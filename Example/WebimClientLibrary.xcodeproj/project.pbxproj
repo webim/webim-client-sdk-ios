@@ -40,6 +40,8 @@
 		EB57F5091D54BBA700BB6695 /* Storyboard-Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB57F5061D54BBA700BB6695 /* Storyboard-Phone.storyboard */; };
 		EB57F50E1D54BD5300BB6695 /* Webim.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB57F50A1D54BD5300BB6695 /* Webim.strings */; };
 		EB57F50F1D54BD5300BB6695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB57F50C1D54BD5300BB6695 /* Localizable.strings */; };
+		EBDA6E6D1D5A28CD00E762BA /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = EBDA6E6B1D5A28CD00E762BA /* LICENSE */; };
+		EBDA6E6E1D5A28CD00E762BA /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = EBDA6E6C1D5A28CD00E762BA /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +107,8 @@
 		EB57F5071D54BBA700BB6695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Storyboard-Phone.storyboard"; sourceTree = "<group>"; };
 		EB57F50B1D54BD5300BB6695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Webim.strings; sourceTree = "<group>"; };
 		EB57F50D1D54BD5300BB6695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EBDA6E6B1D5A28CD00E762BA /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		EBDA6E6C1D5A28CD00E762BA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +248,8 @@
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
+				EBDA6E6B1D5A28CD00E762BA /* LICENSE */,
+				EBDA6E6C1D5A28CD00E762BA /* README.md */,
 				4798CE0DD30DCDAA35B8F75D /* WebimClientLibrary.podspec */,
 			);
 			name = "Podspec Metadata";
@@ -357,6 +363,7 @@
 			files = (
 				EB57F5091D54BBA700BB6695 /* Storyboard-Phone.storyboard in Resources */,
 				EB57F50F1D54BD5300BB6695 /* Localizable.strings in Resources */,
+				EBDA6E6D1D5A28CD00E762BA /* LICENSE in Resources */,
 				EB57F4E01D54BA2E00BB6695 /* iTunesArtwork@2x in Resources */,
 				EB57F4D91D54B7DE00BB6695 /* Images.xcassets in Resources */,
 				EB57F4E11D54BA2E00BB6695 /* LaunchImages.xcassets in Resources */,
@@ -484,6 +491,7 @@
 				EB57F4FC1D54BAF600BB6695 /* WebimController.m in Sources */,
 				EB57F4FD1D54BAF600BB6695 /* WMChatBaseViewController.m in Sources */,
 				EB57F4FE1D54BAF600BB6695 /* WMChatDataViewController.m in Sources */,
+				EBDA6E6E1D5A28CD00E762BA /* README.md in Sources */,
 				EB57F5031D54BAF600BB6695 /* WMRateOperatorTableViewController.m in Sources */,
 				EB57F4E81D54BABA00BB6695 /* UIImage+OrientationFix.m in Sources */,
 				6003F59E195388D20070C39A /* WMAppDelegate.m in Sources */,
