@@ -1,0 +1,14 @@
+use_frameworks!
+
+target 'WebimClientLibrary_Example' do
+  pod 'JSQMessagesViewController'
+  pod 'HCSStarRatingView', :git => 'https://github.com/hugocampossousa/HCSStarRatingView.git'
+  pod 'CRToast', '0.0.8'
+  pod 'WebimClientLibrary', :path => '../'
+
+  target 'WebimClientLibrary_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

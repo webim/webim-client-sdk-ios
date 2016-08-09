@@ -1,0 +1,38 @@
+PODS:
+  - AFNetworking (1.3.4)
+  - CRToast (0.0.8)
+  - HCSStarRatingView (1.4.5)
+  - JSQMessagesViewController (7.3.4):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
+  - WebimClientLibrary (2.3.3):
+    - AFNetworking (< 2.0.0)
+
+DEPENDENCIES:
+  - CRToast (= 0.0.8)
+  - HCSStarRatingView (from `https://github.com/hugocampossousa/HCSStarRatingView.git`)
+  - JSQMessagesViewController
+  - WebimClientLibrary (from `../`)
+
+EXTERNAL SOURCES:
+  HCSStarRatingView:
+    :git: https://github.com/hugocampossousa/HCSStarRatingView.git
+  WebimClientLibrary:
+    :path: "../"
+
+CHECKOUT OPTIONS:
+  HCSStarRatingView:
+    :commit: 4929638b6bc7610ff638ceebdbbf53ee0ff08ffd
+    :git: https://github.com/hugocampossousa/HCSStarRatingView.git
+
+SPEC CHECKSUMS:
+  AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  CRToast: b087127369b4c603726ef6249d74d0d737629ab8
+  HCSStarRatingView: bff3f89314d3b5013ce826ea11897d3129ff6b8c
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  WebimClientLibrary: 501fbbad39c87bae44dd8e36a673631913b9a2e4
+
+PODFILE CHECKSUM: 4fa1da059d79407c135f51a0702657c0d71f4409
+
+COCOAPODS: 1.0.1

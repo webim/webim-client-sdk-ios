@@ -1,0 +1,54 @@
+/* 
+  Webim.strings
+  Webim-Client
+
+  Copyright (c) 2015 WEBIM.RU Ltd. All rights reserved.
+*/
+
+/* WebimController */
+"ToastNewTextMessageTitle"="Новое сообщение:";
+"ToastNewImageMessageTitle"="Новое изображение в чате";
+
+/* HistoryTableViewController */
+"HistoryStartOnlineChatButtonTitle"="Задайте вопрос ONLINE";
+"HistoryStartOfflineChatButtonTitle"="Задайте вопрос OFFLINE";
+"HistoryStartForceOfflineChatButtonTitle"="Принудительно задать вопрос OFFLINE";
+"HistoryContinueChatButtonTitle"="Продолжить чат";
+"HistoryOpratorFileMessageCellTitle"="Получен файл";
+"HistoryVistiorFileMessageCellTitle"="Отправлено изображение";
+"HistoryCurrentChatSectionTitle"="Текущий чат";
+"HistoryHistoryChatSectionTitle"="История";
+
+/* Image Picker */
+"ImagePickerUseCamera"="Снять фото";
+"ImagePickerUserPhotos"="Выбрать фото";
+
+/* Chat */
+"CloseChatConfirmationAlertMessage"="Вы уверены, что хотите закончить диалог?";
+"BubbleLoadingImageMessage"="Изображение загружается...";
+
+"NoOnlineOperatorsAlertTitle"="Реалтайм чат с оператором невозможен";
+"NoOnlineOperatorsAlertMessage"="Сейчас нет доступных онлайн операторов. Вы можете попробовать обратиться чуть позже или оставить свое обращение оффлайн. Оператор ответит, как только будет возможно.";
+"NoOnlineOperatorsAlertCloseButtonTitle"="Закрыть чат";
+"NoOnlineOperatorsAlertStartOfflineChatButtonTitle"="Написать оффлайн";
+
+/* Rate */
+"RatingTitle"="Оценить";
+"RatingSendButtonTitle"="Послать";
+"RatingCancelButtonTitle"="Не сейчас";
+"RatingClarifyingText"="Пожалуйста, оцените работу оператора";
+
+/* Session Errors */
+"WMSessionErrorUnknown"="Произошла непредвиденная ошибка. Пожалуйста, обратитесь в службу поддержки";
+"WMSessionErrorAccountBlocked"="Учетная запись заблокирована. Пожалуйста, обратитесь в службу поддержки";
+"WMSessionErrorNetworkError"="Потерянно соединение с сервером. Пожалуйста, проверьте доступ к Интернет.";
+"WMSessionErrorServerNotReady"="Сервер недоступен, попробуйте повторить запрос чуть позже";
+"WMSessionErrorVisitorBanned"="Извините, для Вас заблокированна возможность отправлять сообщения";
+"WMSessionErrorAttachmentSizeExceeded"="Превышен максимальный размер прикрепляемого файла";
+"WMSessionErrorMessageSizeExceeded"="Превышен максимальный размер сообщения";
+
+/* Dialogs */
+"DialogDismissButton"="Закрыть";
+"DialogCancelButton"="Отменить";
+"DialogYesButton"="Да";
+"DialogOkayButton"="ОК";
