@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'WebimClientLibrary'
-  s.version          = '2.4.0'
+  s.version          = '2.4.1'
   s.summary          = 'Webim.ru client SDK for iOS.'
   s.description      = <<-DESC
 TODO: Add long description of the pod here.

@@ -753,8 +753,12 @@ NSString *const WMVisitorParameterCRC = @"crc";
         return WMSessionErrorAttachmentTypeNotAllowed;
     } else if ([@"max_file_size_exceeded" isEqualToString:errorDescription]) {
         return WMSessionErrorAttachmentSizeExceeded;
-    } else if ([@"message-length-exceeded" isEqualToString:errorDescription]) {
+    } else if ([@"max-message-length-exceeded" isEqualToString:errorDescription]) {
         return WMSessionErrorMessageSizeExceeded;
+    } else if ([@"chat_count_limit_exceeded" isEqualToString:errorDescription]) {
+        return WMSessionErrorChatCountLimitExceeded;
+    } else if ([@"visitor_banned" isEqualToString:errorDescription]) {
+        return WMSessionErrorVisitorBanned;
     } else if ([@"chat_count_limit_exceeded" isEqualToString:errorDescription]) {
         return WMSessionErrorChatCountLimitExceeded;
     }
