@@ -595,6 +595,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
             @"page-id": pageID,
             @"action": @"set_push_token",
             @"push-token": pushToken,
+            @"platform": @"ios",
         };
     [client_ postPath:APIActionPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         WMDebugLog(@"Action: setup push token - response:\n%@", responseObject);
