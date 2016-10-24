@@ -5,7 +5,7 @@ PODS:
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - WebimClientLibrary (2.3.3):
+  - WebimClientLibrary (2.4.3):
     - AFNetworking (< 2.0.0)
 
 DEPENDENCIES:
@@ -31,7 +31,7 @@ SPEC CHECKSUMS:
   HCSStarRatingView: bff3f89314d3b5013ce826ea11897d3129ff6b8c
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  WebimClientLibrary: 501fbbad39c87bae44dd8e36a673631913b9a2e4
+  WebimClientLibrary: 4414f1f53cc9db81626c6576277696f49e2c3bbd
 
 PODFILE CHECKSUM: 4fa1da059d79407c135f51a0702657c0d71f4409
 

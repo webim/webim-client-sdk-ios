@@ -769,9 +769,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 #pragma mark - Processors
 
 - (void)processGetInitialDelta:(id)response {
-    NSParameterAssert(response != nil && ![response isKindOfClass:[NSNull class]]);
-    NSParameterAssert([response isKindOfClass:[NSDictionary class]]);
-    if (((NSDictionary *)response).count == 0) {
+    if (response == nil || ![response isKindOfClass:[NSDictionary class]] || ((NSDictionary *)response).count == 0) {
         return;
     }
     if (self.isStopped) {
@@ -787,9 +785,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (void)processGetDelta:(id)response {
-    NSParameterAssert(response != nil && ![response isKindOfClass:[NSNull class]]);
-    NSParameterAssert([response isKindOfClass:[NSDictionary class]]);
-    if (((NSDictionary *)response).count == 0) {
+    if (response == nil || ![response isKindOfClass:[NSDictionary class]] || ((NSDictionary *)response).count == 0) {
         return;
     }
     if (self.isStopped) {
