@@ -9,6 +9,7 @@
 #import "NSUserDefaults+ClientData.h"
 
 NSString *const WMUserDefaultsRootKey = @"WebimUserDefaults";
+NSString *const WMUserDefaultsMURootKey = @"WebimUserDefaultsMultiUser_";
 
 NSString *const WMStoreVisitorKey = @"visitor";
 NSString *const WMStoreVisitSessionIDKey = @"visitSessionId";
@@ -23,6 +24,14 @@ NSString *const WMStoreVisitorExtKey = @"visitor-ext";
 
 + (NSDictionary *)unarchiveClientData {
     return [[NSUserDefaults standardUserDefaults] unarchiveForKey:WMUserDefaultsRootKey];
+}
+
++ (void)archiveClientDataMU:(NSString *)userId dictionary:(NSDictionary *)dictionary {
+    [[NSUserDefaults standardUserDefaults] archive:dictionary withKey:[WMUserDefaultsMURootKey stringByAppendingString:userId]];
+}
+
++ (NSDictionary *)unarchiveClientDataMU:(NSString *)userId {
+    return [[NSUserDefaults standardUserDefaults] unarchiveForKey:[WMUserDefaultsMURootKey stringByAppendingString:userId]];
 }
 
 - (BOOL)archive:(NSDictionary *)dict withKey:(NSString *)key {

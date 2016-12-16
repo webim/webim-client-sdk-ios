@@ -71,7 +71,10 @@ typedef void (^WMResponseCompletionBlock)(BOOL successful);
  @return Initialized object of session
  */
 - (id)initWithAccountName:(NSString *)accountName location:(NSString *)location delegate:(id<WMSessionDelegate>)delegate;
+
 - (id)initWithAccountName:(NSString *)accountName location:(NSString *)location delegate:(id<WMSessionDelegate>)delegate visitorFields:(NSDictionary *)visitorFields;
+
+- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location delegate:(id <WMSessionDelegate>)delegate visitorFields:(NSDictionary *)visitorFields isMultiUser:(BOOL)isMultiUser;
 
 - (void)startSession:(WMResponseCompletionBlock)block;
 - (void)stopSession;

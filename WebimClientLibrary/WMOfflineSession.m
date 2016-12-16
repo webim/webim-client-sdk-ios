@@ -15,6 +15,7 @@
 #import "WMMessage+Private.h"
 #import "NSUserDefaults+ClientData.h"
 #import "WMUIDGenerator.h"
+#import "NSNull+Checks.h"
 
 #ifdef DEBUG
 #define WMDebugLog(format, ...) NSLog(format, ## __VA_ARGS__)
@@ -59,13 +60,20 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 
 @end
 
-@implementation WMOfflineSession
+@implementation WMOfflineSession {
+    BOOL                 isMultiUser_;
+    NSString            *userId_; // only for multi user session
+}
 
 - (id)initWithAccountName:(NSString *)accountName location:(NSString *)location token:(NSString *)token platform:(NSString *)platform {
     return [self initWithAccountName:accountName location:location token:token platform:platform visitorFields:nil];
 }
 
 - (id)initWithAccountName:(NSString *)accountName location:(NSString *)location token:(NSString *)token platform:(NSString *)platform visitorFields:(NSDictionary *)visitorFields {
+    return [self initWithAccountName:accountName location:location token:token platform:platform visitorFields:visitorFields isMultiUser:NO];
+}
+
+- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location token:(NSString *)token platform:(NSString *)platform visitorFields:(NSDictionary *)visitorFields isMultiUser:(BOOL)isMultiUser {
 
     if ((self = [super initWithAccountName:accountName location:location])) {
         _appealsArray = [NSMutableArray array];
@@ -81,6 +89,17 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
         [_client setDefaultHeader:@"Accept" value:@"text/json, application/json"];
         [_client registerHTTPOperationClass:[AFJSONRequestOperation class]];
         self.client.operationQueue.maxConcurrentOperationCount = 1;
+
+        isMultiUser_ = isMultiUser;
+        if(isMultiUser) {
+            NSAssert([NSNull valueOf:visitorFields] != nil, @"visitorFields must be defined for multi user session");
+            id uid = visitorFields[@"id"];
+            NSAssert([NSNull valueOf:uid] != nil, @"Field 'id' must be defined in visitorFields");
+            if ([uid isKindOfClass:[NSNumber class]])
+                userId_ = [((NSNumber *)uid) stringValue];
+            else
+                userId_ = (NSString *)uid;
+        }
         
         [self load];
     }
@@ -100,8 +119,22 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     self.pageID = nil;
 }
 
+- (NSDictionary *)unarchiveClientData {
+    if(isMultiUser_)
+        return [NSUserDefaults unarchiveClientDataMU:userId_];
+    else
+        return [NSUserDefaults unarchiveClientData];
+}
+
+- (void)archiveClientData:(NSDictionary *)dictionary {
+    if(isMultiUser_)
+        [NSUserDefaults archiveClientDataMU:userId_ dictionary:dictionary];
+    else
+        [NSUserDefaults archiveClientData:dictionary];
+}
+
 - (void)startSession:(void (^)(BOOL success, NSError *error))block {
-    __block NSMutableDictionary *storedValues = [[NSUserDefaults unarchiveClientData] mutableCopy];
+    __block NSMutableDictionary *storedValues = [[self unarchiveClientData] mutableCopy];
     if (storedValues == nil) {
         storedValues = [NSMutableDictionary dictionary];
     }
@@ -159,7 +192,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
         storedValues[WMStoreVisitorKey] = updateDictionary[@"visitor"];
         storedValues[WMStoreVisitSessionIDKey] = self.visitSessionID;
         storedValues[WMStorePageIDKey] = self.pageID;
-        [NSUserDefaults archiveClientData:storedValues];
+        [self archiveClientData:storedValues];
 
         self.lastPagePing = [NSDate date];
         
@@ -199,7 +232,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 }
 
 - (void)getHistoryForced:(BOOL)forced completion:(void (^)(BOOL, id, NSError *))block {
-    NSDictionary *storeData = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storeData = [self unarchiveClientData];
     if (storeData == nil || storeData[WMStoreVisitorKey] == nil || storeData[WMStoreVisitSessionIDKey] == nil) {
         [self tryToRun:3 currentRun:0 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
             if (successful) {
@@ -214,7 +247,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 }
 
 - (void)doGetHistoryForced:(BOOL)forced completion:(void (^)(BOOL, id, NSError *))block {
-    NSDictionary *storeData = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storeData = [self unarchiveClientData];
     NSString *visitorID = storeData[WMStoreVisitorKey][@"id"];
     if (visitorID.length == 0) {
         WMDebugLog(@"History will be available after first appeal");
@@ -324,7 +357,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 
 - (NSError *)checkPageIDForSession {
     if (self.pageID.length == 0) {
-        NSDictionary *storeData = [NSUserDefaults unarchiveClientData];
+        NSDictionary *storeData = [self unarchiveClientData];
         self.pageID = storeData[WMStorePageIDKey];
     }
     if (self.pageID.length == 0) {
@@ -528,7 +561,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 }
 
 - (void)doSendFile:(NSData *)fileData name:(NSString *)fileName mimeType:(NSString *)mimeType inChat:(WMChat *)chat subject:(NSString *)subject departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    NSDictionary *storeData = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storeData = [self unarchiveClientData];
     NSString *visitorID = storeData[WMStoreVisitorKey][@"id"];
     if (visitorID.length == 0) {
         WMDebugLog(@"History will be available after first appeal");
@@ -652,7 +685,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     if (self.isCleaned) {
         return;
     }
-    NSDictionary *storeData = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storeData = [self unarchiveClientData];
     NSString *visitorID = storeData[WMStoreVisitorKey][@"id"];
     if (visitorID.length == 0) {
         WMDebugLog(@"Not saving history because of empty visitor: %@", storeData[WMStoreVisitorKey]);
@@ -668,16 +701,16 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 }
 
 - (void)load {
-    NSString *filepath = [self storageFilePath];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:filepath]) {
-        return;
-    }
-    
-    NSDictionary *storeData = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storeData = [self unarchiveClientData];
     NSDictionary *visitorData = storeData[WMStoreVisitorKey];
     NSString *visitorID = visitorData[@"id"];
     if (visitorData == nil || visitorID == nil) {
+        return;
+    }
+
+    NSString *filepath = [self storageFilePath];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:filepath]) {
         return;
     }
     
@@ -737,7 +770,12 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 
 - (NSString *)storageFilePath {
     NSArray *pathArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    return [[pathArray objectAtIndex:0] stringByAppendingPathComponent:@"webimstorage"];
+    NSString *base = [pathArray[0] stringByAppendingPathComponent:@"webimstorage"];
+    if(isMultiUser_) {
+        return [base stringByAppendingString:userId_];
+    } else {
+        return base;
+    }
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -857,7 +895,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     self.visitSessionID = nil;
     self.revision = nil;
     self.lastChangeTs = @(0);
-    [NSUserDefaults archiveClientData:nil];
+    [self archiveClientData:nil];
     [self removeStorageFile];
 }
 

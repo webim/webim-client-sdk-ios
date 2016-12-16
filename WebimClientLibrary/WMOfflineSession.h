@@ -32,6 +32,13 @@ extern NSString *const WMOfflineChatChangesMessagesKey;
                  platform:(NSString *)platform
             visitorFields:(NSDictionary *)visitorFields;
 
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+                    token:(NSString *)token
+                 platform:(NSString *)platform
+            visitorFields:(NSDictionary *)visitorFields
+              isMultiUser:(BOOL)isMultiUser;
+
 - (void)getHistoryForced:(BOOL)forced
               completion:(void (^)(BOOL successful, id changes, NSError *error))block;
 

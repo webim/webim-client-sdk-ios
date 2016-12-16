@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const WMUserDefaultsRootKey;
+extern NSString *const WMUserDefaultsMURootKey;
 
 extern NSString *const WMStoreVisitorKey;
 extern NSString *const WMStoreVisitSessionIDKey;
@@ -20,6 +21,9 @@ extern NSString *const WMStoreVisitorExtKey;
 + (void)archiveClientData:(NSDictionary *)dictionary;
 + (NSDictionary *)unarchiveClientData;
 + (void)migrateToArchiveClientData;
+
++ (void)archiveClientDataMU:(NSString *)userId dictionary:(NSDictionary *)dictionary;
++ (NSDictionary *)unarchiveClientDataMU:(NSString *)userId;
 
 - (BOOL)archive:(NSDictionary *)dict withKey:(NSString *)key;
 - (NSDictionary *)unarchiveForKey:(NSString *)key;

@@ -22,6 +22,7 @@
 #import "WMOperator+Private.h"
 #import "NSUserDefaults+ClientData.h"
 #import "WMUIDGenerator.h"
+#import "NSNull+Checks.h"
 
 #ifdef DEBUG
 #define WMDebugLog(format, ...) NSLog(format, ## __VA_ARGS__)
@@ -74,9 +75,11 @@ NSString *const WMVisitorParameterCRC = @"crc";
     NSString            *lastComposedCachedDraft_;
     NSDate              *lastComposedSentDate_;
     NSTimer             *composingTimer_;
+    BOOL                 isMultiUser_;
+    NSString            *userId_; // only for multi user session
 }
 
-- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location delegate:(id<WMSessionDelegate>)delegate visitorFields:(NSDictionary *)visitorFields {
+- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location delegate:(id<WMSessionDelegate>)delegate visitorFields:(NSDictionary *)visitorFields isMultiUser:(BOOL)isMultiUser {
     if ((self = [super initWithAccountName:accountName location:location])) {
         _delegate = delegate;
         userDefinedVisitorFields_ = visitorFields;
@@ -87,9 +90,24 @@ NSString *const WMVisitorParameterCRC = @"crc";
         [client_ registerHTTPOperationClass:[AFJSONRequestOperation class]];
         
         [self enableObservingForNotifications:YES];
+
+        isMultiUser_ = isMultiUser;
+        if(isMultiUser) {
+            NSAssert([NSNull valueOf:visitorFields] != nil, @"visitorFields must be defined for multi user session");
+            id uid = visitorFields[@"id"];
+            NSAssert([NSNull valueOf:uid] != nil, @"Field 'id' must be defined in visitorFields");
+            if ([uid isKindOfClass:[NSNumber class]])
+                userId_ = [((NSNumber *)uid) stringValue];
+            else
+                userId_ = (NSString *)uid;
+        }
     }
     
     return self;
+}
+
+- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location delegate:(id<WMSessionDelegate>)delegate visitorFields:(NSDictionary *)visitorFields {
+    return [self initWithAccountName:accountName location:location delegate:delegate visitorFields:visitorFields isMultiUser:NO];
 }
 
 - (id)initWithAccountName:(NSString *)accountName location:(NSString *)location delegate:(id<WMSessionDelegate>)delegate {
@@ -167,6 +185,20 @@ NSString *const WMVisitorParameterCRC = @"crc";
     }
 }
 
+- (NSDictionary *)unarchiveClientData {
+    if(isMultiUser_)
+        return [NSUserDefaults unarchiveClientDataMU:userId_];
+    else
+        return [NSUserDefaults unarchiveClientData];
+}
+
+- (void)archiveClientData:(NSDictionary *)dictionary {
+    if(isMultiUser_)
+        [NSUserDefaults archiveClientDataMU:userId_ dictionary:dictionary];
+    else
+        [NSUserDefaults archiveClientData:dictionary];
+}
+
 #pragma mark - APIs
 
 - (void)startSession:(WMResponseCompletionBlock)block {
@@ -174,12 +206,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
     sessionStarted_ = YES;
     self.isStopped = NO;
 
-#if 0
-    id visitor = [[NSUserDefaults standardUserDefaults] valueForKey:@"visitor"];
-    id visitSessionId = [[NSUserDefaults standardUserDefaults] valueForKey:@"visitSessionId"];
-    id pageID = [[NSUserDefaults standardUserDefaults] valueForKey:@"pageID"];
-#endif
-    NSDictionary *storedValues = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storedValues = [self unarchiveClientData];
     id visitor = storedValues[WMStoreVisitorKey];
     id visitSessionId = storedValues[WMStoreVisitSessionIDKey];
     id pageID = storedValues[WMStorePageIDKey];
@@ -329,7 +356,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (void)getDeltaWithComet:(BOOL)useComet completionBlock:(void (^)(NSDictionary *))block {
-    NSString *pageID = [NSUserDefaults unarchiveClientData][WMStorePageIDKey];
+    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (client_ == nil && pageID.length == 0) {
         CALL_BLOCK(block, @{@"error": @"Uninitialized"});
         return;
@@ -389,7 +416,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (NSString *)startChatWithClientSideId:(NSString *)clientSideId completionBlock:(WMResponseCompletionBlock)block {
-    NSString *pageID = [NSUserDefaults unarchiveClientData][WMStorePageIDKey];
+    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0) {
         CALL_BLOCK(block, NO);
         return nil;
@@ -421,7 +448,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (void)closeChat:(WMResponseCompletionBlock)block {
-    NSString *pageID = [NSUserDefaults unarchiveClientData][WMStorePageIDKey];
+    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0) {
         CALL_BLOCK(block, NO);
         return;
@@ -443,7 +470,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (void)markChatAsRead:(WMResponseCompletionBlock)block {
-    NSString *pageID = [NSUserDefaults unarchiveClientData][WMStorePageIDKey];
+    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0) {
         CALL_BLOCK(block, NO);
         return;
@@ -470,7 +497,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 
 - (NSString *)sendMessage:(NSString *)message withClientSideId:(NSString *)clientSideId successBlock:(void (^)(NSString *))successBlock failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
 
-    NSString *pageID = [NSUserDefaults unarchiveClientData][WMStorePageIDKey];
+    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (clientSideId.length == 0) {
         clientSideId = [WMUIDGenerator generateUID];
     }
@@ -536,7 +563,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 
 - (NSString *)sendFile:(NSData *)fileData name:(NSString *)fileName mimeType:(NSString *)mimeType withClientSideId:(NSString *)clientSideId successBlock:(void (^)(NSString *))succcessBlock failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
 
-    NSDictionary *storeData = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storeData = [self unarchiveClientData];
     NSString *pageID = storeData[WMStorePageIDKey];
     if (clientSideId.length == 0) {
         clientSideId = [WMUIDGenerator generateUID];
@@ -585,7 +612,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (void)setupPushToken:(NSString *)pushToken completion:(WMResponseCompletionBlock)block {
-    NSString *pageID = [NSUserDefaults unarchiveClientData][WMStorePageIDKey];
+    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0 || pushToken.length == 0) {
         return;
     }
@@ -612,7 +639,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (void)clearCachedUserData {
-    [NSUserDefaults archiveClientData:nil];
+    [self archiveClientData:nil];
     self.revision = nil;
 }
 
@@ -632,7 +659,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
     
     BOOL draftChanged = [self draftChanged:draft];
     
-    NSString *pageID = [NSUserDefaults unarchiveClientData][WMStorePageIDKey];
+    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0) {
         return;
     }
@@ -682,7 +709,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
 }
 
 - (void)rateOperator:(NSString *)authorID withRate:(WMOperatorRate)rate completion:(WMResponseCompletionBlock)block {
-    NSDictionary *storedValues = [NSUserDefaults unarchiveClientData];
+    NSDictionary *storedValues = [self unarchiveClientData];
     NSString *pageID = storedValues[WMStorePageIDKey];
     NSString *visitSessionID = storedValues[WMStoreVisitSessionIDKey];
     
@@ -728,9 +755,9 @@ NSString *const WMVisitorParameterCRC = @"crc";
         }
         if ([_delegate respondsToSelector:@selector(session:didReceiveError:)]) {
             if (errorID == WMSessionErrorReinitRequired) {
-                NSMutableDictionary *storage = [[NSUserDefaults unarchiveClientData] mutableCopy];
+                NSMutableDictionary *storage = [[self unarchiveClientData] mutableCopy];
                 [storage removeObjectForKey:WMStorePageIDKey];
-                [NSUserDefaults archiveClientData:storage];
+                [self archiveClientData:storage];
 
                 activeDeltaRevisionNumber_ = nil;
                 sessionEstablished_ = NO;
@@ -817,7 +844,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
     if (self.isStopped) {
         return;
     }
-    [NSUserDefaults archiveClientData:storeValues];
+    [self archiveClientData:storeValues];
     
     self.onlineStatus = [self onlineStatusFromString:updateDictionary[@"onlineStatus"]];
     [self updateSessionStateWithObject:updateDictionary[@"state"]];
