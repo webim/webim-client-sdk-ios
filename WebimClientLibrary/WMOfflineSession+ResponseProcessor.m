@@ -78,7 +78,11 @@
     NSMutableArray *chatsToEdit = [NSMutableArray array];
     [lock lock];
     for (NSDictionary *messageData in messagesDataArray) {
-        WMChat *chat = [self findChatByID:@([messageData[@"chatId"] integerValue]) inAppealsArray:appealsArray];
+        id chatID = messageData[@"chatId"];
+        if ([chatID isKindOfClass:[NSNumber class]]) {
+            chatID = [chatID stringValue];
+        }
+        WMChat *chat = [self findChatByID:chatID inAppealsArray:appealsArray];
         if (chat == nil) {
             NSLog(@"Error: attempt to add message to the missing chat");
             continue;
