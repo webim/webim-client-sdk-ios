@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Webim.ru. All rights reserved.
 //
 
+
 #import "WMFileParams.h"
 
 #import "WMImageParams.h"
@@ -25,6 +26,7 @@
         self.contentType = object[@"content_type"];
         self.imageParams = [WMImageParams createWithObject:object[@"image"]];
     }
+    
     return self;
 }
 

@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 WEBIM.RU Ltd. All rights reserved.
 //
 
+
 #import <Foundation/Foundation.h>
+
 
 typedef enum {
     WMMessageKindUnknown,
@@ -21,8 +23,10 @@ typedef enum {
     WMMessageKindFileFromVisitor,
 } WMMessageKind;
 
+
 @class WMBaseSession;
 @class WMFileParams;
+
 
 @interface WMMessage : NSObject
 
@@ -48,6 +52,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *name;
 
 #pragma mark - end private
+
 
 - (NSString *)filePath;
 - (NSURL *)fileURL;

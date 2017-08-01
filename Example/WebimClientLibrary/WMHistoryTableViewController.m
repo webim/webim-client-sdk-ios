@@ -12,23 +12,29 @@
 #import "WMOfflineChatViewController.h"
 #import "WMHistoryCell.h"
 
+
 typedef NS_ENUM(NSUInteger, ChatSectionType) {
     ChatSectionRealtime = 0,
     ChatSectionOffline = 1,
 };
 
+
 static WMHistoryTableViewController *sharedInastance = nil;
+
 
 @interface WMHistoryTableViewController ()
 
+// MARK: - Properties
 @property (nonatomic, assign) BOOL presentingOfflineChat;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+// MARK: Outlets
 @property (strong, nonatomic) IBOutlet UIButton *startChatButton;
 
 @end
 
+
 @implementation WMHistoryTableViewController {
-    BOOL    shouldReloadChat;
+    BOOL shouldReloadChat;
 }
 
 + (void)setReopenChatOnViewDidAppear {
@@ -39,8 +45,9 @@ static WMHistoryTableViewController *sharedInastance = nil;
 
 - (void)viewDidLoad {
     sharedInastance = self;
-
+    
     [super viewDidLoad];
+    
     [WebimController initializeWithConfig:nil];
     [WebimController setUpdateInterval:20];
     [WebimController forceReloadHostory];
@@ -48,13 +55,32 @@ static WMHistoryTableViewController *sharedInastance = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(onlineFullUpdateNotification:) name:WebimNotifications.onlineFullUpdate object:nil];
-    [nc addObserver:self selector:@selector(onlineNewMessageNotification:) name:WebimNotifications.onlineNewMessage object:nil];
-    [nc addObserver:self selector:@selector(onlineSessionStartChatNotification:) name:WebimNotifications.onlineChatStart object:nil];
-    [nc addObserver:self selector:@selector(onlineSessionChatStatusChangeNotification:) name:WebimNotifications.onlineChatStatusChange object:nil];
-    [nc addObserver:self selector:@selector(webimNotificationsDidReceiveUpdateNotification:) name:WebimNotifications.didReceiveUpdate object:nil];
-    [nc addObserver:self selector:@selector(onlineHasOnlineOperatorChangeNotification:) name:WebimNotifications.onlineSessionHasOnlineOperatorChange object:nil];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineFullUpdateNotification:)
+                               name:WebimNotifications.onlineFullUpdate
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineNewMessageNotification:)
+                               name:WebimNotifications.onlineNewMessage
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineSessionStartChatNotification:)
+                               name:WebimNotifications.onlineChatStart
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineSessionChatStatusChangeNotification:)
+                               name:WebimNotifications.onlineChatStatusChange
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(webimNotificationsDidReceiveUpdateNotification:)
+                               name:WebimNotifications.didReceiveUpdate
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineHasOnlineOperatorChangeNotification:)
+                               name:WebimNotifications.onlineSessionHasOnlineOperatorChange
+                             object:nil];
     
     [self updateViewsOnRealtimeSessionChanges];
     [self reloadDataSourceAnimated:NO];
@@ -62,6 +88,7 @@ static WMHistoryTableViewController *sharedInastance = nil;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
     if (shouldReloadChat) {
         shouldReloadChat = NO;
         [self startChatButtonAction:nil];
@@ -70,14 +97,18 @@ static WMHistoryTableViewController *sharedInastance = nil;
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)reloadDataSourceAnimated:(BOOL)animated {
     NSMutableArray *newDataSource = [[WebimController shared].offlineSession.appealsArray mutableCopy];
     [newDataSource sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        WMChat *left = obj1, *right = obj2;
-        WMMessage *leftMessage = left.messages.lastObject, *rightMessage = right.messages.lastObject;
+        WMChat *left = obj1;
+        WMChat *right = obj2;
+        WMMessage *leftMessage = left.messages.lastObject;
+        WMMessage *rightMessage = right.messages.lastObject;
+        
         return [rightMessage.timestamp compare:leftMessage.timestamp];
     }];
     self.dataSource = newDataSource;
@@ -90,9 +121,10 @@ static WMHistoryTableViewController *sharedInastance = nil;
 
 - (void)updateStartChatButtonTitles {
     WMSession *session = [WebimController shared].realtimeSession;
-    NSString *startChatTitle = session.onlineStatus == WMSessionOnlineStatusOnline ?
-        WMLocString(@"HistoryStartOnlineChatButtonTitle") : WMLocString(@"HistoryStartOfflineChatButtonTitle");
-    [self.startChatButton setTitle:startChatTitle forState:UIControlStateNormal];
+    NSString *startChatTitle = (session.onlineStatus == WMSessionOnlineStatusOnline) ?
+    WMLocString(@"HistoryStartOnlineChatButtonTitle") : WMLocString(@"HistoryStartOfflineChatButtonTitle");
+    [self.startChatButton setTitle:startChatTitle
+                          forState:UIControlStateNormal];
 }
 
 - (void)updateViewsOnRealtimeSessionChanges {
@@ -104,11 +136,16 @@ static WMHistoryTableViewController *sharedInastance = nil;
     return !(chat == nil || chat.state == WMChatStateUnknown || chat.state == WMChatStateClosed || session.onlineStatus != WMSessionOnlineStatusOnline);
 }
 
+
+// MARK: - Actions
+
 - (IBAction)startChatButtonAction:(id)sender {
     if ([WebimController shared].realtimeSession.onlineStatus == WMSessionOnlineStatusOnline) {
-        [self performSegueWithIdentifier:@"PushChatViewController" sender:self];
+        [self performSegueWithIdentifier:@"PushChatViewController"
+                                  sender:self];
     } else {
-        [self performSegueWithIdentifier:@"PushNewOfflineChatViewController" sender:self];
+        [self performSegueWithIdentifier:@"PushNewOfflineChatViewController"
+                                  sender:self];
     }
 }
 
@@ -116,7 +153,8 @@ static WMHistoryTableViewController *sharedInastance = nil;
     [WebimController forceReloadHostory];
 }
 
-#pragma mark - Table view data source
+
+// MARK: - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
@@ -141,7 +179,7 @@ static WMHistoryTableViewController *sharedInastance = nil;
     WMHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HistoryCell" forIndexPath:indexPath];
     
     WMChat *chat = indexPath.section == ChatSectionRealtime ?
-        [WebimController shared].realtimeSession.chat : [self.dataSource objectAtIndex:indexPath.row];
+    [WebimController shared].realtimeSession.chat : [self.dataSource objectAtIndex:indexPath.row];
     WMMessage *lastMessage = [self lastTextMessageInChat:chat];
     NSString *cellTitle = lastMessage.text;
     if (lastMessage == nil) {
@@ -179,10 +217,13 @@ static WMHistoryTableViewController *sharedInastance = nil;
     return indexPath.section == ChatSectionOffline;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         WMChat *chat = self.dataSource[indexPath.row];
-        [[WebimController shared].offlineSession deleteChat:chat completion:^(BOOL successful, NSError *error) {
+        [[WebimController shared].offlineSession deleteChat:chat
+                                                 completion:^(BOOL successful, NSError *error) {
             if (successful) {
                 [self.dataSource removeObject:chat];
                 [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -192,14 +233,17 @@ static WMHistoryTableViewController *sharedInastance = nil;
             }
         }];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-    }   
+    }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == ChatSectionRealtime) {
-        [self performSegueWithIdentifier:@"PushChatViewController" sender:self];
+        [self performSegueWithIdentifier:@"PushChatViewController"
+                                  sender:self];
     } else {
-        [self performSegueWithIdentifier:@"PushOfflineChatViewController" sender:self];
+        [self performSegueWithIdentifier:@"PushOfflineChatViewController"
+                                  sender:self];
     }
 }
 

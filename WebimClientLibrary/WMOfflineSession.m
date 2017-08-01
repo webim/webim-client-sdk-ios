@@ -9,19 +9,22 @@
 #import "WMOfflineSession.h"
 
 #import "AFNetworking.h"
-#import "WMOfflineSession+ResponseProcessor.h"
 
+#import "WMOfflineSession+ResponseProcessor.h"
 #import "WMChat+Private.h"
 #import "WMMessage+Private.h"
-#import "NSUserDefaults+ClientData.h"
 #import "WMUIDGenerator.h"
+
+#import "NSUserDefaults+ClientData.h"
 #import "NSNull+Checks.h"
+
 
 #ifdef DEBUG
 #define WMDebugLog(format, ...) NSLog(format, ## __VA_ARGS__)
 #else
 #define WMDebugLog(format, ...)
 #endif
+
 
 static NSTimeInterval TimeBetweenPagePings = 30 * 60; // Server forgets pages after 30 mins of inactivity
 
@@ -35,6 +38,7 @@ NSString *const WMOfflineChatChangesModifiedChatsKey = @"mod_chats";
 NSString *const WMOfflineChatChangesMessagesKey = @"messages";
 
 static NSString *DefaultClientTitle = @"iOS Client"; //
+
 
 @interface WMOfflineSession () <NSCoding>
 
@@ -60,22 +64,22 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 
 @end
 
+
 @implementation WMOfflineSession {
-    BOOL                 isMultiUser_;
-    NSString            *userId_; // only for multi user session
+    BOOL isMultiUser_;
+    NSString *userId_; // Only for multi-user session
 }
 
-- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location token:(NSString *)token platform:(NSString *)platform {
-    return [self initWithAccountName:accountName location:location token:token platform:platform visitorFields:nil];
-}
+// MARK: Initialization
 
-- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location token:(NSString *)token platform:(NSString *)platform visitorFields:(NSDictionary *)visitorFields {
-    return [self initWithAccountName:accountName location:location token:token platform:platform visitorFields:visitorFields isMultiUser:NO];
-}
-
-- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location token:(NSString *)token platform:(NSString *)platform visitorFields:(NSDictionary *)visitorFields isMultiUser:(BOOL)isMultiUser {
-
-    if ((self = [super initWithAccountName:accountName location:location])) {
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+                    token:(NSString *)token
+                 platform:(NSString *)platform
+            visitorFields:(NSDictionary *)visitorFields
+              isMultiUser:(BOOL)isMultiUser {
+    if ((self = [super initWithAccountName:accountName
+                                  location:location])) {
         _appealsArray = [NSMutableArray array];
         self.token = token;
         self.platform = platform;
@@ -86,10 +90,11 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
         NSURL *baseURL = [NSURL URLWithString:self.host];
         _client = [AFHTTPClient clientWithBaseURL:baseURL];
         [_client setParameterEncoding:AFFormURLParameterEncoding];
-        [_client setDefaultHeader:@"Accept" value:@"text/json, application/json"];
+        [_client setDefaultHeader:@"Accept"
+                            value:@"text/json, application/json"];
         [_client registerHTTPOperationClass:[AFJSONRequestOperation class]];
         self.client.operationQueue.maxConcurrentOperationCount = 1;
-
+        
         isMultiUser_ = isMultiUser;
         if(isMultiUser) {
             NSAssert([NSNull valueOf:visitorFields] != nil, @"visitorFields must be defined for multi user session");
@@ -106,6 +111,31 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     
     return self;
 }
+
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+                    token:(NSString *)token
+                 platform:(NSString *)platform
+            visitorFields:(NSDictionary *)visitorFields {
+    return [self initWithAccountName:accountName
+                            location:location
+                               token:token
+                            platform:platform
+                       visitorFields:visitorFields
+                         isMultiUser:NO];
+}
+
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+                    token:(NSString *)token
+                 platform:(NSString *)platform {
+    return [self initWithAccountName:accountName
+                            location:location
+                               token:token
+                            platform:platform
+                       visitorFields:nil];
+}
+
 
 - (NSMutableArray *)appealsArray {
     [self.appealsLock lock];
@@ -133,6 +163,11 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
         [NSUserDefaults archiveClientData:dictionary];
 }
 
+
+// MARK: - API
+
+// MARK: - Session methods
+
 - (void)startSession:(void (^)(BOOL success, NSError *error))block {
     __block NSMutableDictionary *storedValues = [[self unarchiveClientData] mutableCopy];
     if (storedValues == nil) {
@@ -144,7 +179,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     id pageID = storedValues[WMStorePageIDKey];
     self.pageID = pageID;
     self.visitorObject = visitor;
-
+    
     id extVisitorObject = nil;
     if (self.userDefinedVisitorFields != nil) {
         extVisitorObject = [self jsonizedStringFromObject:self.userDefinedVisitorFields];
@@ -173,80 +208,101 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
         params[@"visitor-ext"] = extVisitorObject;
     }
     
-    [self.client getPath:APIDeltaPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        id errorData = responseObject[@"error"];
-        if (errorData != nil && ![errorData isKindOfClass:[NSNull class]]) {
-            WMDebugLog(@"Init Delta Response Error:\n%@", responseObject);
-            NSError *error = [NSError errorWithDomain:WMWebimErrorDomain
-                                                 code:[self errorFromString:errorData]
-                                             userInfo:nil];
-            CALL_BLOCK(block, NO, error);
-            return;
-        }
-        
-        self.revision = responseObject[@"revision"];
-        NSMutableDictionary *updateDictionary = responseObject[@"fullUpdate"];
-        self.visitSessionID = updateDictionary[@"visitSessionId"];
-        self.pageID = updateDictionary[@"pageId"];
-        
-        storedValues[WMStoreVisitorKey] = updateDictionary[@"visitor"];
-        storedValues[WMStoreVisitSessionIDKey] = self.visitSessionID;
-        storedValues[WMStorePageIDKey] = self.pageID;
-        [self archiveClientData:storedValues];
-
-        self.lastPagePing = [NSDate date];
-        
-        if (![self.visitorObject[@"id"] isEqualToString:updateDictionary[@"visitor"][@"id"]] && self.visitorObject != nil) {
-            WMDebugLog(@"Removing storage file due to changes in visitor id");
-            [self clearStorage];
-        }
-        self.visitorObject = updateDictionary[@"visitor"];
-        
-        CALL_BLOCK(block, YES, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (operation.isCancelled) {
-            CALL_BLOCK(block, NO, error);
-            return;
-        }
-        WMDebugLog(@"Error: unable to start with location.\n%@", error);
-        CALL_BLOCK(block, NO, error);
-    }];
+    [self.client getPath:APIDeltaPath
+              parameters:params
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     id errorData = responseObject[@"error"];
+                     if (errorData != nil &&
+                         ![errorData isKindOfClass:[NSNull class]]) {
+                         WMDebugLog(@"Init Delta Response Error:\n%@", responseObject);
+                         NSError *error = [NSError errorWithDomain:WMWebimErrorDomain
+                                                              code:[self errorFromString:errorData]
+                                                          userInfo:nil];
+                         CALL_BLOCK(block, NO, error);
+                         
+                         return;
+                     }
+                     
+                     self.revision = responseObject[@"revision"];
+                     NSMutableDictionary *updateDictionary = responseObject[@"fullUpdate"];
+                     self.visitSessionID = updateDictionary[@"visitSessionId"];
+                     self.pageID = updateDictionary[@"pageId"];
+                     
+                     storedValues[WMStoreVisitorKey] = updateDictionary[@"visitor"];
+                     storedValues[WMStoreVisitSessionIDKey] = self.visitSessionID;
+                     storedValues[WMStorePageIDKey] = self.pageID;
+                     [self archiveClientData:storedValues];
+                     
+                     self.lastPagePing = [NSDate date];
+                     
+                     if (![self.visitorObject[@"id"] isEqualToString:updateDictionary[@"visitor"][@"id"]] &&
+                         self.visitorObject != nil) {
+                         WMDebugLog(@"Removing storage file due to changes in visitor id");
+                         [self clearStorage];
+                     }
+                     self.visitorObject = updateDictionary[@"visitor"];
+                     
+                     CALL_BLOCK(block, YES, nil);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (operation.isCancelled) {
+                         CALL_BLOCK(block, NO, error);
+                         
+                         return;
+                     }
+                     WMDebugLog(@"Error: unable to start with location.\n%@", error);
+                     CALL_BLOCK(block, NO, error);
+                 }];
 }
 
 // In case of server-not-ready situation this methods tries to "init" given number of times
-- (void)tryToRun:(int)runTimes currentRun:(int)curRun startOfflineSessionWithCompletion:(void (^)(BOOL successful, NSError *error))block {
+- (void)tryToRun:(int)runTimes
+      currentRun:(int)currentRun
+startOfflineSessionWithCompletion:(void (^)(BOOL successful, NSError *error))block {
     [self startSession:^(BOOL success, NSError *lerror) {
         if (success) {
             CALL_BLOCK(block, YES, nil);
         } else {
-            if (runTimes == curRun + 1 || ![lerror.domain isEqualToString:WMWebimErrorDomain] ||
+            if (runTimes == currentRun + 1 ||
+                ![lerror.domain isEqualToString:WMWebimErrorDomain] ||
                 lerror.code != WMSessionErrorServerNotReady) {
                 CALL_BLOCK(block, NO, lerror);
             } else {
-                [NSObject dispatchOnMainThreadAfterDelay:curRun + 1 block:^{
-                    [self tryToRun:runTimes currentRun:curRun + 1 startOfflineSessionWithCompletion:block];
+                [NSObject dispatchOnMainThreadAfterDelay:currentRun + 1 block:^{
+                    [self tryToRun:runTimes currentRun:currentRun + 1 startOfflineSessionWithCompletion:block];
                 }];
             }
         }
     }];
 }
 
-- (void)getHistoryForced:(BOOL)forced completion:(void (^)(BOOL, id, NSError *))block {
+
+// MARK: - Chat methods
+
+- (void)getHistoryForced:(BOOL)forced
+              completion:(void (^)(BOOL, id, NSError *))block {
     NSDictionary *storeData = [self unarchiveClientData];
-    if (storeData == nil || storeData[WMStoreVisitorKey] == nil || storeData[WMStoreVisitSessionIDKey] == nil) {
-        [self tryToRun:3 currentRun:0 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
-            if (successful) {
-                [self doGetHistoryForced:forced completion:block];
-            } else {
-                CALL_BLOCK(block, NO, nil, error);
-            }
-        }];
+    
+    // MARK: TODO: Kill the magic number 3
+    if (storeData == nil ||
+        storeData[WMStoreVisitorKey] == nil ||
+        storeData[WMStoreVisitSessionIDKey] == nil) {
+        [self tryToRun:3
+            currentRun:0
+startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
+    if (successful) {
+        [self doGetHistoryForced:forced
+                      completion:block];
+    } else {
+        CALL_BLOCK(block, NO, nil, error);
+    }
+}];
     } else {
         [self doGetHistoryForced:forced completion:block];
     }
 }
 
-- (void)doGetHistoryForced:(BOOL)forced completion:(void (^)(BOOL, id, NSError *))block {
+- (void)doGetHistoryForced:(BOOL)forced
+                completion:(void (^)(BOOL, id, NSError *))block {
     NSDictionary *storeData = [self unarchiveClientData];
     NSString *visitorID = storeData[WMStoreVisitorKey][@"id"];
     if (visitorID.length == 0) {
@@ -258,43 +314,131 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
                                                      NSLocalizedRecoverySuggestionErrorKey: @"History will be available after user's first message",
                                                      }];
         CALL_BLOCK(block, NO, nil, error);
+        
         return;
     }
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"visitor-id"] = visitorID;
     params[@"since"] = forced ? @(0) : self.lastChangeTs;
-    [self.client getPath:APIHistoryPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSError *webimError = [self checkWebimErrorInResponse:responseObject];
-        if (webimError != nil) {
-            CALL_BLOCK(block, NO, nil, webimError);
-        } else {
-            self.lastChangeTs = responseObject[@"lastChangeTs"];
-            NSDictionary *changes = [self processGetHistory:responseObject appeals:_appealsArray lock:self.appealsLock];
-            [self save];
-            CALL_BLOCK(block, YES, changes, nil);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WMDebugLog(@"%@", error);
-        CALL_BLOCK(block, NO, nil, error);
-    }];
+    [self.client getPath:APIHistoryPath
+              parameters:params
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSError *webimError = [self checkWebimErrorInResponse:responseObject];
+                     if (webimError != nil) {
+                         CALL_BLOCK(block, NO, nil, webimError);
+                     } else {
+                         self.lastChangeTs = responseObject[@"lastChangeTs"];
+                         NSDictionary *changes = [self processGetHistory:responseObject
+                                                                 appeals:_appealsArray
+                                                                    lock:self.appealsLock];
+                         [self save];
+                         CALL_BLOCK(block, YES, changes, nil);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WMDebugLog(@"%@", error);
+                     CALL_BLOCK(block, NO, nil, error);
+                 }];
 }
 
-- (void)doSendOfflineMessage:(NSString *)text chat:(WMChat *)chat fileDescriptors:(NSArray *)fileDescriptors subject:(NSString *)subject departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
+- (WMChat *)chatForMessage:(WMMessage *)message {
+    [self.appealsLock lock];
+    for (WMChat *chat in _appealsArray) {
+        if ([chat.messages containsObject:message]) {
+            [self.appealsLock unlock];
+            
+            return chat;
+        }
+    }
+    [self.appealsLock unlock];
+    
+    return nil;
+}
+
+
+// MARK: - Message mthods
+
+// MARK: Messages (text)
+
+- (void)sendMessage:(NSString *)text
+             inChat:(WMChat *)chat
+            subject:(NSString *)subject
+      departmentKey:(NSString *)departmentKey
+        onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+         completion:(void (^)(BOOL))completion {
+    NSError *textError = [self checkChatMessage:text];
+    if (textError != nil) {
+        CALL_BLOCK(block, NO, chat, nil, textError);
+        CALL_BLOCK(completion, NO);
+        
+        return;
+    }
+    
+    // MARK: TODO: Kill the magic number
+    void (^recoverBlock)() = ^() {
+        [self tryToRun:3
+            currentRun:0
+startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
+            if (successful) {
+                [self doSendOfflineMessage:text
+                                      chat:chat
+                           fileDescriptors:nil
+                                   subject:nil
+                             departmentKey:departmentKey
+                               onDataBlock:block
+                                completion:completion];
+            } else {
+                CALL_BLOCK(block, NO, chat, nil, error);
+                CALL_BLOCK(completion, NO);
+            }
+        }];
+    };
+    
+    void (^mainBlock)() = ^() {
+        void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
+            if ([self isReinitRequiredError:error]) {
+                recoverBlock();
+            } else {
+                CALL_BLOCK(block, result, chat, message, error);
+            }
+        };
+        [self doSendOfflineMessage:text
+                              chat:chat
+                   fileDescriptors:nil
+                           subject:nil
+                     departmentKey:departmentKey
+                       onDataBlock:testBlock
+                        completion:completion];
+    };
+    
+    [self runMethodWithMainBlock:mainBlock
+                    recoverBlock:recoverBlock];
+}
+
+- (void)doSendOfflineMessage:(NSString *)text
+                        chat:(WMChat *)chat
+             fileDescriptors:(NSArray *)fileDescriptors
+                     subject:(NSString *)subject
+               departmentKey:(NSString *)departmentKey
+                 onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+                  completion:(void (^)(BOOL))completion {
     NSError *pageError = [self checkPageIDForSession];
     if (pageError != nil) {
         WMDebugLog(@"Error: sending offline message without page id");
         CALL_BLOCK(block, NO, chat, nil, pageError);
+        
         return;
     }
-    NSAssert(text.length > 0 || fileDescriptors != nil, @"Text or file descriptor required");
+    
+    NSAssert(((text.length > 0) ||
+              (fileDescriptors != nil)), @"Text or file descriptor required");
     
     NSString *uid = [WMUIDGenerator generateUID];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"action"] = @"chat.offline_message";
     params[@"page-id"] = self.pageID;
-    params[@"visitor-fields"] = self.visitorFields.count > 0 ? [self jsonizedStringFromObject:self.visitorFields] : @"{}";
+    params[@"visitor-fields"] = (self.visitorFields.count > 0) ? [self jsonizedStringFromObject:self.visitorFields] : @"{}";
     if (text.length > 0) {
         params[@"text"] = text;
     }
@@ -310,9 +454,11 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     if (uid.length > 0) {
         params[@"client-message-id"] = uid;
     }
-    params[@"subject"] = subject.length > 0 ? subject : [NSNull null];
+    params[@"subject"] = (subject.length > 0) ? subject : [NSNull null];
     
-    [self.client postPath:APIActionPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.client postPath:APIActionPath
+               parameters:params
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *webimError = [self checkWebimErrorInResponse:responseObject];
         if (webimError != nil) {
             CALL_BLOCK(block, NO, chat, nil, webimError);
@@ -326,6 +472,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
                                                    code:WMSessionErrorResponseDataError
                                                userInfo:@{NSLocalizedDescriptionKey: @"Unable to create chat object from server response"}]);
                     CALL_BLOCK(completion, NO);
+                    
                     return;
                 }
                 CALL_BLOCK(block, YES, newChat, newChat.messages.firstObject, nil);
@@ -340,6 +487,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
                                                    code:WMSessionErrorResponseDataError
                                                userInfo:@{NSLocalizedDescriptionKey: @"Unable to create message from server response"}]);
                     CALL_BLOCK(completion, NO);
+                    
                     return;
                 }
                 CALL_BLOCK(block, YES, chat, newMessage, nil);
@@ -354,6 +502,284 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
         CALL_BLOCK(completion, NO);
     }];
 }
+
+- (void)runMethodWithMainBlock:(void (^)())mainBlock
+                  recoverBlock:(void (^)())recoverBlock {
+    if ((self.lastPagePing == nil) ||
+        ([[NSDate date] timeIntervalSinceDate:self.lastPagePing] >= TimeBetweenPagePings)) {
+        recoverBlock();
+    } else {
+        mainBlock();
+    }
+}
+
+- (void)sendMessage:(NSString *)text
+             inChat:(WMChat *)chat
+      departmentKey:(NSString *)departmentKey
+        onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+         completion:(void (^)(BOOL))completion {
+    [self sendMessage:text
+               inChat:chat
+              subject:nil
+        departmentKey:departmentKey
+          onDataBlock:block
+           completion:completion];
+}
+
+- (void)sendMessage:(NSString *)text
+             inChat:(WMChat *)chat
+        onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+         completion:(void (^)(BOOL))completion {
+    [self sendMessage:text
+               inChat:chat
+              subject:nil
+        departmentKey:nil
+          onDataBlock:block
+           completion:completion];
+}
+
+
+// MARK: File (general case)
+
+- (void)sendFile:(NSData *)fileData
+            name:(NSString *)fileName
+        mimeType:(NSString *)mimeType
+          inChat:(WMChat *)chat
+         subject:(NSString *)subject
+   departmentKey:(NSString *)departmentKey
+     onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+      completion:(void (^)(BOOL))completion {
+    // MARK: TODO: Kill tha magic number 3
+    void (^recoverBlock)() = ^() {
+        [self tryToRun:3
+            currentRun:0
+startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
+            if (successful) {
+                [self doSendFile:fileData
+                            name:fileName
+                        mimeType:mimeType
+                          inChat:chat
+                         subject:subject
+                   departmentKey:departmentKey
+                     onDataBlock:block
+                      completion:completion];
+            } else {
+                CALL_BLOCK(block, NO, chat, nil, error);
+                CALL_BLOCK(completion, NO);
+            }
+        }];
+    };
+    
+    void (^mainBlock)() = ^() {
+        void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
+            if ([self isReinitRequiredError:error]) {
+                recoverBlock();
+            } else {
+                CALL_BLOCK(block, result, chat, message, error);
+            }
+        };
+        [self doSendFile:fileData
+                    name:fileName
+                mimeType:mimeType
+                  inChat:chat
+                 subject:subject
+           departmentKey:departmentKey
+             onDataBlock:testBlock
+              completion:completion];
+    };
+    
+    [self runMethodWithMainBlock:mainBlock
+                    recoverBlock:recoverBlock];
+}
+
+- (void)doSendFile:(NSData *)fileData
+              name:(NSString *)fileName
+          mimeType:(NSString *)mimeType
+            inChat:(WMChat *)chat
+           subject:(NSString *)subject
+     departmentKey:(NSString *)departmentKey
+       onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+        completion:(void (^)(BOOL))completion {
+    NSDictionary *storeData = [self unarchiveClientData];
+    NSString *visitorID = storeData[WMStoreVisitorKey][@"id"];
+    if (visitorID.length == 0) {
+        WMDebugLog(@"History will be available after first appeal");
+        NSError *error = [NSError errorWithDomain:WMWebimErrorDomain
+                                             code:WMSessionErrorNotConfigured
+                                         userInfo: @{
+                                                     NSLocalizedDescriptionKey: @"User's visitor id not ready",
+                                                     NSLocalizedRecoverySuggestionErrorKey: @"Unexpected error",
+                                                     }];
+        CALL_BLOCK(block, NO, chat, nil, error);
+        CALL_BLOCK(completion, NO);
+        
+        return;
+    }
+    
+    NSError *pageError = [self checkPageIDForSession];
+    if (pageError != nil) {
+        WMDebugLog(@"Error: attempt to send file without page id");
+        CALL_BLOCK(block, NO, chat, nil, pageError);
+        CALL_BLOCK(completion, NO);
+        
+        return;
+    }
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"chat-mode"] = @"offline";
+    params[@"page-id"] = self.pageID;
+    params[@"visit-session-id"] = visitorID;
+    
+    NSMutableURLRequest *request = [self.client multipartFormRequestWithMethod:@"POST"
+                                                                          path:APIUploadPath
+                                                                    parameters:params
+                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                                                         [formData appendPartWithFileData:fileData
+                                                                                     name:@"webim_upload_file"
+                                                                                 fileName:fileName
+                                                                                 mimeType:mimeType];
+                                                     }];
+    AFHTTPRequestOperation *operation = [self.client HTTPRequestOperationWithRequest:request
+                                                                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSError *webimError = [self checkWebimErrorInResponse:responseObject];
+        if (webimError != nil) {
+            CALL_BLOCK(block, NO, chat, nil, webimError);
+            CALL_BLOCK(completion, NO);
+        } else {
+            NSDictionary *descriptor = responseObject[@"data"];
+            [self doSendOfflineMessage:nil
+                                  chat:chat
+                       fileDescriptors:@[descriptor]
+                               subject:subject
+                         departmentKey:departmentKey
+                           onDataBlock:block
+                            completion:completion];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        CALL_BLOCK(block, NO, chat, nil, error);
+        CALL_BLOCK(completion, NO);
+    }];
+    [self.client enqueueHTTPRequestOperation:operation];
+}
+
+- (void)sendFile:(NSData *)fileData
+            name:(NSString *)fileName
+        mimeType:(NSString *)mimeType
+          inChat:(WMChat *)chat
+   departmentKey:(NSString *)departmentKey
+     onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+      completion:(void (^)(BOOL))completion {
+    [self sendFile:fileData
+              name:fileName
+          mimeType:mimeType
+            inChat:chat
+           subject:nil
+     departmentKey:departmentKey
+       onDataBlock:block
+        completion:completion];
+}
+
+
+// MARK: Image
+
+- (void)sendImage:(NSData *)imageData
+             type:(WMChatAttachmentImageType)type
+           inChat:(WMChat *)chat
+          subject:(NSString *)subject
+    departmentKey:(NSString *)departmentKey
+      onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+       completion:(void (^)(BOOL))completion {
+    // MARK: TODO: Kill the magic number 3
+    void (^recoverBlock)() = ^() {
+        [self tryToRun:3
+            currentRun:0
+startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
+            if (successful) {
+                [self doSendImage:imageData
+                             type:type
+                           inChat:chat
+                          subject:subject
+                    departmentKey:departmentKey
+                      onDataBlock:block
+                       completion:completion];
+            } else {
+                CALL_BLOCK(block, NO, chat, nil, error);
+                CALL_BLOCK(completion, NO);
+            }
+        }];
+    };
+    
+    void (^mainBlock)() = ^() {
+        void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
+            if ([self isReinitRequiredError:error]) {
+                recoverBlock();
+            } else {
+                CALL_BLOCK(block, result, chat, message, error);
+            }
+        };
+        [self doSendImage:imageData
+                     type:type
+                   inChat:chat
+                  subject:subject
+            departmentKey:departmentKey
+              onDataBlock:testBlock
+               completion:completion];
+    };
+    
+    [self runMethodWithMainBlock:mainBlock
+                    recoverBlock:recoverBlock];
+}
+
+- (void)doSendImage:(NSData *)imageData
+               type:(WMChatAttachmentImageType)type
+             inChat:(WMChat *)chat
+            subject:(NSString *)subject
+      departmentKey:(NSString *)departmentKey
+        onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+         completion:(void (^)(BOOL))completion {
+    NSString *mimeType = (type == WMChatAttachmentImageJPEG) ? @"image/jpeg" : @"image/png";
+    NSString *fileName = (type == WMChatAttachmentImageJPEG) ? @"ios_image.jpg" : @"ios_image.png";
+    
+    [self doSendFile:imageData
+                name:fileName
+            mimeType:mimeType
+              inChat:chat
+             subject:subject
+       departmentKey:departmentKey
+         onDataBlock:block
+          completion:completion];
+}
+
+- (void)sendImage:(NSData *)imageData
+             type:(WMChatAttachmentImageType)type
+           inChat:(WMChat *)chat
+    departmentKey:(NSString *)departmentKey
+      onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+       completion:(void (^)(BOOL))completion {
+    [self sendImage:imageData
+               type:type
+             inChat:chat
+            subject:nil
+      departmentKey:departmentKey
+        onDataBlock:block
+         completion:completion];
+}
+
+- (void)sendImage:(NSData *)imageData
+             type:(WMChatAttachmentImageType)type
+           inChat:(WMChat *)chat onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
+       completion:(void (^)(BOOL))completion {
+    [self sendImage:imageData
+               type:type
+             inChat:chat
+            subject:nil
+      departmentKey:nil
+        onDataBlock:block
+         completion:completion];
+}
+
+
+// MARK: -
 
 - (NSError *)checkPageIDForSession {
     if (self.pageID.length == 0) {
@@ -392,57 +818,8 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     return nil;
 }
 
-- (void)runMethodWithMainBlock:(void (^)())mainBlock recoverBlock:(void (^)())recoverBlock {
-    if (self.lastPagePing == nil || [[NSDate date] timeIntervalSinceDate:self.lastPagePing] >= TimeBetweenPagePings) {
-        recoverBlock();
-    } else {
-        mainBlock();
-    }
-}
-
 - (BOOL)isReinitRequiredError:(NSError *)error {
     return [error.domain isEqualToString:WMWebimErrorDomain] && error.code == WMSessionErrorReinitRequired;
-}
-
-- (void)sendMessage:(NSString *)text inChat:(WMChat *)chat subject:(NSString *)subject departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    NSError *textError = [self checkChatMessage:text];
-    if (textError != nil) {
-        CALL_BLOCK(block, NO, chat, nil, textError);
-        CALL_BLOCK(completion, NO);
-        return;
-    }
-    
-    void (^recoverBlock)() = ^() {
-        [self tryToRun:3 currentRun:0 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
-            if (successful) {
-                [self doSendOfflineMessage:text chat:chat fileDescriptors:nil subject:nil departmentKey:departmentKey onDataBlock:block completion:completion];
-            } else {
-                CALL_BLOCK(block, NO, chat, nil, error);
-                CALL_BLOCK(completion, NO);
-            }
-        }];
-    };
-    
-    void (^mainBlock)() = ^() {
-        void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
-            if ([self isReinitRequiredError:error]) {
-                recoverBlock();
-            } else {
-                CALL_BLOCK(block, result, chat, message, error);
-            }
-        };
-        [self doSendOfflineMessage:text chat:chat fileDescriptors:nil subject:nil departmentKey:departmentKey onDataBlock:testBlock completion:completion];
-    };
-    
-    [self runMethodWithMainBlock:mainBlock recoverBlock:recoverBlock];
-}
-
-- (void)sendMessage:(NSString *)text inChat:(WMChat *)chat onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    [self sendMessage:text inChat:chat subject:nil departmentKey:nil onDataBlock:block completion:completion];
-}
-
-- (void)sendMessage:(NSString *)text inChat:(WMChat *)chat departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    [self sendMessage:text inChat:chat subject:nil departmentKey:departmentKey onDataBlock:block completion:completion];
 }
 
 - (void)doDeleteChat:(WMChat *)chat completion:(void (^)(BOOL, NSError *))block {
@@ -553,130 +930,6 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     [self runMethodWithMainBlock:mainBlock recoverBlock:recoverBlock];
 }
 
-- (void)doSendImage:(NSData *)imageData type:(WMChatAttachmentImageType)type inChat:(WMChat *)chat subject:(NSString *)subject departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    NSString *mimeType = type == WMChatAttachmentImageJPEG ? @"image/jpeg" : @"image/png";
-    NSString *fileName = type == WMChatAttachmentImageJPEG ? @"ios_image.jpg" : @"ios_image.png";
-    
-    [self doSendFile:imageData name:fileName mimeType:mimeType inChat:chat subject:subject departmentKey:departmentKey onDataBlock:block completion:completion];
-}
-
-- (void)doSendFile:(NSData *)fileData name:(NSString *)fileName mimeType:(NSString *)mimeType inChat:(WMChat *)chat subject:(NSString *)subject departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    NSDictionary *storeData = [self unarchiveClientData];
-    NSString *visitorID = storeData[WMStoreVisitorKey][@"id"];
-    if (visitorID.length == 0) {
-        WMDebugLog(@"History will be available after first appeal");
-        NSError *error = [NSError errorWithDomain:WMWebimErrorDomain
-                                             code:WMSessionErrorNotConfigured
-                                         userInfo: @{
-                                                     NSLocalizedDescriptionKey: @"User's visitor id not ready",
-                                                     NSLocalizedRecoverySuggestionErrorKey: @"Unexpected error",
-                                                     }];
-        CALL_BLOCK(block, NO, chat, nil, error);
-        CALL_BLOCK(completion, NO);
-        return;
-    }
-    
-    NSError *pageError = [self checkPageIDForSession];
-    if (pageError != nil) {
-        WMDebugLog(@"Error: attempt to send file without page id");
-        CALL_BLOCK(block, NO, chat, nil, pageError);
-        CALL_BLOCK(completion, NO);
-        return;
-    }
-    
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"chat-mode"] = @"offline";
-    params[@"page-id"] = self.pageID;
-    params[@"visit-session-id"] = visitorID;
-    
-    NSMutableURLRequest *request = [self.client multipartFormRequestWithMethod:@"POST"
-                                                                          path:APIUploadPath
-                                                                    parameters:params
-                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                                                         [formData appendPartWithFileData:fileData name:@"webim_upload_file" fileName:fileName mimeType:mimeType];
-                                                     }];
-    AFHTTPRequestOperation *operation = [self.client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSError *webimError = [self checkWebimErrorInResponse:responseObject];
-        if (webimError != nil) {
-            CALL_BLOCK(block, NO, chat, nil, webimError);
-            CALL_BLOCK(completion, NO);
-        } else {
-            NSDictionary *descriptor = responseObject[@"data"];
-            [self doSendOfflineMessage:nil chat:chat fileDescriptors:@[descriptor] subject:subject departmentKey:departmentKey onDataBlock:block completion:completion];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        CALL_BLOCK(block, NO, chat, nil, error);
-        CALL_BLOCK(completion, NO);
-    }];
-    [self.client enqueueHTTPRequestOperation:operation];
-}
-
-- (void)sendImage:(NSData *)imageData type:(WMChatAttachmentImageType)type inChat:(WMChat *)chat onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    [self sendImage:imageData type:type inChat:chat subject:nil departmentKey:nil onDataBlock:block completion:completion];
-}
-
-- (void)sendImage:(NSData *)imageData type:(WMChatAttachmentImageType)type inChat:(WMChat *)chat departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    [self sendImage:imageData type:type inChat:chat subject:nil departmentKey:departmentKey onDataBlock:block completion:completion];
-}
-
-- (void)sendImage:(NSData *)imageData type:(WMChatAttachmentImageType)type inChat:(WMChat *)chat subject:(NSString *)subject departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    
-    void (^recoverBlock)() = ^() {
-        [self tryToRun:3 currentRun:0 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
-            if (successful) {
-                [self doSendImage:imageData type:type inChat:chat subject:subject departmentKey:departmentKey onDataBlock:block completion:completion];
-            } else {
-                CALL_BLOCK(block, NO, chat, nil, error);
-                CALL_BLOCK(completion, NO);
-            }
-        }];
-    };
-    
-    void (^mainBlock)() = ^() {
-        void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
-            if ([self isReinitRequiredError:error]) {
-                recoverBlock();
-            } else {
-                CALL_BLOCK(block, result, chat, message, error);
-            }
-        };
-        [self doSendImage:imageData type:type inChat:chat subject:subject departmentKey:departmentKey onDataBlock:testBlock completion:completion];
-    };
-    
-    [self runMethodWithMainBlock:mainBlock recoverBlock:recoverBlock];
-}
-
-- (void)sendFile:(NSData *)fileData name:(NSString *)fileName mimeType:(NSString *)mimeType inChat:(WMChat *)chat subject:(NSString *)subject departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    
-    void (^recoverBlock)() = ^() {
-        [self tryToRun:3 currentRun:0 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
-            if (successful) {
-                [self doSendFile:fileData name:fileName mimeType:mimeType inChat:chat subject:subject departmentKey:departmentKey onDataBlock:block completion:completion];
-            } else {
-                CALL_BLOCK(block, NO, chat, nil, error);
-                CALL_BLOCK(completion, NO);
-            }
-        }];
-    };
-    
-    void (^mainBlock)() = ^() {
-        void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
-            if ([self isReinitRequiredError:error]) {
-                recoverBlock();
-            } else {
-                CALL_BLOCK(block, result, chat, message, error);
-            }
-        };
-        [self doSendFile:fileData name:fileName mimeType:mimeType inChat:chat subject:subject departmentKey:departmentKey onDataBlock:testBlock completion:completion];
-    };
-    
-    [self runMethodWithMainBlock:mainBlock recoverBlock:recoverBlock];
-}
-
-- (void)sendFile:(NSData *)fileData name:(NSString *)fileName mimeType:(NSString *)mimeType inChat:(WMChat *)chat departmentKey:(NSString *)departmentKey onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block completion:(void (^)(BOOL))completion {
-    [self sendFile:fileData name:fileName mimeType:mimeType inChat:chat subject:nil departmentKey:departmentKey onDataBlock:block completion:completion];
-}
-
 - (void)enqueueHTTPRequestOperation:(id)operation {
     [self.client enqueueHTTPRequestOperation:operation];
 }
@@ -707,7 +960,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     if (visitorData == nil || visitorID == nil) {
         return;
     }
-
+    
     NSString *filepath = [self storageFilePath];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:filepath]) {
@@ -778,53 +1031,6 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     }
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithAccountName:[aDecoder decodeObjectForKey:@"account"] location:[aDecoder decodeObjectForKey:@"location"]];
-    self.appealsArray = [aDecoder decodeObjectForKey:@"chats"];
-    // In old version chat.uid was NSString
-    for (WMChat *chat in _appealsArray) {
-        if ([chat.uid isKindOfClass:[NSNumber class]]) {
-            chat.uid = [((NSNumber *)chat.uid) stringValue];
-        }
-    }
-    self.lastChangeTs = [aDecoder decodeObjectForKey:@"lastChangeTs"];
-    self.visitorObject = [aDecoder decodeObjectForKey:@"visitorObject"];
-    self.pageID = [aDecoder decodeObjectForKey:@"pageID"];
-    self.visitSessionID = [aDecoder decodeObjectForKey:@"visitSessionID"];
-    self.token = [aDecoder decodeObjectForKey:@"token"];
-    self.platform = [aDecoder decodeObjectForKey:@"platfrom"];
-    self.userDefinedVisitorFields = [aDecoder decodeObjectForKey:@"visitorExtFields"];
-    
-    for (WMChat *chat in self.appealsArray) {
-        for (WMMessage *message in chat.messages) {
-            message.session = self;
-        }
-    }
-    
-    if (self.lastChangeTs == nil) {
-        self.lastChangeTs = @(0);
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    if (self.lastChangeTs == nil) {
-        self.lastChangeTs = @(0);
-    }
-    [self.appealsLock lock];
-    [aCoder encodeObject:@(1) forKey:@"coder_version"];
-    [aCoder encodeObject:_appealsArray forKey:@"chats"];
-    [aCoder encodeObject:self.pageID forKey:@"pageID"];
-    [aCoder encodeObject:self.lastChangeTs forKey:@"lastChangeTs"];
-    [aCoder encodeObject:self.visitorObject forKey:@"visitorObject"];
-    [aCoder encodeObject:self.visitSessionID forKey:@"visitSessionID"];
-    [aCoder encodeObject:self.accountName forKey:@"account"];
-    [aCoder encodeObject:self.location forKey:@"location"];
-    [aCoder encodeObject:self.token forKey:@"token"];
-    [aCoder encodeObject:self.platform forKey:@"platfrom"];
-    [aCoder encodeObject:self.userDefinedVisitorFields forKey:@"visitorExtFields"];
-    [self.appealsLock unlock];
-}
 
 #pragma mark -
 //TODO: refactor
@@ -863,18 +1069,6 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     return WMSessionErrorUnknown;
 }
 
-- (WMChat *)chatForMessage:(WMMessage *)message {
-    [self.appealsLock lock];
-    for (WMChat *chat in _appealsArray) {
-        if ([chat.messages containsObject:message]) {
-            [self.appealsLock unlock];
-            return chat;
-        }
-    }
-    [self.appealsLock unlock];
-    return nil;
-}
-
 - (void)clearInMemoryData {
     _appealsArray = [NSMutableArray array];
     self.lastChangeTs = @(0);
@@ -897,6 +1091,62 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     self.lastChangeTs = @(0);
     [self archiveClientData:nil];
     [self removeStorageFile];
+}
+
+
+// MARK: - NSCoder protocol methods
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithAccountName:[aDecoder decodeObjectForKey:@"account"]
+                             location:[aDecoder decodeObjectForKey:@"location"]];
+    self.appealsArray = [aDecoder decodeObjectForKey:@"chats"];
+    // In old version chat.uid was NSString
+    for (WMChat *chat in _appealsArray) {
+        if ([chat.uid isKindOfClass:[NSNumber class]]) {
+            chat.uid = [((NSNumber *)chat.uid) stringValue];
+        }
+    }
+    self.lastChangeTs = [aDecoder decodeObjectForKey:@"lastChangeTs"];
+    self.visitorObject = [aDecoder decodeObjectForKey:@"visitorObject"];
+    self.pageID = [aDecoder decodeObjectForKey:@"pageID"];
+    self.visitSessionID = [aDecoder decodeObjectForKey:@"visitSessionID"];
+    self.token = [aDecoder decodeObjectForKey:@"token"];
+    self.platform = [aDecoder decodeObjectForKey:@"platfrom"];
+    self.userDefinedVisitorFields = [aDecoder decodeObjectForKey:@"visitorExtFields"];
+    
+    for (WMChat *chat in self.appealsArray) {
+        for (WMMessage *message in chat.messages) {
+            message.session = self;
+        }
+    }
+    
+    if (self.lastChangeTs == nil) {
+        self.lastChangeTs = @(0);
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    if (self.lastChangeTs == nil) {
+        self.lastChangeTs = @(0);
+    }
+    
+    [self.appealsLock lock];
+    
+    [aCoder encodeObject:@(1) forKey:@"coder_version"];
+    [aCoder encodeObject:_appealsArray forKey:@"chats"];
+    [aCoder encodeObject:self.pageID forKey:@"pageID"];
+    [aCoder encodeObject:self.lastChangeTs forKey:@"lastChangeTs"];
+    [aCoder encodeObject:self.visitorObject forKey:@"visitorObject"];
+    [aCoder encodeObject:self.visitSessionID forKey:@"visitSessionID"];
+    [aCoder encodeObject:self.accountName forKey:@"account"];
+    [aCoder encodeObject:self.location forKey:@"location"];
+    [aCoder encodeObject:self.token forKey:@"token"];
+    [aCoder encodeObject:self.platform forKey:@"platfrom"];
+    [aCoder encodeObject:self.userDefinedVisitorFields forKey:@"visitorExtFields"];
+    
+    [self.appealsLock unlock];
 }
 
 @end

@@ -13,31 +13,40 @@
 
 #import "WMBaseSession.h"
 
+
 @implementation WMChat (Private)
 
-- (void)initWithObject:(NSDictionary *)object forSession:(WMBaseSession *)session {
+- (void)initWithObject:(NSDictionary *)object
+            forSession:(WMBaseSession *)session {
     self.isOffline = [object[@"offline"] boolValue];
     self.state = [self chatStateFromString:object[@"state"]];
     id unreadByOperatorTSObject = object[@"unreadByOperatorSinceTs"];
+    
     if (![unreadByOperatorTSObject isKindOfClass:[NSNull class]]) {
-        self.unreadByOperatorTimestamp =
-            [NSDate dateWithTimeIntervalSince1970:[unreadByOperatorTSObject doubleValue]];
+        self.unreadByOperatorTimestamp = [NSDate dateWithTimeIntervalSince1970:[unreadByOperatorTSObject doubleValue]];
     }
-    self.messages = [self messagesFromChatObject:object session:session];
+    
+    self.messages = [self messagesFromChatObject:object
+                                         session:session];
     self.chatOperator = [self operatorFromObject:object[@"operator"]];
+    
     id chatUID = object[@"id"];
     if ([chatUID isKindOfClass:[NSString class]]) {
         self.uid = chatUID;
     } else if ([chatUID isKindOfClass:[NSNumber class]]) {
         self.uid = [chatUID stringValue];
     }
+    
     id hasUnreadMessagesData = object[@"unreadByVisitorSinceTs"];
-    self.hasUnreadMessages = !(hasUnreadMessagesData == nil || [hasUnreadMessagesData isKindOfClass:[NSNull class]]);
+    
+    self.hasUnreadMessages = !((hasUnreadMessagesData == nil) ||
+                               [hasUnreadMessagesData isKindOfClass:[NSNull class]]);
     self.operatorTyping = object[@"operatorTyping"] ? [object[@"operatorTyping"] boolValue] : NO;
     self.proposeToRateBeforeClose = NO;
 
     id clientSideId = object[@"clientSideId"];
-    if (clientSideId != nil && ![clientSideId isKindOfClass:[NSNull class]]) {
+    if ((clientSideId != nil) &&
+         ![clientSideId isKindOfClass:[NSNull class]]) {
         self.clientSideId = clientSideId;
     }
 }
@@ -45,37 +54,56 @@
 - (WMChatState)chatStateFromString:(NSString *)stateString {
     if ([@"queue" isEqualToString:stateString]) {
         return WMChatStateQueue;
-    } else if ([@"chatting" isEqualToString:stateString]) {
+    }
+    
+    if ([@"chatting" isEqualToString:stateString]) {
         return WMChatStateChatting;
-    } else if ([@"closed" isEqualToString:stateString]) {
+    }
+    
+    if ([@"closed" isEqualToString:stateString]) {
         return WMChatStateClosed;
-    } else if ([@"closed_by_visitor" isEqualToString:stateString]) {
+    }
+    
+    if ([@"closed_by_visitor" isEqualToString:stateString]) {
         return WMChatStateClosedByVisitor;
-    } else if ([@"closed_by_operator" isEqualToString:stateString]) {
+    }
+    
+    if ([@"closed_by_operator" isEqualToString:stateString]) {
         return WMChatStateClosedByOperator;
-    } else if ([@"invitation" isEqualToString:stateString]) {
+    }
+    
+    if ([@"invitation" isEqualToString:stateString]) {
         return WMChatStateInvitation;
     }
+    
     return WMChatStateUnknown;
 }
 
-- (NSMutableArray *)messagesFromChatObject:(NSDictionary *)chatObject session:(WMBaseSession *)session {
+- (NSMutableArray *)messagesFromChatObject:(NSDictionary *)chatObject
+                                   session:(WMBaseSession *)session {
     NSMutableArray *messages = [NSMutableArray array];
     id messagesData = chatObject[@"messages"];
-    if (messagesData == nil || [messagesData isKindOfClass:[NSNull class]]) {
+    
+    if ((messagesData == nil) ||
+        [messagesData isKindOfClass:[NSNull class]]) {
         return messages;
     }
+    
     for (NSDictionary *message in messagesData) {
-        WMMessage *newMessage = [[WMMessage alloc] initWithObject:message forSession:session];
+        WMMessage *newMessage = [[WMMessage alloc] initWithObject:message
+                                                       forSession:session];
         [messages addObject:newMessage];
     }
+    
     return messages;
 }
 
 - (WMOperator *)operatorFromObject:(NSDictionary *)object {
-    if (object == nil || [object isKindOfClass:[NSNull class]]) {
+    if ((object == nil) ||
+        [object isKindOfClass:[NSNull class]]) {
         return nil;
     }
+    
     return [[WMOperator alloc] initWithObject:object];
 }
 
@@ -86,6 +114,9 @@
     self.hasUnreadMessages = fromObject.hasUnreadMessages;
 }
 
+
+// MARK: NSCoding protocol methods
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self.uid = [aDecoder decodeObjectForKey:@"chat_uid"];
     self.hasUnreadMessages = [aDecoder decodeBoolForKey:@"has_unread"];
@@ -93,6 +124,7 @@
     self.isOffline = [aDecoder decodeBoolForKey:@"isOffline"];
     self.state = (WMChatState)[aDecoder decodeIntegerForKey:@"state"];
     self.clientSideId = [aDecoder decodeObjectForKey:@"clientSideId"];
+    
     return self;
 }
 
@@ -104,7 +136,5 @@
     [aCoder encodeInteger:self.state forKey:@"state"];
     [aCoder encodeObject:self.clientSideId forKey:@"clientSideId"];
 }
-
-void import_Chat_Private() { }
 
 @end

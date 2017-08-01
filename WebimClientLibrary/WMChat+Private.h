@@ -8,15 +8,15 @@
 
 #import "WMChat.h"
 
+
 @class WMBaseSession;
+
 
 @interface WMChat (Private) <NSCoding>
 
-- (void)initWithObject:(NSDictionary *)object forSession:(WMBaseSession *)session;
+- (void)initWithObject:(NSDictionary *)object
+            forSession:(WMBaseSession *)session;
 - (WMChatState)chatStateFromString:(NSString *)stateString;
-
 - (void)copyValues:(WMChat *)fromObject;
 
 @end
-
-void import_Chat_Private();

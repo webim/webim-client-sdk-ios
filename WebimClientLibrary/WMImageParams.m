@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Webim.ru. All rights reserved.
 //
 
+
 #import "WMImageParams.h"
 
 #import "WMImageSize.h"
@@ -21,6 +22,7 @@
     if ((self = [super init])) {
         _size = [WMImageSize createWithObject:object[@"size"]];
     }
+    
     return self;
 }
 

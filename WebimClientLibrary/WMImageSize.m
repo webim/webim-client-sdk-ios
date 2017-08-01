@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Webim.ru. All rights reserved.
 //
 
+
 #import "WMImageSize.h"
+
 
 @implementation WMImageSize
 
@@ -19,6 +21,7 @@
         _width = [object[@"width"] integerValue];
         _height = [object[@"height"] integerValue];
     }
+    
     return self;
 }
 

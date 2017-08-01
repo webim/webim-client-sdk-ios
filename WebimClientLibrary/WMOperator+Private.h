@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 WEBIM.RU Ltd. All rights reserved.
 //
 
+
 #import "WMOperator.h"
+
 
 @interface WMOperator (Private)
 
@@ -14,5 +16,3 @@
 - (void)updateWithObject:(NSDictionary *)object;
 
 @end
-
-void import_Operator_Private();

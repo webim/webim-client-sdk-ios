@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Webim.ru. All rights reserved.
 //
 
+
 #import <Foundation/Foundation.h>
+
 
 @class WMImageSize;
 

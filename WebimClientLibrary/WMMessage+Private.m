@@ -6,14 +6,17 @@
 //  Copyright (c) 2013 WEBIM.RU Ltd. All rights reserved.
 //
 
+
 #import "WMMessage+Private.h"
 
 #import "WMBaseSession.h"
 #import "WMFileParams.h"
 
+
 @implementation WMMessage (Private)
 
-- (WMMessage *)initWithObject:(NSDictionary *)object forSession:(WMBaseSession *)session {
+- (WMMessage *)initWithObject:(NSDictionary *)object
+                   forSession:(WMBaseSession *)session {
     if ((self = [super init])) {
         self.session = session;
         self.timestamp = [NSDate dateWithTimeIntervalSince1970:[object[@"ts"] doubleValue]];
@@ -31,11 +34,13 @@
         
         [self maybeApplyFileParams];
     }
+    
     return self;
 }
 
 - (void)maybeApplyFileParams {
-    if ([self isFileMessage] && self.rawData.length > 0) {
+    if ([self isFileMessage] &&
+        (self.rawData.length > 0)) {
         NSData *data = [self.rawData dataUsingEncoding:NSUTF8StringEncoding];
         NSError *error = nil;
         NSDictionary *params = [NSJSONSerialization JSONObjectWithData:data
@@ -67,6 +72,7 @@
     } else if ([@"file_visitor" isEqualToString:messageKind]) {
         return WMMessageKindFileFromVisitor;
     }
+    
     return WMMessageKindUnknown;
 }
 
@@ -81,6 +87,7 @@
     self.clientSideId = [aDecoder decodeObjectForKey:@"clientSideId"];
     
     [self maybeApplyFileParams];
+    
     return self;
 }
 
@@ -94,7 +101,5 @@
     [aCoder encodeObject:self.name forKey:@"name"];
     [aCoder encodeObject:self.clientSideId forKey:@"clientSideId"];
 }
-
-void import_Message_Private() {};
 
 @end

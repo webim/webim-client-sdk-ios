@@ -17,17 +17,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.inputToolbar.hidden = self.chat != nil && !self.chat.isOffline;
+    
+    self.inputToolbar.hidden = (self.chat != nil) && !self.chat.isOffline;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self
-           selector:@selector(webimNotificationsDidReceiveUpdateNotification:)
-               name:WebimNotifications.didReceiveUpdate
-             object:nil];
-
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(webimNotificationsDidReceiveUpdateNotification:)
+                               name:WebimNotifications.didReceiveUpdate
+                             object:nil];
+    
     [self reloadBubbleTableView];
     [self finishReceivingMessageAnimated:YES];
 }
@@ -137,8 +139,8 @@
 
 - (void)webimNotificationsDidReceiveUpdateNotification:(NSNotification *)notification {
     if (self.chat == nil ||
-            [notification.userInfo[WMOfflineChatChangesNewChatsKey] containsObject:self.chat] ||
-            [notification.userInfo[WMOfflineChatChangesModifiedChatsKey] containsObject:self.chat]) {
+        [notification.userInfo[WMOfflineChatChangesNewChatsKey] containsObject:self.chat] ||
+        [notification.userInfo[WMOfflineChatChangesModifiedChatsKey] containsObject:self.chat]) {
         [self reloadBubbleTableView];
         [self finishReceivingMessageAnimated:YES];
     }

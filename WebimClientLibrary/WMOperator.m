@@ -8,6 +8,7 @@
 
 #import "WMOperator.h"
 
+
 @implementation WMOperator
 
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface WMVisitor : NSObject
 
 @property (nonatomic, strong) NSString *name;

@@ -8,15 +8,18 @@
 
 #import "WMUIDGenerator.h"
 
+
 @implementation WMUIDGenerator
 
 + (NSString *)generateUID {
     CFUUIDRef uuidRef = CFUUIDCreate(NULL);
     CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
     NSString *returnValue = (__bridge NSString *)uuidStringRef;
-    returnValue = [returnValue stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    returnValue = [returnValue stringByReplacingOccurrencesOfString:@"-"
+                                                         withString:@""];
     CFRelease(uuidRef);
     CFRelease(uuidStringRef);
+    
     return returnValue;
 }
 

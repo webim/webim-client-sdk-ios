@@ -5,25 +5,27 @@
 //  Copyright (c) 2015 WEBIM.RU Ltd. All rights reserved.
 //
 
+
 #import "WebimController.h"
 
 #import "WMChatViewController.h"
 #import "WMOfflineChatViewController.h"
 #import "WMHistoryTableViewController.h"
-
 #import "WMMessage.h"
 
 #import "CRToast.h"
-
 #import <CommonCrypto/CommonCrypto.h>
+
+
+// MARK: Constants
 
 static NSTimeInterval DefaultTimerTimeInterval = 20;
 
-// Login parameters
 static NSString *AccountName = @"demo";
 static NSString *Location = @"ios";
 
 static NSString *DeviceTokenUserDefaultsKey = @"WMSampleAppDeviceTokenKey";
+
 
 const struct WebimNotifications WebimNotifications = {
     .onlineFullUpdate = @"WebimNotificationsOnlineFullUpdateNotification",
@@ -37,24 +39,28 @@ const struct WebimNotifications WebimNotifications = {
     .didReceivePushToken = @"WebimNotificationsDidReceivePushTokenNotification",
 };
 
+
 @interface WebimController () <WMSessionDelegate>
 
+// MARK: Properties
 @property (nonatomic, strong) NSTimer *updateTimer;
 @property (nonatomic, assign) BOOL didReceiveHistory;
 
 @end
 
-@implementation WebimController
 
+@implementation WebimController
 
 + (instancetype)shared {
     static WebimController *sharedInstance_;
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance_ = [[WebimController alloc] init];
         sharedInstance_.imagesMap = [NSMutableDictionary dictionary];
         sharedInstance_.deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:DeviceTokenUserDefaultsKey];
     });
+    
     return sharedInstance_;
 }
 
@@ -68,12 +74,12 @@ const struct WebimNotifications WebimNotifications = {
     }
     
     // Initialize realtime session
-    sharedController.realtimeSession =
-        [[WMSession alloc] initWithAccountName:AccountName
-                                      location:Location
-                                      delegate:[WebimController shared]
-                                 visitorFields:nil];
+    sharedController.realtimeSession = [[WMSession alloc] initWithAccountName:AccountName
+                                                                     location:Location
+                                                                     delegate:sharedController
+                                                                visitorFields:nil];
     [sharedController.realtimeSession startSession:nil];
+    
 #if 0
     // Optionally realtime session could be initialized with user information
     NSMutableDictionary *visitorFieldsDictionary = [NSMutableDictionary dictionary];
@@ -81,8 +87,8 @@ const struct WebimNotifications WebimNotifications = {
     visitorFieldsDictionary[WMVisitorParameterEmail] = @"support@webim.ru";
     visitorFieldsDictionary[WMVisitorParameterPhone] = @"+7 812 3855337";
     visitorFieldsDictionary[WMVisitorParameterCRC] = @"cdc2c8b0542897dd311fe85754479860";
-    //^ Those are hardcoded values only for test purposes
-    //  Clients should calculate CRC server-side using their private key
+    // Those are hardcoded values only for test purposes
+    // Clients should calculate CRC server-side using their private key
     
     sharedController.realtimeSession = [[WMSession alloc] initWithAccountName:AccountName
                                                                      location:Location
@@ -91,56 +97,61 @@ const struct WebimNotifications WebimNotifications = {
 #endif
     
     // Initialize offline session
-    sharedController.offlineSession =
-        [[WMOfflineSession alloc] initWithAccountName:AccountName
-                                             location:Location
-                                                token:sharedController.deviceToken
-                                             platform:nil];
+    sharedController.offlineSession = [[WMOfflineSession alloc] initWithAccountName:AccountName
+                                                                           location:Location
+                                                                              token:sharedController.deviceToken
+                                                                           platform:nil];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:sharedController
-           selector:@selector(webimDidReceivePushTokenNotification:)
-               name:WebimNotifications.didReceivePushToken
-             object:nil];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:sharedController
+                           selector:@selector(webimDidReceivePushTokenNotification:)
+                               name:WebimNotifications.didReceivePushToken
+                             object:nil];
 }
 
-#pragma mark - Realtime session
+
+// MARK: - WMSessionDelegate protocol methods
+// MARK: Realtime session
 
 - (void)sessionDidReceiveFullUpdate:(WMSession *)session {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:WebimNotifications.onlineFullUpdate
-                    object:session];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:WebimNotifications.onlineFullUpdate
+                                      object:session];
     [self checkPushNotificationAndMaybeSwitchToRealtimeChat];
 }
 
 - (void)sessionDidChangeStatus:(WMSession *)session {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:WebimNotifications.onlineSessionStatusChange
-                      object:session];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:WebimNotifications.onlineSessionStatusChange
+                                      object:session];
 }
 
 - (void)sessionDidChangeChatStatus:(WMSession *)session {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:WebimNotifications.onlineChatStatusChange
-                      object:session.chat];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:WebimNotifications.onlineChatStatusChange
+                                      object:session.chat];
 }
 
-- (void)session:(WMSession *)session didStartChat:(WMChat *)chat {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:WebimNotifications.onlineChatStart
-                      object:chat];
+- (void)session:(WMSession *)session
+   didStartChat:(WMChat *)chat {
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:WebimNotifications.onlineChatStart
+                                      object:chat];
 }
 
-- (void)session:(WMSession *)session didUpdateOperator:(WMOperator *)chatOperator {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:WebimNotifications.onlineOperatorUpdate
-                      object:chatOperator];
+- (void)session:(WMSession *)session
+didUpdateOperator:(WMOperator *)chatOperator {
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:WebimNotifications.onlineOperatorUpdate
+                                      object:chatOperator];
 }
 
-- (void)session:(WMSession *)session didReceiveMessage:(WMMessage *)message {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:WebimNotifications.onlineNewMessage
-                      object:message];
+- (void)session:(WMSession *)session
+didReceiveMessage:(WMMessage *)message {
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:WebimNotifications.onlineNewMessage
+                                      object:message];
+    
     if ([self checkPushNotificationAndMaybeSwitchToRealtimeChat]) {
         return;
     }
@@ -160,6 +171,7 @@ const struct WebimNotifications WebimNotifications = {
     } else {
         return;
     }
+    
     options[kCRToastInteractionRespondersKey] =
     @[[CRToastInteractionResponder interactionResponderWithInteractionType:CRToastInteractionTypeTap
                                                       automaticallyDismiss:YES
@@ -168,17 +180,19 @@ const struct WebimNotifications WebimNotifications = {
                                                                          [CRToastManager dismissAllNotifications:NO];
                                                                      }]];
     
-    [CRToastManager showNotificationWithOptions:options completionBlock:^{
-    }];
+    [CRToastManager showNotificationWithOptions:options
+                                completionBlock:nil];
 }
 
-- (void)session:(WMSession *)session didChangeHasOnlineOperatorStatus:(BOOL)hasOnlineOperator {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:WebimNotifications.onlineSessionHasOnlineOperatorChange
-                      object:@(hasOnlineOperator)];
+- (void)session:(WMSession *)session
+didChangeHasOnlineOperatorStatus:(BOOL)hasOnlineOperator {
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotificationName:WebimNotifications.onlineSessionHasOnlineOperatorChange
+                                      object:@(hasOnlineOperator)];
 }
 
-- (void)session:(WMSession *)session didReceiveError:(WMSessionError)errorID {
+- (void)session:(WMSession *)session
+didReceiveError:(WMSessionError)errorID {
     if (errorID == WMSessionErrorAccountBlocked) {
         NSString *message = WMLocString(@"WMSessionErrorAccountBlocked");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
@@ -189,45 +203,43 @@ const struct WebimNotifications WebimNotifications = {
         [alert show];
     } else if (errorID == WMSessionErrorNetworkError) {
         static BOOL displayingNetworkErrorToast = NO;
-        if (displayingNetworkErrorToast) {
-            return;
-        }
+        
         NSMutableDictionary *options = [self commonToastOptions];
         options[kCRToastTextKey] = WMLocString(@"WMSessionErrorNetworkError");
-        options[kCRToastInteractionRespondersKey] =
-        @[[CRToastInteractionResponder interactionResponderWithInteractionType:CRToastInteractionTypeTap
-                                                          automaticallyDismiss:YES
-                                                                         block:^(CRToastInteractionType interactionType) {
-                                                                             ;
-                                                                         }]];
-        [CRToastManager showNotificationWithOptions:options completionBlock:^{
-            displayingNetworkErrorToast = NO;
-        }];
+        options[kCRToastInteractionRespondersKey] = @[[CRToastInteractionResponder interactionResponderWithInteractionType:CRToastInteractionTypeTap
+                                                                                                      automaticallyDismiss:YES
+                                                                                                                     block:nil]];
+        [CRToastManager showNotificationWithOptions:options
+                                    completionBlock:^{
+                                        displayingNetworkErrorToast = NO;
+                                    }];
     }
 }
 
 - (BOOL)checkPushNotificationAndMaybeSwitchToRealtimeChat {
     // If we had push notification, that means we came here after switching from bg to fg,
     // try to open realtime chat
-    if (self.pushNotification != nil && [self pushNotificationChatID] == nil) {
+    if ((self.pushNotification != nil) &&
+        ([self pushNotificationChatID] == nil)) {
         // Stay on realtime chat it it's already open. Present new chat on any other vc.
-        if ([[self topViewController] isKindOfClass:[WMChatViewController class]]) {
-            ;
-        } else {
+        if (!([[self topViewController] isKindOfClass:[WMChatViewController class]])) {
             [self pushRealtimeChatViewControllerFrontmost];
         }
         self.pushNotification = nil; // Clear push notification presence
+        
         return YES;
     }
+    
     return NO;
 }
 
-#pragma mark - Offline Session
+// MARK: - Offline session
 
 + (NSString *)deviceVendorIDToken {
     NSString *vendorID = [[UIDevice currentDevice].identifierForVendor UUIDString];
     NSData *tokenData = [WebimController sha1ForString:vendorID];
     NSString *result = [tokenData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithCarriageReturn];
+    
     return result;
 }
 
@@ -237,7 +249,8 @@ const struct WebimNotifications WebimNotifications = {
     
     CC_SHA1(data.bytes, (unsigned int) data.length, digest);
     
-    return [NSData dataWithBytes:digest length:CC_SHA1_DIGEST_LENGTH];
+    return [NSData dataWithBytes:digest
+                          length:CC_SHA1_DIGEST_LENGTH];
 }
 
 + (void)setUpdateInterval:(NSTimeInterval)timeInterval {
@@ -246,15 +259,18 @@ const struct WebimNotifications WebimNotifications = {
 
 + (BOOL)startObserveChanges {
     [[WebimController shared] startTimerWithInterval:DefaultTimerTimeInterval];
+    
     return YES;
 }
 
 + (BOOL)stopObserveChanges {
     [[WebimController shared] stopTimer];
+    
     return YES;
 }
 
-#pragma mark - Notifications
+
+// MARK: - Notifications
 
 - (void)webimDidReceivePushTokenNotification:(NSNotification *)notification {
     if (self.offlineSession) {
@@ -266,36 +282,48 @@ const struct WebimNotifications WebimNotifications = {
                                                                platform:nil];
 }
 
-#pragma mark - Error processor
+
+// MARK: - Error processor
 
 + (BOOL)processCommonErrorInResponse:(NSError *)error {
     if ([error.domain isEqualToString:WMWebimErrorDomain]) {
         NSString *alertMessage = nil;
         if (error.code == WMSessionErrorUnknown) {
             alertMessage = WMLocString(@"WMSessionErrorUnknown");
-        } else if (error.code == WMSessionErrorAccountBlocked) {
+        }
+        
+        if (error.code == WMSessionErrorAccountBlocked) {
             alertMessage = WMLocString(@"WMSessionErrorAccountBlocked");
-        } else if (error.code == WMSessionErrorNetworkError) {
+        }
+        
+        if (error.code == WMSessionErrorNetworkError) {
             alertMessage = WMLocString(@"WMSessionErrorNetworkError");
-        } else if (error.code == WMSessionErrorServerNotReady) {
+        }
+        
+        if (error.code == WMSessionErrorServerNotReady) {
             alertMessage = WMLocString(@"WMSessionErrorServerNotReady");
         }
+        
         if (alertMessage.length > 0) {
             [[[UIAlertView alloc] initWithTitle:nil
                                         message:alertMessage
                                        delegate:nil
                               cancelButtonTitle:WMLocString(@"DialogDismissButton")
                               otherButtonTitles:nil] show];
+            
             return YES;
         }
     }
+    
     return NO;
 }
 
-#pragma mark - private methods
+
+// MARK: - Private methods
 
 - (void)setDeviceToken:(NSString *)deviceToken {
-    [[NSUserDefaults standardUserDefaults] setObject:deviceToken forKey:DeviceTokenUserDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setObject:deviceToken
+                                              forKey:DeviceTokenUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _deviceToken = deviceToken;
 }
@@ -306,7 +334,8 @@ const struct WebimNotifications WebimNotifications = {
                                              selector:@selector(timerFireCallback:)
                                              userInfo:nil
                                               repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:self.updateTimer forMode:NSDefaultRunLoopMode];
+    [[NSRunLoop mainRunLoop] addTimer:self.updateTimer
+                              forMode:NSDefaultRunLoopMode];
     [self.updateTimer fire];
 }
 
@@ -315,44 +344,47 @@ const struct WebimNotifications WebimNotifications = {
 }
 
 - (void)timerFireCallback:(id)userData {
-    [self.offlineSession getHistoryForced:NO completion:^(BOOL successful, id changes, NSError *error) {
-        if (successful) {
-            BOOL shouldSendChanges = self.didReceiveHistory == YES;
-            self.didReceiveHistory = YES;
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:WebimNotifications.didReceiveUpdate
-                              object:nil
-                            userInfo:shouldSendChanges ? changes : nil];
-            if (shouldSendChanges) {
-                if (![[WebimController shared] checkPushNotificationAndMaybeOpenOfflineChat]) {
-                    [[WebimController shared] displayNofificationFromHistoryChanges:changes];
-                }
-            }
-        }
-    }];
+    [self.offlineSession getHistoryForced:NO
+                               completion:^(BOOL successful, id changes, NSError *error) {
+                                   if (successful) {
+                                       BOOL shouldSendChanges = self.didReceiveHistory == YES;
+                                       self.didReceiveHistory = YES;
+                                       NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                                       [notificationCenter postNotificationName:WebimNotifications.didReceiveUpdate
+                                                                         object:nil
+                                                                       userInfo:shouldSendChanges ? changes : nil];
+                                       if (shouldSendChanges) {
+                                           if (![[WebimController shared] checkPushNotificationAndMaybeOpenOfflineChat]) {
+                                               [[WebimController shared] displayNofificationFromHistoryChanges:changes];
+                                           }
+                                       }
+                                   }
+                               }];
 }
 
 + (void)forceReloadHostory {
-    [[WebimController shared].offlineSession getHistoryForced:YES completion:^(BOOL successful, id changes, NSError *error) {
-        if (successful) {
-            BOOL shouldSendChanges = [WebimController shared].didReceiveHistory == YES;
-            [WebimController shared].didReceiveHistory = YES;
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:WebimNotifications.didReceiveUpdate
-                              object:nil
-                            userInfo:shouldSendChanges ? changes : nil];
-            if (shouldSendChanges) {
-                if (![[WebimController shared] checkPushNotificationAndMaybeOpenOfflineChat]) {
-                    [[WebimController shared] displayNofificationFromHistoryChanges:changes];
-                }
-            }
-        }
-    }];
+    [[WebimController shared].offlineSession getHistoryForced:YES
+                                                   completion:^(BOOL successful, id changes, NSError *error) {
+                                                       if (successful) {
+                                                           BOOL shouldSendChanges = [WebimController shared].didReceiveHistory == YES;
+                                                           [WebimController shared].didReceiveHistory = YES;
+                                                           NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                                                           [notificationCenter postNotificationName:WebimNotifications.didReceiveUpdate
+                                                                                             object:nil
+                                                                                           userInfo:shouldSendChanges ? changes : nil];
+                                                           if (shouldSendChanges) {
+                                                               if (![[WebimController shared] checkPushNotificationAndMaybeOpenOfflineChat]) {
+                                                                   [[WebimController shared] displayNofificationFromHistoryChanges:changes];
+                                                               }
+                                                           }
+                                                       }
+                                                   }];
 }
 
 - (void)displayNofificationFromHistoryChanges:(NSDictionary *)changes {
     WMMessage *message = [changes[WMOfflineChatChangesMessagesKey] lastObject];
-    if (message != nil && [self canDisplayToastUIForMessage:message]) {
+    if ((message != nil) &&
+        [self canDisplayToastUIForMessage:message]) {
         NSMutableDictionary *options = [self commonToastOptions];
         if ([message isTextMessage]) {
             options[kCRToastTextKey] = WMLocString(@"ToastNewTextMessageTitle");
@@ -362,13 +394,13 @@ const struct WebimNotifications WebimNotifications = {
         } else {
             return;
         }
-        options[kCRToastInteractionRespondersKey] =
-        @[[CRToastInteractionResponder interactionResponderWithInteractionType:CRToastInteractionTypeTap
-                                                          automaticallyDismiss:YES
-                                                                         block:^(CRToastInteractionType interactionType) {
-                                                                             [self pushOfflineChatViewControllerOnNotificationTapMessage:message];
-                                                                             [CRToastManager dismissAllNotifications:NO];
-                                                                         }]];
+        
+        options[kCRToastInteractionRespondersKey] = @[[CRToastInteractionResponder interactionResponderWithInteractionType:CRToastInteractionTypeTap
+                                                                                                      automaticallyDismiss:YES
+                                                                                                                     block:^(CRToastInteractionType interactionType) {
+                                                                                                                         [self pushOfflineChatViewControllerOnNotificationTapMessage:message];
+                                                                                                                         [CRToastManager dismissAllNotifications:NO];
+                                                                                                                     }]];
         
         [CRToastManager showNotificationWithOptions:options completionBlock:^{
         }];
@@ -386,6 +418,7 @@ const struct WebimNotifications WebimNotifications = {
     options[kCRToastAnimationOutTypeKey] = @(CRToastAnimationTypeGravity);
     options[kCRToastAnimationInDirectionKey] = @(CRToastAnimationDirectionTop);
     options[kCRToastAnimationOutDirectionKey] = @(CRToastAnimationDirectionBottom);
+    
     return options;
 }
 
@@ -393,24 +426,28 @@ const struct WebimNotifications WebimNotifications = {
     if ([self canDisplayToastUIForMessage:message]) {
         UIViewController *topVC = [self topViewController];
         WMChat *chatForMessage = [_offlineSession chatForMessage:message];
-        [self pushOfflineChatViewControllerOn:topVC withChat:chatForMessage];
+        [self pushOfflineChatViewControllerOn:topVC
+                                     withChat:chatForMessage];
     } else {
         [CRToastManager dismissAllNotifications:YES];
     }
 }
 
-- (void)pushOfflineChatViewControllerOn:(UIViewController *)parentVC withChat:(WMChat *)chat {
+- (void)pushOfflineChatViewControllerOn:(UIViewController *)parentVC
+                               withChat:(WMChat *)chat {
     NSString *identifier = NSStringFromClass([WMOfflineChatViewController class]);
     WMOfflineChatViewController *chatVC = [parentVC.storyboard instantiateViewControllerWithIdentifier:identifier];
     chatVC.chat = chat;
-    [parentVC.navigationController pushViewController:chatVC animated:YES];
+    [parentVC.navigationController pushViewController:chatVC
+                                             animated:YES];
 }
 
 - (void)pushRealtimeChatViewControllerFrontmost {
     UIViewController *parentVC = [self topViewController];
     NSString *identifier = NSStringFromClass([WMChatViewController class]);
     WMChatViewController *chatVC = [parentVC.storyboard instantiateViewControllerWithIdentifier:identifier];
-    [parentVC.navigationController pushViewController:chatVC animated:YES];
+    [parentVC.navigationController pushViewController:chatVC
+                                             animated:YES];
 }
 
 - (BOOL)canDisplayToastUIForMessage:(WMMessage *)message {
@@ -421,8 +458,9 @@ const struct WebimNotifications WebimNotifications = {
     UIViewController *topVC = [self topViewController];
     if ([topVC isKindOfClass:[WMOfflineChatViewController class]]) {
         WMOfflineChatViewController *appealVC = (WMOfflineChatViewController *)topVC;
-        return !(appealVC.chat == nil || chatForMessage == appealVC.chat);
+        return !((appealVC.chat == nil) || (chatForMessage == appealVC.chat));
     }
+    
     return YES;
 }
 
@@ -433,16 +471,23 @@ const struct WebimNotifications WebimNotifications = {
 - (UIViewController*)topViewControllerWithRootViewController:(UIViewController*)rootViewController {
     if ([rootViewController isKindOfClass:[UITabBarController class]]) {
         UITabBarController* tabBarController = (UITabBarController*)rootViewController;
+        
         return [self topViewControllerWithRootViewController:tabBarController.selectedViewController];
-    } else if ([rootViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController* navigationController = (UINavigationController*)rootViewController;
-        return [self topViewControllerWithRootViewController:navigationController.visibleViewController];
-    } else if (rootViewController.presentedViewController) {
-        UIViewController* presentedViewController = rootViewController.presentedViewController;
-        return [self topViewControllerWithRootViewController:presentedViewController];
-    } else {
-        return rootViewController;
     }
+    
+    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController* navigationController = (UINavigationController*)rootViewController;
+        
+        return [self topViewControllerWithRootViewController:navigationController.visibleViewController];
+    }
+    
+    if (rootViewController.presentedViewController) {
+        UIViewController* presentedViewController = rootViewController.presentedViewController;
+        
+        return [self topViewControllerWithRootViewController:presentedViewController];
+    }
+    
+    return rootViewController;
 }
 
 - (NSNumber *)pushNotificationChatID {
@@ -451,14 +496,17 @@ const struct WebimNotifications WebimNotifications = {
 
 - (BOOL)checkPushNotificationAndMaybeOpenOfflineChat {
     NSNumber *chatID = nil;
-    if (self.pushNotification != nil && (chatID = [self pushNotificationChatID]) != nil) {
-        WMChat *chat = [self findOfflineChatWithID:chatID];
+    if ((self.pushNotification != nil) &&
+        ((chatID = [self pushNotificationChatID]) != nil)) {
+        WMChat *chat = [self findOfflineChatWithID:[chatID stringValue]];
         if ([self canDisplayToastUIForMessage:chat.messages.firstObject]) {
             [self pushOfflineChatViewControllerOn:[self topViewController] withChat:chat];
         }
         self.pushNotification = nil;
+        
         return YES;
     }
+    
     return NO;
 }
 
@@ -468,6 +516,7 @@ const struct WebimNotifications WebimNotifications = {
             return chat;
         }
     }
+    
     return nil;
 }
 

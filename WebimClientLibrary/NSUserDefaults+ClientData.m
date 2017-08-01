@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Webim.ru. All rights reserved.
 //
 
+
 #import "NSUserDefaults+ClientData.h"
+
 
 NSString *const WMUserDefaultsRootKey = @"WebimUserDefaults";
 NSString *const WMUserDefaultsMURootKey = @"WebimUserDefaultsMultiUser_";
@@ -15,34 +17,35 @@ NSString *const WMStoreVisitorKey = @"visitor";
 NSString *const WMStoreVisitSessionIDKey = @"visitSessionId";
 NSString *const WMStorePageIDKey = @"pageID";
 NSString *const WMStoreVisitorExtKey = @"visitor-ext";
+NSString *const WMStoreAreHintsEnabled = @"hintsEnabled";
+
 
 @implementation NSUserDefaults (ClientData)
 
 + (void)archiveClientData:(NSDictionary *)dictionary {
-    [[NSUserDefaults standardUserDefaults] archive:dictionary withKey:WMUserDefaultsRootKey];
+    [[NSUserDefaults standardUserDefaults] archive:dictionary
+                                           withKey:WMUserDefaultsRootKey];
 }
 
-+ (NSDictionary *)unarchiveClientData {
-    return [[NSUserDefaults standardUserDefaults] unarchiveForKey:WMUserDefaultsRootKey];
++ (void)archiveClientDataMU:(NSString *)userId
+                 dictionary:(NSDictionary *)dictionary {
+    [[NSUserDefaults standardUserDefaults] archive:dictionary
+                                           withKey:[WMUserDefaultsMURootKey
+                                                    stringByAppendingString:userId]];
 }
 
-+ (void)archiveClientDataMU:(NSString *)userId dictionary:(NSDictionary *)dictionary {
-    [[NSUserDefaults standardUserDefaults] archive:dictionary withKey:[WMUserDefaultsMURootKey stringByAppendingString:userId]];
-}
-
-+ (NSDictionary *)unarchiveClientDataMU:(NSString *)userId {
-    return [[NSUserDefaults standardUserDefaults] unarchiveForKey:[WMUserDefaultsMURootKey stringByAppendingString:userId]];
-}
-
-- (BOOL)archive:(NSDictionary *)dict withKey:(NSString *)key {
+- (BOOL)archive:(NSDictionary *)dict
+        withKey:(NSString *)key {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (dict != nil) {
         @try {
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dict];
-            [defaults setObject:data forKey:key];
+            [defaults setObject:data
+                         forKey:key];
         }
         @catch (NSException *exception) {
             NSLog(@"%@", exception);
+            
             return NO;
         }
     } else {
@@ -50,6 +53,14 @@ NSString *const WMStoreVisitorExtKey = @"visitor-ext";
     }
     
     return [defaults synchronize];
+}
+
++ (NSDictionary *)unarchiveClientData {
+    return [[NSUserDefaults standardUserDefaults] unarchiveForKey:WMUserDefaultsRootKey];
+}
+
++ (NSDictionary *)unarchiveClientDataMU:(NSString *)userId {
+    return [[NSUserDefaults standardUserDefaults] unarchiveForKey:[WMUserDefaultsMURootKey stringByAppendingString:userId]];
 }
 
 - (NSDictionary *)unarchiveForKey:(NSString *)key {
@@ -62,9 +73,11 @@ NSString *const WMStoreVisitorExtKey = @"visitor-ext";
         }
         @catch (NSException *exception) {
             NSLog(@"%@", exception);
+            
             return nil;
         }
     }
+    
     return userDict;
 }
 
@@ -72,6 +85,7 @@ NSString *const WMStoreVisitorExtKey = @"visitor-ext";
     if ([NSUserDefaults unarchiveClientData].count > 0) {
         return;
     }
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *visitor = [userDefaults valueForKey:@"visitor"];
     NSString *visitSessionId = [userDefaults valueForKey:@"visitSessionId"];

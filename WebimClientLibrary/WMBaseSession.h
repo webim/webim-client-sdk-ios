@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 typedef enum {
     WMSessionErrorUnknown,
     WMSessionErrorReinitRequired,
@@ -15,10 +16,10 @@ typedef enum {
     WMSessionErrorAccountBlocked,
     WMSessionErrorVisitorBanned,
     WMSessionErrorNetworkError,
-    WMSessionErrorVisitorNotSet,            // ex WMSessionErrorNotAnError
-    WMSessionErrorEmptyMessageText,         // ex WMSessionErrorChatText
-    WMSessionErrorChatNotFound,             // to be removed
-    WMSessionErrorNotConfigured,            // to be removed
+    WMSessionErrorVisitorNotSet,// Ex-WMSessionErrorNotAnError
+    WMSessionErrorEmptyMessageText,// Ex-WMSessionErrorChatText
+    WMSessionErrorChatNotFound,// To be removed
+    WMSessionErrorNotConfigured,// To be removed
     WMSessionErrorAttachmentTypeNotAllowed,
     WMSessionErrorAttachmentSizeExceeded,
     WMSessionErrorMessageSizeExceeded,
@@ -32,23 +33,30 @@ typedef enum {
 } WMChatAttachmentImageType;
 
 typedef NS_ENUM(NSInteger, WMOperatorRate) {
-    WMOperatorRateOneStar       = -2,
-    WMOperatorRateTwoStars      = -1,
-    WMOperatorRateThreeStars    =  0,
-    WMOperatorRateFourStars     =  1,
-    WMOperatorRateFiveStars     =  2,
+    WMOperatorRateOneStar = -2,
+    WMOperatorRateTwoStars = -1,
+    WMOperatorRateThreeStars =  0,
+    WMOperatorRateFourStars =  1,
+    WMOperatorRateFiveStars =  2,
 };
+
 
 @class WMMessage;
 
+
 extern NSString *const WMWebimErrorDomain;
+
 
 @interface WMBaseSession : NSObject
 
 @property (nonatomic, strong) NSString *location;
 @property (nonatomic, readonly, strong) NSString *accountName;
 
-- (id)initWithAccountName:(NSString *)accountName location:(NSString *)location;
+
+// MARK: Initialization
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location;
+
 
 - (NSString *)host;
 - (void)clearCachedUserData;
@@ -62,8 +70,7 @@ extern NSString *const WMWebimErrorDomain;
                                    key:(NSString *)key
                             completion:(void (^)(BOOL successful, UIImage *image, NSError *))block;
 
-#pragma mark - private
-
+// MARK: Private methods
 - (void)enqueueHTTPRequestOperation:(id)operation;
 
 @end

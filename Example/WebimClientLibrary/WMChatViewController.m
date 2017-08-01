@@ -26,9 +26,9 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
 @end
 
 @implementation WMChatViewController {
-    BOOL                 sendingMessage_;
-    BOOL                 didStartComposing_;
-    BOOL                 closeAfterRate_;
+    BOOL sendingMessage_;
+    BOOL didStartComposing_;
+    BOOL closeAfterRate_;
 }
 
 - (void)viewDidLoad {
@@ -39,13 +39,27 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(onlineSessionFullUpdateNotification:) name:WebimNotifications.onlineFullUpdate object:nil];
-    [nc addObserver:self selector:@selector(onlineSessionNewMessageNotification:) name:WebimNotifications.onlineNewMessage object:nil];
-    [nc addObserver:self selector:@selector(onlineSessionOperatorUpdateNotification:) name:WebimNotifications.onlineOperatorUpdate object:nil];
-    [nc addObserver:self selector:@selector(onlineSessionStartChatNotification:) name:WebimNotifications.onlineChatStart object:nil];
-    [nc addObserver:self selector:@selector(onlineSessionChatStatusChangeNotification:) name:WebimNotifications.onlineChatStatusChange object:nil];
-    [nc addObserver:self selector:@selector(onlineSessionStatusChangeNotification:) name:WebimNotifications.onlineSessionStatusChange object:nil];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineSessionNewMessageNotification:)
+                               name:WebimNotifications.onlineNewMessage
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineSessionOperatorUpdateNotification:)
+                               name:WebimNotifications.onlineOperatorUpdate object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineSessionStartChatNotification:)
+                               name:WebimNotifications.onlineChatStart
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineSessionChatStatusChangeNotification:)
+                               name:WebimNotifications.onlineChatStatusChange
+                             object:nil];
+    [notificationCenter addObserver:self
+                           selector:@selector(onlineSessionStatusChangeNotification:)
+                               name:WebimNotifications.onlineSessionStatusChange
+                             object:nil];
     
     WMSession *session = [WebimController shared].realtimeSession;
     [session startChat:^(BOOL successful) {
@@ -65,8 +79,10 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
     return [WebimController shared].realtimeSession.chat;
 }
 
-- (void)chatDataSourceDownloadImageForMessage:(WMMessage *)message completion:(void (^)(BOOL, UIImage *, NSError *))block {
-    [[WebimController shared].realtimeSession downloadImageForMessage:message completion:block];
+- (void)chatDataSourceDownloadImageForMessage:(WMMessage *)message
+                                   completion:(void (^)(BOOL, UIImage *, NSError *))block {
+    [[WebimController shared].realtimeSession downloadImageForMessage:message
+                                                           completion:block];
 }
 
 - (void)reloadBubbleTableView {
@@ -81,15 +97,21 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
 
 #pragma mark - JSQMessagesViewController
 
-- (void)didPressSendButton:(UIButton *)button withMessageText:(NSString *)text senderId:(NSString *)senderId senderDisplayName:(NSString *)senderDisplayName date:(NSDate *)date {
+- (void)didPressSendButton:(UIButton *)button
+           withMessageText:(NSString *)text
+                  senderId:(NSString *)senderId
+         senderDisplayName:(NSString *)senderDisplayName
+                      date:(NSDate *)date {
     [JSQSystemSoundPlayer jsq_playMessageSentSound];
     
     self.inputToolbar.contentView.rightBarButtonItem.enabled = NO;
-    [[WebimController shared].realtimeSession sendMessage:text successBlock:^(NSString *clientSideId) {
-        [self finishSendingMessageAnimated:YES];
-    } failureBlock:^(NSString *clientSideId, WMSessionError error) {
-        [self finishSendingMessageAnimated:YES];
-    }];
+    
+    [[WebimController shared].realtimeSession sendMessage:text
+                                             successBlock:^(NSString *clientSideId) {
+                                                 [self finishSendingMessageAnimated:YES];
+                                             } failureBlock:^(NSString *clientSideId, WMSessionError error) {
+                                                 [self finishSendingMessageAnimated:YES];
+                                             }];
 }
 
 #pragma mark - User Actions
@@ -109,7 +131,9 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
     [self.view endEditing:YES];
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField
+shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString *)string {
     return !sendingMessage_;
 }
 
@@ -126,16 +150,22 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
 - (IBAction)textInputValueChanged:(id)sender {
     if (!didStartComposing_) {
         didStartComposing_ = YES;
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(cancelComposingState) object:nil];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                                 selector:@selector(cancelComposingState:)
+                                                   object:nil];
         
-        [[WebimController shared].realtimeSession setComposingMessage:YES draft:@""];
-        [self performSelector:@selector(cancelComposingState:) withObject:nil afterDelay:7];
+        [[WebimController shared].realtimeSession setComposingMessage:YES
+                                                                draft:@""];
+        [self performSelector:@selector(cancelComposingState:)
+                   withObject:nil
+                   afterDelay:7];
     }
 }
 
 - (void)cancelComposingState:(id)sender {
     didStartComposing_ = NO;
-    [[WebimController shared].realtimeSession setComposingMessage:NO draft:@""];
+    [[WebimController shared].realtimeSession setComposingMessage:NO
+                                                            draft:@""];
 }
 
 #pragma mark - UIAlertView Delegate
@@ -182,12 +212,17 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
     WMSession *session = [WebimController shared].realtimeSession;
     NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
 #if 1
-    [session sendImage:imageData type:WMChatAttachmentImageJPEG completion:^(BOOL successful) {
-        ;
-    }];
+    [session sendImage:imageData
+                  type:WMChatAttachmentImageJPEG
+            completion:^(BOOL successful) {
+                ;
+            }];
 #else
     // Optionaly file could be sent this way
-    [session sendFile:imageData name:@"anyfile.jpg" mimeType:@"image/jpg" completion:nil];
+    [session sendFile:imageData
+                 name:@"anyfile.jpg"
+             mimeType:@"image/jpg"
+           completion:nil];
 #endif
 }
 
@@ -204,9 +239,13 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
     }
 }
 
-- (void)rateOperatorTableViewController:(WMRateOperatorTableViewController *)tvc didRate:(NSInteger)rate authorID:(NSString *)authorID rateCompletion:(void (^)(BOOL))block {
+- (void)rateOperatorTableViewController:(WMRateOperatorTableViewController *)tvc
+                                didRate:(NSInteger)rate authorID:(NSString *)authorID
+                         rateCompletion:(void (^)(BOOL))block {
     WMOperatorRate wmRate = rate - 2;
-    [[WebimController shared].realtimeSession rateOperator:authorID withRate:wmRate completion:^(BOOL successful) {
+    [[WebimController shared].realtimeSession rateOperator:authorID
+                                                  withRate:wmRate
+                                                completion:^(BOOL successful) {
         if (block != nil) {
             block(successful);
         }
@@ -224,9 +263,11 @@ typedef NS_ENUM(NSInteger, AlertIndex) {
     NSLog(@"Chat notification: %@", NSStringFromSelector(_cmd));
     [self reloadChat];
     WMMessage *message = notification.object;
-    if (message != nil && !(message.kind == WMMessageKindVisitor || message.kind == WMMessageKindFileFromVisitor)) {
+    if ((message != nil) && !((message.kind == WMMessageKindVisitor)
+                              || (message.kind == WMMessageKindFileFromVisitor))) {
         [JSQSystemSoundPlayer jsq_playMessageReceivedSound];
     }
+    
     [self finishReceivingMessageAnimated:YES];
 }
 
