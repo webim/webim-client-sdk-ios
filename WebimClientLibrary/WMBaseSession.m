@@ -8,9 +8,10 @@
 
 #import "WMBaseSession.h"
 
-#import "NSUserDefaults+ClientData.h"
-#import "AFNetworking.h"
 #import "WMMessage.h"
+#import "WMUserDataManager.h"
+
+#import "AFNetworking.h"
 
 
 static NSString *DomainURLFormat   = @"https://%@.webim.ru";
@@ -27,7 +28,7 @@ NSString *const WMWebimErrorDomain = @"WebimErrorDomain";
         _accountName = accountName;
         _location = location;
         
-        [NSUserDefaults migrateToArchiveClientData];
+        [WMUserDataManager migrateToArchiveClientData];
     }
     
     return self;
@@ -37,9 +38,10 @@ NSString *const WMWebimErrorDomain = @"WebimErrorDomain";
 - (void)setLocation:(NSString *)location {
     _location = location;
     
-    NSMutableDictionary *storedValues = [[NSUserDefaults unarchiveClientData] mutableCopy];
+    NSMutableDictionary *storedValues = [[WMUserDataManager unarchiveData] mutableCopy];
     [storedValues removeObjectForKey:WMStorePageIDKey];
-    [NSUserDefaults archiveClientData:storedValues];
+    
+    [WMUserDataManager archiveData:storedValues];
 }
 
 - (NSString *)host {

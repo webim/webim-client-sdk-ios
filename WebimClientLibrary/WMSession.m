@@ -10,19 +10,18 @@
 
 #import "WMSession.h"
 
-#import "AFNetworking.h"
-
+#import "NSNull+Checks.h"
 #import "WMChat.h"
+#import "WMChat+Private.h"
 #import "WMMessage.h"
+#import "WMMessage+Private.h"
+#import "WMUserDataManager.h"
 #import "WMOperator.h"
+#import "WMOperator+Private.h"
 #import "WMVisitor.h"
 #import "WMUIDGenerator.h"
-#import "WMChat+Private.h"
-#import "WMMessage+Private.h"
-#import "WMOperator+Private.h"
 
-#import "NSUserDefaults+ClientData.h"
-#import "NSNull+Checks.h"
+#import "AFNetworking.h"
 
 
 #ifdef DEBUG
@@ -30,6 +29,7 @@
 #else
 #define WMDebugLog(format, ...)
 #endif
+
 
 static NSString *const APIDeltaPath = @"/l/v/delta";
 static NSString *const APIActionPath = @"/l/v/action";
@@ -246,14 +246,6 @@ NSString *const WMVisitorParameterCRC = @"crc";
              }];
 }
 
-- (NSDictionary *)unarchiveClientData {
-    if(isMultiUser_) {
-        return [NSUserDefaults unarchiveClientDataMU:userId_];
-    } else {
-        return [NSUserDefaults unarchiveClientData];
-    }
-}
-
 - (BOOL)dictionary:(NSDictionary *)left
 isEqualToDictionary:(NSDictionary *)right {
     if ((left == nil) ||
@@ -305,7 +297,7 @@ isEqualToDictionary:(NSDictionary *)right {
 }
 
 - (BOOL)areHintsEnabled {
-    id hintsEnabled = [self unarchiveClientData][WMStoreAreHintsEnabled];
+    id hintsEnabled = [self unarchiveClientData][WMStoreAreHintsEnabledKey];
     
     if ([hintsEnabled  isEqual: @1]) {
         return true;
@@ -1007,7 +999,7 @@ isEqualToDictionary:(NSDictionary *)right {
     storeValues[WMStoreVisitorKey] = updateDictionary[@"visitor"];
     storeValues[WMStoreVisitSessionIDKey] = updateDictionary[@"visitSessionId"];
     storeValues[WMStorePageIDKey] = updateDictionary[@"pageId"];
-    storeValues[WMStoreAreHintsEnabled] = ([[updateDictionary allKeys] containsObject:@"hintsEnabled"])? updateDictionary[@"hintsEnabled"] : @0; // This checking exists for reverse compability
+    storeValues[WMStoreAreHintsEnabledKey] = ([[updateDictionary allKeys] containsObject:@"hintsEnabled"])? updateDictionary[@"hintsEnabled"] : @0; // This checking exists for reverse compability
     storeValues[WMStoreVisitorExtKey] = userDefinedVisitorFields_;
     
     if (self.isStopped) {
@@ -1044,15 +1036,6 @@ isEqualToDictionary:(NSDictionary *)right {
             
             [self startGettingDeltaWithComet];
         }
-    }
-}
-
-- (void)archiveClientData:(NSDictionary *)dictionary {
-    if(isMultiUser_) {
-        [NSUserDefaults archiveClientDataMU:userId_
-                                 dictionary:dictionary];
-    } else {
-        [NSUserDefaults archiveClientData:dictionary];
     }
 }
 
@@ -1451,6 +1434,28 @@ isEqualToDictionary:(NSDictionary *)right {
 - (void)clearCachedUserData {
     [self archiveClientData:nil];
     self.revision = nil;
+}
+
+
+// MARK: - Private methods
+
+// MARK: Client data
+
+- (void)archiveClientData:(NSDictionary *)dictionary {
+    if (isMultiUser_) {
+        [WMUserDataManager archiveData:dictionary
+                                 forUserID:userId_];
+    } else {
+        [WMUserDataManager archiveData:dictionary];
+    }
+}
+
+- (NSDictionary *)unarchiveClientData {
+    if(isMultiUser_) {
+        return [WMUserDataManager unarchiveDataFor:userId_];
+    } else {
+        return [WMUserDataManager unarchiveData];
+    }
 }
 
 @end

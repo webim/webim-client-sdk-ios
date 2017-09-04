@@ -10,12 +10,12 @@
 
 #import "AFNetworking.h"
 
-#import "WMOfflineSession+ResponseProcessor.h"
 #import "WMChat+Private.h"
 #import "WMMessage+Private.h"
+#import "WMOfflineSession+ResponseProcessor.h"
 #import "WMUIDGenerator.h"
+#import "WMUserDataManager.h"
 
-#import "NSUserDefaults+ClientData.h"
 #import "NSNull+Checks.h"
 
 
@@ -147,20 +147,6 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
 - (void)setLocation:(NSString *)location {
     [super setLocation:location];
     self.pageID = nil;
-}
-
-- (NSDictionary *)unarchiveClientData {
-    if(isMultiUser_)
-        return [NSUserDefaults unarchiveClientDataMU:userId_];
-    else
-        return [NSUserDefaults unarchiveClientData];
-}
-
-- (void)archiveClientData:(NSDictionary *)dictionary {
-    if(isMultiUser_)
-        [NSUserDefaults archiveClientDataMU:userId_ dictionary:dictionary];
-    else
-        [NSUserDefaults archiveClientData:dictionary];
 }
 
 
@@ -356,7 +342,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
 }
 
 
-// MARK: - Message mthods
+// MARK: - Message methods
 
 // MARK: Messages (text)
 
@@ -1091,6 +1077,28 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
     self.lastChangeTs = @(0);
     [self archiveClientData:nil];
     [self removeStorageFile];
+}
+
+
+// MARK: - Private methods
+
+// MARK: Client data
+
+- (void)archiveClientData:(NSDictionary *)dictionary {
+    if (isMultiUser_) {
+        [WMUserDataManager archiveData:dictionary
+                                 forUserID:userId_];
+    } else {
+        [WMUserDataManager archiveData:dictionary];
+    }
+}
+
+- (NSDictionary *)unarchiveClientData {
+    if (isMultiUser_) {
+        return [WMUserDataManager unarchiveDataFor:userId_];
+    } else {
+        return [WMUserDataManager unarchiveData];
+    }
 }
 
 
