@@ -11,16 +11,17 @@
 
 
 typedef enum {
-    WMMessageKindUnknown,
-    WMMessageKindForOperator,
-    WMMessageKindInfo,
-    WMMessageKindVisitor,
-    WMMessageKindOperator,
-    WMMessageKindOperatorBusy,
-    WMMessageKindContactsRequest,
+    WMMessageKindActionRequest,
     WMMessageKindContacts,
+    WMMessageKindContactsRequest,
     WMMessageKindFileFromOperator,
     WMMessageKindFileFromVisitor,
+    WMMessageKindForOperator,
+    WMMessageKindInfo,
+    WMMessageKindOperator,
+    WMMessageKindOperatorBusy,
+    WMMessageKindUnknown,
+    WMMessageKindVisitor,
 } WMMessageKind;
 
 
@@ -30,19 +31,22 @@ typedef enum {
 
 @interface WMMessage : NSObject
 
+// MARK: - Properties
+
 @property (nonatomic, assign) WMMessageKind kind;
+
+@property (nonatomic, strong) NSString *clientSideId;
+@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) WMFileParams *fileParams;
+@property (nonatomic, strong) NSString *rawData;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSDate *timestamp;
 @property (nonatomic, strong) NSString *uid;
-@property (nonatomic, strong) NSString *clientSideId;
 
-@property (nonatomic, readonly) NSString *senderUID;
-@property (nonatomic, readonly) NSString *senderName;
 @property (nonatomic, readonly) NSURL *senderAvatarURL;
+@property (nonatomic, readonly) NSString *senderName;
+@property (nonatomic, readonly) NSString *senderUID;
 
-@property (nonatomic, strong) WMFileParams *fileParams;
-
-@property (nonatomic, strong) NSString *rawData;
 
 #pragma mark - private
 
@@ -58,7 +62,8 @@ typedef enum {
 - (NSURL *)fileURL;
 - (NSURL *)imagePreviewURLForKey:(NSString *)key;
 
-- (BOOL)isTextMessage;
+- (BOOL)isActionMessage;
 - (BOOL)isFileMessage;
+- (BOOL)isTextMessage;
 
 @end

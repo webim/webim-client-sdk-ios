@@ -59,14 +59,18 @@
     return [NSURL URLWithString:fullUrlString];
 }
 
-- (BOOL)isTextMessage {
-    return ((_kind == WMMessageKindVisitor) ||
-            (_kind == WMMessageKindOperator));
+- (BOOL)isActionMessage {
+    return (_kind == WMMessageKindActionRequest);
 }
 
 - (BOOL)isFileMessage {
     return ((_kind == WMMessageKindFileFromOperator) ||
             (_kind == WMMessageKindFileFromVisitor));
+}
+
+- (BOOL)isTextMessage {
+    return ((_kind == WMMessageKindVisitor) ||
+            (_kind == WMMessageKindOperator));
 }
 
 - (NSURL *)senderAvatarURL {

@@ -1173,6 +1173,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     WMMessage *newMessage = [[WMMessage alloc] initWithObject:object
                                                    forSession:self];
+    
     [_chat.messages addObject:newMessage];
     if ([_delegate respondsToSelector:@selector(session:didReceiveMessage:)]) {
         [_delegate session:self

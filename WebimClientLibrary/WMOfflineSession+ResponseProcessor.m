@@ -73,36 +73,50 @@
     return messagesToAdd;
 }
 
-- (NSMutableDictionary *)processMessages:(NSArray *)messagesDataArray appeals:(NSMutableArray *)appealsArray lock:(NSLock *)lock {
+- (NSMutableDictionary *)processMessages:(NSArray *)messagesDataArray
+                                 appeals:(NSMutableArray *)appealsArray
+                                    lock:(NSLock *)lock {
     NSMutableArray *messagesToAdd = [NSMutableArray array];
     NSMutableArray *chatsToEdit = [NSMutableArray array];
+    
     [lock lock];
+    
     for (NSDictionary *messageData in messagesDataArray) {
         id chatID = messageData[@"chatId"];
         if ([chatID isKindOfClass:[NSNumber class]]) {
             chatID = [chatID stringValue];
         }
-        WMChat *chat = [self findChatByID:chatID inAppealsArray:appealsArray];
+        WMChat *chat = [self findChatByID:chatID
+                           inAppealsArray:appealsArray];
         if (chat == nil) {
             NSLog(@"Error: attempt to add message to the missing chat");
+            
             continue;
         }
-        WMMessage *message = [[WMMessage alloc] initWithObject:messageData forSession:self];
-        WMMessage *originalMessage = [self findMessageByID:message.uid inChat:chat];
+        
+        WMMessage *message = [[WMMessage alloc] initWithObject:messageData
+                                                    forSession:self];
+        WMMessage *originalMessage = [self findMessageByID:message.uid
+                                                    inChat:chat];
         if (originalMessage == nil) {
             [chat.messages addObject:message];
-            if ([message isFileMessage] || [message isTextMessage]) {
-                //^ Only those types are important to know in unread messages
+            if (([message isFileMessage]
+                 || [message isTextMessage])
+                || [message isActionMessage]) {
+                // Only those types are important for processinh unread messages.
                 chat.hasUnreadMessages = YES;
             }
             [messagesToAdd addObject:message];
             [chatsToEdit addObject:chat];
         }
     }
+    
     [lock unlock];
+    
     NSMutableDictionary *changes = [NSMutableDictionary dictionary];
     changes[WMOfflineChatChangesMessagesKey] = messagesToAdd;
     changes[WMOfflineChatChangesModifiedChatsKey] = chatsToEdit;
+    
     return changes;
 }
 
