@@ -342,7 +342,9 @@
     } else {
         // No previous item found; add the new one.
         result = SecItemAdd((__bridge CFDictionaryRef)[self dictionaryToSecItemFormat:keychainItemData], NULL);
-        NSAssert(result == noErr, @"Couldn't add the Keychain Item.");
+        
+        // Assert hided by Nikita Lazarev-Zubov 27.09.2017 due to reported by "TCS" bug in WEBIMTCS-486.
+        // NSAssert(result == noErr, @"Couldn't add the Keychain Item.");
     }
     
     if (attributes) {

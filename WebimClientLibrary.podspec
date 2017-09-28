@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'WebimClientLibrary'
-  s.version          = '2.6.0'
+  s.version          = '2.6.1'
   s.summary          = 'Webim.ru client SDK for iOS.'
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
@@ -15,14 +15,14 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'WebimClientLibrary/**/*'
   s.public_header_files =	'WebimClientLibrary/WMBaseSession.h',
-				'WebimClientLibrary/WMChat.h',
-				'WebimClientLibrary/WMMessage.h',
-				'WebimClientLibrary/WMOfflineSession.h',
-				'WebimClientLibrary/WMOperator.h',
-				'WebimClientLibrary/WMSession.h',
-                                'WebimClientLibrary/WMFileParams.h',
-                                'WebimClientLibrary/WMImageParams.h',
-                                'WebimClientLibrary/WMImageSize.h'
+				            'WebimClientLibrary/WMChat.h',
+				            'WebimClientLibrary/WMMessage.h',
+				            'WebimClientLibrary/WMOfflineSession.h',
+				            'WebimClientLibrary/WMOperator.h',
+				            'WebimClientLibrary/WMSession.h',
+                            'WebimClientLibrary/WMFileParams.h',
+                            'WebimClientLibrary/WMImageParams.h',
+                            'WebimClientLibrary/WMImageSize.h'
   s.dependency 'AFNetworking', '< 2.0.0'
 
   s.prefix_header_contents = <<-PREF

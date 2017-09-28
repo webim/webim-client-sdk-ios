@@ -179,7 +179,7 @@ static NSString *DefaultClientTitle = @"iOS Client"; //
     params[@"since"] = @"0";
     params[@"location"] = self.location;
     params[@"title"] = DefaultClientTitle;
-    params[@"platform"] = self.platform.length > 0 ? self.platform : @"ios",
+    params[@"platform"] = self.platform.length > 0 ? self.platform : @"ios";
     params[@"ts"] = @([[NSDate date] timeIntervalSince1970]);
     if (visitSessionId != nil) {
         params[@"visit-session-id"] = visitSessionId;
@@ -361,7 +361,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
     }
     
     // MARK: TODO: Kill the magic number
-    void (^recoverBlock)() = ^() {
+    void (^recoverBlock)(void) = ^() {
         [self tryToRun:3
             currentRun:0
 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
@@ -380,7 +380,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
         }];
     };
     
-    void (^mainBlock)() = ^() {
+    void (^mainBlock)(void) = ^() {
         void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
             if ([self isReinitRequiredError:error]) {
                 recoverBlock();
@@ -489,8 +489,8 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
     }];
 }
 
-- (void)runMethodWithMainBlock:(void (^)())mainBlock
-                  recoverBlock:(void (^)())recoverBlock {
+- (void)runMethodWithMainBlock:(void (^)(void))mainBlock
+                  recoverBlock:(void (^)(void))recoverBlock {
     if ((self.lastPagePing == nil) ||
         ([[NSDate date] timeIntervalSinceDate:self.lastPagePing] >= TimeBetweenPagePings)) {
         recoverBlock();
@@ -536,7 +536,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
      onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
       completion:(void (^)(BOOL))completion {
     // MARK: TODO: Kill tha magic number 3
-    void (^recoverBlock)() = ^() {
+    void (^recoverBlock)(void) = ^() {
         [self tryToRun:3
             currentRun:0
 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
@@ -556,7 +556,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
         }];
     };
     
-    void (^mainBlock)() = ^() {
+    void (^mainBlock)(void) = ^() {
         void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
             if ([self isReinitRequiredError:error]) {
                 recoverBlock();
@@ -676,7 +676,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
       onDataBlock:(void (^)(BOOL, WMChat *, WMMessage *, NSError *))block
        completion:(void (^)(BOOL))completion {
     // MARK: TODO: Kill the magic number 3
-    void (^recoverBlock)() = ^() {
+    void (^recoverBlock)(void) = ^() {
         [self tryToRun:3
             currentRun:0
 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
@@ -695,7 +695,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
         }];
     };
     
-    void (^mainBlock)() = ^() {
+    void (^mainBlock)(void) = ^() {
         void (^testBlock)(BOOL, WMChat *, WMMessage *, NSError *) = ^(BOOL result, WMChat *chat, WMMessage *message, NSError *error) {
             if ([self isReinitRequiredError:error]) {
                 recoverBlock();
@@ -839,7 +839,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
 
 - (void)deleteChat:(WMChat *)chat completion:(void (^)(BOOL, NSError *))block {
     
-    void (^recoverBlock)() = ^() {
+    void (^recoverBlock)(void) = ^() {
         [self tryToRun:3 currentRun:0 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
             if (successful) {
                 [self doDeleteChat:chat completion:block];
@@ -849,7 +849,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
         }];
     };
     
-    void (^mainBlock)() = ^() {
+    void (^mainBlock)(void) = ^() {
         [self doDeleteChat:chat completion:^(BOOL result, NSError *error) {
             if ([self isReinitRequiredError:error]) {
                 recoverBlock();
@@ -893,7 +893,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
 
 - (void)markChatAsRead:(WMChat *)chat completion:(void (^)(BOOL, NSError *))block {
     
-    void (^recoverBlock)() = ^() {
+    void (^recoverBlock)(void) = ^() {
         [self tryToRun:3 currentRun:0 startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
             if (successful) {
                 [self doMarkChatAsRead:chat completion:block];
@@ -903,7 +903,7 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
         }];
     };
     
-    void (^mainBlock)() = ^() {
+    void (^mainBlock)(void) = ^() {
         [self doMarkChatAsRead:chat completion:^(BOOL result, NSError *error) {
             if ([self isReinitRequiredError:error]) {
                 recoverBlock();

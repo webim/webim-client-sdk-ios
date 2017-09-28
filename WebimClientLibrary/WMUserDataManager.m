@@ -99,6 +99,13 @@ NSString *const WMKeychainIdentifier = @"WMUserData";
 
 + (void)archiveData:(NSDictionary *)data
           forUserID:(NSString *)userID {
+    if ((userID == nil)
+        || (data == nil)) {
+        [[WMUserDataManager shared] archiveUserData:data];
+        
+        return;
+    }
+    
     NSDictionary *userDataDictionary = @{
                                          userID : data
                                          };
@@ -113,6 +120,10 @@ NSString *const WMKeychainIdentifier = @"WMUserData";
 // MARK: Unarchiving methods
 
 + (NSDictionary *)unarchiveDataFor:(NSString *)userID {
+    if (userID == nil) {
+        return [[WMUserDataManager shared] unarchiveUserData];
+    }
+    
     NSDictionary *multiUserDictionary = [[WMUserDataManager shared] unarchiveUserData];
     
     return [multiUserDictionary objectForKey:userID];
@@ -127,6 +138,12 @@ NSString *const WMKeychainIdentifier = @"WMUserData";
 /* Uses KeychainItemWrapper class for archiving user data in Keychain. */
 
 - (void)archiveUserData:(NSDictionary *)data {
+    if (data == nil) {
+        [self.keychain resetKeychainItem];
+        
+        return;
+    }
+    
     NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:data];
     [self.keychain setObject:userData
                       forKey:(__bridge id)kSecValueData];
