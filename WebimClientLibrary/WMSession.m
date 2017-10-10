@@ -62,37 +62,41 @@ NSString *const WMVisitorParameterCRC = @"crc";
 
 
 @implementation WMSession {
-    AFHTTPClient *client_;
     NSNumber *activeDeltaRevisionNumber_;
+    NSString *appVersion_; // Client app version to pass to a server. Can be nil.
+    AFHTTPClient *client_;
+    NSTimer *composingTimer_;
+    BOOL gettingInitialDelta_;
+    BOOL isMultiUser_;
+    NSString *lastComposedCachedDraft_;
+    BOOL lastComposedCachedIsTyping_;
+    NSDate *lastComposedSentDate_;
+    NSString *lastComposedSentDraft_;
+    BOOL lastComposedSentIsTyping_;
+    NSDate *lastFullUpdateDate_;
     BOOL sessionEstablished_; // YES after successful response of initial delta.
     BOOL sessionStarted_; // YES after first call to startSession method.
-    BOOL gettingInitialDelta_;
-    NSDate *lastFullUpdateDate_;
     NSTimer *patchDeltaTimer_;
     NSDictionary *userDefinedVisitorFields_;
-    
-    BOOL lastComposedSentIsTyping_;
-    BOOL lastComposedCachedIsTyping_;
-    NSString *lastComposedSentDraft_;
-    NSString *lastComposedCachedDraft_;
-    NSDate *lastComposedSentDate_;
-    NSTimer *composingTimer_;
-    BOOL isMultiUser_;
     NSString *userId_; // Only for multi-user session.
 }
 
 
-// MARK: - Initializers / Deinitializers
+// MARK: - API
+
+// MARK: - Session initialization
 
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
-                 delegate:(id<WMSessionDelegate>)delegate
+               appVersion:(NSString *)appVersion
+                 delegate:(id <WMSessionDelegate>)delegate
             visitorFields:(NSDictionary *)visitorFields
               isMultiUser:(BOOL)isMultiUser {
     if ((self = [super initWithAccountName:accountName
                                   location:location])) {
         _delegate = delegate;
         userDefinedVisitorFields_ = visitorFields;
+        appVersion_ = appVersion;
         
         NSURL *baseURL = [NSURL URLWithString:self.host];
         client_ = [AFHTTPClient clientWithBaseURL:baseURL];
@@ -123,11 +127,50 @@ NSString *const WMVisitorParameterCRC = @"crc";
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id<WMSessionDelegate>)delegate
+            visitorFields:(NSDictionary *)visitorFields
+              isMultiUser:(BOOL)isMultiUser {
+    return [self initWithAccountName:accountName
+                            location:location
+                          appVersion:nil
+                            delegate:delegate
+                       visitorFields:visitorFields
+                         isMultiUser:isMultiUser];
+}
+
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+               appVersion:(NSString *)appVersion
+                 delegate:(id<WMSessionDelegate>)delegate
             visitorFields:(NSDictionary *)visitorFields {
     return [self initWithAccountName:accountName
                             location:location
+                          appVersion:appVersion
                             delegate:delegate
                        visitorFields:visitorFields
+                         isMultiUser:NO];
+}
+
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+                 delegate:(id<WMSessionDelegate>)delegate
+            visitorFields:(NSDictionary *)visitorFields {
+    return [self initWithAccountName:accountName
+                            location:location
+                          appVersion:nil
+                            delegate:delegate
+                       visitorFields:visitorFields
+                         isMultiUser:NO];
+}
+
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+               appVersion:(NSString *)appVersion
+                 delegate:(id<WMSessionDelegate>)delegate {
+    return [self initWithAccountName:accountName
+                            location:location
+                          appVersion:appVersion
+                            delegate:delegate
+                       visitorFields:nil
                          isMultiUser:NO];
 }
 
@@ -136,16 +179,16 @@ NSString *const WMVisitorParameterCRC = @"crc";
                  delegate:(id<WMSessionDelegate>)delegate {
     return [self initWithAccountName:accountName
                             location:location
+                          appVersion:nil
                             delegate:delegate
-                       visitorFields:nil];
+                       visitorFields:nil
+                         isMultiUser:NO];
 }
 
 - (void)dealloc {
     [self enableObservingForNotifications:NO];
 }
 
-
-// MARK: - APIs
 
 // MARK: - Session methods
 
@@ -184,35 +227,47 @@ NSString *const WMVisitorParameterCRC = @"crc";
         extVisitorObject = [NSNull null];
     }
     
-    NSDictionary *parameters = @{
-                                 @"event": @"init",
-                                 @"location": self.location,
-                                 @"visit-session-id": (visitSessionId == nil) ? [NSNull null] : visitSessionId,
-                                 @"title": DefaultClientTitle,
-                                 @"since": @0,
-                                 @"visitor": (visitor == nil) ? [NSNull null] : [self jsonizedStringFromObject:visitor],
-                                 @"visitor-ext": extVisitorObject,
-                                 @"ts": @([[NSDate date] timeIntervalSince1970]),
-                                 @"platform": @"ios",
-                                 };
-    
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setObject:@"init"
+                   forKey:@"event"];
+    [parameters setObject:self.location
+                   forKey:@"location"];
+    [parameters setObject:DefaultClientTitle
+                   forKey:@"title"];
+    [parameters setObject:@0
+                   forKey:@"since"];
+    [parameters setObject:extVisitorObject
+                   forKey:@"visitor-ext"];
+    [parameters setObject:@([[NSDate date] timeIntervalSince1970])
+                   forKey:@"ts"];
+    if (appVersion_ != nil) {
+        [parameters setObject:appVersion_
+                       forKey:@"app-version"];
+    }
+    if (visitSessionId != nil) {
+        [parameters setObject:visitSessionId
+                       forKey:@"visit-session-id"];
+    }
+    if (visitor != nil) {
+        [parameters setObject:[self jsonizedStringFromObject:visitor]
+                       forKey:@"visitor"];
+    }
     NSString *pushToken = [[NSUserDefaults standardUserDefaults] valueForKey:@"WMDeviceTokenKey"];
     if ([pushToken isKindOfClass:[NSString class]] &&
         (pushToken.length > 0)) {
-        NSMutableDictionary *extParams = [parameters mutableCopy];
-        [extParams setValue:pushToken forKey:@"push-token"];
-        parameters = extParams;
+        [parameters setValue:pushToken
+                      forKey:@"push-token"];
     }
     
     if (activeDeltaRevisionNumber_ != nil) {
         CALL_BLOCK(block, NO);
-        
         return;
     }
+    NSDictionary *parametersToSend = [NSDictionary dictionaryWithDictionary:parameters];
     
     activeDeltaRevisionNumber_ = @0;
     [client_ getPath:APIDeltaPath
-          parameters:parameters
+          parameters:parametersToSend
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  activeDeltaRevisionNumber_ = nil;
                  gettingInitialDelta_ = NO;

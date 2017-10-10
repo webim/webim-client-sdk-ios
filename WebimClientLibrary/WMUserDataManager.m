@@ -102,7 +102,6 @@ NSString *const WMKeychainIdentifier = @"WMUserData";
     if ((userID == nil)
         || (data == nil)) {
         [[WMUserDataManager shared] archiveUserData:data];
-        
         return;
     }
     

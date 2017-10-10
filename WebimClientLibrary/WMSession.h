@@ -67,33 +67,49 @@ extern NSString *const WMVisitorParameterCRC; // Required, see http://webim.ru/h
 @property (nonatomic, readonly) WMSessionConnectionStatus connectionStatus;
 
 
-// MARK: Initializers
+// MARK: Session initialization
 
-/*
- Initialize session
+/**
+ Initialize session.
  
- @param accountName The name of an account in the webim service or custom service entry point
- @param location Location is a set of predefined properties for a session, string value
- @param delegate Delegate which will handle WMSessionDelegate calls
+ @param accountName The name of an account in the webim service or custom service entry point.
+ @param location Location is a set of predefined properties for a session, string value.
+ @param appVersion Optional. Sets your app version if it is needed to pass to a server. E.g. '@"2.9.11"'.
+ @param delegate Delegate which will handle WMSessionDelegate calls.
+ @param visitorFields Optional. It is useful for your custom visitor identification.
+ @param isMultiUser Optional. Substatiates if an app should be able to handle different users with local history on device.
  
- @return Initialized object of session
+ @return Initialized object of session.
+ 
+ @see https://webim.ru/help/identification/
  */
-
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+               appVersion:(NSString *)appVersion
+                 delegate:(id <WMSessionDelegate>)delegate
+            visitorFields:(NSDictionary *)visitorFields
+              isMultiUser:(BOOL)isMultiUser;
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id <WMSessionDelegate>)delegate
             visitorFields:(NSDictionary *)visitorFields
               isMultiUser:(BOOL)isMultiUser;
-
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+               appVersion:(NSString *)appVersion
+                 delegate:(id<WMSessionDelegate>)delegate
+            visitorFields:(NSDictionary *)visitorFields;
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id<WMSessionDelegate>)delegate
             visitorFields:(NSDictionary *)visitorFields;
-
+- (id)initWithAccountName:(NSString *)accountName
+                 location:(NSString *)location
+               appVersion:(NSString *)appVersion
+                 delegate:(id<WMSessionDelegate>)delegate;
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id<WMSessionDelegate>)delegate;
-
 
 // MARK: Session methods
 - (void)startSession:(WMResponseCompletionBlock)block;
