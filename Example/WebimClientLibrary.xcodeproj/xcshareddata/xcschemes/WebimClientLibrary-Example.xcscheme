@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6003F589195388D20070C39A"
+               BlueprintIdentifier = "607FACCF1AFB9204008FA782"
                BuildableName = "WebimClientLibrary_Example.app"
                BlueprintName = "WebimClientLibrary_Example"
+               ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "607FACE41AFB9204008FA782"
+               BuildableName = "WebimClientLibrary_Tests.xctest"
+               BlueprintName = "WebimClientLibrary_Tests"
                ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,13 +41,14 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       language = ""
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6003F5AD195388D20070C39A"
+               BlueprintIdentifier = "607FACE41AFB9204008FA782"
                BuildableName = "WebimClientLibrary_Tests.xctest"
                BlueprintName = "WebimClientLibrary_Tests"
                ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
@@ -43,7 +58,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6003F589195388D20070C39A"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
             BuildableName = "WebimClientLibrary_Example.app"
             BlueprintName = "WebimClientLibrary_Example"
             ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
@@ -67,7 +82,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6003F589195388D20070C39A"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
             BuildableName = "WebimClientLibrary_Example.app"
             BlueprintName = "WebimClientLibrary_Example"
             ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
@@ -86,7 +101,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6003F589195388D20070C39A"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
             BuildableName = "WebimClientLibrary_Example.app"
             BlueprintName = "WebimClientLibrary_Example"
             ReferencedContainer = "container:WebimClientLibrary.xcodeproj">

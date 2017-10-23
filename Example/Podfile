@@ -1,14 +1,33 @@
+platform :ios, '9.0'
+
+plugin 'cocoapods-amimono'
+
 use_frameworks!
 
 target 'WebimClientLibrary_Example' do
-  pod 'JSQMessagesViewController', :inhibit_warnings => true
-  pod 'HCSStarRatingView', :git => 'https://github.com/hugocampossousa/HCSStarRatingView.git', :inhibit_warnings => true
-  pod 'CRToast', '0.0.8', :inhibit_warnings => true
-  pod 'WebimClientLibrary', :path => '../'
-
-  target 'WebimClientLibrary_Tests' do
-    inherit! :search_paths
-
     
-  end
+    pod 'WebimClientLibrary', :path => '../'
+    pod 'SQLite.swift', :inhibit_warnings => true
+    pod 'SlackTextViewController', :git => 'https://github.com/slackhq/SlackTextViewController.git', :inhibit_warnings => true
+    pod 'SnapKit', '~> 3.2.0', :inhibit_warnings => true
+    pod 'Timberjack', :git => 'https://github.com/andysmart/Timberjack.git', :inhibit_warnings => true
+    pod 'PopupDialog', '~> 0.6', :inhibit_warnings => true
+    pod 'Cosmos', '~> 12.0', :inhibit_warnings => true
+    
+    target 'WebimClientLibrary_Tests' do
+        inherit! :search_paths
+        end
+    
+    post_install do |installer|
+        require 'cocoapods-amimono/patcher'
+        Amimono::Patcher.patch!(installer)
+        
+        installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '3.0'
+            end
+        end
+        
+    end
+    
 end

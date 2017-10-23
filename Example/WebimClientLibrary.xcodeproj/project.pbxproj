@@ -7,289 +7,224 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		16CB979650DABAA6F4A9AE2F /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7062A411086E166EB24CCB16 /* Pods_WebimClientLibrary_Example.framework */; };
-		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
-		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
-		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
-		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* WMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* WMAppDelegate.m */; };
-		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
-		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
-		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		9584A01D5F987DA8FC205B50 /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1FE03FFC30D39FB77D7AEB6 /* Pods_WebimClientLibrary_Tests.framework */; };
-		EB57F4D91D54B7DE00BB6695 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB57F4D81D54B7DE00BB6695 /* Images.xcassets */; };
-		EB57F4DE1D54BA2E00BB6695 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB57F4DA1D54BA2E00BB6695 /* AppIcon.xcassets */; };
-		EB57F4DF1D54BA2E00BB6695 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = EB57F4DB1D54BA2E00BB6695 /* iTunesArtwork */; };
-		EB57F4E01D54BA2E00BB6695 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = EB57F4DC1D54BA2E00BB6695 /* iTunesArtwork@2x */; };
-		EB57F4E11D54BA2E00BB6695 /* LaunchImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB57F4DD1D54BA2E00BB6695 /* LaunchImages.xcassets */; };
-		EB57F4E41D54BA4600BB6695 /* WebimLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = EB57F4E21D54BA4600BB6695 /* WebimLogo.png */; };
-		EB57F4E51D54BA4600BB6695 /* WebimLogo~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = EB57F4E31D54BA4600BB6695 /* WebimLogo~iPad.png */; };
-		EB57F4E81D54BABA00BB6695 /* UIImage+OrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4E71D54BABA00BB6695 /* UIImage+OrientationFix.m */; };
-		EB57F4FC1D54BAF600BB6695 /* WebimController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4EC1D54BAF600BB6695 /* WebimController.m */; };
-		EB57F4FD1D54BAF600BB6695 /* WMChatBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4EE1D54BAF600BB6695 /* WMChatBaseViewController.m */; };
-		EB57F4FE1D54BAF600BB6695 /* WMChatDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4F01D54BAF600BB6695 /* WMChatDataViewController.m */; };
-		EB57F4FF1D54BAF600BB6695 /* WMChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4F21D54BAF600BB6695 /* WMChatViewController.m */; };
-		EB57F5001D54BAF600BB6695 /* WMHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4F41D54BAF600BB6695 /* WMHistoryCell.m */; };
-		EB57F5011D54BAF600BB6695 /* WMHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4F61D54BAF600BB6695 /* WMHistoryTableViewController.m */; };
-		EB57F5021D54BAF600BB6695 /* WMOfflineChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4F81D54BAF600BB6695 /* WMOfflineChatViewController.m */; };
-		EB57F5031D54BAF600BB6695 /* WMRateOperatorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57F4FA1D54BAF600BB6695 /* WMRateOperatorTableViewController.m */; };
-		EB57F5081D54BBA700BB6695 /* Storyboard-Pad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB57F5041D54BBA700BB6695 /* Storyboard-Pad.storyboard */; };
-		EB57F5091D54BBA700BB6695 /* Storyboard-Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB57F5061D54BBA700BB6695 /* Storyboard-Phone.storyboard */; };
-		EB57F50E1D54BD5300BB6695 /* Webim.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB57F50A1D54BD5300BB6695 /* Webim.strings */; };
-		EB57F50F1D54BD5300BB6695 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB57F50C1D54BD5300BB6695 /* Localizable.strings */; };
-		EBDA6E6D1D5A28CD00E762BA /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = EBDA6E6B1D5A28CD00E762BA /* LICENSE */; };
+		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
+		607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* StartViewController.swift */; };
+		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
+		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
+		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
+		7AC8771ADBD56B8F2687508D /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */; };
+		7EFD66A46B75AB0CACF8C5E8 /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */; };
+		CE44AE651F87CA8E009787E5 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */; };
+		CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDC1F9108FA00F56319 /* UIImageView.swift */; };
+		CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
+		CEA832681F9906C0004845F0 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832671F9906BF004845F0 /* ColorConstants.swift */; };
+		CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832691F99079A004845F0 /* StringConstants.swift */; };
+		CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61A381F82A4C700BF7071 /* ChatViewController.swift */; };
+		DDFC632B1F924D41008E1ACC /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFC632A1F924D41008E1ACC /* UIImage.swift */; };
+		DDFC63CB1F93F23E008E1ACC /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */; };
+		DDFC63CD1F93FFE5008E1ACC /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDFC63CC1F93FEC2008E1ACC /* RatingViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6003F5B3195388D20070C39A /* PBXContainerItemProxy */ = {
+		607FACE61AFB9204008FA782 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6003F582195388D10070C39A /* Project object */;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 6003F589195388D20070C39A;
+			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
 			remoteInfo = WebimClientLibrary;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		29547C61A8A79529089D052D /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		4798CE0DD30DCDAA35B8F75D /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimClientLibrary.podspec; path = ../WebimClientLibrary.podspec; sourceTree = "<group>"; };
-		50C805A7E706B95C3C98D041 /* Pods-WebimClientLibrary_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		6003F58A195388D20070C39A /* WebimClientLibrary_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimClientLibrary_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6003F595195388D20070C39A /* WebimClientLibrary-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WebimClientLibrary-Info.plist"; sourceTree = "<group>"; };
-		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6003F59B195388D20070C39A /* WebimClientLibrary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WebimClientLibrary-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* WMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* WMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMAppDelegate.m; sourceTree = "<group>"; };
-		6003F5AE195388D20070C39A /* WebimClientLibrary_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebimClientLibrary_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
-		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
-		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		7062A411086E166EB24CCB16 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A58489BE9E908511CFFAFEE1 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		A990C3CD44648CCFE1B16DA3 /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
-		C1FE03FFC30D39FB77D7AEB6 /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EB57F4D81D54B7DE00BB6695 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		EB57F4DA1D54BA2E00BB6695 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcon.xcassets; path = Resources/AppIcon.xcassets; sourceTree = "<group>"; };
-		EB57F4DB1D54BA2E00BB6695 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Resources/iTunesArtwork; sourceTree = "<group>"; };
-		EB57F4DC1D54BA2E00BB6695 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; name = "iTunesArtwork@2x"; path = "Resources/iTunesArtwork@2x"; sourceTree = "<group>"; };
-		EB57F4DD1D54BA2E00BB6695 /* LaunchImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = LaunchImages.xcassets; path = Resources/LaunchImages.xcassets; sourceTree = "<group>"; };
-		EB57F4E21D54BA4600BB6695 /* WebimLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WebimLogo.png; path = Resources/Images/WebimLogo.png; sourceTree = "<group>"; };
-		EB57F4E31D54BA4600BB6695 /* WebimLogo~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WebimLogo~iPad.png"; path = "Resources/Images/WebimLogo~iPad.png"; sourceTree = "<group>"; };
-		EB57F4E61D54BABA00BB6695 /* UIImage+OrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OrientationFix.h"; sourceTree = "<group>"; };
-		EB57F4E71D54BABA00BB6695 /* UIImage+OrientationFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+OrientationFix.m"; sourceTree = "<group>"; };
-		EB57F4EB1D54BAF600BB6695 /* WebimController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebimController.h; sourceTree = "<group>"; };
-		EB57F4EC1D54BAF600BB6695 /* WebimController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebimController.m; sourceTree = "<group>"; };
-		EB57F4ED1D54BAF600BB6695 /* WMChatBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMChatBaseViewController.h; sourceTree = "<group>"; };
-		EB57F4EE1D54BAF600BB6695 /* WMChatBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMChatBaseViewController.m; sourceTree = "<group>"; };
-		EB57F4EF1D54BAF600BB6695 /* WMChatDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMChatDataViewController.h; sourceTree = "<group>"; };
-		EB57F4F01D54BAF600BB6695 /* WMChatDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMChatDataViewController.m; sourceTree = "<group>"; };
-		EB57F4F11D54BAF600BB6695 /* WMChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMChatViewController.h; sourceTree = "<group>"; };
-		EB57F4F21D54BAF600BB6695 /* WMChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMChatViewController.m; sourceTree = "<group>"; };
-		EB57F4F31D54BAF600BB6695 /* WMHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMHistoryCell.h; sourceTree = "<group>"; };
-		EB57F4F41D54BAF600BB6695 /* WMHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMHistoryCell.m; sourceTree = "<group>"; };
-		EB57F4F51D54BAF600BB6695 /* WMHistoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMHistoryTableViewController.h; sourceTree = "<group>"; };
-		EB57F4F61D54BAF600BB6695 /* WMHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMHistoryTableViewController.m; sourceTree = "<group>"; };
-		EB57F4F71D54BAF600BB6695 /* WMOfflineChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMOfflineChatViewController.h; sourceTree = "<group>"; };
-		EB57F4F81D54BAF600BB6695 /* WMOfflineChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMOfflineChatViewController.m; sourceTree = "<group>"; };
-		EB57F4F91D54BAF600BB6695 /* WMRateOperatorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMRateOperatorTableViewController.h; sourceTree = "<group>"; };
-		EB57F4FA1D54BAF600BB6695 /* WMRateOperatorTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMRateOperatorTableViewController.m; sourceTree = "<group>"; };
-		EB57F5051D54BBA700BB6695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Storyboard-Pad.storyboard"; sourceTree = "<group>"; };
-		EB57F5071D54BBA700BB6695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Storyboard-Phone.storyboard"; sourceTree = "<group>"; };
-		EB57F50B1D54BD5300BB6695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Webim.strings; sourceTree = "<group>"; };
-		EB57F50D1D54BD5300BB6695 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		EBDA6E6B1D5A28CD00E762BA /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		EBDA6E6C1D5A28CD00E762BA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		1C9EE3CC357A2601B6B46B48 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		4B9885678925C815E999C850 /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
+		607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimClientLibrary_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		607FACD71AFB9204008FA782 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebimClientLibrary_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHolderTests.swift; sourceTree = "<group>"; };
+		64CA62797768201B3FC88CB2 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		9CC9BEBFE5B17489F997BAD5 /* Pods-WebimClientLibrary_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		AB52E1C1E0F009A386DC1C6C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4CD65CA48F80B5A4AD826B3 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimClientLibrary.podspec; path = ../WebimClientLibrary.podspec; sourceTree = "<group>"; };
+		CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebimClientLibrary_Example.entitlements; sourceTree = "<group>"; };
+		CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
+		CE45EDDC1F9108FA00F56319 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		CE45EDDF1F95F95C00F56319 /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
+		CEA832671F9906BF004845F0 /* ColorConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
+		CEA832691F99079A004845F0 /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
+		CEF61A381F82A4C700BF7071 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		DDFC632A1F924D41008E1ACC /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
+		DDFC63CC1F93FEC2008E1ACC /* RatingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
+		EB8C258A78F3730770936414 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		6003F587195388D20070C39A /* Frameworks */ = {
+		607FACCD1AFB9204008FA782 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
-				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
-				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				16CB979650DABAA6F4A9AE2F /* Pods_WebimClientLibrary_Example.framework in Frameworks */,
+				7EFD66A46B75AB0CACF8C5E8 /* Pods_WebimClientLibrary_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6003F5AB195388D20070C39A /* Frameworks */ = {
+		607FACE21AFB9204008FA782 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
-				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
-				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				9584A01D5F987DA8FC205B50 /* Pods_WebimClientLibrary_Tests.framework in Frameworks */,
+				7AC8771ADBD56B8F2687508D /* Pods_WebimClientLibrary_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		30E8AE19B968E0AC78E7A077 /* Pods */ = {
+		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				50C805A7E706B95C3C98D041 /* Pods-WebimClientLibrary_Example.debug.xcconfig */,
-				A990C3CD44648CCFE1B16DA3 /* Pods-WebimClientLibrary_Example.release.xcconfig */,
-				29547C61A8A79529089D052D /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
-				A58489BE9E908511CFFAFEE1 /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		6003F581195388D10070C39A = {
-			isa = PBXGroup;
-			children = (
-				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
-				6003F593195388D20070C39A /* Example for WebimClientLibrary */,
-				6003F5B5195388D20070C39A /* Tests */,
-				6003F58C195388D20070C39A /* Frameworks */,
-				6003F58B195388D20070C39A /* Products */,
-				30E8AE19B968E0AC78E7A077 /* Pods */,
+				CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */,
+				607FACF51AFB993E008FA782 /* Podspec Metadata */,
+				607FACD21AFB9204008FA782 /* Example for WebimClientLibrary */,
+				607FACE81AFB9204008FA782 /* Tests */,
+				607FACD11AFB9204008FA782 /* Products */,
+				8748DD32AC71DEE9A28E52A0 /* Pods */,
+				8DD470AC5F8E155D207105C6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		6003F58B195388D20070C39A /* Products */ = {
+		607FACD11AFB9204008FA782 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6003F58A195388D20070C39A /* WebimClientLibrary_Example.app */,
-				6003F5AE195388D20070C39A /* WebimClientLibrary_Tests.xctest */,
+				607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */,
+				607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6003F58C195388D20070C39A /* Frameworks */ = {
+		607FACD21AFB9204008FA782 /* Example for WebimClientLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				6003F58D195388D20070C39A /* Foundation.framework */,
-				6003F58F195388D20070C39A /* CoreGraphics.framework */,
-				6003F591195388D20070C39A /* UIKit.framework */,
-				6003F5AF195388D20070C39A /* XCTest.framework */,
-				7062A411086E166EB24CCB16 /* Pods_WebimClientLibrary_Example.framework */,
-				C1FE03FFC30D39FB77D7AEB6 /* Pods_WebimClientLibrary_Tests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6003F593195388D20070C39A /* Example for WebimClientLibrary */ = {
-			isa = PBXGroup;
-			children = (
-				6003F59C195388D20070C39A /* WMAppDelegate.h */,
-				6003F59D195388D20070C39A /* WMAppDelegate.m */,
-				EB57F5041D54BBA700BB6695 /* Storyboard-Pad.storyboard */,
-				EB57F5061D54BBA700BB6695 /* Storyboard-Phone.storyboard */,
-				EB57F4EB1D54BAF600BB6695 /* WebimController.h */,
-				EB57F4EC1D54BAF600BB6695 /* WebimController.m */,
-				EB57F4ED1D54BAF600BB6695 /* WMChatBaseViewController.h */,
-				EB57F4EE1D54BAF600BB6695 /* WMChatBaseViewController.m */,
-				EB57F4EF1D54BAF600BB6695 /* WMChatDataViewController.h */,
-				EB57F4F01D54BAF600BB6695 /* WMChatDataViewController.m */,
-				EB57F4F11D54BAF600BB6695 /* WMChatViewController.h */,
-				EB57F4F21D54BAF600BB6695 /* WMChatViewController.m */,
-				EB57F4F51D54BAF600BB6695 /* WMHistoryTableViewController.h */,
-				EB57F4F61D54BAF600BB6695 /* WMHistoryTableViewController.m */,
-				EB57F4F31D54BAF600BB6695 /* WMHistoryCell.h */,
-				EB57F4F41D54BAF600BB6695 /* WMHistoryCell.m */,
-				EB57F4F71D54BAF600BB6695 /* WMOfflineChatViewController.h */,
-				EB57F4F81D54BAF600BB6695 /* WMOfflineChatViewController.m */,
-				EB57F4F91D54BAF600BB6695 /* WMRateOperatorTableViewController.h */,
-				EB57F4FA1D54BAF600BB6695 /* WMRateOperatorTableViewController.m */,
-				EB57F4D51D54B73C00BB6695 /* Images */,
-				EB57F4D41D54B72900BB6695 /* Utilities */,
-				6003F594195388D20070C39A /* Supporting Files */,
+				CEA832661F990689004845F0 /* Appearance settings */,
+				CE45EDDE1F95F94200F56319 /* Utilities */,
+				CE45EDDB1F9108E200F56319 /* Extensions */,
+				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				CEF61A381F82A4C700BF7071 /* ChatViewController.swift */,
+				CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */,
+				DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */,
+				607FACD71AFB9204008FA782 /* StartViewController.swift */,
+				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
+				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				DDFC63CC1F93FEC2008E1ACC /* RatingViewController.xib */,
+				607FACDC1AFB9204008FA782 /* Images.xcassets */,
+				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
 			name = "Example for WebimClientLibrary";
 			path = WebimClientLibrary;
 			sourceTree = "<group>";
 		};
-		6003F594195388D20070C39A /* Supporting Files */ = {
+		607FACD31AFB9204008FA782 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				EB57F50A1D54BD5300BB6695 /* Webim.strings */,
-				EB57F50C1D54BD5300BB6695 /* Localizable.strings */,
-				6003F595195388D20070C39A /* WebimClientLibrary-Info.plist */,
-				6003F596195388D20070C39A /* InfoPlist.strings */,
-				6003F599195388D20070C39A /* main.m */,
-				6003F59B195388D20070C39A /* WebimClientLibrary-Prefix.pch */,
+				607FACD41AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		6003F5B5195388D20070C39A /* Tests */ = {
+		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
-				6003F5B6195388D20070C39A /* Supporting Files */,
+				607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */,
+				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		6003F5B6195388D20070C39A /* Supporting Files */ = {
+		607FACE91AFB9204008FA782 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5B7195388D20070C39A /* Tests-Info.plist */,
-				6003F5B8195388D20070C39A /* InfoPlist.strings */,
-				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
+				607FACEA1AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
+		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				EBDA6E6B1D5A28CD00E762BA /* LICENSE */,
-				EBDA6E6C1D5A28CD00E762BA /* README.md */,
-				4798CE0DD30DCDAA35B8F75D /* WebimClientLibrary.podspec */,
+				C4CD65CA48F80B5A4AD826B3 /* WebimClientLibrary.podspec */,
+				EB8C258A78F3730770936414 /* README.md */,
+				AB52E1C1E0F009A386DC1C6C /* LICENSE */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		EB57F4D41D54B72900BB6695 /* Utilities */ = {
+		8748DD32AC71DEE9A28E52A0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				EB57F4E61D54BABA00BB6695 /* UIImage+OrientationFix.h */,
-				EB57F4E71D54BABA00BB6695 /* UIImage+OrientationFix.m */,
+				9CC9BEBFE5B17489F997BAD5 /* Pods-WebimClientLibrary_Example.debug.xcconfig */,
+				4B9885678925C815E999C850 /* Pods-WebimClientLibrary_Example.release.xcconfig */,
+				64CA62797768201B3FC88CB2 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
+				1C9EE3CC357A2601B6B46B48 /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
 			);
-			name = Utilities;
+			name = Pods;
 			sourceTree = "<group>";
 		};
-		EB57F4D51D54B73C00BB6695 /* Images */ = {
+		8DD470AC5F8E155D207105C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EB57F4E21D54BA4600BB6695 /* WebimLogo.png */,
-				EB57F4E31D54BA4600BB6695 /* WebimLogo~iPad.png */,
-				EB57F4DA1D54BA2E00BB6695 /* AppIcon.xcassets */,
-				EB57F4DB1D54BA2E00BB6695 /* iTunesArtwork */,
-				EB57F4DC1D54BA2E00BB6695 /* iTunesArtwork@2x */,
-				EB57F4DD1D54BA2E00BB6695 /* LaunchImages.xcassets */,
-				EB57F4D81D54B7DE00BB6695 /* Images.xcassets */,
+				BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */,
+				B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */,
 			);
-			name = Images;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE45EDDB1F9108E200F56319 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DDFC632A1F924D41008E1ACC /* UIImage.swift */,
+				CE45EDDC1F9108FA00F56319 /* UIImageView.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CE45EDDE1F95F94200F56319 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				CE45EDDF1F95F95C00F56319 /* MimeType.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		CEA832661F990689004845F0 /* Appearance settings */ = {
+			isa = PBXGroup;
+			children = (
+				CEA832671F9906BF004845F0 /* ColorConstants.swift */,
+				CEA832691F99079A004845F0 /* StringConstants.swift */,
+			);
+			path = "Appearance settings";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6003F589195388D20070C39A /* WebimClientLibrary_Example */ = {
+		607FACCF1AFB9204008FA782 /* WebimClientLibrary_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Example" */;
+			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Example" */;
 			buildPhases = (
-				D403BB603E9C94A29705B3D9 /* [CP] Check Pods Manifest.lock */,
-				6003F586195388D20070C39A /* Sources */,
-				6003F587195388D20070C39A /* Frameworks */,
-				6003F588195388D20070C39A /* Resources */,
-				44262AF856410B8FACEF8287 /* [CP] Embed Pods Frameworks */,
-				7326094BCDB5267C4730321E /* [CP] Copy Pods Resources */,
+				BB203665164CEE6B1814FD79 /* [CP] Check Pods Manifest.lock */,
+				8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */,
+				607FACCC1AFB9204008FA782 /* Sources */,
+				607FACCD1AFB9204008FA782 /* Frameworks */,
+				607FACCE1AFB9204008FA782 /* Resources */,
+				F3287DFF4B4FE3A544A26E02 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -297,46 +232,60 @@
 			);
 			name = WebimClientLibrary_Example;
 			productName = WebimClientLibrary;
-			productReference = 6003F58A195388D20070C39A /* WebimClientLibrary_Example.app */;
+			productReference = 607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6003F5AD195388D20070C39A /* WebimClientLibrary_Tests */ = {
+		607FACE41AFB9204008FA782 /* WebimClientLibrary_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Tests" */;
+			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Tests" */;
 			buildPhases = (
-				3515EC8F7A5F7B9001051D0B /* [CP] Check Pods Manifest.lock */,
-				6003F5AA195388D20070C39A /* Sources */,
-				6003F5AB195388D20070C39A /* Frameworks */,
-				6003F5AC195388D20070C39A /* Resources */,
-				2D2C19F744E9F215AF0B9438 /* [CP] Embed Pods Frameworks */,
-				DE08228CB26459817BEAC1CC /* [CP] Copy Pods Resources */,
+				0E5075168E03BB89E6DD1E86 /* [CP] Check Pods Manifest.lock */,
+				607FACE11AFB9204008FA782 /* Sources */,
+				607FACE21AFB9204008FA782 /* Frameworks */,
+				607FACE31AFB9204008FA782 /* Resources */,
+				BC59808E27F30D5A72A553EF /* [CP] Embed Pods Frameworks */,
+				D234F7C11121A195966C1788 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6003F5B4195388D20070C39A /* PBXTargetDependency */,
+				607FACE71AFB9204008FA782 /* PBXTargetDependency */,
 			);
 			name = WebimClientLibrary_Tests;
-			productName = WebimClientLibraryTests;
-			productReference = 6003F5AE195388D20070C39A /* WebimClientLibrary_Tests.xctest */;
+			productName = Tests;
+			productReference = 607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		6003F582195388D10070C39A /* Project object */ = {
+		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = WM;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = "Vladislav Beskrovnyy";
+				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
-					6003F5AD195388D20070C39A = {
-						TestTargetID = 6003F589195388D20070C39A;
+					607FACCF1AFB9204008FA782 = {
+						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 574GE9X9L7;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+					607FACE41AFB9204008FA782 = {
+						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = 574GE9X9L7;
+						LastSwiftMigration = 0900;
+						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
 			};
-			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "WebimClientLibrary" */;
+			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "WebimClientLibrary" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -344,50 +293,84 @@
 				en,
 				Base,
 			);
-			mainGroup = 6003F581195388D10070C39A;
-			productRefGroup = 6003F58B195388D20070C39A /* Products */;
+			mainGroup = 607FACC71AFB9204008FA782;
+			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6003F589195388D20070C39A /* WebimClientLibrary_Example */,
-				6003F5AD195388D20070C39A /* WebimClientLibrary_Tests */,
+				607FACCF1AFB9204008FA782 /* WebimClientLibrary_Example */,
+				607FACE41AFB9204008FA782 /* WebimClientLibrary_Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		6003F588195388D20070C39A /* Resources */ = {
+		607FACCE1AFB9204008FA782 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB57F5091D54BBA700BB6695 /* Storyboard-Phone.storyboard in Resources */,
-				EB57F50F1D54BD5300BB6695 /* Localizable.strings in Resources */,
-				EBDA6E6D1D5A28CD00E762BA /* LICENSE in Resources */,
-				EB57F4E01D54BA2E00BB6695 /* iTunesArtwork@2x in Resources */,
-				EB57F4D91D54B7DE00BB6695 /* Images.xcassets in Resources */,
-				EB57F4E11D54BA2E00BB6695 /* LaunchImages.xcassets in Resources */,
-				EB57F5081D54BBA700BB6695 /* Storyboard-Pad.storyboard in Resources */,
-				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
-				EB57F4E41D54BA4600BB6695 /* WebimLogo.png in Resources */,
-				EB57F50E1D54BD5300BB6695 /* Webim.strings in Resources */,
-				EB57F4DE1D54BA2E00BB6695 /* AppIcon.xcassets in Resources */,
-				EB57F4E51D54BA4600BB6695 /* WebimLogo~iPad.png in Resources */,
-				EB57F4DF1D54BA2E00BB6695 /* iTunesArtwork in Resources */,
+				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				DDFC63CD1F93FFE5008E1ACC /* RatingViewController.xib in Resources */,
+				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6003F5AC195388D20070C39A /* Resources */ = {
+		607FACE31AFB9204008FA782 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2D2C19F744E9F215AF0B9438 /* [CP] Embed Pods Frameworks */ = {
+		0E5075168E03BB89E6DD1E86 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[Amimono] Create filelist per architecture";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'Timberjack' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
+		};
+		BB203665164CEE6B1814FD79 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BC59808E27F30D5A72A553EF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -402,67 +385,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3515EC8F7A5F7B9001051D0B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		44262AF856410B8FACEF8287 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7326094BCDB5267C4730321E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D403BB603E9C94A29705B3D9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		DE08228CB26459817BEAC1CC /* [CP] Copy Pods Resources */ = {
+		D234F7C11121A195966C1788 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -477,98 +400,133 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F3287DFF4B4FE3A544A26E02 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		6003F586195388D20070C39A /* Sources */ = {
+		607FACCC1AFB9204008FA782 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB57F5001D54BAF600BB6695 /* WMHistoryCell.m in Sources */,
-				EB57F4FF1D54BAF600BB6695 /* WMChatViewController.m in Sources */,
-				EB57F5011D54BAF600BB6695 /* WMHistoryTableViewController.m in Sources */,
-				EB57F4FC1D54BAF600BB6695 /* WebimController.m in Sources */,
-				EB57F4FD1D54BAF600BB6695 /* WMChatBaseViewController.m in Sources */,
-				EB57F4FE1D54BAF600BB6695 /* WMChatDataViewController.m in Sources */,
-				EB57F5031D54BAF600BB6695 /* WMRateOperatorTableViewController.m in Sources */,
-				EB57F4E81D54BABA00BB6695 /* UIImage+OrientationFix.m in Sources */,
-				6003F59E195388D20070C39A /* WMAppDelegate.m in Sources */,
-				EB57F5021D54BAF600BB6695 /* WMOfflineChatViewController.m in Sources */,
-				6003F59A195388D20070C39A /* main.m in Sources */,
+				607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */,
+				CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */,
+				CE44AE651F87CA8E009787E5 /* MessageTableViewCell.swift in Sources */,
+				CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */,
+				DDFC632B1F924D41008E1ACC /* UIImage.swift in Sources */,
+				CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */,
+				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				CEA832681F9906C0004845F0 /* ColorConstants.swift in Sources */,
+				CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */,
+				DDFC63CB1F93F23E008E1ACC /* RatingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6003F5AA195388D20070C39A /* Sources */ = {
+		607FACE11AFB9204008FA782 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6003F5B4195388D20070C39A /* PBXTargetDependency */ = {
+		607FACE71AFB9204008FA782 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6003F589195388D20070C39A /* WebimClientLibrary_Example */;
-			targetProxy = 6003F5B3195388D20070C39A /* PBXContainerItemProxy */;
+			target = 607FACCF1AFB9204008FA782 /* WebimClientLibrary_Example */;
+			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		6003F596195388D20070C39A /* InfoPlist.strings */ = {
+		607FACD91AFB9204008FA782 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6003F597195388D20070C39A /* en */,
+				607FACDA1AFB9204008FA782 /* Base */,
 			);
-			name = InfoPlist.strings;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		6003F5B8195388D20070C39A /* InfoPlist.strings */ = {
+		607FACDE1AFB9204008FA782 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6003F5B9195388D20070C39A /* en */,
+				607FACDF1AFB9204008FA782 /* Base */,
 			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		EB57F5041D54BBA700BB6695 /* Storyboard-Pad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EB57F5051D54BBA700BB6695 /* Base */,
-			);
-			name = "Storyboard-Pad.storyboard";
-			sourceTree = "<group>";
-		};
-		EB57F5061D54BBA700BB6695 /* Storyboard-Phone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EB57F5071D54BBA700BB6695 /* Base */,
-			);
-			name = "Storyboard-Phone.storyboard";
-			sourceTree = "<group>";
-		};
-		EB57F50A1D54BD5300BB6695 /* Webim.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EB57F50B1D54BD5300BB6695 /* Base */,
-			);
-			name = Webim.strings;
-			sourceTree = "<group>";
-		};
-		EB57F50C1D54BD5300BB6695 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EB57F50D1D54BD5300BB6695 /* en */,
-			);
-			name = Localizable.strings;
+			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		6003F5BD195388D20070C39A /* Debug */ = {
+		607FACED1AFB9204008FA782 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: hummingbirddj@gmail.com (5AWBA79F9B)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		607FACEE1AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -595,57 +553,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		6003F5BE195388D20070C39A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -657,119 +565,130 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		6003F5C0195388D20070C39A /* Debug */ = {
+		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50C805A7E706B95C3C98D041 /* Pods-WebimClientLibrary_Example.debug.xcconfig */;
+			baseConfigurationReference = 9CC9BEBFE5B17489F997BAD5 /* Pods-WebimClientLibrary_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WebimClientLibrary/WebimClientLibrary-Prefix.pch";
-				INFOPLIST_FILE = "WebimClientLibrary/WebimClientLibrary-Info.plist";
+				CODE_SIGN_ENTITLEMENTS = WebimClientLibrary_Example.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				FRAMEWORK_SEARCH_PATHS = " $(inherited)";
+				INFOPLIST_FILE = WebimClientLibrary/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -warn-long-expression-type-checking=200";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
-		6003F5C1195388D20070C39A /* Release */ = {
+		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A990C3CD44648CCFE1B16DA3 /* Pods-WebimClientLibrary_Example.release.xcconfig */;
+			baseConfigurationReference = 4B9885678925C815E999C850 /* Pods-WebimClientLibrary_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "WebimClientLibrary/WebimClientLibrary-Prefix.pch";
-				INFOPLIST_FILE = "WebimClientLibrary/WebimClientLibrary-Info.plist";
+				CODE_SIGN_ENTITLEMENTS = WebimClientLibrary_Example.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				FRAMEWORK_SEARCH_PATHS = " $(inherited)";
+				INFOPLIST_FILE = WebimClientLibrary/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
-		6003F5C3195388D20070C39A /* Debug */ = {
+		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29547C61A8A79529089D052D /* Pods-WebimClientLibrary_Tests.debug.xcconfig */;
+			baseConfigurationReference = 64CA62797768201B3FC88CB2 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebimClientLibrary_Example.app/WebimClientLibrary_Example";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		6003F5C4195388D20070C39A /* Release */ = {
+		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A58489BE9E908511CFFAFEE1 /* Pods-WebimClientLibrary_Tests.release.xcconfig */;
+			baseConfigurationReference = 1C9EE3CC357A2601B6B46B48 /* Pods-WebimClientLibrary_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebimClientLibrary_Example.app/WebimClientLibrary_Example";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6003F585195388D10070C39A /* Build configuration list for PBXProject "WebimClientLibrary" */ = {
+		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "WebimClientLibrary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6003F5BD195388D20070C39A /* Debug */,
-				6003F5BE195388D20070C39A /* Release */,
+				607FACED1AFB9204008FA782 /* Debug */,
+				607FACEE1AFB9204008FA782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Example" */ = {
+		607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6003F5C0195388D20070C39A /* Debug */,
-				6003F5C1195388D20070C39A /* Release */,
+				607FACF01AFB9204008FA782 /* Debug */,
+				607FACF11AFB9204008FA782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Tests" */ = {
+		607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6003F5C3195388D20070C39A /* Debug */,
-				6003F5C4195388D20070C39A /* Release */,
+				607FACF31AFB9204008FA782 /* Debug */,
+				607FACF41AFB9204008FA782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 6003F582195388D10070C39A /* Project object */;
+	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }
