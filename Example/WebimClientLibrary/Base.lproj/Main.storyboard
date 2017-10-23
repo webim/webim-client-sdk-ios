@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pKO-IW-95b">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Start View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="StartViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XcY-0e-RvG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="edo-SU-HN8">
+                                <rect key="frame" x="0.0" y="732" width="375" height="46"/>
+                                <color key="backgroundColor" red="0.90065738422616481" green="0.8470412823155008" blue="0.089915955759565222" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="Wt1-oe-b3Q"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                <state key="normal" title="Start chat">
+                                    <color key="titleColor" red="0.26418037130142835" green="0.26418037130142835" blue="0.26418037130142835" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="b0b-FK-5tW" kind="show" id="0zw-c1-liK"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bPt-yP-yHN">
+                                <rect key="frame" x="0.0" y="96" width="375" height="300"/>
+                                <color key="backgroundColor" red="0.89616717970000004" green="0.93132234879999998" blue="0.95925416559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="999" constant="300" id="x5o-0l-MMh"/>
+                                </constraints>
+                                <string key="text">Welcome to the WebimClientLibrary demo app!
+
+To start a chat tap on the button below.
+
+Operator can answer to your chat at:
+https://demo.webim.ru/
+Login: o@webim.ru
+Password: password
+
+This app source code can be found at:
+https://github.com/webim/webim-client-sdk-ios</string>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.89773446321487427" green="0.92855554819107056" blue="0.96161824464797974" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="edo-SU-HN8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bPt-yP-yHN" secondAttribute="bottom" constant="8" id="5JD-kV-iDR"/>
+                            <constraint firstItem="bPt-yP-yHN" firstAttribute="top" secondItem="FG1-OH-9g7" secondAttribute="top" constant="8" id="BZe-km-CLr"/>
+                            <constraint firstAttribute="trailing" secondItem="edo-SU-HN8" secondAttribute="trailing" id="EsA-8q-5Ex"/>
+                            <constraint firstItem="FG1-OH-9g7" firstAttribute="bottom" secondItem="edo-SU-HN8" secondAttribute="bottom" id="Xbb-b6-UUZ"/>
+                            <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="bPt-yP-yHN" secondAttribute="trailing" id="hYV-aF-bMZ"/>
+                            <constraint firstItem="edo-SU-HN8" firstAttribute="leading" secondItem="XcY-0e-RvG" secondAttribute="leading" id="rf4-3K-0SH"/>
+                            <constraint firstItem="bPt-yP-yHN" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" id="s8Z-cr-uDy"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="FG1-OH-9g7"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Qdj-sN-uYq"/>
+                    <connections>
+                        <outlet property="startChatButton" destination="edo-SU-HN8" id="hNP-0g-pxQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="426.39999999999998" y="36.945812807881772"/>
+        </scene>
+        <!--Chat View Controller-->
+        <scene sceneID="VfN-dW-J2d">
+            <objects>
+                <viewController id="b0b-FK-5tW" customClass="ChatViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cA7-73-aJ8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.89616717970000004" green="0.93132234879999998" blue="0.95925416559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="nz6-ac-9Lz"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5E6-DH-fjS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1310" y="37"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="yDz-A0-jZT">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pKO-IW-95b" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="OVf-xW-bBf">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.89616717970000004" green="0.93132234879999998" blue="0.95925416559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="is3-bu-PJG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JLr-TP-n2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-444" y="37"/>
+        </scene>
+    </scenes>
+</document>
