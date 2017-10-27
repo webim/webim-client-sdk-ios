@@ -5,6 +5,24 @@
 //  Created by Nikita Lazarev-Zubov on 02.08.17.
 //  Copyright © 2017 Webim. All rights reserved.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
 
 import Foundation
 import UIKit
@@ -76,7 +94,7 @@ final class WebimSessionImpl {
                                 visitorFields: ProvidedVisitorFields?,
                                 pageTitle: String?,
                                 fatalErrorHandler: FatalErrorHandler?,
-                                arePushNotificationsEnabled: Bool,
+                                areRemoteNotificationsEnabled: Bool,
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool?,
                                 isVisitorDataClearingEnabled: Bool?) throws -> WebimSessionImpl? {
@@ -220,14 +238,17 @@ final class WebimSessionImpl {
     private static func clearVisitorDataFor(userDefaultsKey: String) {
         let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] ?? nil
         if dbName != nil {
-            let dbFileName = dbName as! String
-            let dbFileURL = URL(fileURLWithPath: dbFileName)
             let fileManager = FileManager.default
+            let documentsDirectory = try! fileManager.url(for: .documentDirectory,
+                                                          in: .userDomainMask,
+                                                          appropriateFor: nil,
+                                                          create: false)
+            let dbURL = documentsDirectory.appendingPathComponent(dbName as! String)
             
             do {
-                try fileManager.removeItem(at: dbFileURL)
+                try fileManager.removeItem(at: dbURL)
             } catch {
-                print("Error deleting DB file at \(dbFileURL) or file doesn't exist.")
+                print("Error deleting DB file at \(dbURL) or file doesn't exist.")
             }
         }
     }

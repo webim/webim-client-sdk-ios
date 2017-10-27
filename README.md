@@ -6,8 +6,12 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.0.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.0.1'
 ```
+
+### Objective-C
+
+Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our [_WebimClientLibraryWrapper_](https://github.com/webim/webim-client-sdk-ios-wrapper).
 
 > Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
@@ -77,7 +81,7 @@ All related tools (methods for working with attachments, message types etc.) are
 
 Methods for getting information about specific operator are described inside**Operator.swift** file. Operator object can be getted through `MessageStream` object `getCurrentOperator()` method.
 
-Methods for working with remote notifications by _Webim_ service are described inside **WebimPushNotification.swift** file.
+Methods for working with remote notifications by _Webim_ service are described inside **WebimRemoteNotification.swift** file.
 
 Specific remote notification object can be getted through `Webim` class `parse(remoteNotification:)` method. This class also has method `isWebim(remoteNotification:)` which can be used to easily discover whether the notification is send by _Webim_ service or not.
 
@@ -100,7 +104,7 @@ All public interfaces, classes and methods are described inside 10 files (in alp
 * **Operator.swift**,
 * **Webim.swift**,
 * **WebimError.swift**,
-* **WebimPushNotification.swift**,
+* **WebimRemoteNotification.swift**,
 * **WebimSession.swift**.
 
 There's no need in every class, protocol, method etc. description in this manual because all them have exhaustive descriptions inside SDK public files.

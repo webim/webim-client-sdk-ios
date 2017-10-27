@@ -25,6 +25,7 @@
 //  SOFTWARE.
 //
 
+
 import UIKit
 
 import SnapKit
@@ -47,6 +48,7 @@ extension UIColor {
     }
     
 }
+
 
 // MARK: -
 class MessageTableViewCell: UITableViewCell {
@@ -91,6 +93,7 @@ class MessageTableViewCell: UITableViewCell {
     // MARK: - Methods
     
     func setContent(withMessage message: Message) {
+        // MARK: WEBIM: Using message type.
         let messageType = message.getType()
         
         switch messageType {

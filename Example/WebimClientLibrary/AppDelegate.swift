@@ -24,6 +24,7 @@
 //  SOFTWARE.
 //
 
+
 import UIKit
 
 import Timberjack
@@ -47,13 +48,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Timberjack.register()
         
-        // Push notifications configuration.
+        // Remote notifications configuration.
         let notificationTypes: UIUserNotificationType = [.alert,
                                                          .badge,
                                                          .sound]
-        let pushNotificationSettings = UIUserNotificationSettings(types: notificationTypes,
+        let remoteNotificationSettings = UIUserNotificationSettings(types: notificationTypes,
                                                                   categories: nil)
-        application.registerUserNotificationSettings(pushNotificationSettings)
+        application.registerUserNotificationSettings(remoteNotificationSettings)
         application.registerForRemoteNotifications()
         
         return true
@@ -80,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let isWebimRemoteNotification: Bool? = try? Webim.isWebim(remoteNotification: userInfo)
         if isWebimRemoteNotification == true {
             _ = try! Webim.parse(remoteNotification: userInfo)
-            // TODO: Handle notification.
+            // Handle Webim remote notification.
         } else {
             // Handle another type of remote notification.
         }

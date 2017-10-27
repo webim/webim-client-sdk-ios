@@ -24,6 +24,7 @@
 //  SOFTWARE.
 //
 
+
 import UIKit
 
 import PopupDialog
@@ -210,7 +211,7 @@ class ChatViewController: SLKTextViewController {
             .set(pageTitle: SessionDefaults.PAGE_TITLE.rawValue)
             .set(visitorFieldsJSONString: visitorFieldsJSONString)
             .set(fatalErrorHandler: self)
-            .set(pushNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
+            .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
             .set(deviceToken: deviceToken)
             .build()
     }
@@ -344,7 +345,7 @@ extension ChatViewController: UINavigationControllerDelegate {
 extension ChatViewController: FatalErrorHandler {
     
     func on(error: WebimError) {
-        // MARK: TODO
+        // Handle an error.
     }
     
 }

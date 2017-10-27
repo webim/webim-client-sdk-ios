@@ -5,6 +5,25 @@
 //  Created by Nikita Lazarev-Zubov on 02.08.17.
 //  Copyright © 2017 Webim. All rights reserved.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
+
 
 import Foundation
 
@@ -22,32 +41,32 @@ public final class Webim {
     /**
      Deserializes received remote notification.
      This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:,didReceiveRemoteNotification:)`.
-     - parameter pushNotification:
+     - parameter remoteNotification:
      User info of received remote notification.
      - returns:
-     Push notification object or nil if there's no useful payload or this notification is sent not by Webim service.
+     Remote notification object or nil if there's no useful payload or this notification is sent not by Webim service.
      - throws:
-     `PushNotificationError.UnknownNotificationFormat` if passed remote notification format is incorrect or unknown. Remote notification dictionary must be stored inside standard APNs key "aps".
+     `RemoteNotificationError.UnknownNotificationFormat` if passed remote notification format is incorrect or unknown. Remote notification dictionary must be stored inside standard APNs key "aps".
      - SeeAlso:
-     `SessionBuilder.set(pushNotificationsSystem:)`
-     `isWebim(pushNotification:)`
+     `SessionBuilder.set(remoteNotificationsSystem:)`
+     `isWebim(remoteNotification:)`
      */
-    static public func parse(remoteNotification: [AnyHashable: Any]) throws -> WebimPushNotification? {
+    static public func parse(remoteNotification: [AnyHashable: Any]) throws -> WebimRemoteNotification? {
         return try InternalUtils.parse(remoteNotification: remoteNotification)
     }
     
     /**
-     If push notifications (SessionBuilder.setPushSystem) are enabled for the session, then you can receive push notifications belonging to this session.
+     If remote notifications (SessionBuilder.setRemoteNotificationSystem) are enabled for the session, then you can receive remote notifications belonging to this session.
      This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:,didReceiveRemoteNotification:)`.
-     - parameter pushNotification:
+     - parameter remoteNotification:
      User info of received remote notification.
      - returns:
      Boolean value that indicates is received remote notification is sent by Webim service.
      - throws:
-     `PushNotificationError.UnknownNotificationFormat` if passed remote notification format is incorrect or unknown. Remote notification dictionary must be stored inside standard APNs key "aps".
+     `RemoteNotificationError.UnknownNotificationFormat` if passed remote notification format is incorrect or unknown. Remote notification dictionary must be stored inside standard APNs key "aps".
      - SeeAlso:
-     `SessionBuilder.set(pushNotificationSystem:)`
-     `parsePushNotification()`
+     `SessionBuilder.set(remoteNotificationSystem:)`
+     `parseRemoteNotification()`
      */
     static public func isWebim(remoteNotification: [AnyHashable : Any]) throws -> Bool {
         return try InternalUtils.isWebim(remoteNotification: remoteNotification)
@@ -56,9 +75,9 @@ public final class Webim {
     // MARK: -
     /**
      - SeeAlso:
-     `SessionBuilder.setPushSystem()`
+     `SessionBuilder.setRemoteNotificationSystem()`
      */
-    public enum PushNotificationSystem {
+    public enum RemoteNotificationSystem {
         case APNS
         case NONE
     }
@@ -66,14 +85,13 @@ public final class Webim {
     // MARK: -
     /**
      - SeeAlso:
-     `isWebim(pushNotification:)`
+     `isWebim(remoteNotification:)`
      */
-    public enum PushNotificationError: Error {
+    public enum RemoteNotificationError: Error {
         case UnknownNotificationFormat
     }
     
 }
-
 
 // MARK: -
 /**
@@ -91,7 +109,7 @@ public final class SessionBuilder  {
     private var fatalErrorHandler: FatalErrorHandler?
     private var location: String?
     private var pageTitle: String?
-    private var pushNotificationSystem: Webim.PushNotificationSystem? = .NONE
+    private var remoteNotificationSystem: Webim.RemoteNotificationSystem? = .NONE
     private var visitorFields: ProvidedVisitorFields?
     
     // Properties used for debugging
@@ -205,29 +223,29 @@ public final class SessionBuilder  {
     }
     
     /**
-     Webim service can send push notifications when new messages are received in chat.
+     Webim service can send remote notifications when new messages are received in chat.
      By default it does not. You have to handle receiving by yourself.
-     To differentiate notifications from your app and from Webim service check the field "from" (see `Webim.isWebim(pushNotification:)`).
+     To differentiate notifications from your app and from Webim service check the field "from" (see `Webim.isWebim(remoteNotification:)`).
      - important:
-     If push notification system is setted you must set device token.
-     - parameter pushNotificationSystem:
-     Enum that indicates which system of push notification is used. By default – NONE (push notifications are not sent).
+     If remote notification system is setted you must set device token.
+     - parameter remoteNotificationSystem:
+     Enum that indicates which system of remote notification is used. By default – NONE (remote notifications are not sent).
      - returns:
-     `SessionBuilder` object with push notification system setted.
+     `SessionBuilder` object with remote notification system setted.
      */
-    public func set(pushNotificationSystem: Webim.PushNotificationSystem) -> SessionBuilder {
-        self.pushNotificationSystem = pushNotificationSystem
+    public func set(remoteNotificationSystem: Webim.RemoteNotificationSystem) -> SessionBuilder {
+        self.remoteNotificationSystem = remoteNotificationSystem
         return self
     }
     
     /**
      Sets device token.
      - parameter deviceToken:
-     Push token.
+     Device token.
      - returns:
      `SessionBuilder` object with device token setted.
      - SeeAlso:
-     `setPushSystem`
+     `setRemoteNotificationsSystem`
      */
     public func set(deviceToken: String?) -> SessionBuilder {
         self.deviceToken = deviceToken
@@ -240,7 +258,7 @@ public final class SessionBuilder  {
      By default a session stores a message history locally. This method allows to disable history storage.
      - important:
      Use only for debugging!
-     - parameter localHistoryStorageEnabled:
+     - parameter isLocalHistoryStoragingEnabled:
      Boolean parameter that indicated if an app should enable or disable local history storing.
      - returns:
      `SessionBuilder` object with isLocalHistoryStoragingEnabled parameter setted.
@@ -273,7 +291,7 @@ public final class SessionBuilder  {
      - throws:
      `SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't setted to a non-nil value.
      `SessionBuilderError.NIL_LOCATION` if location wasn't setted to a non-nil value.
-     `SessionBuilderError.INVALID_PUSH_NOTIFICATION_CONFIGURATION` if there is a try to set up a push notifications without device token provided.
+     `SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to set up a remote notifications without device token provided.
      - returns:
      New `WebimSession` object.
      */
@@ -286,10 +304,10 @@ public final class SessionBuilder  {
             throw SessionBuilderError.NIL_LOCATION
         }
         
-        let arePushNotificationsEnabled = (self.pushNotificationSystem != Webim.PushNotificationSystem.NONE)
-        if arePushNotificationsEnabled {
+        let areRemoteNotificationsEnabled = (self.remoteNotificationSystem != Webim.RemoteNotificationSystem.NONE)
+        if areRemoteNotificationsEnabled {
             guard self.deviceToken != nil else {
-                throw SessionBuilderError.INVALID_PUSH_NOTIFICATION_CONFIGURATION
+                throw SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION
             }
         }
         
@@ -299,7 +317,7 @@ public final class SessionBuilder  {
                                                     visitorFields: visitorFields,
                                                     pageTitle: pageTitle,
                                                     fatalErrorHandler: fatalErrorHandler,
-                                                    arePushNotificationsEnabled: arePushNotificationsEnabled,
+                                                    areRemoteNotificationsEnabled: areRemoteNotificationsEnabled,
                                                     deviceToken: deviceToken,
                                                     isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                     isVisitorDataClearingEnabled: visitorDataClearingEnabled)! as WebimSession
@@ -310,7 +328,7 @@ public final class SessionBuilder  {
     public enum SessionBuilderError: Error {
         case NIL_ACCOUNT_NAME
         case NIL_LOCATION
-        case INVALID_PUSH_NOTIFICATION_CONFIGURATION
+        case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
     }
     
 }

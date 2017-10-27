@@ -7,7 +7,7 @@ PODS:
     - SQLite.swift/standard (= 0.11.4)
   - SQLite.swift/standard (0.11.4)
   - Timberjack (0.0.3)
-  - WebimClientLibrary (3.0.0):
+  - WebimClientLibrary (3.0.1):
     - SQLite.swift
 
 DEPENDENCIES:
@@ -42,7 +42,7 @@ SPEC CHECKSUMS:
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
   Timberjack: 20de84a2c135134de6821d1ea90cd57709567e2d
-  WebimClientLibrary: c8a6ae7f32d13c73c2015639b72d5905da1f4709
+  WebimClientLibrary: 263455bfe55e752eb07f6a38bed28c82336de668
 
 PODFILE CHECKSUM: e589bafda1a161022a9e0cabda14e256adb62d0e
 

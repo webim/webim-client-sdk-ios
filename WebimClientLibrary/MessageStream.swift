@@ -5,8 +5,28 @@
 //  Created by Nikita Lazarev-Zubov on 07.08.17.
 //  Copyright © 2017 Webim. All rights reserved.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
+
 
 import Foundation
+
 
 /**
  - SeeAlso:
@@ -308,18 +328,45 @@ public protocol LocationSettingsChangeListener {
 public enum ChatState {
     
     /**
+     Means that an operator has taken a chat for processing.
+     From this state a chat can be turned into:
+     - `CLOSED_BY_OPERATOR`, if an operator closes the chat;
+     - `CLOSED_BY_VISITOR`, if a visitor closes the chat (`MessageStream.closeChat()`);
+     - `NONE`, automatically during long-term absence of activity.
+     */
+    case CHATTING
+    
+    /**
+     Means that an operator has closed the chat.
+     From this state a chat can be turned into:
+     - `NONE`, if the chat is also closed by a visitor (`MessageStream.closeChat()`), or automatically during long-term absence of activity;
+     - `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:,isHintQuestion:)`).
+     */
+    case CLOSED_BY_OPERATOR
+    
+    /**
+     Means that a visitor has closed the chat.
+     From this state a chat can be turned into:
+     - `NONE`, if the chat is also closed by an operator or automatically during long-term absence of activity;
+     - `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:,isHintQuestion:)`).
+     */
+    case CLOSED_BY_VISITOR
+    
+    /**
+     Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
+     From this state a chat can be turned into:
+     - `CHATTING`, if a visitor sends a message (`MessageStream.send(message:,isHintQuestion:)`);
+     - `NONE`, if an operator or a visitor closes the chat (`MessageStream.closeChat()`).
+     */
+    case INVITATION
+    
+    /**
      Means the absence of a chat as such, e.g. a chat has not been started by a visitor nor by an operator.
      From this state a chat can be turned into:
      - `QUEUE`, if the chat is started by a visitor (by the first message or by calling `MessageStream.startChat()`;
      - `INVITATION`, if the chat is started by an operator.
      */
     case NONE
-    
-    /**
-     The state is undefined.
-     This state is set as the initial when creating a new session, until the first response of the server containing the actual state is got. This state is also used as a fallback if SDK can not identify the server state (e.g. if the server has been updated to a version that contains new states).
-     */
-    case UNKNOWN
     
     /**
      Means that a chat has been started by a visitor and at this moment is being in the queue for processing by an operator.
@@ -331,37 +378,10 @@ public enum ChatState {
     case QUEUE
     
     /**
-     Means that an operator has taken a chat for processing.
-     From this state a chat can be turned into:
-     - `CLOSED_BY_OPERATOR`, if an operator closes the chat;
-     - `CLOSED_BY_VISITOR`, if a visitor closes the chat (`MessageStream.closeChat()`);
-     - `NONE`, automatically during long-term absence of activity.
+     The state is undefined.
+     This state is set as the initial when creating a new session, until the first response of the server containing the actual state is got. This state is also used as a fallback if SDK can not identify the server state (e.g. if the server has been updated to a version that contains new states).
      */
-    case CHATTING
-    
-    /**
-     Means that a visitor has closed the chat.
-     From this state a chat can be turned into:
-     - `NONE`, if the chat is also closed by an operator or automatically during long-term absence of activity;
-     - `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:,isHintQuestion:)`).
-     */
-    case CLOSED_BY_VISITOR
-    
-    /**
-     Means that an operator has closed the chat.
-     From this state a chat can be turned into:
-     - `NONE`, if the chat is also closed by a visitor (`MessageStream.closeChat()`), or automatically during long-term absence of activity;
-     - `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:,isHintQuestion:)`).
-     */
-    case CLOSED_BY_OPERATOR
-    
-    /**
-     Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
-     From this state a chat can be turned into:
-     - `CHATTING`, if a visitor sends a message (`MessageStream.send(message:,isHintQuestion:)`);
-     - `NONE`, if an operator or a visitor closes the chat (`MessageStream.closeChat()`).
-     */
-    case INVITATION
+    case UNKNOWN
     
 }
 
@@ -372,15 +392,15 @@ public enum ChatState {
 public enum SendFileError: Error {
     
     /**
-     The server may deny a request if the file type is not allowed.
-     The list of allowed file types is configured on the server.
-     */
-    case FILE_TYPE_NOT_ALLOWED
-    
-    /**
      The server may deny a request if the file size exceeds a limit.
      The maximum size of a file is configured on the server.
      */
     case FILE_SIZE_EXCEEDED
+    
+    /**
+     The server may deny a request if the file type is not allowed.
+     The list of allowed file types is configured on the server.
+     */
+    case FILE_TYPE_NOT_ALLOWED
     
 }
