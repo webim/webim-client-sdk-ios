@@ -34,7 +34,7 @@ final class LocationSettingsImpl: LocationSettings {
     }
     
     // MARK: - Properties
-    fileprivate var hintsEnabled: Bool?
+    fileprivate var hintsEnabled: Bool
     
     
     // MARK: - Initialization
@@ -69,7 +69,7 @@ final class LocationSettingsImpl: LocationSettings {
     
     // MARK: - LocationSettings protocol methods
     func areHintsEnabled() -> Bool {
-        return hintsEnabled == true
+        return hintsEnabled
     }
     
 }

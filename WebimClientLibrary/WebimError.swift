@@ -60,7 +60,7 @@ public enum AccessError: Error {
 }
 
 /**
- Error types that can be throwed by MessageTracker methods.
+ Error types that can be thrown by MessageTracker methods.
  - SeeAlso:
  `MessageTracker.getNextMessages(byLimit limit:completion:)`
  `MessageTracker.resetTo(message:)`

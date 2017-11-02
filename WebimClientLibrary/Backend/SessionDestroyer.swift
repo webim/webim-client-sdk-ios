@@ -29,24 +29,22 @@ import Foundation
 final class SessionDestroyer {
     
     // MARK: - Properties
-    var actions: [() -> ()]?
-    var destroyed: Bool?
+    private lazy var actions = [() -> ()]()
+    private var destroyed: Bool?
     
     
     // MARK: - Methods
     
     func add(action: @escaping () -> ()) {
-        self.actions?.append(action)
+        self.actions.append(action)
     }
     
     func destroy() {
         if !isDestroyed() {
             destroyed = true
             
-            if let actions = actions {
-                for action in actions {
-                    action()
-                }
+            for action in actions {
+                action()
             }
         }
     }

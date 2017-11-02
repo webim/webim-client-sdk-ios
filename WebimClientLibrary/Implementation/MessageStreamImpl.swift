@@ -85,7 +85,7 @@ final class MessageStreamImpl: MessageStream {
         self.chat = chat
         
         if self.chat != previousChat {
-            try messageHolder.receiving(chat: self.chat,
+            try messageHolder.receiving(newChat: self.chat,
                                         previousChat: previousChat,
                                         newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: self.chat!.getMessages()))
         }
@@ -138,6 +138,10 @@ final class MessageStreamImpl: MessageStream {
     
     func getChat() -> ChatItem? {
         return chat
+    }
+    
+    func set(chat: ChatItem) {
+        self.chat = chat
     }
     
     func getChatState() -> ChatState {

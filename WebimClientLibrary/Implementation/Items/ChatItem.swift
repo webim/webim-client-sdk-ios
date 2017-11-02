@@ -238,6 +238,10 @@ final class ChatItem {
         return messages
     }
     
+    func set(messages: [MessageItem]) {
+        self.messages = messages
+    }
+    
     func add(message: MessageItem,
              atPosition position: Int? = nil) {
         if position == nil {

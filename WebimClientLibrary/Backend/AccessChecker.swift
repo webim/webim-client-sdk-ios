@@ -41,8 +41,9 @@ class AccessChecker {
     
     // MARK: - Methods
     func checkAccess() throws {
-        guard thread == Thread.current else {
-            throw AccessError.invalidThread("All Webim actions must be invoked from one thread, the one the session was created in./nCurrent thread: \(Thread.current), session thread: \(thread)")
+        let currentThread = Thread.current
+        guard thread == currentThread else {
+            throw AccessError.invalidThread("All Webim actions must be invoked from one thread, the one the session was created in./nCurrent thread: \(currentThread), session thread: \(thread)")
         }
         
         guard !sessionDestroyer.isDestroyed() else {

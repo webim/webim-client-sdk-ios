@@ -73,14 +73,15 @@ final class MemoryHistoryStorage: HistoryStorage {
         
         if sortedMessages[0].getHistoryID()!.getTimeInMicrosecond() > id.getTimeInMicrosecond() {
             try completion([MessageImpl]())
+            
             return
         }
         
-        for message in sortedMessages {
+        for (index, message) in sortedMessages.enumerated() {
             if message.getHistoryID() == id {
                 try respondTo(messages: sortedMessages,
                               limitOfMessages: limitOfMessages,
-                              offset: sortedMessages.index(of: message)!,
+                              offset: index,
                               completion: completion)
                 break
             }
@@ -124,17 +125,21 @@ final class MemoryHistoryStorage: HistoryStorage {
     
     private func deleteFromHistory(idsToDelete: Set<String>,
                                    completion: (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) throws {
-        for message in historyMessages {
-            if idsToDelete.contains((message.getHistoryID()?.getDBid())!) {
-                historyMessages.remove(at: historyMessages.index(of: message)!)
-                try completion(false, true, message.getHistoryID()?.getDBid(), false, nil, false, nil, nil)
+        for idToDelete in idsToDelete {
+            for (index, message) in historyMessages.enumerated() {
+                if message.getHistoryID()?.getDBid() == idToDelete {
+                    historyMessages.remove(at: index)
+                    try completion(false, true, message.getHistoryID()?.getDBid(), false, nil, false, nil, nil)
+                    
+                    break
+                }
             }
         }
     }
     
     private func mergeHistoryChanges(messages: [MessageImpl],
                                      completion: (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) throws  {
-        // FIXME: Refactor this if you dare!
+        // FIXME: Refactor this.
         /*
          Algorithm merges messages with history messages.
          Messages before first history message are ignored.

@@ -60,4 +60,11 @@ public protocol WebimSession {
      */
     func getStream() -> MessageStream
     
+    /**
+     Changes location without creating a new session.
+     - parameter location:
+     New location name.
+     */
+    func change(location: String) throws
+    
 }

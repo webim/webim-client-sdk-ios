@@ -65,10 +65,6 @@ final class ActionRequestLoop: AbstractRequestLoop {
         self.authorizationData = authorizationData
     }
     
-    func getAuthorizationData() -> AuthorizationData? {
-        return authorizationData
-    }
-    
     func enqueue(request: WebimRequest) {
         queue.append(request)
     }

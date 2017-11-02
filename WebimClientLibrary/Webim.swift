@@ -320,7 +320,7 @@ public final class SessionBuilder  {
                                                     areRemoteNotificationsEnabled: areRemoteNotificationsEnabled,
                                                     deviceToken: deviceToken,
                                                     isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
-                                                    isVisitorDataClearingEnabled: visitorDataClearingEnabled)! as WebimSession
+                                                    isVisitorDataClearingEnabled: visitorDataClearingEnabled) as WebimSession
     }
     
     

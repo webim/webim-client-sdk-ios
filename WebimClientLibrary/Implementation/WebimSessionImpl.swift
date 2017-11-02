@@ -64,12 +64,12 @@ final class WebimSessionImpl {
     
     
     // MARK: - Properties
-    var accessChecker: AccessChecker
-    var client: WebimClient
-    var clientStarted: Bool?
-    var messageStream: MessageStreamImpl
+    fileprivate var client: WebimClient
     fileprivate var historyPoller: HistoryPoller
     fileprivate var sessionDestroyer: SessionDestroyer
+    private var accessChecker: AccessChecker
+    private var clientStarted: Bool?
+    private var messageStream: MessageStreamImpl
     
     
     // MARK: - Initialization
@@ -97,7 +97,7 @@ final class WebimSessionImpl {
                                 areRemoteNotificationsEnabled: Bool,
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool?,
-                                isVisitorDataClearingEnabled: Bool?) throws -> WebimSessionImpl? {
+                                isVisitorDataClearingEnabled: Bool?) throws -> WebimSessionImpl {
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.MAIN.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
@@ -197,7 +197,7 @@ final class WebimSessionImpl {
         let messageHolder = MessageHolder(withAccessChecker: accessChecker,
                                           remoteHistoryProvider: RemoteHistoryProvider(withWebimActions: webimActions!,
                                                                                        historyMessageMapper: historyMessageMapper,
-                                                                                       historyMetaInformation: historyMetaInformationStoragePreferences),
+                                                                                       historyMetaInformationStorage: historyMetaInformationStoragePreferences),
                                           historyStorage: historyStorage,
                                           reachedEndOfRemoteHistory: historyMetaInformationStoragePreferences.isHistoryEnded())
         let messageStream = MessageStreamImpl(withCurrentChatMessageFactoriesMapper: currentChatMessageMapper,
@@ -334,6 +334,10 @@ extension WebimSessionImpl: WebimSession {
     
     func getStream() -> MessageStream {
         return messageStream
+    }
+    
+    func change(location: String) throws {
+        try client.getDeltaRequestLoop().change(location: location)
     }
     
     

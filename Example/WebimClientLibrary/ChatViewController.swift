@@ -104,14 +104,22 @@ class ChatViewController: SLKTextViewController {
         let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
         navigationItemImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = navigationItemImageView
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
         
-        if webimSession == nil {
-            createWebimSession()
-        }
+        // MARK: WEBIM: Hardcoded visitor fields.
+        let visitorFieldsJSONString = "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}"
+        
+        let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
+        
+        // MARK: WEBIM: Creating session.
+        webimSession = try! Webim.newSessionBuilder()
+            .set(accountName: SessionDefaults.ACCOUNT_NAME.rawValue)
+            .set(location: SessionDefaults.LOCATION.rawValue)
+            .set(pageTitle: SessionDefaults.PAGE_TITLE.rawValue)
+            .set(visitorFieldsJSONString: visitorFieldsJSONString)
+            .set(fatalErrorHandler: self)
+            .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
+            .set(deviceToken: deviceToken)
+            .build()
         
         // MARK: WEBIM: Starting session.
         try! webimSession!.resume()
@@ -121,8 +129,6 @@ class ChatViewController: SLKTextViewController {
         
         // MARK: WEBIM: Creating message tracker.
         try! messageTracker = messageStream!.new(messageTracker: self)
-        
-        requestMessages()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -140,15 +146,17 @@ class ChatViewController: SLKTextViewController {
     override func didPressRightButton(_ sender: Any?) {
         textView.refreshFirstResponder()
         
-        if !textView.text.isEmpty {
-            // MARK: WEBIM: Send message.
-            _ = try! messageStream?.send(message: textView.text)
+        if let text = textView.text {
+            if !text.isEmpty {
+                // MARK: WEBIM: Send message.
+                _ = try! messageStream?.send(message: text)
+            }
+            
+            textView.text = ""
+            
+            // Delete visitor typing draft after message is sent.
+            try! messageStream?.setVisitorTyping(draftMessage: nil)
         }
-        
-        textView.text = ""
-        
-        // Delete visitor typing draft after message is sent.
-        try! messageStream?.setVisitorTyping(draftMessage: nil)
     }
     
     // Send file buton.
@@ -197,24 +205,6 @@ class ChatViewController: SLKTextViewController {
     
     
     // MARK: Private methods
-    
-    private func createWebimSession() {
-        // MARK: WEBIM: Hardcoded visitor fields.
-        let visitorFieldsJSONString = "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}"
-        
-        let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
-        
-        // MARK: WEBIM: Creating session.
-        webimSession = try! Webim.newSessionBuilder()
-            .set(accountName: SessionDefaults.ACCOUNT_NAME.rawValue)
-            .set(location: SessionDefaults.LOCATION.rawValue)
-            .set(pageTitle: SessionDefaults.PAGE_TITLE.rawValue)
-            .set(visitorFieldsJSONString: visitorFieldsJSONString)
-            .set(fatalErrorHandler: self)
-            .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
-            .set(deviceToken: deviceToken)
-            .build()
-    }
     
     @objc private func requestMessages() {
         // MARK: WEBIM: Requesting messages for this chat.
@@ -338,7 +328,7 @@ extension ChatViewController: UIImagePickerControllerDelegate {
 
 // MARK: - UINavigationControllerDelegate
 extension ChatViewController: UINavigationControllerDelegate {
-    // Needed for image picker.
+    // For image picker.
 }
 
 // MARK: - WEBIM: FatalErrorHandler
@@ -358,7 +348,8 @@ extension ChatViewController: MessageListener {
         if let previousMessage = previousMessage {
             for (index, message) in messages.enumerated() {
                 if previousMessage.getID() == message.getID() {
-                    messages.insert(newMessage, at: (index + 1))
+                    messages.insert(newMessage,
+                                    at: (index + 1))
                 }
             }
         } else {

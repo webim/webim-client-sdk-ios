@@ -85,12 +85,15 @@ class AbstractRequestLoop {
     }
     
     func stop() {
-        pause()
-        running = false
-        paused = true
-        
-        if let currentDataTask = currentDataTask {
-            currentDataTask.cancel()
+        if queue != nil {
+            running = false
+            resume()
+            
+            if let currentDataTask = currentDataTask {
+                currentDataTask.cancel()
+            }
+            
+            queue = nil
         }
         
         requests?.removeAll()

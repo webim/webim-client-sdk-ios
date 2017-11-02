@@ -212,7 +212,7 @@ class MessageHolderTests: XCTestCase {
                                                    deleted: Set<String>()) {
                                                     // No need to do something when testing.
         }
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -255,7 +255,7 @@ class MessageHolderTests: XCTestCase {
                                                    deleted: Set<String>()) {
                                                     // No need to do something when testing.
         }
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -308,7 +308,7 @@ class MessageHolderTests: XCTestCase {
                                                    deleted: Set<String>()) {
                                                     // No need to do something when testing.
         }
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -355,7 +355,7 @@ class MessageHolderTests: XCTestCase {
                                                    deleted: Set<String>()) {
                                                     // No need to do something when testing.
         }
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -407,7 +407,7 @@ class MessageHolderTests: XCTestCase {
                                                    deleted: Set<String>()) {
                                                     // No need to do something when testing.
         }
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: Array(currentChat[0 ... 5]))
         
@@ -482,7 +482,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving chat of 7/10 messages.
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: Array(currentChat[0 ..< 8]))
         // Then: Receiving method should not be called.
@@ -535,7 +535,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving current chat.
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         // Then: Current chat messages should be added in the end.
@@ -573,7 +573,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving chat.
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         // Then: Receiving method should not be called.
@@ -607,7 +607,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving chat with 2 messages.
-        try messageHolder.receiving(chat: nil,
+        try messageHolder.receiving(newChat: nil,
                                     previousChat: chat,
                                     newMessages: Array(messages[0 ... 1]))
         // Then: Completion should be called on this messages. Receiving method should not be called.
@@ -617,7 +617,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving chat with the same messages.
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: chat,
                                     newMessages: Array(messages[0 ... 1]))
         // Then: Receiving method should not be called.
@@ -626,7 +626,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 4
         // When: Receiving chat with more messages.
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: chat,
                                     newMessages: Array(messages[0 ... 3]))
         // Then: New message should be inserted in the end. Changing or removing messages methods should not be called.
@@ -638,7 +638,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 5
         // When: Receiving some non-running messages.
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: chat,
                                     newMessages: (Array(messages[0 ... 1]) + Array(messages[3 ... 4])))
         // Then: Message out of range should be removed, new messages should be added in the end.
@@ -666,7 +666,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving first chat with 2 messages.
-        try messageHolder.receiving(chat: firstChat,
+        try messageHolder.receiving(newChat: firstChat,
                                     previousChat: nil,
                                     newMessages: Array(messages[0 ... 1]))
         // Then: Completion handler should be called. Receiving method should not.
@@ -676,7 +676,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving second chat with 3 messages.
-        try messageHolder.receiving(chat: secondChat,
+        try messageHolder.receiving(newChat: secondChat,
                                     previousChat: firstChat,
                                     newMessages: Array(messages[2 ... 4]))
         // Then: This messages should be added.
@@ -694,7 +694,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 5
         // When: Receiving second chat with non-running messages.
-        try messageHolder.receiving(chat: secondChat,
+        try messageHolder.receiving(newChat: secondChat,
                                     previousChat: secondChat,
                                     newMessages: ([messages[2]] + Array(messages[4 ... 5])))
         // Then: One message should be deleted. One message should be added.
@@ -732,7 +732,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving first chat with 2 messages.
-        try messageHolder.receiving(chat: firstChat,
+        try messageHolder.receiving(newChat: firstChat,
                                     previousChat: nil,
                                     newMessages: Array(messages[0 ... 1]))
         // Then: Completion handler should be called on this messages. Message listener methods should not be called.
@@ -766,7 +766,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 5
         // When: Receiving second chat with next 3 messages.
-        try messageHolder.receiving(chat: secondChat,
+        try messageHolder.receiving(newChat: secondChat,
                                     previousChat: firstChat,
                                     newMessages: Array(messages[2 ... 4]))
         // Then: Receiving method should be called on all this messages. All current chat messages should be historified.
@@ -793,7 +793,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 8
         // When: Receiving second chat with one message deleted and one added.
-        try messageHolder.receiving(chat: secondChat,
+        try messageHolder.receiving(newChat: secondChat,
                                     previousChat: secondChat,
                                     newMessages: ([messages[2]] + Array(messages[4 ... 5])))
         // Then: One message deleted. One message added.
@@ -835,7 +835,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving first chat with 2 messages.
-        try messageHolder.receiving(chat: firstChat,
+        try messageHolder.receiving(newChat: firstChat,
                                     previousChat: nil,
                                     newMessages: Array(messages[0 ... 1]))
         // Then: Completion handler should not be called. Message listener methods should not be called.
@@ -856,7 +856,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 4
         // When: Receiving second chat with next 3 messages. All current chat messages should be historified.
-        try messageHolder.receiving(chat: secondChat,
+        try messageHolder.receiving(newChat: secondChat,
                                     previousChat: firstChat,
                                     newMessages: Array(messages[2 ... 4]))
         // Then: This messages should be added.
@@ -883,7 +883,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 7
         // When: Receiving second chat again with one message deleted and one added.
-        try messageHolder.receiving(chat: secondChat, previousChat: secondChat,
+        try messageHolder.receiving(newChat: secondChat, previousChat: secondChat,
                                     newMessages: ([messages[2]] + Array(messages[4 ... 5])))
         // Then: One message deleted. One message added.
         XCTAssertEqual(lastRemovedMessage, messages[3])
@@ -912,7 +912,7 @@ class MessageHolderTests: XCTestCase {
                                                    deleted: Set<String>()) {
                                                     // No need to do something when testing.
         }
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -1051,7 +1051,7 @@ class MessageHolderTests: XCTestCase {
                                                     // No need to do something when testing.
         }
         messageHolder.set(endOfHistoryReached: true)
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -1066,7 +1066,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving new messages (one is different).
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: chat,
                                     newMessages: editedCurrentChat)
         // Then: That message should be changed. Other message listener methods should not be called.
@@ -1131,7 +1131,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving current chat with one changed message.
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         // Then: This message should be changed.
@@ -1147,7 +1147,7 @@ class MessageHolderTests: XCTestCase {
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
         let chat = ChatItem()
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -1162,7 +1162,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving chat without messages and history messages.
-        try messageHolder.receiving(chat: nil,
+        try messageHolder.receiving(newChat: nil,
                                     previousChat: chat,
                                     newMessages: [MessageImpl]())
         try messageHolder.receiveHistoryUpdateWith(messages: history,
@@ -1194,7 +1194,7 @@ class MessageHolderTests: XCTestCase {
         let editedHistoryMessage = newEdited(historyMessage: history[9])
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiving(chat: ChatItem(),
+        try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -1242,7 +1242,7 @@ class MessageHolderTests: XCTestCase {
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
         let chat = ChatItem()
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -1257,7 +1257,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving empty chat.
-        try messageHolder.receiving(chat: nil,
+        try messageHolder.receiving(newChat: nil,
                                     previousChat: chat,
                                     newMessages: [MessageImpl]())
         // Then: Message listener methods should not be called.
@@ -1286,7 +1286,7 @@ class MessageHolderTests: XCTestCase {
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
         let chat = ChatItem()
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: nil,
                                     newMessages: currentChat)
         
@@ -1314,7 +1314,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving empty chat.
-        try messageHolder.receiving(chat: nil,
+        try messageHolder.receiving(newChat: nil,
                                     previousChat: chat,
                                     newMessages: [MessageImpl]())
         // Then: Edited message should be changed.
@@ -1376,7 +1376,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving chat with history.
-        try messageHolder.receiving(chat: nil,
+        try messageHolder.receiving(newChat: nil,
                                     previousChat: chat,
                                     newMessages: currentChat)
         // Then: No messages should be changed.
@@ -1391,7 +1391,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 4
         // When: Receiving chat again.
-        try messageHolder.receiving(chat: chat,
+        try messageHolder.receiving(newChat: chat,
                                     previousChat: chat,
                                     newMessages: currentChat)
         // Then: Message should be added.
@@ -1584,7 +1584,7 @@ class MessageHolderTests: XCTestCase {
             
             super.init(withWebimActions: webimActions,
                        historyMessageMapper: historyMessageMapper,
-                       historyMetaInformation: historyMetaInformation)
+                       historyMetaInformationStorage: historyMetaInformation)
         }
         
         // MARK: - Methods

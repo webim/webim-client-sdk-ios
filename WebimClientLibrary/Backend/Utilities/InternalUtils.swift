@@ -36,11 +36,6 @@ final class InternalUtils {
     
     // MARK: - Methods
     
-    static func compare(number firstNumber: Int64,
-                        with secondNumber: Int64) -> Int {
-        return (firstNumber < secondNumber) ? -1 : ((firstNumber == secondNumber) ? 0 : 1)
-    }
-    
     static func createServerURLStringBy(accountName: String?) -> String? {
         if accountName == nil {
             return nil
@@ -54,7 +49,8 @@ final class InternalUtils {
     }
     
     static func getCurrentTimeInMicrosecond() -> Int64 {
-        let currentDate = Date()
+        // TODO: Delete if all is correct.
+        /*let currentDate = Date()
         let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([.hour, .minute, .second],
                                                      from: currentDate)
@@ -68,7 +64,11 @@ final class InternalUtils {
         let secondInMicrosecond = second * 1000
         let currentTimeInMicrosecond = hourInMicrosecond + minuteInMicrosecond + secondInMicrosecond
         
-        return currentTimeInMicrosecond
+        return currentTimeInMicrosecond*/
+        
+        return Int64(Date().timeIntervalSince1970 * 1000)
+        
+        // Alternative: CFAbsoluteTimeGetCurrent()
     }
     
     static func parse(remoteNotification: [AnyHashable : Any]) throws -> WebimRemoteNotification? {

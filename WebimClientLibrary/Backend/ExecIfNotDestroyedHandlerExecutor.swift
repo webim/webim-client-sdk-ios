@@ -42,8 +42,11 @@ final class ExecIfNotDestroyedHandlerExecutor {
     // MARK: - Methods
     func execute(task: DispatchWorkItem) {
         if !sessionDestroyer.isDestroyed() {
-            // FIXME: Check if it is possible to check if session is not destroyed right before executing task!
-            queue.async(execute: task)
+            queue.async {
+                if !self.sessionDestroyer.isDestroyed() {
+                    task.perform()
+                }
+            }
         }
     }
     

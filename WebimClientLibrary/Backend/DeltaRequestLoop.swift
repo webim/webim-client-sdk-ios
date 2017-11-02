@@ -41,12 +41,12 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     private let deltaCallback: DeltaCallback
     private let deviceID: String
     private let internalErrorListener: InternalErrorListener
-    private let location: String
     private let platform: String
     private let sessionParametersListener: SessionParametersListener?
     private let title: String
     private var authorizationData: AuthorizationData?
     private var deviceToken: String?
+    private var location: String
     private var sessionID: String?
     private var since: Int64 = 0
     private var visitorFieldsJSONString: String?
@@ -97,6 +97,15 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     
     func set(deviceToken: String?) {
         self.deviceToken = deviceToken
+    }
+    
+    func change(location: String) throws {
+        self.location = location
+        
+        authorizationData = nil
+        since = 0
+        
+        try requestInitialization()
     }
     
     

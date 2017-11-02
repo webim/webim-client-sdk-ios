@@ -48,6 +48,7 @@ final class LocationSettingsHolder {
     func receiving(locationSettings: LocationSettingsImpl) -> Bool {
         if locationSettings != self.locationSettings {
             locationSettings.saveTo(userDefaults: userDefaultsKey)
+            
             return true
         }
         

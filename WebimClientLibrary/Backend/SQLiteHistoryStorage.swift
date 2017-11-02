@@ -83,9 +83,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     // MARK: - Initialization
     init(withName dbName: String,
-          serverURL serverURLString: String,
-          reachedHistoryEnd: Bool,
-          queue: DispatchQueue) {
+         serverURL serverURLString: String,
+         reachedHistoryEnd: Bool,
+         queue: DispatchQueue) {
         self.serverURLString = serverURLString
         self.reachedHistoryEnd = reachedHistoryEnd
         self.queue = queue
@@ -93,10 +93,13 @@ final class SQLiteHistoryStorage: HistoryStorage {
         createTableWith(name: dbName)
     }
     
+    
     // MARK: - Methods
     
     // MARK: HistoryStorage protocol methods
+    
     func getMajorVersion() -> Int {
+        // No use for this implementation.
         return 1
     }
     
@@ -205,7 +208,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func receiveHistoryUpdate(messages: [MessageImpl],
                               idsToDelete: Set<String>,
-                              completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) throws {
+                              completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) {
         DispatchQueue.global(qos: .background).async {
             var newFirstKnownTimeInMicrosecond = Int64.max
             
@@ -232,8 +235,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      avatarURLString = message.getSenderAvatarURLString(),
                      type = message.getType().rawValue,
                      text = message.getText(),
-                     data = message.getHistoryID()?.getDBid())
-                     serverData = message.getData()
+                     data = message.getHistoryID()?.getDBid(),
+                     serverData = message.getData())
                      WHERE id = message.getID()
                      */
                     if try self.db!.run(SQLiteHistoryStorage.history
@@ -260,16 +263,20 @@ final class SQLiteHistoryStorage: HistoryStorage {
                          <...INSERT> OR FAIL <history...> missed
                          https://sqlite.org/lang_conflict.html
                          */
-                        try self.db!.run(SQLiteHistoryStorage.history.insert(SQLiteHistoryStorage.id <- message.getID(),
-                                                                             SQLiteHistoryStorage.clientSideID <- historyID?.getDBid(),
-                                                                             SQLiteHistoryStorage.timeSinceInMicrosecond <- message.getTimeInMicrosecond(),
-                                                                             SQLiteHistoryStorage.senderID <- message.getOperatorID(),
-                                                                             SQLiteHistoryStorage.senderName <- message.getSenderName(),
-                                                                             SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                                                                             SQLiteHistoryStorage.type <- message.getType().rawValue,
-                                                                             SQLiteHistoryStorage.text <- message.getText(),
-                                                                             SQLiteHistoryStorage.data <- message.getHistoryID()?.getDBid(),
-                                                                             SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
+                        do {
+                            try self.db!.run(SQLiteHistoryStorage.history.insert(SQLiteHistoryStorage.id <- message.getID(),
+                                                                                 SQLiteHistoryStorage.clientSideID <- historyID?.getDBid(),
+                                                                                 SQLiteHistoryStorage.timeSinceInMicrosecond <- message.getTimeInMicrosecond(),
+                                                                                 SQLiteHistoryStorage.senderID <- message.getOperatorID(),
+                                                                                 SQLiteHistoryStorage.senderName <- message.getSenderName(),
+                                                                                 SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
+                                                                                 SQLiteHistoryStorage.type <- message.getType().rawValue,
+                                                                                 SQLiteHistoryStorage.text <- message.getText(),
+                                                                                 SQLiteHistoryStorage.data <- message.getHistoryID()?.getDBid(),
+                                                                                 SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
+                        } catch {
+                            print("Insert message failed: \(error.localizedDescription)")
+                        }
                         
                         /*
                          SELECT * FROM history

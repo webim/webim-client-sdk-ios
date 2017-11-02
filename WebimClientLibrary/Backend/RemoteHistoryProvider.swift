@@ -31,15 +31,15 @@ class RemoteHistoryProvider {
     // MARK: - Properties
     private var webimActions: WebimActions
     private var historyMessageMapper: MessageFactoriesMapper
-    private var historyMetaInformation: HistoryMetaInformationStorage
+    private var historyMetaInformationStorage: HistoryMetaInformationStorage
     
     // MARK: - Initialization
     init(withWebimActions webimActions: WebimActions,
          historyMessageMapper: MessageFactoriesMapper,
-         historyMetaInformation: HistoryMetaInformationStorage) {
+         historyMetaInformationStorage: HistoryMetaInformationStorage) {
         self.webimActions = webimActions
         self.historyMessageMapper = historyMessageMapper
-        self.historyMetaInformation = historyMetaInformation
+        self.historyMetaInformationStorage = historyMetaInformationStorage
     }
     
     // MARK: - Methods
@@ -59,7 +59,7 @@ class RemoteHistoryProvider {
                     try completion(self.historyMessageMapper.mapAll(messages: messages), (historyBeforeResponse.getData()?.isHasMore() == true))
                     
                     if historyBeforeResponse.getData()?.isHasMore() != true {
-                        self.historyMetaInformation.set(historyEnded: true)
+                        self.historyMetaInformationStorage.set(historyEnded: true)
                     }
                 }
             }

@@ -366,18 +366,9 @@ final class MessageTrackerImpl: MessageTracker {
                 messageListener.changed(message: messageToSend,
                                         to: message)
             } else {
-                if let messagesToSend = messageHolder.getMessagesToSend() {
-                    if messagesToSend.isEmpty {
-                        messageListener.added(message: message,
-                                              after: nil)
-                    } else {
-                        messageListener.added(message: message,
-                                              after: messagesToSend.first!)
-                    }
-                } else {
-                    messageListener.added(message: message,
-                                          after: nil)
-                }
+                let messagesToSend = messageHolder.getMessagesToSend()
+                messageListener.added(message: message,
+                                      after: messageHolder.getMessagesToSend().isEmpty ? nil : messagesToSend.first!)
             }
         }
         
@@ -386,11 +377,10 @@ final class MessageTrackerImpl: MessageTracker {
     
     private func getToSendMirrorOf(message: MessageImpl,
                                    of messageHolder: MessageHolder) -> MessageToSend? {
-        if let messagesToSend = messageHolder.getMessagesToSend() {
-            for messageToSend in messagesToSend {
-                if messageToSend.getID() == message.getID() {
-                    return messageToSend
-                }
+        let messagesToSend = messageHolder.getMessagesToSend()
+        for messageToSend in messagesToSend {
+            if messageToSend.getID() == message.getID() {
+                return messageToSend
             }
         }
         
@@ -476,8 +466,7 @@ final class MessageTrackerImpl: MessageTracker {
             let firstMessage = result.first!
             
             if (headMessage == nil)
-                || (self.compare(message: firstMessage,
-                                 with: headMessage!) < 0) {
+                || (firstMessage.getTimeInMicrosecond() < headMessage!.getTimeInMicrosecond()) {
                 headMessage = firstMessage
             }
         } else {
@@ -489,12 +478,6 @@ final class MessageTrackerImpl: MessageTracker {
         messagesLoading = false
         
         completion(result as [Message])
-    }
-    
-    private func compare(message firstMessage: MessageImpl,
-                         with secondMessage: MessageImpl) -> Int {
-        return InternalUtils.compare(number: firstMessage.getTimeInMicrosecond(),
-                                     with: secondMessage.getTimeInMicrosecond())
     }
     
 }

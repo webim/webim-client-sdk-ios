@@ -24,8 +24,11 @@
 //  SOFTWARE.
 //
 
+
 import Foundation
 
+
+// MARK: -
 final class WebimClientBuilder {
     
     // MARK: - Properties
@@ -188,7 +191,7 @@ final class WebimClientBuilder {
 
 // MARK: -
 // Need to update deviceToken in DeltaRequestLoop on update in WebimActions.
-class WebimClient {
+final class WebimClient {
     
     // MARK: - Properties
     private let actionRequestLoop: ActionRequestLoop
@@ -233,6 +236,10 @@ class WebimClient {
         webimActions.update(deviceToken: deviceToken)
     }
     
+    func getDeltaRequestLoop() -> DeltaRequestLoop {
+        return deltaRequestLoop
+    }
+    
     func getActions() -> WebimActions! {
         return webimActions
     }
@@ -261,7 +268,7 @@ final private class SessionParametersListenerWrapper: SessionParametersListener 
         actionRequestLoop.set(authorizationData: authorizationData)
         
         if wrappedSessionParametersListener != nil {
-            wrappedSessionParametersListener?.onSessionParametersChanged(visitorFieldsJSONString: visitorJSONString,
+            wrappedSessionParametersListener!.onSessionParametersChanged(visitorFieldsJSONString: visitorJSONString,
                                                                          sessionID: sessionID,
                                                                          authorizationData: authorizationData)
         }

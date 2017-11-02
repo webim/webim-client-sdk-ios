@@ -26,7 +26,7 @@
 
 import Foundation
 
-final class ClientSideID {
+struct ClientSideID {
     
     // MARK: - Constants
     enum StringSize: Int {
@@ -35,11 +35,11 @@ final class ClientSideID {
     
     // MARK: - Methods
     static func generateClientSideID() -> String {
-        return generateClientSideString(ofCharactersNumber: StringSize.CLIENT_SIDE_ID.rawValue)
+        return generateRandomString(ofCharactersNumber: StringSize.CLIENT_SIDE_ID.rawValue)
     }
     
     // MARK: - Private methods
-    static func generateClientSideString(ofCharactersNumber numberOfCharacters: Int) -> String {
+    static func generateRandomString(ofCharactersNumber numberOfCharacters: Int) -> String {
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let length = UInt32(letters.length)
         
