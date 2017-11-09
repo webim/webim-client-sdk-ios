@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.1.1'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.1.2'
 ```
 
 In the "Build Settings" of your project in the "Swift Compiler – Language" "Swift Language Version" for _WebimClientLibrary_ target must be setted to "Swift 4.0".

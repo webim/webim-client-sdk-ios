@@ -288,7 +288,7 @@ extension MessageImpl: Message {
         return type
     }
     
-    func isEquals(to message: Message) -> Bool {
+    func isEqual(to message: Message) -> Bool {
         return self == message as! MessageImpl
     }
     

@@ -155,7 +155,7 @@ public protocol Message {
      - Copyright:
      2017 Webim
      */
-    func isEquals(to message: Message) -> Bool
+    func isEqual(to message: Message) -> Bool
     
 }
 

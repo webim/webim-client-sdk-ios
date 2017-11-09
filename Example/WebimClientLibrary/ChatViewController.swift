@@ -241,7 +241,7 @@ class ChatViewController: SLKTextViewController {
                 .set(accountName: SessionDefaults.ACCOUNT_NAME.rawValue)
                 .set(location: SessionDefaults.LOCATION.rawValue)
                 .set(pageTitle: SessionDefaults.PAGE_TITLE.rawValue)
-                //.set(visitorFieldsJSONString: visitorFieldsJSONString)
+                .set(visitorFieldsJSONString: visitorFieldsJSONString)
                 .set(fatalErrorHandler: self)
                 .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
                 .set(deviceToken: deviceToken)
@@ -508,7 +508,7 @@ extension ChatViewController: MessageListener {
             var added = false
             
             for (index, message) in messages.enumerated() {
-                if previousMessage.isEquals(to: message) {
+                if previousMessage.isEqual(to: message) {
                     messages.insert(newMessage,
                                     at: index + 1)
                     
