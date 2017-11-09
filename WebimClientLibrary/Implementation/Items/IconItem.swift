@@ -26,6 +26,12 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class IconItem {
     
     // MARK: - Constants
@@ -50,17 +56,6 @@ final class IconItem {
         if let shape = jsonDictionary[JSONField.SHAPE.rawValue] as? String {
             self.shape = shape
         }
-    }
-    
-    
-    // MARK: - Methods
-    
-    func getColor() -> String? {
-        return color
-    }
-    
-    func getShape() -> String? {
-        return shape
     }
     
 }

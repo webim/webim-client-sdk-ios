@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates chat data.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class ChatItem {
     
     // MARK: - Constants
@@ -110,12 +117,10 @@ final class ChatItem {
     
     
     // MARK: - Properties
-    
-    fileprivate var id: String
-    
     private var category: String?
-    fileprivate var clientSideID: String?
+    private var clientSideID: String?
     private var creationTimeSince: Double
+    private var id: String
     private lazy var messages = [MessageItem]()
     private var modificationTimeSince: Double?
     private var offline: Bool?
@@ -230,10 +235,6 @@ final class ChatItem {
     
     // MARK: - Methods
     
-    func getID() -> String {
-        return id
-    }
-    
     func getMessages() -> [MessageItem] {
         return messages
     }
@@ -252,51 +253,20 @@ final class ChatItem {
         }
     }
     
-    func remove(message messageToRemove: MessageItem) -> Int? {
-        var tempMessage: MessageItem? = nil
-        if !messages.isEmpty {
-            for message in messages {
-                if message.getID() == messageToRemove.getID() {
-                    tempMessage = message
-                    break
-                }
-            }
-        }
-        
-        var messagePosition: Int? = nil
-        if tempMessage != nil {
-            messagePosition = getPositionOf(message: tempMessage!)
-            
-            messages.remove(at: messagePosition!)
-        }
-        
-        return messagePosition
-    }
-    
     func getPositionOf(message: MessageItem) -> Int? {
-        var messagePosition: Int? = messages.index(of: message)
+        var messagePosition = messages.index(of: message) as Int?
         
-        if messagePosition == -1 {
-            for messagesIndex in 0 ..< messages.count {
-                if messages[messagesIndex].getID() == message.getClientSideID() {
-                    messagePosition = messagesIndex
+        if messagePosition == nil {
+            for (index, iteratedMessage) in messages.enumerated() {
+                if iteratedMessage.getID() == message.getClientSideID() {
+                    messagePosition = index
+                    
                     break
                 }
             }
         }
         
         return messagePosition
-    }
-    
-    func set(position: Int,
-             ofMessage message: MessageItem) {
-        if position == -1 {
-            messages.append(message)
-        } else {
-            messages.remove(at: position)
-            messages.insert(message,
-                            at: position)
-        }
     }
     
     func isOperatorTyping() -> Bool {
@@ -307,44 +277,8 @@ final class ChatItem {
         self.operatorTyping = operatorTyping
     }
     
-    func getSubject() -> String? {
-        return subject
-    }
-    
-    func set(subject: String?) {
-        self.subject = subject
-    }
-    
-    func getCreationTimeSince() -> Int64 {
-        return Int64(creationTimeSince * 1000)
-    }
-    
-    func getModificationTimeSince() -> Int64 {
-        return Int64(modificationTimeSince! + 1000)
-    }
-    
-    func getUnreadByVisitorTimeSince() -> Int64 {
-        return Int64(unreadByVisitorTimeSince! * 1000)
-    }
-    
-    func set(unreadByVisitorTimeSince: Double?) {
-        self.unreadByVisitorTimeSince = unreadByVisitorTimeSince
-    }
-    
-    func getNoAnswerTime() -> Int64 {
-        return Int64(unreadByOperatorTimeSince! * 1000)
-    }
-    
-    func set(lastAnswerTime: Double) {
-        unreadByOperatorTimeSince = lastAnswerTime
-    }
-    
     func getState() -> ChatItemState {
         return ChatItemState(withType: state!)
-    }
-    
-    func set(stateByString state: String) {
-        self.state = state
     }
     
     func set(state: ChatItemState) {
@@ -359,28 +293,8 @@ final class ChatItem {
         self.`operator` = `operator`
     }
     
-    func isOffline() -> Bool? {
-        return offline
-    }
-    
-    func isReadByVisitor() -> Bool? {
-        return readByVisitor
-    }
-    
     func set(readByVisitor: Bool?) {
         self.readByVisitor = readByVisitor
-    }
-    
-    func isVisitorTyping() -> Bool? {
-        return visitorTyping
-    }
-    
-    func set(visitorTyping: Bool?) {
-        self.visitorTyping = visitorTyping
-    }
-    
-    func getClientSideID() -> String? {
-        return clientSideID
     }
     
     func getOperatorIDToRate() -> [String : RatingItem]? {
@@ -388,14 +302,14 @@ final class ChatItem {
     }
     
     func set(rating: RatingItem,
-             to operatorID: String) {
+             toOperatorWithId operatorID: String) {
         operatorIDToRate[operatorID] = rating
     }
     
     
     // MARK: Private methods
     private static func createCreationTimeSince() -> Double {
-        return Double(InternalUtils.getCurrentTimeInMicrosecond()) / 1000
+        return Double(InternalUtils.getCurrentTimeInMicrosecond()) / 1000.0
     }
     
     
@@ -404,6 +318,7 @@ final class ChatItem {
 // MARK: - Equatable
 extension ChatItem: Equatable {
     
+    // Used inside MessageHolderImpl.receiving(newChat:previousChat:newMessages:) only.
     static func == (lhs: ChatItem,
                     rhs: ChatItem) -> Bool {
         return (lhs.id == rhs.id)

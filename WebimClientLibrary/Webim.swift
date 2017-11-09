@@ -27,12 +27,21 @@
 
 import Foundation
 
-
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 public final class Webim {
     
     /**
      - returns:
      The instance of WebimSession builder.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     static public func newSessionBuilder() -> SessionBuilder {
         return SessionBuilder()
@@ -41,41 +50,51 @@ public final class Webim {
     /**
      Deserializes received remote notification.
      This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:,didReceiveRemoteNotification:)`.
+     Remote notification dictionary must be stored inside standard APNs key "aps".
      - parameter remoteNotification:
      User info of received remote notification.
      - returns:
      Remote notification object or nil if there's no useful payload or this notification is sent not by Webim service.
-     - throws:
-     `RemoteNotificationError.UnknownNotificationFormat` if passed remote notification format is incorrect or unknown. Remote notification dictionary must be stored inside standard APNs key "aps".
      - SeeAlso:
      `SessionBuilder.set(remoteNotificationsSystem:)`
      `isWebim(remoteNotification:)`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
-    static public func parse(remoteNotification: [AnyHashable: Any]) throws -> WebimRemoteNotification? {
-        return try InternalUtils.parse(remoteNotification: remoteNotification)
+    static public func parse(remoteNotification: [AnyHashable: Any]) -> WebimRemoteNotification? {
+        return InternalUtils.parse(remoteNotification: remoteNotification)
     }
     
     /**
      If remote notifications (SessionBuilder.setRemoteNotificationSystem) are enabled for the session, then you can receive remote notifications belonging to this session.
      This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:,didReceiveRemoteNotification:)`.
+     Remote notification dictionary must be stored inside standard APNs key "aps".
      - parameter remoteNotification:
      User info of received remote notification.
      - returns:
      Boolean value that indicates is received remote notification is sent by Webim service.
-     - throws:
-     `RemoteNotificationError.UnknownNotificationFormat` if passed remote notification format is incorrect or unknown. Remote notification dictionary must be stored inside standard APNs key "aps".
      - SeeAlso:
      `SessionBuilder.set(remoteNotificationSystem:)`
      `parseRemoteNotification()`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
-    static public func isWebim(remoteNotification: [AnyHashable : Any]) throws -> Bool {
-        return try InternalUtils.isWebim(remoteNotification: remoteNotification)
+    static public func isWebim(remoteNotification: [AnyHashable : Any]) -> Bool {
+        return InternalUtils.isWebim(remoteNotification: remoteNotification)
     }
     
     // MARK: -
     /**
      - SeeAlso:
      `SessionBuilder.setRemoteNotificationSystem()`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public enum RemoteNotificationSystem {
         case APNS
@@ -86,6 +105,10 @@ public final class Webim {
     /**
      - SeeAlso:
      `isWebim(remoteNotification:)`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public enum RemoteNotificationError: Error {
         case UnknownNotificationFormat
@@ -98,6 +121,10 @@ public final class Webim {
  `WebimSession` builder.
  - SeeAlso:
  `Webim.newSessionBuilder()`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public final class SessionBuilder  {
     
@@ -127,6 +154,10 @@ public final class SessionBuilder  {
      Webim account name.
      - returns:
      `SessionBuilder` object with account name setted.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(accountName: String) -> SessionBuilder {
         self.accountName = accountName
@@ -142,6 +173,10 @@ public final class SessionBuilder  {
      `SessionBuilder` object with location setted.
      - SeeAlso:
      https://webim.ru/help/help-terms/#location
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(location: String) -> SessionBuilder {
         self.location = location
@@ -155,6 +190,10 @@ public final class SessionBuilder  {
      Client app version name.
      - returns:
      `SessionBuilder` object with app version setted.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(appVersion: String?) -> SessionBuilder {
         self.appVersion = appVersion
@@ -173,6 +212,10 @@ public final class SessionBuilder  {
      - SeeAlso:
      https://webim.ru/help/identification/
      set(visitorFieldsJSON jsonData:)
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(visitorFieldsJSONString jsonString: String) -> SessionBuilder {
         self.visitorFields = ProvidedVisitorFields(withJSONString: jsonString)
@@ -191,6 +234,10 @@ public final class SessionBuilder  {
      - SeeAlso:
      https://webim.ru/help/identification/
      `set(visitorFieldsJSON jsonString:)`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(visitorFieldsJSONData jsonData: Data) -> SessionBuilder {
         self.visitorFields = ProvidedVisitorFields(withJSONObject: jsonData)
@@ -204,6 +251,10 @@ public final class SessionBuilder  {
      Page title that visible to an operator.
      - returns:
      `SessionBuilder` object with page title setted.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(pageTitle: String) -> SessionBuilder {
         self.pageTitle = pageTitle
@@ -216,6 +267,10 @@ public final class SessionBuilder  {
      Fatal error handler.
      - returns:
      `SessionBuilder` object with fatal error handler setted.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(fatalErrorHandler: FatalErrorHandler?) -> SessionBuilder {
         self.fatalErrorHandler = fatalErrorHandler
@@ -232,6 +287,10 @@ public final class SessionBuilder  {
      Enum that indicates which system of remote notification is used. By default – NONE (remote notifications are not sent).
      - returns:
      `SessionBuilder` object with remote notification system setted.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(remoteNotificationSystem: Webim.RemoteNotificationSystem) -> SessionBuilder {
         self.remoteNotificationSystem = remoteNotificationSystem
@@ -246,6 +305,10 @@ public final class SessionBuilder  {
      `SessionBuilder` object with device token setted.
      - SeeAlso:
      `setRemoteNotificationsSystem`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(deviceToken: String?) -> SessionBuilder {
         self.deviceToken = deviceToken
@@ -262,6 +325,10 @@ public final class SessionBuilder  {
      Boolean parameter that indicated if an app should enable or disable local history storing.
      - returns:
      `SessionBuilder` object with isLocalHistoryStoragingEnabled parameter setted.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(isLocalHistoryStoragingEnabled: Bool) -> SessionBuilder {
         self.localHistoryStoragingEnabled = isLocalHistoryStoragingEnabled
@@ -276,6 +343,10 @@ public final class SessionBuilder  {
      Boolean parameter that indicated if an app should clear visitor data before session starts.
      - returns:
      `SessionBuilder` object with isVisitorDataClearingEnabled parameter setted.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func set(isVisitorDataClearingEnabled: Bool) -> SessionBuilder {
         self.visitorDataClearingEnabled = isVisitorDataClearingEnabled
@@ -288,12 +359,18 @@ public final class SessionBuilder  {
      - important:
      All the follow-up work with the session must be implemented from the same thread this method was called in.
      Notice that a session is created as a paused. To start using it the first thing to do is to call `WebimSession.resume()`.
+     - returns:
+     New `WebimSession` object.
      - throws:
      `SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't setted to a non-nil value.
      `SessionBuilderError.NIL_LOCATION` if location wasn't setted to a non-nil value.
      `SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to set up a remote notifications without device token provided.
-     - returns:
-     New `WebimSession` object.
+     - SeeAlso:
+     `SessionBuilderError`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func build() throws -> WebimSession {
         guard self.accountName != nil else {
@@ -311,24 +388,16 @@ public final class SessionBuilder  {
             }
         }
         
-        return try WebimSessionImpl.newInstanceWith(accountName: accountName!,
-                                                    location: location!,
-                                                    appVersion: appVersion,
-                                                    visitorFields: visitorFields,
-                                                    pageTitle: pageTitle,
-                                                    fatalErrorHandler: fatalErrorHandler,
-                                                    areRemoteNotificationsEnabled: areRemoteNotificationsEnabled,
-                                                    deviceToken: deviceToken,
-                                                    isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
-                                                    isVisitorDataClearingEnabled: visitorDataClearingEnabled) as WebimSession
-    }
-    
-    
-    // MARK: -
-    public enum SessionBuilderError: Error {
-        case NIL_ACCOUNT_NAME
-        case NIL_LOCATION
-        case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
+        return WebimSessionImpl.newInstanceWith(accountName: accountName!,
+                                                location: location!,
+                                                appVersion: appVersion,
+                                                visitorFields: visitorFields,
+                                                pageTitle: pageTitle,
+                                                fatalErrorHandler: fatalErrorHandler,
+                                                areRemoteNotificationsEnabled: areRemoteNotificationsEnabled,
+                                                deviceToken: deviceToken,
+                                                isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
+                                                isVisitorDataClearingEnabled: visitorDataClearingEnabled) as WebimSession
     }
     
 }

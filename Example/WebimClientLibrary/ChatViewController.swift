@@ -24,13 +24,10 @@
 //  SOFTWARE.
 //
 
-
-import UIKit
-
 import PopupDialog
 import SlackTextViewController
+import UIKit
 import WebimClientLibrary
-
 
 class ChatViewController: SLKTextViewController {
     
@@ -55,6 +52,10 @@ class ChatViewController: SLKTextViewController {
         case CRC = "ffadeb6aa3c788200824e311b9aa44cb"
     }
     
+    private enum ChatSettings: Int {
+        case MESSAGES_PER_REQUEST = 5
+    }
+    
     
     // MARK: - Properties
     let imagePicker = UIImagePickerController()
@@ -72,74 +73,32 @@ class ChatViewController: SLKTextViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        isInverted = false
-        
-        tableView?.estimatedRowHeight = 64.0
-        tableView?.rowHeight = UITableViewAutomaticDimension
-        tableView?.separatorStyle = .none
-        tableView?.register(MessageTableViewCell.self,
-                            forCellReuseIdentifier: "MessageCell")
-        
-        if #available(iOS 10.0, *) {
-            tableView?.refreshControl = refreshControl
-        } else {
-            tableView?.addSubview(refreshControl)
-        }
-        refreshControl.addTarget(self,
-                                 action: #selector(requestMessages),
-                                 for: .valueChanged)
-        refreshControl.tintColor = MAIN_BACKGROUND_COLOR
-        refreshControl.attributedTitle = REFRESH_CONTROL_TEXT
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,
-                                                            target: self,
-                                                            action: #selector(endChat))
-        
-        leftButton.setImage(#imageLiteral(resourceName: "ClipIcon"),
-                            for: .normal)
-        
         imagePicker.delegate = self
         
-        // Setting an image to NavigationItem TitleView.
-        let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
-        navigationItemImageView.contentMode = .scaleAspectFit
-        navigationItem.titleView = navigationItemImageView
-        
-        // MARK: WEBIM: Hardcoded visitor fields.
-        let visitorFieldsJSONString = "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}"
-        
-        let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
-        
-        // MARK: WEBIM: Creating session.
-        webimSession = try! Webim.newSessionBuilder()
-            .set(accountName: SessionDefaults.ACCOUNT_NAME.rawValue)
-            .set(location: SessionDefaults.LOCATION.rawValue)
-            .set(pageTitle: SessionDefaults.PAGE_TITLE.rawValue)
-            .set(visitorFieldsJSONString: visitorFieldsJSONString)
-            .set(fatalErrorHandler: self)
-            .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
-            .set(deviceToken: deviceToken)
-            .build()
-        
-        // MARK: WEBIM: Starting session.
-        try! webimSession!.resume()
-        
-        // MARK: WEBIM: Receiving message stream.
-        messageStream = webimSession!.getStream()
-        
-        // MARK: WEBIM: Creating message tracker.
-        try! messageTracker = messageStream!.new(messageTracker: self)
+        setupTableView()
+        setupNavigationItem()
+        setupSlackTextViewController()
+        setupWebimSession()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-        
-        try! webimSession?.pause()
-    }
+    // MARK: SlackTextViewController methods
     
     override func textViewDidChange(_ textView: UITextView) {
         // MARK: WEBIM: Send visitor typing state.
-        try! messageStream?.setVisitorTyping(draftMessage: textView.text)
+        do {
+            try messageStream?.setVisitorTyping(draftMessage: textView.text)
+        } catch let error as AccessError {
+            switch error {
+            case .INVALID_SESSION:
+                print("Visitor status sending failed because it was called when session object is invalid.")
+                // Assuming to check Webim session object lifecycle.
+            case .INVALID_THREAD:
+                print("Visitor status sending failed because it was called from a wrong thread.")
+                // Assuming to check concurrent calls of WebimClientLibrary methods.
+            }
+        } catch {
+            print("Visitor typing status sending failed with unknown error: \(error.localizedDescription)")
+        }
     }
     
     // Send message button.
@@ -149,13 +108,40 @@ class ChatViewController: SLKTextViewController {
         if let text = textView.text {
             if !text.isEmpty {
                 // MARK: WEBIM: Send message.
-                _ = try! messageStream?.send(message: text)
+                do {
+                    // Function returns an unique message ID. In this app it is not used.
+                    _ = try messageStream?.send(message: text)
+                } catch let error as AccessError {
+                    switch error {
+                    case .INVALID_SESSION:
+                        print("Message sending failed because it was called when session object is invalid.")
+                        // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                    case .INVALID_THREAD:
+                        print("Message sending failed because it was called from a wrong thread.")
+                        // Assuming to check concurrent calls of WebimClientLibrary methods.
+                    }
+                } catch {
+                    print("Message status sending failed with unknown error: \(error.localizedDescription)")
+                }
             }
             
             textView.text = ""
             
             // Delete visitor typing draft after message is sent.
-            try! messageStream?.setVisitorTyping(draftMessage: nil)
+            do {
+                try messageStream?.setVisitorTyping(draftMessage: nil)
+            } catch let error as AccessError {
+                switch error {
+                case .INVALID_SESSION:
+                    print("Visitor status sending failed because it was called when session object is invalid.")
+                    // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                case .INVALID_THREAD:
+                    print("Visitor status sending failed because it was called from a wrong thread.")
+                    // Assuming to check concurrent calls of WebimClientLibrary methods.
+                }
+            } catch {
+                print("Visitor typing status sending failed with unknown error: \(error.localizedDescription)")
+            }
         }
     }
     
@@ -206,48 +192,178 @@ class ChatViewController: SLKTextViewController {
     
     // MARK: Private methods
     
+    private func setupTableView() {
+        tableView?.estimatedRowHeight = 64.0
+        tableView?.rowHeight = UITableViewAutomaticDimension
+        tableView?.separatorStyle = .none
+        tableView?.register(MessageTableViewCell.self,
+                            forCellReuseIdentifier: "MessageCell")
+        
+        // Setup refresh control.
+        if #available(iOS 10.0, *) {
+            tableView?.refreshControl = refreshControl
+        } else {
+            tableView?.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self,
+                                 action: #selector(requestMessages),
+                                 for: .valueChanged)
+        refreshControl.tintColor = MAIN_BACKGROUND_COLOR
+        refreshControl.attributedTitle = REFRESH_CONTROL_TEXT
+    }
+    
+    private func setupSlackTextViewController() {
+        isInverted = false
+        leftButton.setImage(#imageLiteral(resourceName: "ClipIcon"),
+                            for: .normal)
+    }
+    
+    private func setupNavigationItem() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,
+                                                            target: self,
+                                                            action: #selector(endChat))
+        
+        // Setting an image to NavigationItem TitleView.
+        let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
+        navigationItemImageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = navigationItemImageView
+    }
+    
+    private func setupWebimSession() {
+        // MARK: WEBIM: Hardcoded visitor fields for "demo" account only.
+        let visitorFieldsJSONString = "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}"
+        
+        let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
+        
+        // MARK: WEBIM: Creating session.
+        do {
+            webimSession = try Webim.newSessionBuilder()
+                .set(accountName: SessionDefaults.ACCOUNT_NAME.rawValue)
+                .set(location: SessionDefaults.LOCATION.rawValue)
+                .set(pageTitle: SessionDefaults.PAGE_TITLE.rawValue)
+                //.set(visitorFieldsJSONString: visitorFieldsJSONString)
+                .set(fatalErrorHandler: self)
+                .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
+                .set(deviceToken: deviceToken)
+                .build()
+        } catch let error as SessionBuilderError {
+            // Assuming to check parameters values in Webim session builder methods.
+            switch error {
+            case .NIL_ACCOUNT_NAME:
+                print("Webim session object creating failed because of passing nil account name.")
+            case .NIL_LOCATION:
+                print("Webim session object creating failed because of passing nil location name.")
+            case .INVALID_REMOTE_NOTIFICATION_CONFIGURATION:
+                print("Webim session object creating failed because of invalid remote notifications configuration.")
+            }
+        } catch {
+            print("Webim session object creating failed with unknown error: \(error.localizedDescription)")
+        }
+        
+        // MARK: WEBIM: Starting session.
+        do {
+            try webimSession!.resume()
+        } catch let error as AccessError {
+            switch error {
+            case .INVALID_SESSION:
+                print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+            case .INVALID_THREAD:
+                print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                // Assuming to check concurrent calls of WebimClientLibrary methods.
+            }
+        } catch {
+            print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+        }
+        
+        // MARK: WEBIM: Receiving message stream.
+        messageStream = webimSession?.getStream()
+        
+        // MARK: WEBIM: Creating message tracker.
+        if let messageStream = messageStream {
+            do {
+                try messageTracker = messageStream.new(messageTracker: self)
+            } catch let error as AccessError {
+                switch error {
+                case .INVALID_SESSION:
+                    print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                    // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                case .INVALID_THREAD:
+                    print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                    // Assuming to check concurrent calls of WebimClientLibrary methods.
+                }
+            } catch {
+                print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            }
+            
+            // MARK: WEBIM: Need for "activating" message stream.
+            requestMessages()
+        } else {
+            // Assuming re-creating Webim session object and getting new MessageStream object.
+        }
+    }
+    
     @objc private func requestMessages() {
         // MARK: WEBIM: Requesting messages for this chat.
-        try! messageTracker!.getNextMessages(byLimit: 25) { messages in
-            for message in messages {
-                self.messages.append(message)
-                self.messages = messages.sorted { $0.getID() > $1.getID() }
-                
-                DispatchQueue.main.async() {
-                    self.tableView?.reloadData()
-                    self.scrollToBottom()
+        if let messageTracker = messageTracker {
+            do {
+                try messageTracker.getNextMessages(byLimit: ChatSettings.MESSAGES_PER_REQUEST.rawValue) { messages in
+                    self.messages.insert(contentsOf: messages,
+                                         at: 0)
+                    
+                    DispatchQueue.main.async() {
+                        self.tableView?.reloadData()
+                        
+                        self.refreshControl.endRefreshing()
+                        
+                        self.scrollToBottom()
+                    }
                 }
+            } catch let error as AccessError {
+                switch error {
+                case .INVALID_SESSION:
+                    print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                case .INVALID_THREAD:
+                    print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                    // Assuming to check concurrent calls of WebimClientLibrary methods.
+                }
+            } catch {
+                print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
             }
         }
     }
     
-    private func scrollToBottom() {
-        if messages.isEmpty {
-            return
-        }
-        
-        let bottomMessageIndex = IndexPath(row: (tableView?.numberOfRows(inSection: 0))! - 1,
-                                           section: 0)
-        tableView?.scrollToRow(at: bottomMessageIndex,
-                               at: .bottom,
-                               animated: true)
-    }
-    
     @objc private func endChat() {
-        // WEBIM: Chat state.
-        let chatState = messageStream?.getChatState()
-        
-        // WEBIM: Close chat.
-        try! messageStream?.closeChat()
-        
-        if let operatorID = lastOperatorID {
-            if alreadyRated[operatorID] != true {
-                // Don't offer to rate an operator if a visitor already did it independently.
-                if chatState == .QUEUE
-                    || chatState == .CHATTING
-                    || chatState == .CLOSED_BY_OPERATOR
-                    || chatState == .INVITATION {
-                    showRatingDialog(forOperator: operatorID)
+        if let messageStream = messageStream {
+            // WEBIM: Chat state.
+            let chatState = messageStream.getChatState()
+            
+            // WEBIM: Close chat.
+            do {
+                try messageStream.closeChat()
+            } catch let error as AccessError {
+                switch error {
+                case .INVALID_SESSION:
+                    print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                case .INVALID_THREAD:
+                    print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                    // Assuming to check concurrent calls of WebimClientLibrary methods.
+                }
+            } catch {
+                print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            }
+            
+            if let operatorID = lastOperatorID {
+                if alreadyRated[operatorID] != true {
+                    // Don't offer to rate an operator if a visitor already did it independently.
+                    if chatState == .QUEUE
+                        || chatState == .CHATTING
+                        || chatState == .CLOSED_BY_OPERATOR
+                        || chatState == .INVITATION {
+                        showRatingDialog(forOperator: operatorID)
+                    }
                 }
             }
         }
@@ -292,6 +408,18 @@ class ChatViewController: SLKTextViewController {
         present(popup, animated: true, completion: nil)
     }
     
+    private func scrollToBottom() {
+        if messages.isEmpty {
+            return
+        }
+        
+        let bottomMessageIndex = IndexPath(row: (tableView?.numberOfRows(inSection: 0))! - 1,
+                                           section: 0)
+        tableView?.scrollToRow(at: bottomMessageIndex,
+                               at: .bottom,
+                               animated: true)
+    }
+    
 }
 
 // MARK: - UIImagePickerControllerDelegate
@@ -307,10 +435,26 @@ extension ChatViewController: UIImagePickerControllerDelegate {
                     let mimeType = MimeType(url: imageURL as URL)
                     
                     // MARK: WEBIM: Send file.
-                    let _ = try! messageStream?.send(file: imageData,
-                                                     filename: imageName,
-                                                     mimeType: mimeType.value,
-                                                     completionHandler: nil)
+                    do {
+                        // Function returns an unique message ID. In this app it is not used.
+                        let _ = try messageStream?.send(file: imageData,
+                                                        filename: imageName,
+                                                        mimeType: mimeType.value,
+                                                        completionHandler: nil)
+                        // TODO: Implement SendFileCompletionHandler.
+                    } catch let error as AccessError {
+                        switch error {
+                        case .INVALID_SESSION:
+                            print("Message sending failed because it was called when session object is invalid.")
+                        // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                        case .INVALID_THREAD:
+                            print("Message sending failed because it was called from a wrong thread.")
+                            // Assuming to check concurrent calls of WebimClientLibrary methods.
+                        }
+                    } catch {
+                        print("Message status sending failed with unknown error: \(error.localizedDescription)")
+                    }
+                    
                 }
             }
         }
@@ -335,7 +479,22 @@ extension ChatViewController: UINavigationControllerDelegate {
 extension ChatViewController: FatalErrorHandler {
     
     func on(error: WebimError) {
-        // Handle an error.
+        let errorType = error.getErrorType()
+        switch errorType {
+        case .ACCOUNT_BLOCKED:
+            print("Account with used account name is blocked by Webim service.")
+            // Assuming to contact with Webim support.
+        case .PROVIDED_VISITOR_EXPIRED:
+            print("Provided visitor fields expired.")
+            // Assuming to re-authorize it and re-create session object.
+        case .UNKNOWN:
+            print("An unknown error occured.")
+        case .VISITOR_BANNED:
+            print("Visitor with provided visitor fields is banned by an operator.")
+        case .WRONG_PROVIDED_VISITOR_HASH:
+            print("Provided visitor fields are wrong.")
+            // Assuming to check visitor field generating.
+        }
     }
     
 }
@@ -346,11 +505,21 @@ extension ChatViewController: MessageListener {
     func added(message newMessage: Message,
                after previousMessage: Message?) {
         if let previousMessage = previousMessage {
+            var added = false
+            
             for (index, message) in messages.enumerated() {
-                if previousMessage.getID() == message.getID() {
+                if previousMessage.isEquals(to: message) {
                     messages.insert(newMessage,
-                                    at: (index + 1))
+                                    at: index + 1)
+                    
+                    added = true
+                    
+                    break
                 }
+            }
+            
+            if !added {
+                messages.append(newMessage)
             }
         } else {
             messages.append(newMessage)
@@ -363,16 +532,22 @@ extension ChatViewController: MessageListener {
     }
     
     func removed(message: Message) {
+        var toUpdate = false
+        
         for (messageIndex, iteratedMessage) in messages.enumerated() {
             if iteratedMessage.getID() == message.getID() {
                 messages.remove(at: messageIndex)
+                toUpdate = true
+                
                 break
             }
         }
         
-        DispatchQueue.main.async() {
-            self.tableView?.reloadData()
-            self.scrollToBottom()
+        if toUpdate {
+            DispatchQueue.main.async() {
+                self.tableView?.reloadData()
+                self.scrollToBottom()
+            }
         }
     }
     
@@ -386,15 +561,22 @@ extension ChatViewController: MessageListener {
     
     func changed(message oldVersion: Message,
                  to newVersion: Message) {
+        var toUpdate = false
+        
         for (messageIndex, iteratedMessage) in messages.enumerated() {
             if iteratedMessage.getID() == oldVersion.getID() {
                 messages[messageIndex] = newVersion
+                toUpdate = true
+                
+                break
             }
         }
         
-        DispatchQueue.main.async() {
-            self.tableView?.reloadData()
-            self.scrollToBottom()
+        if toUpdate {
+            DispatchQueue.main.async() {
+                self.tableView?.reloadData()
+                self.scrollToBottom()
+            }
         }
     }
     

@@ -26,13 +26,17 @@
 
 import Foundation
 
+/**
+ Class that handles HTTP-requests sending by SDK with internal requested actions (initialization and chat updates).
+ - SeeAlso:
+ `DeltaCallback`
+ `DeltaResponse`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class DeltaRequestLoop: AbstractRequestLoop {
-    
-    // MARK: - Constants
-    private enum ServerError: Error {
-        case INCORRECT_SERVER_ANSWER
-    }
-    
     
     // MARK: - Properties
     private let appVersion: String?
@@ -170,12 +174,14 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                 
                 if let deltaList = deltaResponse.getDeltaList() {
                     if deltaList.count > 0 {
-                        throw ServerError.INCORRECT_SERVER_ANSWER
+                        print("Incorrect server answer.")
+                        return
                     }
                 }
                 
                 guard let fullUpdate = deltaResponse.getFullUpdate() else {
-                    throw ServerError.INCORRECT_SERVER_ANSWER
+                    print("Incorrect server answer.")
+                    return
                 }
                 
                 if let since = deltaResponse.getRevision() {

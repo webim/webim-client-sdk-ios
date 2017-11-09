@@ -31,44 +31,103 @@ import Foundation
 /**
  - SeeAlso:
  `FatalErrorHandler`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public protocol WebimError {
     
     /**
      - returns:
      Parsed type of the error.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getErrorType() -> FatalErrorType
     
     /**
      - returns:
      String representation of an error. Mostly useful if the error type is unknown.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getErrorString() -> String
     
 }
 
 
+// MARK: -
 /**
  Error types that can be throwed by MessageStream methods.
  - SeeAlso:
  `WebimSession` and `MessageStream` methods.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public enum AccessError: Error {
-    case invalidThread(String)
-    case invalidSession(String)
+    
+    /**
+     Error that is thrown if the method was called not from the thread the WebimSession was created in.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case INVALID_THREAD
+    
+    /**
+     Error that is thrown if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case INVALID_SESSION
 }
 
+// MARK: -
 /**
- Error types that can be thrown by MessageTracker methods.
+ Error types that can be throwed by `SessionBuilder` `build()` method.
  - SeeAlso:
- `MessageTracker.getNextMessages(byLimit limit:completion:)`
- `MessageTracker.resetTo(message:)`
- `MessageTracker.destroy()`
+ `SessionBuilder.build()`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
-public enum MessageTrackerError: Error {
-    case invalidState(String)
-    case destroyedObject(String)
-    case repeatedRequest(String)
-    case invalidArgument(String)
+public enum SessionBuilderError: Error {
+    
+    /**
+     Error that is thrown when trying to create session object with nil account name.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case NIL_ACCOUNT_NAME
+    
+    /**
+     Error that is thrown when trying to create session object with nil location name.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case NIL_LOCATION
+    
+    /**
+     Error that is thrown when trying to create session object with invalid remote notifications configuration.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
 }

@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates message data, received from a server.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class MessageItem {
     
     // MARK: - Constants
@@ -76,19 +83,18 @@ final class MessageItem {
     
     
     // MARK: - Properties
-
     private var authorID: String?
     private var avatarURLString: String?
     private var chatID: String?
+    private var clientSideID: String?
     private var data: [String : Any?]?
     private var deleted: Bool?
+    private var id: String?
     private var kind: MessageKind?
     private var senderName: String?
+    private var text: String?
     private var timeSinceInMicrosecond: Int64 = -1
-    fileprivate var clientSideID: String?
-    fileprivate var id: String?
-    fileprivate var text: String?
-    fileprivate var timeSinceInSecond: Double?
+    private var timeSinceInSecond: Double?
     
     
     // MARK: - Initialization
@@ -161,24 +167,12 @@ final class MessageItem {
         return text
     }
     
-    func set(text: String?) {
-        self.text = text
-    }
-    
     func getSenderId() -> String? {
         return authorID
     }
     
     func getSenderAvatarURLString() -> String? {
         return avatarURLString
-    }
-    
-    func getChatID() -> String? {
-        return chatID
-    }
-    
-    func set(chatID: String?) {
-        self.chatID = chatID
     }
     
     func getData() -> [String : Any?]? {
@@ -199,14 +193,6 @@ final class MessageItem {
     
     func getTimeInMicrosecond() -> Int64? {
         return (timeSinceInMicrosecond != -1) ? timeSinceInMicrosecond : Int64(timeSinceInSecond! * 1000000)
-    }
-    
-    func getTimeInMillisecond() -> Int64? {
-        if let timeInMicrosecond = getTimeInMicrosecond() {
-            return timeInMicrosecond * 1000
-        } else {
-            return nil
-        }
     }
     
 }

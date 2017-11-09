@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that handles HTTP-requests sending by SDK with client requested actions (e.g. sending messages, operator rating, chat closing etc.).
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class ActionRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
@@ -72,7 +79,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
     // MARK: Private methods
     private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) -> AuthorizationData? {
         while isRunning()
-            && (lastAuthorizationData == authorizationData) {
+            && (lastAuthorizationData === authorizationData) {
                 usleep(100000)
         }
         
@@ -115,10 +122,16 @@ final class ActionRequestLoop: AbstractRequestLoop {
                 let data = try perform(request: request)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String : Any] {
                     if let error = dataJSON?["error"] as? String {
-                        completionHandlerExecutor.execute(task: DispatchWorkItem {
-                            self.internalErrorListener.on(error: error,
-                                                          urlString: (request.url?.path)!)
-                        })
+                        if error == WebimInternalError.REINIT_REQUIRED.rawValue {
+                            self.authorizationData = awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
+                            
+                            return
+                        } else {
+                            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                                self.internalErrorListener.on(error: error,
+                                                              urlString: (request.url?.path)!)
+                            })
+                        }
                     }
                     
                     if let completionHandler = currentRequest.getCompletionHandler() {

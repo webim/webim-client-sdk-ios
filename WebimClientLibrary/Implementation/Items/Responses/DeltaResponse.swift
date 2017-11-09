@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates chat update respnonce, requested from a server.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class DeltaResponse {
     
     // MARK: - Constants
@@ -55,8 +62,11 @@ final class DeltaResponse {
         
         if let deltaItemArray = jsonDictionary[JSONField.DELTA_LIST.rawValue] as? [Any] {
             for arrayItem in deltaItemArray {
-                let deltaItem = DeltaItem(withJSONDictionary: arrayItem as! [String : Any?])
-                deltaList.append(deltaItem)
+                if let arrayItem = arrayItem as? [String : Any?] {
+                    if let deltaItem = DeltaItem(withJSONDictionary: arrayItem) {
+                        deltaList.append(deltaItem)
+                    }
+                }
             }
         }
     }

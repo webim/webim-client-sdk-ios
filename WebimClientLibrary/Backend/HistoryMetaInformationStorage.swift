@@ -26,6 +26,12 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 protocol HistoryMetaInformationStorage {
     
     func isHistoryEnded() -> Bool

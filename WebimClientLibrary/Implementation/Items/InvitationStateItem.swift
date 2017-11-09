@@ -26,9 +26,15 @@
 
 import Foundation
 
-// Raw values equal to field names received in responses from server.
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 enum InvitationStateItem: String {
     
+    // Raw values equal to field names received in responses from server.
     case CHAT = "chat"
     case DEPARTMENT_SELECTION = "department-selection"
     case FIRST_QUESTION = "first-question"
@@ -40,6 +46,7 @@ enum InvitationStateItem: String {
     case SHOWING_BY_URL_PARAMETER = "showing-by-url-param"
     case UNKNOWN = "unknown"
     
+    // MARK: - Properties
     // Setted for getTypeBy(string:) method.
     private static let invitationStateValues = [CHAT,
                                                 DEPARTMENT_SELECTION,
@@ -55,7 +62,15 @@ enum InvitationStateItem: String {
     
     // MARK: - Initialization
     init(withType typeValue: String) {
-        self = InvitationStateItem(rawValue: typeValue)!
+        for invitationStateType in InvitationStateItem.invitationStateValues {
+            if typeValue == invitationStateType.rawValue {
+                self = invitationStateType
+                
+                return
+            }
+        }
+        
+        self = .UNKNOWN
     }
     
     
@@ -69,10 +84,6 @@ enum InvitationStateItem: String {
         }
         
         return .UNKNOWN
-    }
-    
-    func getTypeValue() -> String {
-        return self.rawValue
     }
     
 }

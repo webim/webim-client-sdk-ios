@@ -26,11 +26,18 @@
 
 import Foundation
 
+/**
+ Class that encapsulates session authorization data.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class AuthorizationData {
     
     // MARK: - Properties
-    fileprivate var pageID: String
-    fileprivate var authorizationToken: String?
+    private var pageID: String
+    private var authorizationToken: String?
     
     
     // MARK: - Initialization

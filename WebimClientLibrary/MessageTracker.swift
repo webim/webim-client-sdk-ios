@@ -32,13 +32,16 @@ import Foundation
  - it defines an interval within which message changes are transmitted to the listener (see `MessageStream.new(messageTracker messageListener:)`).
  - SeeAlso:
  `MessageStream.new(messageTracker messageListener:)`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public protocol MessageTracker {
     
     /**
-     Requests the messages above in history.
-     Returns not more than `limit` of messages.
-     If an empty list is passed, it indicated the end of the message history.
+     Requests the messages above in history. Returns not more than `limit` of messages. If an empty list is passed inside completion, the end of the message history is reached.
+     If there is any previous `MessageTracker` request that is not completed of limit of messages is less than 1, this method will do nothing.
      - important:
      Notice that this method can not be called again until the callback for the previous call will be invoked.
      - parameter limit:
@@ -46,24 +49,30 @@ public protocol MessageTracker {
      - parameter completion:
      A callback.
      - throws:
-     `MessageTrackerError.invalidState` if the method was called not from the thread the `WebimSession` was created in.
-     `MessageTrackerError.destroyedObject` if the `MessageTracker` or the `WebimSession` was destroyed.
-     `MessageTrackerError.repeatedRequest` if the previous request was not completed.
-     `MessageTrackerError.invalidArgument` if `limit <= 0`.
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getNextMessages(byLimit limit: Int,
                          completion: @escaping ([Message]) -> ()) throws
     
     /**
      `MessageTracker` retains some range of messages. By using this method one can move the upper limit of this range to another message.
+     If there is any previous `MessageTracker` request that is not completed, this method will do nothing.
      - important:
      Notice that this method can not be used unless the previous call `getNextMessages(byLimit:completion:)` was finished (completion handler was invoked).
      - parameter message:
      A message reset to.
      - throws:
-     `MessageTrackerError.invalidState` if the method was called not from the thread the `WebimSession` was created in.
-     `MessageTrackerError.destroyedObject` if the `MessageTracker` or the `WebimSession` was destroyed.
-     'MessageTrackerError.repeatedRequest` if the previous `getNextMessages(byLimit:completion:)` request was not completed.
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func resetTo(message: Message) throws
     
@@ -71,7 +80,12 @@ public protocol MessageTracker {
      Destroys the `MessageTracker`.
      It is impossible to use any `MessageTracker` methods after it was destroyed.
      - throws:
-     `MessageTrackerError.invalidState` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func destroy() throws
     

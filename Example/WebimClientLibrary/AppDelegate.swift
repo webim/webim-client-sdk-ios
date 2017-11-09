@@ -39,13 +39,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case DEVICE_TOKEN = "device-token"
     }
 
+    
     // MARK: - Properties
     var window: UIWindow?
 
+    
     // MARK: - Methods
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // Logging HTTP requests and responses.
         Timberjack.register()
         
         // Remote notifications configuration.
@@ -53,9 +56,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                          .badge,
                                                          .sound]
         let remoteNotificationSettings = UIUserNotificationSettings(types: notificationTypes,
-                                                                  categories: nil)
+                                                                    categories: nil)
         application.registerUserNotificationSettings(remoteNotificationSettings)
         application.registerForRemoteNotifications()
+        
+        application.applicationIconBadgeNumber = 0
         
         return true
     }
@@ -78,9 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(userInfo)
         
         // WEBIM: Remote notification handling.
-        let isWebimRemoteNotification: Bool? = try? Webim.isWebim(remoteNotification: userInfo)
-        if isWebimRemoteNotification == true {
-            _ = try! Webim.parse(remoteNotification: userInfo)
+        if Webim.isWebim(remoteNotification: userInfo) == true {
+            _ = Webim.parse(remoteNotification: userInfo)
             // Handle Webim remote notification.
         } else {
             // Handle another type of remote notification.

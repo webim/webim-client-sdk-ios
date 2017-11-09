@@ -28,7 +28,12 @@
 import Foundation
 
 
-// MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class WebimClientBuilder {
     
     // MARK: - Properties
@@ -126,34 +131,7 @@ final class WebimClientBuilder {
         return self
     }
     
-    func build() throws -> WebimClient {
-        guard baseURL != nil else {
-            throw WebimClientError.invalidParameter("baseURL can't be nil.")
-        }
-        guard location != nil else {
-            throw WebimClientError.invalidParameter("location can't be nil.")
-        }
-        guard deltaCallback != nil else {
-            throw WebimClientError.invalidParameter("deltaCallback can't be nil.")
-        }
-        guard internalErrorListener != nil else {
-            throw WebimClientError.invalidParameter("internalErrorListener can't be nil.")
-        }
-        guard platform != nil else {
-            throw WebimClientError.invalidParameter("platform can't be nil.")
-        }
-        guard title != nil else {
-            throw WebimClientError.invalidParameter("title can't be nil.")
-        }
-        
-        guard completionHandlerExecutor != nil else {
-            throw WebimClientError.invalidParameter("completionHandlerExecutor can't be nil.")
-        }
-        
-        guard deviceID != nil else {
-            throw WebimClientError.invalidParameter("deviceID can't be nil.")
-        }
-        
+    func build() -> WebimClient {
         let actionRequestLoop = ActionRequestLoop(withCompletionHandlerExecutor: completionHandlerExecutor!,
                                                   internalErrorListener: internalErrorListener!)
         actionRequestLoop.set(authorizationData: authorizationData)
@@ -178,19 +156,20 @@ final class WebimClientBuilder {
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
                            webimActions: WebimActions(withBaseURL: baseURL!,
-                                                      actionRequestLoop: actionRequestLoop))
-    }
-    
-    
-    // MARK: -
-    enum WebimClientError: Error {
-        case invalidParameter(String)
+                           actionRequestLoop: actionRequestLoop))
     }
     
 }
 
 // MARK: -
 // Need to update deviceToken in DeltaRequestLoop on update in WebimActions.
+/**
+ Class that is responsible for history storage when it is setted to memory mode.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class WebimClient {
     
     // MARK: - Properties
@@ -248,6 +227,13 @@ final class WebimClient {
 
 // MARK: -
 // Need to update AuthorizationData in ActionRequestLoop on update in DeltaRequestLoop.
+/**
+ Class that is responsible for history storage when it is setted to memory mode.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final private class SessionParametersListenerWrapper: SessionParametersListener {
     
     // MARK: - Properties

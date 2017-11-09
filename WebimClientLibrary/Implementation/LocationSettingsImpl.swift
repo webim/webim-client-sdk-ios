@@ -26,15 +26,23 @@
 
 import Foundation
 
-final class LocationSettingsImpl: LocationSettings {
+/**
+ Class that encapsulates various location settings received form server when initializing session.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+final class LocationSettingsImpl {
     
     // MARK: - Constants
     enum UserDefaultsKey: String {
         case HINTS_ENABLED = "hints_enabled"
     }
     
+    
     // MARK: - Properties
-    fileprivate var hintsEnabled: Bool
+    private var hintsEnabled: Bool
     
     
     // MARK: - Initialization
@@ -66,12 +74,6 @@ final class LocationSettingsImpl: LocationSettings {
                                        forKey: userDefaultsKey)
     }
     
-    
-    // MARK: - LocationSettings protocol methods
-    func areHintsEnabled() -> Bool {
-        return hintsEnabled
-    }
-    
 }
 
 // MARK: - Equatable
@@ -80,6 +82,15 @@ extension LocationSettingsImpl: Equatable {
     static func == (lhs: LocationSettingsImpl,
                     rhs: LocationSettingsImpl) -> Bool {
         return lhs.hintsEnabled == lhs.hintsEnabled
+    }
+    
+}
+
+// MARK: - LocationSettings
+extension LocationSettingsImpl: LocationSettings {
+    
+    func areHintsEnabled() -> Bool {
+        return hintsEnabled
     }
     
 }

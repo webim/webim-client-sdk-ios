@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates chat update data, received from a server.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class DeltaItem {
     
     // MARK: - Constants
@@ -59,27 +66,40 @@ final class DeltaItem {
     
     
     // MARK: - Properties
-    private var data: Any?
-    private var event: Event?
+    private var data: Any
+    private var event: Event
     private var objectType: DeltaType?
-    private var sessionID: String?
+    private var sessionID: String
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init?(withJSONDictionary jsonDictionary: [String : Any?]) {
+        // FIXME: Refactor this.
         if let eventString = jsonDictionary[JSONField.EVENT.rawValue] as? String {
-            event = Event(rawValue: eventString)
+            if let event = Event(rawValue: eventString) {
+                self.event = event
+            } else {
+                return nil
+            }
+        } else {
+            return nil
         }
         
-        
-        if let objectTypeString = jsonDictionary[JSONField.OBJECT_TYPE.rawValue] as? String {
-            objectType = DeltaType(rawValue: objectTypeString)
+        if let data = jsonDictionary[JSONField.DATA.rawValue],
+            data != nil {
+            self.data = data!
+        } else {
+            return nil
         }
-        
-        data = jsonDictionary[JSONField.DATA.rawValue] ?? nil
         
         if let sessionID = jsonDictionary[JSONField.SESSION_ID.rawValue] as? String {
             self.sessionID = sessionID
+        } else {
+            return nil
+        }
+        
+        if let objectTypeString = jsonDictionary[JSONField.OBJECT_TYPE.rawValue] as? String {
+            objectType = DeltaType(rawValue: objectTypeString)
         }
     }
     
@@ -90,15 +110,15 @@ final class DeltaItem {
         return objectType
     }
     
-    func getSessionID() -> String? {
+    func getSessionID() -> String {
         return sessionID
     }
     
-    func getEvent() -> Event? {
+    func getEvent() -> Event {
         return event
     }
     
-    func getData() -> Any? {
+    func getData() -> Any {
         return data
     }
     

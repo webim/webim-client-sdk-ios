@@ -29,6 +29,10 @@ import Foundation
 /**
  - SeeAlso:
  `MessageStream.new(messageTracker messageListener:)`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public protocol MessageListener {
     
@@ -40,7 +44,11 @@ public protocol MessageListener {
      - parameter newMessage:
      Added message.
      - parameter previousMessage:
-     A message before which it is needed to make a message insert. If nil then an insert is performed at the end of the list.
+     A message after which it is needed to make a message insert. If nil then an insert is performed at the end of the list.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func added(message newMessage: Message,
                after previousMessage: Message?)
@@ -49,11 +57,19 @@ public protocol MessageListener {
      Called when removing a message.
      - parameter message:
      A message to be removed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func removed(message: Message)
     
     /**
      Called when removed all the messages.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func removedAllMessages()
     
@@ -64,6 +80,10 @@ public protocol MessageListener {
      Message changed from.
      - parameter newVersion:
      Message changed to.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func changed(message oldVersion: Message,
                  to newVersion: Message)

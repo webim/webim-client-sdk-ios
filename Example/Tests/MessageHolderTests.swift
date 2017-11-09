@@ -2,6 +2,8 @@ import UIKit
 import XCTest
 @testable import WebimClientLibrary
 
+
+// MARK: -
 class MessageHolderTests: XCTestCase {
     
     // MARK: - Constants
@@ -86,9 +88,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: History is received.
-        try messageHolder.receiveHistoryUpdateWith(messages: history2,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history2,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Previously cached completion should be called.
         XCTAssertEqual(completionHandlerMessages!, history2)
@@ -135,9 +137,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: History is received.
-        try messageHolder.receiveHistoryUpdateWith(messages: history2,
-                                                   deleted: Set<String>(), completion: {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history2,
+                                               deleted: Set<String>(), completion: {
+                                                // No need to do anything when testing.
         })
         // Then: Cached completion should be called on history2.
         XCTAssertEqual(completionHandlerMessages!, history2)
@@ -160,9 +162,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 1
         // When: Request all messages.
-        try messageHolder.receiveHistoryUpdateWith(messages: history2,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history2,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         var completionHandlerMessages: [MessageImpl]? = nil
         try messageTracker.getNextMessages(byLimit: 100) { messages in
@@ -208,9 +210,9 @@ class MessageHolderTests: XCTestCase {
         let currentChat = generateCurrentChat(ofCount: 10)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history1,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history1,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
@@ -235,9 +237,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving history between current chat and receiver older history.
-        try messageHolder.receiveHistoryUpdateWith(messages: history2,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history2,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: First history message should be inserted before first current chat message.
         XCTAssertEqual(lastAddedMessage, history2[1])
@@ -251,9 +253,9 @@ class MessageHolderTests: XCTestCase {
         let history2 = generateHistoryFrom(currentChat: currentChat)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history1,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history1,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
@@ -281,9 +283,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving history part of current chat.
-        try messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ..< 5]),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ..< 5]),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: No completion handlers should be called.
         XCTAssertEqual(numberOfCalls, 1)
@@ -304,9 +306,9 @@ class MessageHolderTests: XCTestCase {
         let history2 = generateHistoryFrom(currentChat: currentChat)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history1,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history1,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
@@ -326,9 +328,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving history part of current chat.
-        try messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ... 5]),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ... 5]),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Completion handler should not be called and receiving method too.
         XCTAssertEqual(numberOfCalls, 1)
@@ -351,9 +353,9 @@ class MessageHolderTests: XCTestCase {
         let history2 = generateHistoryFrom(currentChat: currentChat)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: Array(history2[5 ... 9]),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: Array(history2[5 ... 9]),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
@@ -403,9 +405,9 @@ class MessageHolderTests: XCTestCase {
         let history2 = generateHistoryFrom(currentChat: currentChat)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history1,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history1,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
@@ -422,9 +424,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Received 5 messaged of history (which is part of current chat).
-        try messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ..< 5]),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ... 5]),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Receiving method should not be called.
         XCTAssertNil(lastAddedMessage)
@@ -432,9 +434,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving history which is not a part of current chat.
-        try messageHolder.receiveHistoryUpdateWith(messages: [history2[6]],
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: [history2[6]],
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Receiving method should not be called.
         XCTAssertNil(lastAddedMessage)
@@ -466,9 +468,9 @@ class MessageHolderTests: XCTestCase {
         let history2 = generateHistoryFrom(currentChat: currentChat)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: (history1 + history2),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: (history1 + history2),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         
         // MARK: Test 1
@@ -525,9 +527,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving history and 1 message of current chat history.
-        try messageHolder.receiveHistoryUpdateWith(messages: (history1 + [history2[8]]),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: (history1 + [history2[8]]),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Receiving method should be called on that message.
         XCTAssertEqual(lastAddedMessage, history2[8])
@@ -557,9 +559,9 @@ class MessageHolderTests: XCTestCase {
         let history = generateHistoryFrom(currentChat: currentChat)
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: Array(history[1 ... 9]),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: Array(history[1 ... 9]),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         
         // MARK: Test 1
@@ -745,9 +747,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving history part of current chat.
-        try messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ... 1]),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: Array(history2[0 ... 1]),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Message listener methods should not be called.
         XCTAssertNil(lastAddedMessage)
@@ -908,9 +910,9 @@ class MessageHolderTests: XCTestCase {
         let nextCurrentChat = newCurrentChat()
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history2,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history2,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         try messageHolder.receiving(newChat: ChatItem(),
                                     previousChat: nil,
@@ -979,9 +981,9 @@ class MessageHolderTests: XCTestCase {
         let nextCurrentChat = newCurrentChat()
         let messageHolder = newMessageHolder()
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         messageHolder.set(endOfHistoryReached: true)
         
@@ -1008,9 +1010,9 @@ class MessageHolderTests: XCTestCase {
         let editedCurrentChat = newEdited(currentChatMessage: nextCurrentChat)
         let messageHolder = newMessageHolder()
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         messageHolder.set(reachedEndOfLocalHistory: true)
         
@@ -1032,7 +1034,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Changing message.
-        try messageHolder.changed(message: editedCurrentChat)
+        messageHolder.changed(message: editedCurrentChat)
         // Then: Changing message listener method should be called on this message.
         XCTAssertEqual(lastOldVersionChangedMessage, nextCurrentChat)
         XCTAssertEqual(lastNewVersionChangedMessage, editedCurrentChat)
@@ -1046,9 +1048,9 @@ class MessageHolderTests: XCTestCase {
         let messageHolder = newMessageHolder()
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
         let chat = ChatItem()
-        try messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](),
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](),
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         messageHolder.set(endOfHistoryReached: true)
         try messageHolder.receiving(newChat: chat,
@@ -1083,9 +1085,9 @@ class MessageHolderTests: XCTestCase {
         let editedHistoryMessage = newEdited(historyMessage: history[9])
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         
         // MARK: Test 1
@@ -1099,9 +1101,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving changed history message.
-        try messageHolder.receiveHistoryUpdateWith(messages: [editedHistoryMessage],
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: [editedHistoryMessage],
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: This message should be changed.
         XCTAssertEqual(lastOldVersionChangedMessage, history[9])
@@ -1115,9 +1117,9 @@ class MessageHolderTests: XCTestCase {
         currentChat[9] = newEdited(currentChatMessage: currentChat[9])
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         
         // MARK: Test 1
@@ -1165,9 +1167,9 @@ class MessageHolderTests: XCTestCase {
         try messageHolder.receiving(newChat: nil,
                                     previousChat: chat,
                                     newMessages: [MessageImpl]())
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Message listener methods should not be called.
         XCTAssertNil(lastAddedMessage)
@@ -1178,9 +1180,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving changed history message.
-        try messageHolder.receiveHistoryUpdateWith(messages: [editedHistoryMessage],
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: [editedHistoryMessage],
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: This message should be changed.
         XCTAssertEqual(lastOldVersionChangedMessage, currentChat[9])
@@ -1209,9 +1211,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Receiving history.
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Message listener methods should not be called.
         XCTAssertNil(lastAddedMessage)
@@ -1222,9 +1224,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving edited history message.
-        try messageHolder.receiveHistoryUpdateWith(messages: [editedHistoryMessage],
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: [editedHistoryMessage],
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: While current chat exists changes in history should not have an effect..
         XCTAssertNil(lastAddedMessage)
@@ -1269,9 +1271,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Receiving history.
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Edited message should be changed.
         XCTAssertEqual(lastOldVersionChangedMessage, currentChat[9])
@@ -1301,9 +1303,9 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: receiving history.
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         // Then: Message listener methods should not be called.
         XCTAssertNil(lastAddedMessage)
@@ -1328,9 +1330,9 @@ class MessageHolderTests: XCTestCase {
         let history = generateHistoryFrom(currentChat: currentChat)
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         
         // MARK: Test 1
@@ -1360,9 +1362,9 @@ class MessageHolderTests: XCTestCase {
         let messageHolder = newMessageHolder(withHistory: history)
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
         let chat = ChatItem()
-        try messageHolder.receiveHistoryUpdateWith(messages: history,
-                                                   deleted: Set<String>()) {
-                                                    // No need to do something when testing.
+        messageHolder.receiveHistoryUpdateWith(messages: history,
+                                               deleted: Set<String>()) {
+                                                // No need to do anything when testing.
         }
         
         // MARK: Test 1
@@ -1385,7 +1387,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 3
         // When: Deleting current chat message.
-        try messageHolder.deletedMessageWith(id: currentChat[0].getCurrentChatID()!)
+        messageHolder.deletedMessageWith(id: currentChat[0].getCurrentChatID()!)
         // Then: Message should be deleted.
         XCTAssertEqual(lastRemovedMessage, currentChat[0])
         
@@ -1608,7 +1610,7 @@ class MessageHolderTests: XCTestCase {
             do {
                 try completion((beforeIndex <= 0) ? [MessageImpl]() : Array(history[afterIndex ..< beforeIndex]), (afterIndex != 0))
             } catch {
-                // No need to do something when testing.
+                // No need to do anything when testing.
             }
         }
         
@@ -1619,7 +1621,7 @@ class MessageHolderTests: XCTestCase {
         
         func on(error: String?,
                 urlString: String) {
-            // No need to do something when testing.
+            // No need to do anything when testing.
         }
         
     }
@@ -1640,7 +1642,7 @@ extension MessageHolderTests: MessageListener {
     }
     
     func removedAllMessages() {
-        // No need to do something when testing.
+        // No need to do anything when testing.
     }
     
     func changed(message oldVersion: Message, to newVersion: Message) {

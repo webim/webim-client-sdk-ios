@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates unique visitor data.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class ProvidedVisitorFields {
     
     // MARK: - Properties
@@ -35,25 +42,30 @@ final class ProvidedVisitorFields {
     
     // MARK: - Initialization
     
-    init(withJSONString jsonString: String,
+    init?(withJSONString jsonString: String,
          JSONObject: Data) throws {
-        if let jsonData = try JSONSerialization.jsonObject(with: JSONObject) as? [String : Any] {
-            if let fields = jsonData["fields"] as? [String : String] {
-                if let id = fields["id"] {
+        do {
+            if let jsonData = try JSONSerialization.jsonObject(with: JSONObject) as? [String : Any] {
+                if let fields = jsonData["fields"] as? [String : String] {
+                    if let id = fields["id"] {
+                        self.id = id
+                    } else {
+                        throw VisitorFieldsError.invalidVisitorFields("Visitor fields JSON object must contain ID field")
+                    }
+                } else if let id = jsonData["id"] as? String {
                     self.id = id
                 } else {
                     throw VisitorFieldsError.invalidVisitorFields("Visitor fields JSON object must contain ID field")
                 }
-            } else if let id = jsonData["id"] as? String {
-                self.id = id
             } else {
-                throw VisitorFieldsError.invalidVisitorFields("Visitor fields JSON object must contain ID field")
+                throw VisitorFieldsError.serializingFail("Error serializing visitor JSON data.")
             }
-        } else {
-            throw VisitorFieldsError.serializingFail("Error serializing visitor JSON data.")
+            
+            self.jsonString = jsonString
+        } catch {
+            print("Error serializing provided visitor fields")
+            return nil
         }
-        
-        self.jsonString = jsonString
     }
     
     convenience init?(withJSONString jsonString: String) {

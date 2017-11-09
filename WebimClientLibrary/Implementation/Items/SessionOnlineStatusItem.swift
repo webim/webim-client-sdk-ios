@@ -26,14 +26,18 @@
 
 import Foundation
 
+// TODO: WEBIMIOSCL-213
 /**
  Raw values equal to field names received in responses from server.
- 
- `BUSY_OFFLINE` - user can't send messages at all;
- `BUSY_ONLINE` - user send offline messages, but server can return an error;
- `OFFLINE` - user can send offline messages;
- `ONLINE` - user can send online and offline messages;
- `UNKNOWN` - session has not received data from server.
+ * `BUSY_OFFLINE` - user can't send messages at all;
+ * `BUSY_ONLINE` - user send offline messages, but server can return an error;
+ * `OFFLINE` - user can send offline messages;
+ * `ONLINE` - user can send online and offline messages;
+ * `UNKNOWN` - session has not received data from server.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 enum SessionOnlineStatusItem: String {
     

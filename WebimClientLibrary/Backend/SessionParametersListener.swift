@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that is responsible for history storage when it is setted to memory mode.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 protocol SessionParametersListener {
     
     func onSessionParametersChanged(visitorFieldsJSONString: String,

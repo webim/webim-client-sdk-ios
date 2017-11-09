@@ -26,23 +26,30 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class WebimErrorImpl: WebimError {
     
     // MARK: - Properties
-    var errorType: FatalErrorType?
+    var errorType: FatalErrorType
     var errorString: String?
     
     // MARK: - Initialization
     init(errorType: FatalErrorType,
-         errorString: String) {
+         errorString: String?) {
         self.errorType = errorType
         self.errorString = errorString
     }
     
-    // MARK: - WebimError protocol methods
+    // MARK: - Methods
+    // MARK: WebimError protocol methods
     
     func getErrorType() -> FatalErrorType {
-        return errorType!
+        return errorType
     }
     
     func getErrorString() -> String {

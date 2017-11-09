@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that is responsible for history storage when it is setted to memory mode.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class MemoryHistoryStorage: HistoryStorage {
     
     // MARK: - Properties
@@ -59,27 +66,27 @@ final class MemoryHistoryStorage: HistoryStorage {
         // No need in this implementation.
     }
     
-    func getLatestBy(limitOfMessages: Int,
-                     completion: @escaping ([Message]) throws -> ()) throws {
-        try respondTo(messages: historyMessages,
+    func getLatest(byLimit limitOfMessages: Int,
+                     completion: @escaping ([Message]) -> ()) {
+        respondTo(messages: historyMessages,
                       limitOfMessages: limitOfMessages,
                       completion: completion)
     }
     
     func getBefore(id: HistoryID,
                    limitOfMessages: Int,
-                   completion: @escaping ([Message]) throws -> ()) throws {
+                   completion: @escaping ([Message]) -> ()) {
         let sortedMessages = historyMessages.sorted { $0.getHistoryID()!.getTimeInMicrosecond() < $1.getHistoryID()!.getTimeInMicrosecond() }
         
         if sortedMessages[0].getHistoryID()!.getTimeInMicrosecond() > id.getTimeInMicrosecond() {
-            try completion([MessageImpl]())
+            completion([MessageImpl]())
             
             return
         }
         
         for (index, message) in sortedMessages.enumerated() {
             if message.getHistoryID() == id {
-                try respondTo(messages: sortedMessages,
+                respondTo(messages: sortedMessages,
                               limitOfMessages: limitOfMessages,
                               offset: index,
                               completion: completion)
@@ -97,39 +104,39 @@ final class MemoryHistoryStorage: HistoryStorage {
         historyMessages = messages + historyMessages
     }
     
-    func receiveHistoryUpdate(messages: [MessageImpl],
+    func receiveHistoryUpdate(withMessages messages: [MessageImpl],
                               idsToDelete: Set<String>,
-                              completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) throws {
-        try deleteFromHistory(idsToDelete: idsToDelete,
-                              completion: completion)
-        try mergeHistoryChanges(messages: messages,
-                                completion: completion)
-        try completion(true, false, nil, false, nil, false, nil, nil)
+                              completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
+        deleteFromHistory(idsToDelete: idsToDelete,
+                          completion: completion)
+        mergeHistoryChanges(messages: messages,
+                            completion: completion)
+        completion(true, false, nil, false, nil, false, nil, nil)
     }
     
     
     // MARK: Private methods
     private func respondTo(messages: [MessageImpl],
                            limitOfMessages: Int,
-                           completion: ([Message]) throws -> ()) throws {
-        try completion((messages.count == 0) ? messages : ((messages.count <= limitOfMessages) ? messages : Array(messages[(messages.count - limitOfMessages) ..< messages.count])))
+                           completion: ([Message]) -> ()) {
+        completion((messages.count == 0) ? messages : ((messages.count <= limitOfMessages) ? messages : Array(messages[(messages.count - limitOfMessages) ..< messages.count])))
     }
     
     private func respondTo(messages: [MessageImpl],
                            limitOfMessages: Int,
                            offset: Int,
-                           completion: ([Message]) throws -> ()) throws {
+                           completion: ([Message]) -> ()) {
         let supposedQuantity = offset - limitOfMessages
-        try completion(Array(messages[((supposedQuantity > 0) ? supposedQuantity : 0) ..< offset]))
+        completion(Array(messages[((supposedQuantity > 0) ? supposedQuantity : 0) ..< offset]))
     }
     
     private func deleteFromHistory(idsToDelete: Set<String>,
-                                   completion: (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) throws {
+                                   completion: (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
         for idToDelete in idsToDelete {
             for (index, message) in historyMessages.enumerated() {
                 if message.getHistoryID()?.getDBid() == idToDelete {
                     historyMessages.remove(at: index)
-                    try completion(false, true, message.getHistoryID()?.getDBid(), false, nil, false, nil, nil)
+                    completion(false, true, message.getHistoryID()?.getDBid(), false, nil, false, nil, nil)
                     
                     break
                 }
@@ -138,7 +145,7 @@ final class MemoryHistoryStorage: HistoryStorage {
     }
     
     private func mergeHistoryChanges(messages: [MessageImpl],
-                                     completion: (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) throws  {
+                                     completion: (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
         // FIXME: Refactor this.
         /*
          Algorithm merges messages with history messages.
@@ -161,7 +168,7 @@ final class MemoryHistoryStorage: HistoryStorage {
                             break
                         } else {
                             result.append(message)
-                            try completion(false, false, nil, false, nil, true, message, historyMessage.getHistoryID())
+                            completion(false, false, nil, false, nil, true, message, historyMessage.getHistoryID())
                             
                             receivedMessages.remove(at: 0)
                             
@@ -177,7 +184,7 @@ final class MemoryHistoryStorage: HistoryStorage {
                     
                     if message.getTimeInMicrosecond() == historyMessage.getTimeInMicrosecond() {
                         result.append(message)
-                        try completion(false, false, nil, true, message, false, nil, nil)
+                        completion(false, false, nil, true, message, false, nil, nil)
                         
                         receivedMessages.remove(at: 0)
                         
@@ -192,7 +199,7 @@ final class MemoryHistoryStorage: HistoryStorage {
         if receivedMessages.count > 0 {
             for message in receivedMessages {
                 result.append(message)
-                try completion(false, false, nil, false, nil, true, message, nil)
+                completion(false, false, nil, false, nil, true, message, nil)
             }
         }
         

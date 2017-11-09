@@ -26,6 +26,12 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class MessageStreamImpl: MessageStream {
     
     // MARK: - Properties
@@ -84,28 +90,28 @@ final class MessageStreamImpl: MessageStream {
         let previousChat = self.chat
         self.chat = chat
         
-        if self.chat != previousChat {
+        if self.chat !== previousChat {
             try messageHolder.receiving(newChat: self.chat,
                                         previousChat: previousChat,
                                         newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: self.chat!.getMessages()))
         }
         
-        let newChatState = (self.chat == nil) ? .CLOSED : self.chat?.getState()
+        let newChatState = (self.chat == nil) ? .CLOSED : self.chat!.getState()
         if (chatStateListener != nil)
             && (lastChatState != newChatState) {
             chatStateListener?.changed(state: publicState(ofChatState: lastChatState),
-                                       to: publicState(ofChatState: newChatState!))
+                                       to: publicState(ofChatState: newChatState))
         }
-        lastChatState = newChatState!
+        lastChatState = newChatState
         
-        let newOperator = operatorFactory.createOperatorFrom(operatorItem: (self.chat == nil) ? nil : self.chat?.getOperator())
+        let newOperator = operatorFactory.createOperatorFrom(operatorItem: (self.chat == nil) ? nil : self.chat!.getOperator())
         if newOperator != currentOperator {
             let previousOperator = currentOperator
             currentOperator = newOperator
             
             if currentOperatorChangeListener != nil {
-                currentOperatorChangeListener?.changed(operator: previousOperator!,
-                                                       to: newOperator!)
+                currentOperatorChangeListener!.changed(operator: previousOperator!,
+                                                       to: newOperator)
             }
         }
         
@@ -113,7 +119,7 @@ final class MessageStreamImpl: MessageStream {
             && (chat?.isOperatorTyping())!
         if (operatorTypingListener != nil)
             && (lastOperatorTypingStatus != operatorTypingStatus) {
-            operatorTypingListener?.onOperatorTypingStateChanged(isTyping: operatorTypingStatus)
+            operatorTypingListener!.onOperatorTypingStateChanged(isTyping: operatorTypingStatus)
         }
         lastOperatorTypingStatus = operatorTypingStatus
     }
@@ -157,7 +163,7 @@ final class MessageStreamImpl: MessageStream {
     }
     
     func getLastRatingOfOperatorWith(id: String) -> Int {
-        let rating = (chat == nil) ? nil : chat?.getOperatorIDToRate()?[id]
+        let rating = (chat == nil) ? nil : chat!.getOperatorIDToRate()?[id]
         return (rating == nil) ? 0 : (rating?.getRating())!
     }
     
@@ -265,19 +271,19 @@ final class MessageStreamImpl: MessageStream {
     private func publicState(ofChatState chatState: ChatItem.ChatItemState) -> ChatState {
         switch chatState {
         case .QUEUE:
-            return ChatState.QUEUE
+            return .QUEUE
         case .CHATTING:
-            return ChatState.CHATTING
+            return .CHATTING
         case .CLOSED:
-            return ChatState.NONE
+            return .NONE
         case .CLOSED_BY_VISITOR:
-            return ChatState.CLOSED_BY_VISITOR
+            return .CLOSED_BY_VISITOR
         case .CLOSED_BY_OPERATOR:
-            return ChatState.CLOSED_BY_OPERATOR
+            return .CLOSED_BY_OPERATOR
         case .INVITATION:
-            return ChatState.INVITATION
+            return .INVITATION
         default:
-            return ChatState.UNKNOWN
+            return .UNKNOWN
         }
     }
     

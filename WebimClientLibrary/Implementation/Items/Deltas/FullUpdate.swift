@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates full chat data, received from a server.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class FullUpdate {
     
     // MARK: - Constants
@@ -110,24 +117,12 @@ final class FullUpdate {
         return visitorJSONString
     }
     
-    func set(visitorJSONString: String?) {
-        self.visitorJSONString = visitorJSONString
-    }
-    
-    func getOnlineStatus() -> String? {
-        return onlineStatus
-    }
-    
     func getState() -> String? {
         return state
     }
     
     func getChat() -> ChatItem? {
         return chat
-    }
-    
-    func hasChat() -> Bool {
-        return chat != nil
     }
     
     func getHintsEnabled() -> Bool? {

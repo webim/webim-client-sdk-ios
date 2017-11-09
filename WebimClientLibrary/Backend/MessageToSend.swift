@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Message subtype which is used when message is sending by visitor at the moment.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class MessageToSend: MessageImpl {
     
     // MARK: - Initialization
@@ -48,11 +55,6 @@ final class MessageToSend: MessageImpl {
                    historyMessage: false,
                    internalID: nil,
                    rawText: nil)
-    }
-    
-    // MARK: - Methods
-    override func getSendStatus() -> MessageSendStatus {
-        return MessageSendStatus.SENDING
     }
     
 }

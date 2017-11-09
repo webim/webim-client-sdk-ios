@@ -28,6 +28,12 @@ import Foundation
 
 // This class is not used anywhere yet. Implemented for the future tasks.
 // FIXME: Fix SessionParametersListenerImpl for using this class instead of visitorJSONString and manual deserialization.
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class VisitorItem {
     
     // MARK: - Constants
@@ -40,8 +46,8 @@ final class VisitorItem {
     
     
     // MARK: - Properties
-    private var id: String?
     private var icon: IconItem?
+    private var id: String?
     private var visitorFields: VisitorFields?
     
     
@@ -60,28 +66,15 @@ final class VisitorItem {
         }
     }
     
-    
-    // MARK: - Methods
-    
-    func getVisitorFields() -> VisitorFields? {
-        return visitorFields
-    }
-    
-    func getName() -> String? {
-        return visitorFields?.getName()
-    }
-    
-    func getID() -> String? {
-        return id
-    }
-    
-    func getIcon() -> IconItem? {
-        return icon
-    }
-    
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 struct VisitorFields {
     
     // MARK: - Constants
@@ -97,17 +90,7 @@ struct VisitorFields {
     private var name: String?
     private var phone: String?
     
-    
     // MARK: - Initialization
-    
-    init(withName name: String?,
-         phone: String?,
-         email: String?) {
-        self.name = name
-        self.phone = phone
-        self.email = email
-    }
-    
     init(withJSONDictionary jsonDictionary: [String: Any?]) {
         if let email = jsonDictionary[JSONField.EMAIL.rawValue] as? String {
             self.email = email
@@ -122,19 +105,9 @@ struct VisitorFields {
         }
     }
     
-    
     // MARK: - Methods
-    
     func getName() -> String? {
         return name
-    }
-    
-    func getPhone() -> String? {
-        return phone
-    }
-    
-    func getEMail() -> String? {
-        return email
     }
     
 }

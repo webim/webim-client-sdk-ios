@@ -26,18 +26,24 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class MessageTrackerImpl: MessageTracker {
     
     // MARK: - Properties
     let messageListener: MessageListener
-    private let messageHolder: MessageHolder!
+    private let messageHolder: MessageHolder
     var idToHistoryMessageMap = [String : MessageImpl]()
     private var allMessageSourcesEnded: Bool?
     private var cachedCompletionHandler: MessageHolderCompletionHandlerWrapper?
     private var cachedLimit: Int?
     private var destroyed: Bool?
-    private var firstHistoryUpdateReceived: Bool?
     private var headMessage: MessageImpl?
+    private var firstHistoryUpdateReceived: Bool?
     private var messagesLoading: Bool?
     
     
@@ -53,21 +59,27 @@ final class MessageTrackerImpl: MessageTracker {
     
     func addedNew(message: MessageImpl,
                   of messageHolder: MessageHolder) throws {
-        try message.getSource().assertIsCurrentChat()
+        do {
+            try message.getSource().assertIsCurrentChat()
+        } catch {
+            print("Message which is being added is not a part of current chat.")
+            
+            return
+        }
         
         if (headMessage != nil)
             || (allMessageSourcesEnded == true) {
-            try addNewOrMerge(message: message,
-                              of: messageHolder)
+            addNewOrMerge(message: message,
+                          of: messageHolder)
         } else {
             var currentChatMessages = messageHolder.getCurrentChatMessages()
             currentChatMessages.append(message)
             messageHolder.set(currentChatMessages: currentChatMessages)
             
-            // FIXME: Do it on endOfBatch only
+            // FIXME: Do it on endOfBatch only.
             if let completionHandler = cachedCompletionHandler {
-                try getNextUncheckedMessagesBy(limit: ((cachedLimit != nil) ? cachedLimit! : 0),
-                                               completion: completionHandler.getCompletionHandler())
+                getNextUncheckedMessagesBy(limit: ((cachedLimit != nil) ? cachedLimit! : 0),
+                                           completion: completionHandler.getCompletionHandler())
                 
                 cachedCompletionHandler = nil
             }
@@ -79,8 +91,8 @@ final class MessageTrackerImpl: MessageTracker {
         if (headMessage != nil)
             || (allMessageSourcesEnded == true) {
             for message in messages {
-                try addNewOrMerge(message: message,
-                                  of: messageHolder)
+                addNewOrMerge(message: message,
+                              of: messageHolder)
             }
         } else {
             var currentChatMessages = messageHolder.getCurrentChatMessages()
@@ -90,8 +102,8 @@ final class MessageTrackerImpl: MessageTracker {
             messageHolder.set(currentChatMessages: currentChatMessages)
             
             if let completionHandler = cachedCompletionHandler {
-                try getNextUncheckedMessagesBy(limit: ((cachedLimit != nil) ? cachedLimit! : 0),
-                                               completion: completionHandler.getCompletionHandler())
+                getNextUncheckedMessagesBy(limit: ((cachedLimit != nil) ? cachedLimit! : 0),
+                                           completion: completionHandler.getCompletionHandler())
                 
                 cachedCompletionHandler = nil
             }
@@ -101,13 +113,25 @@ final class MessageTrackerImpl: MessageTracker {
     func changedCurrentChatMessage(from previousVersion: MessageImpl,
                                    to newVersion: MessageImpl,
                                    at index: Int,
-                                   of messageHolder: MessageHolder) throws {
-        try previousVersion.getSource().assertIsCurrentChat()
-        try newVersion.getSource().assertIsCurrentChat()
+                                   of messageHolder: MessageHolder) {
+        do {
+            try previousVersion.getSource().assertIsCurrentChat()
+        } catch {
+            print("Message which is being changed is not a part of current chat.")
+            
+            return
+        }
+        do {
+            try newVersion.getSource().assertIsCurrentChat()
+        } catch {
+            print("Replacement message for a current chat message is not a part of current chat.")
+            
+            return
+        }
         
         if let headMessage = headMessage {
             if headMessage.getSource().isHistoryMessage() {
-                if previousVersion == headMessage {
+                if previousVersion === headMessage {
                     self.headMessage = newVersion
                 }
                 
@@ -118,7 +142,7 @@ final class MessageTrackerImpl: MessageTracker {
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                     if currentChatMessage.getID() == headMessage.getID() {
                         if index >= currentChatMessageIndex {
-                            if previousVersion == headMessage {
+                            if previousVersion === headMessage {
                                 self.headMessage = newVersion
                             }
                             
@@ -135,8 +159,12 @@ final class MessageTrackerImpl: MessageTracker {
     
     func deletedCurrentChat(message: MessageImpl,
                             at index: Int,
-                            messageHolder: MessageHolder) throws {
-        try message.getSource().assertIsCurrentChat()
+                            messageHolder: MessageHolder) {
+        do {
+            try message.getSource().assertIsCurrentChat()
+        } catch {
+            print("Message which is being deleted is not a part of current chat.")
+        }
         
         let currentChatMessages = messageHolder.getCurrentChatMessages()
         
@@ -154,36 +182,24 @@ final class MessageTrackerImpl: MessageTracker {
         }
     }
     
-    func getHeadMessage() -> MessageImpl? {
-        return headMessage
-    }
-    
-    func set(headMessage: MessageImpl?) {
-        self.headMessage = headMessage
-    }
-    
-    func set(allMessageSourcesEnded: Bool) {
-        self.allMessageSourcesEnded = allMessageSourcesEnded
-    }
-    
     func set(messagesLoading: Bool) {
         self.messagesLoading = messagesLoading
     }
     
-    func endedHistoryBatch() throws {
+    func endedHistoryBatch() {
         if firstHistoryUpdateReceived != true {
             firstHistoryUpdateReceived = true
             
             if let completionHandler = cachedCompletionHandler {
-                try getNextUncheckedMessagesBy(limit: ((cachedLimit != nil) ? cachedLimit! : 0),
-                                               completion: completionHandler.getCompletionHandler())
+                getNextUncheckedMessagesBy(limit: ((cachedLimit != nil) ? cachedLimit! : 0),
+                                           completion: completionHandler.getCompletionHandler())
                 
                 cachedCompletionHandler = nil
             }
         }
     }
     
-    func deletedHistory(messageID: String) {
+    func deletedHistoryMessage(withID messageID: String) {
         guard let message = idToHistoryMessageMap[messageID] else {
             return
         }
@@ -198,13 +214,18 @@ final class MessageTrackerImpl: MessageTracker {
         }
     }
     
-    func changedHistory(message: MessageImpl) throws {
-        try message.getSource().assertIsHistory()
+    func changedHistory(message: MessageImpl) {
+        do {
+            try message.getSource().assertIsHistory()
+        } catch {
+            print("Message which is being changed is not a part of histoty.")
+        }
+        
         
         if let headMessage = headMessage {
             if headMessage.getSource().isHistoryMessage()
                 && (message.getTimeInMicrosecond() >= headMessage.getTimeInMicrosecond()) {
-                let previousMessage: MessageImpl? = idToHistoryMessageMap[message.getHistoryID()!.getDBid()] ?? nil
+                let previousMessage: MessageImpl? = idToHistoryMessageMap[message.getHistoryID()!.getDBid()]
                 idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = message
                 if previousMessage != nil {
                     messageListener.changed(message: previousMessage!,
@@ -217,11 +238,16 @@ final class MessageTrackerImpl: MessageTracker {
     }
     
     func addedHistory(message: MessageImpl,
-                      before id: HistoryID?) throws {
-        try message.getSource().assertIsHistory()
+                      before id: HistoryID?) {
+        do {
+            try message.getSource().assertIsHistory()
+        } catch {
+            print("Message which is being added is not a part of history.")
+        }
         
-        if let headMessage = headMessage {
-            if headMessage.getSource().isHistoryMessage() {
+        
+        if headMessage != nil {
+            if headMessage!.getSource().isHistoryMessage() {
                 if let beforeID = id {
                     if let beforeMessage = idToHistoryMessageMap[beforeID.getDBid()] {
                         idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = message
@@ -231,7 +257,8 @@ final class MessageTrackerImpl: MessageTracker {
                 } else {
                     idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = message
                     let currentChatMessages = messageHolder.getCurrentChatMessages()
-                    messageListener.added(message: message, after: (currentChatMessages.isEmpty ? nil : currentChatMessages.first!))
+                    messageListener.added(message: message,
+                                          after: (currentChatMessages.isEmpty ? nil : currentChatMessages.first!))
                 }
             }
         }
@@ -245,39 +272,41 @@ final class MessageTrackerImpl: MessageTracker {
         try messageHolder.checkAccess()
         
         guard destroyed != true else {
-            throw MessageTrackerError.destroyedObject("MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            print("MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            return
         }
         guard messagesLoading != true else {
-            throw MessageTrackerError.repeatedRequest("Messages are already loading. Unable to perform a second request to get new messages.")
+            print("Messages are already loading. Unable to perform a second request to get new messages.")
+            return
         }
         guard limit > 0 else {
-            throw MessageTrackerError.invalidArgument("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limit)")
+            print("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limit)")
+            return
         }
         
         messagesLoading = true
         
+        let currentChatMessages = messageHolder.getCurrentChatMessages()
         if (firstHistoryUpdateReceived == true)
-            || ((messageHolder.getCurrentChatMessages().count != 0)
-                && (messageHolder.getCurrentChatMessages()[0] != headMessage)) {
-            try getNextUncheckedMessagesBy(limit: limit,
-                                           completion: completion)
+            || (!currentChatMessages.isEmpty
+                && (currentChatMessages.first != headMessage)) {
+            getNextUncheckedMessagesBy(limit: limit,
+                                       completion: completion)
         } else {
             cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
             cachedLimit = limit
             
-            try messageHolder.getHistoryStorage().getLatestBy(limitOfMessages: limit) { messages in
-                if let cachedCompletionHandler = self.cachedCompletionHandler {
-                    if !messages.isEmpty {
-                        let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
-                        
-                        self.firstHistoryUpdateReceived = true
-                        
-                        try self.receive(messages: messages as! [MessageImpl],
-                                         limit: limit,
-                                         completion: completionHandlerToPass)
-                        
-                        self.cachedCompletionHandler = nil
-                    }
+            messageHolder.getHistoryStorage().getLatest(byLimit: limit) { messages in
+                if let cachedCompletionHandler = self.cachedCompletionHandler,
+                    !messages.isEmpty {
+                    self.firstHistoryUpdateReceived = true
+                    
+                    let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
+                    self.receive(messages: messages as! [MessageImpl],
+                                 limit: limit,
+                                 completion: completionHandlerToPass)
+                    
+                    self.cachedCompletionHandler = nil
                 }
             }
         }
@@ -287,22 +316,26 @@ final class MessageTrackerImpl: MessageTracker {
         try messageHolder.checkAccess()
         
         guard destroyed != true else {
-            throw MessageTrackerError.destroyedObject("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
+            print("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
+            return
         }
         guard messagesLoading != true else {
-            throw MessageTrackerError.repeatedRequest("Messages is loading. Unable to perform a simultaneous request to reset to a message.")
+            print("Messages is loading. Unable to perform a simultaneous request to reset to a message.")
+            return
         }
         
         let unwrappedMessage = message as! MessageImpl
-        if unwrappedMessage != headMessage {
+        if unwrappedMessage !== headMessage {
             messageHolder.set(reachedEndOfLocalHistory: false)
         }
         if unwrappedMessage.getSource().isHistoryMessage() {
+            var newIDToHistoryMessageMap = [String : MessageImpl]()
             for (id, iteratedMessage) in idToHistoryMessageMap {
-                if iteratedMessage.getTimeInMicrosecond() < unwrappedMessage.getTimeInMicrosecond() {
-                    idToHistoryMessageMap[id] = nil
+                if iteratedMessage.getTimeInMicrosecond() >= unwrappedMessage.getTimeInMicrosecond() {
+                    newIDToHistoryMessageMap[id] = iteratedMessage
                 }
             }
+            idToHistoryMessageMap = newIDToHistoryMessageMap
         } else {
             idToHistoryMessageMap.removeAll()
         }
@@ -326,8 +359,14 @@ final class MessageTrackerImpl: MessageTracker {
     // MARK: - Private methods
     
     private func addNewOrMerge(message: MessageImpl,
-                               of messageHolder: MessageHolder) throws {
-        try message.getSource().assertIsCurrentChat()
+                               of messageHolder: MessageHolder) {
+        do {
+            try message.getSource().assertIsCurrentChat()
+        } catch {
+            print("Message which is being added is not a part of current chat.")
+            
+            return
+        }
         
         var toCallMessageAdded = true
         
@@ -346,7 +385,7 @@ final class MessageTrackerImpl: MessageTracker {
                     
                     let replacingMessage = historyMessage.transferToCurrentChat(message: message)
                     currentChatMessages.append(replacingMessage)
-                    if (replacingMessage != historyMessage) {
+                    if (replacingMessage !== historyMessage) {
                         messageListener.changed(message: historyMessage,
                                                 to: replacingMessage)
                     }
@@ -362,7 +401,7 @@ final class MessageTrackerImpl: MessageTracker {
             currentChatMessages.append(message)
             
             if let messageToSend = getToSendMirrorOf(message: message,
-                                                      of: messageHolder) {
+                                                     of: messageHolder) {
                 messageListener.changed(message: messageToSend,
                                         to: message)
             } else {
@@ -388,33 +427,33 @@ final class MessageTrackerImpl: MessageTracker {
     }
     
     private func getNextUncheckedMessagesBy(limit: Int,
-                                            completion: @escaping ([Message]) -> ()) throws {
-        let completionHandler = { (messages: [Message]) throws -> () in
-            try self.receive(messages: messages as! [MessageImpl],
-                             limit: limit,
-                             completion: completion)
+                                            completion: @escaping ([Message]) -> ()) {
+        let completionHandler = { (messages: [Message]) -> () in
+            self.receive(messages: messages as! [MessageImpl],
+                         limit: limit,
+                         completion: completion)
         }
         
         if headMessage == nil {
-            try messageHolder.getLatestMessagesBy(limit: limit,
-                                                  completion: completionHandler)
-        } else {
-            try messageHolder.getMessagesBy(limit: limit,
-                                            before: headMessage!,
+            messageHolder.getLatestMessages(byLimit: limit,
                                             completion: completionHandler)
+        } else {
+            messageHolder.getMessagesBy(limit: limit,
+                                        before: headMessage!,
+                                        completion: completionHandler)
         }
     }
     
     private func receive(messages: [MessageImpl],
                          limit: Int,
-                         completion: @escaping ([Message]) -> ()) throws {
-        var result = [MessageImpl]()
+                         completion: @escaping ([Message]) -> ()) {
+        var result: [MessageImpl]?
         
+        // FIXME: Refactor this.
         if !messages.isEmpty {
             let currentChatMessages = messageHolder.getCurrentChatMessages()
-            
             if !currentChatMessages.isEmpty {
-                if messages.last!.getTime() >= currentChatMessages.first!.getTime() {
+                if (messages.last!.getTime() >= currentChatMessages.first!.getTime()) {
                     // We received history that overlap current chat messages. Merging.
                     
                     var filteredMessages = [MessageImpl]()
@@ -425,8 +464,9 @@ final class MessageTrackerImpl: MessageTracker {
                         var addToFilteredMessages = true
                         
                         if message.getSource().isHistoryMessage() {
-                            if (message.getTime() >= (currentChatMessages.first!.getTime()))
-                                && (message.getTime() <= (currentChatMessages.last!.getTime())) {
+                            let messageTime = message.getTime()
+                            if (messageTime >= currentChatMessages.first!.getTime())
+                                && (messageTime <= currentChatMessages.last!.getTime()) {
                                 for currentChatMessage in currentChatMessages {
                                     if currentChatMessage.getID() == message.getID() {
                                         addToFilteredMessages = false
@@ -445,13 +485,16 @@ final class MessageTrackerImpl: MessageTracker {
                     }
                     
                     if filteredMessages.isEmpty {
-                        try messageHolder.getMessagesBy(limit: limit,
-                                                        before: firstMessage,
-                                                        completion: completion)
+                        messageHolder.getMessagesBy(limit: limit,
+                                                    before: firstMessage,
+                                                    completion: completion)
+                        
                         return
                     }
                     
                     result = filteredMessages
+                } else {
+                    result = messages
                 }
             } else {
                 result = messages
@@ -459,14 +502,16 @@ final class MessageTrackerImpl: MessageTracker {
             
             for message in messages {
                 if message.getSource().isHistoryMessage() {
-                    idToHistoryMessageMap[(message.getHistoryID()!.getDBid())] = message
+                    idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = message
                 }
             }
             
-            let firstMessage = result.first!
+            let firstMessage = result!.first!
             
-            if (headMessage == nil)
-                || (firstMessage.getTimeInMicrosecond() < headMessage!.getTimeInMicrosecond()) {
+            // FIXME: Refactor this.
+            if headMessage == nil {
+                headMessage = firstMessage
+            } else if firstMessage.getTimeInMicrosecond() < headMessage!.getTimeInMicrosecond() {
                 headMessage = firstMessage
             }
         } else {
@@ -477,7 +522,7 @@ final class MessageTrackerImpl: MessageTracker {
         
         messagesLoading = false
         
-        completion(result as [Message])
+        completion(result!)
     }
     
 }

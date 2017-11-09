@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates operator rating data.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class RatingItem {
     
     // MARK: - Constants

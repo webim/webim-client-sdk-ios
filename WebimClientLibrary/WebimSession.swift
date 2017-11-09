@@ -26,6 +26,12 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 public protocol WebimSession {
     
     /**
@@ -33,30 +39,46 @@ public protocol WebimSession {
      - important:
      Session is created as paused. To start using it firstly you should call this method.
      - throws:
-     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.invalidSession` if WebimSession was destroyed.
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func resume() throws
     
     /**
      Pauses session networking.
      - throws:
-     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.invalidSession` if WebimSession was destroyed.
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func pause() throws
     
     /**
      Destroys session. After that any session methods are not available.
      - throws:
-     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.invalidSession` if WebimSession was destroyed.
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func destroy() throws
     
     /**
      - returns:
      A `MessageStream` object attached to this session. Each invocation of this method returns the same object.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getStream() -> MessageStream
     
@@ -64,6 +86,14 @@ public protocol WebimSession {
      Changes location without creating a new session.
      - parameter location:
      New location name.
+     - throws:
+     `FatalErrorType`.
+     - SeeAlso:
+     `FatalErrorHandler`.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func change(location: String) throws
     

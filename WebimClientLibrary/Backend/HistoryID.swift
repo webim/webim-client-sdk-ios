@@ -26,11 +26,18 @@
 
 import Foundation
 
+/**
+ Class that encapsulates message ID in history context.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class HistoryID {
 
     // MARK: - Properties
-    fileprivate let dbID: String
-    fileprivate let timeInMicrosecond: Int64
+    private let dbID: String
+    private let timeInMicrosecond: Int64
     
     
     // MARK: - Initialization

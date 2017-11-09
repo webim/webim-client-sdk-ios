@@ -32,18 +32,30 @@ import Foundation
  Abstracts a remote notifications.
  - SeeAlso:
  `Webim.parseRemoteNotification()`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public protocol WebimRemoteNotification {
     
     /**
      - returns:
      The type of this remote notification.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getType() -> NotificationType
     
     /**
      - returns:
      The event of this remote notification.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getEvent() -> NotificationEvent
     
@@ -52,6 +64,10 @@ public protocol WebimRemoteNotification {
      Parameters of this remote notification. Each `NotificationType` has specific list of parameters.
      - SeeAlso:
      `NotificationType`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getParameters() -> [String]
 
@@ -63,29 +79,45 @@ public protocol WebimRemoteNotification {
  - SeeAlso:
  `WebimRemoteNotification.getType()`
  `WebimRemoteNotification.getParameters()`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public enum NotificationType {
     
     /**
      This notification type indicated that an operator has connected to a dialogue.
      Parameters:
-     - Operator's name.
+     * Operator's name.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     case OPERATOR_ACCEPTED
     
     /**
      This notification type indicated that an operator has sent a file.
      Parameters:
-     - Operator's name;
-     - File name.
+     * Operator's name;
+     * File name.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     case OPERATOR_FILE
     
     /**
      This notification type indicated that an operator has sent a text message.
      Parameters:
-     - Operator's name;
-     - Message text.
+     * Operator's name;
+     * Message text.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     case OPERATOR_MESSAGE
 }
@@ -94,16 +126,28 @@ public enum NotificationType {
 /**
  - SeeAlso:
  `WebimRemoteNotification.getEvent()`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public enum NotificationEvent {
     
     /**
      Means that a notification should be added by current remote notification.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     case ADD
     
     /**
      Means that a notification should be deleted by current remote notification.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     case DELETE
     

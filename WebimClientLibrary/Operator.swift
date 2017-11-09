@@ -30,6 +30,10 @@ import Foundation
  Abstracts a chat operator.
  - SeeAlso:
  `MessageStream.getCurrentOperator()`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
  */
 public protocol Operator {
     
@@ -39,18 +43,30 @@ public protocol Operator {
      - SeeAlso:
      `MessageStream.rateOperatorWith(id:,byRate rate:)`
      `MessageStream.getLastRatingOfOperatorWith(id:)`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getID() -> String?
     
     /**
      - returns:
      A display name of the operator.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getName() -> String?
     
     /**
      - returns:
      A URL String of the operator’s avatar.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     func getAvatarURLString() -> String?
     

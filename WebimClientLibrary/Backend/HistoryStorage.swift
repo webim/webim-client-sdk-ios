@@ -26,6 +26,12 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 protocol HistoryStorage {
     
     // When this values is changed history will be re-requested.
@@ -33,18 +39,18 @@ protocol HistoryStorage {
     
     func set(reachedHistoryEnd: Bool)
     
-    func getLatestBy(limitOfMessages: Int,
-                     completion: @escaping ([Message]) throws -> ()) throws
+    func getLatest(byLimit limitOfMessages: Int,
+                   completion: @escaping ([Message]) -> ())
     
     func getBefore(id: HistoryID,
                    limitOfMessages: Int,
-                   completion: @escaping ([Message]) throws -> ()) throws
+                   completion: @escaping ([Message]) -> ())
     
     func receiveHistoryBefore(messages: [MessageImpl],
                               hasMoreMessages: Bool)
     
-    func receiveHistoryUpdate(messages: [MessageImpl],
+    func receiveHistoryUpdate(withMessages messages: [MessageImpl],
                               idsToDelete: Set<String>,
-                              completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) throws -> ()) throws
+                              completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ())
     
 }

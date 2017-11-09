@@ -54,6 +54,12 @@ fileprivate enum UserDefaultsGUIDPrefix: String {
 
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class WebimSessionImpl {
     
     // MARK: - Constants
@@ -64,23 +70,23 @@ final class WebimSessionImpl {
     
     
     // MARK: - Properties
-    fileprivate var client: WebimClient
-    fileprivate var historyPoller: HistoryPoller
-    fileprivate var sessionDestroyer: SessionDestroyer
     private var accessChecker: AccessChecker
     private var clientStarted: Bool?
+    private var historyPoller: HistoryPoller
     private var messageStream: MessageStreamImpl
+    private var sessionDestroyer: SessionDestroyer
+    private var webimClient: WebimClient
     
     
     // MARK: - Initialization
-    fileprivate init(withAccessChecker accessChecker: AccessChecker,
-                     sessionDestroyer: SessionDestroyer,
-                     webimClient client: WebimClient,
-                     historyPoller: HistoryPoller,
-                     messageStream: MessageStreamImpl) {
+    private init(withAccessChecker accessChecker: AccessChecker,
+                 sessionDestroyer: SessionDestroyer,
+                 webimClient client: WebimClient,
+                 historyPoller: HistoryPoller,
+                 messageStream: MessageStreamImpl) {
         self.accessChecker = accessChecker
         self.sessionDestroyer = sessionDestroyer
-        self.client = client
+        self.webimClient = client
         self.historyPoller = historyPoller
         self.messageStream = messageStream
     }
@@ -97,7 +103,7 @@ final class WebimSessionImpl {
                                 areRemoteNotificationsEnabled: Bool,
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool?,
-                                isVisitorDataClearingEnabled: Bool?) throws -> WebimSessionImpl {
+                                isVisitorDataClearingEnabled: Bool?) -> WebimSessionImpl {
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.MAIN.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
@@ -129,8 +135,7 @@ final class WebimSessionImpl {
         
         let deltaCallback = DeltaCallback(withCurrentChatMessageMapper: currentChatMessageMapper)
 
-        var webimClient: WebimClient? = nil
-        webimClient = try WebimClientBuilder()
+        let webimClient = WebimClientBuilder()
             .set(baseURL: serverURLString)
             .set(location: location)
             .set(appVersion: appVersion)
@@ -192,7 +197,7 @@ final class WebimSessionImpl {
         let accessChecker = AccessChecker(with: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
         
-        let webimActions = webimClient!.getActions()
+        let webimActions = webimClient.getActions()
         let historyMessageMapper: MessageFactoriesMapper = HistoryMapper(withServerURLString: serverURLString)
         let messageHolder = MessageHolder(withAccessChecker: accessChecker,
                                           remoteHistoryProvider: RemoteHistoryProvider(withWebimActions: webimActions!,
@@ -213,15 +218,15 @@ final class WebimSessionImpl {
         deltaCallback.set(messageStream: messageStream,
                           messageHolder: messageHolder)
         
-        let historyPoller = try HistoryPoller(withSessionDestroyer: sessionDestroyer,
-                                              queue: queue,
-                                              historyMessageMapper: historyMessageMapper,
-                                              webimActions: webimActions!,
-                                              messageHolder: messageHolder,
-                                              historyMetaInformationStorage: historyMetaInformationStoragePreferences)
+        let historyPoller = HistoryPoller(withSessionDestroyer: sessionDestroyer,
+                                          queue: queue,
+                                          historyMessageMapper: historyMessageMapper,
+                                          webimActions: webimActions!,
+                                          messageHolder: messageHolder,
+                                          historyMetaInformationStorage: historyMetaInformationStoragePreferences)
         
         sessionDestroyer.add(action: { () -> Void in
-            webimClient?.stop()
+            webimClient.stop()
         })
         sessionDestroyer.add(action: { () -> Void in
             historyPoller.pause()
@@ -229,7 +234,7 @@ final class WebimSessionImpl {
         
         return WebimSessionImpl(withAccessChecker: accessChecker,
                                 sessionDestroyer: sessionDestroyer,
-                                webimClient: webimClient!,
+                                webimClient: webimClient,
                                 historyPoller: historyPoller,
                                 messageStream: messageStream)
     }
@@ -303,12 +308,12 @@ extension WebimSessionImpl: WebimSession {
         try checkAccess()
         
         if clientStarted != true {
-            client.start()
+            webimClient.start()
             clientStarted = true
         }
         
-        client.resume()
-        try historyPoller.resume()
+        webimClient.resume()
+        historyPoller.resume()
     }
     
     func pause() throws {
@@ -318,7 +323,7 @@ extension WebimSessionImpl: WebimSession {
         
         try checkAccess()
         
-        client.pause()
+        webimClient.pause()
         historyPoller.pause()
     }
     
@@ -337,7 +342,7 @@ extension WebimSessionImpl: WebimSession {
     }
     
     func change(location: String) throws {
-        try client.getDeltaRequestLoop().change(location: location)
+        try webimClient.getDeltaRequestLoop().change(location: location)
     }
     
     
@@ -352,6 +357,12 @@ extension WebimSessionImpl: WebimSession {
 // MARK: - Private classes
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final private class HistoryPoller {
     
     // MARK: - Constants
@@ -368,7 +379,7 @@ final private class HistoryPoller {
     private let sessionDestroyer: SessionDestroyer
     private let webimActions: WebimActions
     private var dispatchWorkItem: DispatchWorkItem?
-    private var historySinceCompletionHandler: ((_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) throws -> ())?
+    private var historySinceCompletionHandler: ((_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> ())?
     private var lastPollingTime = -TimeInterval.HISTORY_POLL.rawValue
     private var lastRevision: String?
     private var running: Bool?
@@ -380,7 +391,7 @@ final private class HistoryPoller {
          historyMessageMapper: MessageFactoriesMapper,
          webimActions: WebimActions,
          messageHolder: MessageHolder,
-         historyMetaInformationStorage: HistoryMetaInformationStorage) throws {
+         historyMetaInformationStorage: HistoryMetaInformationStorage) {
         self.sessionDestroyer = sessionDestroyer
         self.queue = queue
         self.historyMessageMapper = historyMessageMapper
@@ -401,12 +412,12 @@ final private class HistoryPoller {
         running = false
     }
     
-    func resume() throws {
+    func resume() {
         pause()
         
         running = true
         
-        self.historySinceCompletionHandler = try createHistorySinceCompletionHandler()
+        self.historySinceCompletionHandler = createHistorySinceCompletionHandler()
         
         let uptime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
         if (uptime - lastPollingTime) > TimeInterval.HISTORY_POLL.rawValue {
@@ -431,8 +442,8 @@ final private class HistoryPoller {
     
     // MARK: Private methods
     
-    private func createHistorySinceCompletionHandler() throws -> (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) throws -> () {
-        return { (messageList: [MessageImpl], deleted: Set<String>, hasMore: Bool, isInitial: Bool, revision: String?) throws in
+    private func createHistorySinceCompletionHandler() -> (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> () {
+        return { (messageList: [MessageImpl], deleted: Set<String>, hasMore: Bool, isInitial: Bool, revision: String?) in
             if self.sessionDestroyer.isDestroyed() {
                 return
             }
@@ -447,12 +458,12 @@ final private class HistoryPoller {
                 self.historyMetaInformationStorage.set(historyEnded: true)
             }
             
-            try self.messageHolder.receiveHistoryUpdateWith(messages: messageList,
-                                                            deleted: deleted,
-                                                            completion: {
-                                                                // Revision is saved after history was saved only.
-                                                                // I.e. if history will not be saved, then revision will not be overwritten. History will be re-requested.
-                                                                self.historyMetaInformationStorage.set(revision: revision)
+            self.messageHolder.receiveHistoryUpdateWith(messages: messageList,
+                                                        deleted: deleted,
+                                                        completion: {
+                                                            // Revision is saved after history was saved only.
+                                                            // I.e. if history will not be saved, then revision will not be overwritten. History will be re-requested.
+                                                            self.historyMetaInformationStorage.set(revision: revision)
             })
             
             if self.running != true {
@@ -466,16 +477,12 @@ final private class HistoryPoller {
             
             if !isInitial
                 && hasMore {
-                try self.requestHistory(since: revision,
-                                        completion: self.createHistorySinceCompletionHandler())
+                self.requestHistory(since: revision,
+                                    completion: self.createHistorySinceCompletionHandler())
             } else {
                 self.dispatchWorkItem = DispatchWorkItem() {
-                    do {
-                        try self.requestHistory(since: revision,
-                                                completion: self.createHistorySinceCompletionHandler())
-                    } catch {
-                        print("Requesting history failed.")
-                    }
+                    self.requestHistory(since: revision,
+                                        completion: self.createHistorySinceCompletionHandler())
                 }
                 let interval = Int(TimeInterval.HISTORY_POLL.rawValue)
                 self.queue.asyncAfter(deadline: (.now() + .milliseconds(interval)),
@@ -485,10 +492,10 @@ final private class HistoryPoller {
     }
     
     private func requestHistory(since: String?,
-                                completion: @escaping (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) throws -> ()) {
+                                completion: @escaping (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> ()) {
         webimActions.requestHistory(since: since) { data in
             if data == nil {
-                try completion([MessageImpl](), Set<String>(), false, (since == nil), since)
+                completion([MessageImpl](), Set<String>(), false, (since == nil), since)
             } else {
                 let json = try? JSONSerialization.jsonObject(with: data!,
                                                              options: [])
@@ -510,7 +517,7 @@ final private class HistoryPoller {
                         }
                     }
                     
-                    try completion(self.historyMessageMapper.mapAll(messages: messageChanges), deletes, (historySinceResponse.getData()?.isHasMore() == true), (since == nil), historySinceResponse.getData()?.getRevision())
+                    completion(self.historyMessageMapper.mapAll(messages: messageChanges), deletes, (historySinceResponse.getData()?.isHasMore() == true), (since == nil), historySinceResponse.getData()?.getRevision())
                 }
             }
         }
@@ -519,6 +526,12 @@ final private class HistoryPoller {
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final private class SessionParametersListenerImpl: SessionParametersListener {
     
     // MARL: - Constants
@@ -580,6 +593,12 @@ final private class SessionParametersListenerImpl: SessionParametersListener {
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final private class DestroyIfNotErrorListener: InternalErrorListener {
     
     // MARK: - Properties
@@ -613,6 +632,12 @@ final private class DestroyIfNotErrorListener: InternalErrorListener {
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
     
     // MARK: - Parameters
@@ -632,7 +657,7 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
             let webimError = WebimErrorImpl(errorType: (error != nil) ? toPublicErrorType(string: error!) : FatalErrorType.UNKNOWN,
                                             errorString: (error != nil) ? error! : "Unknown error from URL \(urlString)")
             
-            fatalErrorHandler?.on(error: webimError)
+            fatalErrorHandler!.on(error: webimError)
         }
     }
     
@@ -655,6 +680,12 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final private class HistoryMetaInformationStoragePreferences: HistoryMetaInformationStorage {
     
     // MARK: - Properties

@@ -27,15 +27,32 @@
 import Foundation
 
 
+/**
+ Protocol which is implemented by several mappers classes.
+ - SeeAlso:
+ `MessageItem`
+ `Message`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 protocol MessageFactoriesMapper {
     
-    func map(message: MessageItem) throws -> MessageImpl?
+    func map(message: MessageItem) -> MessageImpl?
     
     func mapAll(messages: [MessageItem]) -> [MessageImpl]
     
 }
 
+
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 class AbstractMapper: MessageFactoriesMapper {
     
     // MARK: - Constants
@@ -57,12 +74,16 @@ class AbstractMapper: MessageFactoriesMapper {
     // MARK: - Methods
     
     func convert(messageItem: MessageItem,
-                 historyMessage: Bool) throws -> MessageImpl? {
+                 historyMessage: Bool) -> MessageImpl? {
         let kind = messageItem.getKind()
         if (kind == nil)
             || (kind == .CONTACT_REQUEST)
             || (kind == .CONTACTS)
             || (kind == .FOR_OPERATOR) {
+            return nil
+        }
+        let type = convert(messageKind: kind!)
+        if type == nil {
             return nil
         }
         
@@ -89,7 +110,7 @@ class AbstractMapper: MessageFactoriesMapper {
                            operatorID: messageItem.getSenderId(),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
                            senderName: messageItem.getSenderName()!,
-                           type: try convert(messageKind: kind!),
+                           type: type!,
                            data: messageItem.getData(),
                            text: text!,
                            timeInMicrosecond: messageItem.getTimeInMicrosecond()!,
@@ -99,30 +120,27 @@ class AbstractMapper: MessageFactoriesMapper {
                            rawText: rawText)
     }
     
-    
     // MARK: MessageFactoriesMapper protocol methods
     
     func mapAll(messages: [MessageItem]) -> [MessageImpl] {
         var mappedList = [MessageImpl]()
         
         for message in messages {
-            if let mappedMessage = try? map(message: message) {
-                if let mappedMessage = mappedMessage {
-                    mappedList.append(mappedMessage)
-                }
+            if let mappedMessage = map(message: message) {
+                mappedList.append(mappedMessage)
             }
         }
         
         return mappedList
     }
     
-    func map(message: MessageItem) throws -> MessageImpl? {
+    func map(message: MessageItem) -> MessageImpl? {
         preconditionFailure("This method must be overridden!")
     }
     
     
     // MARK: Private methods
-    private func convert(messageKind: MessageItem.MessageKind) throws -> MessageType {
+    private func convert(messageKind: MessageItem.MessageKind) -> MessageType? {
         switch messageKind {
         case MessageItem.MessageKind.ACTION_REQUEST:
             return MessageType.ACTION_REQUEST
@@ -139,13 +157,20 @@ class AbstractMapper: MessageFactoriesMapper {
         case MessageItem.MessageKind.VISITOR:
             return MessageType.VISITOR
         default:
-            throw MapError.INVALID_MESSAGE_TYPE("Invalid message type received: \(messageKind.rawValue)")
+            print("Invalid message type received: \(messageKind.rawValue)")
+            return nil
         }
     }
     
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class CurrentChatMapper: AbstractMapper {
     
     
@@ -155,14 +180,20 @@ final class CurrentChatMapper: AbstractMapper {
     }
     
     // MARK: - Methods
-    override func map(message: MessageItem) throws -> MessageImpl? {
-        return try convert(messageItem: message,
-                           historyMessage: false)
+    override func map(message: MessageItem) -> MessageImpl? {
+        return convert(messageItem: message,
+                       historyMessage: false)
     }
     
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class HistoryMapper: AbstractMapper {
     
     // MARK: - Initialization
@@ -171,15 +202,20 @@ final class HistoryMapper: AbstractMapper {
     }
     
     // MARK: - Methods
-    override func map(message: MessageItem) throws -> MessageImpl? {
-        return try convert(messageItem: message,
-                           historyMessage: true)
+    override func map(message: MessageItem) -> MessageImpl? {
+        return convert(messageItem: message,
+                       historyMessage: true)
     }
     
 }
 
-
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class SendingFactory {
     
     // MARK: - Properties
@@ -216,6 +252,12 @@ final class SendingFactory {
 }
 
 // MARK: -
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class OperatorFactory {
     
     // MARK: - Properties

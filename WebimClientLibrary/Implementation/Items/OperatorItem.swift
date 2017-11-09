@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that encapsulates chat operator data, received from a server.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class OperatorItem {
     
     // MARK: - Constants
@@ -71,10 +78,6 @@ final class OperatorItem {
     
     func getID() -> String? {
         return id
-    }
-    
-    func getDepartmentKeys() -> [String]? {
-        return departmentKeys
     }
     
     func getAvatarURLString() -> String? {

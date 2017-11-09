@@ -26,6 +26,12 @@
 
 import Foundation
 
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     // MARK: - Constants
@@ -105,6 +111,7 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     
     // MARK: - Methods
+    // MARK: WebimRemoteNotification protocol methods
     
     func getType() -> NotificationType {
         switch type {

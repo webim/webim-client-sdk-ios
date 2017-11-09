@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that handles HTTP-request sending by SDK.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 class AbstractRequestLoop {
     
     // MARK: - Constants

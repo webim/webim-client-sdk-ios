@@ -26,16 +26,19 @@
 
 import Foundation
 
+/**
+ Class that is responsible for history storage when it is setted to memory mode.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 class WebimActions {
     
     // MARK: - Constants
     
-    enum ServerPathSuffix: String {
-        case ACTION = "/l/v/m/action"
-        case GET_DELTA = "/l/v/m/delta"
-        case DOWNLOAD_FILE = "/l/v/m/download"
-        case GET_HISTORY = "/l/v/m/history"
-        case UPLOAD_FILE = "/l/v/m/upload"
+    enum Event: String {
+        case INITIALIZATION = "init"
     }
     
     enum Parameter: String {
@@ -67,8 +70,12 @@ class WebimActions {
         case VISITOR_TYPING = "typing"
     }
     
-    enum Event: String {
-        case INITIALIZATION = "init"
+    enum ServerPathSuffix: String {
+        case ACTION = "/l/v/m/action"
+        case GET_DELTA = "/l/v/m/delta"
+        case DOWNLOAD_FILE = "/l/v/m/download"
+        case GET_HISTORY = "/l/v/m/history"
+        case UPLOAD_FILE = "/l/v/m/upload"
     }
     
     private enum Action: String {

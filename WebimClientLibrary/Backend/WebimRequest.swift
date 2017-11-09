@@ -26,16 +26,23 @@
 
 import Foundation
 
+/**
+ Class that encapsulates paramters or HTTP-requests sending by SDK.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class WebimRequest {
     
     // MARK: - Properties
-    fileprivate var baseURLString: String
-    fileprivate var boundaryString: String?
-    fileprivate var completionHandler: ((_ data: Data?) throws -> ())?
-    fileprivate var httpBody: Data?
-    fileprivate var messageID: String?
-    fileprivate var primaryData: [String : Any]
-    fileprivate var sendFileCompletionHandler: SendFileCompletionHandler?
+    private var baseURLString: String
+    private var boundaryString: String?
+    private var completionHandler: ((_ data: Data?) throws -> ())?
+    private var httpBody: Data?
+    private var messageID: String?
+    private var primaryData: [String : Any]
+    private var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
     init(withData primaryData: [String : Any],

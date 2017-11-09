@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Various SDK utilities.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class InternalUtils {
     
     // MARK: - Constants
@@ -49,29 +56,12 @@ final class InternalUtils {
     }
     
     static func getCurrentTimeInMicrosecond() -> Int64 {
-        // TODO: Delete if all is correct.
-        /*let currentDate = Date()
-        let calendar = Calendar.current
-        let dateComponents = calendar.dateComponents([.hour, .minute, .second],
-                                                     from: currentDate)
-        
-        let hour = Int64(dateComponents.hour!)
-        let minute = Int64(dateComponents.minute!)
-        let second = Int64(dateComponents.second!)
-        
-        let hourInMicrosecond = hour * 60 * 60 * 1000
-        let minuteInMicrosecond = minute * 60 * 1000
-        let secondInMicrosecond = second * 1000
-        let currentTimeInMicrosecond = hourInMicrosecond + minuteInMicrosecond + secondInMicrosecond
-        
-        return currentTimeInMicrosecond*/
-        
         return Int64(Date().timeIntervalSince1970 * 1000)
         
         // Alternative: CFAbsoluteTimeGetCurrent()
     }
     
-    static func parse(remoteNotification: [AnyHashable : Any]) throws -> WebimRemoteNotification? {
+    static func parse(remoteNotification: [AnyHashable : Any]) -> WebimRemoteNotification? {
         if let apsFields = remoteNotification[WebimRemoteNotificationImpl.APNsField.APS.rawValue] as? [String : Any] {
             if let alertFields = apsFields[WebimRemoteNotificationImpl.APSField.ALERT.rawValue] as? [String : Any] {
                 return WebimRemoteNotificationImpl(withJSONDictionary: alertFields) as WebimRemoteNotification?
@@ -79,11 +69,12 @@ final class InternalUtils {
                 return nil
             }
         } else {
-            throw Webim.RemoteNotificationError.UnknownNotificationFormat
+            print("Unknown remote notification format.")
+            return nil
         }
     }
     
-    static func isWebim(remoteNotification: [AnyHashable : Any]) throws -> Bool {
+    static func isWebim(remoteNotification: [AnyHashable : Any]) -> Bool {
         if let apsFields = remoteNotification[WebimRemoteNotificationImpl.APNsField.APS.rawValue] as? [String : Any] {
             if let customFields = apsFields[WebimRemoteNotificationImpl.APSField.CUSTOM.rawValue] as? [String : Any] {
                 if let webimField = customFields[WebimRemoteNotificationImpl.CustomField.WEBIM.rawValue] as? Bool {
@@ -91,7 +82,7 @@ final class InternalUtils {
                 }
             }
         } else {
-            throw Webim.RemoteNotificationError.UnknownNotificationFormat
+            print("Unknown remote notification format.")
         }
         
         return false

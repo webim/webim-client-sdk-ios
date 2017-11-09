@@ -26,12 +26,19 @@
 
 import Foundation
 
+/**
+ Internal representation of a chat operator data.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class OperatorImpl: Operator {
     
     // MARK: - Properties
-    fileprivate let id: String?
-    fileprivate let name: String?
-    fileprivate let avatarURLString: String?
+    private let id: String?
+    private let name: String?
+    private let avatarURLString: String?
     
     
     // MARK: - Initialization

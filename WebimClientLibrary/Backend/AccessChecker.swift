@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Class that checks if session methods are called in appropriate conditions.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 class AccessChecker {
     
     // MARK: - Properties
@@ -43,11 +50,11 @@ class AccessChecker {
     func checkAccess() throws {
         let currentThread = Thread.current
         guard thread == currentThread else {
-            throw AccessError.invalidThread("All Webim actions must be invoked from one thread, the one the session was created in./nCurrent thread: \(currentThread), session thread: \(thread)")
+            throw AccessError.INVALID_THREAD
         }
         
         guard !sessionDestroyer.isDestroyed() else {
-            throw AccessError.invalidSession("The session you are tried to use has been destroyed.")
+            throw AccessError.INVALID_SESSION
         }
     }
     

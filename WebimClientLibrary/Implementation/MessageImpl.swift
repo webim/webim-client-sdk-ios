@@ -27,19 +27,26 @@
 import Foundation
 
 
-class MessageImpl: Message {
+/**
+ Internal messages representasion.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+class MessageImpl {
     
     // MARK: - Properties
     private let attachment: MessageAttachment?
+    private let id: String
+    private let operatorID: String?
+    private let rawText: String?
+    private let senderAvatarURLString: String?
+    private let senderName: String
     private let serverURLString: String
-    fileprivate let id: String
-    fileprivate let operatorID: String?
-    fileprivate let rawText: String?
-    fileprivate let senderAvatarURLString: String?
-    fileprivate let senderName: String
-    fileprivate let text: String
-    fileprivate let timeInMicrosecond: Int64
-    fileprivate let type: MessageType
+    private let text: String
+    private let timeInMicrosecond: Int64
+    private let type: MessageType
     private var currentChatID: String?
     private var data: [String : Any?]?
     private var historyID: HistoryID?
@@ -103,7 +110,7 @@ class MessageImpl: Message {
             return nil
         }
         
-        return historyID!
+        return historyID
     }
     
     func getCurrentChatID() -> String? {
@@ -149,8 +156,8 @@ class MessageImpl: Message {
     }
     
     func invertHistoryStatus() {
-        guard (historyID != nil)
-            && (currentChatID != nil) else {
+        guard historyID != nil,
+            currentChatID != nil else {
                 print("Message \(self.toString()) has not history component or does not belong to current chat.")
                 
                 return
@@ -160,8 +167,8 @@ class MessageImpl: Message {
     }
     
     func setSecondaryHistory(historyEquivalentMessage: MessageImpl) {
-        guard (!getSource().isHistoryMessage())
-            && (historyEquivalentMessage.getSource().isHistoryMessage()) else {
+        guard !getSource().isHistoryMessage(),
+            historyEquivalentMessage.getSource().isHistoryMessage() else {
                 print("Message \(self.toString()) is already has history component.")
                 
                 return
@@ -171,8 +178,8 @@ class MessageImpl: Message {
     }
     
     func setSecondaryCurrentChat(currentChatEquivalentMessage: MessageImpl) {
-        guard getSource().isHistoryMessage()
-            && !currentChatEquivalentMessage.getSource().isHistoryMessage() else {
+        guard getSource().isHistoryMessage(),
+            !currentChatEquivalentMessage.getSource().isHistoryMessage() else {
                 print("Current chat equivalent of the message \(self.toString()) is already has history component.")
                 
                 return
@@ -197,49 +204,6 @@ class MessageImpl: Message {
             "historyID = \((historyID != nil) ? historyID!.getDBid() : "nil"),\n" +
             "rawText = \((rawText != nil) ? rawText! : "nil")\n" +
         "}"
-    }
-    
-    
-    // MARK: Message protocol methods
-    
-    func getAttachment() -> MessageAttachment? {
-        return attachment
-    }
-    
-    func getData() -> [String : Any?]? {
-        return data
-    }
-    
-    func getID() -> String {
-        return id
-    }
-    
-    func getOperatorID() -> String? {
-        return operatorID
-    }
-    
-    func getSenderAvatarFullURLString() -> String? {
-        return (senderAvatarURLString == nil) ? nil : (serverURLString + senderAvatarURLString!)
-    }
-    
-    func getSendStatus() -> MessageSendStatus {
-        return MessageSendStatus.SENT
-    }
-    
-    func getSenderName() -> String {
-        return senderName
-    }
-    
-    func getText() -> String {
-        return text
-    }
-    
-    func getTime() -> Int64 {
-        return timeInMicrosecond / 1000
-    }
-    
-    func getType() -> MessageType {
-        return type
     }
     
     
@@ -281,6 +245,55 @@ class MessageImpl: Message {
     
 }
 
+// MARK: - Message
+extension MessageImpl: Message {
+    
+    func getAttachment() -> MessageAttachment? {
+        return attachment
+    }
+    
+    func getData() -> [String : Any?]? {
+        return data
+    }
+    
+    func getID() -> String {
+        return id
+    }
+    
+    func getOperatorID() -> String? {
+        return operatorID
+    }
+    
+    func getSenderAvatarFullURLString() -> String? {
+        return (senderAvatarURLString == nil) ? nil : (serverURLString + senderAvatarURLString!)
+    }
+    
+    func getSendStatus() -> MessageSendStatus {
+        return .SENT
+    }
+    
+    func getSenderName() -> String {
+        return senderName
+    }
+    
+    func getText() -> String {
+        return text
+    }
+    
+    func getTime() -> Int64 {
+        return timeInMicrosecond / 1000
+    }
+    
+    func getType() -> MessageType {
+        return type
+    }
+    
+    func isEquals(to message: Message) -> Bool {
+        return self == message as! MessageImpl
+    }
+    
+}
+
 // MARK: - MicrosecondsTimeHolder
 extension MessageImpl: MicrosecondsTimeHolder {
     
@@ -309,7 +322,14 @@ extension MessageImpl: Equatable {
 
 
 // MARK: -
-final class MessageAttachmentImpl: MessageAttachment {
+/**
+ Internal messages' attachments representation.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+final class MessageAttachmentImpl {
     
     // MARK: - Properties
     private let urlString: String?
@@ -340,6 +360,7 @@ final class MessageAttachmentImpl: MessageAttachment {
         guard let textDictionary = try? JSONSerialization.jsonObject(with: textData!,
                                                                      options: []) as? [String : Any?] else {
                                                                         print("Message attachment parameters parsing failed.")
+                                                                        
                                                                         return nil
         }
         
@@ -369,7 +390,33 @@ final class MessageAttachmentImpl: MessageAttachment {
     }
     
     
-    // MARK: MessageAttachment protocol methods
+    // MARK: Private methods
+    private static func extractImageInfoOf(fileParameters: FileParametersItem?,
+                                           with fileURLString: String?) -> ImageInfo? {
+        guard fileParameters != nil,
+            fileURLString != nil else {
+            return nil
+        }
+        
+        let imageSize = (fileParameters?.getImageParameters() == nil) ? nil : fileParameters?.getImageParameters()?.getSize()
+        guard imageSize != nil else {
+            return nil
+        }
+        
+        let thumbURLString = (fileURLString == nil) ? nil : (fileURLString! + "?thumb=ios")
+        guard thumbURLString != nil else {
+            return nil
+        }
+        
+        return ImageInfoImpl(withThumbURLString: thumbURLString!,
+                             width: imageSize!.getWidth(),
+                             height: imageSize!.getHeight())
+    }
+    
+}
+
+// MARK: - MessageAttachment
+extension MessageAttachmentImpl: MessageAttachment {
     
     func getContentType() -> String? {
         return contentType
@@ -391,34 +438,19 @@ final class MessageAttachmentImpl: MessageAttachment {
         return urlString
     }
     
-    
-    // MARK: Private methods
-    private static func extractImageInfoOf(fileParameters: FileParametersItem?,
-                                           with fileURLString: String?) -> ImageInfo? {
-        guard (fileParameters != nil)
-            && (fileURLString != nil) else {
-            return nil
-        }
-        
-        let imageSize = (fileParameters?.getImageParameters() == nil) ? nil : fileParameters?.getImageParameters()?.getSize()
-        guard imageSize != nil else {
-            return nil
-        }
-        
-        let thumbURLString = (fileURLString == nil) ? nil : (fileURLString! + "?thumb=ios")
-        guard thumbURLString != nil else {
-            return nil
-        }
-        
-        return ImageInfoImpl(withThumbURLString: thumbURLString!,
-                             width: imageSize?.getWidth(),
-                             height: imageSize?.getHeight())
-    }
-    
 }
 
 
 // MARK: -
+/**
+ Internal image information representation.
+ - SeeAlso:
+ `MessageAttachment`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 final class ImageInfoImpl: ImageInfo {
     
     // MARK: - Properties
@@ -437,7 +469,8 @@ final class ImageInfoImpl: ImageInfo {
     }
     
     
-    // MARK: - ImageInfo protocol methods
+    // MARK: - Methods
+    // MARK: ImageInfo protocol methods
     
     func getThumbURLString() -> String {
         return thumbURLString

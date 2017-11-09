@@ -26,6 +26,13 @@
 
 import Foundation
 
+/**
+ Errors that can be received from a server after a HTTP-request.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 enum WebimInternalError: String, Error {
     case ACCOUNT_BLOCKED = "account-blocked"
     case OPERATOR_NOT_IN_CHAT = "operator-not-in-chat"
