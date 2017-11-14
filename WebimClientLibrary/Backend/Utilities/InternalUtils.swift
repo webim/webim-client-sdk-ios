@@ -43,16 +43,18 @@ final class InternalUtils {
     
     // MARK: - Methods
     
-    static func createServerURLStringBy(accountName: String?) -> String? {
-        if accountName == nil {
-            return nil
+    static func createServerURLStringBy(accountName: String) -> String {
+        var serverURLstring = accountName
+        
+        if serverURLstring.range(of: "://") != nil {
+            if serverURLstring.last! == "/" {
+                serverURLstring.removeLast()
+            }
+            
+            return serverURLstring
         }
         
-        if accountName?.range(of: "://") != nil {
-            return accountName
-        }
-        
-        return "https://\(accountName!).webim.ru"
+        return "https://\(serverURLstring).webim.ru"
     }
     
     static func getCurrentTimeInMicrosecond() -> Int64 {

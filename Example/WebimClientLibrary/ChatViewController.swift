@@ -46,7 +46,7 @@ class ChatViewController: SLKTextViewController {
     }
     
     private enum VisitorFieldValue: String {
-        // Hardcoded. See https://webim.ru/help/identification/
+        // Hardcoded. See more at https://webim.ru/help/identification/
         case ID = "1234567890987654321"
         case NAME = "Никита"
         case CRC = "ffadeb6aa3c788200824e311b9aa44cb"
@@ -58,8 +58,8 @@ class ChatViewController: SLKTextViewController {
     
     
     // MARK: - Properties
-    let imagePicker = UIImagePickerController()
-    let refreshControl = UIRefreshControl()
+    private let imagePicker = UIImagePickerController()
+    private let refreshControl = UIRefreshControl()
     private lazy var alreadyRated = [String : Bool]()
     private var lastOperatorID: String?
     private lazy var messages = [Message]()
@@ -182,8 +182,15 @@ class ChatViewController: SLKTextViewController {
         if let operatorID = message.getOperatorID() {
             lastOperatorID = operatorID // For using on chat closing.
             let gestureRecognizer = UITapGestureRecognizer(target: self,
-                                                           action:  #selector (ChatViewController.rateOperator(_:)))
+                                                           action:  #selector(ChatViewController.rateOperator(_:)))
             cell.avatarImageView.addGestureRecognizer(gestureRecognizer)
+        }
+        
+        if (message.getType() == .FILE_FROM_OPERATOR)
+            || (message.getType() == .FILE_FROM_VISITOR) {
+            let gestureRecognizer = UITapGestureRecognizer(target: self,
+                                                           action: #selector(ChatViewController.showFile(_:)))
+            cell.bodyLabel.addGestureRecognizer(gestureRecognizer)
         }
         
         return cell
@@ -381,6 +388,67 @@ class ChatViewController: SLKTextViewController {
         }
     }
     
+    @objc private func showFile(_ recognizer: UITapGestureRecognizer) {
+        if recognizer.state == .ended {
+            let tapLocation = recognizer.location(in: tableView)
+            if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
+                let message = messages[tapIndexPath.row]
+                
+                if let attachment = message.getAttachment() {
+                    if let fileName = attachment.getFileName() {
+                        if let attachmentURLString = attachment.getURLString() {
+                            var popupMessage: String?
+                            var image: UIImage?
+                            
+                            let attachmentContentType = attachment.getContentType()
+                            if (attachmentContentType == "image/gif")
+                                || (attachmentContentType == "image/jpeg")
+                                || (attachmentContentType == "image/png")
+                                || (attachmentContentType == "image/tiff") {
+                                let attachmentURL = URL(string: attachmentURLString)!
+                                let semaphore = DispatchSemaphore(value: 0)
+                                let request = URLRequest(url: attachmentURL)
+                                URLSession.shared.dataTask(with: request,
+                                                           completionHandler: { data, _, _ in
+                                                            if let data = data {
+                                                                if let downloadedImage = UIImage(data: data) {
+                                                                    image = downloadedImage
+                                                                } else {
+                                                                    popupMessage = ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue
+                                                                }
+                                                            } else {
+                                                                popupMessage = ShowFileDialog.INVALID_IMAGE_LINK.rawValue
+                                                            }
+                                                            
+                                                            semaphore.signal()
+                                }).resume()
+                                
+                                _ = semaphore.wait(timeout: .distantFuture)
+                            } else {
+                                popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
+                            }
+                            
+                            let button = CancelButton(title: ShowFileDialog.BUTTON_TITLE.rawValue,
+                                                      action: nil)
+                            let popup = PopupDialog(title: fileName,
+                                                    message: popupMessage,
+                                                    image: image,
+                                                    buttonAlignment: .horizontal,
+                                                    transitionStyle: .bounceUp,
+                                                    gestureDismissal: true,
+                                                    completion: nil)
+                            popup.addButton(button)
+                            
+                            self.present(popup,
+                                         animated: true,
+                                         completion: nil)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private func showRatingDialog(forOperator operatorID: String) {
         let ratingVC = RatingViewController(nibName: "RatingViewController",
                                             bundle: nil)
@@ -389,11 +457,11 @@ class ChatViewController: SLKTextViewController {
                                 transitionStyle: .bounceUp,
                                 gestureDismissal: true)
         
-        let cancelButton = CancelButton(title: "Cancel",
+        let cancelButton = CancelButton(title: RatingDialog.CANCEL_BUTTON_TITLE.rawValue,
                                         height: 60,
                                         dismissOnTap: true,
                                         action: nil)
-        let rateButton = DefaultButton(title: "Rate",
+        let rateButton = DefaultButton(title: RatingDialog.ACTION_BUTTON_TITLE.rawValue,
                                        height: 60,
                                        dismissOnTap: true) {
                                         self.alreadyRated[operatorID] = true
@@ -440,8 +508,7 @@ extension ChatViewController: UIImagePickerControllerDelegate {
                         let _ = try messageStream?.send(file: imageData,
                                                         filename: imageName,
                                                         mimeType: mimeType.value,
-                                                        completionHandler: nil)
-                        // TODO: Implement SendFileCompletionHandler.
+                                                        completionHandler: self)
                     } catch let error as AccessError {
                         switch error {
                         case .INVALID_SESSION:
@@ -580,4 +647,45 @@ extension ChatViewController: MessageListener {
         }
     }
     
+}
+
+// MARK: - SendFileCompletionHandler
+extension ChatViewController: SendFileCompletionHandler {
+    
+    func onSuccess(messageID: String) {
+        // Ignored.
+    }
+    
+    func onFailure(messageID: String,
+                   error: SendFileError) {
+        var message: String?
+        switch error {
+        case .FILE_SIZE_EXCEEDED:
+            message = SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue
+        case .FILE_TYPE_NOT_ALLOWED:
+            message = SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue
+        }
+        
+        let popupDialog = PopupDialog(title: SendFileErrorMessage.TITLE.rawValue,
+                                      message: message)
+        let okButton = CancelButton(title: SendFileErrorMessage.BUTTON_TITLE.rawValue) {
+            for (index, message) in self.messages.enumerated() {
+                if message.getID() == messageID {
+                    self.messages.remove(at: index)
+                    
+                    DispatchQueue.main.async() {
+                        self.tableView?.reloadData()
+                    }
+                    
+                    return
+                }
+            }
+        }
+        popupDialog.addButton(okButton)
+        self.present(popupDialog,
+                     animated: true,
+                     completion: nil)
+        
+    }
+
 }

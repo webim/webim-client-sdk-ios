@@ -27,3 +27,26 @@
 import Foundation
 
 let REFRESH_CONTROL_TEXT = NSAttributedString(string: "Loading messages...")
+
+enum SendFileErrorMessage: String {
+    case TITLE = "File sending failed"
+    case BUTTON_TITLE = "OK"
+    
+    // Error messages.
+    case FILE_SIZE_EXCEEDED = "File is too large."
+    case FILE_TYPE_NOT_ALLOWED = "File type is not supported."
+}
+
+enum RatingDialog: String {
+    case ACTION_BUTTON_TITLE = "Rate"
+    case CANCEL_BUTTON_TITLE = "Cancel"
+}
+
+enum ShowFileDialog: String {
+    case BUTTON_TITLE = "OK"
+    
+    // Message.
+    case INVALID_IMAGE_FORMAT = "Image format is not valid."
+    case INVALID_IMAGE_LINK = "Image link is not valid."
+    case NOT_IMAGE = "Preview is not available."
+}

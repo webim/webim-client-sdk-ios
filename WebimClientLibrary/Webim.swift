@@ -25,7 +25,9 @@
 //
 
 
+
 import Foundation
+
 
 /**
  - Author:
@@ -87,6 +89,7 @@ public final class Webim {
         return InternalUtils.isWebim(remoteNotification: remoteNotification)
     }
     
+    
     // MARK: -
     /**
      - SeeAlso:
@@ -99,19 +102,6 @@ public final class Webim {
     public enum RemoteNotificationSystem {
         case APNS
         case NONE
-    }
-    
-    // MARK: -
-    /**
-     - SeeAlso:
-     `isWebim(remoteNotification:)`
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    public enum RemoteNotificationError: Error {
-        case UnknownNotificationFormat
     }
     
 }
@@ -136,15 +126,17 @@ public final class SessionBuilder  {
     private var fatalErrorHandler: FatalErrorHandler?
     private var location: String?
     private var pageTitle: String?
-    private var remoteNotificationSystem: Webim.RemoteNotificationSystem? = .NONE
+    private var remoteNotificationSystem: Webim.RemoteNotificationSystem = .NONE
     private var visitorFields: ProvidedVisitorFields?
     
-    // Properties used for debugging
-    private var localHistoryStoragingEnabled: Bool = true
-    private var visitorDataClearingEnabled: Bool?
+    // Properties that are used for debugging
+    private var localHistoryStoragingEnabled = true
+    private var visitorDataClearingEnabled = false
     
     
-    // MARK: - Builder methods
+    // MARK: - Methods
+    
+    // MARK: Builder methods
     
     /**
      Sets company account name in Webim system.
@@ -161,6 +153,7 @@ public final class SessionBuilder  {
      */
     public func set(accountName: String) -> SessionBuilder {
         self.accountName = accountName
+        
         return self
     }
     
@@ -180,6 +173,7 @@ public final class SessionBuilder  {
      */
     public func set(location: String) -> SessionBuilder {
         self.location = location
+        
         return self
     }
     
@@ -197,6 +191,7 @@ public final class SessionBuilder  {
      */
     public func set(appVersion: String?) -> SessionBuilder {
         self.appVersion = appVersion
+        
         return self
     }
     
@@ -219,6 +214,7 @@ public final class SessionBuilder  {
      */
     public func set(visitorFieldsJSONString jsonString: String) -> SessionBuilder {
         self.visitorFields = ProvidedVisitorFields(withJSONString: jsonString)
+        
         return self
     }
     
@@ -241,6 +237,7 @@ public final class SessionBuilder  {
      */
     public func set(visitorFieldsJSONData jsonData: Data) -> SessionBuilder {
         self.visitorFields = ProvidedVisitorFields(withJSONObject: jsonData)
+        
         return self
     }
     
@@ -258,6 +255,7 @@ public final class SessionBuilder  {
      */
     public func set(pageTitle: String) -> SessionBuilder {
         self.pageTitle = pageTitle
+        
         return self
     }
     
@@ -272,8 +270,9 @@ public final class SessionBuilder  {
      - Copyright:
      2017 Webim
      */
-    public func set(fatalErrorHandler: FatalErrorHandler?) -> SessionBuilder {
+    public func set(fatalErrorHandler: FatalErrorHandler) -> SessionBuilder {
         self.fatalErrorHandler = fatalErrorHandler
+        
         return self
     }
     
@@ -294,6 +293,7 @@ public final class SessionBuilder  {
      */
     public func set(remoteNotificationSystem: Webim.RemoteNotificationSystem) -> SessionBuilder {
         self.remoteNotificationSystem = remoteNotificationSystem
+        
         return self
     }
     
@@ -312,6 +312,7 @@ public final class SessionBuilder  {
      */
     public func set(deviceToken: String?) -> SessionBuilder {
         self.deviceToken = deviceToken
+        
         return self
     }
     
@@ -332,6 +333,7 @@ public final class SessionBuilder  {
      */
     public func set(isLocalHistoryStoragingEnabled: Bool) -> SessionBuilder {
         self.localHistoryStoragingEnabled = isLocalHistoryStoragingEnabled
+        
         return self
     }
     
@@ -350,10 +352,12 @@ public final class SessionBuilder  {
      */
     public func set(isVisitorDataClearingEnabled: Bool) -> SessionBuilder {
         self.visitorDataClearingEnabled = isVisitorDataClearingEnabled
+        
         return self
     }
     
     
+    // MARK: Finalization method.
     /**
      Builds new `WebimSession` object.
      - important:
@@ -399,5 +403,47 @@ public final class SessionBuilder  {
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled) as WebimSession
     }
+    
+}
+
+
+// MARK: -
+/**
+ Error types that can be throwed by `SessionBuilder` `build()` method.
+ - SeeAlso:
+ `SessionBuilder.build()`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public enum SessionBuilderError: Error {
+    
+    /**
+     Error that is thrown when trying to create session object with nil account name.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case NIL_ACCOUNT_NAME
+    
+    /**
+     Error that is thrown when trying to create session object with nil location name.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case NIL_LOCATION
+    
+    /**
+     Error that is thrown when trying to create session object with invalid remote notifications configuration.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
     
 }

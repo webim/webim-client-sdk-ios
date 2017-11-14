@@ -141,25 +141,26 @@ let mimeTypes = [
 public struct MimeType {
     
     // MARK: - Properties
-    let ext: String?
-    public var value: String {
-        guard let ext = ext else {
+    private let `extension`: String?
+    var value: String {
+        guard let ext = `extension` else {
             return DEFAULT_MIME_TYPE
         }
+        
         return mimeTypes[ext.lowercased()] ?? DEFAULT_MIME_TYPE
     }
     
     // MARK: - Initialization
     
     public init(path: String) {
-        ext = NSString(string: path).pathExtension
+        `extension` = NSString(string: path).pathExtension
     }
 
     public init(path: NSString) {
-        ext = path.pathExtension
+        `extension` = path.pathExtension
     }
 
     public init(url: URL) {
-        ext = url.pathExtension
+        `extension` = url.pathExtension
     }
 }

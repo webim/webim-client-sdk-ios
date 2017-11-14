@@ -102,14 +102,14 @@ final class WebimSessionImpl {
                                 fatalErrorHandler: FatalErrorHandler?,
                                 areRemoteNotificationsEnabled: Bool,
                                 deviceToken: String?,
-                                isLocalHistoryStoragingEnabled: Bool?,
-                                isVisitorDataClearingEnabled: Bool?) -> WebimSessionImpl {
+                                isLocalHistoryStoragingEnabled: Bool,
+                                isVisitorDataClearingEnabled: Bool) -> WebimSessionImpl {
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.MAIN.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
         let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
-        if isVisitorDataClearingEnabled == true {
+        if isVisitorDataClearingEnabled {
             clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
         }
         
@@ -122,7 +122,7 @@ final class WebimSessionImpl {
         
         let visitorFieldsJSON = (visitorFields == nil) ? nil : visitorFields?.getJSONString()
         
-        let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)!
+        let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
         
         let currentChatMessageMapper: MessageFactoriesMapper = CurrentChatMapper(withServerURLString: serverURLString)
         
@@ -157,7 +157,7 @@ final class WebimSessionImpl {
         
         var historyStorage: HistoryStorage
         var historyMetaInformationStoragePreferences: HistoryMetaInformationStorage
-        if isLocalHistoryStoragingEnabled == true {
+        if isLocalHistoryStoragingEnabled {
             var dbName = userDefaults?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] as? String
             
             if dbName == nil {

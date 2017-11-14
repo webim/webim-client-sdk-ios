@@ -29,6 +29,7 @@ import Foundation
 
 
 /**
+ Abstracts Webim service possible fatal error.
  - SeeAlso:
  `FatalErrorHandler`
  - Author:
@@ -63,71 +64,72 @@ public protocol WebimError {
 
 // MARK: -
 /**
- Error types that can be throwed by MessageStream methods.
- - SeeAlso:
- `WebimSession` and `MessageStream` methods.
+ Webim service fatal error types.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
  2017 Webim
  */
-public enum AccessError: Error {
+public enum FatalErrorType {
     
     /**
-     Error that is thrown if the method was called not from the thread the WebimSession was created in.
+     Indicates that the account in Webim service has been disabled (e.g. for non-payment). The error is unrelated to the user’s actions.
+     Recommended response is to show the user an error message with a recommendation to try using the chat later.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case INVALID_THREAD
+    case ACCOUNT_BLOCKED
     
     /**
-     Error that is thrown if WebimSession was destroyed.
+     Indicates an expired authorization of a visitor.
+     The recommended response is to re-authorize it and to re-create session object.
+     - SeeAlso:
+     `Webim.SessionBuilder.set(visitorFieldsJSON jsonString:)`
+     `Webim.SessionBuilder.set(visitorFieldsJSON jsonData:)`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case INVALID_SESSION
-}
-
-// MARK: -
-/**
- Error types that can be throwed by `SessionBuilder` `build()` method.
- - SeeAlso:
- `SessionBuilder.build()`
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-public enum SessionBuilderError: Error {
+    case PROVIDED_VISITOR_EXPIRED
     
     /**
-     Error that is thrown when trying to create session object with nil account name.
+     Indicates the occurrence of an unknown error.
+     Recommended response is to send an automatic bug report and show to a user an error message with the recommendation to try using the chat later.
+     - SeeAlso:
+     `WebimError.getErrorString()`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case NIL_ACCOUNT_NAME
+    case UNKNOWN
     
     /**
-     Error that is thrown when trying to create session object with nil location name.
+     Indicates that a visitor was banned by an operator and can't send messages to a chat anymore.
+     Occurs when a user tries to open the chat or write a message after that.
+     Recommended response is to show the user an error message with the recommendation to try using the chat later or explain to the user that it was blocked for some reason.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case NIL_LOCATION
+    case VISITOR_BANNED
     
     /**
-     Error that is thrown when trying to create session object with invalid remote notifications configuration.
+     Indicates a problem of your application authorization mechanism and is unrelated to the user’s actions.
+     Occurs when trying to authorize a visitor with a non-valid signature.
+     Recommended response is to send an automatic bug report and show the user an error message with the recommendation to try using the chat later.
+     - SeeAlso:
+     `Webim.SessionBuilder.set(visitorFieldsJSON jsonString:)`
+     `Webim.SessionBuilder.set(visitorFieldsJSON jsonData:)`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
+    case WRONG_PROVIDED_VISITOR_HASH
+    
 }

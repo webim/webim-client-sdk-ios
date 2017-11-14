@@ -61,16 +61,34 @@ class MessageTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     private static var imageCache = [String : UIImage]()
+    private static let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMM yyyy hh:mm:ss"
+        
+        return dateFormatter
+    }()
+    
+    // MARK: Subviews
     lazy var avatarImageView = UIImageView()
     lazy var bodyLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         label.numberOfLines = 0
+        
         return label
     }()
     lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+        label.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        
+        return label
+    }()
+    lazy var timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textColor = .lightGray
+        label.textAlignment = .right
+        
         return label
     }()
     
@@ -120,6 +138,7 @@ class MessageTableViewCell: UITableViewCell {
         self.addSubview(avatarImageView)
         self.addSubview(nameLabel)
         self.addSubview(bodyLabel)
+        self.addSubview(timeLabel)
         
         avatarImageView.snp.makeConstraints { constraintsMaker in
             constraintsMaker.height.equalTo(Size.AVATAR.rawValue)
@@ -138,6 +157,12 @@ class MessageTableViewCell: UITableViewCell {
             constraintsMaker.top.equalTo(nameLabel.snp.bottom).offset(1)
             constraintsMaker.left.equalTo(avatarImageView.snp.right).offset(10)
             constraintsMaker.right.equalTo(self).offset(-20)
+        }
+        
+        timeLabel.snp.makeConstraints { constraintsMaker in
+            constraintsMaker.top.equalTo(bodyLabel.snp.bottom).offset(1)
+            constraintsMaker.left.equalTo(avatarImageView.snp.right).offset(10)
+            constraintsMaker.right.equalTo(self).offset(-20)
             constraintsMaker.bottom.equalTo(self).offset(-10)
         }
     }
@@ -147,22 +172,36 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     private func layoutFileFromOperator(message: Message) {
-        bodyLabel.text = message.getAttachment()?.getFileName()
-        bodyLabel.textColor = .darkGray
+        if let fileName = message.getAttachment()?.getFileName() {
+            bodyLabel.text = fileName
+        } else {
+            bodyLabel.text = "File is unavailable."
+        }
+        bodyLabel.textColor = .blue
+        bodyLabel.isUserInteractionEnabled = true
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
+        
+        timeLabel.text = getTime(forMessage: message)
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
     }
     
     private func layoutFileFromVisitor(message: Message) {
-        bodyLabel.text = message.getAttachment()?.getFileName()
-        bodyLabel.textColor = .darkGray
+        if let fileName = message.getAttachment()?.getFileName() {
+            bodyLabel.text = fileName
+        } else {
+            bodyLabel.text = "File is unavailable."
+        }
+        bodyLabel.textColor = .blue
+        bodyLabel.isUserInteractionEnabled = true
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
+        
+        timeLabel.text = getTime(forMessage: message)
         
         avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
         avatarImageView.isHidden = false
@@ -172,9 +211,12 @@ class MessageTableViewCell: UITableViewCell {
     private func layoutInfo(message: Message) {
         bodyLabel.text = message.getText()
         bodyLabel.textColor = .darkGray
+        bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
         nameLabel.text = ""
+        
+        timeLabel.text = ""
         
         avatarImageView.isHidden = true
         nameLabel.textColor = .visitorName
@@ -183,10 +225,13 @@ class MessageTableViewCell: UITableViewCell {
     private func layoutOperator(message: Message) {
         bodyLabel.text = message.getText()
         bodyLabel.textColor = .black
+        bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
         nameLabel.textColor = .operatorName
+        
+        timeLabel.text = getTime(forMessage: message)
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
@@ -195,9 +240,12 @@ class MessageTableViewCell: UITableViewCell {
     private func layoutOperatorBusy(message: Message) {
         bodyLabel.text = message.getText()
         bodyLabel.textColor = .darkGray
+        bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
         nameLabel.text = ""
+        
+        timeLabel.text = ""
         
         avatarImageView.isHidden = true
     }
@@ -205,10 +253,13 @@ class MessageTableViewCell: UITableViewCell {
     private func layoutVisitor(message: Message) {
         bodyLabel.text = message.getText()
         bodyLabel.textColor = .black
+        bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
         nameLabel.textColor = .visitorName
+        
+        timeLabel.text = getTime(forMessage: message)
         
         avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
         avatarImageView.isHidden = false
@@ -231,6 +282,12 @@ class MessageTableViewCell: UITableViewCell {
                 }
             }
         }
+    }
+    
+    private func getTime(forMessage message: Message) -> String {
+        let time = Date(timeIntervalSince1970: TimeInterval(message.getTime() / 1000))
+        
+        return MessageTableViewCell.dateFormatter.string(from: time)
     }
     
 }

@@ -275,6 +275,32 @@ public protocol MessageStream {
 }
 
 /**
+ Interface that provides methods for handling MessageStream LocationSettings which are received from server.
+ - SeeAlso:
+ `LocationSettingsChangeListener`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public protocol LocationSettings {
+    
+    /**
+     This method shows to an app if it should show hint questions to visitor.
+     - returns:
+     True if an app should show hint questions to visitor, false otherwise.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func areHintsEnabled() -> Bool
+    
+}
+
+
+// MARK: -
+/**
  - SeeAlso:
  `MessageStream.send(file:filename:mimeType:completionHandler:)`
  - Author:
@@ -310,28 +336,6 @@ public protocol SendFileCompletionHandler {
      */
     func onFailure(messageID: String,
                    error: SendFileError)
-    
-}
-
-/**
- Interface that provides methods for handling MessageStream LocationSettings which are received from server.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-public protocol LocationSettings {
-    
-    /**
-     This method shows to an app if it should show hint questions to visitor.
-     - returns:
-     True if an app should show hint questions to visitor, false otherwise.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    func areHintsEnabled() -> Bool
     
 }
 
@@ -414,6 +418,8 @@ public protocol OperatorTypingListener {
 
 /**
  Interface that provides methods for handling changes in MessageStream LocationSettings.
+ - SeeAlso:
+ `LocationSettings`
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -438,6 +444,7 @@ public protocol LocationSettingsChangeListener {
 }
 
 
+// MARK: -
 /**
  A chat is seen in different ways by an operator depending on ChatState.
  The initial state is `NONE`.

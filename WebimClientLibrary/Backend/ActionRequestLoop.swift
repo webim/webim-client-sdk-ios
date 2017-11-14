@@ -127,6 +127,8 @@ final class ActionRequestLoop: AbstractRequestLoop {
                             
                             return
                         } else {
+                            running = false
+                            
                             completionHandlerExecutor.execute(task: DispatchWorkItem {
                                 self.internalErrorListener.on(error: error,
                                                               urlString: (request.url?.path)!)
@@ -157,6 +159,8 @@ final class ActionRequestLoop: AbstractRequestLoop {
                                                         error: error)
                 }
             } catch let error as WebimInternalError {
+                running = false
+                
                 completionHandlerExecutor.execute(task: DispatchWorkItem {
                     self.internalErrorListener.on(error: error.rawValue,
                                                   urlString: (request.url?.path)!)

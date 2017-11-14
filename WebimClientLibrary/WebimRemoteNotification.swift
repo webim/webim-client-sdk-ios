@@ -29,7 +29,7 @@ import Foundation
 
 
 /**
- Abstracts a remote notifications.
+ Abstracts a remote notifications from Webim service.
  - SeeAlso:
  `Webim.parseRemoteNotification()`
  - Author:
@@ -122,7 +122,6 @@ public enum NotificationType {
     case OPERATOR_MESSAGE
 }
 
-// MARK: -
 /**
  - SeeAlso:
  `WebimRemoteNotification.getEvent()`

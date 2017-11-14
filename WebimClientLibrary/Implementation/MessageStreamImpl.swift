@@ -164,6 +164,7 @@ final class MessageStreamImpl: MessageStream {
     
     func getLastRatingOfOperatorWith(id: String) -> Int {
         let rating = (chat == nil) ? nil : chat!.getOperatorIDToRate()?[id]
+        
         return (rating == nil) ? 0 : (rating?.getRating())!
     }
     

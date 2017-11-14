@@ -30,7 +30,7 @@ import Foundation
 
 /**
  Abstracts a single message in the message history.
- A message is an immutable object. It means that changing some of the message fields creates a new object. Messages can be compared by using `isEquals(to:)` method for searching messages with the same set of fields or by ID (`message1.getId() == message2.getId()`) for searching logically identical messages. ID is formed on the client side when sending a message (`MessageStream.send(message:,isHintQuestion:)` or `MessageStream.sendFile(atPath:mimeType:completion:)).
+ A message is an immutable object. It means that changing some of the message fields creates a new object. Messages can be compared by using `isEqual(to:)` method for searching messages with the same set of fields or by ID (`message1.getID() == message2.getID()`) for searching logically identical messages. ID is formed on the client side when sending a message (`MessageStream.send(message:,isHintQuestion:)` or `MessageStream.sendFile(atPath:mimeType:completion:)).
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -52,8 +52,9 @@ public protocol Message {
     func getAttachment() -> MessageAttachment?
     
     /**
+     Messages of type `MessageType.ACTION_REQUEST` contain custom dictionary.
      - returns:
-     Dictionary which contains custom fields of a message of `MessageType.ACTION_REQUEST` type or nil if there's no such custom fields.
+     Dictionary which contains custom fields or nil if there's no such custom fields.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -265,7 +266,7 @@ public protocol ImageInfo {
     
     /**
      - returns:
-     Height of an image.
+     Height of an image in pixels.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -275,7 +276,7 @@ public protocol ImageInfo {
     
     /**
      - returns:
-     Width of an image.
+     Width of an image in pixels.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -284,6 +285,8 @@ public protocol ImageInfo {
     func getWidth() -> Int?
 }
 
+
+// MARK: -
 /**
  - Author:
  Nikita Lazarev-Zubov

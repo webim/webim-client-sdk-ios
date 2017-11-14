@@ -164,6 +164,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                     authorizationData = nil
                     since = 0
                 } else {
+                    running = false
+                    
                     completionHandlerExecutor.execute(task: DispatchWorkItem {
                         self.internalErrorListener.on(error: error,
                                                       urlString: (request.url?.path)!)
@@ -175,12 +177,14 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                 if let deltaList = deltaResponse.getDeltaList() {
                     if deltaList.count > 0 {
                         print("Incorrect server answer.")
+                        
                         return
                     }
                 }
                 
                 guard let fullUpdate = deltaResponse.getFullUpdate() else {
                     print("Incorrect server answer.")
+                    
                     return
                 }
                 

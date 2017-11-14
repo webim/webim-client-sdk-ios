@@ -24,7 +24,9 @@
 //  SOFTWARE.
 //
 
+
 import Foundation
+
 
 /**
  - Author:
@@ -87,7 +89,7 @@ public protocol WebimSession {
      - parameter location:
      New location name.
      - throws:
-     `FatalErrorType`.
+     `WebimInternalError.UNKNOWN`.
      - SeeAlso:
      `FatalErrorHandler`.
      - Author:
@@ -97,4 +99,36 @@ public protocol WebimSession {
      */
     func change(location: String) throws
     
+}
+
+
+// MARK: -
+/**
+ Error types that can be throwed by MessageStream methods.
+ - SeeAlso:
+ `WebimSession` and `MessageStream` methods.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public enum AccessError: Error {
+    
+    /**
+     Error that is thrown if the method was called not from the thread the WebimSession was created in.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case INVALID_THREAD
+    
+    /**
+     Error that is thrown if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case INVALID_SESSION
 }
