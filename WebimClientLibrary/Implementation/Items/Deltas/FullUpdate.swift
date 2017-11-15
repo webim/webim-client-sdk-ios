@@ -101,24 +101,8 @@ final class FullUpdate {
     
     // MARK: - Methods
     
-    func getPageId() -> String? {
-        return pageID
-    }
-    
     func getAuthorizationToken() -> String? {
         return authorizationToken
-    }
-    
-    func getSessionID() -> String? {
-        return sessionID
-    }
-    
-    func getVisitorJSONString() -> String? {
-        return visitorJSONString
-    }
-    
-    func getState() -> String? {
-        return state
     }
     
     func getChat() -> ChatItem? {
@@ -127,6 +111,26 @@ final class FullUpdate {
     
     func getHintsEnabled() -> Bool? {
         return hintsEnabled
+    }
+    
+    func getOnlineStatus() -> String? {
+        return onlineStatus
+    }
+    
+    func getPageId() -> String? {
+        return pageID
+    }
+    
+    func getSessionID() -> String? {
+        return sessionID
+    }
+    
+    func getState() -> String? {
+        return state
+    }
+    
+    func getVisitorJSONString() -> String? {
+        return visitorJSONString
     }
     
 }

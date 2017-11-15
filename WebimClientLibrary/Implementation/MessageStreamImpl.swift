@@ -53,6 +53,8 @@ final class MessageStreamImpl: MessageStream {
     private var locationSettingsChangeListener: LocationSettingsChangeListener?
     private var operatorFactory: OperatorFactory
     private var operatorTypingListener: OperatorTypingListener?
+    private var sessionOnlineStatus: SessionOnlineStatusItem = .UNKNOWN
+    private var sessionOnlineStatusChangeListener: SessionOnlineStatusChangeListener?
     
     
     // MARK: - Initialization
@@ -77,23 +79,32 @@ final class MessageStreamImpl: MessageStream {
     
     // MARK: - Methods
     
+    func getWebimActions() -> WebimActions {
+        return webimActions
+    }
+    
     func set(invitationState: InvitationStateItem) {
         self.invitationState = invitationState
+        
         isChatIsOpening = false
     }
     
-    func receivingFullUpdateOf(chat: ChatItem?) throws {
-        try changingChatStateOf(chat: chat)
+    func set(sessionOnlineStatus: SessionOnlineStatusItem) {
+        self.sessionOnlineStatus = sessionOnlineStatus
     }
     
-    func changingChatStateOf(chat: ChatItem?) throws {
+    func receivingFullUpdateOf(chat: ChatItem?) {
+        changingChatStateOf(chat: chat)
+    }
+    
+    func changingChatStateOf(chat: ChatItem?) {
         let previousChat = self.chat
         self.chat = chat
         
         if self.chat !== previousChat {
-            try messageHolder.receiving(newChat: self.chat,
-                                        previousChat: previousChat,
-                                        newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: self.chat!.getMessages()))
+            messageHolder.receiving(newChat: self.chat,
+                                    previousChat: previousChat,
+                                    newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: self.chat!.getMessages()))
         }
         
         let newChatState = (self.chat == nil) ? .CLOSED : self.chat!.getState()
@@ -137,6 +148,19 @@ final class MessageStreamImpl: MessageStream {
             locationSettingsChangeListener!.changed(locationSettings: previousLocationSettings,
                                                     to: newLocationSettings)
         }
+    }
+    
+    func onSessionOnlineStatusChanged(to newSessionOnlineStatus: SessionOnlineStatusItem) {
+        let previousPublicSessionOnlineStatus = publicState(ofSessionOnlineState: sessionOnlineStatus)
+        let newPublicSessionOnlineStatus = publicState(ofSessionOnlineState: newSessionOnlineStatus)
+        
+        if sessionOnlineStatusChangeListener != nil
+            && (sessionOnlineStatus != newSessionOnlineStatus) {
+            sessionOnlineStatusChangeListener!.changed(sessionOnlineStatus: previousPublicSessionOnlineStatus,
+                                                       to: newPublicSessionOnlineStatus)
+        }
+        
+        sessionOnlineStatus = newSessionOnlineStatus
     }
     
     
@@ -266,6 +290,10 @@ final class MessageStreamImpl: MessageStream {
         self.locationSettingsChangeListener = locationSettingsChangeListener
     }
     
+    func set(sessionOnlineStatusChangeListener: SessionOnlineStatusChangeListener) {
+        self.sessionOnlineStatusChangeListener = sessionOnlineStatusChangeListener
+    }
+    
     
     // MARK: - Private methods
     
@@ -283,6 +311,21 @@ final class MessageStreamImpl: MessageStream {
             return .CLOSED_BY_OPERATOR
         case .INVITATION:
             return .INVITATION
+        default:
+            return .UNKNOWN
+        }
+    }
+    
+    private func publicState(ofSessionOnlineState sessionOnlineState: SessionOnlineStatusItem) -> SessionOnlineStatus {
+        switch sessionOnlineState {
+        case .BUSY_OFFLINE:
+            return .BUSY_OFFLINE
+        case .BUSY_ONLINE:
+            return .BUSY_ONLINE
+        case .OFFLINE:
+            return .OFFLINE
+        case .ONLINE:
+            return .ONLINE
         default:
             return .UNKNOWN
         }

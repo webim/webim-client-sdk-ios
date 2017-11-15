@@ -68,18 +68,6 @@ final class ChatItem {
         case CLOSED_BY_OPERATOR = "closed_by_operator"
         case INVITATION = "invitation"
         
-        // MARK: - Properties
-        
-        // Setted for getTypeBy(string:) method.
-        private static let chatItemStateValues = [UNKNOWN,
-                                                  QUEUE,
-                                                  CHATTING,
-                                                  CLOSED,
-                                                  CLOSED_BY_VISITOR,
-                                                  CLOSED_BY_OPERATOR,
-                                                  INVITATION]
-        
-        
         // MARK: - Initialization
         init(withType typeValue: String) {
             self = ChatItemState(rawValue: typeValue)!
@@ -87,30 +75,11 @@ final class ChatItem {
         
         
         // MARK: - Methods
-        
         func isClosed() -> Bool {
             return (((self == .CLOSED)
                 || (self == .CLOSED_BY_VISITOR))
                 || (self == .CLOSED_BY_OPERATOR))
                 || (self == .UNKNOWN)
-        }
-        
-        func isOpen() -> Bool {
-            return !isClosed()
-        }
-        
-        func getTypeBy(string: String) -> ChatItemState {
-            for chatItemStateType in ChatItemState.chatItemStateValues {
-                if chatItemStateType == ChatItemState(withType: string) {
-                    return chatItemStateType
-                }
-            }
-            
-            return .UNKNOWN
-        }
-        
-        func getTypeValue() -> String {
-            return self.rawValue
         }
         
     }
@@ -251,22 +220,6 @@ final class ChatItem {
             messages.insert(message,
                             at: position!)
         }
-    }
-    
-    func getPositionOf(message: MessageItem) -> Int? {
-        var messagePosition = messages.index(of: message) as Int?
-        
-        if messagePosition == nil {
-            for (index, iteratedMessage) in messages.enumerated() {
-                if iteratedMessage.getID() == message.getClientSideID() {
-                    messagePosition = index
-                    
-                    break
-                }
-            }
-        }
-        
-        return messagePosition
     }
     
     func isOperatorTyping() -> Bool {

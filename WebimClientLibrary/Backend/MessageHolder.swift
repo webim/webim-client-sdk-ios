@@ -200,26 +200,27 @@ final class MessageHolder {
     
     func receiving(newChat: ChatItem?,
                    previousChat: ChatItem?,
-                   newMessages: [MessageImpl]) throws {
+                   newMessages: [MessageImpl]) {
         if currentChatMessages.isEmpty {
-            try receive(newMessages: newMessages)
+            receive(newMessages: newMessages)
         } else {
             if newChat == nil {
                 historifyCurrentChat()
             } else if (previousChat == nil) ||
                 (newChat != previousChat) {
                 historifyCurrentChat()
-                try receive(newMessages: newMessages)
+                
+                receive(newMessages: newMessages)
             } else {
-                try mergeCurrentChatWith(newMessages: newMessages)
+                mergeCurrentChatWith(newMessages: newMessages)
             }
         }
     }
     
-    func receive(newMessage: MessageImpl) throws {
+    func receive(newMessage: MessageImpl) {
         if messageTracker != nil {
-            try messageTracker!.addedNew(message: newMessage,
-                                         of: self)
+            messageTracker!.addedNew(message: newMessage,
+                                     of: self)
         } else {
             currentChatMessages.append(newMessage)
         }
@@ -288,10 +289,10 @@ final class MessageHolder {
     
     // MARK: Private methods
     
-    private func receive(newMessages: [MessageImpl]) throws {
+    private func receive(newMessages: [MessageImpl]) {
         if messageTracker != nil {
-            try messageTracker!.addedNew(messages: newMessages,
-                                         of: self)
+            messageTracker!.addedNew(messages: newMessages,
+                                     of: self)
         } else {
             for message in newMessages {
                 currentChatMessages.append(message)
@@ -415,7 +416,7 @@ final class MessageHolder {
                   completion: completion)
     }
     
-    private func mergeCurrentChatWith(newMessages: [MessageImpl]) throws {
+    private func mergeCurrentChatWith(newMessages: [MessageImpl]) {
         var previousMessageIndex = lastChatMessageIndex
         var areOldMessagesEnded = false
         
@@ -462,7 +463,7 @@ final class MessageHolder {
             }
             
             if areOldMessagesEnded {
-                try receive(newMessage: newMessage)
+                receive(newMessage: newMessage)
             }
         }
     }

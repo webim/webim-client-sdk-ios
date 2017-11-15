@@ -58,7 +58,7 @@ final class MessageTrackerImpl: MessageTracker {
     // MARK: - Methods
     
     func addedNew(message: MessageImpl,
-                  of messageHolder: MessageHolder) throws {
+                  of messageHolder: MessageHolder) {
         do {
             try message.getSource().assertIsCurrentChat()
         } catch {
@@ -87,7 +87,7 @@ final class MessageTrackerImpl: MessageTracker {
     }
     
     func addedNew(messages: [MessageImpl],
-                  of messageHolder: MessageHolder) throws {
+                  of messageHolder: MessageHolder) {
         if (headMessage != nil)
             || (allMessageSourcesEnded == true) {
             for message in messages {

@@ -420,6 +420,15 @@ public final class SessionBuilder  {
 public enum SessionBuilderError: Error {
     
     /**
+     Error that is thrown when trying to create session object with invalid remote notifications configuration.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
+    
+    /**
      Error that is thrown when trying to create session object with nil account name.
      - Author:
      Nikita Lazarev-Zubov
@@ -436,14 +445,5 @@ public enum SessionBuilderError: Error {
      2017 Webim
      */
     case NIL_LOCATION
-    
-    /**
-     Error that is thrown when trying to create session object with invalid remote notifications configuration.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
     
 }

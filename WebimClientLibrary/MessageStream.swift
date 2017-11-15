@@ -234,9 +234,6 @@ public protocol MessageStream {
      Sets the current `Operator` change listener.
      - parameter currentOperatorChangeListener:
      Current `Operator` change listener.
-     - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -245,12 +242,20 @@ public protocol MessageStream {
     func set(currentOperatorChangeListener: CurrentOperatorChangeListener)
     
     /**
+     Sets the listener of the MessageStream LocationSettings changes.
+     - parameter locationSettingsChangeListener:
+     The listener of MessageStream LocationSettings changes.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func set(locationSettingsChangeListener: LocationSettingsChangeListener)
+    
+    /**
      Sets the listener of the "operator typing" status changes.
      - parameter operatorTypingListener:
      The listener of the "operator typing" status changes.
-     - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -259,18 +264,17 @@ public protocol MessageStream {
     func set(operatorTypingListener: OperatorTypingListener)
     
     /**
-     Sets the listener of the MessageStream LocationSettings changes.
-     - parameter locationSettingsChangeListener:
-     The listener of MessageStream LocationSettings changes.
-     - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     Sets the listener of session status changes.
+     - parameter sessionOnlineStatusChangeListener:
+     `SessionOnlineStatusChangeListener` object.
+     - SeeAlso:
+     `SessionOnlineStatusChangeListener`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    func set(locationSettingsChangeListener: LocationSettingsChangeListener)
+    func set(sessionOnlineStatusChangeListener: SessionOnlineStatusChangeListener)
     
 }
 
@@ -394,29 +398,6 @@ public protocol CurrentOperatorChangeListener {
 }
 
 /**
- - SeeAlso:
- `MessageStream.set(operatorTypingListener:)`
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-public protocol OperatorTypingListener {
-    
-    /**
-     Called when operator typing state changed.
-     - parameter isTyping:
-     True if operator is typing, false otherwise.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    func onOperatorTypingStateChanged(isTyping: Bool)
-    
-}
-
-/**
  Interface that provides methods for handling changes in MessageStream LocationSettings.
  - SeeAlso:
  `LocationSettings`
@@ -440,6 +421,54 @@ public protocol LocationSettingsChangeListener {
      */
     func changed(locationSettings previousLocationSettings: LocationSettings,
                  to newLocationSettings: LocationSettings)
+    
+}
+
+/**
+ - SeeAlso:
+ `MessageStream.set(operatorTypingListener:)`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public protocol OperatorTypingListener {
+    
+    /**
+     Called when operator typing state changed.
+     - parameter isTyping:
+     True if operator is typing, false otherwise.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func onOperatorTypingStateChanged(isTyping: Bool)
+    
+}
+
+/**
+ Interface that provides methods for handling changes of session status.
+ - SeeAlso:
+ `MessageStream.set(sessionOnlineStatusChangeListener:)`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public protocol SessionOnlineStatusChangeListener {
+    
+    /**
+     Called when new session status is received.
+     - SeeAlso:
+     `SessionOnlineStatus`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func changed(sessionOnlineStatus previousSessionOnlineStatus: SessionOnlineStatus,
+                 to newSessionOnlineStatus: SessionOnlineStatus)
     
 }
 
@@ -575,5 +604,63 @@ public enum SendFileError: Error {
      2017 Webim
      */
     case FILE_TYPE_NOT_ALLOWED
+    
+}
+
+/**
+ Session state possible cases.
+ - SeeAlso:
+ `SessionOnlineStatusChangeListener`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public enum SessionOnlineStatus {
+    
+    /**
+     Means that a visitor is not able to send messages at all.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case BUSY_OFFLINE
+    
+    /**
+     A visitor is able send offline messages, but the server can reject it.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case BUSY_ONLINE
+    
+    /**
+     A visitor is able send offline messages.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case OFFLINE
+    
+    /**
+     A visitor is able to send both online and offline messages.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case ONLINE
+    
+    /**
+     The session has not received first session status yet or session status is not supported by this version of the library.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case UNKNOWN
     
 }

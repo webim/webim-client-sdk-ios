@@ -241,11 +241,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                 } else if let deltaList = deltaResponse.getDeltaList() {
                     if deltaList.count > 0 {
                         completionHandlerExecutor.execute(task: DispatchWorkItem {
-                            do {
-                                try self.deltaCallback.process(deltaList: deltaList)
-                            } catch {
-                                print("Error processing delta list.")
-                            }
+                            self.deltaCallback.process(deltaList: deltaList)
                         })
                     }
                 }
@@ -286,11 +282,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         }
         
         completionHandlerExecutor.execute(task: DispatchWorkItem {
-            do {
-                try self.deltaCallback.process(fullUpdate: fullUpdate)
-            } catch {
-                print("Error processing delta list.")
-            }
+            self.deltaCallback.process(fullUpdate: fullUpdate)
         })
     }
     

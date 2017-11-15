@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.1.3'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.2.0'
 ```
 
 In the "Build Settings" of your project in the "Swift Compiler – Language" "Swift Language Version" for _WebimClientLibrary_ target must be setted to "Swift 4.0".
@@ -21,20 +21,9 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Current version changes
 
-* Account name setting improved: now if you will type account name as a server name with an additional "/" at the end it will not cause an error.
-* `RemoteNotificationError` enum deleted from `Webim` class as unused.
-* `FatalErrorType` enum transferred into **WebimError.swift** file.
-* `SendFileError` enum transferred into **MessageStream.swift** file.
-* `SessionBuilderError` enum transferred into **Webim.swift** file.
-* HeaderDoc fixes and extensions.
-* Public API files readability improvements.
-* Different bug fixes and stability improvements.
-
-Example app:
-* Message date and time representation added.
-* File preview added: now it is accessible by clicking on the file name.
-* Send file error handler added.
-* Different appearance improvements.
+* `SessionOnlineStatusChangeListener` protocol added – the session status tracking mechanism.
+* Public APIs fixes and improvements.
+* Various bug fixes and stability improvements.
 
 ## Example
 

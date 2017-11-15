@@ -26,7 +26,6 @@
 
 import Foundation
 
-// TODO: WEBIMIOSCL-213
 /**
  Raw values equal to field names received in responses from server.
  * `BUSY_OFFLINE` - user can't send messages at all;
