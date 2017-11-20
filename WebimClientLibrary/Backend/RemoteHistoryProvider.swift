@@ -50,7 +50,7 @@ class RemoteHistoryProvider {
     
     // MARK: - Methods
     func requestHistory(beforeTimeSince: Int64,
-                        completion: @escaping ([MessageImpl], Bool) throws -> ()) {
+                        completion: @escaping ([MessageImpl], Bool) -> ()) {
         webimActions.requestHistory(beforeMessageTimeSince: beforeTimeSince) { data in
             guard data != nil else {
                 return
@@ -62,7 +62,7 @@ class RemoteHistoryProvider {
                 let historyBeforeResponse = HistoryBeforeResponse(withJSONDictionary: historyBeforeResponseDictionary)
                 
                 if let messages = historyBeforeResponse.getData()?.getMessages() {
-                    try completion(self.historyMessageMapper.mapAll(messages: messages), (historyBeforeResponse.getData()?.isHasMore() == true))
+                    completion(self.historyMessageMapper.mapAll(messages: messages), (historyBeforeResponse.getData()?.isHasMore() == true))
                     
                     if historyBeforeResponse.getData()?.isHasMore() != true {
                         self.historyMetaInformationStorage.set(historyEnded: true)

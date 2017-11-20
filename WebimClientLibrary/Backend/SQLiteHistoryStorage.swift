@@ -77,7 +77,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     
     // MARK: - Properties
-    private let queue: DispatchQueue
+    private static let queryQueue = DispatchQueue.global(qos: .background)
+    private let completionHandlerQueue: DispatchQueue
     private let serverURLString: String
     private var db: Connection?
     private var firstKnownTimeInMicrosecond: Int64 = -1
@@ -92,7 +93,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
          queue: DispatchQueue) {
         self.serverURLString = serverURLString
         self.reachedHistoryEnd = reachedHistoryEnd
-        self.queue = queue
+        self.completionHandlerQueue = queue
         
         createTableWith(name: dbName)
     }
@@ -111,15 +112,47 @@ final class SQLiteHistoryStorage: HistoryStorage {
         self.reachedHistoryEnd = reachedHistoryEnd
     }
     
-    func getLatest(byLimit limitOfMessages: Int,
-                   completion: @escaping ([Message]) -> ()) {
-        DispatchQueue.global(qos: .background).async {
+    func getFullHistory(completion: @escaping ([Message]) -> ()) {
+        SQLiteHistoryStorage.queryQueue.async {
+            /*
+             SELECT * FROM history
+             ORDER BY timeInMicrosecond ASC
+             */
+            let query = SQLiteHistoryStorage
+                .history
+                .order(SQLiteHistoryStorage.timeSinceInMicrosecond.asc)
+            
+            var messages = [MessageImpl]()
+            
+            do {
+                for row in try self.db!.prepare(query) {
+                    let message = SQLiteHistoryStorage.createMessageBy(row: row,
+                                                                       serverURL: self.serverURLString)
+                    messages.append(message)
+                    
+                    #if DEBUG
+                        self.db!.trace { print($0) }
+                    #endif
+                }
+                
+                self.run(messageList: messages,
+                         completion: completion)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func getLatestHistory(byLimit limitOfMessages: Int,
+                          completion: @escaping ([Message]) -> ()) {
+        SQLiteHistoryStorage.queryQueue.async {
             /*
              SELECT * FROM history
              ORDER BY timeInMicrosecond DESC
              LIMIT limitOfMessages
              */
-            let query = SQLiteHistoryStorage.history
+            let query = SQLiteHistoryStorage
+                .history
                 .order(SQLiteHistoryStorage.timeSinceInMicrosecond.desc)
                 .limit(limitOfMessages)
             
@@ -145,10 +178,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
         }
     }
     
-    func getBefore(id: HistoryID,
-                   limitOfMessages: Int,
-                   completion: @escaping ([Message]) -> ()) {
-        DispatchQueue.global(qos: .background).async {
+    func getHistoryBefore(id: HistoryID,
+                          limitOfMessages: Int,
+                          completion: @escaping ([Message]) -> ()) {
+        SQLiteHistoryStorage.queryQueue.async {
             let beforeTimeInMicrosecond = id.getTimeInMicrosecond()
             
             /*
@@ -157,7 +190,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
              ORDER BY timeInMicrosecond DESC
              LIMIT limitOfMessages
              */
-            let query = SQLiteHistoryStorage.history
+            let query = SQLiteHistoryStorage
+                .history
                 .filter(SQLiteHistoryStorage.timeSinceInMicrosecond < beforeTimeInMicrosecond)
                 .order(SQLiteHistoryStorage.timeSinceInMicrosecond.desc)
                 .limit(limitOfMessages)
@@ -186,7 +220,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func receiveHistoryBefore(messages: [MessageImpl],
                               hasMoreMessages: Bool) {
-        DispatchQueue.global(qos: .background).async {
+        SQLiteHistoryStorage.queryQueue.async {
             var newFirstKnownTimeInMicrosecond = Int64.max
             
             for message in messages {
@@ -199,14 +233,16 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      VALUES
                      (message.getID(), message.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), message.getType().rawValue, message.getText(), message.getData())
                      */
-                    try self.db!.run(SQLiteHistoryStorage.history.insert(SQLiteHistoryStorage.id <- message.getID(),
-                                                                         SQLiteHistoryStorage.timeSinceInMicrosecond <- message.getTimeInMicrosecond(),
-                                                                         SQLiteHistoryStorage.senderID <- message.getOperatorID(),
-                                                                         SQLiteHistoryStorage.senderName <- message.getSenderName(),
-                                                                         SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                                                                         SQLiteHistoryStorage.type <- message.getType().rawValue,
-                                                                         SQLiteHistoryStorage.text <- message.getText(),
-                                                                         SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
+                    try self.db!.run(SQLiteHistoryStorage
+                        .history
+                        .insert(SQLiteHistoryStorage.id <- message.getID(),
+                                SQLiteHistoryStorage.timeSinceInMicrosecond <- message.getTimeInMicrosecond(),
+                                SQLiteHistoryStorage.senderID <- message.getOperatorID(),
+                                SQLiteHistoryStorage.senderName <- message.getSenderName(),
+                                SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
+                                SQLiteHistoryStorage.type <- message.getType().rawValue,
+                                SQLiteHistoryStorage.text <- message.getText(),
+                                SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
                     
                     #if DEBUG
                         self.db!.trace { print($0) }
@@ -225,7 +261,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     func receiveHistoryUpdate(withMessages messages: [MessageImpl],
                               idsToDelete: Set<String>,
                               completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
-        DispatchQueue.global(qos: .background).async {
+        SQLiteHistoryStorage.queryQueue.async {
             self.prepare()
             var newFirstKnownTimeInMicrosecond = Int64.max
             
@@ -285,16 +321,18 @@ final class SQLiteHistoryStorage: HistoryStorage {
                              https://sqlite.org/lang_conflict.html
                              */
                             do {
-                                try self.db!.run(SQLiteHistoryStorage.history.insert(SQLiteHistoryStorage.id <- message.getID(),
-                                                                                     SQLiteHistoryStorage.clientSideID <- historyID.getDBid(),
-                                                                                     SQLiteHistoryStorage.timeSinceInMicrosecond <- message.getTimeInMicrosecond(),
-                                                                                     SQLiteHistoryStorage.senderID <- message.getOperatorID(),
-                                                                                     SQLiteHistoryStorage.senderName <- message.getSenderName(),
-                                                                                     SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                                                                                     SQLiteHistoryStorage.type <- message.getType().rawValue,
-                                                                                     SQLiteHistoryStorage.text <- message.getText(),
-                                                                                     SQLiteHistoryStorage.data <- message.getHistoryID()?.getDBid(),
-                                                                                     SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
+                                try self.db!.run(SQLiteHistoryStorage
+                                    .history
+                                    .insert(SQLiteHistoryStorage.id <- message.getID(),
+                                            SQLiteHistoryStorage.clientSideID <- historyID.getDBid(),
+                                            SQLiteHistoryStorage.timeSinceInMicrosecond <- message.getTimeInMicrosecond(),
+                                            SQLiteHistoryStorage.senderID <- message.getOperatorID(),
+                                            SQLiteHistoryStorage.senderName <- message.getSenderName(),
+                                            SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
+                                            SQLiteHistoryStorage.type <- message.getType().rawValue,
+                                            SQLiteHistoryStorage.text <- message.getText(),
+                                            SQLiteHistoryStorage.data <- message.getHistoryID()?.getDBid(),
+                                            SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
                                 
                                 #if DEBUG
                                     self.db!.trace { print($0) }
@@ -309,7 +347,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                              ORDER BY timeInMicrosecond ASC
                              LIMIT 1
                              */
-                            let postQuery = SQLiteHistoryStorage.history
+                            let postQuery = SQLiteHistoryStorage
+                                .history
                                 .filter(SQLiteHistoryStorage.timeSinceInMicrosecond > message.getTimeInMicrosecond())
                                 .order(SQLiteHistoryStorage.timeSinceInMicrosecond.asc)
                                 .limit(1)
@@ -343,7 +382,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                 self.firstKnownTimeInMicrosecond = newFirstKnownTimeInMicrosecond
             }
             
-            self.queue.async {
+            self.completionHandlerQueue.async {
                 completion(true, false, nil, false, nil, false, nil, nil)
             }
         }
@@ -353,51 +392,55 @@ final class SQLiteHistoryStorage: HistoryStorage {
     // MARK: Private methods
     
     private func createTableWith(name: String) {
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                .userDomainMask,
-                                                                true).first!
-        let dbPath = "\(documentsPath)/\(name)"
-        db = try! Connection(dbPath)
-        
-        /*
-         CREATE TABLE history
-         id TEXT PRIMARY KEY NOT NULL,
-         clientSideID TEXT,
-         timeInMicrosecond INTEGER NOT NULL,
-         senderID TEXT,
-         senderName TEXT NOT NULL,
-         avatarURLString TEXT,
-         type TEXT NOT NULL,
-         text TEXT NOT NULL,
-         data TEXT,
-         serverData TEXT
-         */
-        try! db?.run(SQLiteHistoryStorage.history.create(ifNotExists: true) { t in
-            t.column(SQLiteHistoryStorage.id,
-                     primaryKey: true)
-            t.column(SQLiteHistoryStorage.clientSideID)
-            t.column(SQLiteHistoryStorage.timeSinceInMicrosecond)
-            t.column(SQLiteHistoryStorage.senderID)
-            t.column(SQLiteHistoryStorage.senderName)
-            t.column(SQLiteHistoryStorage.avatarURLString)
-            t.column(SQLiteHistoryStorage.type)
-            t.column(SQLiteHistoryStorage.text)
-            t.column(SQLiteHistoryStorage.data)
-            t.column(SQLiteHistoryStorage.serverData)
-        })
-        #if DEBUG
-            self.db!.trace { print($0) }
-        #endif
-        
-        /*
-         CREATE UNIQUE INDEX index_<history>_on_<timeInMicrosecond>
-         ON <history> (<timeInMicrosecond>)
-         */
-        _ = try? db?.run(SQLiteHistoryStorage.history.createIndex(SQLiteHistoryStorage.timeSinceInMicrosecond,
-                                                                  unique: true))
-        #if DEBUG
-            self.db!.trace { print($0) }
-        #endif
+        SQLiteHistoryStorage.queryQueue.async {
+            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                    .userDomainMask,
+                                                                    true).first!
+            let dbPath = "\(documentsPath)/\(name)"
+            self.db = try! Connection(dbPath)
+            
+            /*
+             CREATE TABLE history
+             id TEXT PRIMARY KEY NOT NULL,
+             clientSideID TEXT,
+             timeInMicrosecond INTEGER NOT NULL,
+             senderID TEXT,
+             senderName TEXT NOT NULL,
+             avatarURLString TEXT,
+             type TEXT NOT NULL,
+             text TEXT NOT NULL,
+             data TEXT,
+             serverData TEXT
+             */
+            try! self.db?.run(SQLiteHistoryStorage.history.create(ifNotExists: true) { t in
+                t.column(SQLiteHistoryStorage.id,
+                         primaryKey: true)
+                t.column(SQLiteHistoryStorage.clientSideID)
+                t.column(SQLiteHistoryStorage.timeSinceInMicrosecond)
+                t.column(SQLiteHistoryStorage.senderID)
+                t.column(SQLiteHistoryStorage.senderName)
+                t.column(SQLiteHistoryStorage.avatarURLString)
+                t.column(SQLiteHistoryStorage.type)
+                t.column(SQLiteHistoryStorage.text)
+                t.column(SQLiteHistoryStorage.data)
+                t.column(SQLiteHistoryStorage.serverData)
+            })
+            #if DEBUG
+                self.db!.trace { print($0) }
+            #endif
+            
+            /*
+             CREATE UNIQUE INDEX index_<history>_on_<timeInMicrosecond>
+             ON <history> (<timeInMicrosecond>)
+             */
+            _ = try? self.db?.run(SQLiteHistoryStorage
+                .history
+                .createIndex(SQLiteHistoryStorage.timeSinceInMicrosecond,
+                             unique: true))
+            #if DEBUG
+                self.db!.trace { print($0) }
+            #endif
+        }
     }
     
     private func prepare() {
@@ -410,7 +453,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
              ORDER BY timeInMicrosecond ASC
              LIMIT 1
              */
-            let query = SQLiteHistoryStorage.history
+            let query = SQLiteHistoryStorage
+                .history
                 .select(SQLiteHistoryStorage.timeSinceInMicrosecond)
                 .order(SQLiteHistoryStorage.timeSinceInMicrosecond.asc)
                 .limit(1)
@@ -431,7 +475,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     private func run(messageList: [MessageImpl],
                      completion: @escaping ([Message]) -> ()) {
-        queue.async {
+        completionHandlerQueue.async {
             completion(messageList as [Message])
         }
     }
@@ -439,14 +483,14 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private func runAdded(message: MessageImpl,
                           beforeID: HistoryID?,
                           completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
-        queue.async {
+        completionHandlerQueue.async {
             completion(false, false, nil, false, nil, true, message, beforeID)
         }
     }
     
     private func runChanged(message: MessageImpl,
                             completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?)  -> ()) {
-        queue.async {
+        completionHandlerQueue.async {
             completion(false, false, nil, true, message, false, nil, nil)
         }
     }

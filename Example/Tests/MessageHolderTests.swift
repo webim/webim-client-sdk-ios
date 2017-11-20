@@ -1592,7 +1592,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: - Methods
         override func requestHistory(beforeTimeSince: Int64,
-                                     completion: @escaping ([MessageImpl], Bool) throws -> ()) {
+                                     completion: @escaping ([MessageImpl], Bool) -> ()) {
             var beforeIndex = 0
             for (messageIndex, message) in history.enumerated() {
                 if message.getTimeInMicrosecond() <= beforeTimeSince {
@@ -1608,11 +1608,7 @@ class MessageHolderTests: XCTestCase {
             
             numberOfCalls = numberOfCalls + 1
             
-            do {
-                try completion((beforeIndex <= 0) ? [MessageImpl]() : Array(history[afterIndex ..< beforeIndex]), (afterIndex != 0))
-            } catch {
-                // No need to do anything when testing.
-            }
+            completion((beforeIndex <= 0) ? [MessageImpl]() : Array(history[afterIndex ..< beforeIndex]), (afterIndex != 0))
         }
         
     }

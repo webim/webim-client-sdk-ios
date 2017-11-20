@@ -89,6 +89,8 @@ public protocol MessageStream {
      ID of the operator to be rated.
      - parameter rate:
      A number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
+     - returns:
+     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -102,6 +104,8 @@ public protocol MessageStream {
     
     /**
      Changes `ChatState` to `ChatState.QUEUE`.
+     - returns:
+     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -114,6 +118,8 @@ public protocol MessageStream {
     
     /**
      Changes `ChatState` to `ChatState.CLOSED_BY_VISITOR`.
+     - returns:
+     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -128,6 +134,9 @@ public protocol MessageStream {
      This method must be called whenever there is a change of the input field of a message transferring current content of a message as a parameter.
      - parameter draftMessage:
      Current message content.
+     - returns:
+     No return value.
+     - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
      - Author:
@@ -221,8 +230,10 @@ public protocol MessageStream {
     
     /**
      Sets the `ChatState` change listener.
-     -  parameter chatStateListener:
+     - parameter chatStateListener:
      The `ChatState` change listener.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -234,6 +245,8 @@ public protocol MessageStream {
      Sets the current `Operator` change listener.
      - parameter currentOperatorChangeListener:
      Current `Operator` change listener.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -245,6 +258,8 @@ public protocol MessageStream {
      Sets the listener of the MessageStream LocationSettings changes.
      - parameter locationSettingsChangeListener:
      The listener of MessageStream LocationSettings changes.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -256,6 +271,8 @@ public protocol MessageStream {
      Sets the listener of the "operator typing" status changes.
      - parameter operatorTypingListener:
      The listener of the "operator typing" status changes.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -269,6 +286,8 @@ public protocol MessageStream {
      `SessionOnlineStatusChangeListener` object.
      - SeeAlso:
      `SessionOnlineStatusChangeListener`
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -318,6 +337,8 @@ public protocol SendFileCompletionHandler {
      Executed when operation is done successfully.
      - parameter messageID:
      ID of the message.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -331,6 +352,8 @@ public protocol SendFileCompletionHandler {
      ID of the message.
      - parameter error:
      Error.
+     - returns:
+     No return value.
      - SeeAlso:
      `SendFileError`.
      - Author:
@@ -360,6 +383,8 @@ public protocol ChatStateListener {
      Previous state.
      - parameter newState:
      New state.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -387,6 +412,8 @@ public protocol CurrentOperatorChangeListener {
      Previous operator.
      - parameter newOperator:
      New operator or nil if doesn't exist.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -414,6 +441,8 @@ public protocol LocationSettingsChangeListener {
      Previous LocationSettings state.
      - parameter newLocationSettings:
      New LocationSettings state.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -438,6 +467,8 @@ public protocol OperatorTypingListener {
      Called when operator typing state changed.
      - parameter isTyping:
      True if operator is typing, false otherwise.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -462,6 +493,8 @@ public protocol SessionOnlineStatusChangeListener {
      Called when new session status is received.
      - SeeAlso:
      `SessionOnlineStatus`
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

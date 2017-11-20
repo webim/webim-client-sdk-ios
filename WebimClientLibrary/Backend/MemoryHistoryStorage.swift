@@ -66,16 +66,20 @@ final class MemoryHistoryStorage: HistoryStorage {
         // No need in this implementation.
     }
     
-    func getLatest(byLimit limitOfMessages: Int,
-                     completion: @escaping ([Message]) -> ()) {
-        respondTo(messages: historyMessages,
-                      limitOfMessages: limitOfMessages,
-                      completion: completion)
+    func getFullHistory(completion: @escaping ([Message]) -> ()) {
+        completion(historyMessages as [Message])
     }
     
-    func getBefore(id: HistoryID,
-                   limitOfMessages: Int,
-                   completion: @escaping ([Message]) -> ()) {
+    func getLatestHistory(byLimit limitOfMessages: Int,
+                          completion: @escaping ([Message]) -> ()) {
+        respondTo(messages: historyMessages,
+                  limitOfMessages: limitOfMessages,
+                  completion: completion)
+    }
+    
+    func getHistoryBefore(id: HistoryID,
+                          limitOfMessages: Int,
+                          completion: @escaping ([Message]) -> ()) {
         let sortedMessages = historyMessages.sorted { $0.getHistoryID()!.getTimeInMicrosecond() < $1.getHistoryID()!.getTimeInMicrosecond() }
         
         if sortedMessages[0].getHistoryID()!.getTimeInMicrosecond() > id.getTimeInMicrosecond() {
@@ -87,9 +91,9 @@ final class MemoryHistoryStorage: HistoryStorage {
         for (index, message) in sortedMessages.enumerated() {
             if message.getHistoryID() == id {
                 respondTo(messages: sortedMessages,
-                              limitOfMessages: limitOfMessages,
-                              offset: index,
-                              completion: completion)
+                          limitOfMessages: limitOfMessages,
+                          offset: index,
+                          completion: completion)
                 break
             }
         }

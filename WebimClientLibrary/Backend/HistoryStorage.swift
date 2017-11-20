@@ -39,12 +39,14 @@ protocol HistoryStorage {
     
     func set(reachedHistoryEnd: Bool)
     
-    func getLatest(byLimit limitOfMessages: Int,
-                   completion: @escaping ([Message]) -> ())
+    func getFullHistory(completion: @escaping ([Message]) -> ())
     
-    func getBefore(id: HistoryID,
-                   limitOfMessages: Int,
-                   completion: @escaping ([Message]) -> ())
+    func getLatestHistory(byLimit limitOfMessages: Int,
+                          completion: @escaping ([Message]) -> ())
+    
+    func getHistoryBefore(id: HistoryID,
+                          limitOfMessages: Int,
+                          completion: @escaping ([Message]) -> ())
     
     func receiveHistoryBefore(messages: [MessageImpl],
                               hasMoreMessages: Bool)

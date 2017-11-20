@@ -44,6 +44,8 @@ public protocol FatalErrorHandler {
      Notice that the session will be destroyed before this method is called.
      - parameter error:
      Error type.
+     - returns:
+     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

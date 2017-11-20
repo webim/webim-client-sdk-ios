@@ -1,12 +1,12 @@
 # WebimClientLibrary
 
-This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobile-sdk/ios-sdk-howto/).
+This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobile-sdk/ios-sdk-howto/) – a way to integrate _Webim_ service into your _iOS_ app.
 
 ## Installation
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.2.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.3.0'
 ```
 
 In the "Build Settings" of your project in the "Swift Compiler – Language" "Swift Language Version" for _WebimClientLibrary_ target must be setted to "Swift 4.0".
@@ -21,17 +21,23 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Current version changes
 
-* `SessionOnlineStatusChangeListener` protocol added – the session status tracking mechanism.
-* Public APIs fixes and improvements.
-* Various bug fixes and stability improvements.
+* Added `getLastMessages(byLimit limitOfMessages:,completion:)` method to `MessageTracker` protocol which allows to request message history from beginning.
+* Added `getAllMessages(completion:)` method to `MessageTracker` protocol which allows to request all the messages from history.
+* `getNextMessages(byLimit limit:,completion:)` method renamed to `getNextMessages(byLimit limitOfMessages:,completion:)`
+* Bug that may cause a deadlock state while making server requests fixed.
+* _HeaderDoc_ improvedrating.
+* **Readme** improved.
+
+Demo app:
+* `getLastMessages(byLimit limitOfMessages:,completion:)` method usage example added.
+* _HeaderDoc_ added.
+* Refactoring.
 
 ## Example
 
 To run the example project, clone the repo and run `pod install` from the **Example** directory first.
 
 If you don't have _CocoaPods_ installed you should firstly run `sudo gem install cocoapods`.
-
-> At the moment this example is not a perfectly working app, but it gives an idea of SDK logics and guides a developer of a real app for proper usage of provided classes and methods.
 
 ## Usage
 

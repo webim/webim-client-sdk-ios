@@ -26,6 +26,13 @@
 
 import UIKit
 
+/**
+ Information view controller which is shown when tha app is started.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 class StartViewController: UIViewController {
     
     // MARK: - Properties

@@ -48,9 +48,11 @@ class AbstractRequestLoop {
     
     
     // MARK: - Properties
-    var running: Bool = true
+    private var pauseCondition = NSCondition()
+    private let pauseLock = NSRecursiveLock()
+    var running = true
     private var currentDataTask: URLSessionDataTask?
-    private var paused: Bool = true
+    private var paused = true
     private var queue: DispatchQueue?
     private var requests: [WebimRequest]?
     
@@ -60,10 +62,11 @@ class AbstractRequestLoop {
     func start() {
         guard queue == nil else {
             print("Can't start loop because it is already started.")
+            
             return
         }
         
-        queue = DispatchQueue(label: "Webim I/O executor")
+        queue = DispatchQueue(label: "ru.webim.IODispatchQueue")
         queue?.async {
             do {
                 try self.run()
@@ -74,21 +77,20 @@ class AbstractRequestLoop {
     }
     
     func pause() {
-        let condition = NSCondition()
-        condition.lock()
+        pauseLock.lock()
         
         paused = true
         
-        condition.unlock()
+        pauseLock.unlock()
     }
     
     func resume() {
-        let condition = NSCondition()
-        condition.lock()
+        pauseLock.lock()
         
         paused = false
+        pauseCondition.broadcast()
         
-        condition.unlock()
+        pauseLock.unlock()
     }
     
     func stop() {
@@ -188,14 +190,13 @@ class AbstractRequestLoop {
     
     // MARK: Private methods
     private func blockUntilPaused() {
-        let condition = NSCondition()
-        condition.lock()
+        pauseCondition.lock()
         
         while paused {
-            condition.wait()
+            pauseCondition.wait()
         }
         
-        condition.unlock()
+        pauseCondition.unlock()
     }
     
 }

@@ -64,6 +64,7 @@ final class ProvidedVisitorFields {
             self.jsonString = jsonString
         } catch {
             print("Error serializing provided visitor fields")
+            
             return nil
         }
     }

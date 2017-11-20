@@ -28,10 +28,17 @@ import UIKit
 
 extension UIImage {
     
-    func roundImage(size: CGSize? = nil) -> UIImage {
-        let newSize = size ?? self.size
-        
-        let minEdge = min(newSize.height, newSize.width)
+    /**
+     Converts a UIImage object into round shaped one.
+     - returns:
+     UIImage object of round shape.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func roundImage() -> UIImage {
+        let minEdge = min(self.size.height, self.size.width)
         let size = CGSize(width: minEdge,
                           height: minEdge)
         

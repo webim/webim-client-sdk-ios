@@ -37,10 +37,12 @@ extension UIImageView {
      Optional. Shows to a func if it has to round loaded image.
      - parameter completion:
      Optional. Completion that has to be called on loaded image when loading is finished.
+     - parameter image:
+     Loaded image.
      */
     public func loadImageAsynchronouslyFrom(url: URL,
                                             rounded: Bool = false,
-                                            completion: ((UIImage) -> ())? = nil) {
+                                            completion: ((_ image: UIImage) -> ())? = nil) {
         let request = URLRequest(url: url)
         URLSession.shared.dataTask(with: request,
                                    completionHandler: { data, _, _ in

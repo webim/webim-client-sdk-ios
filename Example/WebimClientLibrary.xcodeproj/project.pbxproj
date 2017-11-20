@@ -18,6 +18,7 @@
 		CE44AE651F87CA8E009787E5 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */; };
 		CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDC1F9108FA00F56319 /* UIImageView.swift */; };
 		CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
+		CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
 		CEA832681F9906C0004845F0 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832671F9906BF004845F0 /* ColorConstants.swift */; };
 		CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832691F99079A004845F0 /* StringConstants.swift */; };
 		CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61A381F82A4C700BF7071 /* ChatViewController.swift */; };
@@ -59,6 +60,7 @@
 		CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		CE45EDDC1F9108FA00F56319 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		CE45EDDF1F95F95C00F56319 /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
+		CE591A421FC2F31E004C95EE /* WebimService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimService.swift; sourceTree = "<group>"; };
 		CEA832671F9906BF004845F0 /* ColorConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
 		CEA832691F99079A004845F0 /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		CEF61A381F82A4C700BF7071 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */,
 				DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */,
 				607FACD71AFB9204008FA782 /* StartViewController.swift */,
+				CE591A421FC2F31E004C95EE /* WebimService.swift */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				DDFC63CC1F93FEC2008E1ACC /* RatingViewController.xib */,
@@ -422,6 +425,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */,
 				607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */,
 				CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */,
 				CE44AE651F87CA8E009787E5 /* MessageTableViewCell.swift in Sources */,

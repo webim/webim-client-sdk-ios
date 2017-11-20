@@ -91,7 +91,7 @@ final class MessageHolder {
                       limitOfMessages: limitOfMessages,
                       completion: completion)
         } else {
-            historyStorage.getLatest(byLimit: limitOfMessages,
+            historyStorage.getLatestHistory(byLimit: limitOfMessages,
                                      completion: completion)
         }
     }
@@ -109,7 +109,7 @@ final class MessageHolder {
             let firstMessage = currentChatMessages.first!
             if message === firstMessage {
                 if !firstMessage.hasHistoryComponent() {
-                    historyStorage.getLatest(byLimit: limit,
+                    historyStorage.getLatestHistory(byLimit: limit,
                                              completion: completion)
                 } else {
                     getMessagesFromHistoryBefore(id: firstMessage.getHistoryID()!,
@@ -370,7 +370,7 @@ final class MessageHolder {
                                               limit: Int,
                                               completion: @escaping ([Message]) -> ()) {
         if reachedEndOfLocalHistory != true {
-            historyStorage.getBefore(id: id,
+            historyStorage.getHistoryBefore(id: id,
                                      limitOfMessages: limit,
                                      completion: { messages in
                                             if messages.isEmpty {

@@ -30,7 +30,13 @@ import UIKit
 
 import Cosmos
 
-
+/**
+ View controller that represents operator rating dialogue.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
 class RatingViewController: UIViewController {
 
     // MARK: - Properties

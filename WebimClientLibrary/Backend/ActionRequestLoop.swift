@@ -40,7 +40,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
     private let internalErrorListener: InternalErrorListener
     private var authorizationData: AuthorizationData?
     private var lastRequest: WebimRequest?
-    private lazy var queue = [WebimRequest]()
+    private lazy var requestQueue = [WebimRequest]()
     
     
     // MARK: - Initialization
@@ -73,7 +73,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
     }
     
     func enqueue(request: WebimRequest) {
-        queue.append(request)
+        requestQueue.append(request)
     }
     
     // MARK: Private methods
@@ -89,8 +89,8 @@ final class ActionRequestLoop: AbstractRequestLoop {
     private func runIteration(withAuthorizationData authorizationData: AuthorizationData) {
         var currentRequest = lastRequest
         if currentRequest == nil {
-            if !queue.isEmpty {
-                let nextRequest = queue.removeFirst()
+            if !requestQueue.isEmpty {
+                let nextRequest = requestQueue.removeFirst()
                 lastRequest = nextRequest
                 currentRequest = nextRequest
             }
