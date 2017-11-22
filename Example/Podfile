@@ -1,6 +1,9 @@
+platform :ios, '8.0'
+
 use_frameworks!
 
 target 'WebimClientLibrary_Example' do
+  
   pod 'JSQMessagesViewController', :inhibit_warnings => true
   pod 'HCSStarRatingView', :git => 'https://github.com/hugocampossousa/HCSStarRatingView.git', :inhibit_warnings => true
   pod 'CRToast', '0.0.8', :inhibit_warnings => true
@@ -8,7 +11,6 @@ target 'WebimClientLibrary_Example' do
 
   target 'WebimClientLibrary_Tests' do
     inherit! :search_paths
-
-    
   end
+  
 end

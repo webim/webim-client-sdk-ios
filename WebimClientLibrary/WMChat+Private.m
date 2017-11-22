@@ -14,43 +14,62 @@
 #import "WMBaseSession.h"
 
 
-@implementation WMChat (Private)
+// MARK: - Constants
+// Delta fields for chat initialization.
+NSString *const CHAT_ID = @"id";
+NSString *const CHAT_CLIENT_SIDE_ID = @"clientSideId";
+NSString *const CHAT_OPERATOR = @"operator";
+NSString *const CHAT_STATE = @"state";
+NSString *const OFFLINE_STATUS = @"offline";
+NSString *const OPERATOR_TYPING = @"operatorTyping";
+NSString *const UNREAD_BY_OPERATOR_SINCE_TIMESTAMP = @"unreadByOperatorSinceTs";
+NSString *const UNREAD_BY_VISITOR_SINCE_TIMESTAMP = @"unreadByVisitorSinceTs";
 
+
+// MARK: -
+@implementation WMChat (Private)
+    
+    // MARK: - Methods
+    
+    // MARK: Initialization
 - (void)initWithObject:(NSDictionary *)object
             forSession:(WMBaseSession *)session {
-    self.isOffline = [object[@"offline"] boolValue];
-    self.state = [self chatStateFromString:object[@"state"]];
-    id unreadByOperatorTSObject = object[@"unreadByOperatorSinceTs"];
+    self.isOffline = [object[OFFLINE_STATUS] boolValue];
+    self.state = [self chatStateFromString:object[CHAT_STATE]];
+    id unreadByOperatorTimestampObject = object[UNREAD_BY_OPERATOR_SINCE_TIMESTAMP];
+    id unreadByVisitorTimestampObject = object[UNREAD_BY_VISITOR_SINCE_TIMESTAMP];
     
-    if (![unreadByOperatorTSObject isKindOfClass:[NSNull class]]) {
-        self.unreadByOperatorTimestamp = [NSDate dateWithTimeIntervalSince1970:[unreadByOperatorTSObject doubleValue]];
+    if (![unreadByOperatorTimestampObject isKindOfClass:[NSNull class]]) {
+        self.unreadByOperatorTimestamp = [NSDate dateWithTimeIntervalSince1970:[unreadByOperatorTimestampObject doubleValue]];
     }
+    
+    if (![unreadByVisitorTimestampObject isKindOfClass:[NSNull class]]) {
+        self.unreadByVisitorTimestamp = [NSDate dateWithTimeIntervalSince1970:[unreadByVisitorTimestampObject doubleValue]];
+    }
+    self.hasUnreadMessages = !((unreadByVisitorTimestampObject == nil) ||
+                               [unreadByVisitorTimestampObject isKindOfClass:[NSNull class]]);
     
     self.messages = [self messagesFromChatObject:object
                                          session:session];
-    self.chatOperator = [self operatorFromObject:object[@"operator"]];
+    self.chatOperator = [self operatorFromObject:object[CHAT_OPERATOR]];
     
-    id chatUID = object[@"id"];
+    id chatUID = object[CHAT_ID];
     if ([chatUID isKindOfClass:[NSString class]]) {
         self.uid = chatUID;
     } else if ([chatUID isKindOfClass:[NSNumber class]]) {
         self.uid = [chatUID stringValue];
     }
     
-    id hasUnreadMessagesData = object[@"unreadByVisitorSinceTs"];
-    
-    self.hasUnreadMessages = !((hasUnreadMessagesData == nil) ||
-                               [hasUnreadMessagesData isKindOfClass:[NSNull class]]);
-    self.operatorTyping = object[@"operatorTyping"] ? [object[@"operatorTyping"] boolValue] : NO;
+    self.operatorTyping = object[OPERATOR_TYPING] ? [object[OPERATOR_TYPING] boolValue] : NO;
     self.proposeToRateBeforeClose = NO;
-
-    id clientSideId = object[@"clientSideId"];
+    
+    id clientSideId = object[CHAT_CLIENT_SIDE_ID];
     if ((clientSideId != nil) &&
-         ![clientSideId isKindOfClass:[NSNull class]]) {
+        ![clientSideId isKindOfClass:[NSNull class]]) {
         self.clientSideId = clientSideId;
     }
 }
-
+    
 - (WMChatState)chatStateFromString:(NSString *)stateString {
     if ([@"queue" isEqualToString:stateString]) {
         return WMChatStateQueue;
@@ -78,7 +97,7 @@
     
     return WMChatStateUnknown;
 }
-
+    
 - (NSMutableArray *)messagesFromChatObject:(NSDictionary *)chatObject
                                    session:(WMBaseSession *)session {
     NSMutableArray *messages = [NSMutableArray array];
@@ -97,7 +116,7 @@
     
     return messages;
 }
-
+    
 - (WMOperator *)operatorFromObject:(NSDictionary *)object {
     if ((object == nil) ||
         [object isKindOfClass:[NSNull class]]) {
@@ -106,17 +125,18 @@
     
     return [[WMOperator alloc] initWithObject:object];
 }
-
+    
 - (void)copyValues:(WMChat *)fromObject {
     self.isOffline = fromObject.isOffline;
     self.state = fromObject.state;
     self.unreadByOperatorTimestamp = fromObject.unreadByOperatorTimestamp;
+    self.unreadByVisitorTimestamp = fromObject.unreadByVisitorTimestamp;
     self.hasUnreadMessages = fromObject.hasUnreadMessages;
 }
-
-
-// MARK: NSCoding protocol methods
-
+    
+    
+    // MARK: NSCoding protocol methods
+    
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self.uid = [aDecoder decodeObjectForKey:@"chat_uid"];
     self.hasUnreadMessages = [aDecoder decodeBoolForKey:@"has_unread"];
@@ -127,7 +147,7 @@
     
     return self;
 }
-
+    
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:self.uid forKey:@"chat_uid"];
     [aCoder encodeBool:self.hasUnreadMessages forKey:@"has_unread"];
@@ -136,5 +156,5 @@
     [aCoder encodeInteger:self.state forKey:@"state"];
     [aCoder encodeObject:self.clientSideId forKey:@"clientSideId"];
 }
-
-@end
+    
+    @end
