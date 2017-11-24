@@ -77,8 +77,8 @@ final class MessageItem {
         case KIND = "kind"
         case SENDER_NAME = "name"
         case TEXT = "text"
-        case TIME_SINCE_IN_MICROSECOND = "ts_m"
-        case TIME_SINCE_IN_SECOND = "ts"
+        case TIMESTAMP_IN_MICROSECOND = "ts_m"
+        case TIMESTAMP_IN_SECOND = "ts"
     }
     
     
@@ -93,8 +93,8 @@ final class MessageItem {
     private var kind: MessageKind?
     private var senderName: String?
     private var text: String?
-    private var timeSinceInMicrosecond: Int64 = -1
-    private var timeSinceInSecond: Double?
+    private var timestampInMicrosecond: Int64 = -1
+    private var timestampInSecond: Double?
     
     
     // MARK: - Initialization
@@ -139,12 +139,12 @@ final class MessageItem {
             self.text = text
         }
         
-        if let timeSinceInMicrosecond = jsonDictionary[JSONField.TIME_SINCE_IN_MICROSECOND.rawValue] as? Int64 {
-            self.timeSinceInMicrosecond = timeSinceInMicrosecond
+        if let timestampInMicrosecond = jsonDictionary[JSONField.TIMESTAMP_IN_MICROSECOND.rawValue] as? Int64 {
+            self.timestampInMicrosecond = timestampInMicrosecond
         }
         
-        if let timeSinceInSecond = jsonDictionary[JSONField.TIME_SINCE_IN_SECOND.rawValue] as? Double {
-            self.timeSinceInSecond = timeSinceInSecond
+        if let timestampInSecond = jsonDictionary[JSONField.TIMESTAMP_IN_SECOND.rawValue] as? Double {
+            self.timestampInSecond = timestampInSecond
         }
     }
     
@@ -192,7 +192,7 @@ final class MessageItem {
     }
     
     func getTimeInMicrosecond() -> Int64? {
-        return (timeSinceInMicrosecond != -1) ? timeSinceInMicrosecond : Int64(timeSinceInSecond! * 1000000)
+        return (timestampInMicrosecond != -1) ? timestampInMicrosecond : Int64(timestampInSecond! * 1000000)
     }
     
 }
@@ -204,7 +204,7 @@ extension MessageItem: Equatable {
                     rhs: MessageItem) -> Bool {
         if (((lhs.id == rhs.id)
             && (lhs.clientSideID == rhs.clientSideID))
-            && (lhs.timeSinceInSecond == rhs.timeSinceInSecond))
+            && (lhs.timestampInSecond == rhs.timestampInSecond))
             && (lhs.text == rhs.text) {
             return true
         }

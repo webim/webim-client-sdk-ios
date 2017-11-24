@@ -80,6 +80,7 @@ final class WebimService {
      2017 Webim
      */
     func createSession() {
+        // Hardcoded values that work with "demo" account only!
         let visitorFieldsJSONString = "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}"
         
         let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
@@ -94,7 +95,7 @@ final class WebimService {
                 .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
                 .set(deviceToken: deviceToken)
                 .build()
-        } catch let error as SessionBuilderError {
+        } catch let error as SessionBuilder.SessionBuilderError {
             // Assuming to check parameters values in Webim session builder methods.
             switch error {
             case .NIL_ACCOUNT_NAME:

@@ -251,8 +251,6 @@ class ChatViewController: SLKTextViewController {
                 self.tableView?.reloadData()
                 
                 self.refreshControl.endRefreshing()
-                
-                self.scrollToBottom()
             }
         }
     }

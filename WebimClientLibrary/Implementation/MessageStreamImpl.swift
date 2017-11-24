@@ -357,6 +357,7 @@ final class MessageStreamImpl: MessageStream {
             return 2
         default:
             print("Rating must be within from 1 to 5 range. Passed value: \(rating)")
+            
             return nil
         }
     }

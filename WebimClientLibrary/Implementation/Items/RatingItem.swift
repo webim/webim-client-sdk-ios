@@ -50,11 +50,8 @@ final class RatingItem {
     
     // MARK: - Initialization
     init?(withJSONDictionary jsonDictionary: [String : Any?]) {
-        guard let operatorID = jsonDictionary[JSONField.OPERATOR_ID.rawValue] as? String else {
-            return nil
-        }
-        
-        guard let rating = jsonDictionary[JSONField.RATING.rawValue] as? Int else {
+        guard let operatorID = jsonDictionary[JSONField.OPERATOR_ID.rawValue] as? String,
+            let rating = jsonDictionary[JSONField.RATING.rawValue] as? Int else {
             return nil
         }
         

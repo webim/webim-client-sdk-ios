@@ -39,6 +39,8 @@ import Foundation
  */
 protocol MessageFactoriesMapper {
     
+    func set(webimClient: WebimClient)
+    
     func map(message: MessageItem) -> MessageImpl?
     
     func mapAll(messages: [MessageItem]) -> [MessageImpl]
@@ -63,6 +65,7 @@ class AbstractMapper: MessageFactoriesMapper {
     
     // MARK: - Properties
     private let serverURLString: String
+    private var webimClient: WebimClient?
     
     
     // MARK: - Initialization
@@ -72,6 +75,10 @@ class AbstractMapper: MessageFactoriesMapper {
     
     
     // MARK: - Methods
+    
+    func set(webimClient: WebimClient) {
+        self.webimClient = webimClient
+    }
     
     func convert(messageItem: MessageItem,
                  historyMessage: Bool) -> MessageImpl? {
@@ -94,6 +101,7 @@ class AbstractMapper: MessageFactoriesMapper {
         let messageItemText = messageItem.getText()
         if (kind == .FILE_FROM_VISITOR) || (kind == .FILE_FROM_OPERATOR) {
             attachment = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
+                                                             webimClient: webimClient!,
                                                              text: messageItemText!)
             if attachment == nil {
                 return nil
@@ -158,6 +166,7 @@ class AbstractMapper: MessageFactoriesMapper {
             return MessageType.VISITOR
         default:
             print("Invalid message type received: \(messageKind.rawValue)")
+            
             return nil
         }
     }
@@ -172,12 +181,6 @@ class AbstractMapper: MessageFactoriesMapper {
  2017 Webim
  */
 final class CurrentChatMapper: AbstractMapper {
-    
-    
-    // MARK: - Initialization
-    override init(withServerURLString serverURLString: String) {
-        super.init(withServerURLString: serverURLString)
-    }
     
     // MARK: - Methods
     override func map(message: MessageItem) -> MessageImpl? {
@@ -195,11 +198,6 @@ final class CurrentChatMapper: AbstractMapper {
  2017 Webim
  */
 final class HistoryMapper: AbstractMapper {
-    
-    // MARK: - Initialization
-    override init(withServerURLString serverURLString: String) {
-        super.init(withServerURLString: serverURLString)
-    }
     
     // MARK: - Methods
     override func map(message: MessageItem) -> MessageImpl? {

@@ -168,7 +168,6 @@ class AbstractRequestLoop {
                 
                 if httpCode == lastHTTPCode {
                     print("Request failed with HTTP code: \(httpCode)")
-                    throw WebimInternalError.UNKNOWN
                 }
                 
                 errorCounter = 10

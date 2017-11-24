@@ -45,7 +45,7 @@ class WebimActions {
         case ACTION = "action"
         case APP_VERSION = "app-version"
         case AUTHORIZATION_TOKEN = "auth-token"
-        case BEFORE_TIME_SINCE = "before-ts"
+        case BEFORE_TIMESTAMP = "before-ts"
         case CHAT_MODE = "chat-mode"
         case CLIENT_SIDE_ID = "client-side-id"
         case DELETE_DRAFT = "del-message-draft"
@@ -63,7 +63,7 @@ class WebimActions {
         case RESPOND_IMMEDIATELY = "respond-immediately"
         case SESSION_ID = "visit-session-id"
         case SINCE = "since"
-        case TIME_SINCE = "ts"
+        case TIMESTAMP = "ts"
         case TITLE = "title"
         case VISITOR = "visitor"
         case VISITOR_FIELDS = "visitor-ext"
@@ -201,9 +201,9 @@ class WebimActions {
                                                         completionHandler: completion))
     }
     
-    func requestHistory(beforeMessageTimeSince: Int64,
+    func requestHistory(beforeMessageTimestamp: Int64,
                         completion: @escaping (_ data: Data?) throws -> ()) {
-        let dataToPost = [Parameter.BEFORE_TIME_SINCE.rawValue : String(beforeMessageTimeSince)] as [String : Any]
+        let dataToPost = [Parameter.BEFORE_TIMESTAMP.rawValue : String(beforeMessageTimestamp)] as [String : Any]
         
         let urlString = baseURL + ServerPathSuffix.GET_HISTORY.rawValue
         

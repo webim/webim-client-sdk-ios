@@ -73,6 +73,7 @@ public protocol MessageTracker {
      If there is any previous `MessageTracker` request that is not completed, or limit of messages is less than 1, or current `MessageTracker` has been destroyed, this method will do nothing.
      - SeeAlso:
      `destroy()` method.
+     `Message` protocol.
      - important:
      Notice that this method can not be called again until the callback for the previous call will be invoked.
      - parameter limitOfMessages:
@@ -101,6 +102,7 @@ public protocol MessageTracker {
      This method is totally independent on `getLastMessages(byLimit limitOfMessages:,completion:)` and `getLastMessages(byLimit limitOfMessages:,completion:)` methods' calls.
      - SeeAlso:
      `destroy()` method.
+     `Message` protocol.
      - parameter completion:
      Completion to be called on resulting array of messages if method call succeeded.
      - parameter result:
@@ -122,6 +124,8 @@ public protocol MessageTracker {
      If there is any previous `MessageTracker` request that is not completed, this method will do nothing.
      - important:
      Notice that this method can not be used unless the previous call `getNextMessages(byLimit:completion:)` was finished (completion handler was invoked).
+     - SeeAlso:
+     `Message` protocol.
      - parameter message:
      A message reset to.
      - returns:
@@ -139,6 +143,8 @@ public protocol MessageTracker {
     /**
      Destroys the `MessageTracker`.
      It is impossible to use any `MessageTracker` methods after it was destroyed.
+     - SeeAlso:
+     `Message` protocol.
      - returns:
      No return value.
      - throws:

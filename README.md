@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.3.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.3.1'
 ```
 
 In the "Build Settings" of your project in the "Swift Compiler – Language" "Swift Language Version" for _WebimClientLibrary_ target must be setted to "Swift 4.0".
@@ -21,23 +21,20 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Current version changes
 
-* Added `getLastMessages(byLimit limitOfMessages:,completion:)` method to `MessageTracker` protocol which allows to request message history from beginning.
-* Added `getAllMessages(completion:)` method to `MessageTracker` protocol which allows to request all the messages from history.
-* `getNextMessages(byLimit limit:,completion:)` method renamed to `getNextMessages(byLimit limitOfMessages:,completion:)`
-* Bug that may cause a deadlock state while making server requests fixed.
-* _HeaderDoc_ improvedrating.
-* **Readme** improved.
-
-Demo app:
-* `getLastMessages(byLimit limitOfMessages:,completion:)` method usage example added.
-* _HeaderDoc_ added.
-* Refactoring.
+* Full [documentation](Documentation/Index.md).
+* Incorrect `MessageAttachment` retreiving from message history bug fix.
+* `MessageAttachment` links security fixes.
+* `SessionBuilderError` transferred into `SessionBuilder` class.
+* Small fixes of working with _SQLite_ DB process.
+* Small _HeaderDoc_ and public API files fixes and additions.
 
 ## Example
 
+If you don't have _CocoaPods_ installed you should firstly run `sudo gem install cocoapods`.
+
 To run the example project, clone the repo and run `pod install` from the **Example** directory first.
 
-If you don't have _CocoaPods_ installed you should firstly run `sudo gem install cocoapods`.
+> Minimum iOS version supported – 8.0.
 
 ## Usage
 
@@ -121,11 +118,11 @@ All public interfaces, classes and methods are described inside 10 files (in alp
 * **WebimRemoteNotification.swift**,
 * **WebimSession.swift**.
 
-There's no need in every class, protocol, method etc. description in this manual because all them have exhaustive descriptions inside SDK public files.
+Every single class, protocol, method etc. description provided inside [documentation](Documentation/Index.md).
 
 ## Additional information
 
-_WebimClientLibrary_ uses [_SQLite.swift_](https://github.com/stephencelis/SQLite.swift). (There's no need to add an appropriate depency in Podfile.)
+_WebimClientLibrary_ uses [_SQLite.swift_](https://github.com/stephencelis/SQLite.swift) and [_CryptoSwift_](https://github.com/krzyzanowskim/CryptoSwift). (There's no need to add this depencies into Podfile.)
 
 In the sake of ease of several functionalities implementation Example app uses (in alphabetical order):
 * [_Cosmos_](https://github.com/evgenyneu/Cosmos) – for visual implementation of operator rating mechanism.

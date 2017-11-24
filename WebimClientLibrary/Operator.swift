@@ -52,7 +52,7 @@ public protocol Operator {
     
     /**
      - returns:
-     A display name of the operator.
+     Display name of the operator.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -62,7 +62,7 @@ public protocol Operator {
     
     /**
      - returns:
-     A URL String of the operator’s avatar.
+     URL String of the operator’s avatar.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

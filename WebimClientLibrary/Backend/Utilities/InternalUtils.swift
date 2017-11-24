@@ -72,6 +72,7 @@ final class InternalUtils {
             }
         } else {
             print("Unknown remote notification format.")
+            
             return nil
         }
     }

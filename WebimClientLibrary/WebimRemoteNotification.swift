@@ -40,8 +40,10 @@ import Foundation
 public protocol WebimRemoteNotification {
     
     /**
+     - SeeAlso:
+     `NotificationType` enum.
      - returns:
-     The type of this remote notification.
+     Type of this remote notification.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -50,8 +52,10 @@ public protocol WebimRemoteNotification {
     func getType() -> NotificationType
     
     /**
+     - SeeAlso:
+     `NotificationEvent` enum.
      - returns:
-     The event of this remote notification.
+     Event of this remote notification.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

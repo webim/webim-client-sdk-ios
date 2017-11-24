@@ -24,6 +24,7 @@
 //  SOFTWARE.
 //
 
+import CryptoSwift
 import Foundation
 
 extension String {
@@ -32,9 +33,13 @@ extension String {
      Percent escapes values to be added to a URL query as specified in RFC 3986.
      This percent-escapes all characters besides the alphanumeric character set and "-", ".", "_", and "~".
      - SeeAlso:
-     http://www.ietf.org/rfc/rfc3986.txt
+     http://ietf.org/rfc/rfc3986.txt
      - returns:
      Percent-escaped string.
+     - author:
+     Nikita Lazarev-Lubov
+     - copyright:
+     2017 Webim
      */
     func addingPercentEncodingForURLQueryValue() -> String? {
         let generalDelimitersToEncode = ":#[]@" // Does not include "?" or "/" due to RFC 3986 - Section 3.4.
@@ -44,6 +49,27 @@ extension String {
         allowed.remove(charactersIn: generalDelimitersToEncode + subDelimitersToEncode)
         
         return addingPercentEncoding(withAllowedCharacters: allowed)
+    }
+    
+    /**
+     Generates HMAC SHA256 code taken on passed key value for self.
+     Using CryptoSwift.
+     - parameter key:
+     Key to generate hash code.
+     - returns:
+     Hash code of string taken with passed key.
+     - author:
+     Nikita Lazarev-Lubov
+     - copyright:
+     2017 Webim
+     */
+    func hmacSHA256(withKey key: String) -> String? {
+        let stringBytes: [UInt8] = Array(self.utf8)
+        let keyBytes: [UInt8] = Array(key.utf8)
+        let hmac = try! HMAC(key: keyBytes,
+                             variant: .sha256).authenticate(stringBytes).toHexString()
+        
+        return hmac
     }
     
 }

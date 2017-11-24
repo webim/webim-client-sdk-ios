@@ -76,9 +76,11 @@ final class ProvidedVisitorFields {
                               JSONObject: jsonData)
             } catch VisitorFieldsError.invalidVisitorFields(let error) {
                 print(error)
+                
                 return nil
             } catch VisitorFieldsError.serializingFail(let error) {
                 print(error)
+                
                 return nil
             } catch {
                 return nil
@@ -97,9 +99,11 @@ final class ProvidedVisitorFields {
                           JSONObject: jsonData)
         } catch VisitorFieldsError.invalidVisitorFields(let error) {
             print(error)
+            
             return nil
         } catch VisitorFieldsError.serializingFail(let error) {
             print(error)
+            
             return nil
         } catch {
             return nil

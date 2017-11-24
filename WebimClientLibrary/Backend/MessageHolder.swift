@@ -349,7 +349,7 @@ final class MessageHolder {
     private func requestHistory(beforeID id: HistoryID,
                                 limit: Int,
                                 completion: @escaping ([Message]) -> ()) {
-        remoteHistoryProvider.requestHistory(beforeTimeSince: id.getTimeInMicrosecond(),
+        remoteHistoryProvider.requestHistory(beforeTimestamp: id.getTimeInMicrosecond(),
                                              completion: { (messages: [MessageImpl], hasMoreMessages: Bool) in
                                                 if !hasMoreMessages {
                                                     self.reachedEndOfRemoteHistory = true

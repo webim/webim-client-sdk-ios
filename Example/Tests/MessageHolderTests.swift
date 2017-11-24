@@ -1591,11 +1591,11 @@ class MessageHolderTests: XCTestCase {
         }
         
         // MARK: - Methods
-        override func requestHistory(beforeTimeSince: Int64,
+        override func requestHistory(beforeTimestamp: Int64,
                                      completion: @escaping ([MessageImpl], Bool) -> ()) {
             var beforeIndex = 0
             for (messageIndex, message) in history.enumerated() {
-                if message.getTimeInMicrosecond() <= beforeTimeSince {
+                if message.getTimeInMicrosecond() <= beforeTimestamp {
                     beforeIndex = messageIndex
                     
                     continue

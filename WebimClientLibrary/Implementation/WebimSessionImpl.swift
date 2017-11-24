@@ -104,6 +104,8 @@ final class WebimSessionImpl {
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool,
                                 isVisitorDataClearingEnabled: Bool) -> WebimSessionImpl {
+        // FIXME: Dare and refactor!
+        
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.MAIN.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
@@ -176,6 +178,7 @@ final class WebimSessionImpl {
             
             historyStorage = SQLiteHistoryStorage(withName: dbName!,
                                                   serverURL: serverURLString,
+                                                  webimClient: webimClient,
                                                   reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
                                                   queue: queue)
             
@@ -231,6 +234,10 @@ final class WebimSessionImpl {
         sessionDestroyer.add(action: { () -> Void in
             historyPoller.pause()
         })
+        
+        // Needed for message attachment secure download link generation.
+        currentChatMessageMapper.set(webimClient: webimClient)
+        historyMessageMapper.set(webimClient: webimClient)
         
         return WebimSessionImpl(withAccessChecker: accessChecker,
                                 sessionDestroyer: sessionDestroyer,
@@ -404,11 +411,9 @@ final private class HistoryPoller {
     // MARK: - Methods
     
     func pause() {
-        if dispatchWorkItem != nil {
-            dispatchWorkItem!.cancel()
-        }
-        
+        dispatchWorkItem?.cancel()
         dispatchWorkItem = nil
+        
         running = false
     }
     

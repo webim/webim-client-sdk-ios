@@ -41,10 +41,10 @@ final class ChatItem {
     enum JSONField: String {
         case CATEGORY = "category"
         case CLIENT_SIDE_ID = "clientSideId"
-        case CREATION_TIME_SINCE = "creationTs"
+        case CREATION_TIMESTAMP = "creationTs"
         case ID = "id"
         case MESSAGES = "messages"
-        case MODIFICATION_TIME_SINCE = "modificationTs"
+        case MODIFICATION_TIMESTAMP = "modificationTs"
         case OFFLINE = "offline"
         case OPERATOR = "operator"
         case OPERATOR_ID_TO_RATE = "operatorIdToRate"
@@ -53,8 +53,8 @@ final class ChatItem {
         case STATE = "state"
         case SUBCATEGORY = "subcategory"
         case SUBJECT = "subject"
-        case UNREAD_BY_OPERATOR_TIME_SINCE = "unreadByOperatorSinceTs"
-        case UNREAD_BY_VISITOR_TIME_SINCE = "unreadByVisitorSinceTs"
+        case UNREAD_BY_OPERATOR_TIMESTAMP = "unreadByOperatorSinceTs"
+        case UNREAD_BY_VISITOR_TIMESTAMP = "unreadByVisitorSinceTs"
         case VISITOR_TYPING = "visitorTyping"
     }
     
@@ -88,10 +88,10 @@ final class ChatItem {
     // MARK: - Properties
     private var category: String?
     private var clientSideID: String?
-    private var creationTimeSince: Double
+    private var creationTimestamp: Double
     private var id: String
     private lazy var messages = [MessageItem]()
-    private var modificationTimeSince: Double?
+    private var modificationTimestamp: Double?
     private var offline: Bool?
     private var `operator`: OperatorItem?
     private lazy var operatorIDToRate = [String : RatingItem]()
@@ -100,34 +100,34 @@ final class ChatItem {
     private var state: String?
     private var subcategory: String?
     private var subject: String?
-    private var unreadByOperatorTimeSince: Double?
-    private var unreadByVisitorTimeSince: Double?
+    private var unreadByOperatorTimestamp: Double?
+    private var unreadByVisitorTimestamp: Double?
     private var visitorTyping: Bool?
     
     
     // MARK: - Initializers
     
     init(withID id: String? = nil) {
-        creationTimeSince = ChatItem.createCreationTimeSince()
+        creationTimestamp = ChatItem.createCreationTimestamp()
         
         if id == nil {
-            self.id = String(Int(-creationTimeSince))
+            self.id = String(Int(-creationTimestamp))
         } else {
             self.id = id!
         }
     }
     
     init(withJSONDictionary jsonDictionary: [String : Any?]) {
-        if let creationTimeSinceValue = jsonDictionary[JSONField.CREATION_TIME_SINCE.rawValue] as? Double {
-            creationTimeSince = creationTimeSinceValue
+        if let creationTimestampValue = jsonDictionary[JSONField.CREATION_TIMESTAMP.rawValue] as? Double {
+            creationTimestamp = creationTimestampValue
         } else {
-            creationTimeSince = ChatItem.createCreationTimeSince()
+            creationTimestamp = ChatItem.createCreationTimestamp()
         }
         
         if let idValue = jsonDictionary[JSONField.ID.rawValue] as? String {
             id = idValue
         } else {
-            id = String(Int(-creationTimeSince))
+            id = String(Int(-creationTimestamp))
         }
         
         if let messagesValue = jsonDictionary[JSONField.MESSAGES.rawValue] as? [Any] {
@@ -160,8 +160,8 @@ final class ChatItem {
             self.clientSideID = clientSideID
         }
         
-        if let modificationTimeSince = jsonDictionary[JSONField.MODIFICATION_TIME_SINCE.rawValue] as? Double {
-            self.modificationTimeSince = modificationTimeSince
+        if let modificationTimestamp = jsonDictionary[JSONField.MODIFICATION_TIMESTAMP.rawValue] as? Double {
+            self.modificationTimestamp = modificationTimestamp
         }
         
         if let offline = jsonDictionary[JSONField.OFFLINE.rawValue] as? Bool {
@@ -188,12 +188,12 @@ final class ChatItem {
             self.subject = subject
         }
         
-        if let unreadByOperatorTimeSince = jsonDictionary[JSONField.UNREAD_BY_OPERATOR_TIME_SINCE.rawValue] as? Double {
-            self.unreadByOperatorTimeSince = unreadByOperatorTimeSince
+        if let unreadByOperatorTimestamp = jsonDictionary[JSONField.UNREAD_BY_OPERATOR_TIMESTAMP.rawValue] as? Double {
+            self.unreadByOperatorTimestamp = unreadByOperatorTimestamp
         }
         
-        if let unreadByVisitorTimeSince = jsonDictionary[JSONField.UNREAD_BY_VISITOR_TIME_SINCE.rawValue] as? Double {
-            self.unreadByVisitorTimeSince = unreadByVisitorTimeSince
+        if let unreadByVisitorTimestamp = jsonDictionary[JSONField.UNREAD_BY_VISITOR_TIMESTAMP.rawValue] as? Double {
+            self.unreadByVisitorTimestamp = unreadByVisitorTimestamp
         }
         
         if let visitorTyping = jsonDictionary[JSONField.VISITOR_TYPING.rawValue] as? Bool {
@@ -261,7 +261,7 @@ final class ChatItem {
     
     
     // MARK: Private methods
-    private static func createCreationTimeSince() -> Double {
+    private static func createCreationTimestamp() -> Double {
         return Double(InternalUtils.getCurrentTimeInMicrosecond()) / 1000.0
     }
     

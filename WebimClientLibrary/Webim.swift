@@ -366,11 +366,11 @@ public final class SessionBuilder  {
      - returns:
      New `WebimSession` object.
      - throws:
-     `SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't setted to a non-nil value.
-     `SessionBuilderError.NIL_LOCATION` if location wasn't setted to a non-nil value.
-     `SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to set up a remote notifications without device token provided.
+     `SessionBuilder.SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't setted to a non-nil value.
+     `SessionBuilder.SessionBuilderError.NIL_LOCATION` if location wasn't setted to a non-nil value.
+     `SessionBuilder.SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to set up a remote notifications without device token provided.
      - SeeAlso:
-     `SessionBuilderError`
+     `SessionBuilder.SessionBuilderError`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -404,46 +404,45 @@ public final class SessionBuilder  {
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled) as WebimSession
     }
     
-}
-
-
-// MARK: -
-/**
- Error types that can be throwed by `SessionBuilder` `build()` method.
- - SeeAlso:
- `SessionBuilder.build()`
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-public enum SessionBuilderError: Error {
-    
+    // MARK: -
     /**
-     Error that is thrown when trying to create session object with invalid remote notifications configuration.
+     Error types that can be throwed by `SessionBuilder` `build()` method.
+     - SeeAlso:
+     `SessionBuilder.build()`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
-    
-    /**
-     Error that is thrown when trying to create session object with nil account name.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    case NIL_ACCOUNT_NAME
-    
-    /**
-     Error that is thrown when trying to create session object with nil location name.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    case NIL_LOCATION
+    public enum SessionBuilderError: Error {
+        
+        /**
+         Error that is thrown when trying to create session object with invalid remote notifications configuration.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2017 Webim
+         */
+        case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
+        
+        /**
+         Error that is thrown when trying to create session object with `nil` account name.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2017 Webim
+         */
+        case NIL_ACCOUNT_NAME
+        
+        /**
+         Error that is thrown when trying to create session object with `nil` location name.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2017 Webim
+         */
+        case NIL_LOCATION
+        
+    }
     
 }

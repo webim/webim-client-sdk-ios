@@ -112,6 +112,9 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         try requestInitialization()
     }
     
+    func getAuthorizationData() -> AuthorizationData? {
+        return authorizationData
+    }
     
     // MARK: Private methods
     private func runIteration() throws {
@@ -124,7 +127,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func requestInitialization() throws {
-        let timeSinceToPost = Int64(CFAbsoluteTimeGetCurrent() * 1000)
+        let timestampToPost = Int64(CFAbsoluteTimeGetCurrent() * 1000)
         var dataToPost = [WebimActions.Parameter.DEVICE_ID.rawValue : deviceID,
                           WebimActions.Parameter.EVENT.rawValue : WebimActions.Event.INITIALIZATION.rawValue,
                           WebimActions.Parameter.LOCATION.rawValue : location,
@@ -132,7 +135,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                           WebimActions.Parameter.RESPOND_IMMEDIATELY.rawValue : String(1), // true
                           WebimActions.Parameter.SINCE.rawValue : String(0),
                           WebimActions.Parameter.TITLE.rawValue : title,
-                          WebimActions.Parameter.TIME_SINCE.rawValue : String(timeSinceToPost)] as [String : Any]
+                          WebimActions.Parameter.TIMESTAMP.rawValue : String(timestampToPost)] as [String : Any]
         if let appVersion = appVersion {
             dataToPost[WebimActions.Parameter.APP_VERSION.rawValue] = appVersion
         }
@@ -200,9 +203,9 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func requestDelta() throws {
-        let timeSinceToPost = Int64(CFAbsoluteTimeGetCurrent() * 1000)
+        let timestampToPost = Int64(CFAbsoluteTimeGetCurrent() * 1000)
         var dataToPost = [WebimActions.Parameter.SINCE.rawValue : String(since),
-                          WebimActions.Parameter.TIME_SINCE.rawValue : String(timeSinceToPost)] as [String : Any]
+                          WebimActions.Parameter.TIMESTAMP.rawValue : String(timestampToPost)] as [String : Any]
         if let authorizationData = authorizationData {
             dataToPost[WebimActions.Parameter.PAGE_ID.rawValue] = authorizationData.getPageID()
             dataToPost[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = authorizationData.getAuthorizationToken()

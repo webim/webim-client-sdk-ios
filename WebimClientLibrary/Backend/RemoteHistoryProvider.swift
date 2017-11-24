@@ -49,9 +49,9 @@ class RemoteHistoryProvider {
     }
     
     // MARK: - Methods
-    func requestHistory(beforeTimeSince: Int64,
+    func requestHistory(beforeTimestamp: Int64,
                         completion: @escaping ([MessageImpl], Bool) -> ()) {
-        webimActions.requestHistory(beforeMessageTimeSince: beforeTimeSince) { data in
+        webimActions.requestHistory(beforeMessageTimestamp: beforeTimestamp) { data in
             guard data != nil else {
                 return
             }

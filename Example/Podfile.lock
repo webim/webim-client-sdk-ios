@@ -1,49 +1,48 @@
 PODS:
   - Cosmos (12.0.1)
-  - PopupDialog (0.6.0)
-  - SlackTextViewController (1.9.5)
-  - SnapKit (3.2.0)
+  - CryptoSwift (0.8.0)
+  - PopupDialog (0.6.2)
+  - SlackTextViewController (1.9.6)
+  - SnapKit (4.0.0)
   - SQLite.swift (0.11.4):
     - SQLite.swift/standard (= 0.11.4)
   - SQLite.swift/standard (0.11.4)
   - Timberjack (0.0.3)
-  - WebimClientLibrary (3.0.0):
+  - WebimClientLibrary (3.3.1):
+    - CryptoSwift
     - SQLite.swift
 
 DEPENDENCIES:
-  - Cosmos (~> 12.0)
-  - PopupDialog (~> 0.6)
-  - SlackTextViewController (from `https://github.com/slackhq/SlackTextViewController.git`)
-  - SnapKit (~> 3.2.0)
+  - Cosmos
+  - CryptoSwift
+  - PopupDialog
+  - SlackTextViewController
+  - SnapKit
   - SQLite.swift
   - Timberjack (from `https://github.com/andysmart/Timberjack.git`)
   - WebimClientLibrary (from `../`)
 
 EXTERNAL SOURCES:
-  SlackTextViewController:
-    :git: https://github.com/slackhq/SlackTextViewController.git
   Timberjack:
     :git: https://github.com/andysmart/Timberjack.git
   WebimClientLibrary:
     :path: ../
 
 CHECKOUT OPTIONS:
-  SlackTextViewController:
-    :commit: 4c74cbab29408dda9af33633f86dcc983a3b5363
-    :git: https://github.com/slackhq/SlackTextViewController.git
   Timberjack:
     :commit: 303b398d5ead5d5fc4dbf86a476b09a856dda4ec
     :git: https://github.com/andysmart/Timberjack.git
 
 SPEC CHECKSUMS:
   Cosmos: 4a9f57998a08788a1062c7b8eefbc62d2b590f39
-  PopupDialog: 687af43af0f7b89948cd411ac701865f931bd6dc
-  SlackTextViewController: fbcdadbb8090673f604484ff5b6eb8d77baed42a
-  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  CryptoSwift: f81907430ebbe38b8404b4f6fb40f3c576a8755f
+  PopupDialog: d4336d7274a6aa3af4cb26d8b6691510eba90cc3
+  SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
   Timberjack: 20de84a2c135134de6821d1ea90cd57709567e2d
-  WebimClientLibrary: ab1a6be61d91d293828f94b58ea7903fa440c7e0
+  WebimClientLibrary: 1240df68451a30cb80ca76553d282b002bdc8eae
 
-PODFILE CHECKSUM: e589bafda1a161022a9e0cabda14e256adb62d0e
+PODFILE CHECKSUM: f7b062abfaf93a10ff70ad3c80879bcad44b4741
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.4.0.beta.2
