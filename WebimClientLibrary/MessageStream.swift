@@ -302,10 +302,10 @@ public protocol MessageStream {
     
     /**
      Sets the listener of session status changes.
-     - parameter sessionOnlineStatusChangeListener:
-     `SessionOnlineStatusChangeListener` object.
+     - parameter onlineStatusChangeListener:
+     `OnlineStatusChangeListener` object.
      - SeeAlso:
-     `SessionOnlineStatusChangeListener`
+     `OnlineStatusChangeListener`
      - returns:
      No return value.
      - Author:
@@ -313,7 +313,7 @@ public protocol MessageStream {
      - Copyright:
      2017 Webim
      */
-    func set(sessionOnlineStatusChangeListener: SessionOnlineStatusChangeListener)
+    func set(onlineStatusChangeListener: OnlineStatusChangeListener)
     
 }
 
@@ -501,18 +501,18 @@ public protocol OperatorTypingListener {
 /**
  Interface that provides methods for handling changes of session status.
  - SeeAlso:
- `MessageStream.set(sessionOnlineStatusChangeListener:)`
+ `MessageStream.set(onlineStatusChangeListener:)`
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
  2017 Webim
  */
-public protocol SessionOnlineStatusChangeListener {
+public protocol OnlineStatusChangeListener {
     
     /**
      Called when new session status is received.
      - SeeAlso:
-     `SessionOnlineStatus`
+     `OnlineStatus`
      - returns:
      No return value.
      - Author:
@@ -520,8 +520,8 @@ public protocol SessionOnlineStatusChangeListener {
      - Copyright:
      2017 Webim
      */
-    func changed(sessionOnlineStatus previousSessionOnlineStatus: SessionOnlineStatus,
-                 to newSessionOnlineStatus: SessionOnlineStatus)
+    func changed(onlineStatus previousOnlineStatus: OnlineStatus,
+                 to newOnlineStatus: OnlineStatus)
     
 }
 
@@ -661,15 +661,15 @@ public enum SendFileError: Error {
 }
 
 /**
- Session state possible cases.
+ Online state possible cases.
  - SeeAlso:
- `SessionOnlineStatusChangeListener`
+ `OnlineStatusChangeListener`
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
  2017 Webim
  */
-public enum SessionOnlineStatus {
+public enum OnlineStatus {
     
     /**
      Means that visitor is not able to send messages at all.

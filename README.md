@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.4.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.4.1'
 ```
 > Minimum iOS version supported – 8.0.
 
@@ -20,23 +20,7 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Current version changes
 
-* `getUnreadByVisitorTimestamp()` and `unreadByOperatorTimestamp()` methods added to `MessageStream` protocol.
-* `set(deviceToken:)` added to `WebimSession` protocol and thus...
-* ...error throwing of `SessionBuilder` `build()` method conditions changed.
-* Custom visitor authentication mechanism added (`ProvidedAuthorizationTokenStateListener` protocol + `set(providedAuthenticationTokenStateListener:providedAuthenticationToken:)` method of `SessionBuilder` class).
-* `getSenderAvatarFullURLString()` of `Message` protocol changed to return `URL` and renamed to `getSenderAvatarFullURL()`.
-* `getAvatarURLString()` of `Operator` protocol changed to return `URL` and renamed to `getAvatarURL()`.
-* `getTime()` of `Message` protocol changed to return `Date`.
-* `PROVIDED_VISITOR_EXPIRED` of `FatalErrorType` renamed to `PROVIDED_VISITOR_FIELDS_EXPIRED`.
-* Various bugs fixed.
-* Small performance improvements.
-* Small **Readme** refinements.
-
-**Example app:**
-* "Settings" screen: now you can choose your own "account name"/"location"/"page title" inside app settings.
-* Accessibility support.
-* Small performance improvements.
-* Small interface improvements.
+* `SessionOnlineStatus` renamed to `OnlineStatus` (and all the appropriate methods naming is changed too).
 
 ## Example
 

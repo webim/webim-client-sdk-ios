@@ -53,7 +53,7 @@
     -   [set(currentOperatorChangeListener:) method](#set-current-operator-change-listener)
     -   [set(operatorTypingListener:) method](#set-operator-typing-listener)
     -   [set(locationSettingsChangeListener:) method](#set-location-settings-change-listener)
-    -   [set(sessionOnlineStatusChangeListener:) method](#set-session-online-status-change-listener)
+    -   [set(onlineStatusChangeListener:) method](#set-online-status-change-listener)
 -   [SendFileCompletionHandler protocol](#send-file-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error)
@@ -67,8 +67,8 @@
     -   [onOperatorTypingStateChanged(isTyping:) method](#on-operator-typing-state-changed-is-typing)
 -   [LocationSettingsChangeListener protocol](#location-settings-shange-listener)
     -   [changed(locationSettings previousLocationSettings:,to newLocationSettings:) method](#changed-location-settings-previous-location-settings-to-new-location-settings)
--   [SessionOnlineStatusChangeListener protocol](#session-online-status-change-listener)
-    -   [changed(sessionOnlineStatus previousSessionOnlineStatus:,to newSessionOnlineStatus:) method](#changed-session-online-status-previous-session-online-status-to-new-session-online-status)
+-   [OnlineStatusChangeListener protocol](#online-status-change-listener)
+    -   [changed(onlineStatus previousOnlineStatus:,to newOnlineStatus:) method](#changed-session-online-status-previous-session-online-status-to-new-session-online-status)
 -   [ChatState enum](#chat-state)
     -   [CHATTING case](#chatting)
     -   [CLOSED_BY_OPERATOR case](#closed-by-operator)
@@ -80,7 +80,7 @@
 -   [SendFileError enum](#send-file-error)
     -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
     -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
--   [SessionOnlineStatus enum](#session-online-status)
+-   [OnlineStatus enum](#session-online-status)
     -   [BUSY_OFFLINE case](#busy-offline)
     -   [BUSY_ONLINE case](#busy-online)
     -   [OFFLINE case](#offline)
@@ -454,9 +454,9 @@ Sets [OperatorTypingListener](#operator-typing-listener) object.
 
 Sets [LocationSettingsChangeListener](#location-settings-shange-listener) object.
 
-<h3 id ="set-session-online-status-change-listener">set(sessionOnlineStatusChangeListener:) method</h3>
+<h3 id ="set-session-online-status-change-listener">set(onlineStatusChangeListener:) method</h3>
 
-Sets [SessionOnlineStatusChangeListener](#session-online-status-change-listener) object.
+Sets [OnlineStatusChangeListener](#session-online-status-change-listener) object.
 
 <h2 id ="send-file-completion-handler">SendFileCompletionHandler protocol</h2>
 
@@ -514,13 +514,13 @@ Interface that provides methods for handling changes in [LocationSettings](#loca
 
 Method called by an app when new [LocationSettings](#location-settings) object is received with parameters that represent previous and new [LocationSettings](#location-settings) objects.
 
-<h2 id ="session-online-status-change-listener">SessionOnlineStatusChangeListener protocol</h2>
+<h2 id ="session-online-status-change-listener">OnlineStatusChangeListener protocol</h2>
 
 Interface that provides methods for handling changes of session status.
 
-<h3 id ="changed-session-online-status-previous-session-online-status-to-new-session-online-status">changed(sessionOnlineStatus previousSessionOnlineStatus:,to newSessionOnlineStatus:) method</h3>
+<h3 id ="changed-session-online-status-previous-session-online-status-to-new-session-online-status">changed(onlineStatus previousOnlineStatus:,to newOnlineStatus:) method</h3>
 
-Called when new session status is received with parameters that represent previous and new [SessionOnlineStatus](#session-online-status) values.
+Called when new session status is received with parameters that represent previous and new [OnlineStatus](#session-online-status) values.
 
 <h2 id ="chat-state">ChatState enum</h2>
 
@@ -595,7 +595,7 @@ The maximum size of a file is configured on the server.
 The server may deny a request if the file type is not allowed.
 The list of allowed file types is configured on the server.
 
-<h2 id ="session-online-status">SessionOnlineStatus enum</h2>
+<h2 id ="session-online-status">OnlineStatus enum</h2>
 
 Session state possible cases.
 

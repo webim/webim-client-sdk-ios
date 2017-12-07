@@ -118,9 +118,9 @@ final class DeltaCallback {
         
         messageStream!.saveLocationSettingsOn(fullUpdate: fullUpdate)
         
-        if let sessionOnlineStatusString = fullUpdate.getOnlineStatus() {
-            if let sessionOnlineStatus = SessionOnlineStatusItem(rawValue: sessionOnlineStatusString) {
-                messageStream!.onSessionOnlineStatusChanged(to: sessionOnlineStatus)
+        if let onlineStatusString = fullUpdate.getOnlineStatus() {
+            if let onlineStatus = OnlineStatusItem(rawValue: onlineStatusString) {
+                messageStream!.onOnlineStatusChanged(to: onlineStatus)
             }
         }
     }
@@ -260,7 +260,7 @@ final class DeltaCallback {
                                                  messageStream: MessageStreamImpl) {
         if let sessionState = delta.getData() as? String {
             if sessionState == InvitationStateItem.OFFLINE_MESSAGE.rawValue {
-                messageStream.set(sessionOnlineStatus: .OFFLINE)
+                messageStream.set(onlineStatus: .OFFLINE)
                 messageStream.getWebimActions().closeChat()
             }
             

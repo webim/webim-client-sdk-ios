@@ -53,8 +53,8 @@ final class MessageStreamImpl: MessageStream {
     private var locationSettingsChangeListener: LocationSettingsChangeListener?
     private var operatorFactory: OperatorFactory
     private var operatorTypingListener: OperatorTypingListener?
-    private var sessionOnlineStatus: SessionOnlineStatusItem = .UNKNOWN
-    private var sessionOnlineStatusChangeListener: SessionOnlineStatusChangeListener?
+    private var onlineStatus: OnlineStatusItem = .UNKNOWN
+    private var onlineStatusChangeListener: OnlineStatusChangeListener?
     private var unreadByOperatorTimestamp: Date?
     private var unreadByVisitorTimestamp: Date?
     
@@ -91,8 +91,8 @@ final class MessageStreamImpl: MessageStream {
         isChatIsOpening = false
     }
     
-    func set(sessionOnlineStatus: SessionOnlineStatusItem) {
-        self.sessionOnlineStatus = sessionOnlineStatus
+    func set(onlineStatus: OnlineStatusItem) {
+        self.onlineStatus = onlineStatus
     }
     
     func changingChatStateOf(chat: ChatItem?) {
@@ -155,17 +155,17 @@ final class MessageStreamImpl: MessageStream {
         }
     }
     
-    func onSessionOnlineStatusChanged(to newSessionOnlineStatus: SessionOnlineStatusItem) {
-        let previousPublicSessionOnlineStatus = publicState(ofSessionOnlineState: sessionOnlineStatus)
-        let newPublicSessionOnlineStatus = publicState(ofSessionOnlineState: newSessionOnlineStatus)
+    func onOnlineStatusChanged(to newOnlineStatus: OnlineStatusItem) {
+        let previousPublicOnlineStatus = publicState(ofOnlineStatus: onlineStatus)
+        let newPublicOnlineStatus = publicState(ofOnlineStatus: newOnlineStatus)
         
-        if sessionOnlineStatusChangeListener != nil
-            && (sessionOnlineStatus != newSessionOnlineStatus) {
-            sessionOnlineStatusChangeListener!.changed(sessionOnlineStatus: previousPublicSessionOnlineStatus,
-                                                       to: newPublicSessionOnlineStatus)
+        if onlineStatusChangeListener != nil
+            && (onlineStatus != newOnlineStatus) {
+            onlineStatusChangeListener!.changed(onlineStatus: previousPublicOnlineStatus,
+                                                       to: newPublicOnlineStatus)
         }
         
-        sessionOnlineStatus = newSessionOnlineStatus
+        onlineStatus = newOnlineStatus
     }
     
     
@@ -295,8 +295,8 @@ final class MessageStreamImpl: MessageStream {
         self.locationSettingsChangeListener = locationSettingsChangeListener
     }
     
-    func set(sessionOnlineStatusChangeListener: SessionOnlineStatusChangeListener) {
-        self.sessionOnlineStatusChangeListener = sessionOnlineStatusChangeListener
+    func set(onlineStatusChangeListener: OnlineStatusChangeListener) {
+        self.onlineStatusChangeListener = onlineStatusChangeListener
     }
     
     
@@ -321,8 +321,8 @@ final class MessageStreamImpl: MessageStream {
         }
     }
     
-    private func publicState(ofSessionOnlineState sessionOnlineState: SessionOnlineStatusItem) -> SessionOnlineStatus {
-        switch sessionOnlineState {
+    private func publicState(ofOnlineStatus onlineStatus: OnlineStatusItem) -> OnlineStatus {
+        switch onlineStatus {
         case .BUSY_OFFLINE:
             return .BUSY_OFFLINE
         case .BUSY_ONLINE:
