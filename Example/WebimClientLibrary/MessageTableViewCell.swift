@@ -70,7 +70,7 @@ class MessageTableViewCell: UITableViewCell {
     
     
     // MARK: - Properties
-    private static var imageCache = [String : UIImage]()
+    private static var imageCache = [URL : UIImage]()
     private static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMM yyyy hh:mm:ss"
@@ -179,26 +179,42 @@ class MessageTableViewCell: UITableViewCell {
         self.addSubview(bodyLabel)
         self.addSubview(timeLabel)
         
-        avatarImageView.snp.makeConstraints { constraintsMaker in
+        avatarImageView.snp.makeConstraints { [weak self] constraintsMaker in
+            guard let `self` = self else {
+                return
+            }
+            
             constraintsMaker.height.equalTo(Size.AVATAR.rawValue)
             constraintsMaker.width.equalTo(avatarImageView.snp.height)
             constraintsMaker.top.equalTo(self).offset(10)
             constraintsMaker.left.equalTo(self).offset(20)
         }
         
-        nameLabel.snp.makeConstraints { constraintsMaker in
+        nameLabel.snp.makeConstraints { [weak self] constraintsMaker in
+            guard let `self` = self else {
+                return
+            }
+            
             constraintsMaker.top.equalTo(self).offset(10)
             constraintsMaker.left.equalTo(avatarImageView.snp.right).offset(10)
             constraintsMaker.right.equalTo(self).offset(-20)
         }
         
-        bodyLabel.snp.makeConstraints { constraintsMaker in
+        bodyLabel.snp.makeConstraints { [weak self] constraintsMaker in
+            guard let `self` = self else {
+                return
+            }
+            
             constraintsMaker.top.equalTo(nameLabel.snp.bottom).offset(1)
             constraintsMaker.left.equalTo(avatarImageView.snp.right).offset(10)
             constraintsMaker.right.equalTo(self).offset(-20)
         }
         
-        timeLabel.snp.makeConstraints { constraintsMaker in
+        timeLabel.snp.makeConstraints { [weak self] constraintsMaker in
+            guard let `self` = self else {
+                return
+            }
+            
             constraintsMaker.top.equalTo(bodyLabel.snp.bottom).offset(1)
             constraintsMaker.left.equalTo(avatarImageView.snp.right).offset(10)
             constraintsMaker.right.equalTo(self).offset(-20)
@@ -254,6 +270,8 @@ class MessageTableViewCell: UITableViewCell {
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
+        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
+        avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue
     }
     
     /**
@@ -274,7 +292,7 @@ class MessageTableViewCell: UITableViewCell {
         if let fileName = message.getAttachment()?.getFileName() {
             bodyLabel.text = fileName
         } else {
-            bodyLabel.text = "File is unavailable."
+            bodyLabel.text = FILE_MESSAGE.FILE_UNAVAILABLE.rawValue
         }
         bodyLabel.textColor = .blue
         bodyLabel.isUserInteractionEnabled = true
@@ -287,6 +305,7 @@ class MessageTableViewCell: UITableViewCell {
         avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
+        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
     }
     
     /**
@@ -344,6 +363,8 @@ class MessageTableViewCell: UITableViewCell {
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
+        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
+        avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue
     }
     
     /**
@@ -401,6 +422,7 @@ class MessageTableViewCell: UITableViewCell {
         avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
+        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
     }
     
     /**
@@ -420,17 +442,18 @@ class MessageTableViewCell: UITableViewCell {
      */
     private func getOperatorAvatar(forImageView imageView: UIImageView,
                                    message: Message) {
+        // FIXME: Could load wrong image to cell due to cell reuse mechanism.
+        
         imageView.image = #imageLiteral(resourceName: "DefaultAvatar")
         imageView.isHidden = false
         imageView.isUserInteractionEnabled = true
-        if let avatarURLString = message.getSenderAvatarFullURLString() {
-            if let image = MessageTableViewCell.imageCache[avatarURLString] {
+        if let avatarURL = message.getSenderAvatarFullURL() {
+            if let image = MessageTableViewCell.imageCache[avatarURL] {
                 imageView.image = image
             } else {
-                let avatarURL = URL(string: avatarURLString)!
                 imageView.loadImageAsynchronouslyFrom(url: avatarURL,
-                                                     rounded: true) { image in
-                                                        MessageTableViewCell.imageCache[avatarURLString] = image
+                                                      rounded: true) { image in
+                                                        MessageTableViewCell.imageCache[avatarURL] = image
                 }
             }
         }
@@ -450,9 +473,7 @@ class MessageTableViewCell: UITableViewCell {
      2017 Webim
      */
     private func getTime(forMessage message: Message) -> String {
-        let time = Date(timeIntervalSince1970: TimeInterval(message.getTime() / 1000))
-        
-        return MessageTableViewCell.dateFormatter.string(from: time)
+        return MessageTableViewCell.dateFormatter.string(from: message.getTime())
     }
     
 }

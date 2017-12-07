@@ -53,7 +53,7 @@ final class FileParametersItem {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let imageParametersDictionary = jsonDictionary[JSONField.IMAGE_PARAMETERS.rawValue] as? [String : Any?] {
             imageParameters = ImageParameters(withJSONDictionary: imageParametersDictionary)
         }

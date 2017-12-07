@@ -83,12 +83,12 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private let webimClient: WebimClient
     private var db: Connection?
     private var firstKnownTimeInMicrosecond: Int64 = -1
-    private var prepared: Bool?
+    private var prepared = false
     private var reachedHistoryEnd: Bool
     
     
     // MARK: - Initialization
-    init(withName dbName: String,
+    init(dbName: String,
          serverURL serverURLString: String,
          webimClient: WebimClient,
          reachedHistoryEnd: Bool,
@@ -116,7 +116,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     }
     
     func getFullHistory(completion: @escaping ([Message]) -> ()) {
-        SQLiteHistoryStorage.queryQueue.async {
+        SQLiteHistoryStorage.queryQueue.sync {
             /*
              SELECT * FROM history
              ORDER BY timestamp_in_microsecond ASC
@@ -147,7 +147,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func getLatestHistory(byLimit limitOfMessages: Int,
                           completion: @escaping ([Message]) -> ()) {
-        SQLiteHistoryStorage.queryQueue.async {
+        SQLiteHistoryStorage.queryQueue.sync {
             /*
              SELECT * FROM history
              ORDER BY timestamp_in_microsecond DESC
@@ -182,7 +182,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     func getHistoryBefore(id: HistoryID,
                           limitOfMessages: Int,
                           completion: @escaping ([Message]) -> ()) {
-        SQLiteHistoryStorage.queryQueue.async {
+        SQLiteHistoryStorage.queryQueue.sync {
             let beforeTimeInMicrosecond = id.getTimeInMicrosecond()
             
             /*
@@ -220,7 +220,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func receiveHistoryBefore(messages: [MessageImpl],
                               hasMoreMessages: Bool) {
-        SQLiteHistoryStorage.queryQueue.async {
+        SQLiteHistoryStorage.queryQueue.sync {
             var newFirstKnownTimeInMicrosecond = Int64.max
             
             for message in messages {
@@ -272,7 +272,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     func receiveHistoryUpdate(withMessages messages: [MessageImpl],
                               idsToDelete: Set<String>,
                               completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
-        SQLiteHistoryStorage.queryQueue.async {
+        SQLiteHistoryStorage.queryQueue.sync {
             self.prepare()
             var newFirstKnownTimeInMicrosecond = Int64.max
             
@@ -411,60 +411,60 @@ final class SQLiteHistoryStorage: HistoryStorage {
     // MARK: Private methods
     
     private func createTableWith(name: String) {
-        SQLiteHistoryStorage.queryQueue.async {
-            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                    .userDomainMask,
-                                                                    true).first!
-            let dbPath = "\(documentsPath)/\(name)"
-            self.db = try! Connection(dbPath)
-            
-            /*
-             CREATE TABLE history
-             id TEXT PRIMARY KEY NOT NULL,
-             client_side_id TEXT,
-             timestamp_in_microsecond INTEGER NOT NULL,
-             sender_id TEXT,
-             sender_name TEXT NOT NULL,
-             avatar_url_string TEXT,
-             type TEXT NOT NULL,
-             text TEXT NOT NULL,
-             data TEXT,
-             server_data TEXT
-             */
-            try! self.db?.run(SQLiteHistoryStorage.history.create(ifNotExists: true) { t in
-                t.column(SQLiteHistoryStorage.id,
-                         primaryKey: true)
-                t.column(SQLiteHistoryStorage.clientSideID)
-                t.column(SQLiteHistoryStorage.timestampInMicrosecond)
-                t.column(SQLiteHistoryStorage.senderID)
-                t.column(SQLiteHistoryStorage.senderName)
-                t.column(SQLiteHistoryStorage.avatarURLString)
-                t.column(SQLiteHistoryStorage.type)
-                t.column(SQLiteHistoryStorage.text)
-                t.column(SQLiteHistoryStorage.data)
-                t.column(SQLiteHistoryStorage.serverData)
-            })
-            #if DEBUG
-                self.db!.trace { print($0) }
-            #endif
-            
-            /*
-             CREATE UNIQUE INDEX index_history_on_timestamp_in_microsecond
-             ON history (time_since_in_microsecon)
-             */
-            _ = try? self.db?.run(SQLiteHistoryStorage
-                .history
-                .createIndex(SQLiteHistoryStorage.timestampInMicrosecond,
-                             unique: true))
-            #if DEBUG
-                self.db!.trace { print($0) }
-            #endif
-        }
+        SQLiteHistoryStorage.queryQueue.sync { //
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                .userDomainMask,
+                                                                true).first!
+        let dbPath = "\(documentsPath)/\(name)"
+        self.db = try! Connection(dbPath)
+        
+        /*
+         CREATE TABLE history
+         id TEXT PRIMARY KEY NOT NULL,
+         client_side_id TEXT,
+         timestamp_in_microsecond INTEGER NOT NULL,
+         sender_id TEXT,
+         sender_name TEXT NOT NULL,
+         avatar_url_string TEXT,
+         type TEXT NOT NULL,
+         text TEXT NOT NULL,
+         data TEXT,
+         server_data TEXT
+         */
+        try! self.db?.run(SQLiteHistoryStorage.history.create(ifNotExists: true) { t in
+            t.column(SQLiteHistoryStorage.id,
+                     primaryKey: true)
+            t.column(SQLiteHistoryStorage.clientSideID)
+            t.column(SQLiteHistoryStorage.timestampInMicrosecond)
+            t.column(SQLiteHistoryStorage.senderID)
+            t.column(SQLiteHistoryStorage.senderName)
+            t.column(SQLiteHistoryStorage.avatarURLString)
+            t.column(SQLiteHistoryStorage.type)
+            t.column(SQLiteHistoryStorage.text)
+            t.column(SQLiteHistoryStorage.data)
+            t.column(SQLiteHistoryStorage.serverData)
+        })
+        #if DEBUG
+            self.db!.trace { print($0) }
+        #endif
+        
+        /*
+         CREATE UNIQUE INDEX index_history_on_timestamp_in_microsecond
+         ON history (time_since_in_microsecon)
+         */
+        _ = try? self.db?.run(SQLiteHistoryStorage
+            .history
+            .createIndex(SQLiteHistoryStorage.timestampInMicrosecond,
+                         unique: true))
+        #if DEBUG
+            self.db!.trace { print($0) }
+        #endif
+        }//
     }
     
     private func prepare() {
-        if self.prepared != true {
-            self.prepared = true
+        if prepared != true {
+            prepared = true
             
             /*
              SELECT timestamp_in_microsecond

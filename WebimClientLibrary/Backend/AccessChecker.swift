@@ -40,7 +40,7 @@ class AccessChecker {
     let sessionDestroyer: SessionDestroyer
     
     // MARK: - Initialization
-    init(with thread: Thread,
+    init(thread: Thread,
          sessionDestroyer: SessionDestroyer) {
         self.thread = thread
         self.sessionDestroyer = sessionDestroyer

@@ -6,10 +6,9 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.3.1'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.4.0'
 ```
-
-In the "Build Settings" of your project in the "Swift Compiler – Language" "Swift Language Version" for _WebimClientLibrary_ target must be setted to "Swift 4.0".
+> Minimum iOS version supported – 8.0.
 
 ### Objective-C
 
@@ -21,20 +20,31 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Current version changes
 
-* Full [documentation](Documentation/Index.md).
-* Incorrect `MessageAttachment` retreiving from message history bug fix.
-* `MessageAttachment` links security fixes.
-* `SessionBuilderError` transferred into `SessionBuilder` class.
-* Small fixes of working with _SQLite_ DB process.
-* Small _HeaderDoc_ and public API files fixes and additions.
+* `getUnreadByVisitorTimestamp()` and `unreadByOperatorTimestamp()` methods added to `MessageStream` protocol.
+* `set(deviceToken:)` added to `WebimSession` protocol and thus...
+* ...error throwing of `SessionBuilder` `build()` method conditions changed.
+* Custom visitor authentication mechanism added (`ProvidedAuthorizationTokenStateListener` protocol + `set(providedAuthenticationTokenStateListener:providedAuthenticationToken:)` method of `SessionBuilder` class).
+* `getSenderAvatarFullURLString()` of `Message` protocol changed to return `URL` and renamed to `getSenderAvatarFullURL()`.
+* `getAvatarURLString()` of `Operator` protocol changed to return `URL` and renamed to `getAvatarURL()`.
+* `getTime()` of `Message` protocol changed to return `Date`.
+* `PROVIDED_VISITOR_EXPIRED` of `FatalErrorType` renamed to `PROVIDED_VISITOR_FIELDS_EXPIRED`.
+* Various bugs fixed.
+* Small performance improvements.
+* Small **Readme** refinements.
+
+**Example app:**
+* "Settings" screen: now you can choose your own "account name"/"location"/"page title" inside app settings.
+* Accessibility support.
+* Small performance improvements.
+* Small interface improvements.
 
 ## Example
+
+![Start screen screenshot](Screenshots/StartScreen.png) ![Settings screen screenshot](Screenshots/SettingsScreen.png) ![Chat screen screenshot](Screenshots/ChatScreen.png)
 
 If you don't have _CocoaPods_ installed you should firstly run `sudo gem install cocoapods`.
 
 To run the example project, clone the repo and run `pod install` from the **Example** directory first.
-
-> Minimum iOS version supported – 8.0.
 
 ## Usage
 
@@ -59,7 +69,7 @@ Session can be paused (`pause()` method) and resumed (`resume()` method) as well
 
 All message stream methods are described in **MessageStream.swift** file.
 
-For this methods usage ability the `MessageStream` class object is have to be getted through `getStream()` method by `WebimSession` class object.
+For this methods usage ability the `MessageStream` object is have to be getted through `getStream()` method by `WebimSession` class object.
 
 Methods examples:
 `send(message:)` – send message,
@@ -82,9 +92,9 @@ Full methods descriptions can be found inside **MessageListener.swift** file.
 
 ### Message
 
-`MessageListener` protocol methods operate on `Message` class objects which is described inside **Message.swift** file.
+`MessageListener` protocol methods operate on `Message` objects which is described inside **Message.swift** file.
 
-All necessary information about specific message can be getted through  `Message` class objects methods: unique message number (`getID()` method), message text (`getText()` method), attached file info (`getAttachment()` method) etc.
+All necessary information about specific message can be getted through  `Message` objects methods: unique message number (`getID()` method), message text (`getText()` method), attached file info (`getAttachment()` method) etc.
 
 All related tools (methods for working with attachments, message types etc.) are also described in **Message.swift** file.
 

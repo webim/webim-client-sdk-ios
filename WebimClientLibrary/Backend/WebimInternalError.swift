@@ -36,6 +36,7 @@ import Foundation
 enum WebimInternalError: String, Error {
     case ACCOUNT_BLOCKED = "account-blocked"
     case OPERATOR_NOT_IN_CHAT = "operator-not-in-chat"
+    case PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND = "provided-auth-token-not-found"
     case PROVIDED_VISITOR_EXPIRED = "provided-visitor-expired"
     case REINIT_REQUIRED = "reinit-required"
     case SERVER_NOT_READY = "server-not-ready"

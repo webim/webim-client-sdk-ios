@@ -33,7 +33,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class OperatorItem {
+struct OperatorItem {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
@@ -53,7 +53,7 @@ final class OperatorItem {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let departmentKeysArray = jsonDictionary[JSONField.DEPARTMENT_KEYS.rawValue] as? [Any] {
             for departmentKey in departmentKeysArray {
                 departmentKeys.append(departmentKey as! String)

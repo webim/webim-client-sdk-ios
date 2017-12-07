@@ -32,7 +32,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class IconItem {
+struct IconItem {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
@@ -48,7 +48,7 @@ final class IconItem {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let color = jsonDictionary[JSONField.COLOR.rawValue] as? String {
             self.color = color
         }

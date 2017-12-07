@@ -47,6 +47,8 @@ final class WebimClientBuilder {
     private var internalErrorListener: InternalErrorListener?
     private var location: String?
     private var platform: String?
+    private var providedAuthenticationToken: String?
+    private var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var sessionID: String?
     private var sessionParametersListener: SessionParametersListener?
     private var title: String?
@@ -58,85 +60,108 @@ final class WebimClientBuilder {
     
     func set(appVersion: String?) -> WebimClientBuilder {
         self.appVersion = appVersion
+        
         return self
     }
     
     func set(baseURL: String) -> WebimClientBuilder {
         self.baseURL = baseURL
+        
         return self
     }
     
     func set(location: String) -> WebimClientBuilder {
         self.location = location
+        
         return self
     }
     
     func set(deltaCallback: DeltaCallback) -> WebimClientBuilder {
         self.deltaCallback = deltaCallback
+        
         return self
     }
     
     func set(sessionParametersListener: SessionParametersListener) -> WebimClientBuilder {
         self.sessionParametersListener = sessionParametersListener
+        
         return self
     }
     
     func set(internalErrorListener: InternalErrorListener) -> WebimClientBuilder {
         self.internalErrorListener = internalErrorListener
+        
         return self
     }
     
     func set(visitorJSONString: String?) -> WebimClientBuilder {
         self.visitorJSONString = visitorJSONString
+        
         return self
     }
     
     func set(visitorFieldsJSONString: String?) -> WebimClientBuilder {
         self.visitorFieldsJSONString = visitorFieldsJSONString
+        
+        return self
+    }
+    
+    func set(providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?,
+             providedAuthenticationToken: String? = nil) -> WebimClientBuilder {
+        self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
+        self.providedAuthenticationToken = providedAuthenticationToken
+        
         return self
     }
     
     func set(sessionID: String?) -> WebimClientBuilder {
         self.sessionID = sessionID
+        
         return self
     }
     
     func set(authorizationData: AuthorizationData?) -> WebimClientBuilder {
         self.authorizationData = authorizationData
+        
         return self
     }
     
     func set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?) -> WebimClientBuilder {
         self.completionHandlerExecutor = completionHandlerExecutor
+        
         return self
     }
     
     func set(platform: String) -> WebimClientBuilder {
         self.platform = platform
+        
         return self
     }
     
     func set(title: String) -> WebimClientBuilder {
         self.title = title
+        
         return self
     }
     
     func set(deviceToken: String?) -> WebimClientBuilder {
         self.deviceToken = deviceToken
+        
         return self
     }
     
     func set(deviceID: String) -> WebimClientBuilder {
         self.deviceID = deviceID
+        
         return self
     }
     
     func build() -> WebimClient {
-        let actionRequestLoop = ActionRequestLoop(withCompletionHandlerExecutor: completionHandlerExecutor!,
+        let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: completionHandlerExecutor!,
                                                   internalErrorListener: internalErrorListener!)
         actionRequestLoop.set(authorizationData: authorizationData)
         
-        let deltaRequestLoop = DeltaRequestLoop(withDeltaCallback: deltaCallback!,
+        let deltaRequestLoop = DeltaRequestLoop(deltaCallback: deltaCallback!,
                                                 completionHandlerExecutor: completionHandlerExecutor!,
                                                 sessionParametersListener: SessionParametersListenerWrapper(withSessionParametersListenerToWrap: sessionParametersListener,
                                                                                                             actionRequestLoop: actionRequestLoop),
@@ -147,6 +172,8 @@ final class WebimClientBuilder {
                                                 location: location!,
                                                 appVersion: appVersion,
                                                 visitorFieldsJSONString: visitorFieldsJSONString,
+                                                providedAuthenticationTokenStateListener: providedAuthenticationTokenStateListener,
+                                                providedAuthenticationToken: providedAuthenticationToken,
                                                 deviceID: deviceID!,
                                                 deviceToken: deviceToken,
                                                 visitorJSONString: visitorJSONString,
@@ -155,7 +182,7 @@ final class WebimClientBuilder {
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
-                           webimActions: WebimActions(withBaseURL: baseURL!,
+                           webimActions: WebimActions(baseURL: baseURL!,
                            actionRequestLoop: actionRequestLoop))
     }
     

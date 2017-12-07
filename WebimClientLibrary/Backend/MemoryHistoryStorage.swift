@@ -38,7 +38,7 @@ final class MemoryHistoryStorage: HistoryStorage {
     // MARK: - Properties
     private let majorVersion = Int(InternalUtils.getCurrentTimeInMicrosecond() % Int64.max)
     private lazy var historyMessages = [MessageImpl]()
-    private var reachedHistoryEnd: Bool?
+    private var reachedHistoryEnd = false
     
     
     // MARK: - Initialization
@@ -48,7 +48,7 @@ final class MemoryHistoryStorage: HistoryStorage {
     }
     
     // For testing purposes only.
-    init(with messagesToAdd: [MessageImpl]) {
+    init(messagesToAdd: [MessageImpl]) {
         for message in messagesToAdd {
             historyMessages.append(message)
         }
@@ -166,17 +166,17 @@ final class MemoryHistoryStorage: HistoryStorage {
             while receivedMessages.count > 0 {
                 for message in receivedMessages {
                     if message.getTimeInMicrosecond() < historyMessage.getTimeInMicrosecond() {
-                        if result.count == 0 {
-                            receivedMessages.remove(at: 0)
-                            
-                            break
-                        } else {
+                        if !result.isEmpty {
                             result.append(message)
                             completion(false, false, nil, false, nil, true, message, historyMessage.getHistoryID())
                             
                             receivedMessages.remove(at: 0)
                             
                             continue
+                        } else {
+                            receivedMessages.remove(at: 0)
+                            
+                            break
                         }
                     }
                     

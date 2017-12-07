@@ -88,6 +88,8 @@ public protocol Message {
     func getOperatorID() -> String?
     
     /**
+     - important:
+     Versions 3.3.1 and earlier has the method called `getSenderAvatarFullURLString()` that returned `String?`.
      - returns:
      URL of a sender's avatar or `nil` if one does not exist.
      - Author:
@@ -95,7 +97,7 @@ public protocol Message {
      - Copyright:
      2017 Webim
      */
-    func getSenderAvatarFullURLString() -> String?
+    func getSenderAvatarFullURL() -> URL?
     
     /**
      - returns:
@@ -129,13 +131,13 @@ public protocol Message {
     
     /**
      - returns:
-     Epoch time (in ms) the message was processed by the server.
+     Timestamp of the moment the message was processed by the server.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    func getTime() -> Int64
+    func getTime() -> Date
     
     /**
      - SeeAlso:

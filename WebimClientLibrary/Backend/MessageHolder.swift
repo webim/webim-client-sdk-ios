@@ -47,7 +47,7 @@ final class MessageHolder {
     
     
     // MARK: - Initialization
-    init(withAccessChecker accessChecker: AccessChecker,
+    init(accessChecker: AccessChecker,
          remoteHistoryProvider: RemoteHistoryProvider,
          historyStorage: HistoryStorage,
          reachedEndOfRemoteHistory: Bool) {
@@ -92,7 +92,7 @@ final class MessageHolder {
                       completion: completion)
         } else {
             historyStorage.getLatestHistory(byLimit: limitOfMessages,
-                                     completion: completion)
+                                            completion: completion)
         }
     }
     
@@ -149,8 +149,8 @@ final class MessageHolder {
             try self.messageTracker!.destroy()
         }
         
-        self.set(messageTracker: MessageTrackerImpl(withMessageListener: messageListener,
-                                                        messageHolder: self))
+        self.set(messageTracker: MessageTrackerImpl(messageListener: messageListener,
+                                                    messageHolder: self))
         
         return messageTracker!
     }
@@ -159,10 +159,10 @@ final class MessageHolder {
                                   deleted: Set<String>,
                                   completion: @escaping () -> ()) {
         historyStorage.receiveHistoryUpdate(withMessages: messages,
-                                            idsToDelete: deleted) { (endOfBatch: Bool, messageDeleted: Bool, deletedMessageID: String?, messageChanged: Bool, changedMessage: MessageImpl?, messageAdded: Bool, addedMessage: MessageImpl?, idBeforeAddedMessage: HistoryID?) -> () in
+                                            idsToDelete: deleted) { [weak self] (endOfBatch: Bool, messageDeleted: Bool, deletedMessageID: String?, messageChanged: Bool, changedMessage: MessageImpl?, messageAdded: Bool, addedMessage: MessageImpl?, idBeforeAddedMessage: HistoryID?) -> () in
                                                     if endOfBatch {
-                                                        if self.messageTracker != nil {
-                                                            self.messageTracker!.endedHistoryBatch()
+                                                        if self?.messageTracker != nil {
+                                                            self?.messageTracker!.endedHistoryBatch()
                                                         }
                                                         
                                                         completion()
@@ -170,23 +170,23 @@ final class MessageHolder {
                                                     
                                                     if messageDeleted {
                                                         // Assuming that when messageDeleted == true deletedMessageID cannot be nil.
-                                                        if self.messageTracker != nil {
-                                                            self.messageTracker!.deletedHistoryMessage(withID: deletedMessageID!)
+                                                        if self?.messageTracker != nil {
+                                                            self?.messageTracker!.deletedHistoryMessage(withID: deletedMessageID!)
                                                         }
                                                     }
                                                     
                                                     if messageChanged {
                                                         // Assuming that when messageChanged == true changedMessage cannot be nil.
-                                                        if self.messageTracker != nil {
-                                                            self.messageTracker!.changedHistory(message: changedMessage!)
+                                                        if self?.messageTracker != nil {
+                                                            self?.messageTracker!.changedHistory(message: changedMessage!)
                                                         }
                                                     }
                                                     
                                                     if messageAdded {
                                                         // Assuming that when messageAdded == true addedMessage cannot be nil.
-                                                        if !self.tryMergeWithLastChat(message: addedMessage!) &&
-                                                            (self.messageTracker != nil) {
-                                                            self.messageTracker!.addedHistory(message: addedMessage!,
+                                                        if (self?.tryMergeWithLastChat(message: addedMessage!) != true) &&
+                                                            (self?.messageTracker != nil) {
+                                                            self?.messageTracker!.addedHistory(message: addedMessage!,
                                                                                               before: idBeforeAddedMessage)
                                                         }
                                                     }
@@ -350,17 +350,17 @@ final class MessageHolder {
                                 limit: Int,
                                 completion: @escaping ([Message]) -> ()) {
         remoteHistoryProvider.requestHistory(beforeTimestamp: id.getTimeInMicrosecond(),
-                                             completion: { (messages: [MessageImpl], hasMoreMessages: Bool) in
+                                             completion: { [weak self] (messages: [MessageImpl], hasMoreMessages: Bool) in
                                                 if !hasMoreMessages {
-                                                    self.reachedEndOfRemoteHistory = true
+                                                    self?.reachedEndOfRemoteHistory = true
                                                 }
                                                 
                                                 if !messages.isEmpty {
-                                                    self.historyStorage.receiveHistoryBefore(messages: messages,
+                                                    self?.historyStorage.receiveHistoryBefore(messages: messages,
                                                                                              hasMoreMessages: hasMoreMessages)
                                                 }
                                                 
-                                                self.respondTo(messages: messages,
+                                                self?.respondTo(messages: messages,
                                                                limitOfMessages: limit,
                                                                completion: completion)
         })
@@ -372,15 +372,16 @@ final class MessageHolder {
         if reachedEndOfLocalHistory != true {
             historyStorage.getHistoryBefore(id: id,
                                      limitOfMessages: limit,
-                                     completion: { messages in
-                                            if messages.isEmpty {
-                                                self.reachedEndOfLocalHistory = true
-                                                self.getMessagesFromHistoryBefore(id: id,
-                                                                                  limit: limit,
-                                                                                  completion: completion)
-                                            } else {
-                                                completion(messages)
-                                            }
+                                     completion: { [weak self] messages in
+                                        if !messages.isEmpty {
+                                            completion(messages)
+                                            
+                                        } else {
+                                            self?.reachedEndOfLocalHistory = true
+                                            self?.getMessagesFromHistoryBefore(id: id,
+                                                                               limit: limit,
+                                                                               completion: completion)
+                                        }
             })
         } else if reachedEndOfRemoteHistory == true {
             completion([MessageImpl]())

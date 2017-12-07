@@ -19,6 +19,12 @@
 		CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDC1F9108FA00F56319 /* UIImageView.swift */; };
 		CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
 		CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
+		CE88BCD11FCD7F9A00A4FA2E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */; };
+		CE88BCD31FCD88EA00A4FA2E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD21FCD88EA00A4FA2E /* Settings.swift */; };
+		CE88BCD51FCDA45C00A4FA2E /* ButtonConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD41FCDA45C00A4FA2E /* ButtonConstants.swift */; };
+		CE88BCDA1FCF06EE00A4FA2E /* ChatScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = CE88BCD71FCF06EE00A4FA2E /* ChatScreen.png */; };
+		CE88BCDB1FCF06EE00A4FA2E /* StartScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = CE88BCD81FCF06EE00A4FA2E /* StartScreen.png */; };
+		CE88BCDC1FCF06EE00A4FA2E /* SettingsScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = CE88BCD91FCF06EE00A4FA2E /* SettingsScreen.png */; };
 		CEA832681F9906C0004845F0 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832671F9906BF004845F0 /* ColorConstants.swift */; };
 		CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832691F99079A004845F0 /* StringConstants.swift */; };
 		CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61A381F82A4C700BF7071 /* ChatViewController.swift */; };
@@ -62,6 +68,12 @@
 		CE45EDDF1F95F95C00F56319 /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
 		CE54B2511FC452B9009C05BD /* Index.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Index.md; sourceTree = "<group>"; };
 		CE591A421FC2F31E004C95EE /* WebimService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimService.swift; sourceTree = "<group>"; };
+		CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = WebimClientLibrary/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
+		CE88BCD21FCD88EA00A4FA2E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		CE88BCD41FCDA45C00A4FA2E /* ButtonConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonConstants.swift; sourceTree = "<group>"; };
+		CE88BCD71FCF06EE00A4FA2E /* ChatScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChatScreen.png; sourceTree = "<group>"; };
+		CE88BCD81FCF06EE00A4FA2E /* StartScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = StartScreen.png; sourceTree = "<group>"; };
+		CE88BCD91FCF06EE00A4FA2E /* SettingsScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SettingsScreen.png; sourceTree = "<group>"; };
 		CEA832671F9906BF004845F0 /* ColorConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
 		CEA832691F99079A004845F0 /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		CEF61A381F82A4C700BF7071 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +106,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				CE88BCD61FCF05CF00A4FA2E /* Screenshots */,
 				CE54B2501FC45274009C05BD /* Documentation */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */,
@@ -117,13 +130,15 @@
 		607FACD21AFB9204008FA782 /* Example for WebimClientLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				CEA832661F990689004845F0 /* Appearance settings */,
+				CEA832661F990689004845F0 /* AppearanceSettings */,
 				CE45EDDE1F95F94200F56319 /* Utilities */,
 				CE45EDDB1F9108E200F56319 /* Extensions */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				CEF61A381F82A4C700BF7071 /* ChatViewController.swift */,
 				CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */,
 				DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */,
+				CE88BCD21FCD88EA00A4FA2E /* Settings.swift */,
+				CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */,
 				607FACD71AFB9204008FA782 /* StartViewController.swift */,
 				CE591A421FC2F31E004C95EE /* WebimService.swift */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -217,13 +232,25 @@
 			path = ../Documentation;
 			sourceTree = "<group>";
 		};
-		CEA832661F990689004845F0 /* Appearance settings */ = {
+		CE88BCD61FCF05CF00A4FA2E /* Screenshots */ = {
 			isa = PBXGroup;
 			children = (
+				CE88BCD71FCF06EE00A4FA2E /* ChatScreen.png */,
+				CE88BCD91FCF06EE00A4FA2E /* SettingsScreen.png */,
+				CE88BCD81FCF06EE00A4FA2E /* StartScreen.png */,
+			);
+			name = Screenshots;
+			path = ../Screenshots;
+			sourceTree = "<group>";
+		};
+		CEA832661F990689004845F0 /* AppearanceSettings */ = {
+			isa = PBXGroup;
+			children = (
+				CE88BCD41FCDA45C00A4FA2E /* ButtonConstants.swift */,
 				CEA832671F9906BF004845F0 /* ColorConstants.swift */,
 				CEA832691F99079A004845F0 /* StringConstants.swift */,
 			);
-			path = "Appearance settings";
+			path = AppearanceSettings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,7 +350,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE88BCDC1FCF06EE00A4FA2E /* SettingsScreen.png in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				CE88BCDA1FCF06EE00A4FA2E /* ChatScreen.png in Resources */,
+				CE88BCDB1FCF06EE00A4FA2E /* StartScreen.png in Resources */,
 				DDFC63CD1F93FFE5008E1ACC /* RatingViewController.xib in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
@@ -444,15 +474,18 @@
 			files = (
 				CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */,
 				607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */,
+				CE88BCD31FCD88EA00A4FA2E /* Settings.swift in Sources */,
 				CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */,
 				CE44AE651F87CA8E009787E5 /* MessageTableViewCell.swift in Sources */,
 				CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */,
 				DDFC632B1F924D41008E1ACC /* UIImage.swift in Sources */,
 				CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				CE88BCD51FCDA45C00A4FA2E /* ButtonConstants.swift in Sources */,
 				CEA832681F9906C0004845F0 /* ColorConstants.swift in Sources */,
 				CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */,
 				DDFC63CB1F93F23E008E1ACC /* RatingViewController.swift in Sources */,
+				CE88BCD11FCD7F9A00A4FA2E /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,7 +640,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -warn-long-expression-type-checking=200";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -warn-long-expression-type-checking=100 -Xfrontend -warn-long-function-bodies=150 -Onone";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

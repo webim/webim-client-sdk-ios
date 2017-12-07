@@ -44,7 +44,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
     
     
     // MARK: - Initialization
-    init(withCompletionHandlerExecutor completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
+    init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
          internalErrorListener: InternalErrorListener) {
         self.completionHandlerExecutor = completionHandlerExecutor
         self.internalErrorListener = internalErrorListener
@@ -64,7 +64,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
                 return
             }
             
-            runIteration(withAuthorizationData: currentAuthorizationData!)
+            self.runIteration(withAuthorizationData: currentAuthorizationData!)
         }
     }
     
@@ -79,7 +79,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
     // MARK: Private methods
     private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) -> AuthorizationData? {
         while isRunning()
-            && (lastAuthorizationData === authorizationData) {
+            && (lastAuthorizationData == authorizationData) {
                 usleep(100000)
         }
         

@@ -126,6 +126,8 @@ public final class SessionBuilder  {
     private var fatalErrorHandler: FatalErrorHandler?
     private var location: String?
     private var pageTitle: String?
+    private var providedAuthorizationToken: String?
+    private var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var remoteNotificationSystem: Webim.RemoteNotificationSystem = .NONE
     private var visitorFields: ProvidedVisitorFields?
     
@@ -200,6 +202,8 @@ public final class SessionBuilder  {
      In this case visitor receives a random ID, which is written in `UserDefaults`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
      Authorizing of a visitor can be useful when there are internal mechanisms of authorization in your application and you want the message history to exist regardless of a device communication occurs from.
      This method takes as a parameter a string containing the signed fields of a user in JSON format. Since the fields are necessary to be signed with a private key that can never be included into the code of a client's application, this string must be created and signed somewhere on your backend side. Read more about forming a string and a signature here: https://webim.ru/help/identification/
+     - important:
+     Can't be used simultanously with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`.
      - parameter jsonString:
      JSON-string containing the signed fields of a visitor.
      - returns:
@@ -223,12 +227,13 @@ public final class SessionBuilder  {
      In this case visitor receives a random ID, which is written in `UserDefaults`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
      Authorizing of a visitor can be useful when there are internal mechanisms of authorization in your application and you want the message history to exist regardless of a device communication occurs from.
      This method takes as a parameter a string containing the signed fields of a user in JSON format. Since the fields are necessary to be signed with a private key that can never be included into the code of a client's application, this string must be created and signed somewhere on your backend side. Read more about forming a string and a signature here: https://webim.ru/help/identification/
+     - important:
+     Can't be used simultanously with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`.
      - parameter jsonData:
      JSON-data containing the signed fields of a visitor.
      - returns:
      `SessionBuilder` object with visitor fields setted.
      - SeeAlso:
-     https://webim.ru/help/identification/
      `set(visitorFieldsJSON jsonString:)`
      - Author:
      Nikita Lazarev-Zubov
@@ -237,6 +242,29 @@ public final class SessionBuilder  {
      */
     public func set(visitorFieldsJSONData jsonData: Data) -> SessionBuilder {
         self.visitorFields = ProvidedVisitorFields(withJSONObject: jsonData)
+        
+        return self
+    }
+    
+    /**
+     When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
+     - important:
+     Can't be used simultaneously with `set(visitorFieldsJSONString:)` or `set(visitorFieldsJSONString:)`.
+     - parameter providedAuthorizationTokenStateListener:
+     `ProvidedAuthorizationTokenStateListener` object.
+     - parameter providedAuthorizationToken:
+     Optional. Client generated provided authorization token. If it is not passed, library generates its own.
+     - SeeAlso:
+     `ProvidedAuthorizationTokenStateListener`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    public func set(providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener,
+                    providedAuthorizationToken: String? = nil) -> SessionBuilder {
+        self.providedAuthorizationTokenStateListener = providedAuthorizationTokenStateListener
+        self.providedAuthorizationToken = providedAuthorizationToken
         
         return self
     }
@@ -299,8 +327,10 @@ public final class SessionBuilder  {
     
     /**
      Sets device token.
+     Example that shows how to change device token for the proper formatted one:
+     `let deviceToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()`
      - parameter deviceToken:
-     Device token.
+     Device token in hexadecimal format and without any spaces and service symbols.
      - returns:
      `SessionBuilder` object with device token setted.
      - SeeAlso:
@@ -368,7 +398,8 @@ public final class SessionBuilder  {
      - throws:
      `SessionBuilder.SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't setted to a non-nil value.
      `SessionBuilder.SessionBuilderError.NIL_LOCATION` if location wasn't setted to a non-nil value.
-     `SessionBuilder.SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to set up a remote notifications without device token provided.
+     `SessionBuilder.SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to pass device token with `RemoteNotificationSystem` not setted (or setted to `.NONE`).
+     `SessionBuilder.SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS` if methods `set(visitorFieldsJSONString:)` or `set(visitorFieldsJSONData:)` are called with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)` simultaneously.
      - SeeAlso:
      `SessionBuilder.SessionBuilderError`
      - Author:
@@ -385,20 +416,34 @@ public final class SessionBuilder  {
             throw SessionBuilderError.NIL_LOCATION
         }
         
-        let areRemoteNotificationsEnabled = (self.remoteNotificationSystem != Webim.RemoteNotificationSystem.NONE)
-        if areRemoteNotificationsEnabled {
-            guard self.deviceToken != nil else {
-                throw SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION
+        let remoteNotificationsEnabled = (self.remoteNotificationSystem != Webim.RemoteNotificationSystem.NONE)
+        if (deviceToken) != nil
+            && !remoteNotificationsEnabled {
+            throw SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION
+        }
+        
+        if (visitorFields != nil)
+            && (providedAuthorizationTokenStateListener != nil) {
+            throw SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS
+        }
+        
+        if providedAuthorizationTokenStateListener != nil {
+            if providedAuthorizationToken == nil {
+                providedAuthorizationToken = ClientSideID.generateClientSideID()
             }
+            
+            providedAuthorizationTokenStateListener!.update(providedAuthorizationToken: providedAuthorizationToken!)
         }
         
         return WebimSessionImpl.newInstanceWith(accountName: accountName!,
                                                 location: location!,
                                                 appVersion: appVersion,
                                                 visitorFields: visitorFields,
+                                                providedAuthorizationTokenStateListener: providedAuthorizationTokenStateListener,
+                                                providedAuthorizationToken: providedAuthorizationToken,
                                                 pageTitle: pageTitle,
                                                 fatalErrorHandler: fatalErrorHandler,
-                                                areRemoteNotificationsEnabled: areRemoteNotificationsEnabled,
+                                                areRemoteNotificationsEnabled: remoteNotificationsEnabled,
                                                 deviceToken: deviceToken,
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled) as WebimSession
@@ -417,7 +462,23 @@ public final class SessionBuilder  {
     public enum SessionBuilderError: Error {
         
         /**
+         Error that is thrown when trying to use standard and custom visitor fields authentication simultaneously.
+         - SeeAlso:
+         `set(visitorFieldsJSONString:)`
+         `set(visitorFieldsJSONData:)`
+         `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2017 Webim
+         */
+        case INVALID_AUTHENTICATION_PARAMETERS
+        
+        /**
          Error that is thrown when trying to create session object with invalid remote notifications configuration.
+         - SeeAlso:
+         `set(remoteNotificationSystem:)`
+         `set(deviceToken:)`
          - Author:
          Nikita Lazarev-Zubov
          - Copyright:
@@ -427,6 +488,8 @@ public final class SessionBuilder  {
         
         /**
          Error that is thrown when trying to create session object with `nil` account name.
+         - SeeAlso:
+         `set(accountName:)`
          - Author:
          Nikita Lazarev-Zubov
          - Copyright:
@@ -436,6 +499,8 @@ public final class SessionBuilder  {
         
         /**
          Error that is thrown when trying to create session object with `nil` location name.
+         - SeeAlso:
+         `set(location:)`
          - Author:
          Nikita Lazarev-Zubov
          - Copyright:

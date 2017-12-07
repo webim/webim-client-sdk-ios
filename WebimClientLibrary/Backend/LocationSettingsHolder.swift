@@ -40,7 +40,7 @@ final class LocationSettingsHolder {
     
     
     // MARK: - Initialization
-    init(withUserDefaults userDefaultsKey: String) {
+    init(userDefaultsKey: String) {
         self.userDefaultsKey = userDefaultsKey
         self.locationSettings = LocationSettingsImpl.getFrom(userDefaults: userDefaultsKey)
     }

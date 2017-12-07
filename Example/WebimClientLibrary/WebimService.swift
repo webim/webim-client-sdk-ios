@@ -40,11 +40,6 @@ final class WebimService {
     private enum ChatSettings: Int {
         case MESSAGES_PER_REQUEST = 5
     }
-    private enum SessionDefaults: String {
-        case ACCOUNT_NAME = "demo"
-        case LOCATION = "mobile"
-        case PAGE_TITLE = "iOS demo app"
-    }
     private enum VisitorField: String {
         case ID = "id"
         case NAME = "display_name"
@@ -80,21 +75,23 @@ final class WebimService {
      2017 Webim
      */
     func createSession() {
-        // Hardcoded values that work with "demo" account only!
-        let visitorFieldsJSONString = "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}"
-        
         let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
         
+        var sessionBuilder = Webim.newSessionBuilder()
+            .set(accountName: Settings.shared.accountName)
+            .set(location: Settings.shared.location)
+            .set(pageTitle: Settings.shared.pageTitle)
+            .set(fatalErrorHandler: self)
+            .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
+            .set(deviceToken: deviceToken)
+        
+        if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
+            // Hardcoded values that work with "demo" account only!
+            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}")
+        }
+        
         do {
-            webimSession = try Webim.newSessionBuilder()
-                .set(accountName: SessionDefaults.ACCOUNT_NAME.rawValue)
-                .set(location: SessionDefaults.LOCATION.rawValue)
-                .set(pageTitle: SessionDefaults.PAGE_TITLE.rawValue)
-                .set(visitorFieldsJSONString: visitorFieldsJSONString)
-                .set(fatalErrorHandler: self)
-                .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
-                .set(deviceToken: deviceToken)
-                .build()
+            webimSession = try sessionBuilder.build()
         } catch let error as SessionBuilder.SessionBuilderError {
             // Assuming to check parameters values in Webim session builder methods.
             switch error {
@@ -104,6 +101,8 @@ final class WebimService {
                 print("Webim session object creating failed because of passing nil location name.")
             case .INVALID_REMOTE_NOTIFICATION_CONFIGURATION:
                 print("Webim session object creating failed because of invalid remote notifications configuration.")
+            case .INVALID_AUTHENTICATION_PARAMETERS:
+                print("Webim session object creating failed because of invalid visitor authentication system configuration.")
             }
         } catch {
             print("Webim session object creating failed with unknown error: \(error.localizedDescription)")
@@ -477,7 +476,7 @@ extension WebimService: FatalErrorHandler {
         case .ACCOUNT_BLOCKED:
             print("Account with used account name is blocked by Webim service.")
             // Assuming to contact with Webim support.
-        case .PROVIDED_VISITOR_EXPIRED:
+        case .PROVIDED_VISITOR_FIELDS_EXPIRED:
             print("Provided visitor fields expired.")
             // Assuming to re-authorize it and re-create session object.
         case .UNKNOWN:

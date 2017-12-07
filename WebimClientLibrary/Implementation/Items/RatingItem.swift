@@ -33,7 +33,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class RatingItem {
+struct RatingItem {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
@@ -44,12 +44,12 @@ final class RatingItem {
     
     
     // MARK: - Properties
-    private var operatorID: String?
-    private var rating: Int?
+    private var operatorID: String
+    private var rating: Int
     
     
     // MARK: - Initialization
-    init?(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init?(jsonDictionary: [String : Any?]) {
         guard let operatorID = jsonDictionary[JSONField.OPERATOR_ID.rawValue] as? String,
             let rating = jsonDictionary[JSONField.RATING.rawValue] as? Int else {
             return nil
@@ -62,11 +62,11 @@ final class RatingItem {
     
     // MARK: - Methods
     
-    func getOperatorID() -> String? {
+    func getOperatorID() -> String {
         return operatorID
     }
     
-    func getRating() -> Int? {
+    func getRating() -> Int {
         return rating
     }
     

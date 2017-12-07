@@ -38,7 +38,7 @@ final class MessageTrackerImpl: MessageTracker {
     let messageListener: MessageListener
     private let messageHolder: MessageHolder
     var idToHistoryMessageMap = [String : MessageImpl]()
-    private var allMessageSourcesEnded: Bool?
+    private var allMessageSourcesEnded = false
     private var cachedCompletionHandler: MessageHolderCompletionHandlerWrapper?
     private var cachedLimit: Int?
     private var destroyed: Bool?
@@ -48,7 +48,7 @@ final class MessageTrackerImpl: MessageTracker {
     
     
     // MARK: - Initialization
-    init(withMessageListener messageListener: MessageListener,
+    init(messageListener: MessageListener,
          messageHolder: MessageHolder) {
         self.messageListener = messageListener
         self.messageHolder = messageHolder
@@ -68,7 +68,7 @@ final class MessageTrackerImpl: MessageTracker {
         }
         
         if (headMessage != nil)
-            || (allMessageSourcesEnded == true) {
+            || allMessageSourcesEnded {
             addNewOrMerge(message: message,
                           of: messageHolder)
         } else {
@@ -89,7 +89,7 @@ final class MessageTrackerImpl: MessageTracker {
     func addedNew(messages: [MessageImpl],
                   of messageHolder: MessageHolder) {
         if (headMessage != nil)
-            || (allMessageSourcesEnded == true) {
+            || allMessageSourcesEnded {
             for message in messages {
                 addNewOrMerge(message: message,
                               of: messageHolder)
@@ -339,17 +339,17 @@ final class MessageTrackerImpl: MessageTracker {
             cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
             cachedLimit = limitOfMessages
             
-            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { messages in
-                if let cachedCompletionHandler = self.cachedCompletionHandler,
+            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
+                if let cachedCompletionHandler = self?.cachedCompletionHandler,
                     !messages.isEmpty {
-                    self.firstHistoryUpdateReceived = true
+                    self?.firstHistoryUpdateReceived = true
                     
                     let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
-                    self.receive(messages: messages as! [MessageImpl],
-                                 limit: limitOfMessages,
-                                 completion: completionHandlerToPass)
+                    self?.receive(messages: messages as! [MessageImpl],
+                                  limit: limitOfMessages,
+                                  completion: completionHandlerToPass)
                     
-                    self.cachedCompletionHandler = nil
+                    self?.cachedCompletionHandler = nil
                 }
             }
         }
@@ -483,19 +483,19 @@ final class MessageTrackerImpl: MessageTracker {
     
     private func getNextUncheckedMessagesBy(limit: Int,
                                             completion: @escaping ([Message]) -> ()) {
-        let completionHandler = { (messages: [Message]) -> () in
-            self.receive(messages: messages as! [MessageImpl],
+        let completionHandler = { [weak self] (messages: [Message]) -> () in
+            self?.receive(messages: messages as! [MessageImpl],
                          limit: limit,
                          completion: completion)
         }
         
-        if headMessage == nil {
-            messageHolder.getLatestMessages(byLimit: limit,
-                                            completion: completionHandler)
-        } else {
+        if headMessage != nil {
             messageHolder.getMessagesBy(limit: limit,
                                         before: headMessage!,
                                         completion: completionHandler)
+        } else {
+            messageHolder.getLatestMessages(byLimit: limit,
+                                            completion: completionHandler)
         }
     }
     

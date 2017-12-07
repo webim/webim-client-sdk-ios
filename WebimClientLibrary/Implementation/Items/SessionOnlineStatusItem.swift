@@ -55,7 +55,7 @@ enum SessionOnlineStatusItem: String {
     
     
     // MARK: - Initialization
-    init(withType typeValue: String) {
+    init(typeValue: String) {
         self = SessionOnlineStatusItem(rawValue: typeValue)!
     }
     
@@ -64,7 +64,7 @@ enum SessionOnlineStatusItem: String {
     
     func getTypeBy(string: String) -> SessionOnlineStatusItem {
         for sessionOnlineStatusItemType in SessionOnlineStatusItem.sessionOnlineStatusValues {
-            if sessionOnlineStatusItemType == SessionOnlineStatusItem(withType: string) {
+            if sessionOnlineStatusItemType == SessionOnlineStatusItem(typeValue: string) {
                 return sessionOnlineStatusItemType
             }
         }

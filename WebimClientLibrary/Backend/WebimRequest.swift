@@ -45,7 +45,7 @@ final class WebimRequest {
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
-    init(withData primaryData: [String : Any],
+    init(primaryData: [String : Any],
          messageID: String? = nil,
          httpBody: Data? = nil,
          boundaryString: String? = nil,
@@ -98,7 +98,7 @@ final class WebimRequest {
 extension WebimRequest: NSCopying {
     
     func copy(with zone: NSZone? = nil) -> Any {
-        return WebimRequest(withData: primaryData,
+        return WebimRequest(primaryData: primaryData,
                             messageID: messageID,
                             httpBody: httpBody,
                             boundaryString: boundaryString,

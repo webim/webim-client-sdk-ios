@@ -93,7 +93,7 @@ public enum FatalErrorType {
      - Copyright:
      2017 Webim
      */
-    case PROVIDED_VISITOR_EXPIRED
+    case PROVIDED_VISITOR_FIELDS_EXPIRED
     
     /**
      Indicates the occurrence of an unknown error.

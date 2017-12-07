@@ -52,6 +52,26 @@ public protocol MessageStream {
     
     /**
      - returns:
+     Timestamp after which all chat messages are unread by operator (at the moment of last server update recieved.)
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func getUnreadByOperatorTimestamp() -> Date?
+    
+    /**
+     - returns:
+     Timestamp after which all chat messages are unread by visitor (at the moment of last server update recieved.)
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func getUnreadByVisitorTimestamp() -> Date?
+    
+    /**
+     - returns:
      Current LocationSettings of the MessageStream.
      - Author:
      Nikita Lazarev-Zubov

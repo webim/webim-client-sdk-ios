@@ -39,6 +39,7 @@ import Foundation
 final class DeltaRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
+    private static var providedAuthTokenErrorCount = 0
     private let appVersion: String?
     private let baseURL: String
     private let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor
@@ -51,6 +52,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     private var authorizationData: AuthorizationData?
     private var deviceToken: String?
     private var location: String
+    private var providedAuthenticationToken: String?
+    private var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var sessionID: String?
     private var since: Int64 = 0
     private var visitorFieldsJSONString: String?
@@ -58,7 +61,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     
     
     // MARK: - Initialization
-    init(withDeltaCallback deltaCallback: DeltaCallback,
+    init(deltaCallback: DeltaCallback,
          completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
          sessionParametersListener: SessionParametersListener?,
          internalErrorListener: InternalErrorListener,
@@ -68,6 +71,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
          location: String,
          appVersion: String?,
          visitorFieldsJSONString: String?,
+         providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?,
+         providedAuthenticationToken: String?,
          deviceID: String,
          deviceToken: String?,
          visitorJSONString: String?,
@@ -88,6 +93,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         self.visitorJSONString = visitorJSONString
         self.sessionID = sessionID
         self.authorizationData = authorizationData
+        self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
+        self.providedAuthenticationToken = providedAuthenticationToken
     }
     
     
@@ -99,7 +106,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
-    func set(deviceToken: String?) {
+    func set(deviceToken: String) {
         self.deviceToken = deviceToken
     }
     
@@ -117,9 +124,9 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     // MARK: Private methods
+    
     private func runIteration() throws {
-        if (authorizationData != nil)
-            && (since != 0) {
+        if authorizationData != nil {
             try requestDelta()
         } else {
             try requestInitialization()
@@ -151,6 +158,9 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         if let visitorFieldsJSONString = visitorFieldsJSONString {
             dataToPost[WebimActions.Parameter.VISITOR_FIELDS.rawValue] = visitorFieldsJSONString
         }
+        if let providedAuthenticationToken = providedAuthenticationToken {
+            dataToPost[WebimActions.Parameter.PROVIDED_AUTHENTICATION_TOKEN.rawValue] = providedAuthenticationToken
+        }
         
         let parametersString = dataToPost.stringFromHTTPParameters()
         let url = URL(string: getDeltaServerURLString() + "?" + parametersString)
@@ -161,11 +171,24 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         let data = try perform(request: request)
         do {
             let dataJSON = try JSONSerialization.jsonObject(with: data) as! [String : Any]
-            
             if let error = dataJSON["error"] as? String {
                 if error == WebimInternalError.REINIT_REQUIRED.rawValue {
                     authorizationData = nil
                     since = 0
+                } else if error == WebimInternalError.PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND.rawValue {
+                    DeltaRequestLoop.providedAuthTokenErrorCount += 1
+                    
+                    if DeltaRequestLoop.providedAuthTokenErrorCount < 5 {
+                        sleepBetweenInitializationAttempts()
+                    } else {
+                        if providedAuthenticationTokenStateListener != nil {
+                            providedAuthenticationTokenStateListener!.update(providedAuthorizationToken: providedAuthenticationToken!)
+                        }
+                        
+                        DeltaRequestLoop.providedAuthTokenErrorCount = 0
+                        
+                        sleepBetweenInitializationAttempts()
+                    }
                 } else {
                     running = false
                     
@@ -175,7 +198,9 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                     })
                 }
             } else {
-                let deltaResponse = DeltaResponse(withJSONDictionary: dataJSON)
+                DeltaRequestLoop.providedAuthTokenErrorCount = 0
+                
+                let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
                 
                 if let deltaList = deltaResponse.getDeltaList() {
                     if deltaList.count > 0 {
@@ -231,7 +256,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                     })
                 }
             } else {
-                let deltaResponse = DeltaResponse(withJSONDictionary: dataJSON)
+                let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
                 
                 guard let revision = deltaResponse.getRevision() else {
                     // Delta timeout.
@@ -240,7 +265,9 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                 since = revision
                 
                 if let fullUpdate = deltaResponse.getFullUpdate() {
-                    process(fullUpdate: fullUpdate)
+                    completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        self.process(fullUpdate: fullUpdate)
+                    })
                 } else if let deltaList = deltaResponse.getDeltaList() {
                     if deltaList.count > 0 {
                         completionHandlerExecutor.execute(task: DispatchWorkItem {
@@ -257,7 +284,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     private func process(fullUpdate: FullUpdate) {
         let visitorJSONString = fullUpdate.getVisitorJSONString()
         let sessionID = fullUpdate.getSessionID()
-        let authorizationData = AuthorizationData(pageID: fullUpdate.getPageId()!,
+        let authorizationData = AuthorizationData(pageID: fullUpdate.getPageId(),
                                                   authorizationToken: fullUpdate.getAuthorizationToken())
         
         let isNecessaryToUpdateVisitorFieldJSONString = (self.visitorFieldsJSONString == nil)
@@ -291,6 +318,13 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     
     private func getDeltaServerURLString() -> String! {
         return baseURL + WebimActions.ServerPathSuffix.GET_DELTA.rawValue
+    }
+    
+    private func sleepBetweenInitializationAttempts() {
+        authorizationData = nil
+        since = 0
+        
+        usleep(1000 * 1000)  // 1 s
     }
     
 }

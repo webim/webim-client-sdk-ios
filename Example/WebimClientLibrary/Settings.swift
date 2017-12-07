@@ -1,8 +1,8 @@
 //
-//  StringConstants.swift
+//  Settings.swift
 //  WebimClientLibrary_Example
 //
-//  Created by Nikita Lazarev-Zubov on 19.10.17.
+//  Created by Nikita Lazarev-Zubov on 28.11.17.
 //  Copyright © 2017 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,27 +26,38 @@
 
 import Foundation
 
-let REFRESH_CONTROL_TEXT = NSAttributedString(string: "Loading messages...")
-
-enum SendFileErrorMessage: String {
-    case TITLE = "File sending failed"
-    case BUTTON_TITLE = "OK"
+/**
+ Abstraction for present account settings in Webim service.
+ Uses Singleton pattern. Accessible by `Settings.shared`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+class Settings {
     
-    // Error messages.
-    case FILE_SIZE_EXCEEDED = "File is too large."
-    case FILE_TYPE_NOT_ALLOWED = "File type is not supported."
-}
-
-enum RatingDialog: String {
-    case ACTION_BUTTON_TITLE = "Rate"
-    case CANCEL_BUTTON_TITLE = "Cancel"
-}
-
-enum ShowFileDialog: String {
-    case BUTTON_TITLE = "OK"
+    // MARK: - Constants
+    enum Defaults: String {
+        case ACCOUNT_NAME = "demo"
+        case LOCATION = "mobile"
+        case PAGE_TITLE = "iOS demo app"
+    }
     
-    // Message.
-    case INVALID_IMAGE_FORMAT = "Image format is not valid."
-    case INVALID_IMAGE_LINK = "Image link is not valid."
-    case NOT_IMAGE = "Preview is not available."
+    // MARK: - Properties
+    static let shared = Settings(accountName: Defaults.ACCOUNT_NAME.rawValue,
+                                 location: Defaults.LOCATION.rawValue,
+                                 pageTitle: Defaults.PAGE_TITLE.rawValue)
+    var accountName: String
+    var location: String
+    var pageTitle: String
+    
+    // MARK: - Initialization
+    private init(accountName: String,
+                 location: String,
+                 pageTitle: String) {
+        self.accountName = accountName
+        self.location = location
+        self.pageTitle = pageTitle
+    }
+    
 }

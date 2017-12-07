@@ -27,6 +27,10 @@
 import Foundation
 import UIKit
 
+let GREY_COLOR = UIColor(red: (67.0 / 255.0),
+                         green: (67.0 / 255.0),
+                         blue: (67.0 / 255.0),
+                         alpha: 1.0)
 let MAIN_BACKGROUND_COLOR = UIColor(red: (229.0 / 255.0),
                                     green: (237.0 / 255.0),
                                     blue: (244.0 / 255.0),

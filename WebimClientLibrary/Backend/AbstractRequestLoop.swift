@@ -117,11 +117,11 @@ class AbstractRequestLoop {
     }
     
     func perform(request: URLRequest) throws -> Data {
-        var errorCounter = 0
+        var errorCounter = 0.0
         var lastHTTPCode = -1
         
         while isRunning() {
-            let startTime = CFAbsoluteTimeGetCurrent()
+            let startTime = Date()
             var httpCode = 200
             
             let semaphore = DispatchSemaphore(value: 0)
@@ -170,17 +170,18 @@ class AbstractRequestLoop {
                     print("Request failed with HTTP code: \(httpCode)")
                 }
                 
-                errorCounter = 10
+                errorCounter = 10.0
             }
             
             lastHTTPCode = httpCode
             
             // If request wasn't successful and error isn't fatal, wait some time and try again.
-            errorCounter = errorCounter + 1
-            let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-            let sleepTime = (errorCounter >= 5) ? 5 : errorCounter
-            if timeElapsed < Double(sleepTime) {
-                usleep(useconds_t((Double(sleepTime) - timeElapsed) * 1000))
+            errorCounter = errorCounter + 1.0
+            let sleepTime = ((errorCounter >= 5.0) ? 5.0 : errorCounter) as TimeInterval
+            let timeElapsed = Date().timeIntervalSince(startTime)
+            if Double(timeElapsed) < Double(sleepTime) {
+                let remainingTime = Double(sleepTime) - Double(timeElapsed)
+                usleep(useconds_t(remainingTime * 1000000.0))
             }
         }
         

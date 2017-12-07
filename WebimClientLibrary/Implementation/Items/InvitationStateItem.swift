@@ -61,7 +61,7 @@ enum InvitationStateItem: String {
     
     
     // MARK: - Initialization
-    init(withType typeValue: String) {
+    init(typeValue: String) {
         for invitationStateType in InvitationStateItem.invitationStateValues {
             if typeValue == invitationStateType.rawValue {
                 self = invitationStateType
@@ -78,7 +78,7 @@ enum InvitationStateItem: String {
     
     static func getTypeBy(string: String) -> InvitationStateItem {
         for invitationStateType in InvitationStateItem.invitationStateValues {
-            if invitationStateType == InvitationStateItem(withType: string) {
+            if invitationStateType == InvitationStateItem(typeValue: string) {
                 return invitationStateType
             }
         }

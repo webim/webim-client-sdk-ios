@@ -44,7 +44,7 @@ final class DeltaCallback {
     private var messageStream: MessageStreamImpl?
     
     // MARK: - Initialization
-    init(withCurrentChatMessageMapper currentChatMessageMapper: MessageFactoriesMapper) {
+    init(currentChatMessageMapper: MessageFactoriesMapper) {
         self.currentChatMessageMapper = currentChatMessageMapper
     }
     
@@ -114,7 +114,7 @@ final class DeltaCallback {
         
         currentChat = fullUpdate.getChat()
         
-        messageStream!.receivingFullUpdateOf(chat: currentChat)
+        messageStream!.changingChatStateOf(chat: currentChat)
         
         messageStream!.saveLocationSettingsOn(fullUpdate: fullUpdate)
         
@@ -160,7 +160,7 @@ final class DeltaCallback {
             messageHolder.deletedMessageWith(id: sessionID)
         } else {
             if let deltaData = delta.getData() as? [String : Any?] {
-                let messageItem = MessageItem(withJSONDictionary: deltaData)
+                let messageItem = MessageItem(jsonDictionary: deltaData)
                 let message = currentChatMessageMapper.map(message: messageItem)
                 if deltaEvent == .ADD {
                     if currentChat != nil {
@@ -194,7 +194,7 @@ final class DeltaCallback {
     private func handleChatOperatorUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
         if let deltaData = delta.getData() as? [String : Any?] {
-            let operatorItem = OperatorItem(withJSONDictionary: deltaData)
+            let operatorItem = OperatorItem(jsonDictionary: deltaData)
             if delta.getEvent() == .UPDATE {
                 if currentChat != nil {
                     currentChat!.set(operator: operatorItem)
@@ -245,11 +245,11 @@ final class DeltaCallback {
     private func handleOperatorRateUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
         if let deltaData = delta.getData() as? [String : Any?] {
-            if let rating = RatingItem(withJSONDictionary: deltaData) {
+            if let rating = RatingItem(jsonDictionary: deltaData) {
                 if delta.getEvent() == .UPDATE {
                     if currentChat != nil {
                         currentChat!.set(rating: rating,
-                                         toOperatorWithId: rating.getOperatorID()!)
+                                         toOperatorWithId: rating.getOperatorID())
                     }
                 }
             }

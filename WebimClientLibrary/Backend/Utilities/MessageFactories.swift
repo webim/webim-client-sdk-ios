@@ -230,7 +230,7 @@ final class SendingFactory {
     
     func createTextMessageToSendWith(id: String,
                                      text: String) -> MessageToSend {
-        return MessageToSend(withServerURLString: serverURLString,
+        return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
                              type: MessageType.VISITOR,
@@ -239,7 +239,7 @@ final class SendingFactory {
     }
     
     func createFileMessageToSendWith(id: String) -> MessageToSend {
-        return MessageToSend(withServerURLString: serverURLString,
+        return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
                              type: MessageType.FILE_FROM_VISITOR,
@@ -268,7 +268,7 @@ final class OperatorFactory {
     
     // MARK: - Methods
     func createOperatorFrom(operatorItem: OperatorItem?) -> OperatorImpl? {
-        return (operatorItem == nil) ? nil : OperatorImpl(withID: operatorItem!.getID(),
+        return (operatorItem == nil) ? nil : OperatorImpl(id: operatorItem!.getID(),
                                                           name: operatorItem!.getFullName(),
                                                           avatarURLString: (operatorItem!.getAvatarURLString() == nil) ? nil : (serverURLString + operatorItem!.getAvatarURLString()!))
     }

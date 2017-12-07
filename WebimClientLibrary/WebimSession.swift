@@ -107,6 +107,22 @@ public protocol WebimSession {
      */
     func change(location: String) throws
     
+    /**
+     This method allows to manually set device token after the session is created.
+     Example that shows how to change device token for the proper formatted one:
+     `let deviceToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()`
+     - parameter deviceToken:
+     Device token in hexadecimal format and without any spaces and service symbols.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func set(deviceToken: String) throws
+    
 }
 
 

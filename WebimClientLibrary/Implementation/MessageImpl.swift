@@ -81,7 +81,7 @@ class MessageImpl {
         
         self.historyMessage = historyMessage
         if historyMessage {
-            historyID = HistoryID(withDBid: internalID!,
+            historyID = HistoryID(dbID: internalID!,
                                   timeInMicrosecond: timeInMicrosecond)
         } else {
             currentChatID = internalID
@@ -264,8 +264,14 @@ extension MessageImpl: Message {
         return operatorID
     }
     
-    func getSenderAvatarFullURLString() -> String? {
-        return (senderAvatarURLString == nil) ? nil : (serverURLString + senderAvatarURLString!)
+    func getSenderAvatarFullURL() -> URL? {
+        guard let senderAvatarURLString = senderAvatarURLString else {
+            return nil
+        }
+        
+        let fullSenderAvatarURLString = serverURLString + senderAvatarURLString
+        
+        return URL(string: fullSenderAvatarURLString)
     }
     
     func getSendStatus() -> MessageSendStatus {
@@ -280,8 +286,8 @@ extension MessageImpl: Message {
         return text
     }
     
-    func getTime() -> Int64 {
-        return timeInMicrosecond / 1000
+    func getTime() -> Date {
+        return Date(timeIntervalSince1970: TimeInterval(timeInMicrosecond / 1000000))
     }
     
     func getType() -> MessageType {
@@ -346,7 +352,7 @@ final class MessageAttachmentImpl {
     
     
     // MARK: - Initialization
-    init(withURLString urlString: String?,
+    init(urlString: String?,
          size: Int64?,
          filename: String?,
          contentType: String?,
@@ -371,7 +377,7 @@ final class MessageAttachmentImpl {
                                                                         return nil
         }
         
-        let fileParameters = FileParametersItem(withJSONDictionary: textDictionary!)
+        let fileParameters = FileParametersItem(jsonDictionary: textDictionary!)
         guard let filename = fileParameters.getFilename(),
             let guid = fileParameters.getGUID(),
             let contentType = fileParameters.getContentType() else {
@@ -395,7 +401,7 @@ final class MessageAttachmentImpl {
                 + "expires" + "=" + String(expires) + "&"
                 + "hash" + "=" + hash
             
-            return MessageAttachmentImpl(withURLString: fileURLString,
+            return MessageAttachmentImpl(urlString: fileURLString,
                                          size: fileParameters.getSize(),
                                          filename: filename,
                                          contentType: contentType,

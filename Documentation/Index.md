@@ -13,6 +13,7 @@
     -   [Instance method set(appVersion:)](#set-app-version)
     -   [Instance method set(visitorFieldsJSONString jsonString:)](#set-visitor-fields-json-string-json-string)
     -   [Instance method set(visitorFieldsJSONData jsonData:)](#set-visitor-fields-json-data-json-data)
+    -   [Instance method set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)](#set-provided-authorization-token-state-listener-provided-authorization-token)
     -   [Instance method set(pageTitle:)](#set-page-title)
     -   [Instance method set(fatalErrorHandler:)](#set-fatal-error-handler)
     -   [Instance method set(remoteNotificationSystem:)](#set-remote-notification-system)
@@ -23,15 +24,21 @@
     -   [SessionBuilderError enum](#session-builder-error)
         -   [NIL_ACCOUNT_NAME case](#nil-account-name)
         -   [NIL_LOCATION case](#nil-location)
+        -   [INVALID_AUTHENTICATION_PARAMETERS](#invalid-authentication-parameters)
         -   [INVALID_REMOTE_NOTIFICATION_CONFIGURATION case](#invalid-remote-notification-configuration)
+-   [ProvidedAuthorizationTokenStateListener protocol](#provided-authorization-token-state-listener)
+    -   [update(providedAuthorizationToken:) method](#update-provided-authorization-token)
 -   [WebimSession protocol](#webim-session)
     -   [resume() method](#resume)
     -   [pause() method](#pause)
     -   [destroy() method](#destroy)
     -   [getStream() method](#get-stream)
     -   [change(location:) method](#change-location)
+    -   [set(deviceToken:) method](#set-device-token)
 -   [MessageStream protocol](#message-stream)
     -   [getChatState() method](#get-chat-state)
+    -   [getUnreadByOperatorTimestamp() method](#get-unread-by-operator-timestamp)
+    -   [getUnreadByVisitorTimestamp() method](#get-unread-by-visitor-timestamp)
     -   [getLocationSettings() method](#get-location-settings)
     -   [getCurrentOperator() method](#get-current-operator)
     -   [getLastRatingOfOperatorWith(id:) method](#get-last-rating-of-operator-with-id)
@@ -95,7 +102,7 @@
     -   [getData() method](#get-data)
     -   [getID() method](#get-id)
     -   [getOperatorID() method](#get-operator-id)
-    -   [getSenderAvatarFullURLString() method](#get-sender-avatar-full-url-string)
+    -   [getSenderAvatarFullURL() method](#get-sender-avatar-full-url)
     -   [getSenderName() method](#get-sender-name)
     -   [getSendStatus() method](#get-send-status)
     -   [getText() method](#get-text)
@@ -126,7 +133,7 @@
 -   [Operator protocol](#operator-protocol)
     -   [getID() method](#get-id-operator)
     -   [getName() method](#get-name)
-    -   [getAvatarURLString() method](#get-avatar-url-string)
+    -   [getAvatarURL() method](#get-avatar-url)
 -   [WebimRemoteNotification protocol](#webim-remote-notification)
     -   [getType() method](#get-type-webim-remote-notification)
     -   [getEvent() method](#get-event)
@@ -142,7 +149,7 @@
     -   [on(error:) method](#on-error)
 -   [FatalErrorType enum](#fatal-error-type)
     -   [ACCOUNT_BLOCKED case](#account-blocked)
-    -   [PROVIDED_VISITOR_EXPIRED case](#provided-visitor-fields)
+    -   [PROVIDED_VISITOR_FIELDS_EXPIRED case](#provided-visitor-fields-expired)
     -   [UNKNOWN case](#unknown-fatal-error-type)
     -   [VISITOR_BANNED case](#visitor-banned)
     -   [WRONG_PROVIDED_VISITOR_HASH case](#wrong-provided-visitor-hash)
@@ -219,11 +226,20 @@ Authorized visitor data are saved by server and available with any device.
 `jsonString` parameter – _JSON_-formatted `String`-typed [visitor fields](https://webim.ru/help/identification/).
 Returns `self` with visitor authorization data set.
 Method is not mandatory to create [WebimSession](#webim-session) object.
+Can't be used simultanously with [set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:) method](#set-provided-authorization-token-state-listener-provided-authorization-token).
 
 <h3 id ="set-visitor-fields-json-data-json-data">Instance method set(visitorFieldsJSONData jsonData:)</h3>
 
 Absolutely similar to [method set(visitorFieldsJSONString jsonString:)](#set-visitor-fields-json-string-json-string).
 `jsonData` parameter – _JSON_-formatted `Data`-typed [visitor fields](https://webim.ru/help/identification/).
+
+<h3 id ="set-provided-authorization-token-state-listener-provided-authorization-token">Instance method set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)</h3>
+
+When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
+Method sets [ProvidedAuthorizationTokenStateListener](#provided-authorization-token-state-listener) object and provided authorization token. Setting custom token is optional, if is not set, library generates its own.
+Returns `self` with visitor authorization data set.
+Method is not mandatory to create [WebimSession](#webim-session) object.
+Can't be used simultaneously with [set(visitorFieldsJSONString:)](#set-visitor-fields-json-string-json-string) or [set(visitorFieldsJSONString:)](#set-visitor-fields-json-data-json-data).
 
 <h3 id ="set-page-title">Instance method set(pageTitle:)</h3>
 
@@ -287,9 +303,27 @@ Error that is thrown when trying to create session object with `nil` account nam
 
 Error that is thrown when trying to create session object with `nil` location name.
 
+<h4 id ="invalid-authentication-parameters">INVALID_AUTHENTICATION_PARAMETERS case</h4>
+
+Error that is thrown when trying to use standard and custom visitor fields authentication simultaneously.
+
 <h4 id ="invalid-remote-notification-configuration">INVALID_REMOTE_NOTIFICATION_CONFIGURATION case</h4>
 
 Error that is thrown when trying to create session object with invalid remote notifications configuration.
+
+<h2 id ="provided-authorization-token-state-listener">ProvidedAuthorizationTokenStateListener protocol</h2>
+
+When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
+When provided authorization token is generated (or passed to session by client app), `update(providedAuthorizationToken:)` method is called. This method call indicates that client app must send provided authorisation token to its server which is responsible to send it to Webim service.
+This mechanism can't be used as is. It requires that client server to support this mecahnism.
+
+<h3 id ="update-provided-authorization-token">update(providedAuthorizationToken:) method</h3>
+
+Method is called in two cases:
+1. Provided authorization token is genrated (or set by client app) and must be sent to client server which is responsible to send it to Webim service.
+2. Passed provided authorization token is not valid. Provided authorization token can be invalid if Webim service did not receive it from client server yet.
+When this method is called, client server must send provided authorization token to Webim service.
+`providedAuthorizationToken` parameter contains provided authentication token which is set and which must be sent to _Webim_ service by client server.
 
 <h2 id ="webim-session">WebimSession protocol</h2>
 
@@ -320,6 +354,10 @@ Returns [MessageStream](#message-stream) object attached to this session. Each i
 Changes [location](https://webim.ru/help/help-terms/) without creating a new session.
 `location` parameter – new location name of `String` type.
 
+<h3 id="set-device-token">set(deviceToken:) method</h3>
+
+Sets device token.
+
 <h2 id ="message-stream">MessageStream protocol</h2>
 
 Provides methods to interact with _Webim_ service.
@@ -327,6 +365,14 @@ Provides methods to interact with _Webim_ service.
 <h3 id ="get-chat-state">getChatState() method</h3>
 
 Returns current chat state of [ChatState](#chat-state) type.
+
+<h3 id ="get-unread-by-operator-timestamp">getUnreadByOperatorTimestamp() method</h3>
+
+Returns timestamp (of type `Date`) after which all chat messages are unread by operator (at the moment of last server update recieved).
+
+<h3 id ="get-unread-by-visitor-timestamp">getUnreadByVisitorTimestamp() method</h3>
+
+Returns timestamp (of type `Date`) after which all chat messages are unread by visitor (at the moment of last server update recieved).
 
 <h3 id ="get-location-settings">getLocationSettings() method</h3>
 
@@ -666,9 +712,9 @@ Returns unique ID of the message of type `String`.
 
 Returns ID of a message sender, if the sender is an operator, of type `String`.
 
-<h3 id ="get-sender-avatar-full-url-string">getSenderAvatarFullURLString() method</h3>
+<h3 id ="get-sender-avatar-full-url">getSenderAvatarFullURL() method</h3>
 
-Returns URL of a sender's avatar of type `String` or `nil` if one does not exist.
+Returns `URL` of a sender's avatar or `nil` if one does not exist.
 
 <h3 id ="get-sender-name">getSenderName() method</h3>
 
@@ -684,12 +730,7 @@ Returns text of the message of type `String`.
 
 <h3 id ="get-time">getTime() method</h3>
 
-Returns Epoch time (in ms) the message was processed by the server of `Int64` type.
-
-Example code:
-````
-let messageDate = Date(timeIntervalSince1970: TimeInterval(message.getTime() / 1000))
-````
+Returns `Date` the message was processed by the server.
 
 <h3 id ="get-type">getType() method</h3>
 
@@ -820,9 +861,9 @@ Returns unique ID of the operator of `String` type or nil.
 
 Returns display name of the operator of `String` type or nil.
 
-<h3 id ="get-avatar-url-string">getAvatarURLString() method</h3>
+<h3 id ="get-avatar-url">getAvatarURL() method</h3>
 
-Returns URL `String` of the operator’s avatar.
+Returns `URL` of the operator’s avatar or `nil` if does not exist.
 
 <h2 id ="webim-remote-notification">WebimRemoteNotification protocol</h2>
 
@@ -898,7 +939,7 @@ Webim service fatal error types.
 Indicates that the account in Webim service has been disabled (e.g. for non-payment). The error is unrelated to the user’s actions.
 Recommended response is to show the user an error message with a recommendation to try using the chat later.
 
-<h3 id ="provided-visitor-fields">PROVIDED_VISITOR_EXPIRED case</h3>
+<h3 id ="provided-visitor-fields-expired">PROVIDED_VISITOR_FIELDS_EXPIRED case</h3>
 
 Indicates an expired authorization of a visitor.
 The recommended response is to re-authorize it and to re-create session object.

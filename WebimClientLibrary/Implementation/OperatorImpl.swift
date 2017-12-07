@@ -33,7 +33,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class OperatorImpl: Operator {
+struct OperatorImpl: Operator {
     
     // MARK: - Properties
     private let id: String?
@@ -42,7 +42,7 @@ final class OperatorImpl: Operator {
     
     
     // MARK: - Initialization
-    init(withID id: String?,
+    init(id: String?,
          name: String?,
          avatarURLString: String? = nil) {
         self.id = id
@@ -62,8 +62,12 @@ final class OperatorImpl: Operator {
         return name
     }
     
-    func getAvatarURLString() -> String? {
-        return avatarURLString
+    func getAvatarURL() -> URL? {
+        guard let avatarURLString = avatarURLString else {
+            return nil
+        }
+        
+        return URL(string: avatarURLString)
     }
     
 }

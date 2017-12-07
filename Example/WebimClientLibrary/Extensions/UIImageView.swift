@@ -45,7 +45,7 @@ extension UIImageView {
                                             completion: ((_ image: UIImage) -> ())? = nil) {
         let request = URLRequest(url: url)
         URLSession.shared.dataTask(with: request,
-                                   completionHandler: { data, _, _ in
+                                   completionHandler: { [weak self] data, _, _ in
                                     if let data = data {
                                         DispatchQueue.main.async {
                                             if let image = UIImage(data: data) {
@@ -55,7 +55,7 @@ extension UIImageView {
                                                     imageToSave = imageToSave.roundImage()
                                                 }
                                                 
-                                                self.image = imageToSave
+                                                self?.image = imageToSave
                                                 
                                                 if let completion = completion {
                                                     completion(imageToSave)

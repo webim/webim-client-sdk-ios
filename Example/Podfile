@@ -33,6 +33,13 @@ target 'WebimClientLibrary_Example' do
                     config.build_settings['SWIFT_VERSION'] = '3.2'
                 end
             end
+            
+            target.build_configurations.each do |config|
+                if config.name == 'Debug'
+                    config.build_settings['OTHER_SWIFT_FLAGS'] = ['$(inherited)', '-Onone']
+                    config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+                end
+            end
         end
         
         require 'cocoapods-amimono/patcher'

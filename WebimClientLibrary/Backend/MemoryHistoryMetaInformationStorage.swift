@@ -35,7 +35,7 @@ import Foundation
 final class MemoryHistoryMetaInformationStorage: HistoryMetaInformationStorage {
     
     // MARK: - Properties
-    private var historyEnded: Bool?
+    private var historyEnded = false
     private var revision: String?
     
     
@@ -43,7 +43,7 @@ final class MemoryHistoryMetaInformationStorage: HistoryMetaInformationStorage {
     // MARK: HistoryMetaInformationStorage protocol methods
     
     func isHistoryEnded() -> Bool {
-        return historyEnded ?? false
+        return historyEnded
     }
     
     func set(historyEnded: Bool) {

@@ -42,8 +42,8 @@ final class ProvidedVisitorFields {
     
     // MARK: - Initialization
     
-    init?(withJSONString jsonString: String,
-         JSONObject: Data) throws {
+    init?(jsonString: String,
+          JSONObject: Data) throws {
         do {
             if let jsonData = try JSONSerialization.jsonObject(with: JSONObject) as? [String : Any] {
                 if let fields = jsonData["fields"] as? [String : String] {
@@ -72,7 +72,7 @@ final class ProvidedVisitorFields {
     convenience init?(withJSONString jsonString: String) {
         if let jsonData = jsonString.data(using: .utf8) {
             do {
-                try self.init(withJSONString: jsonString,
+                try self.init(jsonString: jsonString,
                               JSONObject: jsonData)
             } catch VisitorFieldsError.invalidVisitorFields(let error) {
                 print(error)
@@ -95,7 +95,7 @@ final class ProvidedVisitorFields {
                                 encoding: .utf8)
         
         do {
-            try self.init(withJSONString: jsonString!,
+            try self.init(jsonString: jsonString!,
                           JSONObject: jsonData)
         } catch VisitorFieldsError.invalidVisitorFields(let error) {
             print(error)

@@ -62,12 +62,12 @@ public protocol Operator {
     
     /**
      - returns:
-     URL String of the operator’s avatar.
+     URL of the operator’s avatar or `nil` if does not exist.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    func getAvatarURLString() -> String?
+    func getAvatarURL() -> URL?
     
 }

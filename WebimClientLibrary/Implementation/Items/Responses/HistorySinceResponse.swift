@@ -32,7 +32,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class HistorySinceResponse {
+struct HistorySinceResponse {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
@@ -48,7 +48,7 @@ final class HistorySinceResponse {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let dataDictionary = jsonDictionary[JSONField.HISTORY_RESPONSE_DATA.rawValue] as? [String: Any?] {
             historyResponseData = HistoryResponseData(withJSONDictionary: dataDictionary)
         }
@@ -89,7 +89,7 @@ final class HistorySinceResponse {
             if let messagesArray = jsonDictionary[JSONField.MESSAGES.rawValue] as? [Any?] {
                 for item in messagesArray {
                     if let messageDictionary = item as? [String : Any?] {
-                        let messageItem = MessageItem(withJSONDictionary: messageDictionary)
+                        let messageItem = MessageItem(jsonDictionary: messageDictionary)
                         messages.append(messageItem)
                     }
                 }

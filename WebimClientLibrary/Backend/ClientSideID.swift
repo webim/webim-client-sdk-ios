@@ -47,7 +47,7 @@ struct ClientSideID {
     
     // MARK: - Private methods
     static func generateRandomString(ofCharactersNumber numberOfCharacters: Int) -> String {
-        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let letters : NSString = "abcdef0123456789"
         let length = UInt32(letters.length)
         
         var randomString = ""
@@ -55,7 +55,8 @@ struct ClientSideID {
         for _ in 0 ..< numberOfCharacters {
             let random = arc4random_uniform(length)
             var nextChar = letters.character(at: Int(random))
-            randomString = randomString + (NSString(characters: &nextChar, length: 1) as String)
+            randomString = randomString + (NSString(characters: &nextChar,
+                                                    length: 1) as String)
         }
         
         return randomString

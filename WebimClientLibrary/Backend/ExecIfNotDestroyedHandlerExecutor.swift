@@ -40,7 +40,7 @@ final class ExecIfNotDestroyedHandlerExecutor {
     private let queue: DispatchQueue
     
     // MARK: - Initialization
-    init(withSessionDestroyer sessionDestroyer: SessionDestroyer,
+    init(sessionDestroyer: SessionDestroyer,
          queue: DispatchQueue) {
         self.sessionDestroyer = sessionDestroyer
         self.queue = queue

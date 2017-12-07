@@ -46,7 +46,7 @@ final class LocationSettingsImpl {
     
     
     // MARK: - Initialization
-    init(withHintsEnabled hintsEnabled: Bool) {
+    init(hintsEnabled: Bool) {
         self.hintsEnabled = hintsEnabled
     }
     
@@ -56,11 +56,11 @@ final class LocationSettingsImpl {
     static func getFrom(userDefaults userDefaultsKey: String) -> LocationSettingsImpl {
         if let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
             if let hintsEnabled = userDefaults[UserDefaultsKey.HINTS_ENABLED.rawValue] as? Bool {
-                return LocationSettingsImpl(withHintsEnabled: hintsEnabled)
+                return LocationSettingsImpl(hintsEnabled: hintsEnabled)
             }
         }
         
-        return LocationSettingsImpl(withHintsEnabled: false)
+        return LocationSettingsImpl(hintsEnabled: false)
     }
     
     func saveTo(userDefaults userDefaultsKey: String) {

@@ -5,7 +5,6 @@
 //  Created by Nikita Lazarev-Zubov on 15.10.17.
 //  Copyright © 2017 Webim. All rights reserved.
 //
-//
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
 //  in the Software without restriction, including without limitation the rights
@@ -25,10 +24,8 @@
 //  SOFTWARE.
 //
 
-
-import UIKit
-
 import Cosmos
+import UIKit
 
 /**
  View controller that represents operator rating dialogue.

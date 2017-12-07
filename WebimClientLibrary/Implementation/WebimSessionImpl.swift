@@ -71,7 +71,7 @@ final class WebimSessionImpl {
     
     // MARK: - Properties
     private var accessChecker: AccessChecker
-    private var clientStarted: Bool?
+    private var clientStarted = false
     private var historyPoller: HistoryPoller
     private var messageStream: MessageStreamImpl
     private var sessionDestroyer: SessionDestroyer
@@ -98,6 +98,8 @@ final class WebimSessionImpl {
                                 location: String,
                                 appVersion: String?,
                                 visitorFields: ProvidedVisitorFields?,
+                                providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?,
+                                providedAuthorizationToken: String?,
                                 pageTitle: String?,
                                 fatalErrorHandler: FatalErrorHandler?,
                                 areRemoteNotificationsEnabled: Bool,
@@ -130,12 +132,12 @@ final class WebimSessionImpl {
         
         let sessionID = userDefaults?[UserDefaultsMainPrefix.SESSION_ID.rawValue] ?? nil
         
-        let pageID = userDefaults?[UserDefaultsMainPrefix.PAGE_ID.rawValue] ?? nil
-        let authorizationToken = userDefaults?[UserDefaultsMainPrefix.AUTHORIZATION_TOKEN.rawValue] ?? nil
-        let authorizationData = (pageID == nil) ? nil : AuthorizationData(pageID: pageID as! String,
-                                                                          authorizationToken: authorizationToken as! String?)
+        let pageID = userDefaults?[UserDefaultsMainPrefix.PAGE_ID.rawValue] as! String?
+        let authorizationToken = userDefaults?[UserDefaultsMainPrefix.AUTHORIZATION_TOKEN.rawValue] as! String?
+        let authorizationData = AuthorizationData(pageID: pageID,
+                                                  authorizationToken: authorizationToken)
         
-        let deltaCallback = DeltaCallback(withCurrentChatMessageMapper: currentChatMessageMapper)
+        let deltaCallback = DeltaCallback(currentChatMessageMapper: currentChatMessageMapper)
 
         let webimClient = WebimClientBuilder()
             .set(baseURL: serverURLString)
@@ -147,9 +149,11 @@ final class WebimSessionImpl {
             .set(internalErrorListener: DestroyIfNotErrorListener(sessionDestroyer: sessionDestroyer,
                                                                   internalErrorListener: ErrorHandlerToInternalAdapter(fatalErrorHandler: fatalErrorHandler)))
             .set(visitorJSONString: visitorJSON as! String?)
+            .set(providedAuthenticationTokenStateListener: providedAuthorizationTokenStateListener,
+                 providedAuthenticationToken: providedAuthorizationToken)
             .set(sessionID: sessionID as! String?)
             .set(authorizationData: authorizationData)
-            .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(withSessionDestroyer: sessionDestroyer,
+            .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                               queue: queue))
             .set(platform: Settings.PLATFORM.rawValue)
             .set(title: (pageTitle != nil) ? pageTitle! : Settings.DEFAULT_PAGE_TITLE.rawValue)
@@ -174,9 +178,9 @@ final class WebimSessionImpl {
                 }
             }
             
-            historyMetaInformationStoragePreferences = HistoryMetaInformationStoragePreferences(withUserDefaultsKey: userDefaultsKey)
+            historyMetaInformationStoragePreferences = HistoryMetaInformationStoragePreferences(userDefaultsKey: userDefaultsKey)
             
-            historyStorage = SQLiteHistoryStorage(withName: dbName!,
+            historyStorage = SQLiteHistoryStorage(dbName: dbName!,
                                                   serverURL: serverURLString,
                                                   webimClient: webimClient,
                                                   reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
@@ -197,26 +201,26 @@ final class WebimSessionImpl {
             historyMetaInformationStoragePreferences = MemoryHistoryMetaInformationStorage()
         }
         
-        let accessChecker = AccessChecker(with: Thread.current,
+        let accessChecker = AccessChecker(thread: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
         
         let webimActions = webimClient.getActions()
         let historyMessageMapper: MessageFactoriesMapper = HistoryMapper(withServerURLString: serverURLString)
-        let messageHolder = MessageHolder(withAccessChecker: accessChecker,
-                                          remoteHistoryProvider: RemoteHistoryProvider(withWebimActions: webimActions!,
+        let messageHolder = MessageHolder(accessChecker: accessChecker,
+                                          remoteHistoryProvider: RemoteHistoryProvider(webimActions: webimActions!,
                                                                                        historyMessageMapper: historyMessageMapper,
                                                                                        historyMetaInformationStorage: historyMetaInformationStoragePreferences),
                                           historyStorage: historyStorage,
                                           reachedEndOfRemoteHistory: historyMetaInformationStoragePreferences.isHistoryEnded())
-        let messageStream = MessageStreamImpl(withCurrentChatMessageFactoriesMapper: currentChatMessageMapper,
+        let messageStream = MessageStreamImpl(currentChatMessageFactoriesMapper: currentChatMessageMapper,
                                               sendingMessageFactory: SendingFactory(withServerURLString: serverURLString),
                                               operatorFactory: OperatorFactory(withServerURLString: serverURLString),
                                               accessChecker: accessChecker,
                                               webimActions: webimActions!,
                                               messageHolder: messageHolder,
-                                              messageComposingHandler: MessageComposingHandler(withWebimActions: webimActions!,
+                                              messageComposingHandler: MessageComposingHandler(webimActions: webimActions!,
                                                                                                queue: queue),
-                                              locationSettingsHolder: LocationSettingsHolder(withUserDefaults: userDefaultsKey))
+                                              locationSettingsHolder: LocationSettingsHolder(userDefaultsKey: userDefaultsKey))
         
         deltaCallback.set(messageStream: messageStream,
                           messageHolder: messageHolder)
@@ -314,7 +318,7 @@ extension WebimSessionImpl: WebimSession {
     func resume() throws {
         try checkAccess()
         
-        if clientStarted != true {
+        if !clientStarted {
             webimClient.start()
             clientStarted = true
         }
@@ -350,6 +354,12 @@ extension WebimSessionImpl: WebimSession {
     
     func change(location: String) throws {
         try webimClient.getDeltaRequestLoop().change(location: location)
+    }
+    
+    func set(deviceToken: String) throws {
+        try checkAccess()
+        
+        webimClient.set(deviceToken: deviceToken)
     }
     
     
@@ -448,7 +458,11 @@ final private class HistoryPoller {
     // MARK: Private methods
     
     private func createHistorySinceCompletionHandler() -> (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> () {
-        return { (messageList: [MessageImpl], deleted: Set<String>, hasMore: Bool, isInitial: Bool, revision: String?) in
+        return { [weak self] (messageList: [MessageImpl], deleted: Set<String>, hasMore: Bool, isInitial: Bool, revision: String?) in
+            guard let `self` = self else {
+                return
+            }
+            
             if self.sessionDestroyer.isDestroyed() {
                 return
             }
@@ -465,10 +479,10 @@ final private class HistoryPoller {
             
             self.messageHolder.receiveHistoryUpdateWith(messages: messageList,
                                                         deleted: deleted,
-                                                        completion: {
+                                                        completion: { [weak self] in
                                                             // Revision is saved after history was saved only.
                                                             // I.e. if history will not be saved, then revision will not be overwritten. History will be re-requested.
-                                                            self.historyMetaInformationStorage.set(revision: revision)
+                                                            self?.historyMetaInformationStorage.set(revision: revision)
             })
             
             if self.running != true {
@@ -499,13 +513,11 @@ final private class HistoryPoller {
     private func requestHistory(since: String?,
                                 completion: @escaping (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> ()) {
         webimActions.requestHistory(since: since) { data in
-            if data == nil {
-                completion([MessageImpl](), Set<String>(), false, (since == nil), since)
-            } else {
+            if data != nil {
                 let json = try? JSONSerialization.jsonObject(with: data!,
                                                              options: [])
                 if let historySinceResponseDictionary = json as? [String: Any?] {
-                    let historySinceResponse = HistorySinceResponse(withJSONDictionary: historySinceResponseDictionary)
+                    let historySinceResponse = HistorySinceResponse(jsonDictionary: historySinceResponseDictionary)
                     
                     var deletes = Set<String>()
                     var messageChanges = [MessageItem]()
@@ -524,6 +536,8 @@ final private class HistoryPoller {
                     
                     completion(self.historyMessageMapper.mapAll(messages: messageChanges), deletes, (historySinceResponse.getData()?.isHasMore() == true), (since == nil), historySinceResponse.getData()?.getRevision())
                 }
+            } else {
+                completion([MessageImpl](), Set<String>(), false, (since == nil), since)
             }
         }
     }
@@ -676,7 +690,7 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
         case WebimInternalError.WRONG_PROVIDED_VISITOR_HASH.rawValue:
             return FatalErrorType.WRONG_PROVIDED_VISITOR_HASH
         case WebimInternalError.PROVIDED_VISITOR_EXPIRED.rawValue:
-            return FatalErrorType.PROVIDED_VISITOR_EXPIRED
+            return FatalErrorType.PROVIDED_VISITOR_FIELDS_EXPIRED
         default:
             return FatalErrorType.UNKNOWN
         }
@@ -697,8 +711,8 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     var userDefaultsKey: String
     
     // MARK: - Initialization
-    init(withUserDefaultsKey key: String) {
-        self.userDefaultsKey = key
+    init(userDefaultsKey: String) {
+        self.userDefaultsKey = userDefaultsKey
     }
     
     // MARK: - Methods

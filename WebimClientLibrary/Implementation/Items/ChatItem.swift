@@ -107,7 +107,7 @@ final class ChatItem {
     
     // MARK: - Initializers
     
-    init(withID id: String? = nil) {
+    init(id: String? = nil) {
         creationTimestamp = ChatItem.createCreationTimestamp()
         
         if id == nil {
@@ -133,20 +133,20 @@ final class ChatItem {
         if let messagesValue = jsonDictionary[JSONField.MESSAGES.rawValue] as? [Any] {
             for message in messagesValue {
                 if let messageValue = message as? [String : Any?] {
-                    let messageItem = MessageItem(withJSONDictionary: messageValue)
+                    let messageItem = MessageItem(jsonDictionary: messageValue)
                     messages.append(messageItem)
                 }
             }
         }
 
         if let operatorValue = jsonDictionary[JSONField.OPERATOR.rawValue] as? [String : Any?] {
-            `operator` = OperatorItem(withJSONDictionary: operatorValue)
+            `operator` = OperatorItem(jsonDictionary: operatorValue)
         }
         
         if let operatorIDToRateValue = jsonDictionary[JSONField.OPERATOR_ID_TO_RATE.rawValue] as? [String : Any?] {
             for (operatorIDValue, ratingValue) in operatorIDToRateValue {
                 if let ratingItemValue = ratingValue as? [String : Any?] {
-                    let rating = RatingItem(withJSONDictionary: ratingItemValue)
+                    let rating = RatingItem(jsonDictionary: ratingItemValue)
                     operatorIDToRate[operatorIDValue] = rating
                 }
             }
@@ -257,6 +257,14 @@ final class ChatItem {
     func set(rating: RatingItem,
              toOperatorWithId operatorID: String) {
         operatorIDToRate[operatorID] = rating
+    }
+    
+    func getUnreadByVisitorTimestamp() -> Double? {
+        return unreadByVisitorTimestamp
+    }
+    
+    func getUnreadByOperatorTimestamp() -> Double? {
+        return unreadByOperatorTimestamp
     }
     
     

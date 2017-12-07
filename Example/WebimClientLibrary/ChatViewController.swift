@@ -38,6 +38,16 @@ import WebimClientLibrary
  */
 class ChatViewController: SLKTextViewController {
     
+    // MARK: - Constants
+    private enum ErrorDialog: String {
+        case BUTTON_TITLE = "OK"
+        case BUTTON_ACCESSIBILITY_HINT = "Closes dialog."
+        
+        case TITLE = "Session creation failed"
+        case MESSAGE = "Account that is used to create session is blocked. Please contact Webim support or use another one."
+    }
+    
+    
     // MARK: - Properties
     private let imagePicker = UIImagePickerController()
     private let refreshControl = UIRefreshControl()
@@ -72,7 +82,34 @@ class ChatViewController: SLKTextViewController {
         
         if let text = textView.text {
             if !text.isEmpty {
-                webimService.send(message: text)
+                // TODO: Delete this after getLast/NextMessages bug is fixed.
+                if text == "Clear" {
+                    messages.removeAll()
+                    tableView?.reloadData()
+                } else if text == "Last" {
+                    webimService.getLastMessages { [weak self] messages in
+                        self?.messages.insert(contentsOf: messages,
+                                              at: 0)
+                        
+                        DispatchQueue.main.async() {
+                            self?.tableView?.reloadData()
+                            self?.scrollToBottom()
+                        }
+                    }
+                } else if text == "Next" {
+                    webimService.getNextMessages { [weak self] messages in
+                        self?.messages.insert(contentsOf: messages,
+                                              at: 0)
+                        
+                        DispatchQueue.main.async() {
+                            self?.tableView?.reloadData()
+                            self?.scrollToBottom()
+                        }
+                    }
+                } else {
+                    webimService.send(message: text)
+                }
+                //
             }
             
             textView.text = ""
@@ -178,8 +215,11 @@ class ChatViewController: SLKTextViewController {
      */
     private func setupSlackTextViewController() {
         isInverted = false
+        
         leftButton.setImage(#imageLiteral(resourceName: "ClipIcon"),
                             for: .normal)
+        leftButton.accessibilityLabel = LeftButton.ACCESSIBILITY_LABEL.rawValue
+        leftButton.accessibilityHint = LeftButton.ACCESSIBILITY_HINT.rawValue
     }
     
     /**
@@ -220,13 +260,13 @@ class ChatViewController: SLKTextViewController {
         webimService.setMessageStream()
         
         webimService.setMessageTracker(withMessageListener: self)
-        webimService.getLastMessages() { messages in
-            self.messages.insert(contentsOf: messages,
+        webimService.getLastMessages() { [weak self] messages in
+            self?.messages.insert(contentsOf: messages,
                                  at: 0)
             
             DispatchQueue.main.async() {
-                self.tableView?.reloadData()
-                self.scrollToBottom()
+                self?.tableView?.reloadData()
+                self?.scrollToBottom()
             }
         }
     }
@@ -243,14 +283,14 @@ class ChatViewController: SLKTextViewController {
      2017 Webim
      */
     @objc private func requestMessages() {
-        webimService.getNextMessages() { messages in
-            self.messages.insert(contentsOf: messages,
+        webimService.getNextMessages() { [weak self] messages in
+            self?.messages.insert(contentsOf: messages,
                                  at: 0)
             
             DispatchQueue.main.async() {
-                self.tableView?.reloadData()
+                self?.tableView?.reloadData()
                 
-                self.refreshControl.endRefreshing()
+                self?.refreshControl.endRefreshing()
             }
         }
     }
@@ -316,9 +356,9 @@ class ChatViewController: SLKTextViewController {
             if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
                 let message = messages[tapIndexPath.row]
                 
-                if let attachment = message.getAttachment() {
-                    if let fileName = attachment.getFileName() {
-                        if let attachmentURLString = attachment.getURLString() {
+                if let attachment = message.getAttachment(),
+                    let fileName = attachment.getFileName(),
+                    let attachmentURLString = attachment.getURLString() {
                             var popupMessage: String?
                             var image: UIImage?
                             
@@ -352,6 +392,8 @@ class ChatViewController: SLKTextViewController {
                             
                             let button = CancelButton(title: ShowFileDialog.BUTTON_TITLE.rawValue,
                                                       action: nil)
+                            button.accessibilityHint = ShowFileDialog.ACCESSIBILITY_HINT.rawValue
+                            
                             let popup = PopupDialog(title: fileName,
                                                     message: popupMessage,
                                                     image: image,
@@ -360,13 +402,10 @@ class ChatViewController: SLKTextViewController {
                                                     gestureDismissal: true,
                                                     completion: nil)
                             popup.addButton(button)
-                            
                             self.present(popup,
                                          animated: true,
                                          completion: nil)
                         }
-                    }
-                }
             }
         }
     }
@@ -394,14 +433,18 @@ class ChatViewController: SLKTextViewController {
                                         height: 60,
                                         dismissOnTap: true,
                                         action: nil)
+        cancelButton.accessibilityHint = RatingDialog.CANCEL_BUTTON_ACCESSIBILITY_LABEL.rawValue
+        
         let rateButton = DefaultButton(title: RatingDialog.ACTION_BUTTON_TITLE.rawValue,
                                        height: 60,
-                                       dismissOnTap: true) {
-                                        self.alreadyRated[operatorID] = true
+                                       dismissOnTap: true) { [weak self] in
+                                        self?.alreadyRated[operatorID] = true
                                         
-                                        self.webimService.rateOperator(withID: operatorID,
+                                        self?.webimService.rateOperator(withID: operatorID,
                                                                        byRating: Int(ratingVC.ratingView.rating))
         }
+        rateButton.accessibilityHint = RatingDialog.ACTION_BUTTON_ACCESSIBILITY_LABEL.rawValue
+        
         popup.addButtons([cancelButton,
                           rateButton])
         
@@ -476,9 +519,17 @@ extension ChatViewController: FatalErrorHandler {
         let errorType = error.getErrorType()
         switch errorType {
         case .ACCOUNT_BLOCKED:
-            print("Account with used account name is blocked by Webim service.")
-            // Assuming to contact with Webim support.
-        case .PROVIDED_VISITOR_EXPIRED:
+            let popup = PopupDialog(title: ErrorDialog.TITLE.rawValue,
+                                    message: ErrorDialog.MESSAGE.rawValue)
+            
+            let okButton = CancelButton(title: ErrorDialog.BUTTON_TITLE.rawValue,
+                                        action: nil)
+            okButton.accessibilityHint = ErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue
+            popup.addButton(okButton)
+            self.present(popup,
+                         animated: true,
+                         completion: nil)
+        case .PROVIDED_VISITOR_FIELDS_EXPIRED:
             print("Provided visitor fields expired.")
             // Assuming to re-authorize it and re-create session object.
         case .UNKNOWN:
@@ -595,7 +646,12 @@ extension ChatViewController: SendFileCompletionHandler {
         
         let popupDialog = PopupDialog(title: SendFileErrorMessage.TITLE.rawValue,
                                       message: message)
-        let okButton = CancelButton(title: SendFileErrorMessage.BUTTON_TITLE.rawValue) {
+        
+        let okButton = CancelButton(title: SendFileErrorMessage.BUTTON_TITLE.rawValue) { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            
             for (index, message) in self.messages.enumerated() {
                 if message.getID() == messageID {
                     self.messages.remove(at: index)
@@ -608,6 +664,8 @@ extension ChatViewController: SendFileCompletionHandler {
                 }
             }
         }
+        okButton.accessibilityHint = SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue
+        
         popupDialog.addButton(okButton)
         self.present(popupDialog,
                      animated: true,

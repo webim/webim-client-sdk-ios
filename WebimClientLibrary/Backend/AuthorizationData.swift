@@ -27,22 +27,27 @@
 import Foundation
 
 /**
- Class that encapsulates session authorization data.
+ Struct that encapsulates session authorization data.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
  2017 Webim
  */
-final class AuthorizationData {
+struct AuthorizationData {
     
     // MARK: - Properties
     private var pageID: String
-    private var authorizationToken: String?
+    private var authorizationToken: String
     
     
     // MARK: - Initialization
-    init(pageID: String,
-         authorizationToken: String?) {
+    init?(pageID: String?,
+          authorizationToken: String?) {
+        guard let pageID = pageID,
+            let authorizationToken = authorizationToken else {
+            return nil
+        }
+        
         self.pageID = pageID
         self.authorizationToken = authorizationToken
     }
@@ -66,7 +71,7 @@ extension AuthorizationData: Equatable {
     static func == (lhs: AuthorizationData,
                     rhs: AuthorizationData) -> Bool {
         return (lhs.pageID == rhs.pageID)
-            && (lhs.authorizationToken != rhs.authorizationToken)
+            && (lhs.authorizationToken == rhs.authorizationToken)
     }
     
 }

@@ -653,8 +653,8 @@ class MessageHolderTests: XCTestCase {
         // MARK: Model set up
         let messageHolder = newMessageHolder()
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        let firstChat = ChatItem(withID: "1")
-        let secondChat = ChatItem(withID: "2")
+        let firstChat = ChatItem(id: "1")
+        let secondChat = ChatItem(id: "2")
         let messages = generateCurrentChat(ofCount: 10)
         
         // MARK: Test 1
@@ -720,8 +720,8 @@ class MessageHolderTests: XCTestCase {
         let history2 = generateHistoryFrom(currentChat: messages)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        let firstChat = ChatItem(withID: "1")
-        let secondChat = ChatItem(withID: "2")
+        let firstChat = ChatItem(id: "1")
+        let secondChat = ChatItem(id: "2")
         
         // MARK: Test 1
         // When: Requesting messages.
@@ -821,8 +821,8 @@ class MessageHolderTests: XCTestCase {
         let messageHolder = newMessageHolder(withHistory: (history1 + history2),
                                              localHistory: Array(history2[0 ... 1]))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        let firstChat = ChatItem(withID: "1")
-        let secondChat = ChatItem(withID: "2")
+        let firstChat = ChatItem(id: "1")
+        let secondChat = ChatItem(id: "2")
         
         // MARK: Test 1
         // When: Requesting messages.
@@ -1528,20 +1528,20 @@ class MessageHolderTests: XCTestCase {
     
     private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {
         let sessionDestroyer = SessionDestroyer()
-        let accessChecker = AccessChecker(with: Thread.current,
+        let accessChecker = AccessChecker(thread: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
-        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(withSessionDestroyer: sessionDestroyer,
+        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
-        let actionRequestLoop = ActionRequestLoop(withCompletionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+        let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                   internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(withBaseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
                                         actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
         
-        return MessageHolder(withAccessChecker: accessChecker,
+        return MessageHolder(accessChecker: accessChecker,
                              remoteHistoryProvider: remoteHistoryProvider,
                              historyStorage: MemoryHistoryStorage(),
                              reachedEndOfRemoteHistory: false)
@@ -1550,21 +1550,21 @@ class MessageHolderTests: XCTestCase {
     private func newMessageHolder(withHistory history: [MessageImpl],
                                   localHistory: [MessageImpl]) -> MessageHolder {
         let sessionDestroyer = SessionDestroyer()
-        let accessChecker = AccessChecker(with: Thread.current,
+        let accessChecker = AccessChecker(thread: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
-        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(withSessionDestroyer: sessionDestroyer,
+        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
-        let actionRequestLoop = ActionRequestLoop(withCompletionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+        let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                   internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(withBaseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
                                         actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
-        let memoryHistoryStorage = MemoryHistoryStorage(with: localHistory)
+        let memoryHistoryStorage = MemoryHistoryStorage(messagesToAdd: localHistory)
         
-        return MessageHolder(withAccessChecker: accessChecker,
+        return MessageHolder(accessChecker: accessChecker,
                              remoteHistoryProvider: remoteHistoryProvider,
                              historyStorage: memoryHistoryStorage,
                              reachedEndOfRemoteHistory: false)
@@ -1585,7 +1585,7 @@ class MessageHolderTests: XCTestCase {
              history: [MessageImpl] = [MessageImpl]()) {
             self.history = history
             
-            super.init(withWebimActions: webimActions,
+            super.init(webimActions: webimActions,
                        historyMessageMapper: historyMessageMapper,
                        historyMetaInformationStorage: historyMetaInformation)
         }

@@ -36,40 +36,69 @@ import UIKit
 class StartViewController: UIViewController {
     
     // MARK: - Properties
-    
-    let gradient: CAGradientLayer = CAGradientLayer()
-    
-    // MARK: Outlets    
+    // MARK: Outlets
     @IBOutlet weak var startChatButton: UIButton!
+    @IBOutlet weak var settingsButton: UIButton!
     
     
     // MARK: - Methods
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        // Setting an image to NavigationItem TitleView.
+        setupNavigationItem()
+        
+        setupStartChatButton()
+        setupSettingstButton()
+    }
+    
+    @IBAction func unwindFromSettings(_: UIStoryboardSegue) {
+        // No need to do anything.
+    }
+    
+    // MARK: Private methods
+    
+    /**
+     Sets up navigation item.
+     - returns:
+     No return value.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    private func setupNavigationItem() {
         let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
         navigationItemImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = navigationItemImageView
-        
-        // Setting a gradient over the Start Chat Button.
-        gradient.opacity = 0.3
-        gradient.frame = startChatButton.bounds
-        let colors: [UIColor] = [.clear,
-                                 .lightGray]
-        gradient.colors = colors.map { $0.cgColor }
-        gradient.locations = [0.6,
-                              1.0]
-        startChatButton.layer.insertSublayer(gradient,
-                                             at: 0)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // Re-drawing gradient over the Start Chat Button on device rotations.
-        gradient.frame = startChatButton.bounds
+    /**
+     Sets up Start Chat button.
+     - returns:
+     No return value.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    private func setupStartChatButton() {
+        startChatButton.layer.cornerRadius = CORNER_RADIOUS
+    }
+    
+    /**
+     Sets up Settings button.
+     - returns:
+     No return value.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    private func setupSettingstButton() {
+        settingsButton.layer.cornerRadius = CORNER_RADIOUS
+        settingsButton.layer.borderWidth = BORDER_WIDTH
+        settingsButton.layer.borderColor = GREY_COLOR.cgColor
     }
     
 }

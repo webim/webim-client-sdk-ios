@@ -34,7 +34,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class VisitorItem {
+struct VisitorItem {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
@@ -52,9 +52,9 @@ final class VisitorItem {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let iconValue = jsonDictionary[JSONField.ICON.rawValue] as? [String : Any?] {
-            icon = IconItem(withJSONDictionary: iconValue)
+            icon = IconItem(jsonDictionary: iconValue)
         }
         
         if let visitorFieldsValue = jsonDictionary[JSONField.VISITOR_FIELDS.rawValue] as? [String : Any?] {

@@ -36,7 +36,7 @@ final class SessionDestroyer {
     
     // MARK: - Properties
     private lazy var actions = [() -> ()]()
-    private var destroyed: Bool?
+    private var destroyed = false
     
     
     // MARK: - Methods
@@ -46,7 +46,7 @@ final class SessionDestroyer {
     }
     
     func destroy() {
-        if !isDestroyed() {
+        if !destroyed {
             destroyed = true
             
             for action in actions {
@@ -56,7 +56,7 @@ final class SessionDestroyer {
     }
     
     func isDestroyed() -> Bool {
-        return destroyed == true
+        return destroyed
     }
     
 }

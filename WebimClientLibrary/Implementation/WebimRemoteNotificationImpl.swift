@@ -73,7 +73,7 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     
     // MARK: - Initialization
-    init?(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init?(jsonDictionary: [String : Any?]) {
         guard let event = jsonDictionary[AlertField.EVENT.rawValue] as? String,
             let parameters = jsonDictionary[AlertField.PARAMETERS.rawValue] as? [String],
             let type = jsonDictionary[AlertField.TYPE.rawValue] as? String else {

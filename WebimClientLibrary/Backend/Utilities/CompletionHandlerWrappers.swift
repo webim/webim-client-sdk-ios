@@ -35,7 +35,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-struct MessageHolderCompletionHandlerWrapper {
+final class MessageHolderCompletionHandlerWrapper {
     
     // MARK: - Properties
     private var messageHolderCompletionHandler: ([Message]) -> ()

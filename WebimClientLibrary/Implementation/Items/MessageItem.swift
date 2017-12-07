@@ -98,7 +98,7 @@ final class MessageItem {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let messageKind = jsonDictionary[JSONField.KIND.rawValue] as? String {
             kind = MessageKind(rawValue: messageKind)
         }

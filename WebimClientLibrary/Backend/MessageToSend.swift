@@ -36,7 +36,7 @@ import Foundation
 final class MessageToSend: MessageImpl {
     
     // MARK: - Initialization
-    init(withServerURLString serverURLString: String,
+    init(serverURLString: String,
          id: String,
          senderName: String,
          type: MessageType,

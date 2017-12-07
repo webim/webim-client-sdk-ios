@@ -53,12 +53,14 @@ class WebimActions {
         case DEVICE_TOKEN = "push-token"
         case DRAFT = "message-draft"
         case EVENT = "event"
+        case FORCE_ONLINE = "force-online"
         case HINT_QUESTION = "hint_question"
         case LOCATION = "location"
         case MESSAGE = "message"
         case OPERATOR_ID = "operator-id"
         case PAGE_ID = "page-id"
         case PLATFORM = "platform"
+        case PROVIDED_AUTHENTICATION_TOKEN = "provided_auth_token"
         case RATING = "rate"
         case RESPOND_IMMEDIATELY = "respond-immediately"
         case SESSION_ID = "visit-session-id"
@@ -102,7 +104,7 @@ class WebimActions {
     
     
     // MARK: - Initialization
-    init(withBaseURL baseURL: String,
+    init(baseURL: String,
          actionRequestLoop: ActionRequestLoop) {
         self.baseURL = baseURL
         self.actionRequestLoop = actionRequestLoop
@@ -123,7 +125,7 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString))
     }
     
@@ -144,7 +146,7 @@ class WebimActions {
                                       fileData: file,
                                       boundaryString: boundaryString)
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         messageID: clientSideID,
                                                         httpBody: httpBody,
                                                         boundaryString: boundaryString,
@@ -154,11 +156,12 @@ class WebimActions {
     
     func startChat(withClientSideID clientSideID: String) {
         let dataToPost = [Parameter.ACTION.rawValue : Action.START_CHAT.rawValue,
+                          Parameter.FORCE_ONLINE.rawValue : "1", // true
                           Parameter.CLIENT_SIDE_ID.rawValue : clientSideID] as [String : Any]
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString))
     }
     
@@ -167,7 +170,7 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString))
     }
     
@@ -183,7 +186,7 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString))
     }
     
@@ -196,7 +199,7 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.GET_HISTORY.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString,
                                                         completionHandler: completion))
     }
@@ -207,7 +210,7 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.GET_HISTORY.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString,
                                                         completionHandler: completion))
     }
@@ -222,7 +225,7 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString))
     }
     
@@ -232,7 +235,7 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(withData: dataToPost,
+        actionRequestLoop.enqueue(request: WebimRequest(primaryData: dataToPost,
                                                         baseURLString: urlString))
     }
     

@@ -33,7 +33,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class FullUpdate {
+struct FullUpdate {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
@@ -64,7 +64,7 @@ final class FullUpdate {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let authorizationToken = jsonDictionary[JSONField.AUTHORIZATION_TOKEN.rawValue] as? String {
             self.authorizationToken = authorizationToken
         }

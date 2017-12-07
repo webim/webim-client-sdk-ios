@@ -47,11 +47,11 @@ final class MessageComposingHandler {
     private let webimActions: WebimActions
     private var latestDraft: String?
     private var resetTimer: Timer?
-    private var updateDraftScheduled: Bool?
+    private var updateDraftScheduled = false
     
     
     // MARK: - Initialization
-    init(withWebimActions webimActions: WebimActions,
+    init(webimActions: WebimActions,
          queue: DispatchQueue) {
         self.webimActions = webimActions
         self.queue = queue
@@ -63,7 +63,7 @@ final class MessageComposingHandler {
     func setComposing(draft: String?) {
         latestDraft = draft
         
-        if updateDraftScheduled != true {
+        if !updateDraftScheduled {
             send(draft: draft)
             updateDraftScheduled = true
             

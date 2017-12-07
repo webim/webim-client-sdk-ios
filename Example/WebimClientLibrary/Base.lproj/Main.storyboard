@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pKO-IW-95b">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pKO-IW-95b">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,23 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="edo-SU-HN8">
-                                <rect key="frame" x="0.0" y="732" width="375" height="46"/>
-                                <color key="backgroundColor" red="0.90065738422616481" green="0.8470412823155008" blue="0.089915955759565222" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="Wt1-oe-b3Q"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Start chat">
-                                    <color key="titleColor" red="0.26418037130142835" green="0.26418037130142835" blue="0.26418037130142835" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <segue destination="b0b-FK-5tW" kind="show" id="0zw-c1-liK"/>
-                                </connections>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bPt-yP-yHN">
                                 <rect key="frame" x="0.0" y="96" width="375" height="300"/>
                                 <color key="backgroundColor" red="0.89616717970000004" green="0.93132234879999998" blue="0.95925416559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration" label="Greeting words"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="999" constant="300" id="x5o-0l-MMh"/>
                                 </constraints>
@@ -53,27 +40,179 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-x2-dzu">
+                                <rect key="frame" x="8" y="724" width="359" height="46"/>
+                                <accessibility key="accessibilityConfiguration" hint="Shows custom account settings." label="Settings"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="zzW-SW-4PX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleColor" red="0.26418037129999999" green="0.26418037129999999" blue="0.26418037129999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="B1F-ds-pmK" kind="show" id="QIq-Pf-07s"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="edo-SU-HN8">
+                                <rect key="frame" x="8" y="670" width="359" height="46"/>
+                                <color key="backgroundColor" red="0.90065738422616481" green="0.8470412823155008" blue="0.089915955759565222" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration" hint="Starts chat." label="Start chat"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="Wt1-oe-b3Q"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
+                                <state key="normal" title="Start chat">
+                                    <color key="titleColor" red="0.26418037130142835" green="0.26418037130142835" blue="0.26418037130142835" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="b0b-FK-5tW" kind="show" identifier="ShowChatViewController" id="0zw-c1-liK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.89773446321487427" green="0.92855554819107056" blue="0.96161824464797974" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="edo-SU-HN8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bPt-yP-yHN" secondAttribute="bottom" constant="8" id="5JD-kV-iDR"/>
                             <constraint firstItem="bPt-yP-yHN" firstAttribute="top" secondItem="FG1-OH-9g7" secondAttribute="top" constant="8" id="BZe-km-CLr"/>
-                            <constraint firstAttribute="trailing" secondItem="edo-SU-HN8" secondAttribute="trailing" id="EsA-8q-5Ex"/>
-                            <constraint firstItem="FG1-OH-9g7" firstAttribute="bottom" secondItem="edo-SU-HN8" secondAttribute="bottom" id="Xbb-b6-UUZ"/>
+                            <constraint firstItem="rMR-x2-dzu" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="8" id="FdB-Zx-mEf"/>
+                            <constraint firstItem="rMR-x2-dzu" firstAttribute="top" secondItem="edo-SU-HN8" secondAttribute="bottom" constant="8" id="LQ5-10-TEi"/>
+                            <constraint firstItem="FG1-OH-9g7" firstAttribute="bottom" secondItem="rMR-x2-dzu" secondAttribute="bottom" constant="8" id="UMH-4j-NXx"/>
+                            <constraint firstItem="edo-SU-HN8" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="8" id="WRg-Ft-QjY"/>
+                            <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="rMR-x2-dzu" secondAttribute="trailing" constant="8" id="fE0-97-mcL"/>
                             <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="bPt-yP-yHN" secondAttribute="trailing" id="hYV-aF-bMZ"/>
-                            <constraint firstItem="edo-SU-HN8" firstAttribute="leading" secondItem="XcY-0e-RvG" secondAttribute="leading" id="rf4-3K-0SH"/>
+                            <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="edo-SU-HN8" secondAttribute="trailing" constant="8" id="iTr-Uz-03W"/>
                             <constraint firstItem="bPt-yP-yHN" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" id="s8Z-cr-uDy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="FG1-OH-9g7"/>
                     </view>
                     <navigationItem key="navigationItem" id="Qdj-sN-uYq"/>
                     <connections>
+                        <outlet property="settingsButton" destination="rMR-x2-dzu" id="tAn-H8-XdI"/>
                         <outlet property="startChatButton" destination="edo-SU-HN8" id="hNP-0g-pxQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="426.39999999999998" y="36.945812807881772"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="c4f-39-NnS">
+            <objects>
+                <viewController id="B1F-ds-pmK" customClass="SettingsViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YT6-Qd-hAH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="If you are registered in Webim service you can use your own account name and location." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="X1c-3e-DTs">
+                                <rect key="frame" x="8" y="96" width="359" height="100"/>
+                                <color key="backgroundColor" red="0.89616717970000004" green="0.93132234879999998" blue="0.95925416559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration" label="Settings instruction"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="ZAP-fO-of3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oZI-yJ-Boe">
+                                <rect key="frame" x="8" y="204" width="359" height="21"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="demo" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W2o-Tj-nJy">
+                                <rect key="frame" x="8" y="233" width="359" height="30"/>
+                                <accessibility key="accessibilityConfiguration" label="Account name field"/>
+                                <color key="textColor" red="0.26418037129999999" green="0.26418037129999999" blue="0.26418037129999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nw9-pU-o26">
+                                <rect key="frame" x="8" y="271" width="359" height="21"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="mobile" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DCi-74-SZ1">
+                                <rect key="frame" x="8" y="300" width="359" height="30"/>
+                                <accessibility key="accessibilityConfiguration" label="Location name field"/>
+                                <color key="textColor" red="0.26418037129999999" green="0.26418037129999999" blue="0.26418037129999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="iOS Demo App" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5OU-6u-MM0">
+                                <rect key="frame" x="8" y="367" width="359" height="30"/>
+                                <accessibility key="accessibilityConfiguration" label="Page title field"/>
+                                <color key="textColor" red="0.26418037129999999" green="0.26418037129999999" blue="0.26418037129999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QrB-ab-D1k">
+                                <rect key="frame" x="8" y="724" width="359" height="46"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.90065738419999997" green="0.84704128229999998" blue="0.089915955759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration" hint="Saves current settings and shows start screen." label="Save"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" red="0.26418037129999999" green="0.26418037129999999" blue="0.26418037129999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="0Eu-pd-CbG" kind="unwind" unwindAction="unwindFromSettings:" id="Bks-5V-2Z3"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Page title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W9e-BQ-hTd">
+                                <rect key="frame" x="8" y="338" width="359" height="21"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.8999422789" green="0.92909246680000002" blue="0.95872980360000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="X1c-3e-DTs" firstAttribute="top" secondItem="3dm-n7-NsY" secondAttribute="top" constant="8" id="3cC-7j-g7a"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="W2o-Tj-nJy" secondAttribute="trailing" constant="8" id="6QK-Fo-gNB"/>
+                            <constraint firstItem="5OU-6u-MM0" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="6oQ-VL-lf1"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="5OU-6u-MM0" secondAttribute="trailing" constant="8" id="CYW-wT-sd7"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="X1c-3e-DTs" secondAttribute="trailing" constant="8" id="QYt-yz-okd"/>
+                            <constraint firstItem="Nw9-pU-o26" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="U0A-b6-N7D"/>
+                            <constraint firstItem="Nw9-pU-o26" firstAttribute="top" secondItem="W2o-Tj-nJy" secondAttribute="bottom" constant="8" id="UZx-rw-GEH"/>
+                            <constraint firstItem="DCi-74-SZ1" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="WP1-Az-4iw"/>
+                            <constraint firstItem="W2o-Tj-nJy" firstAttribute="top" secondItem="oZI-yJ-Boe" secondAttribute="bottom" constant="8" id="YDy-a7-2OR"/>
+                            <constraint firstItem="W9e-BQ-hTd" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="Znk-LR-MNq"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="Nw9-pU-o26" secondAttribute="trailing" constant="8" id="a2V-he-PMX"/>
+                            <constraint firstItem="DCi-74-SZ1" firstAttribute="top" secondItem="Nw9-pU-o26" secondAttribute="bottom" constant="8" id="afW-Gd-Lox"/>
+                            <constraint firstItem="oZI-yJ-Boe" firstAttribute="top" secondItem="X1c-3e-DTs" secondAttribute="bottom" constant="8" id="apD-7t-SrT"/>
+                            <constraint firstItem="X1c-3e-DTs" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="c2p-wf-o5U"/>
+                            <constraint firstItem="W2o-Tj-nJy" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="fJ2-Oi-eV6"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="W9e-BQ-hTd" secondAttribute="trailing" constant="8" id="hDO-rh-jTZ"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="DCi-74-SZ1" secondAttribute="trailing" constant="8" id="ic1-nn-H1A"/>
+                            <constraint firstItem="5OU-6u-MM0" firstAttribute="top" secondItem="W9e-BQ-hTd" secondAttribute="bottom" constant="8" id="jqC-zg-UIv"/>
+                            <constraint firstItem="oZI-yJ-Boe" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="lbD-ia-mNj"/>
+                            <constraint firstItem="W9e-BQ-hTd" firstAttribute="top" secondItem="DCi-74-SZ1" secondAttribute="bottom" constant="8" id="uB3-2e-3wK"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="oZI-yJ-Boe" secondAttribute="trailing" constant="8" id="uOO-06-s2g"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3dm-n7-NsY"/>
+                    </view>
+                    <connections>
+                        <outlet property="accountNameTextField" destination="W2o-Tj-nJy" id="pvK-99-kiq"/>
+                        <outlet property="locationTextField" destination="DCi-74-SZ1" id="Dnu-Zn-cRJ"/>
+                        <outlet property="pageTitleTextField" destination="5OU-6u-MM0" id="pd3-xL-EAc"/>
+                        <outlet property="saveButton" destination="QrB-ab-D1k" id="Iea-6w-Ihl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="flO-1y-HGn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="0Eu-pd-CbG" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="424.80000000000001" y="767.73399014778329"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="VfN-dW-J2d">
