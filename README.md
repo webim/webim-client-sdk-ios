@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.4.1'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.5.0'
 ```
 > Minimum iOS version supported – 8.0.
 
@@ -18,9 +18,24 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 > If you're already using previous version and don't plan to jump on the new one you don't have to update your **Podfile**, depencies on version numbers 2.7.0 and lower will work properly. But for all renewals of the previous version usage, you have to switch your depency on the **version2** branch.
 
-### Current version changes
+### Release notes
 
-* `SessionOnlineStatus` renamed to `OnlineStatus` (and all the appropriate methods naming is changed too).
+* Departments support (see `Department` protocol and `getDepartmentList()` and `startChat(departmentKey:)` methods of `MessageStream` protocol and `DepartmentListChangeListener` protocol).
+* Visit session state support supplemented (see `getVisitSessionState()` of `MessageStream` protocol and `VisitSessionStateListener` protocol).
+* `WebimLogger` – protocol for custom _WebimClientLibrary_ network activity logging – added.
+* Working with `WebimRemoteNotification` fixed:
+    * `Webim` class method `isWebim(remoteNotification:)` fixed to work properly.
+    * `WebimRemoteNotification` protocol method `getEvent()` fixed to be able to produce `nil`.
+* Visitor data caching and clearing bugs fixed.
+* `getURLString()` of protocol `MessageAttachment` changed to return `URL` and renamed to `getURL()`.
+* `getThumbURLString()` of protocol `ImageInfo` changed to return `URL` and renamed to `getThumbURL()`.
+* Contacts request messages from operator limited support added.
+* Small API improvements.
+* Documentation updated and improved.
+
+#### Demo app
+* Russian localization added! 🇷🇺
+* Settings screen Save button constraints fixed.
 
 ## Example
 
@@ -101,12 +116,14 @@ Entities and methods described above are all that it necessary for working in an
 Abilities described In this manual are not all of the existing ones, so after necessary minimum is implemented it is recommended to get acquainted with full list of protocols and methods listed in SDK public files.
 
 All public interfaces, classes and methods are described inside 10 files (in alphabetical order):
+* **Department.swift**,
 * **FatalErrorHandler.swift**,
 * **Message.swift**,
 * **MessageListener.swift**,
 * **MessageStream.swift**,
 * **MessageTracker.swit**,
 * **Operator.swift**,
+* **ProvidedAuthorizationTokenStateListener.swift**
 * **Webim.swift**,
 * **WebimError.swift**,
 * **WebimRemoteNotification.swift**,

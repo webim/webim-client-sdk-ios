@@ -198,7 +198,7 @@ class MessageImpl {
             "type = \(type),\n" +
             "text = \(text),\n" +
             "timeInMicrosecond = \(timeInMicrosecond),\n" +
-            "attachment = \((attachment != nil) ? (attachment!.getURLString() != nil ? attachment!.getURLString()! : "nil") : "nil"),\n" +
+            "attachment = \((attachment != nil) ? ((attachment!.getURL() != nil) ? ((attachment!.getURL()?.absoluteString != nil) ? attachment!.getURL()!.absoluteString : "nil") : "nil") : "nil"),\n" +
             "historyMessage = \(historyMessage),\n" +
             "currentChatID = \((currentChatID != nil) ? currentChatID! : "nil"),\n" +
             "historyID = \((historyID != nil) ? historyID!.getDBid() : "nil"),\n" +
@@ -459,8 +459,8 @@ extension MessageAttachmentImpl: MessageAttachment {
         return size
     }
     
-    func getURLString() -> String? {
-        return urlString
+    func getURL() -> URL? {
+        return (urlString != nil) ? URL(string: urlString!) : nil
     }
     
 }
@@ -497,8 +497,8 @@ final class ImageInfoImpl: ImageInfo {
     // MARK: - Methods
     // MARK: ImageInfo protocol methods
     
-    func getThumbURLString() -> String {
-        return thumbURLString
+    func getThumbURL() -> URL {
+        return URL(string: thumbURLString)!
     }
     
     func getHeight() -> Int? {

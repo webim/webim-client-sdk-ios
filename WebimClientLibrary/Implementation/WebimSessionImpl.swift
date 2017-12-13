@@ -105,17 +105,19 @@ final class WebimSessionImpl {
                                 areRemoteNotificationsEnabled: Bool,
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool,
-                                isVisitorDataClearingEnabled: Bool) -> WebimSessionImpl {
+                                isVisitorDataClearingEnabled: Bool,
+                                webimLogger: WebimLogger?) -> WebimSessionImpl {
         // FIXME: Dare and refactor!
         
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.MAIN.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
-        let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
         if isVisitorDataClearingEnabled {
             clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
         }
+        
+        let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
         checkSavedSessionFor(userDefaultsKey: userDefaultsKey,
                              newProvidedVisitorFields: visitorFields)
@@ -127,6 +129,7 @@ final class WebimSessionImpl {
         let visitorFieldsJSON = (visitorFields == nil) ? nil : visitorFields?.getJSONString()
         
         let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
+        webimLogger?.log(entry: "Server URL: \(serverURLString)")
         
         let currentChatMessageMapper: MessageFactoriesMapper = CurrentChatMapper(withServerURLString: serverURLString)
         
@@ -159,6 +162,7 @@ final class WebimSessionImpl {
             .set(title: (pageTitle != nil) ? pageTitle! : Settings.DEFAULT_PAGE_TITLE.rawValue)
             .set(deviceToken: deviceToken)
             .set(deviceID: getDeviceID())
+            .set(webimLogger: webimLogger)
             .build() as WebimClient
         
         var historyStorage: HistoryStorage
@@ -212,7 +216,8 @@ final class WebimSessionImpl {
                                                                                        historyMetaInformationStorage: historyMetaInformationStoragePreferences),
                                           historyStorage: historyStorage,
                                           reachedEndOfRemoteHistory: historyMetaInformationStoragePreferences.isHistoryEnded())
-        let messageStream = MessageStreamImpl(currentChatMessageFactoriesMapper: currentChatMessageMapper,
+        let messageStream = MessageStreamImpl(serverURLString: serverURLString,
+                                              currentChatMessageFactoriesMapper: currentChatMessageMapper,
                                               sendingMessageFactory: SendingFactory(withServerURLString: serverURLString),
                                               operatorFactory: OperatorFactory(withServerURLString: serverURLString),
                                               accessChecker: accessChecker,
@@ -252,8 +257,7 @@ final class WebimSessionImpl {
     
     // Deletes local message history SQLite DB file.
     private static func clearVisitorDataFor(userDefaultsKey: String) {
-        let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] ?? nil
-        if dbName != nil {
+        if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] {
             let fileManager = FileManager.default
             let documentsDirectory = try! fileManager.url(for: .documentDirectory,
                                                           in: .userDomainMask,
@@ -267,6 +271,8 @@ final class WebimSessionImpl {
                 print("Error deleting DB file at \(dbURL) or file doesn't exist.")
             }
         }
+        
+        UserDefaults.standard.removeObject(forKey: userDefaultsKey)
     }
     
     private static func checkSavedSessionFor(userDefaultsKey: String,
@@ -288,6 +294,10 @@ final class WebimSessionImpl {
         
         if newVisitorFieldsJSONString != previousVisitorFieldsJSONString {
             UserDefaults.standard.removeObject(forKey: userDefaultsKey)
+            
+            let newVisitorFieldsDictionary = [UserDefaultsMainPrefix.VISITOR_EXT.rawValue : newVisitorFieldsJSONString]
+            UserDefaults.standard.set(newVisitorFieldsDictionary,
+                                      forKey: userDefaultsKey)
         }
     }
     

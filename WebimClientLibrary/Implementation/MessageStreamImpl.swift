@@ -41,12 +41,14 @@ final class MessageStreamImpl: MessageStream {
     private let messageComposingHandler: MessageComposingHandler
     private let messageHolder: MessageHolder
     private let sendingMessageFactory: SendingFactory
+    private let serverURLString: String
     private let webimActions: WebimActions
     private var chat: ChatItem?
     private var chatStateListener: ChatStateListener?
     private var currentOperator: OperatorImpl?
+    private var departmentList: [Department]?
+    private var departmentListChangeListener: DepartmentListChangeListener?
     private var currentOperatorChangeListener: CurrentOperatorChangeListener?
-    private var invitationState: InvitationStateItem = .UNKNOWN
     private var isChatIsOpening = false
     private var lastChatState: ChatItem.ChatItemState = .CLOSED
     private var lastOperatorTypingStatus: Bool?
@@ -57,10 +59,13 @@ final class MessageStreamImpl: MessageStream {
     private var onlineStatusChangeListener: OnlineStatusChangeListener?
     private var unreadByOperatorTimestamp: Date?
     private var unreadByVisitorTimestamp: Date?
+    private var visitSessionState: VisitSessionStateItem = .UNKNOWN
+    private var visitSessionStateListener: VisitSessionStateListener?
     
     
     // MARK: - Initialization
-    init(currentChatMessageFactoriesMapper: MessageFactoriesMapper,
+    init(serverURLString: String,
+         currentChatMessageFactoriesMapper: MessageFactoriesMapper,
          sendingMessageFactory: SendingFactory,
          operatorFactory: OperatorFactory,
          accessChecker: AccessChecker,
@@ -68,6 +73,7 @@ final class MessageStreamImpl: MessageStream {
          messageHolder: MessageHolder,
          messageComposingHandler: MessageComposingHandler,
          locationSettingsHolder: LocationSettingsHolder) {
+        self.serverURLString = serverURLString
         self.currentChatMessageFactoriesMapper = currentChatMessageFactoriesMapper
         self.sendingMessageFactory = sendingMessageFactory
         self.operatorFactory = operatorFactory
@@ -85,10 +91,16 @@ final class MessageStreamImpl: MessageStream {
         return webimActions
     }
     
-    func set(invitationState: InvitationStateItem) {
-        self.invitationState = invitationState
+    func set(visitSessionState: VisitSessionStateItem) {
+        let previousVisitSessionState = self.visitSessionState
+        self.visitSessionState = visitSessionState
         
         isChatIsOpening = false
+        
+        if visitSessionStateListener != nil {
+            visitSessionStateListener?.changed(state: publicState(ofVisitSessionState: previousVisitSessionState),
+                                               to: publicState(ofVisitSessionState: visitSessionState))
+        }
     }
     
     func set(onlineStatus: OnlineStatusItem) {
@@ -168,8 +180,35 @@ final class MessageStreamImpl: MessageStream {
         onlineStatus = newOnlineStatus
     }
     
+    func onReceiving(departmentItemList: [DepartmentItem]) {
+        var departmentList = [Department]()
+        for departmentItem in departmentItemList {
+            var fullLogoURLString: URL? = nil
+            if let logoURLString = departmentItem.getLogoURLString() {
+                fullLogoURLString = URL(string: serverURLString + logoURLString)
+            }
+            
+            let department = DepartmentImpl(key: departmentItem.getKey(),
+                                            name: departmentItem.getName(),
+                                            departmentOnlineStatus: publicState(ofDepartmentOnlineStatus: departmentItem.getOnlineStatus()),
+                                            order: departmentItem.getOrder(),
+                                            localizedNames: departmentItem.getLocalizedNames(),
+                                            logo: fullLogoURLString)
+            departmentList.append(department)
+        }
+        self.departmentList = departmentList
+        
+        if departmentListChangeListener != nil {
+            departmentListChangeListener?.received(departmentList: departmentList)
+        }
+    }
+    
     
     // MARK: - MessageStream protocol methods
+    
+    func getVisitSessionState() -> VisitSessionState {
+        return publicState(ofVisitSessionState: visitSessionState)
+    }
     
     func getChatState() -> ChatState {
         return publicState(ofChatState: lastChatState)
@@ -181,6 +220,10 @@ final class MessageStreamImpl: MessageStream {
     
     func getUnreadByVisitorTimestamp() -> Date? {
         return unreadByVisitorTimestamp
+    }
+    
+    func getDepartmentList() -> [Department]? {
+        return departmentList
     }
     
     func getLocationSettings() -> LocationSettings {
@@ -212,6 +255,12 @@ final class MessageStreamImpl: MessageStream {
         try checkAccess()
         
         openChatIfNecessary()
+    }
+    
+    func startChat(departmentKey: String) throws {
+        try checkAccess()
+        
+        openChatIfNecessary(departmentKey: departmentKey)
     }
     
     func closeChat() throws {
@@ -279,6 +328,10 @@ final class MessageStreamImpl: MessageStream {
         return try messageHolder.newMessageTracker(withMessageListener: messageListener) as MessageTracker
     }
     
+    func set(visitSessionStateListener: VisitSessionStateListener) {
+        self.visitSessionStateListener = visitSessionStateListener
+    }
+    
     func set(chatStateListener: ChatStateListener) {
         self.chatStateListener = chatStateListener
     }
@@ -289,6 +342,10 @@ final class MessageStreamImpl: MessageStream {
     
     func set(operatorTypingListener: OperatorTypingListener) {
         self.operatorTypingListener = operatorTypingListener
+    }
+    
+    func set(departmentListChangeListener: DepartmentListChangeListener) {
+        self.departmentListChangeListener = departmentListChangeListener
     }
     
     func set(locationSettingsChangeListener: LocationSettingsChangeListener) {
@@ -336,15 +393,48 @@ final class MessageStreamImpl: MessageStream {
         }
     }
     
+    private func publicState(ofVisitSessionState visitSessionState: VisitSessionStateItem) -> VisitSessionState {
+        switch visitSessionState {
+        case .CHAT:
+            return .CHAT
+        case .DEPARTMENT_SELECTION:
+            return .DEPARTMENT_SELECTION
+        case .IDLE:
+            return .IDLE
+        case .IDLE_AFTER_CHAT:
+            return .IDLE_AFTER_CHAT
+        case .OFFLINE_MESSAGE:
+            return .OFFLINE_MESSAGE
+        default:
+            return .UNKNOWN
+        }
+    }
+    
+    private func publicState(ofDepartmentOnlineStatus departmentOnlineStatus: DepartmentItem.InternalDepartmentOnlineStatus) -> DepartmentOnlineStatus {
+        switch departmentOnlineStatus {
+        case .BUSY_OFFLINE:
+            return .BUSY_OFFLINE
+        case .BUSY_ONLINE:
+            return .BUSY_ONLINE
+        case .OFFLINE:
+            return .OFFLINE
+        case .ONLINE:
+            return .ONLINE
+        case .UNKNOWN:
+            return .UNKNOWN
+        }
+    }
+    
     private func checkAccess() throws {
         try accessChecker.checkAccess()
     }
     
-    private func openChatIfNecessary() {
+    private func openChatIfNecessary(departmentKey: String? = nil) {
         if (lastChatState.isClosed()
-            || (invitationState == .OFFLINE_MESSAGE))
+            || (visitSessionState == .OFFLINE_MESSAGE))
             && !isChatIsOpening {
-            webimActions.startChat(withClientSideID: ClientSideID.generateClientSideID())
+            webimActions.startChat(withClientSideID: ClientSideID.generateClientSideID(),
+                                   departmentKey: departmentKey)
         }
     }
     

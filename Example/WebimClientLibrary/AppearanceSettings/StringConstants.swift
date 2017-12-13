@@ -26,14 +26,15 @@
 
 import Foundation
 
-let REFRESH_CONTROL_TEXT = NSAttributedString(string: "Loading messages...")
+let REFRESH_CONTROL_TEXT = NSAttributedString(string: NSLocalizedString("Loading messages...",
+                                                                        comment: ""))
 
 enum Avatar: String {
     case ACCESSIBILITY_LABEL = "Sender avatar image"
     case ACCESSIBILITY_HINT_FOR_OPERATOR = "Shows rating dialog."
 }
 
-enum FILE_MESSAGE: String {
+enum FileMessage: String {
     case FILE_UNAVAILABLE = "File is unavailable."
 }
 
@@ -46,8 +47,8 @@ enum RatingDialog: String {
     case ACTION_BUTTON_TITLE = "Rate"
     case CANCEL_BUTTON_TITLE = "Cancel"
     
-    case ACTION_BUTTON_ACCESSIBILITY_LABEL = "Rates operator with chosen rating."
-    case CANCEL_BUTTON_ACCESSIBILITY_LABEL = "Closes rating dialog."
+    case ACTION_BUTTON_ACCESSIBILITY_HINT = "Rates operator with chosen rating."
+    case CANCEL_BUTTON_ACCESSIBILITY_HINT = "Closes rating dialog."
 }
 
 enum SendFileErrorMessage: String {
@@ -59,6 +60,23 @@ enum SendFileErrorMessage: String {
     // Error messages.
     case FILE_SIZE_EXCEEDED = "File is too large."
     case FILE_TYPE_NOT_ALLOWED = "File type is not supported."
+}
+
+enum SessionCreationErrorDialog: String {
+    case BUTTON_TITLE = "OK"
+    case BUTTON_ACCESSIBILITY_HINT = "Closes dialog."
+    
+    case TITLE = "Session creation failed"
+    case MESSAGE = "Account that is used to create session is blocked. Please contact Webim support or use another one."
+}
+
+enum SettingsErrorDialog: String {
+    case BUTTON_TITLE = "OK"
+    case BUTTON_ACCESSIBILITY_HINT = "Closes dialog."
+    
+    case TITLE = "Invalid account settings"
+    case WRONG_ACCOUNT_NAME_MESSAGE = "Account name can't be empty."
+    case WRONG_LOCATION_MESSAGE = "Location can't be empty."
 }
 
 enum ShowFileDialog: String {

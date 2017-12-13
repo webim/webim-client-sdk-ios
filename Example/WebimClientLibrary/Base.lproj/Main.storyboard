@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pKO-IW-95b">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pKO-IW-95b">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,11 +19,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bPt-yP-yHN">
-                                <rect key="frame" x="0.0" y="96" width="375" height="300"/>
+                                <rect key="frame" x="0.0" y="96" width="375" height="350"/>
                                 <color key="backgroundColor" red="0.89616717970000004" green="0.93132234879999998" blue="0.95925416559999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration" label="Greeting words"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="999" constant="300" id="x5o-0l-MMh"/>
+                                    <constraint firstAttribute="height" priority="999" constant="350" id="x5o-0l-MMh"/>
                                 </constraints>
                                 <string key="text">Welcome to the WebimClientLibrary demo app!
 
@@ -89,6 +89,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
                     <connections>
                         <outlet property="settingsButton" destination="rMR-x2-dzu" id="tAn-H8-XdI"/>
                         <outlet property="startChatButton" destination="edo-SU-HN8" id="hNP-0g-pxQ"/>
+                        <outlet property="welcomeTextView" destination="bPt-yP-yHN" id="Nnr-N5-c9K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -153,11 +154,13 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QrB-ab-D1k">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QrB-ab-D1k">
                                 <rect key="frame" x="8" y="724" width="359" height="46"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.90065738419999997" green="0.84704128229999998" blue="0.089915955759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration" hint="Saves current settings and shows start screen." label="Save"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="AYW-XK-8NI"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                 <state key="normal" title="Save">
                                     <color key="titleColor" red="0.26418037129999999" green="0.26418037129999999" blue="0.26418037129999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -178,11 +181,14 @@ https://github.com/webim/webim-client-sdk-ios</string>
                         </subviews>
                         <color key="backgroundColor" red="0.8999422789" green="0.92909246680000002" blue="0.95872980360000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="QrB-ab-D1k" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5OU-6u-MM0" secondAttribute="bottom" constant="8" id="2iD-sY-SwV"/>
                             <constraint firstItem="X1c-3e-DTs" firstAttribute="top" secondItem="3dm-n7-NsY" secondAttribute="top" constant="8" id="3cC-7j-g7a"/>
                             <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="W2o-Tj-nJy" secondAttribute="trailing" constant="8" id="6QK-Fo-gNB"/>
                             <constraint firstItem="5OU-6u-MM0" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="6oQ-VL-lf1"/>
                             <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="5OU-6u-MM0" secondAttribute="trailing" constant="8" id="CYW-wT-sd7"/>
+                            <constraint firstItem="QrB-ab-D1k" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="Pui-cb-kuU"/>
                             <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="X1c-3e-DTs" secondAttribute="trailing" constant="8" id="QYt-yz-okd"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="bottom" secondItem="QrB-ab-D1k" secondAttribute="bottom" constant="8" id="SLF-9Y-4Ba"/>
                             <constraint firstItem="Nw9-pU-o26" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="U0A-b6-N7D"/>
                             <constraint firstItem="Nw9-pU-o26" firstAttribute="top" secondItem="W2o-Tj-nJy" secondAttribute="bottom" constant="8" id="UZx-rw-GEH"/>
                             <constraint firstItem="DCi-74-SZ1" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="WP1-Az-4iw"/>
@@ -196,6 +202,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
                             <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="W9e-BQ-hTd" secondAttribute="trailing" constant="8" id="hDO-rh-jTZ"/>
                             <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="DCi-74-SZ1" secondAttribute="trailing" constant="8" id="ic1-nn-H1A"/>
                             <constraint firstItem="5OU-6u-MM0" firstAttribute="top" secondItem="W9e-BQ-hTd" secondAttribute="bottom" constant="8" id="jqC-zg-UIv"/>
+                            <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="QrB-ab-D1k" secondAttribute="trailing" constant="8" id="kJr-Re-6pR"/>
                             <constraint firstItem="oZI-yJ-Boe" firstAttribute="leading" secondItem="3dm-n7-NsY" secondAttribute="leading" constant="8" id="lbD-ia-mNj"/>
                             <constraint firstItem="W9e-BQ-hTd" firstAttribute="top" secondItem="DCi-74-SZ1" secondAttribute="bottom" constant="8" id="uB3-2e-3wK"/>
                             <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="oZI-yJ-Boe" secondAttribute="trailing" constant="8" id="uOO-06-s2g"/>
@@ -207,6 +214,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
                         <outlet property="locationTextField" destination="DCi-74-SZ1" id="Dnu-Zn-cRJ"/>
                         <outlet property="pageTitleTextField" destination="5OU-6u-MM0" id="pd3-xL-EAc"/>
                         <outlet property="saveButton" destination="QrB-ab-D1k" id="Iea-6w-Ihl"/>
+                        <outlet property="welcomeTextView" destination="X1c-3e-DTs" id="fiP-Xv-MVM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="flO-1y-HGn" userLabel="First Responder" sceneMemberID="firstResponder"/>

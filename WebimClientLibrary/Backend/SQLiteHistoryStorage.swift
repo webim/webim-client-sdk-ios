@@ -232,7 +232,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      INTO history
                      (id, timestamp_in_microsecond, sender_id, sender_name, avatar_url_string, type, text, server_data)
                      VALUES
-                     (message.getID(), message.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), message.getType().rawValue, message.getRawText() ?? message.getText(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
+                     (message.getID(), message.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), MessageItem.MessageKind(messageType: message.getType()).rawValue, message.getRawText() ?? message.getText(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
                      */
                     let statement = try self.db!.prepare("INSERT OR FAIL INTO history (\(SQLiteHistoryStorage.ColumnName.ID.rawValue), \(SQLiteHistoryStorage.ColumnName.TIMESTAMP_IN_MICROSECOND.rawValue), \(SQLiteHistoryStorage.ColumnName.SENDER_ID.rawValue), \(SQLiteHistoryStorage.ColumnName.SENDER_NAME.rawValue), \(SQLiteHistoryStorage.ColumnName.AVATAR_URL_STRING.rawValue), \(SQLiteHistoryStorage.ColumnName.TYPE.rawValue), \(SQLiteHistoryStorage.ColumnName.TEXT.rawValue), \(SQLiteHistoryStorage.ColumnName.SERVER_DATA.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
                     try statement.run(message.getID(),
@@ -240,7 +240,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                       message.getOperatorID(),
                                       message.getSenderName(),
                                       message.getSenderAvatarURLString(),
-                                      message.getType().rawValue,
+                                      MessageItem.MessageKind(messageType: message.getType()).rawValue,
                                       message.getRawText() ?? message.getText(),
                                       SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
                     // Raw SQLite statement constructed because there's no way to implement INSERT OR FAIL query with SQLite.swift methods. Appropriate INSERT query can look like this:
@@ -251,7 +251,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                 SQLiteHistoryStorage.senderID <- message.getOperatorID(),
                                 SQLiteHistoryStorage.senderName <- message.getSenderName(),
                                 SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                                SQLiteHistoryStorage.type <- message.getType().rawValue,
+                                SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
                                 SQLiteHistoryStorage.text <- message.getText(),
                                 SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))*/
                     
@@ -296,7 +296,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                          sender_id = message.getOperatorID(),
                          sender_name = message.getSenderName(),
                          avatar_url_string = message.getSenderAvatarURLString(),
-                         type = message.getType().rawValue,
+                         type = MessageItem.MessageKind(messageType: message.getType()).rawValue,
                          text = message.getRawText() ?? message.getText(),
                          data = message.getHistoryID()?.getDBid(),
                          server_data = SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
@@ -309,7 +309,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                     SQLiteHistoryStorage.senderID <- message.getOperatorID(),
                                     SQLiteHistoryStorage.senderName <- message.getSenderName(),
                                     SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                                    SQLiteHistoryStorage.type <- message.getType().rawValue,
+                                    SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
                                     SQLiteHistoryStorage.text <- message.getRawText() ?? message.getText(),
                                     SQLiteHistoryStorage.data <- message.getHistoryID()?.getDBid(),
                                     SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))) > 0 {
@@ -327,7 +327,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                  INTO history
                                  (id, client_side_id, timestamp_in_microsecond, sender_id, sender_name, avatar_url_string, type, text, data, server_data)
                                  VALUES
-                                 (message.getID(), historyID?.getDBid(), message.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), message.getType().rawValue, message.getRawText() ?? message.getText(), message.getHistoryID().getDBid(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
+                                 (message.getID(), historyID?.getDBid(), message.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), MessageItem.MessageKind(messageType: message.getType()).rawValue, message.getRawText() ?? message.getText(), message.getHistoryID().getDBid(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
                                  */
                                 let statement = try self.db!.prepare("INSERT OR FAIL INTO history (\(SQLiteHistoryStorage.ColumnName.ID.rawValue), \(SQLiteHistoryStorage.ColumnName.CLIENT_SIDE_ID.rawValue), \(SQLiteHistoryStorage.ColumnName.TIMESTAMP_IN_MICROSECOND.rawValue), \(SQLiteHistoryStorage.ColumnName.SENDER_ID.rawValue), \(SQLiteHistoryStorage.ColumnName.SENDER_NAME.rawValue), \(SQLiteHistoryStorage.ColumnName.AVATAR_URL_STRING.rawValue), \(SQLiteHistoryStorage.ColumnName.TYPE.rawValue), \(SQLiteHistoryStorage.ColumnName.TEXT.rawValue), \(SQLiteHistoryStorage.ColumnName.DATA.rawValue), \(SQLiteHistoryStorage.ColumnName.SERVER_DATA.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
                                 try statement.run(message.getID(),
@@ -336,7 +336,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                   message.getOperatorID(),
                                                   message.getSenderName(),
                                                   message.getSenderAvatarURLString(),
-                                                  message.getType().rawValue,
+                                                  MessageItem.MessageKind(messageType: message.getType()).rawValue,
                                                   message.getRawText() ?? message.getText(),
                                                   message.getHistoryID()?.getDBid(),
                                                   SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
@@ -349,7 +349,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                             SQLiteHistoryStorage.senderID <- message.getOperatorID(),
                                             SQLiteHistoryStorage.senderName <- message.getSenderName(),
                                             SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                                            SQLiteHistoryStorage.type <- message.getType().rawValue,
+                                            SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
                                             SQLiteHistoryStorage.text <- message.getText(),
                                             SQLiteHistoryStorage.data <- message.getHistoryID()?.getDBid(),
                                             SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))*/
@@ -520,7 +520,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         
         var rawText: String? = nil
         var text = row[SQLiteHistoryStorage.text]
-        let type = MessageType(rawValue: row[SQLiteHistoryStorage.type])
+        let type = AbstractMapper.convert(messageKind: MessageItem.MessageKind(rawValue: row[SQLiteHistoryStorage.type])!)
         if (type == MessageType.FILE_FROM_OPERATOR)
             || (type == MessageType.FILE_FROM_VISITOR) {
             rawText = text

@@ -38,16 +38,6 @@ import WebimClientLibrary
  */
 class ChatViewController: SLKTextViewController {
     
-    // MARK: - Constants
-    private enum ErrorDialog: String {
-        case BUTTON_TITLE = "OK"
-        case BUTTON_ACCESSIBILITY_HINT = "Closes dialog."
-        
-        case TITLE = "Session creation failed"
-        case MESSAGE = "Account that is used to create session is blocked. Please contact Webim support or use another one."
-    }
-    
-    
     // MARK: - Properties
     private let imagePicker = UIImagePickerController()
     private let refreshControl = UIRefreshControl()
@@ -82,34 +72,7 @@ class ChatViewController: SLKTextViewController {
         
         if let text = textView.text {
             if !text.isEmpty {
-                // TODO: Delete this after getLast/NextMessages bug is fixed.
-                if text == "Clear" {
-                    messages.removeAll()
-                    tableView?.reloadData()
-                } else if text == "Last" {
-                    webimService.getLastMessages { [weak self] messages in
-                        self?.messages.insert(contentsOf: messages,
-                                              at: 0)
-                        
-                        DispatchQueue.main.async() {
-                            self?.tableView?.reloadData()
-                            self?.scrollToBottom()
-                        }
-                    }
-                } else if text == "Next" {
-                    webimService.getNextMessages { [weak self] messages in
-                        self?.messages.insert(contentsOf: messages,
-                                              at: 0)
-                        
-                        DispatchQueue.main.async() {
-                            self?.tableView?.reloadData()
-                            self?.scrollToBottom()
-                        }
-                    }
-                } else {
-                    webimService.send(message: text)
-                }
-                //
+                webimService.send(message: text)
             }
             
             textView.text = ""
@@ -218,8 +181,10 @@ class ChatViewController: SLKTextViewController {
         
         leftButton.setImage(#imageLiteral(resourceName: "ClipIcon"),
                             for: .normal)
-        leftButton.accessibilityLabel = LeftButton.ACCESSIBILITY_LABEL.rawValue
-        leftButton.accessibilityHint = LeftButton.ACCESSIBILITY_HINT.rawValue
+        leftButton.accessibilityLabel = NSLocalizedString(LeftButton.ACCESSIBILITY_LABEL.rawValue,
+                                                          comment: "")
+        leftButton.accessibilityHint = NSLocalizedString(LeftButton.ACCESSIBILITY_HINT.rawValue,
+                                                         comment: "")
     }
     
     /**
@@ -358,7 +323,7 @@ class ChatViewController: SLKTextViewController {
                 
                 if let attachment = message.getAttachment(),
                     let fileName = attachment.getFileName(),
-                    let attachmentURLString = attachment.getURLString() {
+                    let attachmentURL = attachment.getURL() {
                             var popupMessage: String?
                             var image: UIImage?
                             
@@ -367,7 +332,6 @@ class ChatViewController: SLKTextViewController {
                                 || (attachmentContentType == "image/jpeg")
                                 || (attachmentContentType == "image/png")
                                 || (attachmentContentType == "image/tiff") {
-                                let attachmentURL = URL(string: attachmentURLString)!
                                 let semaphore = DispatchSemaphore(value: 0)
                                 let request = URLRequest(url: attachmentURL)
                                 URLSession.shared.dataTask(with: request,
@@ -376,10 +340,12 @@ class ChatViewController: SLKTextViewController {
                                                                 if let downloadedImage = UIImage(data: data) {
                                                                     image = downloadedImage
                                                                 } else {
-                                                                    popupMessage = ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue
+                                                                    popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue,
+                                                                                                     comment: "")
                                                                 }
                                                             } else {
-                                                                popupMessage = ShowFileDialog.INVALID_IMAGE_LINK.rawValue
+                                                                popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_LINK.rawValue,
+                                                                                                 comment: "")
                                                             }
                                                             
                                                             semaphore.signal()
@@ -390,9 +356,11 @@ class ChatViewController: SLKTextViewController {
                                 popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
                             }
                             
-                            let button = CancelButton(title: ShowFileDialog.BUTTON_TITLE.rawValue,
+                            let button = CancelButton(title: NSLocalizedString(ShowFileDialog.BUTTON_TITLE.rawValue,
+                                                                               comment: "") ,
                                                       action: nil)
-                            button.accessibilityHint = ShowFileDialog.ACCESSIBILITY_HINT.rawValue
+                            button.accessibilityHint = NSLocalizedString(ShowFileDialog.ACCESSIBILITY_HINT.rawValue,
+                                                                         comment: "")
                             
                             let popup = PopupDialog(title: fileName,
                                                     message: popupMessage,
@@ -429,21 +397,25 @@ class ChatViewController: SLKTextViewController {
                                 transitionStyle: .bounceUp,
                                 gestureDismissal: true)
         
-        let cancelButton = CancelButton(title: RatingDialog.CANCEL_BUTTON_TITLE.rawValue,
+        let cancelButton = CancelButton(title: NSLocalizedString(RatingDialog.CANCEL_BUTTON_TITLE.rawValue,
+                                                                 comment: ""),
                                         height: 60,
                                         dismissOnTap: true,
                                         action: nil)
-        cancelButton.accessibilityHint = RatingDialog.CANCEL_BUTTON_ACCESSIBILITY_LABEL.rawValue
+        cancelButton.accessibilityHint = NSLocalizedString(RatingDialog.CANCEL_BUTTON_ACCESSIBILITY_HINT.rawValue,
+                                                           comment: "")
         
-        let rateButton = DefaultButton(title: RatingDialog.ACTION_BUTTON_TITLE.rawValue,
+        let rateButton = DefaultButton(title: NSLocalizedString(RatingDialog.ACTION_BUTTON_TITLE.rawValue,
+                                                                comment: "") ,
                                        height: 60,
                                        dismissOnTap: true) { [weak self] in
                                         self?.alreadyRated[operatorID] = true
                                         
                                         self?.webimService.rateOperator(withID: operatorID,
-                                                                       byRating: Int(ratingVC.ratingView.rating))
+                                                                        byRating: Int(ratingVC.ratingView.rating))
         }
-        rateButton.accessibilityHint = RatingDialog.ACTION_BUTTON_ACCESSIBILITY_LABEL.rawValue
+        rateButton.accessibilityHint = NSLocalizedString(RatingDialog.ACTION_BUTTON_ACCESSIBILITY_HINT.rawValue,
+                                                         comment: "")
         
         popup.addButtons([cancelButton,
                           rateButton])
@@ -519,26 +491,28 @@ extension ChatViewController: FatalErrorHandler {
         let errorType = error.getErrorType()
         switch errorType {
         case .ACCOUNT_BLOCKED:
-            let popup = PopupDialog(title: ErrorDialog.TITLE.rawValue,
-                                    message: ErrorDialog.MESSAGE.rawValue)
+            let popup = PopupDialog(title: NSLocalizedString(SessionCreationErrorDialog.TITLE.rawValue, comment: ""),
+                                    message: NSLocalizedString(SessionCreationErrorDialog.MESSAGE.rawValue, comment: ""))
             
-            let okButton = CancelButton(title: ErrorDialog.BUTTON_TITLE.rawValue,
+            let okButton = CancelButton(title: NSLocalizedString(SessionCreationErrorDialog.BUTTON_TITLE.rawValue,
+                                                                 comment: "") ,
                                         action: nil)
-            okButton.accessibilityHint = ErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue
+            okButton.accessibilityHint = NSLocalizedString(SessionCreationErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue,
+                                                           comment: "")
             popup.addButton(okButton)
             self.present(popup,
                          animated: true,
                          completion: nil)
         case .PROVIDED_VISITOR_FIELDS_EXPIRED:
-            print("Provided visitor fields expired.")
             // Assuming to re-authorize it and re-create session object.
+            print("Provided visitor fields expired.")
         case .UNKNOWN:
             print("An unknown error occured.")
         case .VISITOR_BANNED:
             print("Visitor with provided visitor fields is banned by an operator.")
         case .WRONG_PROVIDED_VISITOR_HASH:
-            print("Provided visitor fields are wrong.")
             // Assuming to check visitor field generating.
+            print("Provided visitor fields are wrong.")
         }
     }
     
@@ -639,15 +613,19 @@ extension ChatViewController: SendFileCompletionHandler {
         var message: String?
         switch error {
         case .FILE_SIZE_EXCEEDED:
-            message = SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue
+            message = NSLocalizedString(SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue,
+                                        comment: "")
         case .FILE_TYPE_NOT_ALLOWED:
-            message = SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue
+            message = NSLocalizedString(SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue,
+                                        comment: "")
         }
         
-        let popupDialog = PopupDialog(title: SendFileErrorMessage.TITLE.rawValue,
+        let popupDialog = PopupDialog(title: NSLocalizedString(SendFileErrorMessage.TITLE.rawValue,
+                                                               comment: ""),
                                       message: message)
         
-        let okButton = CancelButton(title: SendFileErrorMessage.BUTTON_TITLE.rawValue) { [weak self] in
+        let okButton = CancelButton(title: NSLocalizedString(SendFileErrorMessage.BUTTON_TITLE.rawValue,
+                                                             comment: "")) { [weak self] in
             guard let `self` = self else {
                 return
             }
@@ -664,7 +642,8 @@ extension ChatViewController: SendFileCompletionHandler {
                 }
             }
         }
-        okButton.accessibilityHint = SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue
+        okButton.accessibilityHint = NSLocalizedString(SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue,
+                                                       comment: "") 
         
         popupDialog.addButton(okButton)
         self.present(popupDialog,

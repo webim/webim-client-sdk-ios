@@ -54,6 +54,7 @@ final class WebimClientBuilder {
     private var title: String?
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
+    private var webimLogger: WebimLogger?
     
     
     // MARK: - Builder methods
@@ -156,10 +157,17 @@ final class WebimClientBuilder {
         return self
     }
     
+    func set(webimLogger: WebimLogger?) -> WebimClientBuilder {
+        self.webimLogger = webimLogger
+        
+        return self
+    }
+    
     func build() -> WebimClient {
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: completionHandlerExecutor!,
                                                   internalErrorListener: internalErrorListener!)
         actionRequestLoop.set(authorizationData: authorizationData)
+        actionRequestLoop.set(webimLogger: webimLogger)
         
         let deltaRequestLoop = DeltaRequestLoop(deltaCallback: deltaCallback!,
                                                 completionHandlerExecutor: completionHandlerExecutor!,
@@ -179,6 +187,7 @@ final class WebimClientBuilder {
                                                 visitorJSONString: visitorJSONString,
                                                 sessionID: sessionID,
                                                 authorizationData: authorizationData)
+        deltaRequestLoop.set(webimLogger: webimLogger)
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
@@ -191,7 +200,7 @@ final class WebimClientBuilder {
 // MARK: -
 // Need to update deviceToken in DeltaRequestLoop on update in WebimActions.
 /**
- Class that is responsible for history storage when it is setted to memory mode.
+ Class that is responsible for history storage when it is set to memory mode.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -255,7 +264,7 @@ final class WebimClient {
 // MARK: -
 // Need to update AuthorizationData in ActionRequestLoop on update in DeltaRequestLoop.
 /**
- Class that is responsible for history storage when it is setted to memory mode.
+ Class that is responsible for history storage when it is set to memory mode.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:

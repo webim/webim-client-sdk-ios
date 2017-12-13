@@ -46,34 +46,4 @@ enum OnlineStatusItem: String {
     case ONLINE = "online"
     case UNKNOWN = "unknown"
     
-    // Setted for getTypeBy(string:) method.
-    private static let onlineStatusValues = [BUSY_OFFLINE,
-                                                    BUSY_ONLINE,
-                                                    OFFLINE,
-                                                    ONLINE,
-                                                    UNKNOWN]
-    
-    
-    // MARK: - Initialization
-    init(typeValue: String) {
-        self = OnlineStatusItem(rawValue: typeValue)!
-    }
-    
-    
-    // MARK: - Methods
-    
-    func getTypeBy(string: String) -> OnlineStatusItem {
-        for onlineStatusItemType in OnlineStatusItem.onlineStatusValues {
-            if onlineStatusItemType == OnlineStatusItem(typeValue: string) {
-                return onlineStatusItemType
-            }
-        }
-        
-        return .UNKNOWN
-    }
-    
-    func getTypeValue() -> String {
-        return self.rawValue
-    }
-    
 }

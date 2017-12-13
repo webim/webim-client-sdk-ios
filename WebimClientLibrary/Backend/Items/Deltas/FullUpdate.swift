@@ -40,6 +40,7 @@ struct FullUpdate {
     private enum JSONField: String {
         case AUTHORIZATION_TOKEN = "authToken"
         case CHAT = "chat"
+        case DEPARTMENTS = "departments"
         case HINTS_ENABLED = "hintsEnabled"
         case ONLINE_STATUS = "onlineStatus"
         case PAGE_ID = "pageId"
@@ -50,18 +51,16 @@ struct FullUpdate {
     
     
     // MARK: - Properties
-    
     private var authorizationToken: String?
     private var chat: ChatItem?
+    private var departments: [DepartmentItem]?
+    private var hintsEnabled: Bool?
     private var onlineStatus: String?
     private var pageID: String?
     private var sessionID: String?
     private var state: String?
     private var visitorJSONString: String?
-    
-    // MARK: LocationSettings properties
-    private var hintsEnabled: Bool?
-    
+
     
     // MARK: - Initialization
     init(jsonDictionary: [String : Any?]) {
@@ -70,7 +69,7 @@ struct FullUpdate {
         }
         
         if let chatValue = jsonDictionary[JSONField.CHAT.rawValue] as? [String : Any?] {
-            chat = ChatItem(withJSONDictionary: chatValue)
+            chat = ChatItem(jsonDictionary: chatValue)
         }
         
         if let pageID = jsonDictionary[JSONField.PAGE_ID.rawValue] as? String {
@@ -94,7 +93,18 @@ struct FullUpdate {
                 visitorJSONString = String(data: visitorJSONData,
                                            encoding: .utf8)
             }
-            
+        }
+        
+        if let departmantsData = jsonDictionary[JSONField.DEPARTMENTS.rawValue] as? [Any] {
+            var departmentItems = [DepartmentItem]()
+            for departmentData in departmantsData {
+                if let departmentDictionary = departmentData as? [String : Any] {
+                    if let deparmentItem = DepartmentItem(jsonDictionary: departmentDictionary) {
+                        departmentItems.append(deparmentItem)
+                    }
+                }
+            }
+            self.departments = departmentItems
         }
     }
     
@@ -103,6 +113,10 @@ struct FullUpdate {
     
     func getAuthorizationToken() -> String? {
         return authorizationToken
+    }
+    
+    func getDepartments() -> [DepartmentItem]? {
+        return departments
     }
     
     func getChat() -> ChatItem? {

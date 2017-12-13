@@ -91,6 +91,9 @@ final class DeltaCallback {
             case .CHAT_STATE:
                 handleChatStateUpdateBy(delta: delta,
                                         messageStream: messageStream!)
+            case .DEPARTMENT_LIST:
+                handleDepartmentListUpdateBy(delta: delta,
+                                             messageStream: messageStream!)
             case .OPERATOR_RATE:
                 handleOperatorRateUpdateBy(delta: delta,
                                            messageStream: messageStream!)
@@ -108,8 +111,12 @@ final class DeltaCallback {
             return
         }
         
-        if let invitationState = fullUpdate.getState() {
-            messageStream!.set(invitationState: InvitationStateItem.getTypeBy(string: invitationState))
+        if let visitSessionState = fullUpdate.getState() {
+            messageStream!.set(visitSessionState: (VisitSessionStateItem(rawValue: visitSessionState) ?? .UNKNOWN))
+        }
+        
+        if let departments = fullUpdate.getDepartments() {
+            messageStream!.onReceiving(departmentItemList: departments)
         }
         
         currentChat = fullUpdate.getChat()
@@ -131,7 +138,7 @@ final class DeltaCallback {
                                     messageStream: MessageStreamImpl) {
         if delta.getEvent() == .UPDATE {
             if let deltaData = delta.getData() as? [String : Any?] {
-                currentChat = ChatItem(withJSONDictionary: deltaData)
+                currentChat = ChatItem(jsonDictionary: deltaData)
                 messageStream.changingChatStateOf(chat: currentChat)
             }
         }
@@ -242,6 +249,24 @@ final class DeltaCallback {
         }
     }
     
+    private func handleDepartmentListUpdateBy(delta: DeltaItem,
+                                              messageStream: MessageStreamImpl) {
+        guard let deltaData = delta.getData() as? [Any] else {
+            return
+        }
+        
+        var departmentItems = [DepartmentItem]()
+        for departmentData in deltaData {
+            if let departmentDictionary = departmentData as? [String : Any] {
+                if let deparmentItem = DepartmentItem(jsonDictionary: departmentDictionary) {
+                    departmentItems.append(deparmentItem)
+                }
+            }
+        }
+        
+        messageStream.onReceiving(departmentItemList: departmentItems)
+    }
+    
     private func handleOperatorRateUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
         if let deltaData = delta.getData() as? [String : Any?] {
@@ -259,13 +284,13 @@ final class DeltaCallback {
     private func handleVisitSessionStateUpdateBy(delta: DeltaItem,
                                                  messageStream: MessageStreamImpl) {
         if let sessionState = delta.getData() as? String {
-            if sessionState == InvitationStateItem.OFFLINE_MESSAGE.rawValue {
+            if sessionState == VisitSessionStateItem.OFFLINE_MESSAGE.rawValue {
                 messageStream.set(onlineStatus: .OFFLINE)
                 messageStream.getWebimActions().closeChat()
             }
             
             if delta.getEvent() == .UPDATE {
-                messageStream.set(invitationState: InvitationStateItem.getTypeBy(string: sessionState))
+                messageStream.set(visitSessionState: (VisitSessionStateItem(rawValue: sessionState) ?? .UNKNOWN))
             }
         }
     }

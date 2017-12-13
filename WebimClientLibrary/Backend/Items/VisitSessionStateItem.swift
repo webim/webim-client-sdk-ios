@@ -1,5 +1,5 @@
 //
-//  InvitationStateItem.swift
+//  VisitSessionStateItem.swift
 //  WebimClientLibrary
 //
 //  Created by Nikita Lazarev-Zubov on 15.08.17.
@@ -32,11 +32,14 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-enum InvitationStateItem: String {
+enum VisitSessionStateItem: String {
     
     // Raw values equal to field names received in responses from server.
+    case CALLBACK_HUNTER = "callback-hunter"
     case CHAT = "chat"
+    case CHAT_SHOWING = "chat-showing"
     case DEPARTMENT_SELECTION = "department-selection"
+    case END = "end"
     case FIRST_QUESTION = "first-question"
     case IDLE = "idle"
     case IDLE_AFTER_CHAT = "idle-after-chat"
@@ -44,46 +47,6 @@ enum InvitationStateItem: String {
     case SHOWING = "showing"
     case SHOWING_AUTO = "showing-auto"
     case SHOWING_BY_URL_PARAMETER = "showing-by-url-param"
-    case UNKNOWN = "unknown"
-    
-    // MARK: - Properties
-    // Setted for getTypeBy(string:) method.
-    private static let invitationStateValues = [CHAT,
-                                                DEPARTMENT_SELECTION,
-                                                FIRST_QUESTION,
-                                                IDLE,
-                                                IDLE_AFTER_CHAT,
-                                                OFFLINE_MESSAGE,
-                                                SHOWING,
-                                                SHOWING_AUTO,
-                                                SHOWING_BY_URL_PARAMETER,
-                                                UNKNOWN]
-    
-    
-    // MARK: - Initialization
-    init(typeValue: String) {
-        for invitationStateType in InvitationStateItem.invitationStateValues {
-            if typeValue == invitationStateType.rawValue {
-                self = invitationStateType
-                
-                return
-            }
-        }
-        
-        self = .UNKNOWN
-    }
-    
-    
-    // MARK: - Methods
-    
-    static func getTypeBy(string: String) -> InvitationStateItem {
-        for invitationStateType in InvitationStateItem.invitationStateValues {
-            if invitationStateType == InvitationStateItem(typeValue: string) {
-                return invitationStateType
-            }
-        }
-        
-        return .UNKNOWN
-    }
+    case UNKNOWN
     
 }

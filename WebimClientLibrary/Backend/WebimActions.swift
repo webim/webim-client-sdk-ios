@@ -27,7 +27,7 @@
 import Foundation
 
 /**
- Class that is responsible for history storage when it is setted to memory mode.
+ Class that is responsible for history storage when it is set to memory mode.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -49,6 +49,7 @@ class WebimActions {
         case CHAT_MODE = "chat-mode"
         case CLIENT_SIDE_ID = "client-side-id"
         case DELETE_DRAFT = "del-message-draft"
+        case DEPARTMENT_KEY = "department-key"
         case DEVICE_ID = "device-id"
         case DEVICE_TOKEN = "push-token"
         case DRAFT = "message-draft"
@@ -154,10 +155,14 @@ class WebimActions {
                                                         sendFileCompletionHandler: completionHandler))
     }
     
-    func startChat(withClientSideID clientSideID: String) {
-        let dataToPost = [Parameter.ACTION.rawValue : Action.START_CHAT.rawValue,
+    func startChat(withClientSideID clientSideID: String,
+                   departmentKey: String? = nil) {
+        var dataToPost = [Parameter.ACTION.rawValue : Action.START_CHAT.rawValue,
                           Parameter.FORCE_ONLINE.rawValue : "1", // true
                           Parameter.CLIENT_SIDE_ID.rawValue : clientSideID] as [String : Any]
+        if let departmentKey = departmentKey {
+            dataToPost[Parameter.DEPARTMENT_KEY.rawValue] = departmentKey
+        }
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         

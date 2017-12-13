@@ -124,17 +124,15 @@ public final class SessionBuilder  {
     private var appVersion: String?
     private var deviceToken: String?
     private var fatalErrorHandler: FatalErrorHandler?
+    private var localHistoryStoragingEnabled = true
     private var location: String?
     private var pageTitle: String?
     private var providedAuthorizationToken: String?
     private var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var remoteNotificationSystem: Webim.RemoteNotificationSystem = .NONE
-    private var visitorFields: ProvidedVisitorFields?
-    
-    // Properties that are used for debugging
-    private var localHistoryStoragingEnabled = true
     private var visitorDataClearingEnabled = false
-    
+    private var visitorFields: ProvidedVisitorFields?
+    private var webimLogger: WebimLogger?
     
     // MARK: - Methods
     
@@ -147,7 +145,7 @@ public final class SessionBuilder  {
      - parameter accountName:
      Webim account name.
      - returns:
-     `SessionBuilder` object with account name setted.
+     `SessionBuilder` object with account name set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -165,7 +163,7 @@ public final class SessionBuilder  {
      - parameter location:
      Location name.
      - returns:
-     `SessionBuilder` object with location setted.
+     `SessionBuilder` object with location set.
      - SeeAlso:
      https://webim.ru/help/help-terms/#location
      - Author:
@@ -185,7 +183,7 @@ public final class SessionBuilder  {
      - parameter appVersion:
      Client app version name.
      - returns:
-     `SessionBuilder` object with app version setted.
+     `SessionBuilder` object with app version set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -207,7 +205,7 @@ public final class SessionBuilder  {
      - parameter jsonString:
      JSON-string containing the signed fields of a visitor.
      - returns:
-     `SessionBuilder` object with visitor fields setted.
+     `SessionBuilder` object with visitor fields set.
      - SeeAlso:
      https://webim.ru/help/identification/
      set(visitorFieldsJSON jsonData:)
@@ -232,7 +230,7 @@ public final class SessionBuilder  {
      - parameter jsonData:
      JSON-data containing the signed fields of a visitor.
      - returns:
-     `SessionBuilder` object with visitor fields setted.
+     `SessionBuilder` object with visitor fields set.
      - SeeAlso:
      `set(visitorFieldsJSON jsonString:)`
      - Author:
@@ -275,7 +273,7 @@ public final class SessionBuilder  {
      - parameter pageTitle:
      Page title that visible to an operator.
      - returns:
-     `SessionBuilder` object with page title setted.
+     `SessionBuilder` object with page title set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -292,7 +290,7 @@ public final class SessionBuilder  {
      - parameter fatalErrorHandler:
      Fatal error handler.
      - returns:
-     `SessionBuilder` object with fatal error handler setted.
+     `SessionBuilder` object with fatal error handler set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -309,11 +307,11 @@ public final class SessionBuilder  {
      By default it does not. You have to handle receiving by yourself.
      To differentiate notifications from your app and from Webim service check the field "from" (see `Webim.isWebim(remoteNotification:)`).
      - important:
-     If remote notification system is setted you must set device token.
+     If remote notification system is set you must set device token.
      - parameter remoteNotificationSystem:
      Enum that indicates which system of remote notification is used. By default – NONE (remote notifications are not sent).
      - returns:
-     `SessionBuilder` object with remote notification system setted.
+     `SessionBuilder` object with remote notification system set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -332,7 +330,7 @@ public final class SessionBuilder  {
      - parameter deviceToken:
      Device token in hexadecimal format and without any spaces and service symbols.
      - returns:
-     `SessionBuilder` object with device token setted.
+     `SessionBuilder` object with device token set.
      - SeeAlso:
      `setRemoteNotificationsSystem`
      - Author:
@@ -355,7 +353,7 @@ public final class SessionBuilder  {
      - parameter isLocalHistoryStoragingEnabled:
      Boolean parameter that indicated if an app should enable or disable local history storing.
      - returns:
-     `SessionBuilder` object with isLocalHistoryStoragingEnabled parameter setted.
+     `SessionBuilder` object with isLocalHistoryStoragingEnabled parameter set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -374,7 +372,7 @@ public final class SessionBuilder  {
      - parameter isVisitorDataClearingEnabled:
      Boolean parameter that indicated if an app should clear visitor data before session starts.
      - returns:
-     `SessionBuilder` object with isVisitorDataClearingEnabled parameter setted.
+     `SessionBuilder` object with isVisitorDataClearingEnabled parameter set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -386,8 +384,27 @@ public final class SessionBuilder  {
         return self
     }
     
+    /**
+     Method to pass WebimLogger object.
+     - parameter webimLogger:
+     `WebimLogger` object.
+     - returns:
+     `SessionBuilder` object with `WebimLogger` object set.
+     - SeeAlso:
+     `WebimLogger`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    public func set(webimLogger: WebimLogger) -> SessionBuilder {
+        self.webimLogger = webimLogger
+        
+        return self
+    }
     
-    // MARK: Finalization method.
+    
+    // MARK: Finalization
     /**
      Builds new `WebimSession` object.
      - important:
@@ -396,9 +413,9 @@ public final class SessionBuilder  {
      - returns:
      New `WebimSession` object.
      - throws:
-     `SessionBuilder.SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't setted to a non-nil value.
-     `SessionBuilder.SessionBuilderError.NIL_LOCATION` if location wasn't setted to a non-nil value.
-     `SessionBuilder.SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to pass device token with `RemoteNotificationSystem` not setted (or setted to `.NONE`).
+     `SessionBuilder.SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't set to a non-nil value.
+     `SessionBuilder.SessionBuilderError.NIL_LOCATION` if location wasn't set to a non-nil value.
+     `SessionBuilder.SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to pass device token with `RemoteNotificationSystem` not set (or set to `.NONE`).
      `SessionBuilder.SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS` if methods `set(visitorFieldsJSONString:)` or `set(visitorFieldsJSONData:)` are called with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)` simultaneously.
      - SeeAlso:
      `SessionBuilder.SessionBuilderError`
@@ -446,7 +463,8 @@ public final class SessionBuilder  {
                                                 areRemoteNotificationsEnabled: remoteNotificationsEnabled,
                                                 deviceToken: deviceToken,
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
-                                                isVisitorDataClearingEnabled: visitorDataClearingEnabled) as WebimSession
+                                                isVisitorDataClearingEnabled: visitorDataClearingEnabled,
+                                                webimLogger: webimLogger) as WebimSession
     }
     
     // MARK: -

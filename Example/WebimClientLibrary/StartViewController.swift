@@ -39,6 +39,7 @@ class StartViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var startChatButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var welcomeTextView: UITextView!
     
     
     // MARK: - Methods
@@ -50,6 +51,13 @@ class StartViewController: UIViewController {
         
         setupStartChatButton()
         setupSettingstButton()
+        
+        // Xcode does not localize UITextView text automatically.
+        welcomeTextView.text = NSLocalizedString("Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios",
+                                                 tableName: "Main",
+                                                 bundle: .main,
+                                                 value: "",
+                                                 comment: "")
     }
     
     @IBAction func unwindFromSettings(_: UIStoryboardSegue) {

@@ -27,7 +27,7 @@
 import Foundation
 
 /**
- Class that is responsible for history storage when it is setted to memory mode.
+ Class that is responsible for history storage when it is set to memory mode.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:

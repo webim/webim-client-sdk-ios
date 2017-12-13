@@ -213,6 +213,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                 guard let fullUpdate = deltaResponse.getFullUpdate() else {
                     print("Incorrect server answer.")
                     
+                    usleep(1000 * 1000)  // 1 s
+                    
                     return
                 }
                 

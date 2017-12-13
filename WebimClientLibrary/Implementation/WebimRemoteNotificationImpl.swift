@@ -38,15 +38,11 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     enum APNsField: String {
         case APS = "aps"
+        case WEBIM = "webim"
     }
     
     enum APSField: String {
         case ALERT = "alert"
-        case CUSTOM = "custom"
-    }
-    
-    enum CustomField: String {
-        case WEBIM = "webim"
     }
     
     private enum AlertField: String {
@@ -67,26 +63,27 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     }
     
     // MARK: - Properties
-    private var event: InternalNotificationEvent
+    private var event: InternalNotificationEvent? = nil
     private lazy var parameters = [String]()
     private var type: InternalNotificationType
     
     
     // MARK: - Initialization
     init?(jsonDictionary: [String : Any?]) {
-        guard let event = jsonDictionary[AlertField.EVENT.rawValue] as? String,
-            let parameters = jsonDictionary[AlertField.PARAMETERS.rawValue] as? [String],
+        guard let parameters = jsonDictionary[AlertField.PARAMETERS.rawValue] as? [String],
             let type = jsonDictionary[AlertField.TYPE.rawValue] as? String else {
             return nil
         }
         
-        switch event {
-        case InternalNotificationEvent.ADD.rawValue:
-            self.event = .ADD
-        case InternalNotificationEvent.DELETE.rawValue:
-            self.event = .DELETE
-        default:
-            return nil
+        if let event = jsonDictionary[AlertField.EVENT.rawValue] as? String {
+            switch event {
+            case InternalNotificationEvent.ADD.rawValue:
+                self.event = .ADD
+            case InternalNotificationEvent.DELETE.rawValue:
+                self.event = .DELETE
+            default:
+                break
+            }
         }
         
         switch type {
@@ -118,13 +115,17 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
         }
     }
     
-    func getEvent() -> NotificationEvent {
-        switch event {
-        case .ADD:
-            return .ADD
-        case .DELETE:
-            return .DELETE
+    func getEvent() -> NotificationEvent? {
+        if let event = event {
+            switch event {
+            case .ADD:
+                return .ADD
+            case .DELETE:
+                return .DELETE
+            }
         }
+        
+        return nil
     }
     
     func getParameters() -> [String] {

@@ -36,23 +36,13 @@ import UIKit
  */
 class SettingsViewController: UIViewController {
     
-    // MARK: - Constants
-    private enum AlertDialog: String {
-        case BUTTON_TITLE = "OK"
-        case BUTTON_ACCESSIBILITY_HINT = "Closes dialog."
-        
-        case TITLE = "Invalid account settings"
-        case WRONG_ACCOUNT_NAME_MESSAGE = "Account name can't be empty."
-        case WRONG_LOCATION_MESSAGE = "Location can't be empty."
-    }
-    
-    
     // MARK: - Properties
     // MARK: Outlets
     @IBOutlet weak var accountNameTextField: UITextField!
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var pageTitleTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var welcomeTextView: UITextView!
     
     
     // MARK: - Methods
@@ -67,6 +57,13 @@ class SettingsViewController: UIViewController {
         setupNavigationItem()
         
         setupSaveButton()
+        
+        // Xcode does not localize UITextView text automatically.
+        welcomeTextView.text = NSLocalizedString("If you are registered in Webim service you can use your own account name and location.",
+                                                 tableName: "Main",
+                                                 bundle: .main,
+                                                 value: "",
+                                                 comment: "")
     }
     
     // MARK: Navigation
@@ -77,13 +74,15 @@ class SettingsViewController: UIViewController {
         let pageTitle = pageTitleTextField.text!
         
         if accountName.isEmpty {
-            showSettingsAlert(withMessage: AlertDialog.WRONG_ACCOUNT_NAME_MESSAGE.rawValue)
+            showSettingsAlert(withMessage: NSLocalizedString(SettingsErrorDialog.WRONG_ACCOUNT_NAME_MESSAGE.rawValue,
+                                                             comment: ""))
             
             return false
         }
         
         if location.isEmpty {
-            showSettingsAlert(withMessage: AlertDialog.WRONG_LOCATION_MESSAGE.rawValue)
+            showSettingsAlert(withMessage: NSLocalizedString(SettingsErrorDialog.WRONG_LOCATION_MESSAGE.rawValue,
+                                                             comment: ""))
             
             return false
         }
@@ -141,12 +140,15 @@ class SettingsViewController: UIViewController {
      2017 Webim
      */
     private func showSettingsAlert(withMessage message: String) {
-        let popup = PopupDialog(title: AlertDialog.TITLE.rawValue,
+        let popup = PopupDialog(title: NSLocalizedString(SettingsErrorDialog.TITLE.rawValue,
+                                                         comment: "") ,
                                 message: message)
         
-        let okButton = CancelButton(title: AlertDialog.BUTTON_TITLE.rawValue,
+        let okButton = CancelButton(title: NSLocalizedString(SettingsErrorDialog.BUTTON_TITLE.rawValue,
+                                                             comment: ""),
                                     action: nil)
-        okButton.accessibilityHint = AlertDialog.BUTTON_ACCESSIBILITY_HINT.rawValue
+        okButton.accessibilityHint = NSLocalizedString(SettingsErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue,
+                                                       comment: "") 
         popup.addButton(okButton)
         self.present(popup,
                      animated: true,

@@ -38,7 +38,7 @@ final class ChatItem {
     // MARK: - Constants
     
     // Raw values equal to field names received in responses from server.
-    enum JSONField: String {
+    private enum JSONField: String {
         case CATEGORY = "category"
         case CLIENT_SIDE_ID = "clientSideId"
         case CREATION_TIMESTAMP = "creationTs"
@@ -117,7 +117,7 @@ final class ChatItem {
         }
     }
     
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let creationTimestampValue = jsonDictionary[JSONField.CREATION_TIMESTAMP.rawValue] as? Double {
             creationTimestamp = creationTimestampValue
         } else {

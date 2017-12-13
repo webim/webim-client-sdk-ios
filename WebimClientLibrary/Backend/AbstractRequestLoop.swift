@@ -36,25 +36,24 @@ import Foundation
 class AbstractRequestLoop {
     
     // MARK: - Constants
-    
     enum HTTPMethod: String {
         case GET = "GET"
         case POST = "POST"
     }
-    
     enum UnknownError: Error {
         case INTERRUPTED
     }
     
     
     // MARK: - Properties
-    private var pauseCondition = NSCondition()
+    private let pauseCondition = NSCondition()
     private let pauseLock = NSRecursiveLock()
     var running = true
     private var currentDataTask: URLSessionDataTask?
     private var paused = true
     private var queue: DispatchQueue?
     private var requests: [WebimRequest]?
+    private var webimLogger: WebimLogger?
     
     
     // MARK: - Methods
@@ -71,7 +70,7 @@ class AbstractRequestLoop {
             do {
                 try self.run()
             } catch {
-                // MARK: TODO
+                // Ignored.
             }
         }
     }
@@ -126,18 +125,35 @@ class AbstractRequestLoop {
             
             let semaphore = DispatchSemaphore(value: 0)
             var receivedData: Data? = nil
-            let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            webimLogger?.log(entry: ("Request:"
+                + " method - " + request.httpMethod!
+                + ", URL – " + request.url!.absoluteString))
+            
+            let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+                var webimLoggerEntry = "Response:"
+                    + " URL – " + request.url!.absoluteString
+                
                 if let response = response {
                     httpCode = (response as! HTTPURLResponse).statusCode
+                    
+                    webimLoggerEntry += ", Code – " + String(httpCode)
                 }
                 
                 if error != nil {
                     semaphore.signal()
+                    
+                    self?.webimLogger?.log(entry: webimLoggerEntry)
+                    
                     return
                 }
                 
                 if let data = data {
                     receivedData = data
+                    
+                    webimLoggerEntry += ", Data – " + String(data: data,
+                                                             encoding: .utf8)!
+                    self?.webimLogger?.log(entry: webimLoggerEntry)
                 }
                 
                 semaphore.signal()
@@ -186,6 +202,10 @@ class AbstractRequestLoop {
         }
         
         throw UnknownError.INTERRUPTED
+    }
+    
+    func set(webimLogger: WebimLogger?) {
+        self.webimLogger = webimLogger
     }
     
     // MARK: Private methods

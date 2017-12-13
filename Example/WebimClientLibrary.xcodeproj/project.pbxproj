@@ -15,10 +15,12 @@
 		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
 		7AC8771ADBD56B8F2687508D /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */; };
 		7EFD66A46B75AB0CACF8C5E8 /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */; };
+		CE324E631FDECBD2004BB116 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE324E651FDECBD2004BB116 /* RatingViewController.xib */; };
 		CE44AE651F87CA8E009787E5 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */; };
 		CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDC1F9108FA00F56319 /* UIImageView.swift */; };
 		CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
 		CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
+		CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE5A03BC1FDEB756009D320A /* Localizable.strings */; };
 		CE88BCD11FCD7F9A00A4FA2E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */; };
 		CE88BCD31FCD88EA00A4FA2E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD21FCD88EA00A4FA2E /* Settings.swift */; };
 		CE88BCD51FCDA45C00A4FA2E /* ButtonConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD41FCDA45C00A4FA2E /* ButtonConstants.swift */; };
@@ -30,7 +32,6 @@
 		CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61A381F82A4C700BF7071 /* ChatViewController.swift */; };
 		DDFC632B1F924D41008E1ACC /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFC632A1F924D41008E1ACC /* UIImage.swift */; };
 		DDFC63CB1F93F23E008E1ACC /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */; };
-		DDFC63CD1F93FFE5008E1ACC /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDFC63CC1F93FEC2008E1ACC /* RatingViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,11 +64,15 @@
 		BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4CD65CA48F80B5A4AD826B3 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimClientLibrary.podspec; path = ../WebimClientLibrary.podspec; sourceTree = "<group>"; };
 		CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebimClientLibrary_Example.entitlements; sourceTree = "<group>"; };
+		CE324E661FDECBE0004BB116 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RatingViewController.xib; sourceTree = "<group>"; };
+		CE324E6D1FDED429004BB116 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "ru-RU"; path = "ru-RU.lproj/RatingViewController.xib"; sourceTree = "<group>"; };
 		CE44AE641F87CA8E009787E5 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		CE45EDDC1F9108FA00F56319 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		CE45EDDF1F95F95C00F56319 /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
 		CE54B2511FC452B9009C05BD /* Index.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Index.md; sourceTree = "<group>"; };
 		CE591A421FC2F31E004C95EE /* WebimService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimService.swift; sourceTree = "<group>"; };
+		CE5A03B71FDEB573009D320A /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/Main.strings"; sourceTree = "<group>"; };
+		CE5A03BB1FDEB756009D320A /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = WebimClientLibrary/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		CE88BCD21FCD88EA00A4FA2E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CE88BCD41FCDA45C00A4FA2E /* ButtonConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonConstants.swift; sourceTree = "<group>"; };
@@ -79,7 +84,6 @@
 		CEF61A381F82A4C700BF7071 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		DDFC632A1F924D41008E1ACC /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
-		DDFC63CC1F93FEC2008E1ACC /* RatingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		EB8C258A78F3730770936414 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,9 +147,10 @@
 				CE591A421FC2F31E004C95EE /* WebimService.swift */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
-				DDFC63CC1F93FEC2008E1ACC /* RatingViewController.xib */,
+				CE324E651FDECBD2004BB116 /* RatingViewController.xib */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				CE5A03BC1FDEB756009D320A /* Localizable.strings */,
 			);
 			name = "Example for WebimClientLibrary";
 			path = WebimClientLibrary;
@@ -354,7 +359,8 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				CE88BCDA1FCF06EE00A4FA2E /* ChatScreen.png in Resources */,
 				CE88BCDB1FCF06EE00A4FA2E /* StartScreen.png in Resources */,
-				DDFC63CD1F93FFE5008E1ACC /* RatingViewController.xib in Resources */,
+				CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */,
+				CE324E631FDECBD2004BB116 /* RatingViewController.xib in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -512,6 +518,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				607FACDA1AFB9204008FA782 /* Base */,
+				CE5A03B71FDEB573009D320A /* ru-RU */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -524,6 +531,23 @@
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
+		CE324E651FDECBD2004BB116 /* RatingViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE324E661FDECBE0004BB116 /* Base */,
+				CE324E6D1FDED429004BB116 /* ru-RU */,
+			);
+			name = RatingViewController.xib;
+			sourceTree = "<group>";
+		};
+		CE5A03BC1FDEB756009D320A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE5A03BB1FDEB756009D320A /* ru-RU */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -531,6 +555,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -584,6 +609,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;

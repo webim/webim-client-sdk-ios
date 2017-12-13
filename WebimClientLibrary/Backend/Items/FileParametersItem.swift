@@ -55,7 +55,7 @@ final class FileParametersItem {
     // MARK: - Initialization
     init(jsonDictionary: [String : Any?]) {
         if let imageParametersDictionary = jsonDictionary[JSONField.IMAGE_PARAMETERS.rawValue] as? [String : Any?] {
-            imageParameters = ImageParameters(withJSONDictionary: imageParametersDictionary)
+            imageParameters = ImageParameters(jsonDictionary: imageParametersDictionary)
         }
         
         if let contentType = jsonDictionary[JSONField.CONTENT_TYPE.rawValue] as? String {
@@ -113,9 +113,9 @@ final class ImageParameters {
     private var size: ImageSize?
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let sizeDictionary = jsonDictionary[JSONField.IMAGE_SIZE.rawValue] as? [String : Any?] {
-            self.size = ImageSize(withJSONDictionary: sizeDictionary)
+            self.size = ImageSize(jsonDictionary: sizeDictionary)
         }
     }
     
@@ -143,7 +143,7 @@ struct ImageSize {
     
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String : Any?]) {
         if let height = jsonDictionary[JSONField.HEIGHT.rawValue] as? Int {
             self.height = height
         }

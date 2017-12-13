@@ -84,6 +84,7 @@ final class WebimService {
             .set(fatalErrorHandler: self)
             .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
             .set(deviceToken: deviceToken)
+            .set(isVisitorDataClearingEnabled: false)
         
         if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
             // Hardcoded values that work with "demo" account only!

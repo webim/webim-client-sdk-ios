@@ -147,6 +147,8 @@ class MessageTableViewCell: UITableViewCell {
         switch messageType {
         case .ACTION_REQUEST:
             layoutActionRequest(message: message)
+        case .CONTACTS_REQUEST:
+            layoutOperator(message: message)
         case .FILE_FROM_OPERATOR:
             layoutFileFromOperator(message: message)
         case .FILE_FROM_VISITOR:
@@ -258,7 +260,8 @@ class MessageTableViewCell: UITableViewCell {
         if let fileName = message.getAttachment()?.getFileName() {
             bodyLabel.text = fileName
         } else {
-            bodyLabel.text = "File is unavailable."
+            bodyLabel.text = NSLocalizedString(FileMessage.FILE_UNAVAILABLE.rawValue,
+                                               comment: "")
         }
         bodyLabel.textColor = .blue
         bodyLabel.isUserInteractionEnabled = true
@@ -270,8 +273,10 @@ class MessageTableViewCell: UITableViewCell {
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
-        avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue
+        avatarImageView.accessibilityLabel = NSLocalizedString(Avatar.ACCESSIBILITY_LABEL.rawValue,
+                                                               comment: "")
+        avatarImageView.accessibilityHint = NSLocalizedString(Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue,
+                                                              comment: "")
     }
     
     /**
@@ -292,7 +297,8 @@ class MessageTableViewCell: UITableViewCell {
         if let fileName = message.getAttachment()?.getFileName() {
             bodyLabel.text = fileName
         } else {
-            bodyLabel.text = FILE_MESSAGE.FILE_UNAVAILABLE.rawValue
+            bodyLabel.text = NSLocalizedString(FileMessage.FILE_UNAVAILABLE.rawValue,
+                                               comment: "") 
         }
         bodyLabel.textColor = .blue
         bodyLabel.isUserInteractionEnabled = true
@@ -305,7 +311,8 @@ class MessageTableViewCell: UITableViewCell {
         avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
+        avatarImageView.accessibilityLabel = NSLocalizedString(Avatar.ACCESSIBILITY_LABEL.rawValue,
+                                                               comment: "")
     }
     
     /**
@@ -363,8 +370,10 @@ class MessageTableViewCell: UITableViewCell {
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
-        avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue
+        avatarImageView.accessibilityLabel = NSLocalizedString(Avatar.ACCESSIBILITY_LABEL.rawValue,
+                                                               comment: "")
+        avatarImageView.accessibilityHint = NSLocalizedString(Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue,
+                                                              comment: "")
     }
     
     /**
@@ -422,7 +431,8 @@ class MessageTableViewCell: UITableViewCell {
         avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue
+        avatarImageView.accessibilityLabel = NSLocalizedString(Avatar.ACCESSIBILITY_LABEL.rawValue,
+                                                               comment: "") 
     }
     
     /**

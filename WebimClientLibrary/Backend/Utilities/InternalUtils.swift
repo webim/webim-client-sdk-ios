@@ -78,14 +78,8 @@ final class InternalUtils {
     }
     
     static func isWebim(remoteNotification: [AnyHashable : Any]) -> Bool {
-        if let apsFields = remoteNotification[WebimRemoteNotificationImpl.APNsField.APS.rawValue] as? [String : Any] {
-            if let customFields = apsFields[WebimRemoteNotificationImpl.APSField.CUSTOM.rawValue] as? [String : Any] {
-                if let webimField = customFields[WebimRemoteNotificationImpl.CustomField.WEBIM.rawValue] as? Bool {
-                    return webimField
-                }
-            }
-        } else {
-            print("Unknown remote notification format.")
+        if let webimField = remoteNotification[WebimRemoteNotificationImpl.APNsField.WEBIM.rawValue] as? Bool {
+            return webimField
         }
         
         return false

@@ -76,6 +76,31 @@ class AbstractMapper: MessageFactoriesMapper {
     
     // MARK: - Methods
     
+    static func convert(messageKind: MessageItem.MessageKind) -> MessageType? {
+        switch messageKind {
+        case .ACTION_REQUEST:
+            return .ACTION_REQUEST
+        case .CONTACTS_REQUEST:
+            return .CONTACTS_REQUEST
+        case .FILE_FROM_OPERATOR:
+            return .FILE_FROM_OPERATOR
+        case .FILE_FROM_VISITOR:
+            return .FILE_FROM_VISITOR
+        case .INFO:
+            return .INFO
+        case .OPERATOR:
+            return .OPERATOR
+        case .OPERATOR_BUSY:
+            return .OPERATOR_BUSY
+        case .VISITOR:
+            return .VISITOR
+        default:
+            print("Invalid message type received: \(messageKind.rawValue)")
+            
+            return nil
+        }
+    }
+    
     func set(webimClient: WebimClient) {
         self.webimClient = webimClient
     }
@@ -84,12 +109,11 @@ class AbstractMapper: MessageFactoriesMapper {
                  historyMessage: Bool) -> MessageImpl? {
         let kind = messageItem.getKind()
         if (kind == nil)
-            || (kind == .CONTACT_REQUEST)
             || (kind == .CONTACTS)
             || (kind == .FOR_OPERATOR) {
             return nil
         }
-        let type = convert(messageKind: kind!)
+        let type = AbstractMapper.convert(messageKind: kind!)
         if type == nil {
             return nil
         }
@@ -144,31 +168,6 @@ class AbstractMapper: MessageFactoriesMapper {
     
     func map(message: MessageItem) -> MessageImpl? {
         preconditionFailure("This method must be overridden!")
-    }
-    
-    
-    // MARK: Private methods
-    private func convert(messageKind: MessageItem.MessageKind) -> MessageType? {
-        switch messageKind {
-        case MessageItem.MessageKind.ACTION_REQUEST:
-            return MessageType.ACTION_REQUEST
-        case MessageItem.MessageKind.FILE_FROM_OPERATOR:
-            return MessageType.FILE_FROM_OPERATOR
-        case MessageItem.MessageKind.FILE_FROM_VISITOR:
-            return MessageType.FILE_FROM_VISITOR
-        case MessageItem.MessageKind.INFO:
-            return MessageType.INFO
-        case MessageItem.MessageKind.OPERATOR:
-            return MessageType.OPERATOR
-        case MessageItem.MessageKind.OPERATOR_BUSY:
-            return MessageType.OPERATOR_BUSY
-        case MessageItem.MessageKind.VISITOR:
-            return MessageType.VISITOR
-        default:
-            print("Invalid message type received: \(messageKind.rawValue)")
-            
-            return nil
-        }
     }
     
 }

@@ -1,8 +1,8 @@
 //
-//  WebimRemoteNotification.swift
-//  WebimClientLibrary
+//  Department.swift
+//  Cosmos
 //
-//  Created by Nikita Lazarev-Zubov on 08.08.17.
+//  Created by Nikita Lazarev-Zubov on 12.12.17.
 //  Copyright © 2017 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,134 +24,139 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
 
-
 /**
- Abstracts a remote notifications from Webim service.
- - SeeAlso:
- `Webim.parseRemoteNotification()`
+ Single department entity. Provides methods to get department information.
+ Department objects can be received through `DepartmentListChangeListener` protocol methods and `getDepartmentList()` method of `MessageStream` protocol.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
  2017 Webim
  */
-public protocol WebimRemoteNotification {
+public protocol Department {
     
     /**
+     Department key is used to start chat with some department.
      - SeeAlso:
-     `NotificationType` enum.
+     `startChat(departmentKey:)` method of `MessageStream` protocol.
      - returns:
-     Type of this remote notification.
+     Department key value that uniquely idetificates this department.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    func getType() -> NotificationType
-    
-    /**
-     - SeeAlso:
-     `NotificationEvent` enum.
-     - returns:
-     Event of this remote notification.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    func getEvent() -> NotificationEvent?
+    func getKey() -> String
     
     /**
      - returns:
-     Parameters of this remote notification. Each `NotificationType` has specific list of parameters.
+     Department public name.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func getName() -> String
+    
+    /**
      - SeeAlso:
-     `NotificationType`
+     `DepartmentOnlineStatus`.
+     - returns:
+     Department online status.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    func getParameters() -> [String]
-
-}
-
-
-// MARK: -
-/**
- - SeeAlso:
- `WebimRemoteNotification.getType()`
- `WebimRemoteNotification.getParameters()`
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-public enum NotificationType {
+    func getDepartmentOnlineStatus() -> DepartmentOnlineStatus
     
     /**
-     This notification type indicated that an operator has connected to a dialogue.
-     Parameters:
-     * Operator's name.
+     - returns:
+     Order number. Higher numbers match higher priority.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case OPERATOR_ACCEPTED
+    func getOrder() -> Int
     
     /**
-     This notification type indicated that an operator has sent a file.
-     Parameters:
-     * Operator's name;
-     * File name.
+     - returns:
+     Dictionary of department localized names (if exists). Key is custom locale descriptor, value is matching name.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case OPERATOR_FILE
+    func getLocalizedNames() -> [String : String]?
     
     /**
-     This notification type indicated that an operator has sent a text message.
-     Parameters:
-     * Operator's name;
-     * Message text.
+     - returns:
+     Department logo URL (if exists).
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case OPERATOR_MESSAGE
+    func getLogoURL() -> URL?
+    
 }
 
 /**
+ Possible department online statuses.
  - SeeAlso:
- `WebimRemoteNotification.getEvent()`
+ `getDepartmentOnlineStatus()` of `Department` protocol.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
  2017 Webim
  */
-public enum NotificationEvent {
+public enum DepartmentOnlineStatus {
     
     /**
-     Means that a notification should be added by current remote notification.
+     Offline state with chats' count limit exceeded.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case ADD
+    case BUSY_OFFLINE
     
     /**
-     Means that a notification should be deleted by current remote notification.
+     Online state with chats' count limit exceeded.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case DELETE
+    case BUSY_ONLINE
+    
+    /**
+     Visitor is able to send offline messages.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case OFFLINE
+    
+    /**
+     Visitor is able to send both online and offline messages.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case ONLINE
+    
+    /**
+     Any status that is not supported by this version of the library.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case UNKNOWN
     
 }

@@ -88,8 +88,6 @@ public protocol Message {
     func getOperatorID() -> String?
     
     /**
-     - important:
-     Versions 3.3.1 and earlier has the method called `getSenderAvatarFullURLString()` that returned `String?`.
      - returns:
      URL of a sender's avatar or `nil` if one does not exist.
      - Author:
@@ -223,13 +221,13 @@ public protocol MessageAttachment {
      - important:
      Notice that this URL is short-living and is tied to a session.
      - returns:
-     URL String of the file.
+     URL of attached file.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    func getURLString() -> String?
+    func getURL() -> URL?
     
 }
 
@@ -263,13 +261,13 @@ public protocol ImageInfo {
      - important:
      Notice that this URL is short-living and is tied to a session.
      - returns:
-     URL String of reduced image.
+     URL of reduced image.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    func getThumbURLString() -> String
+    func getThumbURL() -> URL
     
     /**
      - returns:
@@ -295,6 +293,7 @@ public protocol ImageInfo {
 
 // MARK: -
 /**
+ Supported message types.
  - SeeAlso:
  `Message.getType()`
  - Author:
@@ -302,7 +301,7 @@ public protocol ImageInfo {
  - Copyright:
  2017 Webim
  */
-public enum MessageType: String {
+public enum MessageType {
     
     /**
      A message from operator which requests some actions from a visitor.
@@ -314,7 +313,20 @@ public enum MessageType: String {
      - Copyright:
      2017 Webim
      */
-    case ACTION_REQUEST = "action_request"
+    case ACTION_REQUEST
+    
+    /**
+     Message type that is received after operator clicked contacts request button.
+     - important:
+     There's no this functionality automatic support yet. All payload is transfered inside standard text field.
+     - SeeAlso:
+     `Message.getText()`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case CONTACTS_REQUEST
     
     /**
      A message sent by an operator which contains an attachment.
@@ -327,7 +339,7 @@ public enum MessageType: String {
      - Copyright:
      2017 Webim
      */
-    case FILE_FROM_OPERATOR = "file_from_operator"
+    case FILE_FROM_OPERATOR
     
     /**
      A message sent by a visitor which contains an attachment.
@@ -340,7 +352,7 @@ public enum MessageType: String {
      - Copyright:
      2017 Webim
      */
-    case FILE_FROM_VISITOR = "file_from_visitor"
+    case FILE_FROM_VISITOR
     
     /**
      A system information message.
@@ -350,16 +362,18 @@ public enum MessageType: String {
      - Copyright:
      2017 Webim
      */
-    case INFO = "info"
+    case INFO
     
     /**
      A text message sent by an operator.
+     - SeeAlso:
+     `Message.getText()`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case OPERATOR = "operator"
+    case OPERATOR
     
     /**
      A system information message which indicates that an operator is busy and can't reply to a visitor at the moment.
@@ -368,16 +382,18 @@ public enum MessageType: String {
      - Copyright:
      2017 Webim
      */
-    case OPERATOR_BUSY = "operator_busy"
+    case OPERATOR_BUSY
     
     /**
      A text message sent by a visitor.
+     - SeeAlso:
+     `Message.getText()`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    case VISITOR = "visitor"
+    case VISITOR
 
 }
 

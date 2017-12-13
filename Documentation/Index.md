@@ -36,27 +36,36 @@
     -   [change(location:) method](#change-location)
     -   [set(deviceToken:) method](#set-device-token)
 -   [MessageStream protocol](#message-stream)
+    -   [getVisitSessionState() method](#get-visit-session-state)
     -   [getChatState() method](#get-chat-state)
     -   [getUnreadByOperatorTimestamp() method](#get-unread-by-operator-timestamp)
     -   [getUnreadByVisitorTimestamp() method](#get-unread-by-visitor-timestamp)
+    -   [getDepartmentList() method](#get-department-list)
     -   [getLocationSettings() method](#get-location-settings)
     -   [getCurrentOperator() method](#get-current-operator)
     -   [getLastRatingOfOperatorWith(id:) method](#get-last-rating-of-operator-with-id)
     -   [rateOperatorWith(id:,byRating rating:) method](#rate-operator-with-id-by-rating-rating)
     -   [startChat() method](#start-chat)
+    -   [startChat(departmentKey:) method](#start-chat-department-key)
     -   [closeChat() method](#close-chat)
     -   [setVisitorTyping(draftMessage:) method](#set-visitor-typing-draft-message)
     -   [send(message:,isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:,filename:,mimeType:,completionHandler:) method](#send-file-filename-mime-type-completion-handler)
     -   [new(messageTracker messageListener:) method](#new-message-tracker-message-listener)
+    -   [set(visitSessionStateListener:)](#set-visit-session-state-listener)
     -   [set(chatStateListener:) method](#set-chat-state-listener)
     -   [set(currentOperatorChangeListener:) method](#set-current-operator-change-listener)
+    -   [set(departmentListChangeListener:)](#set-department-list-change-listener)
     -   [set(operatorTypingListener:) method](#set-operator-typing-listener)
     -   [set(locationSettingsChangeListener:) method](#set-location-settings-change-listener)
     -   [set(onlineStatusChangeListener:) method](#set-online-status-change-listener)
 -   [SendFileCompletionHandler protocol](#send-file-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error)
+-   [VisitSessionStateListener protocol](#visit-session-state-listener)
+    -   [changed(state previousState:,to newState:)](#changed-state-previous-state-to-new-state-visit-session-state-listener)
+-   [DepartmentListChangeListener protocol](#department-list-change-listener)
+    -   [received(departmentList:) method](#received-department-list)
 -   [LocationSettings protocol](#location-settings)
     -   [areHintsEnabled() method](#are-hints-enabled)
 -   [ChatStateListener protocol](#chat-state-listener)
@@ -86,6 +95,13 @@
     -   [OFFLINE case](#offline)
     -   [ONLINE case](#online)
     -   [UNKNOWN case](#unknown-session-online-status)
+-   [VisitSessionState enum](#visit-session-state)
+   -   [CHAT case](#chat-visit-session-state)
+   -   [DEPARTMENT_SELECTION case](#department-selection)
+   -   [IDLE case](#idle)
+   -   [IDLE_AFTER_CHAT case](#idle-after-chat)
+   -   [OFFLINE_MESSAGE case](#offline-message)
+   -   [UNKNOWN case](#unknown-visit-session-state)
 -   [MessageTracker protocol](#message-tracker)
     -   [getLastMessages(byLimit limitOfMessages:,completion:) method](#get-last-messages-by-limit-limit-of-messages-completion)
     -   [getNextMessages(byLimit limitOfMessages:,completion:) method](#get-next-nessages-by-limit-limit-of-messages-completion)
@@ -114,13 +130,14 @@
     -   [getFileName() method](#get-file-name)
     -   [getImageInfo() method](#get-image-info)
     -   [getSize() method](#get-size)
-    -   [getURLString() method](#get-url-string)
+    -   [getURL() method](#get-url-string)
 -   [ImageInfo protocol](#image-info)
-    -   [getThumbURLString() method](#get-thumb-url-string)
+    -   [getThumbURL() method](#get-thumb-url-string)
     -   [getHeight() method](#get-height)
     -   [getWidth() method](#get-width)
 -   [MessageType enum](#message-type)
     -   [ACTION_REQUEST case](#action-request)
+    -   [CONTACTS_REQUEST case](#contacts-request)
     -   [FILE_FROM_OPERATOR case](#file-from-operator)
     -   [FILE_FROM_VISITOR case](#file-from-visitor)
     -   [INFO case](#info)
@@ -130,6 +147,19 @@
 -   [MessageSendStatus enum](#message-send-status)
     -   [SENDING case](#sending)
     -   [SENT case](#sent)
+-   [Department protocol](#department)
+    -   [getKey() method](#get-key)
+    -   [getName() method](#get-name-department)
+    -   [getDepartmentOnlineStatus() method](#get-department-online-status)
+    -   [getOrder() method](#get-order)
+    -   [getLocalizedNames() method](#get-localized-names)
+    -   [getLogo() method](#get-logo)
+-   [DepartmentOnlineStatus enum](#department-online-status)
+    -   [BUSY_OFFLINE case](#busy-offline-department-online-status)
+    -   [BUSY_ONLINE case](#busy-online-department-online-status)
+    -   [OFFLINE case](#offline-department-online-status)
+    -   [ONLINE case](#online-department-online-status)
+    -   [UNKNOWN case](#unknown-department-online-status)
 -   [Operator protocol](#operator-protocol)
     -   [getID() method](#get-id-operator)
     -   [getName() method](#get-name)
@@ -159,6 +189,8 @@
 -   [AccessError enum](#access-error)
     -   [INVALID_THREAD case](#invalid-thread)
     -   [INVALID_SESSION case](#invalid-session)
+-   [WebimLogger protocol](#webim-logger)
+    -   [log(entry:) method](#log-entry)
 
 <h2 id="webim">Webim class</h2>
 
@@ -215,7 +247,7 @@ Method is mandatory to create [WebimSession](#webim-session) object.
 
 Sets app version number if it is necessary to differentiate its values inside _Webim_ service.
 `appVersion` parameter – optional `String`-typed app version.
-Returns `self` with app version setted. When passed `nil` it does nothing.
+Returns `self` with app version set. When passed `nil` it does nothing.
 Method is not mandatory to create [WebimSession](#webim-session) object.
 
 <h3 id ="set-visitor-fields-json-string-json-string">Instance method set(visitorFieldsJSONString jsonString:)</h3>
@@ -362,6 +394,10 @@ Sets device token.
 
 Provides methods to interact with _Webim_ service.
 
+<h3 id ="get-visit-session-state">getVisitSessionState() method</h3>
+
+Returns current session state ([VisitSessionState type](#visit-session-state).
+
 <h3 id ="get-chat-state">getChatState() method</h3>
 
 Returns current chat state of [ChatState](#chat-state) type.
@@ -373,6 +409,10 @@ Returns timestamp (of type `Date`) after which all chat messages are unread by o
 <h3 id ="get-unread-by-visitor-timestamp">getUnreadByVisitorTimestamp() method</h3>
 
 Returns timestamp (of type `Date`) after which all chat messages are unread by visitor (at the moment of last server update recieved).
+
+<h3 id ="get-department-list">getDepartmentList() method</h3>
+
+Returns array of departments ([Department](#department)) or `nil` if there're any or department list is not recieved yet.
 
 <h3 id ="get-location-settings">getLocationSettings() method</h3>
 
@@ -398,6 +438,13 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id ="start-chat">startChat() method</h3>
 
 Changes [ChatState](#chat-state) to [QUEUE](#queue). Method call is not mandatory, send message or send file methods start chat automatically.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="start-chat-department-key">startChat(departmentKey:) method</h3>
+
+Starts chat with particular department. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
+Changes [ChatState](#chat-state) to [QUEUE](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="close-chat">closeChat() method</h3>
@@ -438,6 +485,10 @@ Changes of user-visible messages (e.g. ever requested from [MessageTracker](#mes
 For each [MessageStream](#message-stream) at every single moment can exist the only one active [MessageTracker](#message-tracker). When creating a new one at the previous there will be automatically called [destroy()](#destroy-message-tracker).
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="set-visit-session-state-listener">set(visitSessionStateListener:) method</h3>
+
+Sets [VisitSessionStateListener](#visit-session-state-listener) object to track changes of [VisitSessionState](#visit-session-state).
+
 <h3 id ="set-chat-state-listener">set(chatStateListener:) method</h3>
 
 Sets [ChatStateListener](#chat-state-listener) object.
@@ -445,6 +496,10 @@ Sets [ChatStateListener](#chat-state-listener) object.
 <h3 id ="set-current-operator-change-listener">set(currentOperatorChangeListener:) method</h3>
 
 Sets [CurrentOperatorChangeListener](#current-operator-change-listener) object.
+
+<h3 id ="set-department-list-change-listener">set(departmentListChangeListener:) method</h3>
+
+Sets [DepartmentListChangeListener](#department-list-change-listener) object to track changes of department list.
 
 <h3 id ="set-operator-typing-listener">set(operatorTypingListener:) method</h3>
 
@@ -472,6 +527,22 @@ Executed when operation is done successfully.
 Executed when operation is failed.
 `messageID` parameter – ID of the appropriate message of `String` type.
 `error` parameter – appropriate [SendFileError](#send-file-error) value.
+
+<h2 id ="visit-session-state-listener">VisitSessionStateListener protocol</h2>
+
+Provides methods to track changes of [VisitSessionState](#visit-session-state) status.
+
+<h3 id ="#changed-state-previous-state-to-new-state-visit-session-state-listener">changed(state previousState:,to newState:) method</h3>
+
+Called when [VisitSessionState](#visit-session-state) status is changed. Parameters contain its previous and new values.
+
+<h2 id ="department-list-change-listener">DepartmentListChangeListener protocol</h2>
+
+Provides methods to track changes in departments list.
+
+<h3 id ="received-department-list">received(departmentList:) method</h3>
+
+Called when department list is received. Current department list passed inside `departmentList` parameter and presents array of [Department](#department) objects.
 
 <h2 id ="location-settings">LocationSettings protocol</h2>
 
@@ -597,14 +668,16 @@ The list of allowed file types is configured on the server.
 
 <h2 id ="session-online-status">OnlineStatus enum</h2>
 
-Session state possible cases.
+Online state possible cases.
 
 <h3 id ="busy-offline">BUSY_OFFLINE case</h3>
 
+Offline state with chats' count limit exceeded.
 Means that visitor is not able to send messages at all.
 
 <h3 id ="busy-online">BUSY_ONLINE case</h3>
 
+Online state with chats' count limit exceeded.
 Visitor is able send offline messages, but the server can reject it.
 
 <h3 id ="offline">OFFLINE case</h3>
@@ -618,6 +691,34 @@ Visitor is able to send both online and offline messages.
 <h3 id ="unknown-session-online-status">UNKNOWN case</h3>
 
 Session has not received first session status yet or session status is not supported by this version of the library.
+
+<h2 id ="visit-session-state">VisitSessionState enum</h2>
+
+Session possible states.
+
+<h3 id ="chat-visit-session-state">CHAT case</h3>
+
+Chat in progress.
+
+<h3 id ="department-selection">DEPARTMENT_SELECTION case</h3>
+
+Chat must be started with department selected (there was a try to start chat without department selected).
+
+<h3 id ="idle">IDLE case</h3>
+
+Session is active but no chat is occuring (chat was not started yet).
+
+<h3 id ="idle-after-chat">IDLE_AFTER_CHAT case</h3>
+
+Session is active but no chat is occuring (chat was closed recently).
+
+<h3 id ="offline-message">OFFLINE_MESSAGE case</h3>
+
+Offline state.
+
+<h3 id ="unknown-visit-session-state">UNKNOWN case</h3>
+
+First status is not recieved yet or status is not supported by this version of the library.
 
 <h2 id ="message-tracker">MessageTracker protocol</h2>
 
@@ -769,16 +870,16 @@ Returns attachment file size in bytes of `Int64` type.
 
 <h3 id ="get-url-string">getURLString() method</h3>
 
-Returns URL `String` of the file or `nil`.
+Returns `URL` of the file or `nil`.
 Notice that this URL is short-living and is tied to a session.
 
 <h2 id ="image-info">ImageInfo protocol</h2>
 
 Provides information about an image.
 
-<h3 id ="get-thumb-url-string">getThumbURLString() method</h3>
+<h3 id ="get-thumb-url-string">getThumbURL() method</h3>
 
-Returns a URL String of an image thumbnail.
+Returns a URL of an image thumbnail.
 The maximum width and height is usually 300 px but it can be adjusted at server settings.
 To get an actual preview size before file uploading is completed, use the following code:
 ````
@@ -811,6 +912,10 @@ Message type representation.
 
 A message from operator which requests some actions from a visitor.
 E.g. choose an operator group by clicking on a button in this message.
+
+<h3 id ="contacts-request">CONTACTS_REQUEST case</h3>
+Message type that is received after operator clicked contacts request button.
+There's no this functionality automatic support yet. All payload is transfered inside standard text field.
 
 <h3 id ="file-from-operator">FILE_FROM_OPERATOR case</h3>
 
@@ -849,9 +954,67 @@ A message is being sent.
 
 A message had been sent to the server, received by the server and was spreaded among clients.
 
+<h2 id ="department">Department protocol</h2>
+
+Single department entity. Provides methods to get department information.
+Department objects can be received through [DepartmentListChangeListener protocol](#department-list-change-listener) methods and [getDepartmentList() method](#get-department-list) of [MessageStream protocol](#message-stream).
+
+<h3 id ="get-key">getKey() method</h3>
+
+Department key is used to start chat with some department. Presented by `String` object.
+Used for [startChat(departmentKey:) method](#start-chat-department-key) of [MessageStream protocol](#message-stream) call.
+
+<h3 id ="get-name-department">getName() method</h3>
+
+Returns department public name. Presented by `String` object.
+
+<h3 id ="get-department-online-status">getDepartmentOnlineStatus() method</h3>
+
+Returns department online status. Presented by [DepartmentOnlineStatus](#department-online-status) object.
+
+<h3 id ="get-order">getOrder() method</h3>
+
+Returns order number.
+Presented by `Int` value. Higher numbers match higher priority.
+
+<h3 id ="get-localized-names">getLocalizedNames() method</h3>
+
+Returns dictionary of department localized names (if exists).
+Presented by `[String : String]` dictonary. Key is custom locale descriptor, value is matching name.
+
+<h3 id ="get-logo">getLogo() method</h3>
+
+Returns department logo _URL_ (if exists).
+Presented by `URL` object.
+
+<h2 id ="department-online-status">DepartmentOnlineStatus enum</h2>
+
+Possible department online statuses.
+Can be retreived by [getDepartmentOnlineStatus() method](#get-department-online-status) of [Department protocol](#department).
+
+<h3 id ="busy-offline-department-online-status">BUSY_OFFLINE case</h3>
+
+Offline state with chats' count limit exceeded.
+
+<h3 id ="busy-online-department-online-status">BUSY_ONLINE case</h3>
+
+Online state with chats' count limit exceeded.
+
+<h3 id ="offline-department-online-status">OFFLINE case</h3>
+
+Visitor is able to send offline messages.
+
+<h3 id ="online-department-online-status">ONLINE case</h3>
+
+Visitor is able to send both online and offline messages.
+
+<h3 id ="unknown-department-online-status">UNKNOWN case</h3>
+
+Any status that is not supported by this version of the library.
+
 <h2 id ="operator-protocol">Operator protocol</h2>
 
-Abstracts a chat operator.
+Presents chat operator object.
 
 <h3 id ="get-id-operator">getID() method</h3>
 
@@ -875,7 +1038,7 @@ Returns type of this remote notification of [NotificationType](#notification-typ
 
 <h3 id ="get-event">getEvent() method</h3>
 
-Returns event of this remote notification of [NotificationEvent](#notification-event) type.
+Returns event of this remote notification of [NotificationEvent](#notification-event) type or `nil`.
 
 <h3 id ="get-parameters">getParameters() method</h3>
 
@@ -984,3 +1147,13 @@ Error that is thrown if the method was called not from the thread the [WebimSess
 <h3 id ="invalid-session">INVALID_SESSION case</h3>
 
 Error that is thrown if [WebimSession](#webim-session) object was destroyed.
+
+<h2 id="webim-logger">WebimLogger protocol</h2>
+
+Protocol that provides methods for implementing custom _WebimClientLibrary_ network requests logging.
+It can be useful for debugging production releases if debug logs are not available.
+
+<h3 id="log-entry">log(entry:) method</h3>
+
+Method which is called after new _WebimClientLibrary_ network request log entry came out.
+New log entry passed inside `entry` parameter.

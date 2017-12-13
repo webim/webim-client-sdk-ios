@@ -39,10 +39,22 @@ import Foundation
 public protocol MessageStream {
     
     /**
+     - SeeAlso:
+     `VisitSessionState` type.
+     - returns:
+     Current session state.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func getVisitSessionState() -> VisitSessionState
+    
+    /**
      - returns:
      Current chat state.
      - SeeAlso:
-     `ChatState`
+     `ChatState` type.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -69,6 +81,19 @@ public protocol MessageStream {
      2017 Webim
      */
     func getUnreadByVisitorTimestamp() -> Date?
+    
+    /**
+     - SeeAlso:
+     `Department` protocol.
+     `DepartmentListChangeListener` protocol.
+     - returns:
+     List of departments or `nil` if there're any or department list is not recieved yet.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func getDepartmentList() -> [Department]?
     
     /**
      - returns:
@@ -124,6 +149,7 @@ public protocol MessageStream {
     
     /**
      Changes `ChatState` to `ChatState.QUEUE`.
+     Can cause `VisitSessionState.DEPARTMENT_SELECTION` session state. It means that chat must be started by `startChat(departmentKey:)` method.
      - returns:
      No return value.
      - throws:
@@ -135,6 +161,25 @@ public protocol MessageStream {
      2017 Webim
      */
     func startChat() throws
+    
+    /**
+     Starts chat with particular department.
+     Changes `ChatState` to `ChatState.QUEUE`.
+     - SeeAlso:
+     `Department` protocol.
+     - parameter departmentKey:
+     Department key (see `getKey()` of `Department` protocol).
+     - returns:
+     No return value.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func startChat(departmentKey: String) throws
     
     /**
      Changes `ChatState` to `ChatState.CLOSED_BY_VISITOR`.
@@ -249,6 +294,22 @@ public protocol MessageStream {
     func new(messageTracker messageListener: MessageListener) throws -> MessageTracker
     
     /**
+     Sets `VisitSessionStateListener` object.
+     - SeeAlso:
+     `VisitSessionStateListener` protocol.
+     `VisitSessionState` type.
+     - parameter visitSessionStateListener:
+     `VisitSessionStateListener` object.
+     - returns:
+     No return value.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func set(visitSessionStateListener: VisitSessionStateListener)
+    
+    /**
      Sets the `ChatState` change listener.
      - parameter chatStateListener:
      The `ChatState` change listener.
@@ -273,6 +334,22 @@ public protocol MessageStream {
      2017 Webim
      */
     func set(currentOperatorChangeListener: CurrentOperatorChangeListener)
+    
+    /**
+     Sets `DepartmentListChangeListener` object.
+     - SeeAlso:
+     `DepartmentListChangeListener` protocol.
+     `Department` protocol.
+     - parameter departmentListChangeListener:
+     `DepartmentListChangeListener` object.
+     - returns:
+     No return value.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func set(departmentListChangeListener: DepartmentListChangeListener)
     
     /**
      Sets the listener of the MessageStream LocationSettings changes.
@@ -387,6 +464,35 @@ public protocol SendFileCompletionHandler {
 }
 
 /**
+ Provides methods to track changes of `VisitSessionState` status.
+ - SeeAlso:
+ `VisitSessionState` protocol.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public protocol VisitSessionStateListener {
+    
+    /**
+     Called when `VisitSessionState` status is changed.
+     - SeeAlso:
+     `VisitSessionState` protocol.
+     - parameter previousState:
+     Previous value of `VisitSessionState` status.
+     - parameter newState:
+     New value of `VisitSessionState` status.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func changed(state previousState: VisitSessionState,
+                 to newState: VisitSessionState)
+    
+}
+
+/**
  - SeeAlso:
  `MessageStream.set(chatStateListener:)`
  `MessageStream.getChatState()`
@@ -441,6 +547,32 @@ public protocol CurrentOperatorChangeListener {
      */
     func changed(operator previousOperator: Operator,
                  to newOperator: Operator?)
+    
+}
+
+/**
+ Provides methods to track changes in departments list.
+ - SeeAlso:
+ `Department` protocol.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public protocol DepartmentListChangeListener {
+    
+    /**
+     Called when department list is received.
+     - SeeAlso:
+     `Department` protocol.
+     - parameter departmentList:
+     Current department list.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func received(departmentList: [Department])
     
 }
 
@@ -672,6 +804,7 @@ public enum SendFileError: Error {
 public enum OnlineStatus {
     
     /**
+     Offline state with chats' count limit exceeded.
      Means that visitor is not able to send messages at all.
      - Author:
      Nikita Lazarev-Zubov
@@ -681,6 +814,7 @@ public enum OnlineStatus {
     case BUSY_OFFLINE
     
     /**
+     Online state with chats' count limit exceeded.
      Visitor is able send offline messages, but the server can reject it.
      - Author:
      Nikita Lazarev-Zubov
@@ -690,7 +824,7 @@ public enum OnlineStatus {
     case BUSY_ONLINE
     
     /**
-     Visitor is able send offline messages.
+     Visitor is able to send offline messages.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -708,7 +842,74 @@ public enum OnlineStatus {
     case ONLINE
     
     /**
-     Session has not received first session status yet or session status is not supported by this version of the library.
+     First status is not recieved yet or status is not supported by this version of the library.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case UNKNOWN
+    
+}
+
+/**
+ Session possible states.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public enum VisitSessionState {
+    
+    /**
+     Chat in progress.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case CHAT
+    
+    /**
+     Chat must be started with department selected (there was a try to start chat without department selected).
+     - SeeAlso:
+     `startChat(departmentKey:)` of `MessageStream` protocol.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case DEPARTMENT_SELECTION
+    
+    /**
+     Session is active but no chat is occuring (chat was not started yet).
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case IDLE
+    
+    /**
+     Session is active but no chat is occuring (chat was closed recently).
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case IDLE_AFTER_CHAT
+    
+    /**
+     Offline state.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case OFFLINE_MESSAGE
+    
+    /**
+     First status is not recieved yet or status is not supported by this version of the library.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

@@ -1,0 +1,68 @@
+
+/* Class = "UITextField"; accessibilityLabel = "Page title field"; ObjectID = "5OU-6u-MM0"; */
+"5OU-6u-MM0.accessibilityLabel" = "Поле имени чата";
+
+/* Class = "UITextField"; text = "iOS Demo App"; ObjectID = "5OU-6u-MM0"; */
+"5OU-6u-MM0.text" = "iOS Demo App";
+
+/* Class = "UITextField"; accessibilityLabel = "Location name field"; ObjectID = "DCi-74-SZ1"; */
+"DCi-74-SZ1.accessibilityLabel" = "Поле названия размещения";
+
+/* Class = "UITextField"; text = "mobile"; ObjectID = "DCi-74-SZ1"; */
+"DCi-74-SZ1.text" = "mobile";
+
+/* Class = "UILabel"; text = "Location"; ObjectID = "Nw9-pU-o26"; */
+"Nw9-pU-o26.text" = "Размещение";
+
+/* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "QrB-ab-D1k"; */
+"QrB-ab-D1k.accessibilityHint" = "Сохраняет текущие настройки и возвращается к начальной странице.";
+
+/* Class = "UIButton"; accessibilityLabel = "Save"; ObjectID = "QrB-ab-D1k"; */
+"QrB-ab-D1k.accessibilityLabel" = "Сохранить";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "QrB-ab-D1k"; */
+"QrB-ab-D1k.normalTitle" = "Сохранить";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name field"; ObjectID = "W2o-Tj-nJy"; */
+"W2o-Tj-nJy.accessibilityLabel" = "Поле имени учетной записи";
+
+/* Class = "UITextField"; text = "demo"; ObjectID = "W2o-Tj-nJy"; */
+"W2o-Tj-nJy.text" = "demo";
+
+/* Class = "UILabel"; text = "Page title"; ObjectID = "W9e-BQ-hTd"; */
+"W9e-BQ-hTd.text" = "Имя чата (Page title)";
+
+/* Class = "UITextView"; accessibilityLabel = "Settings instruction"; ObjectID = "X1c-3e-DTs"; */
+"X1c-3e-DTs.accessibilityLabel" = "Инструкция к экрану настроек";
+
+// Xcode does not localize UITextView text automatically.
+/* Class = "UITextView"; text = "If you are registered in Webim service you can use your own account name and location."; ObjectID = "X1c-3e-DTs"; */
+"If you are registered in Webim service you can use your own account name and location." = "Если вы зарегистрированы в сервисе \"Webim\", вы можете использовать свою учетную запись.";
+
+/* Class = "UITextView"; accessibilityLabel = "Greeting words"; ObjectID = "bPt-yP-yHN"; */
+"bPt-yP-yHN.accessibilityLabel" = "Приветственные слова";
+
+// Xcode does not localize UITextView text automatically.
+/* Class = "UITextView"; text = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"; ObjectID = "bPt-yP-yHN"; */
+"Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "Добро пожаловать в демо-приложение WebimClientLibrary!\n\nЧтобы начать чат, нажмите кнопку внизу.\n\nОператор может ответить на обращение здесь:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код данного приложения может быть найден здесь:\nhttps://github.com/webim/webim-client-sdk-ios";
+
+/* Class = "UIButton"; accessibilityHint = "Starts chat."; ObjectID = "edo-SU-HN8"; */
+"edo-SU-HN8.accessibilityHint" = "Начинает чат.";
+
+/* Class = "UIButton"; accessibilityLabel = "Start chat"; ObjectID = "edo-SU-HN8"; */
+"edo-SU-HN8.accessibilityLabel" = "Начать чат";
+
+/* Class = "UIButton"; normalTitle = "Start chat"; ObjectID = "edo-SU-HN8"; */
+"edo-SU-HN8.normalTitle" = "Начать чат";
+
+/* Class = "UILabel"; text = "Account name"; ObjectID = "oZI-yJ-Boe"; */
+"oZI-yJ-Boe.text" = "Название учетной записи";
+
+/* Class = "UIButton"; accessibilityHint = "Shows custom account settings."; ObjectID = "rMR-x2-dzu"; */
+"rMR-x2-dzu.accessibilityHint" = "Показывает настройки учетной записи.";
+
+/* Class = "UIButton"; accessibilityLabel = "Settings"; ObjectID = "rMR-x2-dzu"; */
+"rMR-x2-dzu.accessibilityLabel" = "Настройки";
+
+/* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "rMR-x2-dzu"; */
+"rMR-x2-dzu.normalTitle" = "Настройки";

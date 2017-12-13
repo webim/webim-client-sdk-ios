@@ -58,7 +58,7 @@ struct VisitorItem {
         }
         
         if let visitorFieldsValue = jsonDictionary[JSONField.VISITOR_FIELDS.rawValue] as? [String : Any?] {
-            visitorFields = VisitorFields(withJSONDictionary: visitorFieldsValue)
+            visitorFields = VisitorFields(jsonDictionary: visitorFieldsValue)
         }
         
         if let id = jsonDictionary[JSONField.ID.rawValue] as? String {
@@ -91,7 +91,7 @@ struct VisitorFields {
     private var phone: String?
     
     // MARK: - Initialization
-    init(withJSONDictionary jsonDictionary: [String: Any?]) {
+    init(jsonDictionary: [String: Any?]) {
         if let email = jsonDictionary[JSONField.EMAIL.rawValue] as? String {
             self.email = email
         }

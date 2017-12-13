@@ -42,7 +42,7 @@ final class MessageItem {
     enum MessageKind: String {
         
         case ACTION_REQUEST = "action_request"
-        case CONTACT_REQUEST = "cont_req"
+        case CONTACTS_REQUEST = "cont_req"
         case CONTACTS = "contacts"
         case FILE_FROM_OPERATOR = "file_operator"
         case FILE_FROM_VISITOR = "file_visitor"
@@ -51,6 +51,28 @@ final class MessageItem {
         case OPERATOR = "operator"
         case OPERATOR_BUSY = "operator_busy"
         case VISITOR = "visitor"
+        
+        // MARK: - Initialization
+        init(messageType: MessageType) {
+            switch messageType {
+            case .ACTION_REQUEST:
+                self = .ACTION_REQUEST
+            case .CONTACTS_REQUEST:
+                self = .CONTACTS_REQUEST
+            case .FILE_FROM_OPERATOR:
+                self = .FILE_FROM_OPERATOR
+            case .FILE_FROM_VISITOR:
+                self = .FILE_FROM_VISITOR
+            case .INFO:
+                self = .INFO
+            case .OPERATOR:
+                self = .OPERATOR
+            case .OPERATOR_BUSY:
+                self = .OPERATOR_BUSY
+            case .VISITOR:
+                self = .VISITOR
+            }
+        }
         
         // MARK: - Methods
         
