@@ -240,6 +240,8 @@ NSString *const WMVisitorParameterCRC = @"crc";
                    forKey:@"visitor-ext"];
     [parameters setObject:@([[NSDate date] timeIntervalSince1970])
                    forKey:@"ts"];
+    [parameters setObject:@"ios"
+                   forKey:@"platform"];
     if (appVersion_ != nil) {
         [parameters setObject:appVersion_
                        forKey:@"app-version"];

@@ -8,18 +8,14 @@ _WebimClientLibrary_ is available through [CocoaPods](http://cocoapods.org). To 
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'version2', :tag => '2.8.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'version2', :tag => '2.8.1'
 ```
 
 > Latest _Swift_ version can be found at **master** branch.
 
-## Current version changes
+## Release notes
 
-- `unreadByVisitorTimestamp` property added to `WMChat` interface. (Timestamp after which messages are unread by visitor.)
-- Missing **AppIcon** versions added.
-
-Example app:
-- **Podfile** small fixes was made.
+* Online session initialization bug fixed.
 
 ## Example
 
