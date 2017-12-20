@@ -44,7 +44,9 @@ typedef enum {
 typedef void (^WMResponseCompletionBlock)(BOOL successful);
 
 
-// Optional keys for visitorData dictionary
+// MARK: - Constants
+
+// MARK: Keys for visitorData dictionary.
 extern NSString *const WMVisitorParameterDisplayName;
 extern NSString *const WMVisitorParameterPhone;
 extern NSString *const WMVisitorParameterEmail;
@@ -55,34 +57,39 @@ extern NSString *const WMVisitorParameterID;
 extern NSString *const WMVisitorParameterLogin;
 extern NSString *const WMVisitorParameterCRC; // Required, see http://webim.ru/help/identification/
 
+// MARK: Keys of result dictionary of history methods.
+extern NSString *const WMHistoryChatsKey;
+extern NSString *const WMHistoryMessagesKey;
+
 
 @interface WMSession : WMBaseSession
-
-@property (nonatomic, weak) id <WMSessionDelegate> delegate;
-@property (nonatomic, readonly, assign) WMSessionState state;
-@property (nonatomic, readonly, assign) WMSessionOnlineStatus onlineStatus;
-@property (nonatomic, strong) WMChat *chat;
-@property (nonatomic, strong) WMVisitor *visitor;
-
-@property (nonatomic, readonly) WMSessionConnectionStatus connectionStatus;
-
-
-// MARK: Session initialization
-
-/**
- Initialize session.
- 
- @param accountName The name of an account in the webim service or custom service entry point.
- @param location Location is a set of predefined properties for a session, string value.
- @param appVersion Optional. Sets your app version if it is needed to pass to a server. E.g. '@"2.9.11"'.
- @param delegate Delegate which will handle WMSessionDelegate calls.
- @param visitorFields Optional. It is useful for your custom visitor identification.
- @param isMultiUser Optional. Substatiates if an app should be able to handle different users with local history on device.
- 
- @return Initialized object of session.
- 
- @see https://webim.ru/help/identification/
- */
+    
+    // MARK: - Properties
+    @property (nonatomic, strong) WMChat *chat;
+    @property (nonatomic, readonly) WMSessionConnectionStatus connectionStatus;
+    @property (nonatomic, weak) id <WMSessionDelegate> delegate;
+    @property (nonatomic, strong) NSNumber *lastHistoryResponseTS;
+    @property (nonatomic, readonly, assign) WMSessionOnlineStatus onlineStatus;
+    @property (nonatomic, readonly, assign) WMSessionState state;
+    @property (nonatomic, strong) WMVisitor *visitor;
+    
+    
+    // MARK: Session initialization
+    
+    /**
+     Initializes session.
+     
+     @param accountName The name of an account in the webim service or custom service entry point.
+     @param location Location is a set of predefined properties for a session, string value.
+     @param appVersion Optional. Sets your app version if it is needed to pass to a server. E.g. '@"2.9.11"'.
+     @param delegate Delegate which will handle WMSessionDelegate calls.
+     @param visitorFields Optional. It is useful for your custom visitor identification.
+     @param isMultiUser Optional. Substatiates if an app should be able to handle different users with local history on device.
+     
+     @return Initialized object of session.
+     
+     @see https://webim.ru/help/identification/
+     */
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                appVersion:(NSString *)appVersion
@@ -110,23 +117,38 @@ extern NSString *const WMVisitorParameterCRC; // Required, see http://webim.ru/h
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id<WMSessionDelegate>)delegate;
-
-// MARK: Session methods
+    
+    // MARK: Session methods
+    
 - (void)startSession:(WMResponseCompletionBlock)block;
 - (void)stopSession;
 - (void)refreshSessionWithCompletionBlock:(WMResponseCompletionBlock)block;
 - (BOOL)areHintsEnabled; // Answers if the app should show hints to visitor when composing a new message
-
-// MARK: Chat methods
+    
+    // MARK: Chat methods
+    
 - (NSString *)startChatWithClientSideId:(NSString *)clientSideId
                         completionBlock:(WMResponseCompletionBlock)completionBlock;
 - (NSString *)startChat:(WMResponseCompletionBlock)block;
 - (void)closeChat:(WMResponseCompletionBlock)block;
 - (void)markChatAsRead:(WMResponseCompletionBlock)block;
-
-// MARK: Messages methods
-
-// MARK: Text (message)
+    
+    // MARK: History
+    /**
+     @brief Gets history since timestamp.
+     
+     @discussion Completion block takes three parameters: successful indicates if request succeeded; result contains dictionary whith  two keys – WMHistoryChats and WMHistoryMessages; error describes the reason the request failed by. WMHistoryChats contains array of WMChat. WMHistoryMessages contains array of messages.
+     
+     @param since Timestamp after which history is to be requested.
+     @param block Completion block to be executed after request finished.
+     */
+    - (void)getHistorySince:(NSNumber *)since
+                 completion:(void (^)(BOOL successful, NSDictionary *result, NSError *error))block;
+    
+    // MARK: Messages methods
+    
+    // MARK: Text (message)
+    
 - (NSString *)sendMessage:(NSString *)message
          withClientSideId:(NSString *)clientSideId
              successBlock:(void (^)(NSString *clientSideId))successBlock
@@ -134,7 +156,8 @@ extern NSString *const WMVisitorParameterCRC; // Required, see http://webim.ru/h
 - (NSString *)sendMessage:(NSString *)message
              successBlock:(void (^)(NSString *clientSideId))successBlock
              failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
-// Those with optional argument isHint which is demonstrates to server if visitor choose a hint instead of composing message
+    
+    // Those with optional argument isHint which is demonstrates to server if visitor choose a hint instead of composing message
 - (NSString *)sendMessage:(NSString *)message
          withClientSideId:(NSString *)clientSideId
            isHintQuestion:(BOOL)isHintQuestion
@@ -144,8 +167,9 @@ extern NSString *const WMVisitorParameterCRC; // Required, see http://webim.ru/h
            isHintQuestion:(BOOL)isHintQuestion
              successBlock:(void (^)(NSString *clientSideId))successBlock
              failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
-
-// MARK: File (general case)
+    
+    // MARK: File (general case)
+    
 - (NSString *)sendFile:(NSData *)fileData
                   name:(NSString *)fileName
               mimeType:(NSString *)mimeType
@@ -157,32 +181,32 @@ extern NSString *const WMVisitorParameterCRC; // Required, see http://webim.ru/h
               mimeType:(NSString *)mimeType
           successBlock:(void (^)(NSString *clientSideId))succcessBlock
           failureBlock:(void(^)(NSString *clientSideId, WMSessionError error))failureBlock;
-
-// MARK: Image
+    
+    // Image
 - (void)sendImage:(NSData *)imageData
              type:(WMChatAttachmentImageType)type
        completion:(WMResponseCompletionBlock)block __attribute__((deprecated("Use - (void)sendFile... instead")));
-
+    
 - (void)setComposingMessage:(BOOL)isComposing
                       draft:(NSString *)draft;
-
-// MARK: Rate operator method
+    
+    // MARK: Rate operator method
 - (void)rateOperator:(NSString *)authorID
             withRate:(WMOperatorRate)rate
           completion:(WMResponseCompletionBlock)block;
-
-// MARK: Token methods
-
+    
+    // MARK: Token methods
+    
 - (void)setDeviceToken:(NSData *)deviceToken
             completion:(WMResponseCompletionBlock)block;
 + (void)setDeviceToken:(NSData *)deviceToken;
 + (void)setDeviceTokenString:(NSString *)token;
-
-@end
+    
+    @end
 
 
 @protocol WMSessionDelegate <NSObject>
-
+    
 - (void)sessionDidReceiveFullUpdate:(WMSession *)session;
 - (void)sessionDidChangeStatus:(WMSession *)session;
 - (void)sessionDidChangeChatStatus:(WMSession *)session;
@@ -194,19 +218,19 @@ didUpdateOperator:(WMOperator *)chatOperator;
 didReceiveMessage:(WMMessage *)message;
 - (void)session:(WMSession *)session
 didReceiveError:(WMSessionError)errorID;
-
-@optional
+    
+    @optional
 - (void)session:(WMSession *)session
 didChangeConnectionStatus:(WMSessionConnectionStatus)status;
 - (void)session:(WMSession *)session
 didChangeOnlineStatus:(WMSessionOnlineStatus)onlineStatus;
 - (void)session:(WMSession *)session
 didChangeOperatorTyping:(BOOL)typing;
-
-/*
- Session unexpected behaviour.
- Session is stopped at this moment. Try to start it again or create a new instance instead.
- */
+    
+    /*
+     Session unexpected behaviour.
+     Session is stopped at this moment. Try to start it again or create a new instance instead.
+     */
 - (void)sessionRestartRequired:(WMSession *)session;
-
-@end
+    
+    @end

@@ -283,7 +283,8 @@ startOfflineSessionWithCompletion:^(BOOL successful, NSError *error) {
     }
 }];
     } else {
-        [self doGetHistoryForced:forced completion:block];
+        [self doGetHistoryForced:forced
+                      completion:block];
     }
 }
 

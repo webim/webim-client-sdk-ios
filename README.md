@@ -8,14 +8,14 @@ _WebimClientLibrary_ is available through [CocoaPods](http://cocoapods.org). To 
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'version2', :tag => '2.8.1'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'version2', :tag => '2.9.0'
 ```
 
 > Latest _Swift_ version can be found at **master** branch.
 
 ## Release notes
 
-* Online session initialization bug fixed.
+* `-getHistorySince:completion:` instance method added to `WMSession` class.
 
 ## Example
 

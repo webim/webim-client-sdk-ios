@@ -30,18 +30,37 @@
 #define WMDebugLog(format, ...)
 #endif
 
+// MARK: - Constants
 
+// MARK: Request paths
 static NSString *const APIDeltaPath = @"/l/v/delta";
 static NSString *const APIActionPath = @"/l/v/action";
 static NSString *const APIHistoryPath = @"/l/v/history";
 static NSString *const APIUploadPath = @"/l/v/upload";
 
+// MARK: Request parameters
+NSString *const SINCE_PARAMETER = @"since";
+NSString *const VISITOR_ID_PARAMETER = @"visitor-id";
+
+// MARK: Response fields
+NSString *const CHATS_FIELD = @"chats";
+NSString *const ERROR_FIELD = @"error";
+NSString *const LAST_CHANGE_TIMESTAMP_FIELD = @"lastChangeTs";
+NSString *const MESSAGES_FIELD = @"messages";
+
+// MARK: Keys of result dictionary of history methods.
+NSString *const WMHistoryChatsKey = @"chats";
+NSString *const WMHistoryMessagesKey = @"messages";
+
+// MARK: Default client parameters
 static NSString *DefaultClientTitle = @"iOS Client";
 
+// MARK: Default timeouts
 static const NSTimeInterval ReconnectTimeInterval = 30; // < seconds
 static const NSTimeInterval OnlineDeltaPatchTimeInterval = 30;
 static const NSTimeInterval PatchTimerCheckTimeInterval = 4;
 
+// MARK: Visitor fields names
 NSString *const WMVisitorParameterDisplayName = @"display_name";
 NSString *const WMVisitorParameterPhone = @"phone";
 NSString *const WMVisitorParameterEmail = @"email";
@@ -54,11 +73,11 @@ NSString *const WMVisitorParameterCRC = @"crc";
 
 
 @interface WMSession ()
-
-@property (nonatomic, strong) NSNumber *revision;
-@property (nonatomic, assign) BOOL isStopped;
-
-@end
+    
+    @property (nonatomic, strong) NSNumber *revision;
+    @property (nonatomic, assign) BOOL isStopped;
+    
+    @end
 
 
 @implementation WMSession {
@@ -80,12 +99,12 @@ NSString *const WMVisitorParameterCRC = @"crc";
     NSDictionary *userDefinedVisitorFields_;
     NSString *userId_; // Only for multi-user session.
 }
-
-
-// MARK: - API
-
-// MARK: - Session initialization
-
+    
+    
+    // MARK: - API
+    
+    // MARK: - Session initialization
+    
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                appVersion:(NSString *)appVersion
@@ -97,6 +116,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
         _delegate = delegate;
         userDefinedVisitorFields_ = visitorFields;
         appVersion_ = appVersion;
+        _lastHistoryResponseTS = @0;
         
         NSURL *baseURL = [NSURL URLWithString:self.host];
         client_ = [AFHTTPClient clientWithBaseURL:baseURL];
@@ -123,7 +143,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
     
     return self;
 }
-
+    
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id<WMSessionDelegate>)delegate
@@ -136,7 +156,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
                        visitorFields:visitorFields
                          isMultiUser:isMultiUser];
 }
-
+    
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                appVersion:(NSString *)appVersion
@@ -149,7 +169,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
                        visitorFields:visitorFields
                          isMultiUser:NO];
 }
-
+    
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id<WMSessionDelegate>)delegate
@@ -161,7 +181,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
                        visitorFields:visitorFields
                          isMultiUser:NO];
 }
-
+    
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                appVersion:(NSString *)appVersion
@@ -173,7 +193,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
                        visitorFields:nil
                          isMultiUser:NO];
 }
-
+    
 - (id)initWithAccountName:(NSString *)accountName
                  location:(NSString *)location
                  delegate:(id<WMSessionDelegate>)delegate {
@@ -184,14 +204,14 @@ NSString *const WMVisitorParameterCRC = @"crc";
                        visitorFields:nil
                          isMultiUser:NO];
 }
-
+    
 - (void)dealloc {
     [self enableObservingForNotifications:NO];
 }
-
-
-// MARK: - Session methods
-
+    
+    
+    // MARK: - Session methods
+    
 - (void)startSession:(WMResponseCompletionBlock)block {
     gettingInitialDelta_ = YES;
     sessionStarted_ = YES;
@@ -235,7 +255,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
     [parameters setObject:DefaultClientTitle
                    forKey:@"title"];
     [parameters setObject:@0
-                   forKey:@"since"];
+                   forKey:SINCE_PARAMETER];
     [parameters setObject:extVisitorObject
                    forKey:@"visitor-ext"];
     [parameters setObject:@([[NSDate date] timeIntervalSince1970])
@@ -302,7 +322,7 @@ NSString *const WMVisitorParameterCRC = @"crc";
                  CALL_BLOCK(block, NO);
              }];
 }
-
+    
 - (BOOL)dictionary:(NSDictionary *)left
 isEqualToDictionary:(NSDictionary *)right {
     if ((left == nil) ||
@@ -317,7 +337,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return [left isEqualToDictionary:right];
 }
-
+    
 - (NSString *)jsonizedStringFromObject:(id)inputObject {
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:inputObject
@@ -335,7 +355,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return output;
 }
-
+    
 - (void)stopSession {
     [patchDeltaTimer_ invalidate];
     patchDeltaTimer_ = nil;
@@ -344,7 +364,7 @@ isEqualToDictionary:(NSDictionary *)right {
     [self cancelGettingDeltaWithComet];
     self.isStopped = YES;
 }
-
+    
 - (void)refreshSessionWithCompletionBlock:(WMResponseCompletionBlock)block {
     [self cancelGettingDeltaWithComet];
     [self getDeltaWithComet:NO
@@ -352,7 +372,7 @@ isEqualToDictionary:(NSDictionary *)right {
                 CALL_BLOCK(block, statusData == nil);
             }];
 }
-
+    
 - (BOOL)areHintsEnabled {
     id hintsEnabled = [self unarchiveClientData][WMStoreAreHintsEnabledKey];
     
@@ -362,10 +382,10 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return false;
 }
-
-
-// MARK: - Delta methods
-
+    
+    
+    // MARK: - Delta methods
+    
 - (void)getDeltaWithComet:(BOOL)useComet
           completionBlock:(void (^)(NSDictionary *))block {
     NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
@@ -398,7 +418,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     NSDictionary *params = @{
                              @"page-id": pageID,
-                             @"since": self.revision,
+                             SINCE_PARAMETER: self.revision,
                              @"ts": @([[NSDate date] timeIntervalSince1970]),
                              @"respond-immediately" : useComet ? @"false" : @"true",
                              };
@@ -442,7 +462,7 @@ isEqualToDictionary:(NSDictionary *)right {
                  }
              }];
 }
-
+    
 - (void)startGettingDeltaWithComet {
     if (self.isStopped) {
         return;
@@ -469,7 +489,7 @@ isEqualToDictionary:(NSDictionary *)right {
                 }];
     }];
 }
-
+    
 - (void)cancelGettingDeltaWithComet {
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(startGettingDeltaWithComet)
@@ -477,15 +497,15 @@ isEqualToDictionary:(NSDictionary *)right {
     [client_ cancelAllHTTPOperationsWithMethod:@"GET"
                                           path:APIDeltaPath];
 }
-
+    
 - (void)getDeltaWithCompletionBlock:(void (^)(NSDictionary *statusData))block {
     [self getDeltaWithComet:NO
             completionBlock:block];
 }
-
-
-// MARK: - Chat methods
-
+    
+    
+    // MARK: - Chat methods
+    
 - (NSString *)startChatWithClientSideId:(NSString *)clientSideId
                         completionBlock:(WMResponseCompletionBlock)block {
     NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
@@ -523,12 +543,12 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return clientSideId;
 }
-
+    
 - (NSString *)startChat:(WMResponseCompletionBlock)block {
     return [self startChatWithClientSideId:nil
                            completionBlock:block];
 }
-
+    
 - (void)closeChat:(WMResponseCompletionBlock)block {
     NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0) {
@@ -554,7 +574,7 @@ isEqualToDictionary:(NSDictionary *)right {
                   CALL_BLOCK(block, NO);
               }];
 }
-
+    
 - (void)markChatAsRead:(WMResponseCompletionBlock)block {
     NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0) {
@@ -581,11 +601,87 @@ isEqualToDictionary:(NSDictionary *)right {
                   CALL_BLOCK(block, NO);
               }];
 }
-
-
-// MARK: - Messages methods
-
-// Full implementation
+    
+    // MARK: - History methods
+    
+    - (void)getHistorySince:(NSNumber *)since
+                 completion:(void (^)(BOOL successful, NSDictionary *result, NSError *error))block {
+        NSDictionary *storedValues = [self unarchiveClientData];
+        NSString *visitorID = storedValues[WMStoreVisitorKey][WMVisitorParameterID];
+        if (visitorID.length == 0) {
+            WMDebugLog(@"History will be available after first appeal.");
+            
+            NSError *error = [NSError errorWithDomain:WMWebimErrorDomain
+                                                 code:WMSessionErrorVisitorNotSet
+                                             userInfo:@{
+                                                        NSLocalizedDescriptionKey: @"User visitor ID is not ready.",
+                                                        NSLocalizedRecoverySuggestionErrorKey: @"History will be available after user's first message."
+                                                        }];
+            CALL_BLOCK(block, NO, nil, error);
+            
+            return;
+        }
+        
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        [parameters setObject:visitorID
+                       forKey:VISITOR_ID_PARAMETER];
+        [parameters setObject:since
+                       forKey:SINCE_PARAMETER];
+        
+        [client_ getPath:APIHistoryPath
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     WMDebugLog(@"History request: %@\nHistory response:\n%@", operation.request.URL, responseObject);
+                     
+                     BOOL hasError = [self handleErrorInResponse:responseObject];
+                     if (!hasError) {
+                         _lastHistoryResponseTS = responseObject[LAST_CHANGE_TIMESTAMP_FIELD];
+                         
+                         NSArray *chatsResponse = responseObject[CHATS_FIELD];
+                         NSMutableArray *chats = [NSMutableArray array];
+                         for (NSDictionary *chatDictionary in chatsResponse) {
+                             WMChat *chat = [WMChat alloc];
+                             [chat initWithObject:chatDictionary
+                                       forSession:self];
+                             [chats addObject:chat];
+                         }
+                         
+                         NSArray *messagesResponse = responseObject[MESSAGES_FIELD];
+                         NSMutableArray *messages = [NSMutableArray array];
+                         for (NSDictionary *messageDictionary in messagesResponse) {
+                             WMMessage *message = [[WMMessage alloc] initWithObject:messageDictionary
+                                                                         forSession:self];
+                             [messages addObject:message];
+                         }
+                         
+                         NSMutableDictionary *result = [NSMutableDictionary dictionary];
+                         [result setObject:chats
+                                    forKey:WMHistoryChatsKey];
+                         [result setObject:messages
+                                    forKey:WMHistoryMessagesKey];
+                         
+                         CALL_BLOCK(block, YES, result, nil);
+                     } else {
+                         NSString *errorString = responseObject[ERROR_FIELD];
+                         WMSessionError webimError = [self errorFromString:errorString];
+                         NSError *error = [NSError errorWithDomain:WMWebimErrorDomain
+                                                              code:webimError
+                                                          userInfo:@{
+                                                                     NSLocalizedDescriptionKey: errorString
+                                                                     }];
+                         CALL_BLOCK(block, NO, nil, error);
+                     }
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     WMDebugLog(@"%@", error);
+                     
+                     CALL_BLOCK(block, NO, nil, error);
+                 }];
+    }
+    
+    // MARK: - Messages methods
+    
+    // Full implementation
 - (NSString *)sendMessage:(NSString *)message
          withClientSideId:(NSString *)clientSideId
            isHintQuestion:(BOOL)isHintQuestion
@@ -611,8 +707,8 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return clientSideId;
 }
-
-// Implementation without clientSideId passed
+    
+    // Implementation without clientSideId passed
 - (NSString *)sendMessage:(NSString *)message
            isHintQuestion:(BOOL)isHintQuestion
              successBlock:(void (^)(NSString *))successBlock
@@ -623,8 +719,8 @@ isEqualToDictionary:(NSDictionary *)right {
                 successBlock:successBlock
                 failureBlock:failureBlock];
 }
-
-// Implementation without isHintQuestion flag passed
+    
+    // Implementation without isHintQuestion flag passed
 - (NSString *)sendMessage:(NSString *)message
          withClientSideId:(NSString *)clientSideId
              successBlock:(void (^)(NSString *))successBlock
@@ -647,8 +743,8 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return clientSideId;
 }
-
-// Implementation without clientSideId and isHintQuestion flag passed
+    
+    // Implementation without clientSideId and isHintQuestion flag passed
 - (NSString *)sendMessage:(NSString *)message
              successBlock:(void (^)(NSString *))successBlock
              failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
@@ -657,7 +753,7 @@ isEqualToDictionary:(NSDictionary *)right {
                 successBlock:successBlock
                 failureBlock:failureBlock];
 }
-
+    
 - (NSMutableDictionary *)baseMessageParametersDictionaryWithMessage:(NSString *)message
                                                     andClientSideId:(NSString *)clientSideId {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -672,7 +768,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return parameters;
 }
-
+    
 - (void)postMessageWithParameters:(NSDictionary *)parameters
                   andClientSideId:(NSString *)clientSideId
                      successBlock:(void (^)(NSString *))successBlock
@@ -703,10 +799,10 @@ isEqualToDictionary:(NSDictionary *)right {
                   CALL_BLOCK(failureBlock, clientSideId, WMSessionErrorNetworkError);
               }];
 }
-
-
-// MARK: File (general case)
-
+    
+    
+    // MARK: File (general case)
+    
 - (NSString *)sendFile:(NSData *)fileData
                   name:(NSString *)fileName
               mimeType:(NSString *)mimeType
@@ -761,11 +857,11 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return clientSideId;
 }
-
+    
 - (void)enqueueHTTPRequestOperation:(id)operation {
     [client_ enqueueHTTPRequestOperation:operation];
 }
-
+    
 - (NSString *)sendFile:(NSData *)fileData
                   name:(NSString *)fileName
               mimeType:(NSString *)mimeType
@@ -778,10 +874,10 @@ isEqualToDictionary:(NSDictionary *)right {
              successBlock:succcessBlock
              failureBlock:failureBlock];
 }
-
-
-// MARK: Image
-
+    
+    
+    // MARK: Image
+    
 - (void)sendImage:(NSData *)imageData
              type:(WMChatAttachmentImageType)type
        completion:(WMResponseCompletionBlock)block {
@@ -797,8 +893,8 @@ isEqualToDictionary:(NSDictionary *)right {
           CALL_BLOCK(block, NO);
       }];
 }
-
-
+    
+    
 - (void)setComposingMessage:(BOOL)isComposing
                       draft:(NSString *)draft {
     lastComposedCachedIsTyping_ = isComposing;
@@ -824,14 +920,14 @@ isEqualToDictionary:(NSDictionary *)right {
                         draft:draft
                       isTimer:NO];
 }
-
+    
 - (void)setComposingByTimer:(NSTimer *)timer {
     composingTimer_ = nil;
     [self setComposingMessage:lastComposedCachedIsTyping_
                         draft:lastComposedCachedDraft_
                       isTimer:YES];
 }
-
+    
 - (void)setComposingMessage:(BOOL)isComposing
                       draft:(NSString *)draft
                     isTimer:(BOOL)isTimer {
@@ -866,7 +962,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     lastComposedSentDate_ = [NSDate date];
 }
-
+    
 - (BOOL)draftChanged:(NSString *)draft {
     if ((lastComposedSentDraft_.length == 0) &&
         (draft.length == 0)) {
@@ -878,10 +974,10 @@ isEqualToDictionary:(NSDictionary *)right {
         return ![lastComposedSentDraft_ isEqualToString:draft];
     }
 }
-
-
-// MARK: - Rate operator method
-
+    
+    
+    // MARK: - Rate operator method
+    
 - (void)rateOperator:(NSString *)authorID
             withRate:(WMOperatorRate)rate
           completion:(WMResponseCompletionBlock)block {
@@ -918,10 +1014,10 @@ isEqualToDictionary:(NSDictionary *)right {
                   CALL_BLOCK(block, NO);
               }];
 }
-
-
-// MARK: - Token methods
-
+    
+    
+    // MARK: - Token methods
+    
 - (void)tryToSetupPushToken {
     if (sessionStarted_ &&
         !sessionEstablished_) {
@@ -934,19 +1030,19 @@ isEqualToDictionary:(NSDictionary *)right {
                   completion:nil];
     }
 }
-
+    
 - (void)setDeviceToken:(NSData *)deviceToken
             completion:(WMResponseCompletionBlock)block {
     NSString *tokenString = [[self class] deviceTokenStringFromData:deviceToken];
     [self setupPushToken:tokenString
               completion:block];
 }
-
+    
 + (void)setDeviceToken:(NSData *)deviceToken {
     NSString *token = [[self class] deviceTokenStringFromData:deviceToken];
     [WMSession setDeviceTokenString:token];
 }
-
+    
 + (NSString *)deviceTokenStringFromData:(NSData *)deviceToken {
     NSCharacterSet *matchSet = [NSCharacterSet characterSetWithCharactersInString:@"<>"];
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:matchSet];
@@ -955,7 +1051,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return token;
 }
-
+    
 + (void)setDeviceTokenString:(NSString *)token {
     [[NSUserDefaults standardUserDefaults] setValue:token
                                              forKey:@"WMDeviceTokenKey"];
@@ -966,8 +1062,8 @@ isEqualToDictionary:(NSDictionary *)right {
                                       object:token
                                     userInfo:nil];
 }
-
-
+    
+    
 - (void)setupPushToken:(NSString *)pushToken completion:(WMResponseCompletionBlock)block {
     NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
     if (pageID.length == 0 || pushToken.length == 0) {
@@ -994,10 +1090,10 @@ isEqualToDictionary:(NSDictionary *)right {
         CALL_BLOCK(block, NO);
     }];
 }
-
-
-// MARK: - Processors
-
+    
+    
+    // MARK: - Processors
+    
 - (void)processGetInitialDelta:(id)response {
     if (response == nil ||
         ![response isKindOfClass:[NSDictionary class]] ||
@@ -1016,7 +1112,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     [self processDeltaFullUpdate:fullUpdate];
 }
-
+    
 - (void)processGetDelta:(id)response {
     if ((response == nil) ||
         ![response isKindOfClass:[NSDictionary class]] ||
@@ -1035,7 +1131,7 @@ isEqualToDictionary:(NSDictionary *)right {
     [self processDeltaFullUpdate:response[@"fullUpdate"]];
     [self processDeltaDeltaList:response[@"deltaList"]];
 }
-
+    
 - (void)processDeltaFullUpdate:(NSMutableDictionary *)updateDictionary {
     lastFullUpdateDate_ = [NSDate date];
     
@@ -1073,7 +1169,7 @@ isEqualToDictionary:(NSDictionary *)right {
         [_delegate sessionDidReceiveFullUpdate:self];
     }
 }
-
+    
 - (void)patchOnlineDelta {
     if (self.isStopped) {
         return;
@@ -1095,7 +1191,7 @@ isEqualToDictionary:(NSDictionary *)right {
         }
     }
 }
-
+    
 - (WMSessionOnlineStatus)onlineStatusFromString:(NSString *)status {
     NSDictionary *map = @{
                           @"online": @(WMSessionOnlineStatusOnline),
@@ -1110,7 +1206,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return (WMSessionOnlineStatus)[map[status] integerValue];
 }
-
+    
 - (void)updateSessionStateWithObject:(NSDictionary *)object {
     NSParameterAssert([object isKindOfClass:[NSString class]]);
     
@@ -1130,7 +1226,7 @@ isEqualToDictionary:(NSDictionary *)right {
         [_delegate sessionDidChangeStatus:self];
     }
 }
-
+    
 - (WMSessionState)sesstionStateFromString:(NSString *)state {
     if ([@"idle" isEqualToString:state]) {
         return WMSessionStateIdle;
@@ -1150,7 +1246,7 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return WMSessionStateUnknown;
 }
-
+    
 - (void)updateChatWithObject:(NSDictionary *)object {
     if ([object isKindOfClass:[NSNull class]]) {
         _chat = nil;
@@ -1167,7 +1263,7 @@ isEqualToDictionary:(NSDictionary *)right {
         }
     }
 }
-
+    
 - (void)processDeltaDeltaList:(NSDictionary *)deltaList {
     if (deltaList == nil ||
         ![deltaList isKindOfClass:[NSArray class]]) {
@@ -1224,7 +1320,7 @@ isEqualToDictionary:(NSDictionary *)right {
         }
     }
 }
-
+    
 - (void)addChatMessageFromObject:(NSDictionary *)object {
     NSAssert(_chat != nil, @"Chat is not initialized");
     
@@ -1237,7 +1333,7 @@ isEqualToDictionary:(NSDictionary *)right {
          didReceiveMessage:newMessage];
     }
 }
-
+    
 - (void)updateChatStatusWithObject:(NSDictionary *)object {
     NSParameterAssert([object isKindOfClass:[NSString class]]);
     if (_chat == nil) {
@@ -1250,7 +1346,7 @@ isEqualToDictionary:(NSDictionary *)right {
         [_delegate sessionDidChangeChatStatus:self];
     }
 }
-
+    
 - (void)updateChatOperatorWithObject:(NSDictionary *)object {
     NSAssert(_chat != nil, @"Chat object must exist before adding operator");
     
@@ -1270,12 +1366,12 @@ isEqualToDictionary:(NSDictionary *)right {
          didUpdateOperator:_chat.chatOperator];
     }
 }
-
+    
 - (void)updateChatReadByVisitorWithObject:(id)object {
     BOOL chatReadByVisitor = [object boolValue];
     _chat.hasUnreadMessages = !chatReadByVisitor;
 }
-
+    
 - (void)updateChatOperatorTypingWithObject:(id)object {
     BOOL operatorTyping = [object boolValue];
     _chat.operatorTyping = operatorTyping;
@@ -1284,10 +1380,10 @@ isEqualToDictionary:(NSDictionary *)right {
    didChangeOperatorTyping:operatorTyping];
     }
 }
-
-
-// MARK: Error processors
-
+    
+    
+    // MARK: Error processors
+    
 - (void)processErrorAPIResponse:(AFHTTPRequestOperation *)operation
                           error:(NSError *)error {
     if (operation.response == nil) {
@@ -1300,7 +1396,7 @@ isEqualToDictionary:(NSDictionary *)right {
         }
     }
 }
-
+    
 - (void)postponeGettingDelta {
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(startGettingDeltaWithComet)
@@ -1309,19 +1405,19 @@ isEqualToDictionary:(NSDictionary *)right {
                withObject:nil
                afterDelay:ReconnectTimeInterval];
 }
-
+    
 - (BOOL)handleErrorInResponse:(NSDictionary *)response
                         error:(WMSessionError *)error {
     if ((response != nil) &&
         [response isKindOfClass:[NSDictionary class]] &&
-        (response[@"error"] != nil)) {
+        (response[ERROR_FIELD] != nil)) {
         [self cancelGettingDeltaWithComet];
         
         if (self.isStopped) {
             return NO;
         }
         
-        WMSessionError errorID = [self errorFromString:response[@"error"]];
+        WMSessionError errorID = [self errorFromString:response[ERROR_FIELD]];
         if (error != NULL) {
             *error = errorID;
         }
@@ -1346,12 +1442,12 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return NO;
 }
-
+    
 - (BOOL)handleErrorInResponse:(NSDictionary *)response {
     return [self handleErrorInResponse:response
                                  error:nil];
 }
-
+    
 - (WMSessionError)errorFromString:(NSString *)errorDescription {
     if ([@"reinit-required" isEqualToString:errorDescription]) {
         return WMSessionErrorReinitRequired;
@@ -1391,10 +1487,10 @@ isEqualToDictionary:(NSDictionary *)right {
     
     return WMSessionErrorUnknown;
 }
-
-
-// MARK: - UIApplication Notifications
-
+    
+    
+    // MARK: - UIApplication Notifications
+    
 - (void)applicationDidBecomeActiveNotification:(NSNotification *)notification {
     if (sessionStarted_ && !gettingInitialDelta_) {
 #if 1
@@ -1409,7 +1505,7 @@ isEqualToDictionary:(NSDictionary *)right {
         [self continueInLocation];
     }
 }
-
+    
 - (void)continueInLocation {
     [self cancelGettingDeltaWithComet];
     
@@ -1417,14 +1513,14 @@ isEqualToDictionary:(NSDictionary *)right {
                withObject:nil
                afterDelay:0.3];
 }
-
+    
 - (void)applicationDidEnterBackgroundNotification:(NSNotification *)notification {
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(startGettingDeltaWithComet)
                                                object:nil];
     [self cancelGettingDeltaWithComet];
 }
-
+    
 - (void)enableObservingForNotifications:(BOOL)enable {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     if (enable) {
@@ -1452,14 +1548,14 @@ isEqualToDictionary:(NSDictionary *)right {
                                     object:nil];
     }
 }
-
+    
 - (void)deviceTokenNotification:(NSNotification *)notification {
     [self tryToSetupPushToken];
 }
-
-
-// MARK: -
-
+    
+    
+    // MARK: -
+    
 - (void)setOnlineStatus:(WMSessionOnlineStatus)onlineStatus {
     static NSString *name = @"onlineOperator";
     [self willChangeValueForKey:name];
@@ -1470,7 +1566,7 @@ isEqualToDictionary:(NSDictionary *)right {
         [_delegate session:self didChangeOnlineStatus:onlineStatus];
     }
 }
-
+    
 - (void)setLocation:(NSString *)location {
     [super setLocation:location];
     
@@ -1479,7 +1575,7 @@ isEqualToDictionary:(NSDictionary *)right {
         [self startSession:nil];
     }
 }
-
+    
 - (NSString *)percentEscapeString:(NSString *)string {
     NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                                                  (CFStringRef)string,
@@ -1488,26 +1584,26 @@ isEqualToDictionary:(NSDictionary *)right {
                                                                                  kCFStringEncodingUTF8));
     return [result stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 }
-
+    
 - (void)clearCachedUserData {
     [self archiveClientData:nil];
     self.revision = nil;
 }
-
-
-// MARK: - Private methods
-
-// MARK: Client data
-
+    
+    
+    // MARK: - Private methods
+    
+    // MARK: Client data
+    
 - (void)archiveClientData:(NSDictionary *)dictionary {
     if (isMultiUser_) {
         [WMUserDataManager archiveData:dictionary
-                                 forUserID:userId_];
+                             forUserID:userId_];
     } else {
         [WMUserDataManager archiveData:dictionary];
     }
 }
-
+    
 - (NSDictionary *)unarchiveClientData {
     if(isMultiUser_) {
         return [WMUserDataManager unarchiveDataFor:userId_];
@@ -1515,5 +1611,5 @@ isEqualToDictionary:(NSDictionary *)right {
         return [WMUserDataManager unarchiveData];
     }
 }
-
-@end
+    
+    @end
