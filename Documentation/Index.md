@@ -181,6 +181,7 @@
     -   [on(error:) method](#on-error)
 -   [FatalErrorType enum](#fatal-error-type)
     -   [ACCOUNT_BLOCKED case](#account-blocked)
+    -   [NO_CHAT case](#no-chat)
     -   [PROVIDED_VISITOR_FIELDS_EXPIRED case](#provided-visitor-fields-expired)
     -   [UNKNOWN case](#unknown-fatal-error-type)
     -   [VISITOR_BANNED case](#visitor-banned)
@@ -1104,28 +1105,41 @@ Must be adopted to handle service errors that can occur.
 
 <h3 id ="on-error">on(error:) method</h3>
 
-This method is to be called when a fatal error occurs.
-Notice that the session will be destroyed before this method is called.
-Returns [WebimError](#webim-error) object.
+This method is to be called when Webim service error is received.
+Notica that method called NOT FROM THE MAIN THREAD!
+
+`error` parameter is of [`WebimError` type](#webim-error).
 
 <h2 id ="fatal-error-type">FatalErrorType enum</h2>
 
-Webim service fatal error types.
+Webim service error types.
+Mind that most of this errors causes session to destroy.
 
 <h3 id ="account-blocked">ACCOUNT_BLOCKED case</h3>
 
 Indicates that the account in Webim service has been disabled (e.g. for non-payment). The error is unrelated to the user’s actions.
 Recommended response is to show the user an error message with a recommendation to try using the chat later.
 
+Notice that the session will be destroyed if this error occured.
+
+<h3 id ="no-chat">NO_CHAT case</h3>
+
+Indicates that there was a try to perform action that requires existing chat, but there's no chat.
+E.g. see [rateOperatorWith(id:,byRating rating:) method](#rate-operator-with-id-by-rating-rating) of [MessageStream protocol](#message-stream).
+
 <h3 id ="provided-visitor-fields-expired">PROVIDED_VISITOR_FIELDS_EXPIRED case</h3>
 
 Indicates an expired authorization of a visitor.
 The recommended response is to re-authorize it and to re-create session object.
 
+Notice that the session will be destroyed if this error occured.
+
 <h3 id ="unknown-fatal-error-type">UNKNOWN case</h3>
 
 Indicates the occurrence of an unknown error.
 Recommended response is to send an automatic bug report and show to a user an error message with the recommendation to try using the chat later.
+
+Notice that the session will be destroyed if this error occured.
 
 <h3 id ="visitor-banned">VISITOR_BANNED case</h3>
 
@@ -1133,11 +1147,15 @@ Indicates that a visitor was banned by an operator and can't send messages to a 
 Occurs when a user tries to open the chat or write a message after that.
 Recommended response is to show the user an error message with the recommendation to try using the chat later or explain to the user that it was blocked for some reason.
 
+Notice that the session will be destroyed if this error occured.
+
 <h3 id ="wrong-provided-visitor-hash">WRONG_PROVIDED_VISITOR_HASH case</h3>
 
 Indicates a problem of your application authorization mechanism and is unrelated to the user’s actions.
 Occurs when trying to authorize a visitor with a non-valid signature.
 Recommended response is to send an automatic bug report and show the user an error message with the recommendation to try using the chat later.
+
+Notice that the session will be destroyed if this error occured.
 
 <h2 id ="webim-error">WebimError protocol</h2>
 

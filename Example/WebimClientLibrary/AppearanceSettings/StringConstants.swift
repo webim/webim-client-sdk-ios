@@ -29,6 +29,15 @@ import Foundation
 let REFRESH_CONTROL_TEXT = NSAttributedString(string: NSLocalizedString("LoadingMessages",
                                                                         comment: ""))
 
+enum ActionErrorDialog: String {
+    case BUTTON_TITLE = "OK"
+    case BUTTON_ACCESSIBILITY_HINT = "ClosesActionError"
+    
+    case TITLE = "ActionFailed"
+    
+    case NO_CHAT = "NoChat"
+}
+
 enum Avatar: String {
     case ACCESSIBILITY_LABEL = "SenderAvatarImage"
     case ACCESSIBILITY_HINT_FOR_OPERATOR = "ShowsRatingDialog"
@@ -67,7 +76,9 @@ enum SessionCreationErrorDialog: String {
     case BUTTON_ACCESSIBILITY_HINT = "ClosesSessionError"
     
     case TITLE = "SessionCreationFailed"
-    case MESSAGE = "AccountBlocked"
+    
+    case ACCOUNT_BLOCKED = "AccountBlocked"
+    case VISITOR_BANNED = "VisitorBanned"
 }
 
 enum SettingsErrorDialog: String {

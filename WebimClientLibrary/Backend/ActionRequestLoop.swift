@@ -138,7 +138,9 @@ final class ActionRequestLoop: AbstractRequestLoop {
                             
                             return
                         } else {
-                            running = false
+                            if WebimInternalError.isFatalError(string: error) {
+                                running = false
+                            }
                             
                             completionHandlerExecutor.execute(task: DispatchWorkItem {
                                 self.internalErrorListener.on(error: error,

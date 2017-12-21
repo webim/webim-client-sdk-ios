@@ -30,7 +30,7 @@ import Foundation
 
 /**
  - SeeAlso:
- `SessionBuilder.set(fatalErrorHandler:)`
+ `set(fatalErrorHandler:)` method of `SessionBuilder` class.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -39,9 +39,9 @@ import Foundation
 public protocol FatalErrorHandler {
     
     /**
-     This method is to be called when a fatal error occurs.
+     This method is to be called when Webim service error is received.
      - important:
-     Notice that the session will be destroyed before this method is called.
+     Method called NOT FROM THE MAIN THREAD!
      - parameter error:
      Error type.
      - Author:

@@ -1616,7 +1616,7 @@ class MessageHolderTests: XCTestCase {
     // MARK: - Mocking InternalErrorListener
     final class InternalErrorListenerForTests: InternalErrorListener {
         
-        func on(error: String?,
+        func on(error: String,
                 urlString: String) {
             // No need to do anything when testing.
         }

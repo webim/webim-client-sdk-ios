@@ -130,6 +130,10 @@ public protocol MessageStream {
     /**
      Rates an operator.
      To get an ID of the current operator call `getCurrentOperator()`.
+     - important:
+     Requires existing chat. When there's no one, `on(error:)` method of `FatalErrorHandler` protocol will be called with `NO_CHAT` value of `error` parameter.
+     - SeeAlso:
+     `FatalErrorHandler` protocol.
      - parameter id:
      ID of the operator to be rated.
      - parameter rate:

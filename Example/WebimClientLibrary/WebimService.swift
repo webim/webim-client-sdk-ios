@@ -25,6 +25,7 @@
 //
 
 import Foundation
+import PopupDialog
 import WebimClientLibrary
 
 /**
@@ -56,6 +57,7 @@ final class WebimService {
     // MARK: - Properties
     var messageStream: MessageStream?
     var messageTracker: MessageTracker?
+    var viewController: UIViewController?
     var webimSession: WebimSession?
     
     
@@ -72,7 +74,9 @@ final class WebimService {
      - Copyright:
      2017 Webim
      */
-    func createSession() {
+    func createSession(viewController: UIViewController) {
+        self.viewController = viewController
+        
         let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
         
         var sessionBuilder = Webim.newSessionBuilder()
@@ -87,7 +91,7 @@ final class WebimService {
         
         if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
             // Hardcoded values that work with "demo" account only!
-            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}")
+            //sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}")
         }
         
         do {
@@ -454,18 +458,71 @@ extension WebimService: FatalErrorHandler {
         let errorType = error.getErrorType()
         switch errorType {
         case .ACCOUNT_BLOCKED:
-            print("Account with used account name is blocked by Webim service.")
             // Assuming to contact with Webim support.
+            print("Account with used account name is blocked by Webim service.")
+            
+            showErrorDialog(title: SessionCreationErrorDialog.TITLE.rawValue,
+                            message: SessionCreationErrorDialog.ACCOUNT_BLOCKED.rawValue,
+                            button: SessionCreationErrorDialog.BUTTON_TITLE.rawValue,
+                            hint: SessionCreationErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue)
         case .PROVIDED_VISITOR_FIELDS_EXPIRED:
-            print("Provided visitor fields expired.")
             // Assuming to re-authorize it and re-create session object.
+            print("Provided visitor fields expired. See \"expires\" key of this fields.")
         case .UNKNOWN:
             print("An unknown error occured.")
         case .VISITOR_BANNED:
             print("Visitor with provided visitor fields is banned by an operator.")
+            
+            showErrorDialog(title: SessionCreationErrorDialog.TITLE.rawValue,
+                            message: SessionCreationErrorDialog.VISITOR_BANNED.rawValue,
+                            button: SessionCreationErrorDialog.BUTTON_TITLE.rawValue,
+                            hint: SessionCreationErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue)
         case .WRONG_PROVIDED_VISITOR_HASH:
-            print("Provided visitor fields are wrong.")
             // Assuming to check visitor field generating.
+            print("Wrong CRC passed with visitor fields.")
+        case .NO_CHAT:
+            print("Request assuming existing chat was send without one exists.")
+            
+            showErrorDialog(title: ActionErrorDialog.TITLE.rawValue,
+                            message: ActionErrorDialog.NO_CHAT.rawValue,
+                            button: ActionErrorDialog.BUTTON_TITLE.rawValue,
+                            hint: ActionErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue)
+        }
+    }
+    
+    // MARK: - Private methods
+    /**
+     Show error dialog for WebimClientLibrary `FatalErrorHandler` errors.
+     - parameter title:
+     Error dialog title.
+     - parameter message:
+     Error dialog message.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    private func showErrorDialog(title: String,
+                                 message: String,
+                                 button: String,
+                                 hint: String) {
+        DispatchQueue.main.sync {
+            if let viewController = viewController {
+                let popup = PopupDialog(title: NSLocalizedString(title,
+                                                                 comment: ""),
+                                        message: NSLocalizedString(message,
+                                                                   comment: ""))
+                
+                let okButton = CancelButton(title: NSLocalizedString(button,
+                                                                     comment: "") ,
+                                            action: nil)
+                okButton.accessibilityHint = NSLocalizedString(hint,
+                                                               comment: "")
+                popup.addButton(okButton)
+                viewController.present(popup,
+                                       animated: true,
+                                       completion: nil)
+            }
         }
     }
     

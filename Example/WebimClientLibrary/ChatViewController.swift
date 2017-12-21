@@ -210,7 +210,7 @@ class ChatViewController: SLKTextViewController {
      2017 Webim
      */
     private func setupWebimSession() {
-        webimService.createSession()
+        webimService.createSession(viewController: self)
         webimService.startSession()
         
         webimService.setMessageStream()
@@ -464,40 +464,6 @@ extension ChatViewController: UIImagePickerControllerDelegate {
 // MARK: - UINavigationControllerDelegate
 extension ChatViewController: UINavigationControllerDelegate {
     // For image picker.
-}
-
-// MARK: - WEBIM: FatalErrorHandler
-extension ChatViewController: FatalErrorHandler {
-    
-    func on(error: WebimError) {
-        let errorType = error.getErrorType()
-        switch errorType {
-        case .ACCOUNT_BLOCKED:
-            let popup = PopupDialog(title: NSLocalizedString(SessionCreationErrorDialog.TITLE.rawValue, comment: ""),
-                                    message: NSLocalizedString(SessionCreationErrorDialog.MESSAGE.rawValue, comment: ""))
-            
-            let okButton = CancelButton(title: NSLocalizedString(SessionCreationErrorDialog.BUTTON_TITLE.rawValue,
-                                                                 comment: "") ,
-                                        action: nil)
-            okButton.accessibilityHint = NSLocalizedString(SessionCreationErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue,
-                                                           comment: "")
-            popup.addButton(okButton)
-            self.present(popup,
-                         animated: true,
-                         completion: nil)
-        case .PROVIDED_VISITOR_FIELDS_EXPIRED:
-            // Assuming to re-authorize it and re-create session object.
-            print("Provided visitor fields expired.")
-        case .UNKNOWN:
-            print("An unknown error occured.")
-        case .VISITOR_BANNED:
-            print("Visitor with provided visitor fields is banned by an operator.")
-        case .WRONG_PROVIDED_VISITOR_HASH:
-            // Assuming to check visitor field generating.
-            print("Provided visitor fields are wrong.")
-        }
-    }
-    
 }
 
 // MARK: - WEBIM: MessageListener

@@ -19,6 +19,11 @@
 // REFRESH_CONTROL_TEXT
 "LoadingMessages" = "Loading messages...";
 
+// ActionErrorDialog
+"ClosesActionError" = "Closes dialog.";
+"ActionFailed" = "Request failed";
+"NoChat" = "There's no chat to perform requested action in.";
+
 // Avatar
 "SenderAvatarImage" = "Sender avatar image";
 "ShowsRatingDialog" = "Shows rating dialog.";
@@ -46,6 +51,7 @@
 "ClosesSessionError" = "Closes dialog.";
 "SessionCreationFailed" = "Session creation failed";
 "AccountBlocked" = "Account that is used to create session is blocked. Please contact Webim support or use another one.";
+"VisitorBanned" = "Your visitor account is in the black list.";
 
 // SettingsErrorDialog
 "ClosesSettingsError" = "Closes dialog.";

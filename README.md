@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.6.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.7.0'
 ```
 > Minimum iOS version supported – 8.0.
 
@@ -20,18 +20,12 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Release notes
 
-* Chat start with first message functionality support added (`startChat(firstQuestion:)` and `startChat(departmentKey:firstQuestion:)` `MessageStream` methods).
-* Various bugs fixed.
-* Working of network requests improved.
-* `WebimLogger` entries dramatically improved.
-* _HeaderDoc_ improved.
-* Documentation fulfilled.
+* `FatalErrorType` fulfilled with `NO_CHAT` case.
+* `HeaderDoc` improved.
+* [**Documentation**](Documentation/Index.md) improved and fulfilled.
 
 #### Demo app
-* Remote notifications display support added.
-* _Timberjack_ dependency removed because it's no longer needed.
-* Additional logging added.
-* _HeaderDoc_ improved.
+* `WebimError` handling improved.
 
 ## Example
 

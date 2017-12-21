@@ -29,9 +29,9 @@ import Foundation
 
 
 /**
- Abstracts Webim service possible fatal error.
+ Abstracts Webim service possible error responses.
  - SeeAlso:
- `FatalErrorHandler`
+ `FatalErrorHandler` protocol.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -64,7 +64,9 @@ public protocol WebimError {
 
 // MARK: -
 /**
- Webim service fatal error types.
+ Webim service error types.
+ - important:
+ Mind that most of this errors causes session to destroy.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -75,6 +77,8 @@ public enum FatalErrorType {
     /**
      Indicates that the account in Webim service has been disabled (e.g. for non-payment). The error is unrelated to the user’s actions.
      Recommended response is to show the user an error message with a recommendation to try using the chat later.
+     - important:
+     Notice that the session will be destroyed if this error occured.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -83,8 +87,21 @@ public enum FatalErrorType {
     case ACCOUNT_BLOCKED
     
     /**
+     Indicates that there was a try to perform action that requires existing chat, but there's no chat.
+     - SeeAlso:
+     `rateOperatorWith(id:,byRating rating:)` method of `MessageStream` protocol.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case NO_CHAT
+    
+    /**
      Indicates an expired authorization of a visitor.
      The recommended response is to re-authorize it and to re-create session object.
+     - important:
+     Notice that the session will be destroyed if this error occured.
      - SeeAlso:
      `Webim.SessionBuilder.set(visitorFieldsJSON jsonString:)`
      `Webim.SessionBuilder.set(visitorFieldsJSON jsonData:)`
@@ -98,6 +115,8 @@ public enum FatalErrorType {
     /**
      Indicates the occurrence of an unknown error.
      Recommended response is to send an automatic bug report and show to a user an error message with the recommendation to try using the chat later.
+     - important:
+     Notice that the session will be destroyed if this error occured.
      - SeeAlso:
      `WebimError.getErrorString()`
      - Author:
@@ -111,6 +130,8 @@ public enum FatalErrorType {
      Indicates that a visitor was banned by an operator and can't send messages to a chat anymore.
      Occurs when a user tries to open the chat or write a message after that.
      Recommended response is to show the user an error message with the recommendation to try using the chat later or explain to the user that it was blocked for some reason.
+     - important:
+     Notice that the session will be destroyed if this error occured.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -122,6 +143,8 @@ public enum FatalErrorType {
      Indicates a problem of your application authorization mechanism and is unrelated to the user’s actions.
      Occurs when trying to authorize a visitor with a non-valid signature.
      Recommended response is to send an automatic bug report and show the user an error message with the recommendation to try using the chat later.
+     - important:
+     Notice that the session will be destroyed if this error occured.
      - SeeAlso:
      `Webim.SessionBuilder.set(visitorFieldsJSON jsonString:)`
      `Webim.SessionBuilder.set(visitorFieldsJSON jsonData:)`

@@ -19,6 +19,11 @@
 // REFRESH_CONTROL_TEXT
 "LoadingMessages" = "Сообщения загружаются...";
 
+// ActionErrorDialog
+"ClosesActionError" = "Закрывает диалог.";
+"ActionFailed" = "Запрос отклонен";
+"NoChat" = "Чат закрыт, и запрос не может быть исполнен.";
+
 // Avatar
 "SenderAvatarImage" = "Изображение аватара отправителя сообщения";
 "ShowsRatingDialog" = "Показывает окно оценки оператора.";
@@ -46,6 +51,7 @@
 "ClosesSessionError" = "Закрывает окно.";
 "SessionCreationFailed" = "Неудачная попытка создания сессии";
 "AccountBlocked" = "Учетная запись, с помощью которой была произведена попытка начать сессию, заблокирован. Пожалуйста, обратитесь в службу поддержки \"Webim\" или используйте другую учетную запись.";
+"VisitorBanned" = "Ваша учетная запись посетителя находится в черном списке.";
 
 // SettingsErrorDialog
 "ClosesSettingsError" = "Закрывает окно.";

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name             = 'WebimClientLibrary'
-  s.version          = '3.6.0'
+  s.version          = '3.7.0'
   s.summary          = 'Webim.ru client SDK for iOS.'
   s.homepage         = 'https://webim.ru/integration/mobile-sdk/ios-sdk-howto/'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }

@@ -643,18 +643,16 @@ final private class DestroyIfNotErrorListener: InternalErrorListener {
     
     // MARK: - Methods
     // MARK: InternalErrorListener protocol methods
-    func on(error: String?,
+    func on(error: String,
             urlString: String) {
         if (sessionDestroyer == nil)
             || (sessionDestroyer?.isDestroyed() == false) {
-            if sessionDestroyer != nil {
+            if WebimInternalError.isFatalError(string: error) {
                 sessionDestroyer?.destroy()
             }
             
-            if internalErrorListener != nil {
-                internalErrorListener?.on(error: error,
-                                          urlString: urlString)
-            }
+            internalErrorListener?.on(error: error,
+                                      urlString: urlString)
         }
     }
     
@@ -680,29 +678,28 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
     // MARK: - Methods
     
     // MARK: InternalErrorListener protocol methods
-    func on(error: String?,
+    func on(error: String,
             urlString: String) {
-        if fatalErrorHandler != nil {
-            let webimError = WebimErrorImpl(errorType: (error != nil) ? toPublicErrorType(string: error!) : FatalErrorType.UNKNOWN,
-                                            errorString: (error != nil) ? error! : "Unknown error from URL \(urlString)")
-            
-            fatalErrorHandler!.on(error: webimError)
-        }
+        let webimError = WebimErrorImpl(errorType: toPublicErrorType(string: error),
+                                        errorString: error)
+        fatalErrorHandler?.on(error: webimError)
     }
     
     // MARK: Private methods
     private func toPublicErrorType(string: String) -> FatalErrorType {
         switch string {
         case WebimInternalError.ACCOUNT_BLOCKED.rawValue:
-            return FatalErrorType.ACCOUNT_BLOCKED
+            return .ACCOUNT_BLOCKED
+        case WebimInternalError.NO_CHAT.rawValue:
+            return .NO_CHAT
         case WebimInternalError.VISITOR_BANNED.rawValue:
-            return FatalErrorType.VISITOR_BANNED
+            return .VISITOR_BANNED
         case WebimInternalError.WRONG_PROVIDED_VISITOR_HASH.rawValue:
-            return FatalErrorType.WRONG_PROVIDED_VISITOR_HASH
+            return .WRONG_PROVIDED_VISITOR_HASH
         case WebimInternalError.PROVIDED_VISITOR_EXPIRED.rawValue:
-            return FatalErrorType.PROVIDED_VISITOR_FIELDS_EXPIRED
+            return .PROVIDED_VISITOR_FIELDS_EXPIRED
         default:
-            return FatalErrorType.UNKNOWN
+            return .UNKNOWN
         }
     }
     
