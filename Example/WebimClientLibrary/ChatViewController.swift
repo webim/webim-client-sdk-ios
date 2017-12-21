@@ -70,16 +70,15 @@ class ChatViewController: SLKTextViewController {
     override func didPressRightButton(_ sender: Any?) {
         textView.refreshFirstResponder()
         
-        if let text = textView.text {
-            if !text.isEmpty {
-                webimService.send(message: text)
-            }
-            
-            textView.text = ""
-            
-            // Delete visitor typing draft after message is sent.
-            webimService.setVisitorTyping(draft: nil)
+        if let text = textView.text,
+            !text.isEmpty {
+            webimService.send(message: text)
         }
+        
+        textView.text = ""
+        
+        // Delete visitor typing draft after message is sent.
+        webimService.setVisitorTyping(draft: nil)
     }
     
     // Send file buton.
@@ -138,8 +137,6 @@ class ChatViewController: SLKTextViewController {
     
     /**
      Sets up table view.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -169,8 +166,6 @@ class ChatViewController: SLKTextViewController {
      Sets up SlackTextViewController view.
      - SeeAlso:
      `SLKTextViewController` protocol.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -189,8 +184,6 @@ class ChatViewController: SLKTextViewController {
     
     /**
      Sets up navigation item.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -211,8 +204,6 @@ class ChatViewController: SLKTextViewController {
      Sets up `WebimService` class.
      - SeeAlso:
      `WebimService` class.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -227,7 +218,7 @@ class ChatViewController: SLKTextViewController {
         webimService.setMessageTracker(withMessageListener: self)
         webimService.getLastMessages() { [weak self] messages in
             self?.messages.insert(contentsOf: messages,
-                                 at: 0)
+                                  at: 0)
             
             DispatchQueue.main.async() {
                 self?.tableView?.reloadData()
@@ -240,8 +231,6 @@ class ChatViewController: SLKTextViewController {
      Requests messages from above of the message history.
      - SeeAlso:
      `WebimService` class.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -250,7 +239,7 @@ class ChatViewController: SLKTextViewController {
     @objc private func requestMessages() {
         webimService.getNextMessages() { [weak self] messages in
             self?.messages.insert(contentsOf: messages,
-                                 at: 0)
+                                  at: 0)
             
             DispatchQueue.main.async() {
                 self?.tableView?.reloadData()
@@ -264,8 +253,6 @@ class ChatViewController: SLKTextViewController {
      Closes chat in virtual context.
      - SeeAlso:
      `WebimService` class.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -285,8 +272,6 @@ class ChatViewController: SLKTextViewController {
      Rates current operator.
      - SeeAlso:
      `WebimService` class.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -308,8 +293,6 @@ class ChatViewController: SLKTextViewController {
      Show preview of file inside a chat message.
      - SeeAlso:
      `WebimService` class.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -324,56 +307,59 @@ class ChatViewController: SLKTextViewController {
                 if let attachment = message.getAttachment(),
                     let fileName = attachment.getFileName(),
                     let attachmentURL = attachment.getURL() {
-                            var popupMessage: String?
-                            var image: UIImage?
-                            
-                            let attachmentContentType = attachment.getContentType()
-                            if (attachmentContentType == "image/gif")
-                                || (attachmentContentType == "image/jpeg")
-                                || (attachmentContentType == "image/png")
-                                || (attachmentContentType == "image/tiff") {
-                                let semaphore = DispatchSemaphore(value: 0)
-                                let request = URLRequest(url: attachmentURL)
-                                URLSession.shared.dataTask(with: request,
-                                                           completionHandler: { data, _, _ in
-                                                            if let data = data {
-                                                                if let downloadedImage = UIImage(data: data) {
-                                                                    image = downloadedImage
-                                                                } else {
-                                                                    popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue,
-                                                                                                     comment: "")
-                                                                }
-                                                            } else {
-                                                                popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_LINK.rawValue,
-                                                                                                 comment: "")
-                                                            }
-                                                            
-                                                            semaphore.signal()
-                                }).resume()
-                                
-                                _ = semaphore.wait(timeout: .distantFuture)
-                            } else {
-                                popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
-                            }
-                            
-                            let button = CancelButton(title: NSLocalizedString(ShowFileDialog.BUTTON_TITLE.rawValue,
-                                                                               comment: "") ,
-                                                      action: nil)
-                            button.accessibilityHint = NSLocalizedString(ShowFileDialog.ACCESSIBILITY_HINT.rawValue,
-                                                                         comment: "")
-                            
-                            let popup = PopupDialog(title: fileName,
-                                                    message: popupMessage,
-                                                    image: image,
-                                                    buttonAlignment: .horizontal,
-                                                    transitionStyle: .bounceUp,
-                                                    gestureDismissal: true,
-                                                    completion: nil)
-                            popup.addButton(button)
-                            self.present(popup,
-                                         animated: true,
-                                         completion: nil)
-                        }
+                    var popupMessage: String?
+                    var image: UIImage?
+                    
+                    let attachmentContentType = attachment.getContentType()
+                    if (attachmentContentType == "image/gif")
+                        || (attachmentContentType == "image/jpeg")
+                        || (attachmentContentType == "image/png")
+                        || (attachmentContentType == "image/tiff") {
+                        let semaphore = DispatchSemaphore(value: 0)
+                        let request = URLRequest(url: attachmentURL)
+                        
+                        print("Requesting file: \(attachmentURL.absoluteString)")
+                        
+                        URLSession.shared.dataTask(with: request,
+                                                   completionHandler: { data, _, _ in
+                                                    if let data = data {
+                                                        if let downloadedImage = UIImage(data: data) {
+                                                            image = downloadedImage
+                                                        } else {
+                                                            popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue,
+                                                                                             comment: "")
+                                                        }
+                                                    } else {
+                                                        popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_LINK.rawValue,
+                                                                                         comment: "")
+                                                    }
+                                                    
+                                                    semaphore.signal()
+                        }).resume()
+                        
+                        _ = semaphore.wait(timeout: .distantFuture)
+                    } else {
+                        popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
+                    }
+                    
+                    let button = CancelButton(title: NSLocalizedString(ShowFileDialog.BUTTON_TITLE.rawValue,
+                                                                       comment: "") ,
+                                              action: nil)
+                    button.accessibilityHint = NSLocalizedString(ShowFileDialog.ACCESSIBILITY_HINT.rawValue,
+                                                                 comment: "")
+                    
+                    let popup = PopupDialog(title: fileName,
+                                            message: popupMessage,
+                                            image: image,
+                                            buttonAlignment: .horizontal,
+                                            transitionStyle: .bounceUp,
+                                            gestureDismissal: true,
+                                            completion: nil)
+                    popup.addButton(button)
+                    self.present(popup,
+                                 animated: true,
+                                 completion: nil)
+                }
             }
         }
     }
@@ -382,8 +368,6 @@ class ChatViewController: SLKTextViewController {
      Shows RatingViewController.
      - SeeAlso:
      `RatingViewController` class.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -427,8 +411,6 @@ class ChatViewController: SLKTextViewController {
     
     /**
      Scroll table view to the bottom.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -626,21 +608,21 @@ extension ChatViewController: SendFileCompletionHandler {
         
         let okButton = CancelButton(title: NSLocalizedString(SendFileErrorMessage.BUTTON_TITLE.rawValue,
                                                              comment: "")) { [weak self] in
-            guard let `self` = self else {
-                return
-            }
-            
-            for (index, message) in self.messages.enumerated() {
-                if message.getID() == messageID {
-                    self.messages.remove(at: index)
-                    
-                    DispatchQueue.main.async() {
-                        self.tableView?.reloadData()
-                    }
-                    
-                    return
-                }
-            }
+                                                                guard let `self` = self else {
+                                                                    return
+                                                                }
+                                                                
+                                                                for (index, message) in self.messages.enumerated() {
+                                                                    if message.getID() == messageID {
+                                                                        self.messages.remove(at: index)
+                                                                        
+                                                                        DispatchQueue.main.async() {
+                                                                            self.tableView?.reloadData()
+                                                                        }
+                                                                        
+                                                                        return
+                                                                    }
+                                                                }
         }
         okButton.accessibilityHint = NSLocalizedString(SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue,
                                                        comment: "") 
@@ -651,5 +633,5 @@ extension ChatViewController: SendFileCompletionHandler {
                      completion: nil)
         
     }
-
+    
 }

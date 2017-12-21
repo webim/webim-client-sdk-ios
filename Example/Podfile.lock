@@ -1,5 +1,5 @@
 PODS:
-  - Cosmos (12.0.1)
+  - Cosmos (13.0.0)
   - CryptoSwift (0.8.0)
   - PopupDialog (0.6.2)
   - SlackTextViewController (1.9.6)
@@ -7,8 +7,7 @@ PODS:
   - SQLite.swift (0.11.4):
     - SQLite.swift/standard (= 0.11.4)
   - SQLite.swift/standard (0.11.4)
-  - Timberjack (0.0.3)
-  - WebimClientLibrary (3.5.0):
+  - WebimClientLibrary (3.6.0):
     - CryptoSwift
     - SQLite.swift
 
@@ -19,30 +18,21 @@ DEPENDENCIES:
   - SlackTextViewController
   - SnapKit
   - SQLite.swift
-  - Timberjack (from `https://github.com/andysmart/Timberjack.git`)
   - WebimClientLibrary (from `../`)
 
 EXTERNAL SOURCES:
-  Timberjack:
-    :git: https://github.com/andysmart/Timberjack.git
   WebimClientLibrary:
     :path: ../
 
-CHECKOUT OPTIONS:
-  Timberjack:
-    :commit: 303b398d5ead5d5fc4dbf86a476b09a856dda4ec
-    :git: https://github.com/andysmart/Timberjack.git
-
 SPEC CHECKSUMS:
-  Cosmos: 4a9f57998a08788a1062c7b8eefbc62d2b590f39
+  Cosmos: af3973becc045af335b64498c9812034876b7661
   CryptoSwift: f81907430ebbe38b8404b4f6fb40f3c576a8755f
   PopupDialog: d4336d7274a6aa3af4cb26d8b6691510eba90cc3
   SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
-  Timberjack: 20de84a2c135134de6821d1ea90cd57709567e2d
-  WebimClientLibrary: ea9fe35556f33757f6a4077984542f7d3b171f3c
+  WebimClientLibrary: b251403b053189ec3faed0531faad8d648c98a5e
 
-PODFILE CHECKSUM: d7afc3d47f6da45186b556efac75ea358528eb32
+PODFILE CHECKSUM: 7cc1799c8a839435e5dc6273dc841db2ccc38275
 
-COCOAPODS: 1.4.0.beta.2
+COCOAPODS: 1.4.0.rc.1

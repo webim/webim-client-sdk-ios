@@ -133,12 +133,13 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     messages.append(message)
                     
                     #if DEBUG
-                        self.db!.trace { print($0) }
+                        self.db?.trace { print($0) }
                     #endif
                 }
                 
-                self.run(messageList: messages,
-                         completion: completion)
+                completionHandlerQueue.async {
+                    completion(messages as [Message])
+                }
             } catch {
                 print(error.localizedDescription)
             }
@@ -164,15 +165,16 @@ final class SQLiteHistoryStorage: HistoryStorage {
                 for row in try self.db!.prepare(query) {
                     let message = self.createMessageBy(row: row)
                     messages.append(message)
-                    
-                    #if DEBUG
-                        self.db!.trace { print($0) }
-                    #endif
                 }
                 
+                #if DEBUG
+                    self.db?.trace { print($0) }
+                #endif
+                
                 messages = messages.reversed()
-                self.run(messageList: messages,
-                         completion: completion)
+                completionHandlerQueue.async {
+                    completion(messages as [Message])
+                }
             } catch {
                 print(error.localizedDescription)
             }
@@ -205,13 +207,14 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     messages.append(message)
                     
                     #if DEBUG
-                        self.db!.trace { print($0) }
+                        self.db?.trace { print($0) }
                     #endif
                 }
                 
                 messages = messages.reversed()
-                self.run(messageList: messages,
-                         completion: completion)
+                completionHandlerQueue.async {
+                    completion(messages as [Message])
+                }
             } catch {
                 print(error.localizedDescription)
             }
@@ -256,7 +259,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                 SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))*/
                     
                     #if DEBUG
-                        self.db!.trace { print($0) }
+                        self.db?.trace { print($0) }
                     #endif
                 } catch {
                     print(error.localizedDescription)
@@ -313,13 +316,13 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                     SQLiteHistoryStorage.text <- message.getRawText() ?? message.getText(),
                                     SQLiteHistoryStorage.data <- message.getHistoryID()?.getDBid(),
                                     SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))) > 0 {
-                            
                             #if DEBUG
-                                self.db!.trace { print($0) }
+                                self.db?.trace { print($0) }
                             #endif
                             
-                            self.runChanged(message: message,
-                                            completion: completion)
+                            completionHandlerQueue.async {
+                                completion(false, false, nil, true, message, false, nil, nil)
+                            }
                         } else {
                             do {
                                 /*
@@ -355,7 +358,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                             SQLiteHistoryStorage.serverData <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))*/
                                 
                                 #if DEBUG
-                                    self.db!.trace { print($0) }
+                                    self.db?.trace { print($0) }
                                 #endif
                             } catch {
                                 print("Insert message failed: \(error.localizedDescription)")
@@ -376,18 +379,20 @@ final class SQLiteHistoryStorage: HistoryStorage {
                             do {
                                 if let row = try self.db!.pluck(postQuery) {
                                     #if DEBUG
-                                        self.db!.trace { print($0) }
+                                        self.db?.trace { print($0) }
                                     #endif
                                     
                                     let nextMessage = self.createMessageBy(row: row)
-                                    self.runAdded(message: message,
-                                                  beforeID: nextMessage.getHistoryID()!,
-                                                  completion: completion)
+                                    completionHandlerQueue.async {
+                                        completion(false, false, nil, false, nil, true, message, nextMessage.getHistoryID()!)
+                                    }
+                                } else {
+                                    completionHandlerQueue.async {
+                                        completion(false, false, nil, false, nil, true, message, nil)
+                                    }
                                 }
                             } catch {
-                                self.runAdded(message: message,
-                                              beforeID: nil,
-                                              completion: completion)
+                                // Ignored.
                             }
                         }
                     }
@@ -445,7 +450,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             t.column(SQLiteHistoryStorage.serverData)
         })
         #if DEBUG
-            self.db!.trace { print($0) }
+            self.db?.trace { print($0) }
         #endif
         
         /*
@@ -457,13 +462,13 @@ final class SQLiteHistoryStorage: HistoryStorage {
             .createIndex(SQLiteHistoryStorage.timestampInMicrosecond,
                          unique: true))
         #if DEBUG
-            self.db!.trace { print($0) }
+            self.db?.trace { print($0) }
         #endif
-        }//
+        }
     }
     
     private func prepare() {
-        if prepared != true {
+        if !prepared {
             prepared = true
             
             /*
@@ -481,7 +486,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             do {
                 if let row = try self.db!.pluck(query) {
                     #if DEBUG
-                        self.db!.trace { print($0) }
+                        self.db?.trace { print($0) }
                     #endif
                     
                     self.firstKnownTimeInMicrosecond = row[SQLiteHistoryStorage.timestampInMicrosecond]
@@ -489,28 +494,6 @@ final class SQLiteHistoryStorage: HistoryStorage {
             } catch {
                 print(error.localizedDescription)
             }
-        }
-    }
-    
-    private func run(messageList: [MessageImpl],
-                     completion: @escaping ([Message]) -> ()) {
-        completionHandlerQueue.async {
-            completion(messageList as [Message])
-        }
-    }
-    
-    private func runAdded(message: MessageImpl,
-                          beforeID: HistoryID?,
-                          completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
-        completionHandlerQueue.async {
-            completion(false, false, nil, false, nil, true, message, beforeID)
-        }
-    }
-    
-    private func runChanged(message: MessageImpl,
-                            completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?)  -> ()) {
-        completionHandlerQueue.async {
-            completion(false, false, nil, true, message, false, nil, nil)
         }
     }
     
@@ -539,7 +522,6 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                              webimClient: webimClient,
                                                              text: rawText)
         }
-        
         
         return MessageImpl(withServerURLString: serverURLString,
                            id: (clientSideID == nil) ? id : clientSideID!,

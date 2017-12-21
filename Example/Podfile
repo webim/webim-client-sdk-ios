@@ -13,7 +13,6 @@ target 'WebimClientLibrary_Example' do
     pod 'SlackTextViewController', :inhibit_warnings => true
     pod 'SnapKit', :inhibit_warnings => true
     pod 'SQLite.swift', :inhibit_warnings => true
-    pod 'Timberjack', :git => 'https://github.com/andysmart/Timberjack.git', :inhibit_warnings => true
     pod 'PopupDialog', :inhibit_warnings => true
     
     

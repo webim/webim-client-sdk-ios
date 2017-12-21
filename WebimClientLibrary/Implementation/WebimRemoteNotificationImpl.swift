@@ -57,6 +57,7 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     }
     
     private enum InternalNotificationType: String {
+        // case CONTACTS_REQUEST = "P.CR"
         case OPERATOR_ACCEPTED = "P.OA"
         case OPERATOR_FILE = "P.OF"
         case OPERATOR_MESSAGE = "P.OM"

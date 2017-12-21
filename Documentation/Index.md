@@ -46,7 +46,9 @@
     -   [getLastRatingOfOperatorWith(id:) method](#get-last-rating-of-operator-with-id)
     -   [rateOperatorWith(id:,byRating rating:) method](#rate-operator-with-id-by-rating-rating)
     -   [startChat() method](#start-chat)
+    -   [startChat(firstQuestion:) method](#start-chat-first-question)
     -   [startChat(departmentKey:) method](#start-chat-department-key)
+    -   [startChat(departmentKey:firstQuestion:) method](#start-chat-department-key-first-question)
     -   [closeChat() method](#close-chat)
     -   [setVisitorTyping(draftMessage:) method](#set-visitor-typing-draft-message)
     -   [send(message:,isHintQuestion:) method](#send-message-is-hint-question)
@@ -440,9 +442,22 @@ Can throw errors of [AccessError](#access-error) type.
 Changes [ChatState](#chat-state) to [QUEUE](#queue). Method call is not mandatory, send message or send file methods start chat automatically.
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="start-chat-first-question">startChat(firstQuestion:) method</h3>
+
+Changes [ChatState](#chat-state) to [QUEUE](#queue). Starts chat and sends first message simultaneously.
+Method call is not mandatory, send message or send file methods start chat automatically.
+Can throw errors of [AccessError](#access-error) type.
+
 <h3 id ="start-chat-department-key">startChat(departmentKey:) method</h3>
 
 Starts chat with particular department. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
+Changes [ChatState](#chat-state) to [QUEUE](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="start-chat-department-key-first-question">startChat(departmentKey:firstQuestion:) method</h3>
+
+Starts chat with particular department  and sends first message simultaneously. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
 Changes [ChatState](#chat-state) to [QUEUE](#queue).
 In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
 Can throw errors of [AccessError](#access-error) type.

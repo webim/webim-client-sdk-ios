@@ -129,7 +129,7 @@ final class WebimSessionImpl {
         let visitorFieldsJSON = (visitorFields == nil) ? nil : visitorFields?.getJSONString()
         
         let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
-        webimLogger?.log(entry: "Server URL: \(serverURLString)")
+        webimLogger?.log(entry: "Webim server URL: \(serverURLString)")
         
         let currentChatMessageMapper: MessageFactoriesMapper = CurrentChatMapper(withServerURLString: serverURLString)
         
@@ -490,7 +490,7 @@ final private class HistoryPoller {
             self.messageHolder.receiveHistoryUpdateWith(messages: messageList,
                                                         deleted: deleted,
                                                         completion: { [weak self] in
-                                                            // Revision is saved after history was saved only.
+                                                            // Revision is saved after history is saved only.
                                                             // I.e. if history will not be saved, then revision will not be overwritten. History will be re-requested.
                                                             self?.historyMetaInformationStorage.set(revision: revision)
             })

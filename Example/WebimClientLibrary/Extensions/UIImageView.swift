@@ -44,6 +44,9 @@ extension UIImageView {
                                             rounded: Bool = false,
                                             completion: ((_ image: UIImage) -> ())? = nil) {
         let request = URLRequest(url: url)
+        
+        print("Requesting image: \(url.absoluteString)")
+        
         URLSession.shared.dataTask(with: request,
                                    completionHandler: { [weak self] data, _, _ in
                                     if let data = data {

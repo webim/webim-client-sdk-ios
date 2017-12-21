@@ -45,8 +45,6 @@ public protocol ProvidedAuthorizationTokenStateListener {
      When this method is called, client server must send provided authorization token to Webim service.
      - parameter providedAuthorizationToken:
      Provided authorization token which corresponds to session.
-     - returns:
-     No return value.
      - SeeAlso:
      `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`
      - Author:

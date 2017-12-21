@@ -87,7 +87,7 @@ public protocol MessageStream {
      `Department` protocol.
      `DepartmentListChangeListener` protocol.
      - returns:
-     List of departments or `nil` if there're any or department list is not recieved yet.
+     List of departments or `nil` if there're any or department list is not received yet.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -134,8 +134,6 @@ public protocol MessageStream {
      ID of the operator to be rated.
      - parameter rate:
      A number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -150,8 +148,6 @@ public protocol MessageStream {
     /**
      Changes `ChatState` to `ChatState.QUEUE`.
      Can cause `VisitSessionState.DEPARTMENT_SELECTION` session state. It means that chat must be started by `startChat(departmentKey:)` method.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -163,14 +159,10 @@ public protocol MessageStream {
     func startChat() throws
     
     /**
-     Starts chat with particular department.
+     Starts chat and sends first message simultaneously.
      Changes `ChatState` to `ChatState.QUEUE`.
-     - SeeAlso:
-     `Department` protocol.
-     - parameter departmentKey:
-     Department key (see `getKey()` of `Department` protocol).
-     - returns:
-     No return value.
+     - parameter firstQuestion:
+     First message to send.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -179,12 +171,47 @@ public protocol MessageStream {
      - Copyright:
      2017 Webim
      */
-    func startChat(departmentKey: String) throws
+    func startChat(firstQuestion: String?) throws
+    
+    /**
+     Starts chat with particular department.
+     Changes `ChatState` to `ChatState.QUEUE`.
+     - SeeAlso:
+     `Department` protocol.
+     - parameter departmentKey:
+     Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func startChat(departmentKey: String?) throws
+    
+    /**
+     Starts chat with particular department and sends first message simultaneously.
+     Changes `ChatState` to `ChatState.QUEUE`.
+     - SeeAlso:
+     `Department` protocol.
+     - parameter departmentKey:
+     Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
+     - parameter firstQuestion:
+     First message to send.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func startChat(departmentKey: String?,
+                   firstQuestion: String?) throws
     
     /**
      Changes `ChatState` to `ChatState.CLOSED_BY_VISITOR`.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -199,8 +226,6 @@ public protocol MessageStream {
      This method must be called whenever there is a change of the input field of a message transferring current content of a message as a parameter.
      - parameter draftMessage:
      Current message content.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -210,6 +235,23 @@ public protocol MessageStream {
      2017 Webim
      */
     func setVisitorTyping(draftMessage: String?) throws
+    
+    /**
+     Sends a text message.
+     When calling this method, if there is an active `MessageTracker` (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     - parameter message:
+     Text of the message.
+     - returns:
+     ID of the message.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func send(message: String) throws -> String
     
     /**
      Sends a text message.
@@ -230,23 +272,6 @@ public protocol MessageStream {
      */
     func send(message: String,
               isHintQuestion: Bool?) throws -> String
-    
-    /**
-     Sends a text message.
-     When calling this method, if there is an active `MessageTracker` (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
-     - parameter message:
-     Text of the message.
-     - returns:
-     ID of the message.
-     - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    func send(message: String) throws -> String
     
     /**
      Sends a file message.
@@ -300,8 +325,6 @@ public protocol MessageStream {
      `VisitSessionState` type.
      - parameter visitSessionStateListener:
      `VisitSessionStateListener` object.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -313,8 +336,6 @@ public protocol MessageStream {
      Sets the `ChatState` change listener.
      - parameter chatStateListener:
      The `ChatState` change listener.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -326,8 +347,6 @@ public protocol MessageStream {
      Sets the current `Operator` change listener.
      - parameter currentOperatorChangeListener:
      Current `Operator` change listener.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -342,8 +361,6 @@ public protocol MessageStream {
      `Department` protocol.
      - parameter departmentListChangeListener:
      `DepartmentListChangeListener` object.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -355,8 +372,6 @@ public protocol MessageStream {
      Sets the listener of the MessageStream LocationSettings changes.
      - parameter locationSettingsChangeListener:
      The listener of MessageStream LocationSettings changes.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -368,8 +383,6 @@ public protocol MessageStream {
      Sets the listener of the "operator typing" status changes.
      - parameter operatorTypingListener:
      The listener of the "operator typing" status changes.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -383,8 +396,6 @@ public protocol MessageStream {
      `OnlineStatusChangeListener` object.
      - SeeAlso:
      `OnlineStatusChangeListener`
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -434,8 +445,6 @@ public protocol SendFileCompletionHandler {
      Executed when operation is done successfully.
      - parameter messageID:
      ID of the message.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -449,8 +458,6 @@ public protocol SendFileCompletionHandler {
      ID of the message.
      - parameter error:
      Error.
-     - returns:
-     No return value.
      - SeeAlso:
      `SendFileError`.
      - Author:
@@ -476,8 +483,6 @@ public protocol VisitSessionStateListener {
     
     /**
      Called when `VisitSessionState` status is changed.
-     - SeeAlso:
-     `VisitSessionState` protocol.
      - parameter previousState:
      Previous value of `VisitSessionState` status.
      - parameter newState:
@@ -509,8 +514,6 @@ public protocol ChatStateListener {
      Previous state.
      - parameter newState:
      New state.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -538,8 +541,6 @@ public protocol CurrentOperatorChangeListener {
      Previous operator.
      - parameter newOperator:
      New operator or nil if doesn't exist.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -593,8 +594,6 @@ public protocol LocationSettingsChangeListener {
      Previous LocationSettings state.
      - parameter newLocationSettings:
      New LocationSettings state.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -619,8 +618,6 @@ public protocol OperatorTypingListener {
      Called when operator typing state changed.
      - parameter isTyping:
      True if operator is typing, false otherwise.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -645,8 +642,6 @@ public protocol OnlineStatusChangeListener {
      Called when new session status is received.
      - SeeAlso:
      `OnlineStatus`
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -854,6 +849,9 @@ public enum OnlineStatus {
 
 /**
  Session possible states.
+ - SeeAlso:
+ `getVisitSessionState()` method of `MessageStream` protocol.
+ `VisitSessionStateListener` protocol.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -909,7 +907,7 @@ public enum VisitSessionState {
     case OFFLINE_MESSAGE
     
     /**
-     First status is not recieved yet or status is not supported by this version of the library.
+     First status is not received yet or status is not supported by this version of the library.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

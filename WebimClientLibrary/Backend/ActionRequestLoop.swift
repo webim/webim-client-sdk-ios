@@ -100,26 +100,37 @@ final class ActionRequestLoop: AbstractRequestLoop {
             var dataToPost = currentRequest.getPrimaryData()
             dataToPost[WebimActions.Parameter.PAGE_ID.rawValue] = authorizationData.getPageID()
             dataToPost[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = authorizationData.getAuthorizationToken()
-            
             let parametersString = dataToPost.stringFromHTTPParameters()
-            let url = URL(string: currentRequest.getBaseURLString() + "?" + parametersString)
-            var request = URLRequest(url: url!)
             
-            if let httpBody = currentRequest.getHTTPBody() {
-                request.httpMethod = AbstractRequestLoop.HTTPMethod.POST.rawValue
-                
-                // Assuming boundary string is always exists when POST request is being handled.
-                let contentType = "multipart/form-data; boundary=" + currentRequest.getBoundaryString()!
-                request.setValue(contentType,
-                                 forHTTPHeaderField: "Content-Type")
-                
-                request.httpBody = httpBody
+            var url: URL?
+            var request: URLRequest?
+            let httpMethod = currentRequest.getHTTPMethod()
+            if httpMethod == .GET {
+                url = URL(string: currentRequest.getBaseURLString() + "?" + parametersString)
+                request = URLRequest(url: url!)
             } else {
-                request.httpMethod = AbstractRequestLoop.HTTPMethod.GET.rawValue
+                if let httpBody = currentRequest.getHTTPBody() {
+                    // Assuming HTTP body is passed only for multipart requests.
+                    url = URL(string: currentRequest.getBaseURLString() + "?" + parametersString)
+                    request = URLRequest(url: url!)
+                    request!.httpBody = httpBody
+                } else {
+                    // For URL encoded requests.
+                    url = URL(string: currentRequest.getBaseURLString())
+                    request = URLRequest(url: url!)
+                    request!.httpBody = parametersString.data(using: .utf8)
+                }
+            }
+            
+            request!.httpMethod = httpMethod.rawValue
+            
+            if let contentType = currentRequest.getConentType() {
+                request!.setValue(contentType,
+                                  forHTTPHeaderField: "Content-Type")
             }
             
             do {
-                let data = try perform(request: request)
+                let data = try perform(request: request!)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String : Any] {
                     if let error = dataJSON?["error"] as? String {
                         if error == WebimInternalError.REINIT_REQUIRED.rawValue {
@@ -131,7 +142,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
                             
                             completionHandlerExecutor.execute(task: DispatchWorkItem {
                                 self.internalErrorListener.on(error: error,
-                                                              urlString: (request.url?.path)!)
+                                                              urlString: request!.url!.path)
                             })
                         }
                     }
@@ -163,7 +174,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
                 
                 completionHandlerExecutor.execute(task: DispatchWorkItem {
                     self.internalErrorListener.on(error: error.rawValue,
-                                                  urlString: (request.url?.path)!)
+                                                  urlString: request!.url!.path)
                 })
             } catch _ as UnknownError {
                 print("Request was interrupted.")

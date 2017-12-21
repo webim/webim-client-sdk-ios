@@ -55,8 +55,6 @@ public protocol MessageTracker {
      Completion to be called on resulting array of messages if method call succeeded.
      - parameter result:
      Resulting array of messages if method call succeeded.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
@@ -82,8 +80,6 @@ public protocol MessageTracker {
      Completion to be called on resulting array of messages if method call succeeded.
      - parameter result:
      Resulting array of messages if method call succeeded.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
@@ -107,8 +103,6 @@ public protocol MessageTracker {
      Completion to be called on resulting array of messages if method call succeeded.
      - parameter result:
      Resulting array of messages if method call succeeded.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
@@ -128,8 +122,6 @@ public protocol MessageTracker {
      `Message` protocol.
      - parameter message:
      A message reset to.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
@@ -145,8 +137,6 @@ public protocol MessageTracker {
      It is impossible to use any `MessageTracker` methods after it was destroyed.
      - SeeAlso:
      `Message` protocol.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.

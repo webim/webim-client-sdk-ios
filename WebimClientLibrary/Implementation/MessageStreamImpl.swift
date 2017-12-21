@@ -32,7 +32,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class MessageStreamImpl: MessageStream {
+final class MessageStreamImpl {
     
     // MARK: - Properties
     private let accessChecker: AccessChecker
@@ -97,10 +97,8 @@ final class MessageStreamImpl: MessageStream {
         
         isChatIsOpening = false
         
-        if visitSessionStateListener != nil {
-            visitSessionStateListener?.changed(state: publicState(ofVisitSessionState: previousVisitSessionState),
-                                               to: publicState(ofVisitSessionState: visitSessionState))
-        }
+        visitSessionStateListener?.changed(state: publicState(ofVisitSessionState: previousVisitSessionState),
+                                           to: publicState(ofVisitSessionState: visitSessionState))
     }
     
     func set(onlineStatus: OnlineStatusItem) {
@@ -174,7 +172,7 @@ final class MessageStreamImpl: MessageStream {
         if onlineStatusChangeListener != nil
             && (onlineStatus != newOnlineStatus) {
             onlineStatusChangeListener!.changed(onlineStatus: previousPublicOnlineStatus,
-                                                       to: newPublicOnlineStatus)
+                                                to: newPublicOnlineStatus)
         }
         
         onlineStatus = newOnlineStatus
@@ -183,9 +181,9 @@ final class MessageStreamImpl: MessageStream {
     func onReceiving(departmentItemList: [DepartmentItem]) {
         var departmentList = [Department]()
         for departmentItem in departmentItemList {
-            var fullLogoURLString: URL? = nil
+            var fullLogoURL: URL? = nil
             if let logoURLString = departmentItem.getLogoURLString() {
-                fullLogoURLString = URL(string: serverURLString + logoURLString)
+                fullLogoURL = URL(string: serverURLString + logoURLString)
             }
             
             let department = DepartmentImpl(key: departmentItem.getKey(),
@@ -193,171 +191,15 @@ final class MessageStreamImpl: MessageStream {
                                             departmentOnlineStatus: publicState(ofDepartmentOnlineStatus: departmentItem.getOnlineStatus()),
                                             order: departmentItem.getOrder(),
                                             localizedNames: departmentItem.getLocalizedNames(),
-                                            logo: fullLogoURLString)
+                                            logo: fullLogoURL)
             departmentList.append(department)
         }
         self.departmentList = departmentList
         
-        if departmentListChangeListener != nil {
-            departmentListChangeListener?.received(departmentList: departmentList)
-        }
+        departmentListChangeListener?.received(departmentList: departmentList)
     }
     
-    
-    // MARK: - MessageStream protocol methods
-    
-    func getVisitSessionState() -> VisitSessionState {
-        return publicState(ofVisitSessionState: visitSessionState)
-    }
-    
-    func getChatState() -> ChatState {
-        return publicState(ofChatState: lastChatState)
-    }
-    
-    func getUnreadByOperatorTimestamp() -> Date? {
-        return unreadByOperatorTimestamp
-    }
-    
-    func getUnreadByVisitorTimestamp() -> Date? {
-        return unreadByVisitorTimestamp
-    }
-    
-    func getDepartmentList() -> [Department]? {
-        return departmentList
-    }
-    
-    func getLocationSettings() -> LocationSettings {
-        return locationSettingsHolder.getLocationSettings()
-    }
-    
-    func getCurrentOperator() -> Operator? {
-        return currentOperator
-    }
-    
-    func getLastRatingOfOperatorWith(id: String) -> Int {
-        let rating = (chat == nil) ? nil : chat!.getOperatorIDToRate()?[id]
-        
-        return (rating == nil) ? 0 : (rating?.getRating())!
-    }
-    
-    
-    func rateOperatorWith(id: String,
-                          byRating rating: Int) throws {
-        if let ratingValue = convertToInternal(rating: rating) {
-            try checkAccess()
-            
-            webimActions.rateOperatorWith(id: id,
-                                          rating: ratingValue)
-        }
-    }
-    
-    func startChat() throws {
-        try checkAccess()
-        
-        openChatIfNecessary()
-    }
-    
-    func startChat(departmentKey: String) throws {
-        try checkAccess()
-        
-        openChatIfNecessary(departmentKey: departmentKey)
-    }
-    
-    func closeChat() throws {
-        try checkAccess()
-        
-        let chatIsOpen = ((lastChatState != .CLOSED_BY_VISITOR)
-            && (lastChatState != .CLOSED))
-            && (lastChatState != .UNKNOWN)
-        if chatIsOpen {
-            webimActions.closeChat()
-        }
-    }
-    
-    func setVisitorTyping(draftMessage: String?) throws {
-        try checkAccess()
-        
-        messageComposingHandler.setComposing(draft: draftMessage)
-    }
-    
-    func send(message: String,
-              isHintQuestion: Bool? = nil) throws -> String {
-        try checkAccess()
-        
-        openChatIfNecessary()
-        
-        let messageID = ClientSideID.generateClientSideID()
-        webimActions.send(message: message,
-                          clientSideID: messageID,
-                          isHintQuestion: isHintQuestion)
-        
-        messageHolder.sending(message: sendingMessageFactory.createTextMessageToSendWith(id: messageID,
-                                                                                         text: message))
-        
-        return messageID
-    }
-    
-    func send(message: String) throws -> String {
-        return try send(message: message,
-                        isHintQuestion: nil)
-    }
-    
-    func send(file: Data,
-              filename: String,
-              mimeType: String,
-              completionHandler: SendFileCompletionHandler?) throws -> String {
-        try checkAccess()
-        
-        openChatIfNecessary()
-        
-        let messageID = ClientSideID.generateClientSideID()
-        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID))
-        
-        webimActions.send(file: file,
-                          filename: filename,
-                          mimeType: mimeType,
-                          clientSideID: messageID,
-                          completionHandler: completionHandler)
-        
-        return messageID
-    }
-    
-    func new(messageTracker messageListener: MessageListener) throws -> MessageTracker {
-        try checkAccess()
-        
-        return try messageHolder.newMessageTracker(withMessageListener: messageListener) as MessageTracker
-    }
-    
-    func set(visitSessionStateListener: VisitSessionStateListener) {
-        self.visitSessionStateListener = visitSessionStateListener
-    }
-    
-    func set(chatStateListener: ChatStateListener) {
-        self.chatStateListener = chatStateListener
-    }
-    
-    func set(currentOperatorChangeListener: CurrentOperatorChangeListener) {
-        self.currentOperatorChangeListener = currentOperatorChangeListener
-    }
-    
-    func set(operatorTypingListener: OperatorTypingListener) {
-        self.operatorTypingListener = operatorTypingListener
-    }
-    
-    func set(departmentListChangeListener: DepartmentListChangeListener) {
-        self.departmentListChangeListener = departmentListChangeListener
-    }
-    
-    func set(locationSettingsChangeListener: LocationSettingsChangeListener) {
-        self.locationSettingsChangeListener = locationSettingsChangeListener
-    }
-    
-    func set(onlineStatusChangeListener: OnlineStatusChangeListener) {
-        self.onlineStatusChangeListener = onlineStatusChangeListener
-    }
-    
-    
-    // MARK: - Private methods
+    // MARK: Private methods
     
     private func publicState(ofChatState chatState: ChatItem.ChatItemState) -> ChatState {
         switch chatState {
@@ -425,18 +267,174 @@ final class MessageStreamImpl: MessageStream {
         }
     }
     
-    private func checkAccess() throws {
-        try accessChecker.checkAccess()
+}
+
+// MARK: - MessageStream
+extension MessageStreamImpl: MessageStream {
+    
+    func getVisitSessionState() -> VisitSessionState {
+        return publicState(ofVisitSessionState: visitSessionState)
     }
     
-    private func openChatIfNecessary(departmentKey: String? = nil) {
+    func getChatState() -> ChatState {
+        return publicState(ofChatState: lastChatState)
+    }
+    
+    func getUnreadByOperatorTimestamp() -> Date? {
+        return unreadByOperatorTimestamp
+    }
+    
+    func getUnreadByVisitorTimestamp() -> Date? {
+        return unreadByVisitorTimestamp
+    }
+    
+    func getDepartmentList() -> [Department]? {
+        return departmentList
+    }
+    
+    func getLocationSettings() -> LocationSettings {
+        return locationSettingsHolder.getLocationSettings()
+    }
+    
+    func getCurrentOperator() -> Operator? {
+        return currentOperator
+    }
+    
+    func getLastRatingOfOperatorWith(id: String) -> Int {
+        let rating = (chat == nil) ? nil : chat!.getOperatorIDToRate()?[id]
+        
+        return (rating == nil) ? 0 : (rating?.getRating())!
+    }
+    
+    
+    func rateOperatorWith(id: String,
+                          byRating rating: Int) throws {
+        if let ratingValue = convertToInternal(rating: rating) {
+            try accessChecker.checkAccess()
+            
+            webimActions.rateOperatorWith(id: id,
+                                          rating: ratingValue)
+        }
+    }
+    
+    func startChat() throws {
+        try startChat(departmentKey: nil,
+                      firstQuestion: nil)
+    }
+    
+    func startChat(firstQuestion: String?) throws {
+        try startChat(departmentKey: nil,
+                      firstQuestion: firstQuestion)
+    }
+    
+    func startChat(departmentKey: String?) throws {
+        try startChat(departmentKey: departmentKey,
+                      firstQuestion: nil)
+    }
+    
+    func startChat(departmentKey: String?,
+                   firstQuestion: String?) throws {
+        try accessChecker.checkAccess()
+        
         if (lastChatState.isClosed()
             || (visitSessionState == .OFFLINE_MESSAGE))
             && !isChatIsOpening {
             webimActions.startChat(withClientSideID: ClientSideID.generateClientSideID(),
+                                   firstQuestion: firstQuestion,
                                    departmentKey: departmentKey)
         }
     }
+    
+    func closeChat() throws {
+        try accessChecker.checkAccess()
+        
+        let chatIsOpen = ((lastChatState != .CLOSED_BY_VISITOR)
+            && (lastChatState != .CLOSED))
+            && (lastChatState != .UNKNOWN)
+        if chatIsOpen {
+            webimActions.closeChat()
+        }
+    }
+    
+    func setVisitorTyping(draftMessage: String?) throws {
+        try accessChecker.checkAccess()
+        
+        messageComposingHandler.setComposing(draft: draftMessage)
+    }
+    
+    func send(message: String,
+              isHintQuestion: Bool? = nil) throws -> String {
+        try startChat()
+        
+        let messageID = ClientSideID.generateClientSideID()
+        webimActions.send(message: message,
+                          clientSideID: messageID,
+                          isHintQuestion: isHintQuestion)
+        
+        messageHolder.sending(message: sendingMessageFactory.createTextMessageToSendWith(id: messageID,
+                                                                                         text: message))
+        
+        return messageID
+    }
+    
+    func send(message: String) throws -> String {
+        return try send(message: message,
+                        isHintQuestion: nil)
+    }
+    
+    func send(file: Data,
+              filename: String,
+              mimeType: String,
+              completionHandler: SendFileCompletionHandler?) throws -> String {
+        try startChat()
+        
+        let messageID = ClientSideID.generateClientSideID()
+        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID))
+        
+        webimActions.send(file: file,
+                          filename: filename,
+                          mimeType: mimeType,
+                          clientSideID: messageID,
+                          completionHandler: completionHandler)
+        
+        return messageID
+    }
+    
+    func new(messageTracker messageListener: MessageListener) throws -> MessageTracker {
+        try accessChecker.checkAccess()
+        
+        return try messageHolder.newMessageTracker(withMessageListener: messageListener) as MessageTracker
+    }
+    
+    func set(visitSessionStateListener: VisitSessionStateListener) {
+        self.visitSessionStateListener = visitSessionStateListener
+    }
+    
+    func set(chatStateListener: ChatStateListener) {
+        self.chatStateListener = chatStateListener
+    }
+    
+    func set(currentOperatorChangeListener: CurrentOperatorChangeListener) {
+        self.currentOperatorChangeListener = currentOperatorChangeListener
+    }
+    
+    func set(operatorTypingListener: OperatorTypingListener) {
+        self.operatorTypingListener = operatorTypingListener
+    }
+    
+    func set(departmentListChangeListener: DepartmentListChangeListener) {
+        self.departmentListChangeListener = departmentListChangeListener
+    }
+    
+    func set(locationSettingsChangeListener: LocationSettingsChangeListener) {
+        self.locationSettingsChangeListener = locationSettingsChangeListener
+    }
+    
+    func set(onlineStatusChangeListener: OnlineStatusChangeListener) {
+        self.onlineStatusChangeListener = onlineStatusChangeListener
+    }
+    
+    // MARK: Private methods
     
     private func convertToInternal(rating: Int) -> Int? {
         switch rating {

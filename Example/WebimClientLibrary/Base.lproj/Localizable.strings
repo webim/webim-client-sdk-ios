@@ -1,0 +1,60 @@
+/* 
+  Localizable.strings
+  WebimClientLibrary
+
+  Created by Nikita Lazarev-Zubov on 11.12.17.
+  Copyright © 2017 Webim. All rights reserved.
+*/
+
+
+// MARK: - Remote notifications
+
+"P.OA" = "Operator assigned to your appeal: %@.";
+"P.OF" = "%@ has sent file: %@.";
+"P.OM" = "%@ has sent message: %@.";
+
+
+// MARK: - StringConstants.swift
+
+// REFRESH_CONTROL_TEXT
+"LoadingMessages" = "Loading messages...";
+
+// Avatar
+"SenderAvatarImage" = "Sender avatar image";
+"ShowsRatingDialog" = "Shows rating dialog.";
+
+// FileMessage
+"FileUnavailable" = "File is unavailable.";
+
+// LeftButton
+"ChooseFile" = "Choose file";
+"ShowsImagePicker" = "Shows image picker to choose an image to send.";
+
+// RatingDialog
+"Rate" = "Rate";
+"Cancel" = "Cancel";
+"RatesOperator" = "Rates operator with chosen rating.";
+"ClosesRatingDialog" = "Closes rating dialog.";
+
+// SendFileErrorMessage
+"FileSendingFailed" = "File sending failed";
+"ClosesSendFileError" = "Closes dialog.";
+"FileTooLarge" = "File is too large.";
+"FileTypeNotSupported" = "File type is not supported.";
+
+// SessionCreationErrorDialog
+"ClosesSessionError" = "Closes dialog.";
+"SessionCreationFailed" = "Session creation failed";
+"AccountBlocked" = "Account that is used to create session is blocked. Please contact Webim support or use another one.";
+
+// SettingsErrorDialog
+"ClosesSettingsError" = "Closes dialog.";
+"InvalidSettings" = "Invalid account settings";
+"AccountNameEmpty" = "Account name can't be empty.";
+"LocationEmpty" = "Location can't be empty.";
+
+// ShowFileDialog
+"ImageFormatInvalid" = "Image format is not valid.";
+"ImageLinkInvalid" = "Image link is not valid.";
+"PreviewUnavailable" = "Preview is not available.";
+"ClosesFilePreview" = "Closes file preview.";

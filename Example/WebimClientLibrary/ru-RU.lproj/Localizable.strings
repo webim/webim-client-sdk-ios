@@ -6,47 +6,55 @@
   Copyright © 2017 Webim. All rights reserved.
 */
 
+
+// MARK: - Remote notifications
+
+"P.OA" = "Обращению назначен оператор: %@.";
+"P.OF" = "%@ прислал файл: %@.";
+"P.OM" = "%@ написал сообщение: %@.";
+
+
 // MARK: - StringConstants.swift
 
 // REFRESH_CONTROL_TEXT
-"Loading messages..." = "Сообщения загружаются...";
+"LoadingMessages" = "Сообщения загружаются...";
 
 // Avatar
-"Sender avatar image" = "Изображение аватара отправителя сообщения";
-"Shows rating dialog." = "Показывает окно оценки оператора.";
+"SenderAvatarImage" = "Изображение аватара отправителя сообщения";
+"ShowsRatingDialog" = "Показывает окно оценки оператора.";
 
 // FileMessage
-"File is unavailable." = "Файл недоступен.";
+"FileUnavailable" = "Файл недоступен.";
 
 // LeftButton
-"Choose file" = "Выбрать файл для отправки";
-"Shows image picker to choose an image to send." = "Показывает окно выбора изображения для отправки.";
+"ChooseFile" = "Выбрать файл для отправки";
+"ShowsImagePicker" = "Показывает окно выбора изображения для отправки.";
 
 // RatingDialog
 "Rate" = "Оценить";
 "Cancel" = "Отмена";
-"Rates operator with chosen rating." = "Оценивает оператора.";
-"Closes rating dialog." = "Закрывает диалог.";
+"RatesOperator" = "Оценивает оператора.";
+"ClosesRatingDialog" = "Закрывает диалог.";
 
 // SendFileErrorMessage
-"File sending failed" = "Неудачная попытка отправки файла";
-"Closes dialog." = "Закрывает окно.";
-"File is too large." = "Размер файла превышен.";
-"File type is not supported." = "Данный тип файла не поддерживается.";
+"FileSendingFailed" = "Неудачная попытка отправки файла";
+"ClosesSendFileError" = "Закрывает окно.";
+"FileTooLarge" = "Размер файла превышен.";
+"FileTypeNotSupported" = "Данный тип файла не поддерживается.";
 
 // SessionCreationErrorDialog
-"Closes dialog." = "Закрывает окно.";
-"Session creation failed" = "Неудачная попытка создания сессии";
-"Account that is used to create session is blocked. Please contact Webim support or use another one." = "Учетная запись, с помощью которой была произведена попытка начать сессию, заблокирован. Пожалуйста, обратитесь в службу поддержки \"Webim\" или используйте другую учетную запись.";
+"ClosesSessionError" = "Закрывает окно.";
+"SessionCreationFailed" = "Неудачная попытка создания сессии";
+"AccountBlocked" = "Учетная запись, с помощью которой была произведена попытка начать сессию, заблокирован. Пожалуйста, обратитесь в службу поддержки \"Webim\" или используйте другую учетную запись.";
 
 // SettingsErrorDialog
-"Closes dialog." = "Закрывает окно.";
-"Invalid account settings" = "Неверные данные учетной записи";
-"Account name can't be empty." = "Название учетной записи не может быть пустым.";
-"Location can't be empty." = "Значение размещения не может быть пустым.";
+"ClosesSettingsError" = "Закрывает окно.";
+"InvalidSettings" = "Неверные данные учетной записи";
+"AccountNameEmpty" = "Название учетной записи не может быть пустым.";
+"LocationEmpty" = "Значение размещения не может быть пустым.";
 
 // ShowFileDialog
-"Image format is not valid." = "Неверный формат изображения.";
-"Image link is not valid." = "Ссылка недействительна.";
-"Preview is not available." = "Просмотр недоступен.";
-"Closes file preview." = "Закрывает окно.";
+"ImageFormatInvalid" = "Неверный формат изображения.";
+"ImageLinkInvalid" = "Ссылка недействительна.";
+"PreviewUnavailable" = "Просмотр недоступен.";
+"ClosesFilePreview" = "Закрывает окно.";

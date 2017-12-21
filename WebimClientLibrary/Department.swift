@@ -1,6 +1,6 @@
 //
 //  Department.swift
-//  Cosmos
+//  WebimClientLibrary
 //
 //  Created by Nikita Lazarev-Zubov on 12.12.17.
 //  Copyright © 2017 Webim. All rights reserved.
@@ -41,7 +41,7 @@ public protocol Department {
      - SeeAlso:
      `startChat(departmentKey:)` method of `MessageStream` protocol.
      - returns:
-     Department key value that uniquely idetificates this department.
+     Department key value that uniquely identifies this department.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

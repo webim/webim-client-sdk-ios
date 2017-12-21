@@ -286,25 +286,30 @@ final class MessageTrackerImpl: MessageTracker {
             return
         }
         
-        messagesLoading = true
-        
-        messageHolder.set(currentChatMessages: [MessageImpl]())
-        
-        cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
-        cachedLimit = limitOfMessages
-        
-        messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { messages in
-            if let cachedCompletionHandler = self.cachedCompletionHandler,
-                !messages.isEmpty {
-                self.firstHistoryUpdateReceived = true
-                
-                let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
-                self.receive(messages: messages as! [MessageImpl],
-                             limit: limitOfMessages,
-                             completion: completionHandlerToPass)
-                
-                self.cachedCompletionHandler = nil
+        let currentChatMessages = messageHolder.getCurrentChatMessages()
+        if currentChatMessages.isEmpty {
+            messagesLoading = true
+            
+            cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
+            cachedLimit = limitOfMessages
+            
+            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { messages in
+                if let cachedCompletionHandler = self.cachedCompletionHandler,
+                    !messages.isEmpty {
+                    self.firstHistoryUpdateReceived = true
+                    
+                    let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
+                    self.receive(messages: messages as! [MessageImpl],
+                                 limit: limitOfMessages,
+                                 completion: completionHandlerToPass)
+                    
+                    self.cachedCompletionHandler = nil
+                }
             }
+        } else {
+            let result = Array(currentChatMessages.suffix(limitOfMessages))
+            headMessage = result.first
+            completion(result)
         }
     }
     
@@ -485,8 +490,8 @@ final class MessageTrackerImpl: MessageTracker {
                                             completion: @escaping ([Message]) -> ()) {
         let completionHandler = { [weak self] (messages: [Message]) -> () in
             self?.receive(messages: messages as! [MessageImpl],
-                         limit: limit,
-                         completion: completion)
+                          limit: limit,
+                          completion: completion)
         }
         
         if headMessage != nil {

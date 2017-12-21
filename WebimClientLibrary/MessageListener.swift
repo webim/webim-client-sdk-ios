@@ -47,8 +47,6 @@ public protocol MessageListener {
      Added message.
      - parameter previousMessage:
      A message after which it is needed to make a message insert. If `nil` then an insert is performed at the end of the list.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -63,8 +61,6 @@ public protocol MessageListener {
      `Message` protocol.
      - parameter message:
      A message to be removed.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -74,8 +70,6 @@ public protocol MessageListener {
     
     /**
      Called when removed all the messages.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -92,8 +86,6 @@ public protocol MessageListener {
      Message changed from.
      - parameter newVersion:
      Message changed to.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

@@ -27,7 +27,7 @@
 import Foundation
 
 /**
- Class that encapsulates paramters or HTTP-requests sending by SDK.
+ Class that encapsulates paramters or HTTP-requests sending by WebimClientLibrary.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -36,40 +36,47 @@ import Foundation
 final class WebimRequest {
     
     // MARK: - Properties
-    private var baseURLString: String
-    private var boundaryString: String?
+    private let baseURLString: String
+    private let httpMethod: AbstractRequestLoop.HTTPMethod
+    private let primaryData: [String : Any]
     private var completionHandler: ((_ data: Data?) throws -> ())?
+    private var contentType: String?
     private var httpBody: Data?
     private var messageID: String?
-    private var primaryData: [String : Any]
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
-    init(primaryData: [String : Any],
+    init(httpMethod: AbstractRequestLoop.HTTPMethod,
+         primaryData: [String : Any],
          messageID: String? = nil,
          httpBody: Data? = nil,
-         boundaryString: String? = nil,
+         contentType: String? = nil,
          baseURLString: String,
-         completionHandler: ((_ data: Data?) throws -> ())? = nil,
+         completion: ((_ data: Data?) throws -> ())? = nil,
          sendFileCompletionHandler: SendFileCompletionHandler? = nil) {
+        self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
         self.httpBody = httpBody
-        self.boundaryString = boundaryString
+        self.contentType = contentType
         self.baseURLString = baseURLString
-        self.completionHandler = completionHandler
+        self.completionHandler = completion
         self.sendFileCompletionHandler = sendFileCompletionHandler
     }
     
     
     // MARK: - Methods
     
+    func getHTTPMethod() -> AbstractRequestLoop.HTTPMethod {
+        return httpMethod
+    }
+    
     func getBaseURLString() -> String {
         return baseURLString
     }
     
-    func getBoundaryString() -> String? {
-        return boundaryString
+    func getConentType() -> String? {
+        return contentType
     }
     
     func getCompletionHandler() -> ((_ data: Data?) throws -> ())? {
@@ -98,12 +105,12 @@ final class WebimRequest {
 extension WebimRequest: NSCopying {
     
     func copy(with zone: NSZone? = nil) -> Any {
-        return WebimRequest(primaryData: primaryData,
+        return WebimRequest(httpMethod: httpMethod,
+                            primaryData: primaryData,
                             messageID: messageID,
                             httpBody: httpBody,
-                            boundaryString: boundaryString,
                             baseURLString: baseURLString,
-                            completionHandler: completionHandler,
+                            completion: completionHandler,
                             sendFileCompletionHandler: sendFileCompletionHandler)
     }
     

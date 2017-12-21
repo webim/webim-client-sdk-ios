@@ -110,7 +110,7 @@ final class MessageHolder {
             if message === firstMessage {
                 if !firstMessage.hasHistoryComponent() {
                     historyStorage.getLatestHistory(byLimit: limit,
-                                             completion: completion)
+                                                    completion: completion)
                 } else {
                     getMessagesFromHistoryBefore(id: firstMessage.getHistoryID()!,
                                                  limit: limit,
@@ -161,33 +161,26 @@ final class MessageHolder {
         historyStorage.receiveHistoryUpdate(withMessages: messages,
                                             idsToDelete: deleted) { [weak self] (endOfBatch: Bool, messageDeleted: Bool, deletedMessageID: String?, messageChanged: Bool, changedMessage: MessageImpl?, messageAdded: Bool, addedMessage: MessageImpl?, idBeforeAddedMessage: HistoryID?) -> () in
                                                     if endOfBatch {
-                                                        if self?.messageTracker != nil {
-                                                            self?.messageTracker!.endedHistoryBatch()
-                                                        }
+                                                        self?.messageTracker?.endedHistoryBatch()
                                                         
                                                         completion()
                                                     }
                                                     
                                                     if messageDeleted {
                                                         // Assuming that when messageDeleted == true deletedMessageID cannot be nil.
-                                                        if self?.messageTracker != nil {
-                                                            self?.messageTracker!.deletedHistoryMessage(withID: deletedMessageID!)
-                                                        }
+                                                        self?.messageTracker?.deletedHistoryMessage(withID: deletedMessageID!)
                                                     }
                                                     
                                                     if messageChanged {
                                                         // Assuming that when messageChanged == true changedMessage cannot be nil.
-                                                        if self?.messageTracker != nil {
-                                                            self?.messageTracker!.changedHistory(message: changedMessage!)
-                                                        }
+                                                        self?.messageTracker?.changedHistory(message: changedMessage!)
                                                     }
                                                     
                                                     if messageAdded {
                                                         // Assuming that when messageAdded == true addedMessage cannot be nil.
-                                                        if (self?.tryMergeWithLastChat(message: addedMessage!) != true) &&
-                                                            (self?.messageTracker != nil) {
-                                                            self?.messageTracker!.addedHistory(message: addedMessage!,
-                                                                                              before: idBeforeAddedMessage)
+                                                        if (self?.tryMergeWithLastChat(message: addedMessage!) != true) {
+                                                            self?.messageTracker?.addedHistory(message: addedMessage!,
+                                                                                               before: idBeforeAddedMessage)
                                                         }
                                                     }
         }
@@ -264,10 +257,8 @@ final class MessageHolder {
     func sending(message: MessageToSend) {
         messagesToSend.append(message)
         
-        if messageTracker != nil {
-            messageTracker!.messageListener.added(message: message,
-                                                  after: nil)
-        }
+        messageTracker?.messageListener.added(message: message,
+                                              after: nil)
     }
     
     func sendingCancelledWith(messageID: String) {

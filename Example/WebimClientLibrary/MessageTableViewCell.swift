@@ -133,8 +133,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -168,8 +166,6 @@ class MessageTableViewCell: UITableViewCell {
     
     /**
      Layouts subviews of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -231,8 +227,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -249,8 +243,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -286,8 +278,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -322,8 +312,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -350,8 +338,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -383,8 +369,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -410,8 +394,6 @@ class MessageTableViewCell: UITableViewCell {
      `Message` protocol of WebimClientLibrary.
      - parameter message:
      Current message which is influenced layout of the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -443,8 +425,6 @@ class MessageTableViewCell: UITableViewCell {
      Image view which is supposed to show operator avater.
      - parameter message:
      Message that is appropriate to the cell.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

@@ -40,8 +40,6 @@ public protocol WebimSession {
      Resumes session networking.
      - important:
      Session is created as paused. To start using it firstly you should call this method.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -54,8 +52,6 @@ public protocol WebimSession {
     
     /**
      Pauses session networking.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -68,8 +64,6 @@ public protocol WebimSession {
     
     /**
      Destroys session. After that any session methods are not available.
-     - returns:
-     No return value.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -94,8 +88,6 @@ public protocol WebimSession {
      Changes location without creating a new session.
      - parameter location:
      New location name.
-     - returns:
-     No return value.
      - throws:
      `WebimInternalError.UNKNOWN`.
      - SeeAlso:

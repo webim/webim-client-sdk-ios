@@ -68,8 +68,6 @@ class StartViewController: UIViewController {
     
     /**
      Sets up navigation item.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -83,8 +81,6 @@ class StartViewController: UIViewController {
     
     /**
      Sets up Start Chat button.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -96,8 +92,6 @@ class StartViewController: UIViewController {
     
     /**
      Sets up Settings button.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

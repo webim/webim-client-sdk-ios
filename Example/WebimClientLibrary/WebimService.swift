@@ -67,8 +67,6 @@ final class WebimService {
      Tries to create session of Webim service.
      - SeeAlso:
      `Webim` and `SessionBuilder` classes of WebimClientLibrary.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -85,6 +83,7 @@ final class WebimService {
             .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
             .set(deviceToken: deviceToken)
             .set(isVisitorDataClearingEnabled: false)
+            .set(webimLogger: self)
         
         if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
             // Hardcoded values that work with "demo" account only!
@@ -116,8 +115,6 @@ final class WebimService {
      It is necessary to call `createSession()` before calling this one.
      - SeeAlso:
      `resume()` method of `WebimSession` protocol of WebimClientLibrary.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -148,8 +145,6 @@ final class WebimService {
      It is necessary to call `createSession()` method before calling this one.
      - SeeAlso:
      `getStream()` method of `WebimSession` protocol of WebimClientLibrary.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -167,8 +162,6 @@ final class WebimService {
      `setVisitorTyping(draftMessage:)` method of `MessageStream` protocol of WebimClientLibrary.
      - parameter draft:
      Message draft. Empty string or nil means that visitor stopped typing.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -203,8 +196,6 @@ final class WebimService {
      `send(message:)` method of `MessageStream` protocol of WebimClientLibrary.
      - parameter message:
      Message to be sent.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -246,8 +237,6 @@ final class WebimService {
      File MIME-type.
      - parameter completionHandler:
      `SendFileCompletionHandler` object.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -271,7 +260,7 @@ final class WebimService {
             switch error {
             case .INVALID_SESSION:
                 print("Message sending failed because it was called when session object is invalid.")
-            // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
             case .INVALID_THREAD:
                 print("Message sending failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
@@ -287,8 +276,6 @@ final class WebimService {
      Assuming session is created and started.
      - SeeAlso:
      `closeChat()` method of `MessageStream` protocol of WebimClientLibrary.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -325,8 +312,6 @@ final class WebimService {
      ID of the operator to rate.
      - parameter rating:
      Rating in whole numbers from 1 to 5.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -363,8 +348,6 @@ final class WebimService {
      Assuming session is created and started.
      - SeeAlso:
      `new(messageTracker:)` method of `MessageStream` protocol of WebimClientLibrary.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -381,7 +364,7 @@ final class WebimService {
             switch error {
             case .INVALID_SESSION:
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
-            // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
             case .INVALID_THREAD:
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
@@ -404,8 +387,6 @@ final class WebimService {
      Completion that will be called on the resulting array of messages if method call succeeded.
      - parameter result:
      Resulting array of messages if method call succeeded.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -419,7 +400,7 @@ final class WebimService {
             switch error {
             case .INVALID_SESSION:
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
-            // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
             case .INVALID_THREAD:
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
@@ -441,8 +422,6 @@ final class WebimService {
      Completion that will be called on the resulting array of messages if method call succeeded.
      - parameter result:
      Resulting array of messages if method call succeeded.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -451,12 +430,12 @@ final class WebimService {
     func getNextMessages(completion: @escaping (_ result: [Message]) -> ()) {
         do {
             try messageTracker?.getNextMessages(byLimit: ChatSettings.MESSAGES_PER_REQUEST.rawValue,
-                                               completion: completion)
+                                                completion: completion)
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
-            // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
             case .INVALID_THREAD:
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
@@ -488,6 +467,15 @@ extension WebimService: FatalErrorHandler {
             print("Provided visitor fields are wrong.")
             // Assuming to check visitor field generating.
         }
+    }
+    
+}
+
+// MARK: - WebimLogger
+extension WebimService: WebimLogger {
+    
+    func log(entry: String) {
+        print(entry)
     }
     
 }

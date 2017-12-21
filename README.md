@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.5.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.6.0'
 ```
 > Minimum iOS version supported – 8.0.
 
@@ -20,22 +20,18 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Release notes
 
-* Departments support (see `Department` protocol and `getDepartmentList()` and `startChat(departmentKey:)` methods of `MessageStream` protocol and `DepartmentListChangeListener` protocol).
-* Visit session state support supplemented (see `getVisitSessionState()` of `MessageStream` protocol and `VisitSessionStateListener` protocol).
-* `WebimLogger` – protocol for custom _WebimClientLibrary_ network activity logging – added.
-* Working with `WebimRemoteNotification` fixed:
-    * `Webim` class method `isWebim(remoteNotification:)` fixed to work properly.
-    * `WebimRemoteNotification` protocol method `getEvent()` fixed to be able to produce `nil`.
-* Visitor data caching and clearing bugs fixed.
-* `getURLString()` of protocol `MessageAttachment` changed to return `URL` and renamed to `getURL()`.
-* `getThumbURLString()` of protocol `ImageInfo` changed to return `URL` and renamed to `getThumbURL()`.
-* Contacts request messages from operator limited support added.
-* Small API improvements.
-* Documentation updated and improved.
+* Chat start with first message functionality support added (`startChat(firstQuestion:)` and `startChat(departmentKey:firstQuestion:)` `MessageStream` methods).
+* Various bugs fixed.
+* Working of network requests improved.
+* `WebimLogger` entries dramatically improved.
+* _HeaderDoc_ improved.
+* Documentation fulfilled.
 
 #### Demo app
-* Russian localization added! 🇷🇺
-* Settings screen Save button constraints fixed.
+* Remote notifications display support added.
+* _Timberjack_ dependency removed because it's no longer needed.
+* Additional logging added.
+* _HeaderDoc_ improved.
 
 ## Example
 
@@ -140,7 +136,6 @@ In the sake of ease of several functionalities implementation Example app uses (
 * [_PopupDialog_](https://github.com/Orderella/PopupDialog) – for implemetation of pop-up dialogs.
 * [_SnapKit_](https://github.com/SnapKit/SnapKit) – for AutoLayout mechanism implementation inside the code.
 * [_SlackTextViewController_](https://github.com/slackhq/SlackTextViewController) – for chat stream displaying inside Table View.
-* [_Timberjack_](https://github.com/andysmart/Timberjack) – for logging of outgoing network requests and appropriate server responses.
 
 
 ## License

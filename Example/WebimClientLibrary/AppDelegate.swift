@@ -26,10 +26,7 @@
 
 
 import UIKit
-
-import Timberjack
 import WebimClientLibrary
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -48,9 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Logging HTTP requests and responses.
-        Timberjack.register()
-        
         // Remote notifications configuration.
         let notificationTypes: UIUserNotificationType = [.alert,
                                                          .badge,
@@ -68,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print(deviceToken)
+        print("Device token: \(deviceToken)")
         UserDefaults.standard.set(deviceToken,
                                   forKey: UserDefaultsKey.DEVICE_TOKEN.rawValue)
     }

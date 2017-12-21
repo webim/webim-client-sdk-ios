@@ -101,8 +101,6 @@ class SettingsViewController: UIViewController {
     
     /**
      Sets up navigation item.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -116,8 +114,6 @@ class SettingsViewController: UIViewController {
     
     /**
      Sets up Save button.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -132,8 +128,6 @@ class SettingsViewController: UIViewController {
      Using PopupDialog.
      - parameter message:
      Message to show inside alert view.
-     - returns:
-     No return value.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

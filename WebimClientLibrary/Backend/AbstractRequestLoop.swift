@@ -126,24 +126,33 @@ class AbstractRequestLoop {
             let semaphore = DispatchSemaphore(value: 0)
             var receivedData: Data? = nil
             
-            webimLogger?.log(entry: ("Request:"
-                + " method - " + request.httpMethod!
-                + ", URL – " + request.url!.absoluteString))
+            log(request: request)
             
             let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-                var webimLoggerEntry = "Response:"
-                    + " URL – " + request.url!.absoluteString
+                guard let `self` = `self` else {
+                    return
+                }
+                
+                var webimLoggerEntry = "Webim response:\n"
+                    + "URL – " + request.url!.absoluteString
+                if let httpBody = request.httpBody {
+                    if let dataString = String(data: httpBody,
+                                               encoding: .utf8) {
+                        webimLoggerEntry += ("\nParameters – " + dataString)
+                    }
+                }
                 
                 if let response = response {
                     httpCode = (response as! HTTPURLResponse).statusCode
                     
-                    webimLoggerEntry += ", Code – " + String(httpCode)
+                    webimLoggerEntry += "\nHTTP code – " + String(httpCode)
                 }
                 
                 if error != nil {
                     semaphore.signal()
                     
-                    self?.webimLogger?.log(entry: webimLoggerEntry)
+                    webimLoggerEntry += "\nError – " + error!.localizedDescription
+                    self.webimLogger?.log(entry: webimLoggerEntry)
                     
                     return
                 }
@@ -151,9 +160,8 @@ class AbstractRequestLoop {
                 if let data = data {
                     receivedData = data
                     
-                    webimLoggerEntry += ", Data – " + String(data: data,
-                                                             encoding: .utf8)!
-                    self?.webimLogger?.log(entry: webimLoggerEntry)
+                    webimLoggerEntry += self.encode(responseData: data)
+                    self.webimLogger?.log(entry: webimLoggerEntry)
                 }
                 
                 semaphore.signal()
@@ -209,6 +217,7 @@ class AbstractRequestLoop {
     }
     
     // MARK: Private methods
+    
     private func blockUntilPaused() {
         pauseCondition.lock()
         
@@ -217,6 +226,41 @@ class AbstractRequestLoop {
         }
         
         pauseCondition.unlock()
+    }
+    
+    private func log(request: URLRequest) {
+        var webimLoggerEntry = "Webim request:\n"
+            + "HTTP method - " + request.httpMethod! + "\n"
+            + "URL – " + request.url!.absoluteString
+        if let httpBody = request.httpBody {
+            if let dataString = String(data: httpBody,
+                                       encoding: .utf8) {
+                webimLoggerEntry += ("\nParameters – " + dataString)
+            }
+        }
+        
+        webimLogger?.log(entry: webimLoggerEntry)
+    }
+    
+    private func encode(responseData: Data) -> String {
+        do {
+            let jsonResponse = try JSONSerialization.jsonObject(with: responseData,
+                                                                options: .mutableContainers)
+            let prettyPrintedJSONResponse = try JSONSerialization.data(withJSONObject: jsonResponse,
+                                                                       options: .prettyPrinted)
+            
+            if let dataResponseString = String(data: prettyPrintedJSONResponse,
+                                               encoding: .utf8) {
+                return "\nJSON:\n" + dataResponseString
+            }
+        } catch {
+            if let dataResponseString = String(data: responseData,
+                                               encoding: .utf8) {
+                return "\nData:\n" + dataResponseString
+            }
+        }
+        
+        return ""
     }
     
 }

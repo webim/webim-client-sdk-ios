@@ -29,12 +29,12 @@ import Foundation
 final class DepartmentImpl: Department {
     
     // MARK: - Properties
-    let departmentOnlineStatus: DepartmentOnlineStatus
-    let key: String
-    let name: String
-    let order: Int
-    var localizedNames: [String : String]?
-    var logo: URL?
+    private let departmentOnlineStatus: DepartmentOnlineStatus
+    private let key: String
+    private let name: String
+    private let order: Int
+    private var localizedNames: [String : String]?
+    private var logoURL: URL?
     
     // MARK: - Initialization
     init(key: String,
@@ -48,7 +48,7 @@ final class DepartmentImpl: Department {
         self.departmentOnlineStatus = departmentOnlineStatus
         self.order = order
         self.localizedNames = localizedNames
-        self.logo = logo
+        self.logoURL = logo
     }
     
     // MARK: - Methods
@@ -75,7 +75,7 @@ final class DepartmentImpl: Department {
     }
     
     func getLogoURL() -> URL? {
-        return logo
+        return logoURL
     }
     
 }
