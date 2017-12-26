@@ -39,6 +39,9 @@ static NSString *const APIHistoryPath = @"/l/v/history";
 static NSString *const APIUploadPath = @"/l/v/upload";
 
 // MARK: Request parameters
+NSString *const DATA_PARAMETER = @"data";
+NSString *const HINT_QUESTION_PARAMETER = @"hint_question";
+NSString *const PAGE_ID_PARAMETER = @"page-id";
 NSString *const SINCE_PARAMETER = @"since";
 NSString *const VISITOR_ID_PARAMETER = @"visitor-id";
 
@@ -681,125 +684,128 @@ isEqualToDictionary:(NSDictionary *)right {
     
     // MARK: - Messages methods
     
-    // Full implementation
-- (NSString *)sendMessage:(NSString *)message
-         withClientSideId:(NSString *)clientSideId
-           isHintQuestion:(BOOL)isHintQuestion
-             successBlock:(void (^)(NSString *))successBlock
-             failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
-    NSMutableDictionary *parameters = [self baseMessageParametersDictionaryWithMessage:message
-                                                                       andClientSideId:clientSideId];
-    
-    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
-    if (pageID.length == 0) {
-        CALL_BLOCK(failureBlock, nil, WMSessionErrorNotConfigured);
-        return nil;
-    } else {
-        parameters[@"page-id"] = pageID;
+    - (NSString *)sendMessage:(NSString *)message
+             withClientSideId:(NSString *)clientSideId
+                 successBlock:(void (^)(NSString *))successBlock
+                 failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
+        NSMutableDictionary *parameters = [self baseMessageParametersDictionaryWithMessage:message
+                                                                           andClientSideId:clientSideId];
+        
+        NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
+        if (pageID.length == 0) {
+            CALL_BLOCK(failureBlock, nil, WMSessionErrorNotConfigured);
+            
+            return nil;
+        } else {
+            [parameters setObject:pageID
+                           forKey:PAGE_ID_PARAMETER];
+        }
+        
+        [self postMessageWithParameters:parameters
+                        andClientSideId:clientSideId
+                           successBlock:successBlock
+                           failureBlock:failureBlock];
+        
+        return clientSideId;
     }
     
-    parameters[@"hint_question"] = isHintQuestion ? @"true" : @"false";
-    
-    [self postMessageWithParameters:parameters
-                    andClientSideId:clientSideId
-                       successBlock:successBlock
-                       failureBlock:failureBlock];
-    
-    return clientSideId;
-}
-    
-    // Implementation without clientSideId passed
-- (NSString *)sendMessage:(NSString *)message
-           isHintQuestion:(BOOL)isHintQuestion
-             successBlock:(void (^)(NSString *))successBlock
-             failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
-    return [self sendMessage:message
-            withClientSideId:nil
-              isHintQuestion:isHintQuestion
-                successBlock:successBlock
-                failureBlock:failureBlock];
-}
-    
-    // Implementation without isHintQuestion flag passed
-- (NSString *)sendMessage:(NSString *)message
-         withClientSideId:(NSString *)clientSideId
-             successBlock:(void (^)(NSString *))successBlock
-             failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
-    NSMutableDictionary *parameters = [self baseMessageParametersDictionaryWithMessage:message
-                                                                       andClientSideId:clientSideId];
-    
-    NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
-    if (pageID.length == 0) {
-        CALL_BLOCK(failureBlock, nil, WMSessionErrorNotConfigured);
-        return nil;
-    } else {
-        parameters[@"page-id"] = pageID;
+    - (NSString *)sendMessage:(NSString *)message
+                 successBlock:(void (^)(NSString *))successBlock
+                 failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
+        return [self sendMessage:message
+                withClientSideId:nil
+                    successBlock:successBlock
+                    failureBlock:failureBlock];
     }
     
-    [self postMessageWithParameters:parameters
-                    andClientSideId:clientSideId
-                       successBlock:successBlock
-                       failureBlock:failureBlock];
-    
-    return clientSideId;
-}
-    
-    // Implementation without clientSideId and isHintQuestion flag passed
-- (NSString *)sendMessage:(NSString *)message
-             successBlock:(void (^)(NSString *))successBlock
-             failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
-    return [self sendMessage:message
-            withClientSideId:nil
-                successBlock:successBlock
-                failureBlock:failureBlock];
-}
-    
-- (NSMutableDictionary *)baseMessageParametersDictionaryWithMessage:(NSString *)message
-                                                    andClientSideId:(NSString *)clientSideId {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    
-    parameters[@"action"] = @"chat.message";
-    if (message.length > 0) {
-        parameters[@"message"] = message;
-    }
-    if (clientSideId.length > 0) {
-        parameters[@"client-side-id"] = clientSideId;
-    }
-    
-    return parameters;
-}
-    
-- (void)postMessageWithParameters:(NSDictionary *)parameters
-                  andClientSideId:(NSString *)clientSideId
-                     successBlock:(void (^)(NSString *))successBlock
-                     failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
-    if (clientSideId.length == 0) {
-        clientSideId = [WMUIDGenerator generateUID];
+    - (NSString *)sendMessage:(NSString *)message
+             withClientSideId:(NSString *)clientSideId
+                         data: (NSDictionary *)data
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock {
+        NSMutableDictionary *parameters = [self baseMessageParametersDictionaryWithMessage:message
+                                                                           andClientSideId:clientSideId];
+        
+        NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
+        if (pageID.length == 0) {
+            CALL_BLOCK(failureBlock, nil, WMSessionErrorNotConfigured);
+            
+            return nil;
+        } else {
+            [parameters setObject:pageID
+                           forKey:PAGE_ID_PARAMETER];
+        }
+        
+        if (data != nil) {
+            NSError *error; // Ignored.
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
+                                                               options:0
+                                                                 error:&error];
+            if (jsonData != nil) {
+                [parameters setObject:[[NSString alloc] initWithData:jsonData
+                                                            encoding:NSUTF8StringEncoding]
+                               forKey:DATA_PARAMETER];
+            }
+        }
+        
+        [self postMessageWithParameters:parameters
+                        andClientSideId:clientSideId
+                           successBlock:successBlock
+                           failureBlock:failureBlock];
+        
+        return clientSideId;
     }
     
-    [client_ postPath:APIActionPath
-           parameters:parameters
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  WMDebugLog(@"Action: send message - response:\n%@", responseObject);
-                  
-                  WMSessionError error = WMSessionErrorUnknown;
-                  BOOL hasError = [self handleErrorInResponse:responseObject
-                                                        error:&error];
-                  if (hasError) {
-                      CALL_BLOCK(failureBlock, clientSideId, error);
-                  } else {
-                      CALL_BLOCK(successBlock, clientSideId);
-                  }
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  WMDebugLog(@"Action: send message - error: %@", error);
-                  
-                  [self processErrorAPIResponse:operation
-                                          error:error];
-                  
-                  CALL_BLOCK(failureBlock, clientSideId, WMSessionErrorNetworkError);
-              }];
-}
+    - (NSString *)sendMessage:(NSString *)message
+                         data: (NSDictionary *)data
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock {
+        return [self sendMessage:message
+                withClientSideId:nil
+                            data:data
+                    successBlock:successBlock
+                    failureBlock:failureBlock];
+    }
     
+    - (NSString *)sendMessage:(NSString *)message
+             withClientSideId:(NSString *)clientSideId
+               isHintQuestion:(BOOL)isHintQuestion
+                 successBlock:(void (^)(NSString *))successBlock
+                 failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
+        NSMutableDictionary *parameters = [self baseMessageParametersDictionaryWithMessage:message
+                                                                           andClientSideId:clientSideId];
+    
+        NSString *pageID = [self unarchiveClientData][WMStorePageIDKey];
+        if (pageID.length == 0) {
+            CALL_BLOCK(failureBlock, nil, WMSessionErrorNotConfigured);
+            
+            return nil;
+        } else {
+            [parameters setObject:pageID
+                           forKey:PAGE_ID_PARAMETER];
+        }
+    
+        [parameters setObject:(isHintQuestion ? @"true" : @"false")
+                       forKey:HINT_QUESTION_PARAMETER];
+    
+        [self postMessageWithParameters:parameters
+                        andClientSideId:clientSideId
+                           successBlock:successBlock
+                           failureBlock:failureBlock];
+    
+        return clientSideId;
+    }
+    
+    - (NSString *)sendMessage:(NSString *)message
+               isHintQuestion:(BOOL)isHintQuestion
+                 successBlock:(void (^)(NSString *))successBlock
+                 failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
+        return [self sendMessage:message
+                withClientSideId:nil
+                  isHintQuestion:isHintQuestion
+                    successBlock:successBlock
+                    failureBlock:failureBlock];
+    }
     
     // MARK: File (general case)
     
@@ -1593,8 +1599,6 @@ isEqualToDictionary:(NSDictionary *)right {
     
     // MARK: - Private methods
     
-    // MARK: Client data
-    
 - (void)archiveClientData:(NSDictionary *)dictionary {
     if (isMultiUser_) {
         [WMUserDataManager archiveData:dictionary
@@ -1611,5 +1615,51 @@ isEqualToDictionary:(NSDictionary *)right {
         return [WMUserDataManager unarchiveData];
     }
 }
+    
+    - (NSMutableDictionary *)baseMessageParametersDictionaryWithMessage:(NSString *)message
+                                                        andClientSideId:(NSString *)clientSideId {
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        
+        parameters[@"action"] = @"chat.message";
+        if (message.length > 0) {
+            parameters[@"message"] = message;
+        }
+        if (clientSideId.length > 0) {
+            parameters[@"client-side-id"] = clientSideId;
+        }
+        
+        return parameters;
+    }
+    
+    - (void)postMessageWithParameters:(NSDictionary *)parameters
+                      andClientSideId:(NSString *)clientSideId
+                         successBlock:(void (^)(NSString *))successBlock
+                         failureBlock:(void (^)(NSString *, WMSessionError))failureBlock {
+        if (clientSideId.length == 0) {
+            clientSideId = [WMUIDGenerator generateUID];
+        }
+        
+        [client_ postPath:APIActionPath
+               parameters:parameters
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      WMDebugLog(@"Action: send message - response:\n%@", responseObject);
+                      
+                      WMSessionError error = WMSessionErrorUnknown;
+                      BOOL hasError = [self handleErrorInResponse:responseObject
+                                                            error:&error];
+                      if (hasError) {
+                          CALL_BLOCK(failureBlock, clientSideId, error);
+                      } else {
+                          CALL_BLOCK(successBlock, clientSideId);
+                      }
+                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      WMDebugLog(@"Action: send message - error: %@", error);
+                      
+                      [self processErrorAPIResponse:operation
+                                              error:error];
+                      
+                      CALL_BLOCK(failureBlock, clientSideId, WMSessionErrorNetworkError);
+                  }];
+    }
     
     @end

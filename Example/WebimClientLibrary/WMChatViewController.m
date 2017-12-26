@@ -240,9 +240,10 @@ replacementString:(NSString *)string {
 }
 
 - (void)rateOperatorTableViewController:(WMRateOperatorTableViewController *)tvc
-                                didRate:(NSInteger)rate authorID:(NSString *)authorID
+                                didRate:(NSInteger)rate
+                               authorID:(NSString *)authorID
                          rateCompletion:(void (^)(BOOL))block {
-    WMOperatorRate wmRate = rate - 2;
+    WMOperatorRate wmRate = rate - 3;
     [[WebimController shared].realtimeSession rateOperator:authorID
                                                   withRate:wmRate
                                                 completion:^(BOOL successful) {

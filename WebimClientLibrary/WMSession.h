@@ -149,24 +149,90 @@ extern NSString *const WMHistoryMessagesKey;
     
     // MARK: Text (message)
     
-- (NSString *)sendMessage:(NSString *)message
-         withClientSideId:(NSString *)clientSideId
-             successBlock:(void (^)(NSString *clientSideId))successBlock
-             failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
-- (NSString *)sendMessage:(NSString *)message
-             successBlock:(void (^)(NSString *clientSideId))successBlock
-             failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
+    /**
+     @brief Sends visitor message to Webim service.
+     
+     @param message Message text.
+     @param clientSideId Client side generated unique ID of the message. This one is optional. If is not provided, one will be randomly generated.
+     @param successBlock Completion block to call if request is successful.
+     @param failureBlock Completion block to call if request failed.
+     */
+    - (NSString *)sendMessage:(NSString *)message
+             withClientSideId:(NSString *)clientSideId
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
+    /**
+     @brief Sends visitor message to Webim service.
+     
+     @param message Message text.
+     @param successBlock Completion block to call if request is successful.
+     @param failureBlock Completion block to call if request failed.
+     */
+    - (NSString *)sendMessage:(NSString *)message
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
     
-    // Those with optional argument isHint which is demonstrates to server if visitor choose a hint instead of composing message
-- (NSString *)sendMessage:(NSString *)message
-         withClientSideId:(NSString *)clientSideId
-           isHintQuestion:(BOOL)isHintQuestion
-             successBlock:(void (^)(NSString *clientSideId))successBlock
-             failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
-- (NSString *)sendMessage:(NSString *)message
-           isHintQuestion:(BOOL)isHintQuestion
-             successBlock:(void (^)(NSString *clientSideId))successBlock
-             failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
+    /**
+     @brief Sends visitor message to Webim service.
+     
+     @discussion This version of method is used for messages which provide custom dictionary of message parameters. This functionality is not available as is – server version must support it.
+     
+     @param message Message text.
+     @param clientSideId Client side generated unique ID of the message. This one is optional. If is not provided, one will be randomly generated.
+     @param data Custom dictionary of message parameters. Must contain only standard types values.
+     @param successBlock Completion block to call if request is successful.
+     @param failureBlock Completion block to call if request failed.
+     */
+    - (NSString *)sendMessage:(NSString *)message
+             withClientSideId:(NSString *)clientSideId
+                         data: (NSDictionary *)data
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
+    /**
+     @brief Sends visitor message to Webim service.
+     
+     @discussion This version of method is used for messages which provide custom dictionary of message parameters. This functionality is not available as is – server version must support it.
+     
+     @param message Message text.
+     @param data Custom dictionary of message parameters. Must contain only standard types values.
+     @param successBlock Completion block to call if request is successful.
+     @param failureBlock Completion block to call if request failed.
+     */
+    - (NSString *)sendMessage:(NSString *)message
+                         data: (NSDictionary *)data
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
+    
+    /**
+     @brief Sends visitor message to Webim service.
+     
+     @discussion This version of method is used when there's a need to indicate wether it was a hint question of an app or manually typed message. This functionality is not available as is – server version must support it.
+     
+     @param message Message text.
+     @param clientSideId Client side generated unique ID of the message. This one is optional. If is not provided, one will be randomly generated.
+     @param isHintQuestion Flag that indicates wether it was a hint question of an app or manually typed message.
+     @param successBlock Completion block to call if request is successful.
+     @param failureBlock Completion block to call if request failed.
+     */
+    - (NSString *)sendMessage:(NSString *)message
+             withClientSideId:(NSString *)clientSideId
+               isHintQuestion:(BOOL)isHintQuestion
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
+    /**
+     @brief Sends visitor message to Webim service.
+     
+     @discussion This version of method is used when there's a need to indicate wether it was a hint question of an app or manually typed message. This functionality is not available as is – server version must support it.
+     
+     @param message Message text.
+     @param isHintQuestion Flag that indicates wether it was a hint question of an app or manually typed message.
+     @param successBlock Completion block to call if request is successful.
+     @param failureBlock Completion block to call if request failed.
+     */
+    - (NSString *)sendMessage:(NSString *)message
+               isHintQuestion:(BOOL)isHintQuestion
+                 successBlock:(void (^)(NSString *clientSideId))successBlock
+                 failureBlock:(void (^)(NSString *clientSideId, WMSessionError error))failureBlock;
     
     // MARK: File (general case)
     
