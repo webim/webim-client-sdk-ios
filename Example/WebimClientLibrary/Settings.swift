@@ -38,7 +38,7 @@ class Settings {
     
     // MARK: - Constants
     enum Defaults: String {
-        case ACCOUNT_NAME = "https://wmtest2.webim.ru"//"demo"
+        case ACCOUNT_NAME = "demo"
         case LOCATION = "mobile"
         case PAGE_TITLE = "iOS demo app"
     }

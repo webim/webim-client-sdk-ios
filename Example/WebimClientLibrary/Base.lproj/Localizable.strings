@@ -19,11 +19,6 @@
 // REFRESH_CONTROL_TEXT
 "LoadingMessages" = "Loading messages...";
 
-// ActionErrorDialog
-"ClosesActionError" = "Closes dialog.";
-"ActionFailed" = "Request failed";
-"NoChat" = "There's no chat to perform requested action in.";
-
 // Avatar
 "SenderAvatarImage" = "Sender avatar image";
 "ShowsRatingDialog" = "Shows rating dialog.";
@@ -34,6 +29,11 @@
 // LeftButton
 "ChooseFile" = "Choose file";
 "ShowsImagePicker" = "Shows image picker to choose an image to send.";
+
+// RateOperatorErrorMessage
+"OperatorRatingFailed" = "Operator rating failed";
+"ClosesRateOperatorError" = "Closes dialog.";
+"RateOperatorErrorMessage" = "Unknown error occured.";
 
 // RatingDialog
 "Rate" = "Rate";

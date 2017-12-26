@@ -48,6 +48,7 @@ class WebimActions {
         case BEFORE_TIMESTAMP = "before-ts"
         case CHAT_MODE = "chat-mode"
         case CLIENT_SIDE_ID = "client-side-id"
+        case DATA = "data"
         case DELETE_DRAFT = "del-message-draft"
         case DEPARTMENT_KEY = "department-key"
         case DEVICE_ID = "device-id"
@@ -122,12 +123,16 @@ class WebimActions {
     
     func send(message: String,
               clientSideID: String,
+              dataJSONString: String?,
               isHintQuestion: Bool?) {
         var dataToPost = [Parameter.ACTION.rawValue : Action.SEND_MESSAGE.rawValue,
                           Parameter.CLIENT_SIDE_ID.rawValue : clientSideID,
                           Parameter.MESSAGE.rawValue : message] as [String : Any]
         if let isHintQuestion = isHintQuestion {
             dataToPost[Parameter.HINT_QUESTION.rawValue] = isHintQuestion ? "1" : "0" // true / false
+        }
+        if let dataJSONString = dataJSONString {
+            dataToPost[Parameter.DATA.rawValue] = dataJSONString
         }
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
@@ -242,7 +247,8 @@ class WebimActions {
     }
     
     func rateOperatorWith(id: String?,
-                          rating: Int) {
+                          rating: Int,
+                          completionHandler: RateOperatorCompletionHandler?) {
         var dataToPost = [Parameter.ACTION.rawValue : Action.RATE_OPERATOR.rawValue,
                           Parameter.RATING.rawValue : String(rating)] as [String : Any]
         if let id = id {
@@ -254,7 +260,8 @@ class WebimActions {
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
                                                         primaryData: dataToPost,
                                                         contentType: ContentType.URL_ENCODED.rawValue,
-                                                        baseURLString: urlString))
+                                                        baseURLString: urlString,
+                                                        rateOperatorCompletionHandler: completionHandler))
     }
     
     func update(deviceToken: String) {

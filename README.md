@@ -6,7 +6,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 _WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.7.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.8.0'
 ```
 > Minimum iOS version supported – 8.0.
 
@@ -20,12 +20,13 @@ Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our
 
 ### Release notes
 
-* `FatalErrorType` fulfilled with `NO_CHAT` case.
-* `HeaderDoc` improved.
-* [**Documentation**](Documentation/Index.md) improved and fulfilled.
+* `SendFileError` handling fixed.
+* `RateOperatorCompletionHandler` protocol that handled `RateOperatorError` errors added and `rateOperatorWith(id:,byRating rating:,comletionHandler:)` method signature changed.
+* `send(message:data:)` method added to `MessageStream`. `data` parameter is a custom fields dictionary to pass custom message parameters (if server version supports this functionality).
+* Documentation typos fixed.
 
 #### Demo app
-* `WebimError` handling improved.
+* `RateOperatorCompletionHandler` protocol implementation example added.
 
 ## Example
 

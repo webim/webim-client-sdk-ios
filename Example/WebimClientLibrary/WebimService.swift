@@ -91,7 +91,7 @@ final class WebimService {
         
         if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
             // Hardcoded values that work with "demo" account only!
-            //sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}")
+            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}")
         }
         
         do {
@@ -212,7 +212,8 @@ final class WebimService {
             }
             
             // Function returns an unique message ID. In this app it is not used.
-            _ = try messageStream?.send(message: message)
+            _ = try messageStream?.send(message: message,
+                                        data: ["quotedMessageID": "abcd12345678"])
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
@@ -322,14 +323,16 @@ final class WebimService {
      2017 Webim
      */
     func rateOperator(withID operatorID: String,
-                      byRating rating: Int) {
+                      byRating rating: Int,
+                      completionHandler: RateOperatorCompletionHandler?) {
         do {
             if messageStream == nil {
                 setMessageStream()
             }
             
             try messageStream?.rateOperatorWith(id: operatorID,
-                                                byRating: rating)
+                                                byRating: rating,
+                                                comletionHandler: completionHandler)
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
@@ -480,13 +483,6 @@ extension WebimService: FatalErrorHandler {
         case .WRONG_PROVIDED_VISITOR_HASH:
             // Assuming to check visitor field generating.
             print("Wrong CRC passed with visitor fields.")
-        case .NO_CHAT:
-            print("Request assuming existing chat was send without one exists.")
-            
-            showErrorDialog(title: ActionErrorDialog.TITLE.rawValue,
-                            message: ActionErrorDialog.NO_CHAT.rawValue,
-                            button: ActionErrorDialog.BUTTON_TITLE.rawValue,
-                            hint: ActionErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue)
         }
     }
     

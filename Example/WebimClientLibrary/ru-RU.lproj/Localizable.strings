@@ -19,11 +19,6 @@
 // REFRESH_CONTROL_TEXT
 "LoadingMessages" = "Сообщения загружаются...";
 
-// ActionErrorDialog
-"ClosesActionError" = "Закрывает диалог.";
-"ActionFailed" = "Запрос отклонен";
-"NoChat" = "Чат закрыт, и запрос не может быть исполнен.";
-
 // Avatar
 "SenderAvatarImage" = "Изображение аватара отправителя сообщения";
 "ShowsRatingDialog" = "Показывает окно оценки оператора.";
@@ -34,6 +29,11 @@
 // LeftButton
 "ChooseFile" = "Выбрать файл для отправки";
 "ShowsImagePicker" = "Показывает окно выбора изображения для отправки.";
+
+// RateOperatorErrorMessage
+"OperatorRatingFailed" = "Неудачная попытка оценить оператора";
+"ClosesRateOperatorError" = "Закрывает окно.";
+"RateOperatorErrorMessage" = "Произошла неизвестная ошибка.";
 
 // RatingDialog
 "Rate" = "Оценить";

@@ -308,12 +308,14 @@ extension MessageStreamImpl: MessageStream {
     
     
     func rateOperatorWith(id: String,
-                          byRating rating: Int) throws {
+                          byRating rating: Int,
+                          comletionHandler: RateOperatorCompletionHandler?) throws {
         if let ratingValue = convertToInternal(rating: rating) {
             try accessChecker.checkAccess()
             
             webimActions.rateOperatorWith(id: id,
-                                          rating: ratingValue)
+                                          rating: ratingValue,
+                                          completionHandler: comletionHandler)
         }
     }
     
@@ -362,24 +364,33 @@ extension MessageStreamImpl: MessageStream {
         messageComposingHandler.setComposing(draft: draftMessage)
     }
     
-    func send(message: String,
-              isHintQuestion: Bool? = nil) throws -> String {
-        try startChat()
-        
-        let messageID = ClientSideID.generateClientSideID()
-        webimActions.send(message: message,
-                          clientSideID: messageID,
-                          isHintQuestion: isHintQuestion)
-        
-        messageHolder.sending(message: sendingMessageFactory.createTextMessageToSendWith(id: messageID,
-                                                                                         text: message))
-        
-        return messageID
+    func send(message: String) throws -> String {
+        return try sendMessageInternally(messageText: message,
+                                         dataJSONString: nil,
+                                         isHintQuestion: nil)
     }
     
-    func send(message: String) throws -> String {
-        return try send(message: message,
-                        isHintQuestion: nil)
+    func send(message: String, data: [String : Any]?) throws -> String {
+        if let jsonData = try? JSONSerialization.data(withJSONObject: data as Any,
+                                                      options: []) {
+            let jsonString = String(data: jsonData,
+                                    encoding: .utf8)
+            
+            return try sendMessageInternally(messageText: message,
+                                             dataJSONString: jsonString,
+                                             isHintQuestion: nil)
+        } else {
+            return try sendMessageInternally(messageText: message,
+                                             dataJSONString: nil,
+                                             isHintQuestion: nil)
+        }
+    }
+    
+    func send(message: String,
+              isHintQuestion: Bool?) throws -> String {
+        return try sendMessageInternally(messageText: message,
+                                         dataJSONString: nil,
+                                         isHintQuestion: isHintQuestion)
     }
     
     func send(file: Data,
@@ -453,6 +464,23 @@ extension MessageStreamImpl: MessageStream {
             
             return nil
         }
+    }
+    
+    private func sendMessageInternally(messageText: String,
+                                       dataJSONString: String?,
+                                       isHintQuestion: Bool?) throws -> String {
+        try startChat()
+        
+        let messageID = ClientSideID.generateClientSideID()
+        webimActions.send(message: messageText,
+                          clientSideID: messageID,
+                          dataJSONString: dataJSONString,
+                          isHintQuestion: isHintQuestion)
+        
+        messageHolder.sending(message: sendingMessageFactory.createTextMessageToSendWith(id: messageID,
+                                                                                         text: messageText))
+        
+        return messageID
     }
     
 }

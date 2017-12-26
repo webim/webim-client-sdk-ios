@@ -1,5 +1,7 @@
 #  _WebimClientLibrary_ Reference Book
 
+<h2 id="table-of-contents">Table of contents</h2>
+
 -   [Webim class](#webim)
     -   [Class method newSessionBuilder()](#new-session-builder)
     -   [Class method parse(remoteNotification:)](#parse-remote-notification)
@@ -44,13 +46,14 @@
     -   [getLocationSettings() method](#get-location-settings)
     -   [getCurrentOperator() method](#get-current-operator)
     -   [getLastRatingOfOperatorWith(id:) method](#get-last-rating-of-operator-with-id)
-    -   [rateOperatorWith(id:,byRating rating:) method](#rate-operator-with-id-by-rating-rating)
+    -   [rateOperatorWith(id:,byRating rating:,completionHandler:) method](#rate-operator-with-id-by-rating-rating)
     -   [startChat() method](#start-chat)
     -   [startChat(firstQuestion:) method](#start-chat-first-question)
     -   [startChat(departmentKey:) method](#start-chat-department-key)
     -   [startChat(departmentKey:firstQuestion:) method](#start-chat-department-key-first-question)
     -   [closeChat() method](#close-chat)
     -   [setVisitorTyping(draftMessage:) method](#set-visitor-typing-draft-message)
+    -   [send(message:,data:) method](#send-message-data)
     -   [send(message:,isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:,filename:,mimeType:,completionHandler:) method](#send-file-filename-mime-type-completion-handler)
     -   [new(messageTracker messageListener:) method](#new-message-tracker-message-listener)
@@ -64,6 +67,9 @@
 -   [SendFileCompletionHandler protocol](#send-file-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error)
+-   [RateOperatorCompletionHandler protocol](#rate-operator-completion-handler)
+    -   [onSuccess() method](#on-success)
+    -   [onFailure(error:) method](#on-failure-error)
 -   [VisitSessionStateListener protocol](#visit-session-state-listener)
     -   [changed(state previousState:,to newState:)](#changed-state-previous-state-to-new-state-visit-session-state-listener)
 -   [DepartmentListChangeListener protocol](#department-list-change-listener)
@@ -88,9 +94,6 @@
     -   [NONE case](#none-chat-state)
     -   [QUEUE case](#queue)
     -   [UNKNOWN case](#unknown)
--   [SendFileError enum](#send-file-error)
-    -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
-    -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
 -   [OnlineStatus enum](#session-online-status)
     -   [BUSY_OFFLINE case](#busy-offline)
     -   [BUSY_ONLINE case](#busy-online)
@@ -104,6 +107,12 @@
    -   [IDLE_AFTER_CHAT case](#idle-after-chat)
    -   [OFFLINE_MESSAGE case](#offline-message)
    -   [UNKNOWN case](#unknown-visit-session-state)
+-   [SendFileError enum](#send-file-error)
+   -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
+   -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
+-   [RateOperatorError enum](#rate-operator-error)
+    -   [NO_CHAT case](#no-chat)
+    -   [WRONG_OPERATOR_ID case](#wrong-operator-id)
 -   [MessageTracker protocol](#message-tracker)
     -   [getLastMessages(byLimit limitOfMessages:,completion:) method](#get-last-messages-by-limit-limit-of-messages-completion)
     -   [getNextMessages(byLimit limitOfMessages:,completion:) method](#get-next-nessages-by-limit-limit-of-messages-completion)
@@ -228,6 +237,8 @@ _Apple Push Notification System_.
 
 App does not receive remote notification from _Webim_ service.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="session-builder">SessionBuilder class</h2>
 
 Instance of this class is used to get [WebimSession](#webim-session) object. [SessionBuilder class](#session-builder) instance can be retreived with [newSessionBuilder()](#new-session-builder) [Webim class](#webim) method.
@@ -346,6 +357,8 @@ Error that is thrown when trying to use standard and custom visitor fields authe
 
 Error that is thrown when trying to create session object with invalid remote notifications configuration.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="provided-authorization-token-state-listener">ProvidedAuthorizationTokenStateListener protocol</h2>
 
 When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
@@ -359,6 +372,8 @@ Method is called in two cases:
 2. Passed provided authorization token is not valid. Provided authorization token can be invalid if Webim service did not receive it from client server yet.
 When this method is called, client server must send provided authorization token to Webim service.
 `providedAuthorizationToken` parameter contains provided authentication token which is set and which must be sent to _Webim_ service by client server.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="webim-session">WebimSession protocol</h2>
 
@@ -392,6 +407,8 @@ Changes [location](https://webim.ru/help/help-terms/) without creating a new ses
 <h3 id="set-device-token">set(deviceToken:) method</h3>
 
 Sets device token.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="message-stream">MessageStream protocol</h2>
 
@@ -430,12 +447,13 @@ Returns [Operator](#operator-protocol) object of the current chat or `nil` if on
 Returns previous rating of the operator or `0` if it was not rated before.
 `id` parameter – `String`-typed ID of operator.
 
-<h3 id ="rate-operator-with-id-by-rating-rating">rateOperatorWith(id:,byRating rating:) method</h3>
+<h3 id ="rate-operator-with-id-by-rating-rating">rateOperatorWith(id:,byRating rating:,completionHandler:) method</h3>
 
 Rates an operator.
 To get an ID of the current operator call [getCurrentOperator()](#get-current-operator).
 id parameter – String-typed ID of the operator to be rated.
 rating parameter – a number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
+completionHandler parameter – [RateOperatorCompletionHandler](#rate-operator-completion-handler) object.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat">startChat() method</h3>
@@ -474,12 +492,21 @@ This method must be called whenever there is a change of the input field of a me
 When there's multiple calls of this method occured, draft message is sending to service one time per second.
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="send-message-is-hint-question">send(message:,data:) method</h3>
+
+Sends a text message.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
+`message` parameter – `String`-typed message text.
+`data` parameter is optional, custom message parameters dictionary. Note that this functionality does not work as is – server version must support it.
+Returns randomly generated `String`-typed ID of the message.
+Can throw errors of [AccessError](#access-error) type.
+
 <h3 id ="send-message-is-hint-question">send(message:,isHintQuestion:) method</h3>
 
 Sends a text message.
 When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
-message parameter – `String`-typed message text.
-isHintQuestion parameter shows to server if a visitor chose a hint (true value) or wrote his own text (`false`). Optional to use.
+`message` parameter – `String`-typed message text.
+`isHintQuestion` parameter shows to server if a visitor chose a hint (true value) or wrote his own text (`false`). Optional to use.
 Returns randomly generated `String`-typed ID of the message.
 Can throw errors of [AccessError](#access-error) type.
 
@@ -529,6 +556,8 @@ Sets [LocationSettingsChangeListener](#location-settings-shange-listener) object
 
 Sets [OnlineStatusChangeListener](#session-online-status-change-listener) object.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="send-file-completion-handler">SendFileCompletionHandler protocol</h2>
 
 Protocol which methods are called after [send(file:,filename:,mimeType:,completionHandler:)](#send-file-filename-mime-type-completion-handler) method is finished. Must be adopted.
@@ -544,6 +573,23 @@ Executed when operation is failed.
 `messageID` parameter – ID of the appropriate message of `String` type.
 `error` parameter – appropriate [SendFileError](#send-file-error) value.
 
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="rate-operator-completion-handler">RateOperatorCompletionHandler protocol</h2>
+
+Protocol which methods are called after [rateOperatorWith(id:,byRating rating:,completionHandler:)](#rate-operator-with-id-by-rating-rating) method is finished. Must be adopted.
+
+<h3 id ="on-success">onSuccess() method</h3>
+
+Executed when operation is done successfully.
+
+<h3 id ="on-failure-error">onFailure(error:) method</h3>
+
+Executed when operation is failed.
+`error` parameter – appropriate [RateOperatorError](#rate-operator-error) value.
+
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="visit-session-state-listener">VisitSessionStateListener protocol</h2>
 
 Provides methods to track changes of [VisitSessionState](#visit-session-state) status.
@@ -551,6 +597,8 @@ Provides methods to track changes of [VisitSessionState](#visit-session-state) s
 <h3 id ="#changed-state-previous-state-to-new-state-visit-session-state-listener">changed(state previousState:,to newState:) method</h3>
 
 Called when [VisitSessionState](#visit-session-state) status is changed. Parameters contain its previous and new values.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="department-list-change-listener">DepartmentListChangeListener protocol</h2>
 
@@ -560,6 +608,8 @@ Provides methods to track changes in departments list.
 
 Called when department list is received. Current department list passed inside `departmentList` parameter and presents array of [Department](#department) objects.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="location-settings">LocationSettings protocol</h2>
 
 Interface that provides methods for handling [LocationSettings](#location-settings) which are received from server.
@@ -567,6 +617,8 @@ Interface that provides methods for handling [LocationSettings](#location-settin
 <h3 id ="are-hints-enabled">areHintsEnabled() method</h3>
 
 This method shows to an app if it should show hint questions to visitor. Returns `true` if an app should show hint questions to visitor, `false` otherwise.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="chat-state-listener">ChatStateListener protocol</h2>
 
@@ -576,6 +628,8 @@ Protocol that is to be adopted to track [ChatState](#chat-state) changes.
 
 Called during [ChatState](#chat-state)transition. Parameters are of [ChatState](#chat-state) type.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="current-operator-change-listener">CurrentOperatorChangeListener protocol</h2>
 
 Protocol that is to be adopted to track if current [Operator](#operator-protocol) object is changed.
@@ -583,6 +637,8 @@ Protocol that is to be adopted to track if current [Operator](#operator-protocol
 <h3 id ="changed-operator-previous-operator-to-new-operator">changed(operator previousOperator:,to newOperator:) method</h3>
 
 Called when [Operator](#operator-protocol) object of the current chat changed. New one value can be `nil` (if an operator leaved the chat).
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="operator-typing-listener">OperatorTypingListener protocol</h2>
 
@@ -593,6 +649,8 @@ Protocol that is to be adopted to track if the operator started or ended to type
 Called when operator typing state changed.
 Parameter `isTyping` is `true` if operator is typing, `false` otherwise.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="location-settings-shange-listener">LocationSettingsChangeListener protocol</h2>
 
 Interface that provides methods for handling changes in [LocationSettings](#location-settings).
@@ -601,6 +659,8 @@ Interface that provides methods for handling changes in [LocationSettings](#loca
 
 Method called by an app when new [LocationSettings](#location-settings) object is received with parameters that represent previous and new [LocationSettings](#location-settings) objects.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="session-online-status-change-listener">OnlineStatusChangeListener protocol</h2>
 
 Interface that provides methods for handling changes of session status.
@@ -608,6 +668,8 @@ Interface that provides methods for handling changes of session status.
 <h3 id ="changed-session-online-status-previous-session-online-status-to-new-session-online-status">changed(onlineStatus previousOnlineStatus:,to newOnlineStatus:) method</h3>
 
 Called when new session status is received with parameters that represent previous and new [OnlineStatus](#session-online-status) values.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="chat-state">ChatState enum</h2>
 
@@ -668,19 +730,7 @@ From this state a chat can be turned into:
 The state is undefined.
 This state is set as the initial when creating a new session, until the first response of the server containing the actual state is got. This state is also used as a fallback if _WebimClientLibrary_ can not identify the server state (e.g. if the server has been updated to a version that contains new states).
 
-<h2 id ="send-file-error">SendFileError enum</h2>
-
-Error types that could be passed in [onFailure(messageID:,error:) method](#on-failure-message-id-error).
-
-<h3 id ="file-size-exceeded">FILE_SIZE_EXCEEDED case</h3>
-
-The server may deny a request if the file size exceeds a limit.
-The maximum size of a file is configured on the server.
-
-<h3 id ="file-type-not-allowed">FILE_TYPE_NOT_ALLOWED case</h3>
-
-The server may deny a request if the file type is not allowed.
-The list of allowed file types is configured on the server.
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="session-online-status">OnlineStatus enum</h2>
 
@@ -707,6 +757,8 @@ Visitor is able to send both online and offline messages.
 <h3 id ="unknown-session-online-status">UNKNOWN case</h3>
 
 Session has not received first session status yet or session status is not supported by this version of the library.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="visit-session-state">VisitSessionState enum</h2>
 
@@ -735,6 +787,38 @@ Offline state.
 <h3 id ="unknown-visit-session-state">UNKNOWN case</h3>
 
 First status is not recieved yet or status is not supported by this version of the library.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="send-file-error">SendFileError enum</h2>
+
+Error types that could be passed in [onFailure(messageID:,error:) method](#on-failure-message-id-error).
+
+<h3 id ="file-size-exceeded">FILE_SIZE_EXCEEDED case</h3>
+
+The server may deny a request if the file size exceeds a limit.
+The maximum size of a file is configured on the server.
+
+<h3 id ="file-type-not-allowed">FILE_TYPE_NOT_ALLOWED case</h3>
+
+The server may deny a request if the file type is not allowed.
+The list of allowed file types is configured on the server.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="rate-operator-error">RateOperatorError enum</h2>
+
+Error types that could be passed in [onFailure(error:) method](#on-failure-error).
+
+<h3 id ="no-chat">NO_CHAT case</h3>
+
+Arised when trying to send operator rating request if no chat is exists.
+
+<h3 id ="wrong-operator-id">WRONG_OPERATOR_ID case</h3>
+
+Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="message-tracker">MessageTracker protocol</h2>
 
@@ -779,6 +863,8 @@ Can throw errors of [AccessError](#access-error) type.
 Destroys the [MessageTracker](#message-tracker). It is impossible to use any [MessageTracker](#message-tracker) methods after it was destroyed.
 Isn't mandatory to be called.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="message-listener">MessageListener protocol</h2>
 
 Should be adopted. Provides methods to track changes inside message stream.
@@ -804,6 +890,8 @@ Called when removed all the messages.
 Called when changing a message.
 [Message](#message) is an immutable type and field values can not be changed. That is why message changing occurs as replacing one object with another. Thereby you can find out, for example, which certain message fields have changed by comparing an old and a new object values.
 Parameters are of type [Message](#message).
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="message">Message protocol</h2>
 
@@ -864,6 +952,8 @@ if messageOne.isEqual(to: messageTwo) { /* … */ }
 ````
 Where `messageOne` and `messageTwo` are any `Message` objects.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="message-attachment">MessageAttachment protocol</h2>
 
 Contains information about an attachment file.
@@ -888,6 +978,8 @@ Returns attachment file size in bytes of `Int64` type.
 
 Returns `URL` of the file or `nil`.
 Notice that this URL is short-living and is tied to a session.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="image-info">ImageInfo protocol</h2>
 
@@ -919,6 +1011,8 @@ Returns height of an image in pixels of `Int` type or `nil`.
 <h3 id ="get-width">getWidth() method</h3>
 
 Returns width of an image in pixels of `Int` type or `nil`.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="message-type">MessageType enum</h2>
 
@@ -958,6 +1052,8 @@ A system information message which indicates that an operator is busy and can't 
 
 A text message sent by a visitor.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="message-send-status">MessageSendStatus enum</h2>
 
 Until a message is sent to the server, is received by the server and is spreaded among clients, message can be seen as "being send"; at the same time `Message.getSendStatus()` will return [SENDING](#sending). In other cases - [SENT](#sent).
@@ -969,6 +1065,8 @@ A message is being sent.
 <h3 id ="sent">SENT case</h3>
 
 A message had been sent to the server, received by the server and was spreaded among clients.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="department">Department protocol</h2>
 
@@ -1003,6 +1101,8 @@ Presented by `[String : String]` dictonary. Key is custom locale descriptor, val
 Returns department logo _URL_ (if exists).
 Presented by `URL` object.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="department-online-status">DepartmentOnlineStatus enum</h2>
 
 Possible department online statuses.
@@ -1028,6 +1128,8 @@ Visitor is able to send both online and offline messages.
 
 Any status that is not supported by this version of the library.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="operator-protocol">Operator protocol</h2>
 
 Presents chat operator object.
@@ -1044,6 +1146,8 @@ Returns display name of the operator of `String` type or nil.
 
 Returns `URL` of the operator’s avatar or `nil` if does not exist.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="webim-remote-notification">WebimRemoteNotification protocol</h2>
 
 Abstracts a remote notifications from _Webim_ service.
@@ -1059,6 +1163,8 @@ Returns event of this remote notification of [NotificationEvent](#notification-e
 <h3 id ="get-parameters">getParameters() method</h3>
 
 Returns parameters of this remote notification of array of type `String` type. Each [NotificationType](#notification-type) has specific list of parameters.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="notification-type">NotificationType enum</h2>
 
@@ -1087,6 +1193,8 @@ Parameters:
 * Operator's name;
 * Message text.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="notification-event">NotificationEvent enum</h2>
 
 Represents meaned type of action when remote notification is received.
@@ -1099,6 +1207,8 @@ Means that a notification should be added by current remote notification.
 
 Means that a notification should be deleted by current remote notification.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="fatal-error-handler">FatalErrorHandler protocol</h2>
 
 Must be adopted to handle service errors that can occur.
@@ -1106,9 +1216,11 @@ Must be adopted to handle service errors that can occur.
 <h3 id ="on-error">on(error:) method</h3>
 
 This method is to be called when Webim service error is received.
-Notica that method called NOT FROM THE MAIN THREAD!
+Notice that method called NOT FROM THE MAIN THREAD!
 
 `error` parameter is of [`WebimError` type](#webim-error).
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id ="fatal-error-type">FatalErrorType enum</h2>
 
@@ -1157,6 +1269,8 @@ Recommended response is to send an automatic bug report and show the user an err
 
 Notice that the session will be destroyed if this error occured.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="webim-error">WebimError protocol</h2>
 
 Abstracts _Webim_ service possible fatal error.
@@ -1169,6 +1283,8 @@ Returns parsed type of the error of [FatalErrorType](#fatal-error-type) type.
 
 Returns `String` representation of an error. Mostly useful if the error type is unknown.
 
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="access-error">AccessError enum</h2>
 
 Error types that can be throwed by [MessageStream](#message-stream) methods.
@@ -1180,6 +1296,8 @@ Error that is thrown if the method was called not from the thread the [WebimSess
 <h3 id ="invalid-session">INVALID_SESSION case</h3>
 
 Error that is thrown if [WebimSession](#webim-session) object was destroyed.
+
+[Go to table of contents](#table-of-contents)
 
 <h2 id="webim-logger">WebimLogger protocol</h2>
 

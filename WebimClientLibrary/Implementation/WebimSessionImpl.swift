@@ -647,9 +647,7 @@ final private class DestroyIfNotErrorListener: InternalErrorListener {
             urlString: String) {
         if (sessionDestroyer == nil)
             || (sessionDestroyer?.isDestroyed() == false) {
-            if WebimInternalError.isFatalError(string: error) {
-                sessionDestroyer?.destroy()
-            }
+            sessionDestroyer?.destroy()
             
             internalErrorListener?.on(error: error,
                                       urlString: urlString)
@@ -690,8 +688,6 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
         switch string {
         case WebimInternalError.ACCOUNT_BLOCKED.rawValue:
             return .ACCOUNT_BLOCKED
-        case WebimInternalError.NO_CHAT.rawValue:
-            return .NO_CHAT
         case WebimInternalError.VISITOR_BANNED.rawValue:
             return .VISITOR_BANNED
         case WebimInternalError.WRONG_PROVIDED_VISITOR_HASH.rawValue:

@@ -87,17 +87,6 @@ public enum FatalErrorType {
     case ACCOUNT_BLOCKED
     
     /**
-     Indicates that there was a try to perform action that requires existing chat, but there's no chat.
-     - SeeAlso:
-     `rateOperatorWith(id:,byRating rating:)` method of `MessageStream` protocol.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    case NO_CHAT
-    
-    /**
      Indicates an expired authorization of a visitor.
      The recommended response is to re-authorize it and to re-create session object.
      - important:

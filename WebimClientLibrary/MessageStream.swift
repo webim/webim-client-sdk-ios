@@ -131,13 +131,15 @@ public protocol MessageStream {
      Rates an operator.
      To get an ID of the current operator call `getCurrentOperator()`.
      - important:
-     Requires existing chat. When there's no one, `on(error:)` method of `FatalErrorHandler` protocol will be called with `NO_CHAT` value of `error` parameter.
+     Requires existing chat.
      - SeeAlso:
-     `FatalErrorHandler` protocol.
+     `RateOperatorCompletionHandler` protocol.
      - parameter id:
      ID of the operator to be rated.
      - parameter rate:
      A number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
+     - parameter comletionHandler:
+     `RateOperatorCompletionHandler` object.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
@@ -147,7 +149,8 @@ public protocol MessageStream {
      2017 Webim
      */
     func rateOperatorWith(id: String,
-                          byRating rating: Int) throws
+                          byRating rating: Int,
+                          comletionHandler: RateOperatorCompletionHandler?) throws
     
     /**
      Changes `ChatState` to `ChatState.QUEUE`.
@@ -256,6 +259,26 @@ public protocol MessageStream {
      2017 Webim
      */
     func send(message: String) throws -> String
+    
+    /**
+     Sends a text message.
+     When calling this method, if there is an active `MessageTracker` object (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     - parameter message:
+     Text of the message.
+     - parameter data:
+     Optional. Custom message parameters dictionary. Note that this functionality does not work as is – server version must support it.
+     - returns:
+     ID of the message.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func send(message: String,
+              data: [String: Any]?) throws -> String
     
     /**
      Sends a text message.
@@ -471,6 +494,40 @@ public protocol SendFileCompletionHandler {
      */
     func onFailure(messageID: String,
                    error: SendFileError)
+    
+}
+
+/**
+ - SeeAlso:
+ `MessageStream.rateOperatorWith(id:,byRating rating:,comletionHandler:)`.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public protocol RateOperatorCompletionHandler {
+    
+    /**
+     Executed when operation is done successfully.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func onSuccess()
+    
+    /**
+     Executed when operation is failed.
+     - parameter error:
+     Error.
+     - SeeAlso:
+     `RateOperatorError`.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func onFailure(error: RateOperatorError)
     
 }
 
@@ -760,38 +817,6 @@ public enum ChatState {
 }
 
 /**
- - SeeAlso:
- `SendFileCompletionHandler.onFailure(messageID:error:)`
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-public enum SendFileError: Error {
-    
-    /**
-     The server may deny a request if the file size exceeds a limit.
-     The maximum size of a file is configured on the server.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    case FILE_SIZE_EXCEEDED
-    
-    /**
-     The server may deny a request if the file type is not allowed.
-     The list of allowed file types is configured on the server.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    case FILE_TYPE_NOT_ALLOWED
-    
-}
-
-/**
  Online state possible cases.
  - SeeAlso:
  `OnlineStatusChangeListener`
@@ -918,5 +943,67 @@ public enum VisitSessionState {
      2017 Webim
      */
     case UNKNOWN
+    
+}
+
+/**
+ - SeeAlso:
+ `SendFileCompletionHandler.onFailure(messageID:error:)`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public enum SendFileError: Error {
+    
+    /**
+     The server may deny a request if the file size exceeds a limit.
+     The maximum size of a file is configured on the server.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case FILE_SIZE_EXCEEDED
+    
+    /**
+     The server may deny a request if the file type is not allowed.
+     The list of allowed file types is configured on the server.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case FILE_TYPE_NOT_ALLOWED
+    
+}
+
+/**
+ - SeeAlso:
+ `RateOperatorCompletionHandler.onFailure(error:)`
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+public enum RateOperatorError: Error {
+    
+    /**
+     Arised when trying to send operator rating request if no chat is exists.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case NO_CHAT
+    
+    /**
+     Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    case WRONG_OPERATOR_ID
     
 }

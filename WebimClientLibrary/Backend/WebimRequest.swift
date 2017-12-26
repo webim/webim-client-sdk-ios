@@ -43,6 +43,7 @@ final class WebimRequest {
     private var contentType: String?
     private var httpBody: Data?
     private var messageID: String?
+    private var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
@@ -53,6 +54,7 @@ final class WebimRequest {
          contentType: String? = nil,
          baseURLString: String,
          completion: ((_ data: Data?) throws -> ())? = nil,
+         rateOperatorCompletionHandler: RateOperatorCompletionHandler? = nil,
          sendFileCompletionHandler: SendFileCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
@@ -61,6 +63,7 @@ final class WebimRequest {
         self.contentType = contentType
         self.baseURLString = baseURLString
         self.completionHandler = completion
+        self.rateOperatorCompletionHandler = rateOperatorCompletionHandler
         self.sendFileCompletionHandler = sendFileCompletionHandler
     }
     
@@ -93,6 +96,10 @@ final class WebimRequest {
     
     func getPrimaryData() -> [String : Any] {
         return primaryData
+    }
+    
+    func getRateOperatorCompletionHandler() -> RateOperatorCompletionHandler? {
+        return rateOperatorCompletionHandler
     }
     
     func getSendFileCompletionHandler() -> SendFileCompletionHandler? {

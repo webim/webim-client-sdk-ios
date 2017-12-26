@@ -137,15 +137,48 @@ final class ActionRequestLoop: AbstractRequestLoop {
                             self.authorizationData = awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
                             
                             return
-                        } else {
-                            if WebimInternalError.isFatalError(string: error) {
-                                running = false
+                        } else if (error == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue)
+                            || (error == WebimInternalError.FILE_TYPE_NOT_ALLOWED.rawValue) {
+                            lastRequest = nil
+                            
+                            if let sendFileCompletionHandler = currentRequest.getSendFileCompletionHandler() {
+                                let sendFileError: SendFileError
+                                if error == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue {
+                                    sendFileError = .FILE_SIZE_EXCEEDED
+                                } else {
+                                    sendFileError = .FILE_TYPE_NOT_ALLOWED
+                                }
+                                
+                                sendFileCompletionHandler.onFailure(messageID: currentRequest.getMessageID()!,
+                                                                    error: sendFileError)
                             }
+                            
+                            return
+                        } else if (error == WebimInternalError.NO_CHAT.rawValue)
+                            || (error == WebimInternalError.OPERATOR_NOT_IN_CHAT.rawValue) {
+                            lastRequest = nil
+                            
+                            if let rateOperatorCompletionhandler = currentRequest.getRateOperatorCompletionHandler() {
+                                let rateOperatorError: RateOperatorError
+                                if error == WebimInternalError.NO_CHAT.rawValue {
+                                    rateOperatorError = .NO_CHAT
+                                } else {
+                                    rateOperatorError = .WRONG_OPERATOR_ID
+                                }
+                                
+                                rateOperatorCompletionhandler.onFailure(error: rateOperatorError)
+                            }
+                            
+                            return
+                        } else {
+                            running = false
                             
                             completionHandlerExecutor.execute(task: DispatchWorkItem {
                                 self.internalErrorListener.on(error: error,
                                                               urlString: request!.url!.path)
                             })
+                            
+                            return
                         }
                     }
                     
@@ -165,21 +198,18 @@ final class ActionRequestLoop: AbstractRequestLoop {
                             sendFileCompletionHandler.onSuccess(messageID: currentRequest.getMessageID()!)
                         })
                     }
+                    
+                    if let rateOperatorCOmpletionHandler = currentRequest.getRateOperatorCompletionHandler() {
+                        completionHandlerExecutor.execute(task: DispatchWorkItem {
+                            rateOperatorCOmpletionHandler.onSuccess()
+                        })
+                    }
                 }
-            } catch let error as SendFileError {
+            } catch let sendFileError as SendFileError {
                 if let sendFileCompletionHandler = currentRequest.getSendFileCompletionHandler() {
                     sendFileCompletionHandler.onFailure(messageID: currentRequest.getMessageID()!,
-                                                        error: error)
+                                                        error: sendFileError)
                 }
-            } catch let error as WebimInternalError {
-                running = false
-                
-                completionHandlerExecutor.execute(task: DispatchWorkItem {
-                    self.internalErrorListener.on(error: error.rawValue,
-                                                  urlString: request!.url!.path)
-                })
-            } catch _ as UnknownError {
-                print("Request was interrupted.")
             } catch {
                 print("Request failed with unknown error.")
             }

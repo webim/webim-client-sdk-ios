@@ -35,6 +35,8 @@ import Foundation
  */
 enum WebimInternalError: String, Error {
     case ACCOUNT_BLOCKED = "account-blocked"
+    case FILE_SIZE_EXCEEDED = "max_file_size_exceeded"
+    case FILE_TYPE_NOT_ALLOWED = "not_allowed_file_type"
     case NO_CHAT = "no-chat"
     case OPERATOR_NOT_IN_CHAT = "operator-not-in-chat"
     case PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND = "provided-auth-token-not-found"
@@ -44,10 +46,4 @@ enum WebimInternalError: String, Error {
     case UNKNOWN
     case VISITOR_BANNED = "visitor-banned"
     case WRONG_PROVIDED_VISITOR_HASH = "wrong-provided-visitor-hash-value"
-    
-    // MARK: - Methods
-    static func isFatalError(string: String) -> Bool {
-        return (string != WebimInternalError.NO_CHAT.rawValue)
-    }
-    
 }

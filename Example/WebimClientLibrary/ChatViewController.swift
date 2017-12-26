@@ -396,7 +396,8 @@ class ChatViewController: SLKTextViewController {
                                         self?.alreadyRated[operatorID] = true
                                         
                                         self?.webimService.rateOperator(withID: operatorID,
-                                                                        byRating: Int(ratingVC.ratingView.rating))
+                                                                        byRating: Int(ratingVC.ratingView.rating),
+                                                                        completionHandler: self)
         }
         rateButton.accessibilityHint = NSLocalizedString(RatingDialog.ACTION_BUTTON_ACCESSIBILITY_HINT.rawValue,
                                                          comment: "")
@@ -558,46 +559,78 @@ extension ChatViewController: SendFileCompletionHandler {
     
     func onFailure(messageID: String,
                    error: SendFileError) {
-        var message: String?
-        switch error {
-        case .FILE_SIZE_EXCEEDED:
-            message = NSLocalizedString(SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue,
-                                        comment: "")
-        case .FILE_TYPE_NOT_ALLOWED:
-            message = NSLocalizedString(SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue,
-                                        comment: "")
-        }
-        
-        let popupDialog = PopupDialog(title: NSLocalizedString(SendFileErrorMessage.TITLE.rawValue,
-                                                               comment: ""),
-                                      message: message)
-        
-        let okButton = CancelButton(title: NSLocalizedString(SendFileErrorMessage.BUTTON_TITLE.rawValue,
-                                                             comment: "")) { [weak self] in
-                                                                guard let `self` = self else {
-                                                                    return
-                                                                }
-                                                                
-                                                                for (index, message) in self.messages.enumerated() {
-                                                                    if message.getID() == messageID {
-                                                                        self.messages.remove(at: index)
-                                                                        
-                                                                        DispatchQueue.main.async() {
-                                                                            self.tableView?.reloadData()
-                                                                        }
-                                                                        
+        DispatchQueue.main.sync {
+            var message: String?
+            switch error {
+            case .FILE_SIZE_EXCEEDED:
+                message = NSLocalizedString(SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue,
+                                            comment: "")
+            case .FILE_TYPE_NOT_ALLOWED:
+                message = NSLocalizedString(SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue,
+                                            comment: "")
+            }
+            
+            let popupDialog = PopupDialog(title: NSLocalizedString(SendFileErrorMessage.TITLE.rawValue,
+                                                                   comment: ""),
+                                          message: message)
+            
+            let okButton = CancelButton(title: NSLocalizedString(SendFileErrorMessage.BUTTON_TITLE.rawValue,
+                                                                 comment: "")) { [weak self] in
+                                                                    guard let `self` = self else {
                                                                         return
                                                                     }
-                                                                }
+                                                                    
+                                                                    for (index, message) in self.messages.enumerated() {
+                                                                        if message.getID() == messageID {
+                                                                            self.messages.remove(at: index)
+                                                                            
+                                                                            DispatchQueue.main.async() {
+                                                                                self.tableView?.reloadData()
+                                                                            }
+                                                                            
+                                                                            return
+                                                                        }
+                                                                    }
+            }
+            okButton.accessibilityHint = NSLocalizedString(SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue,
+                                                           comment: "")
+            popupDialog.addButton(okButton)
+            
+            self.present(popupDialog,
+                         animated: true,
+                         completion: nil)
         }
-        okButton.accessibilityHint = NSLocalizedString(SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue,
-                                                       comment: "") 
-        
-        popupDialog.addButton(okButton)
-        self.present(popupDialog,
-                     animated: true,
-                     completion: nil)
-        
+    }
+    
+}
+
+// MARK: - RateOperatorCompletionHandler
+extension ChatViewController: RateOperatorCompletionHandler {
+    
+    func onSuccess() {
+        // Ignored.
+    }
+    
+    func onFailure(error: RateOperatorError) {
+        DispatchQueue.main.sync {
+            let message = NSLocalizedString(RateOperatorErrorMessage.MESSAGE.rawValue,
+                                            comment: "")
+            
+            let popupDialog = PopupDialog(title: NSLocalizedString(RateOperatorErrorMessage.TITLE.rawValue,
+                                                                   comment: ""),
+                                          message: message)
+            
+            let okButton = CancelButton(title: NSLocalizedString(RateOperatorErrorMessage.BUTTON_TITLE.rawValue,
+                                                                 comment: ""),
+                                        action: nil)
+            okButton.accessibilityHint = NSLocalizedString(RateOperatorErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue,
+                                                           comment: "")
+            popupDialog.addButton(okButton)
+            
+            self.present(popupDialog,
+                         animated: true,
+                         completion: nil)
+        }
     }
     
 }
