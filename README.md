@@ -4,29 +4,36 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 ## Installation
 
-_WebimClientLibrary_ is available through [_CocoaPods_](http://cocoapods.org). To install it, simply add the following line to your **Podfile**:
+### CocoaPods
+
+Add following line to your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.8.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.9.0'
 ```
+
+### Carthage
+
+Add following line to your **Cartfile**:
+```
+github "webim/webim-client-sdk-ios" ~> 3.9.0
+```
+
 > Minimum iOS version supported – 8.0.
 
-### Objective-C
+#### Objective-C
 
-Trying to integrate _WebimClientLibrary_ into your Objective-C code? Try out our [_WebimClientLibraryWrapper_](https://github.com/webim/webim-client-sdk-ios-wrapper).
+Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out our [_WebimClientLibraryWrapper_](https://github.com/webim/webim-client-sdk-ios-wrapper).
 
-> Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
+#### Previous version
 
-> If you're already using previous version and don't plan to jump on the new one you don't have to update your **Podfile**, depencies on version numbers 2.7.0 and lower will work properly. But for all renewals of the previous version usage, you have to switch your depency on the **version2** branch.
+Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
-### Release notes
+If you're already using previous version and don't plan to jump on the new one you don't have to update your **Podfile**, depencies on version numbers 2.7.0 and lower will work properly. But for all renewals of the previous version usage, you have to switch your depency on the **version2** branch.
 
-* `SendFileError` handling fixed.
-* `RateOperatorCompletionHandler` protocol that handled `RateOperatorError` errors added and `rateOperatorWith(id:,byRating rating:,comletionHandler:)` method signature changed.
-* `send(message:data:)` method added to `MessageStream`. `data` parameter is a custom fields dictionary to pass custom message parameters (if server version supports this functionality).
-* Documentation typos fixed.
+## Release notes
 
-#### Demo app
-* `RateOperatorCompletionHandler` protocol implementation example added.
+* _Carthage_ support added.
+* Minor bug fixes, stability improvements and documentation additions.
 
 ## Example
 

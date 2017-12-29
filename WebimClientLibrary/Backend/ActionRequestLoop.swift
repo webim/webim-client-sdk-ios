@@ -141,33 +141,16 @@ final class ActionRequestLoop: AbstractRequestLoop {
                             || (error == WebimInternalError.FILE_TYPE_NOT_ALLOWED.rawValue) {
                             lastRequest = nil
                             
-                            if let sendFileCompletionHandler = currentRequest.getSendFileCompletionHandler() {
-                                let sendFileError: SendFileError
-                                if error == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue {
-                                    sendFileError = .FILE_SIZE_EXCEEDED
-                                } else {
-                                    sendFileError = .FILE_TYPE_NOT_ALLOWED
-                                }
-                                
-                                sendFileCompletionHandler.onFailure(messageID: currentRequest.getMessageID()!,
-                                                                    error: sendFileError)
-                            }
+                            handleSendFile(error: error,
+                                           ofRequest: currentRequest)
                             
                             return
                         } else if (error == WebimInternalError.NO_CHAT.rawValue)
                             || (error == WebimInternalError.OPERATOR_NOT_IN_CHAT.rawValue) {
                             lastRequest = nil
                             
-                            if let rateOperatorCompletionhandler = currentRequest.getRateOperatorCompletionHandler() {
-                                let rateOperatorError: RateOperatorError
-                                if error == WebimInternalError.NO_CHAT.rawValue {
-                                    rateOperatorError = .NO_CHAT
-                                } else {
-                                    rateOperatorError = .WRONG_OPERATOR_ID
-                                }
-                                
-                                rateOperatorCompletionhandler.onFailure(error: rateOperatorError)
-                            }
+                            handleRateOperator(error: error,
+                                               ofRequest: currentRequest)
                             
                             return
                         } else {
@@ -216,6 +199,35 @@ final class ActionRequestLoop: AbstractRequestLoop {
         }
         
         lastRequest = nil
+    }
+    
+    private func handleSendFile(error errorString: String,
+                                ofRequest webimRequest: WebimRequest) {
+        if let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler() {
+            let sendFileError: SendFileError
+            if errorString == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue {
+                sendFileError = .FILE_SIZE_EXCEEDED
+            } else {
+                sendFileError = .FILE_TYPE_NOT_ALLOWED
+            }
+            
+            sendFileCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                                                error: sendFileError)
+        }
+    }
+    
+    private func handleRateOperator(error errorString: String,
+                                    ofRequest webimReques: WebimRequest) {
+        if let rateOperatorCompletionhandler = webimReques.getRateOperatorCompletionHandler() {
+            let rateOperatorError: RateOperatorError
+            if errorString == WebimInternalError.NO_CHAT.rawValue {
+                rateOperatorError = .NO_CHAT
+            } else {
+                rateOperatorError = .WRONG_OPERATOR_ID
+            }
+            
+            rateOperatorCompletionhandler.onFailure(error: rateOperatorError)
+        }
     }
     
 }

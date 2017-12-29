@@ -246,6 +246,8 @@ public protocol MessageStream {
     /**
      Sends a text message.
      When calling this method, if there is an active `MessageTracker` (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     - important:
+     Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
      Text of the message.
      - returns:
@@ -263,6 +265,8 @@ public protocol MessageStream {
     /**
      Sends a text message.
      When calling this method, if there is an active `MessageTracker` object (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     - important:
+     Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
      Text of the message.
      - parameter data:
@@ -283,6 +287,8 @@ public protocol MessageStream {
     /**
      Sends a text message.
      When calling this method, if there is an active `MessageTracker` object (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     - important:
+     Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
      Text of the message.
      - parameter isHintQuestion:
