@@ -48,7 +48,7 @@ class MessageImpl {
     private let timeInMicrosecond: Int64
     private let type: MessageType
     private var currentChatID: String?
-    private var data: [String : Any?]?
+    private var data: [String: Any?]?
     private var historyID: HistoryID?
     private var historyMessage: Bool
     
@@ -60,7 +60,7 @@ class MessageImpl {
          senderAvatarURLString: String?,
          senderName: String,
          type: MessageType,
-         data: [String : Any?]?,
+         data: [String: Any?]?,
          text: String,
          timeInMicrosecond: Int64,
          attachment: MessageAttachment?,
@@ -124,7 +124,7 @@ class MessageImpl {
     }
     
     func getSource() -> MessageSource {
-        return historyMessage ? MessageSource.HISTORY : MessageSource.CURRENT_CHAT
+        return (historyMessage ? MessageSource.HISTORY : MessageSource.CURRENT_CHAT)
     }
     
     func transferToCurrentChat(message: MessageImpl) -> MessageImpl {
@@ -229,11 +229,11 @@ class MessageImpl {
         }
         
         func isHistoryMessage() -> Bool {
-            return self == .HISTORY
+            return (self == .HISTORY)
         }
         
         func isCurrentChatMessage() -> Bool {
-            return self == .CURRENT_CHAT
+            return (self == .CURRENT_CHAT)
         }
         
     }
@@ -252,7 +252,7 @@ extension MessageImpl: Message {
         return attachment
     }
     
-    func getData() -> [String : Any?]? {
+    func getData() -> [String: Any?]? {
         return data
     }
     
@@ -371,7 +371,7 @@ final class MessageAttachmentImpl {
                               text: String) -> MessageAttachment? {
         let textData = text.data(using: .utf8)
         guard let textDictionary = try? JSONSerialization.jsonObject(with: textData!,
-                                                                     options: []) as? [String : Any?] else {
+                                                                     options: []) as? [String: Any?] else {
                                                                         print("Message attachment parameters parsing failed.")
                                                                         
                                                                         return nil
@@ -460,7 +460,7 @@ extension MessageAttachmentImpl: MessageAttachment {
     }
     
     func getURL() -> URL? {
-        return (urlString != nil) ? URL(string: urlString!) : nil
+        return ((urlString != nil) ? URL(string: urlString!) : nil)
     }
     
 }

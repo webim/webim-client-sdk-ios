@@ -101,10 +101,6 @@ class AbstractMapper: MessageFactoriesMapper {
         }
     }
     
-    func set(webimClient: WebimClient) {
-        self.webimClient = webimClient
-    }
-    
     func convert(messageItem: MessageItem,
                  historyMessage: Bool) -> MessageImpl? {
         let kind = messageItem.getKind()
@@ -139,7 +135,7 @@ class AbstractMapper: MessageFactoriesMapper {
         
         return MessageImpl(withServerURLString: serverURLString,
                            id: messageItem.getClientSideID()!,
-                           operatorID: messageItem.getSenderId(),
+                           operatorID: messageItem.getSenderID(),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
                            senderName: messageItem.getSenderName()!,
                            type: type!,
@@ -153,6 +149,10 @@ class AbstractMapper: MessageFactoriesMapper {
     }
     
     // MARK: MessageFactoriesMapper protocol methods
+    
+    func set(webimClient: WebimClient) {
+        self.webimClient = webimClient
+    }
     
     func mapAll(messages: [MessageItem]) -> [MessageImpl] {
         var mappedList = [MessageImpl]()

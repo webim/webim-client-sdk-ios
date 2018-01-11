@@ -39,6 +39,10 @@ extension UIImageView {
      Optional. Completion that has to be called on loaded image when loading is finished.
      - parameter image:
      Loaded image.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
      */
     public func loadImageAsynchronouslyFrom(url: URL,
                                             rounded: Bool = false,

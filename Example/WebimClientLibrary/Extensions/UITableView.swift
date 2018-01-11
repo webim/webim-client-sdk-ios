@@ -1,8 +1,8 @@
 //
-//  IconItem.swift
-//  WebimClientLibrary
+//  UITableView.swift
+//  WebimClientLibrary_Example
 //
-//  Created by Nikita Lazarev-Zubov on 15.08.17.
+//  Created by Nikita Lazarev-Zubov on 03.01.18.
 //  Copyright © 2017 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,38 +24,39 @@
 //  SOFTWARE.
 //
 
-import Foundation
+import UIKit
 
-/**
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-struct IconItem {
+extension UITableView {
     
-    // MARK: - Constants
-    // Raw values equal to field names received in responses from server.
-    private enum JSONField: String {
-        case COLOR = "color"
-        case SHAPE = "shape"
-    }
-    
-    
-    // MARK: - Properties
-    private var color: String?
-    private var shape: String?
-    
-    
-    // MARK: - Initialization
-    init(jsonDictionary: [String : Any?]) {
-        if let color = jsonDictionary[JSONField.COLOR.rawValue] as? String {
-            self.color = color
-        }
+    /**
+     Sets text message to table view background view to show if table view is empty.
+     Code example inside `numberOfSections(in tableView:)`:
+     ```
+     if rows.count > 0 {
+        return 1
+     } else {
+        tableView.emptyTableView(message: "Table is empty.")
+     
+        return 0
+     }
+     ```
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2017 Webim
+     */
+    func emptyTableView(message: NSAttributedString) {
+        let messageLabel = UILabel(frame: CGRect(x: 0.0,
+                                                 y: 0.0,
+                                                 width: self.bounds.size.width,
+                                                 height: self.bounds.size.height))
+        messageLabel.attributedText = message
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.sizeToFit()
         
-        if let shape = jsonDictionary[JSONField.SHAPE.rawValue] as? String {
-            self.shape = shape
-        }
+        self.backgroundView = messageLabel
+        self.separatorStyle = .none
     }
     
 }

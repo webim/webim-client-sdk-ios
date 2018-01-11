@@ -46,7 +46,7 @@ struct HistoryBeforeResponse {
     private var result: String?
     
     // MARK: - Initialization
-    init(jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String: Any?]) {
         if let dataDictionary = jsonDictionary[JSONField.HISTORY_RESPONSE_DATA.rawValue] as? [String: Any?] {
             historyResponseData = HistoryResponseData(jsonDictionary: dataDictionary)
         }
@@ -78,11 +78,11 @@ struct HistoryBeforeResponse {
         
         
         // MARK: - Initialization
-        init(jsonDictionary: [String : Any?]) {
+        init(jsonDictionary: [String: Any?]) {
             messages = [MessageItem]()
             if let messagesArray = jsonDictionary[JSONField.MESSAGES.rawValue] as? [Any?] {
                 for item in messagesArray {
-                    if let messageDictionary = item as? [String : Any?] {
+                    if let messageDictionary = item as? [String: Any?] {
                         let messageItem = MessageItem(jsonDictionary: messageDictionary)
                         messages?.append(messageItem)
                     }

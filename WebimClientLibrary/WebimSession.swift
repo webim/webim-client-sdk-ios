@@ -89,7 +89,8 @@ public protocol WebimSession {
      - parameter location:
      New location name.
      - throws:
-     `WebimInternalError.UNKNOWN`.
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
      - SeeAlso:
      `FatalErrorHandler`.
      - Author:

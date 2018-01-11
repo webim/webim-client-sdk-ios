@@ -53,7 +53,7 @@ final class WebimErrorImpl: WebimError {
     }
     
     func getErrorString() -> String {
-        return (errorString == nil) ? String(describing: errorType) : errorString!
+        return ((errorString != nil) ? errorString! : String(describing: errorType))
     }
     
 }

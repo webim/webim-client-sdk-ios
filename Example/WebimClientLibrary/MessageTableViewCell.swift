@@ -70,7 +70,7 @@ class MessageTableViewCell: UITableViewCell {
     
     
     // MARK: - Properties
-    private static var imageCache = [URL : UIImage]()
+    private static var imageCache = [URL: UIImage]()
     private static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMM yyyy hh:mm:ss"

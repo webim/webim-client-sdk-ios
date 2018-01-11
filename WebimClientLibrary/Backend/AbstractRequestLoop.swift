@@ -40,8 +40,16 @@ class AbstractRequestLoop {
         case GET = "GET"
         case POST = "POST"
     }
+    enum ResponseField: String {
+        case DATA = "data"
+        case ERROR = "error"
+    }
+    enum DataField: String {
+        case ERROR = "error"
+    }
     enum UnknownError: Error {
         case INTERRUPTED
+        case SERVER_ERROR
     }
     
     
@@ -51,64 +59,35 @@ class AbstractRequestLoop {
     var running = true
     private var currentDataTask: URLSessionDataTask?
     private var paused = true
-    private var queue: DispatchQueue?
-    private var requests: [WebimRequest]?
     private var webimLogger: WebimLogger?
     
     
     // MARK: - Methods
     
     func start() {
-        guard queue == nil else {
-            print("Can't start loop because it is already started.")
-            
-            return
-        }
-        
-        queue = DispatchQueue(label: "ru.webim.IODispatchQueue")
-        queue?.async {
-            do {
-                try self.run()
-            } catch {
-                // Ignored.
-            }
-        }
+        preconditionFailure("This method must be overridden!")
     }
     
     func pause() {
         pauseLock.lock()
-        
         paused = true
-        
         pauseLock.unlock()
     }
     
     func resume() {
         pauseLock.lock()
-        
         paused = false
         pauseCondition.broadcast()
-        
         pauseLock.unlock()
     }
     
     func stop() {
-        if queue != nil {
-            running = false
-            resume()
+        running = false
+        resume()
             
-            if let currentDataTask = currentDataTask {
-                currentDataTask.cancel()
-            }
-            
-            queue = nil
+        if let currentDataTask = currentDataTask {
+            currentDataTask.cancel()
         }
-        
-        requests?.removeAll()
-    }
-    
-    func run() throws {
-        preconditionFailure("This method must be overridden!")
     }
     
     func isRunning() -> Bool {
@@ -116,7 +95,7 @@ class AbstractRequestLoop {
     }
     
     func perform(request: URLRequest) throws -> Data {
-        var errorCounter = 0.0
+        var errorCounter = 0
         var lastHTTPCode = -1
         
         while isRunning() {
@@ -182,11 +161,13 @@ class AbstractRequestLoop {
             }
             
             if httpCode != 502 { // Bad Gateway
-                if httpCode == 413 { // Request Entity Too Large
+                if httpCode == 413 {
+                    // Request Entity Too Large
                     throw SendFileError.FILE_SIZE_EXCEEDED
                 }
                 
-                if httpCode == 415 { // Unsupported Media Type
+                if httpCode == 415 {
+                    // Unsupported Media Type
                     throw SendFileError.FILE_TYPE_NOT_ALLOWED
                 }
                 
@@ -194,14 +175,17 @@ class AbstractRequestLoop {
                     print("Request failed with HTTP code: \(httpCode)")
                 }
                 
-                errorCounter = 10.0
+                errorCounter += 1
             }
             
             lastHTTPCode = httpCode
             
             // If request wasn't successful and error isn't fatal, wait some time and try again.
-            errorCounter = errorCounter + 1.0
-            let sleepTime = ((errorCounter >= 5.0) ? 5.0 : errorCounter) as TimeInterval
+            if (errorCounter >= 5) {
+                // If there was more that five tries stop trying.
+                throw UnknownError.SERVER_ERROR
+            }
+            let sleepTime = Double(errorCounter) as TimeInterval
             let timeElapsed = Date().timeIntervalSince(startTime)
             if Double(timeElapsed) < Double(sleepTime) {
                 let remainingTime = Double(sleepTime) - Double(timeElapsed)
@@ -212,6 +196,15 @@ class AbstractRequestLoop {
         throw UnknownError.INTERRUPTED
     }
     
+    func handleRequestLoop(error: UnknownError) {
+        switch error {
+        case .INTERRUPTED:
+            print("Request failed with application internal error.")
+        case .SERVER_ERROR:
+            print("Request failed with server error.")
+        }
+    }
+    
     func set(webimLogger: WebimLogger?) {
         self.webimLogger = webimLogger
     }
@@ -220,11 +213,9 @@ class AbstractRequestLoop {
     
     private func blockUntilPaused() {
         pauseCondition.lock()
-        
         while paused {
             pauseCondition.wait()
         }
-        
         pauseCondition.unlock()
     }
     

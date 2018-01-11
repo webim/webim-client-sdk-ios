@@ -74,7 +74,7 @@ final class DeltaItem {
     
     
     // MARK: - Initialization
-    init?(jsonDictionary: [String : Any?]) {
+    init?(jsonDictionary: [String: Any?]) {
         // FIXME: Refactor this.
         if let eventString = jsonDictionary[JSONField.EVENT.rawValue] as? String {
             guard let event = Event(rawValue: eventString) else {

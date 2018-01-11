@@ -59,9 +59,9 @@ final class DeltaCallback {
     func process(deltaList: [DeltaItem]) {
         guard messageStream != nil,
             messageHolder != nil else {
-            print("Unable to process received delta list, because Message Stream object doesn't exist.")
-            
-            return
+                print("Unable to process received delta list, because Message Stream object doesn't exist.")
+                
+                return
         }
         
         for delta in deltaList {
@@ -137,7 +137,7 @@ final class DeltaCallback {
     private func handleChatUpdateBy(delta: DeltaItem,
                                     messageStream: MessageStreamImpl) {
         if delta.getEvent() == .UPDATE {
-            if let deltaData = delta.getData() as? [String : Any?] {
+            if let deltaData = delta.getData() as? [String: Any?] {
                 currentChat = ChatItem(jsonDictionary: deltaData)
                 messageStream.changingChatStateOf(chat: currentChat)
             }
@@ -166,13 +166,11 @@ final class DeltaCallback {
             
             messageHolder.deletedMessageWith(id: sessionID)
         } else {
-            if let deltaData = delta.getData() as? [String : Any?] {
+            if let deltaData = delta.getData() as? [String: Any?] {
                 let messageItem = MessageItem(jsonDictionary: deltaData)
                 let message = currentChatMessageMapper.map(message: messageItem)
                 if deltaEvent == .ADD {
-                    if currentChat != nil {
-                        currentChat?.add(message: messageItem)
-                    }
+                    currentChat?.add(message: messageItem)
                     
                     if message != nil {
                         messageHolder.receive(newMessage: message!)
@@ -200,12 +198,10 @@ final class DeltaCallback {
     
     private func handleChatOperatorUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
-        if let deltaData = delta.getData() as? [String : Any?] {
+        if let deltaData = delta.getData() as? [String: Any?] {
             let operatorItem = OperatorItem(jsonDictionary: deltaData)
             if delta.getEvent() == .UPDATE {
-                if currentChat != nil {
-                    currentChat!.set(operator: operatorItem)
-                }
+                currentChat?.set(operator: operatorItem)
                 
                 messageStream.changingChatStateOf(chat: currentChat)
             }
@@ -216,9 +212,7 @@ final class DeltaCallback {
                                                   messageStream: MessageStreamImpl) {
         if let operatorTyping = delta.getData() as? Bool {
             if delta.getEvent() == .UPDATE {
-                if currentChat != nil {
-                    currentChat!.set(operatorTyping: operatorTyping)
-                }
+                currentChat?.set(operatorTyping: operatorTyping)
                 
                 messageStream.changingChatStateOf(chat: currentChat)
             }
@@ -229,9 +223,7 @@ final class DeltaCallback {
                                                  messageStream: MessageStreamImpl) {
         if let readByVisitor = delta.getData() as? Bool {
             if delta.getEvent() == .UPDATE {
-                if currentChat != nil {
-                    currentChat!.set(readByVisitor: readByVisitor)
-                }
+                currentChat?.set(readByVisitor: readByVisitor)
             }
         }
     }
@@ -240,9 +232,7 @@ final class DeltaCallback {
                                          messageStream: MessageStreamImpl) {
         if let chatState = delta.getData() as? String {
             if delta.getEvent() == .UPDATE {
-                if currentChat != nil {
-                    currentChat!.set(state: ChatItem.ChatItemState(rawValue: chatState)!)
-                }
+                currentChat?.set(state: ChatItem.ChatItemState(rawValue: chatState)!)
                 
                 messageStream.changingChatStateOf(chat: currentChat)
             }
@@ -257,7 +247,7 @@ final class DeltaCallback {
         
         var departmentItems = [DepartmentItem]()
         for departmentData in deltaData {
-            if let departmentDictionary = departmentData as? [String : Any] {
+            if let departmentDictionary = departmentData as? [String: Any] {
                 if let deparmentItem = DepartmentItem(jsonDictionary: departmentDictionary) {
                     departmentItems.append(deparmentItem)
                 }
@@ -269,13 +259,11 @@ final class DeltaCallback {
     
     private func handleOperatorRateUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
-        if let deltaData = delta.getData() as? [String : Any?] {
+        if let deltaData = delta.getData() as? [String: Any?] {
             if let rating = RatingItem(jsonDictionary: deltaData) {
                 if delta.getEvent() == .UPDATE {
-                    if currentChat != nil {
-                        currentChat!.set(rating: rating,
-                                         toOperatorWithId: rating.getOperatorID())
-                    }
+                    currentChat?.set(rating: rating,
+                                     toOperatorWithId: rating.getOperatorID())
                 }
             }
         }

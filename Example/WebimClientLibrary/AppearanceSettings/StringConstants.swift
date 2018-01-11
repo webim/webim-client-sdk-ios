@@ -26,6 +26,8 @@
 
 import Foundation
 
+let EMPTY_TABLE_VIEW_TEXT = NSAttributedString(string: NSLocalizedString("EmptyChat",
+                                                                         comment: ""))
 let REFRESH_CONTROL_TEXT = NSAttributedString(string: NSLocalizedString("LoadingMessages",
                                                                         comment: ""))
 

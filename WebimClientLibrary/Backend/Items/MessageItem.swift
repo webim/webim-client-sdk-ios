@@ -74,18 +74,6 @@ final class MessageItem {
             }
         }
         
-        // MARK: - Methods
-        
-        func isTextMessage() -> Bool {
-            return (self == .VISITOR)
-                || (self == .OPERATOR)
-        }
-        
-        func isFileMessage() -> Bool {
-            return (self == .FILE_FROM_OPERATOR)
-                || (self == .FILE_FROM_VISITOR)
-        }
-        
     }
     
     private enum JSONField: String {
@@ -109,7 +97,7 @@ final class MessageItem {
     private var avatarURLString: String?
     private var chatID: String?
     private var clientSideID: String?
-    private var data: [String : Any?]?
+    private var data: [String: Any?]?
     private var deleted: Bool?
     private var id: String?
     private var kind: MessageKind?
@@ -120,7 +108,7 @@ final class MessageItem {
     
     
     // MARK: - Initialization
-    init(jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String: Any?]) {
         if let messageKind = jsonDictionary[JSONField.KIND.rawValue] as? String {
             kind = MessageKind(rawValue: messageKind)
         }
@@ -141,7 +129,7 @@ final class MessageItem {
             self.clientSideID = clientSideID
         }
         
-        if let data = jsonDictionary[JSONField.DATA.rawValue] as? [String : Any?] {
+        if let data = jsonDictionary[JSONField.DATA.rawValue] as? [String: Any?] {
             self.data = data
         }
         
@@ -189,7 +177,7 @@ final class MessageItem {
         return text
     }
     
-    func getSenderId() -> String? {
+    func getSenderID() -> String? {
         return authorID
     }
     
@@ -197,12 +185,12 @@ final class MessageItem {
         return avatarURLString
     }
     
-    func getData() -> [String : Any?]? {
+    func getData() -> [String: Any?]? {
         return data
     }
     
     func isDeleted() -> Bool {
-        return deleted == true
+        return (deleted == true)
     }
     
     func getKind() -> MessageKind? {

@@ -63,12 +63,12 @@ struct FullUpdate {
 
     
     // MARK: - Initialization
-    init(jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String: Any?]) {
         if let authorizationToken = jsonDictionary[JSONField.AUTHORIZATION_TOKEN.rawValue] as? String {
             self.authorizationToken = authorizationToken
         }
         
-        if let chatValue = jsonDictionary[JSONField.CHAT.rawValue] as? [String : Any?] {
+        if let chatValue = jsonDictionary[JSONField.CHAT.rawValue] as? [String: Any?] {
             chat = ChatItem(jsonDictionary: chatValue)
         }
         
@@ -98,7 +98,7 @@ struct FullUpdate {
         if let departmantsData = jsonDictionary[JSONField.DEPARTMENTS.rawValue] as? [Any] {
             var departmentItems = [DepartmentItem]()
             for departmentData in departmantsData {
-                if let departmentDictionary = departmentData as? [String : Any] {
+                if let departmentDictionary = departmentData as? [String: Any] {
                     if let deparmentItem = DepartmentItem(jsonDictionary: departmentDictionary) {
                         departmentItems.append(deparmentItem)
                     }
@@ -131,7 +131,7 @@ struct FullUpdate {
         return onlineStatus
     }
     
-    func getPageId() -> String? {
+    func getPageID() -> String? {
         return pageID
     }
     

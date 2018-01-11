@@ -70,7 +70,7 @@ final class LocationSettingsImpl {
                                       forKey: userDefaultsKey)
         }
         
-        UserDefaults.standard.setValue([UserDefaultsKey.HINTS_ENABLED.rawValue : hintsEnabled],
+        UserDefaults.standard.setValue([UserDefaultsKey.HINTS_ENABLED.rawValue: hintsEnabled],
                                        forKey: userDefaultsKey)
     }
     

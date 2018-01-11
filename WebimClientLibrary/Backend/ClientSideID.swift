@@ -47,7 +47,7 @@ struct ClientSideID {
     
     // MARK: - Private methods
     static func generateRandomString(ofCharactersNumber numberOfCharacters: Int) -> String {
-        let letters : NSString = "abcdef0123456789"
+        let letters: NSString = "abcdef0123456789"
         let length = UInt32(letters.length)
         
         var randomString = ""

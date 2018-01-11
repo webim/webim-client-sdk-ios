@@ -118,20 +118,18 @@ final class MessageStreamImpl {
         let newChatState = (self.chat == nil) ? .CLOSED : self.chat!.getState()
         if (chatStateListener != nil)
             && (lastChatState != newChatState) {
-            chatStateListener?.changed(state: publicState(ofChatState: lastChatState),
+            chatStateListener!.changed(state: publicState(ofChatState: lastChatState),
                                        to: publicState(ofChatState: newChatState))
         }
         lastChatState = newChatState
         
-        let newOperator = operatorFactory.createOperatorFrom(operatorItem: (self.chat == nil) ? nil : self.chat!.getOperator())
+        let newOperator = operatorFactory.createOperatorFrom(operatorItem: (self.chat != nil) ? self.chat!.getOperator() : nil)
         if newOperator != currentOperator {
             let previousOperator = currentOperator
             currentOperator = newOperator
             
-            if currentOperatorChangeListener != nil {
-                currentOperatorChangeListener!.changed(operator: previousOperator!,
+            currentOperatorChangeListener?.changed(operator: previousOperator!,
                                                        to: newOperator)
-            }
         }
         
         let operatorTypingStatus = (chat != nil)
@@ -301,7 +299,7 @@ extension MessageStreamImpl: MessageStream {
     }
     
     func getLastRatingOfOperatorWith(id: String) -> Int {
-        let rating = (chat == nil) ? nil : chat!.getOperatorIDToRate()?[id]
+        let rating = ((chat != nil) ? chat!.getOperatorIDToRate()?[id] : nil)
         
         return (rating == nil) ? 0 : (rating?.getRating())!
     }
@@ -365,12 +363,12 @@ extension MessageStreamImpl: MessageStream {
     }
     
     func send(message: String) throws -> String {
-        return try sendMessageInternally(messageText: message,
-                                         dataJSONString: nil,
-                                         isHintQuestion: nil)
+        return try sendMessageInternally(messageText: message)
     }
     
-    func send(message: String, data: [String : Any]?) throws -> String {
+    func send(message: String,
+              data: [String: Any]?,
+              completionHandler: DataMessageCompletionHandler?) throws -> String {
         if let jsonData = try? JSONSerialization.data(withJSONObject: data as Any,
                                                       options: []) {
             let jsonString = String(data: jsonData,
@@ -378,18 +376,15 @@ extension MessageStreamImpl: MessageStream {
             
             return try sendMessageInternally(messageText: message,
                                              dataJSONString: jsonString,
-                                             isHintQuestion: nil)
+                                             dataMessageCompletionHandler: completionHandler)
         } else {
-            return try sendMessageInternally(messageText: message,
-                                             dataJSONString: nil,
-                                             isHintQuestion: nil)
+            return try sendMessageInternally(messageText: message)
         }
     }
     
     func send(message: String,
               isHintQuestion: Bool?) throws -> String {
         return try sendMessageInternally(messageText: message,
-                                         dataJSONString: nil,
                                          isHintQuestion: isHintQuestion)
     }
     
@@ -467,16 +462,17 @@ extension MessageStreamImpl: MessageStream {
     }
     
     private func sendMessageInternally(messageText: String,
-                                       dataJSONString: String?,
-                                       isHintQuestion: Bool?) throws -> String {
+                                       dataJSONString: String? = nil,
+                                       isHintQuestion: Bool? = nil,
+                                       dataMessageCompletionHandler: DataMessageCompletionHandler? = nil) throws -> String {
         try startChat()
         
         let messageID = ClientSideID.generateClientSideID()
         webimActions.send(message: messageText,
                           clientSideID: messageID,
                           dataJSONString: dataJSONString,
-                          isHintQuestion: isHintQuestion)
-        
+                          isHintQuestion: isHintQuestion,
+                          dataMessageCompletionHandler: dataMessageCompletionHandler)
         messageHolder.sending(message: sendingMessageFactory.createTextMessageToSendWith(id: messageID,
                                                                                          text: messageText))
         

@@ -63,9 +63,9 @@ final class InternalUtils {
         // Alternative: CFAbsoluteTimeGetCurrent()
     }
     
-    static func parse(remoteNotification: [AnyHashable : Any]) -> WebimRemoteNotification? {
-        if let apsFields = remoteNotification[WebimRemoteNotificationImpl.APNsField.APS.rawValue] as? [String : Any] {
-            if let alertFields = apsFields[WebimRemoteNotificationImpl.APSField.ALERT.rawValue] as? [String : Any] {
+    static func parse(remoteNotification: [AnyHashable: Any]) -> WebimRemoteNotification? {
+        if let apsFields = remoteNotification[WebimRemoteNotificationImpl.APNsField.APS.rawValue] as? [String: Any] {
+            if let alertFields = apsFields[WebimRemoteNotificationImpl.APSField.ALERT.rawValue] as? [String: Any] {
                 return WebimRemoteNotificationImpl(jsonDictionary: alertFields) as WebimRemoteNotification?
             } else {
                 return nil
@@ -77,7 +77,7 @@ final class InternalUtils {
         }
     }
     
-    static func isWebim(remoteNotification: [AnyHashable : Any]) -> Bool {
+    static func isWebim(remoteNotification: [AnyHashable: Any]) -> Bool {
         if let webimField = remoteNotification[WebimRemoteNotificationImpl.APNsField.WEBIM.rawValue] as? Bool {
             return webimField
         }

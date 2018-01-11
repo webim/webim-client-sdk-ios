@@ -72,10 +72,6 @@ final class MessageHolder {
         self.currentChatMessages = currentChatMessages
     }
     
-    func getLastChatMessageIndex() -> Int {
-        return lastChatMessageIndex
-    }
-    
     func getMessagesToSend() -> [MessageToSend] {
         return messagesToSend
     }
@@ -85,7 +81,7 @@ final class MessageHolder {
     }
     
     func getLatestMessages(byLimit limitOfMessages: Int,
-                             completion: @escaping ([Message]) -> ()) {
+                           completion: @escaping ([Message]) -> ()) {
         if !currentChatMessages.isEmpty {
             respondTo(messages: currentChatMessages,
                       limitOfMessages: limitOfMessages,
@@ -136,18 +132,12 @@ final class MessageHolder {
         return historyStorage
     }
     
-    func getRemoteHistoryProvider() -> RemoteHistoryProvider {
-        return remoteHistoryProvider
-    }
-    
     func set(reachedEndOfLocalHistory: Bool) {
         self.reachedEndOfLocalHistory = reachedEndOfLocalHistory
     }
     
     func newMessageTracker(withMessageListener messageListener: MessageListener) throws -> MessageTrackerImpl {
-        if self.messageTracker != nil {
-            try self.messageTracker!.destroy()
-        }
+        try self.messageTracker?.destroy()
         
         self.set(messageTracker: MessageTrackerImpl(messageListener: messageListener,
                                                     messageHolder: self))
@@ -160,35 +150,30 @@ final class MessageHolder {
                                   completion: @escaping () -> ()) {
         historyStorage.receiveHistoryUpdate(withMessages: messages,
                                             idsToDelete: deleted) { [weak self] (endOfBatch: Bool, messageDeleted: Bool, deletedMessageID: String?, messageChanged: Bool, changedMessage: MessageImpl?, messageAdded: Bool, addedMessage: MessageImpl?, idBeforeAddedMessage: HistoryID?) -> () in
-                                                    if endOfBatch {
-                                                        self?.messageTracker?.endedHistoryBatch()
-                                                        
-                                                        completion()
-                                                    }
+                                                if endOfBatch {
+                                                    self?.messageTracker?.endedHistoryBatch()
                                                     
-                                                    if messageDeleted {
-                                                        // Assuming that when messageDeleted == true deletedMessageID cannot be nil.
-                                                        self?.messageTracker?.deletedHistoryMessage(withID: deletedMessageID!)
+                                                    completion()
+                                                }
+                                                
+                                                if messageDeleted {
+                                                    // Assuming that when messageDeleted == true deletedMessageID cannot be nil.
+                                                    self?.messageTracker?.deletedHistoryMessage(withID: deletedMessageID!)
+                                                }
+                                                
+                                                if messageChanged {
+                                                    // Assuming that when messageChanged == true changedMessage cannot be nil.
+                                                    self?.messageTracker?.changedHistory(message: changedMessage!)
+                                                }
+                                                
+                                                if messageAdded {
+                                                    // Assuming that when messageAdded == true addedMessage cannot be nil.
+                                                    if (self?.tryMergeWithLastChat(message: addedMessage!) != true) {
+                                                        self?.messageTracker?.addedHistory(message: addedMessage!,
+                                                                                           before: idBeforeAddedMessage)
                                                     }
-                                                    
-                                                    if messageChanged {
-                                                        // Assuming that when messageChanged == true changedMessage cannot be nil.
-                                                        self?.messageTracker?.changedHistory(message: changedMessage!)
-                                                    }
-                                                    
-                                                    if messageAdded {
-                                                        // Assuming that when messageAdded == true addedMessage cannot be nil.
-                                                        if (self?.tryMergeWithLastChat(message: addedMessage!) != true) {
-                                                            self?.messageTracker?.addedHistory(message: addedMessage!,
-                                                                                               before: idBeforeAddedMessage)
-                                                        }
-                                                    }
+                                                }
         }
-    }
-    
-    func set(endOfHistoryReached: Bool) {
-        reachedEndOfRemoteHistory = endOfHistoryReached
-        historyStorage.set(reachedHistoryEnd: endOfHistoryReached)
     }
     
     func receiving(newChat: ChatItem?,
@@ -225,12 +210,10 @@ final class MessageHolder {
             if previousVersion.getCurrentChatID() == message.getCurrentChatID() {
                 currentChatMessages[messageIndex] = message
                 
-                if messageTracker != nil {
-                    messageTracker!.changedCurrentChatMessage(from: previousVersion,
-                                                              to: message,
-                                                              at: messageIndex,
-                                                              of: self)
-                }
+                messageTracker?.changedCurrentChatMessage(from: previousVersion,
+                                                          to: message,
+                                                          at: messageIndex,
+                                                          of: self)
                 
                 return
             }
@@ -243,11 +226,9 @@ final class MessageHolder {
             if message.getCurrentChatID() == id {
                 currentChatMessages.remove(at: messageIndex)
                 
-                if messageTracker != nil {
-                    messageTracker!.deletedCurrentChat(message: message,
-                                                       at: messageIndex,
-                                                       messageHolder: self)
-                }
+                messageTracker?.deletedCurrentChat(message: message,
+                                                   at: messageIndex,
+                                                   messageHolder: self)
                 
                 return
             }
@@ -261,6 +242,7 @@ final class MessageHolder {
                                               after: nil)
     }
     
+    // TODO: Use it on image sending failed.
     func sendingCancelledWith(messageID: String) {
         for messageIndex in 0 ..< messagesToSend.count {
             if messagesToSend[messageIndex].getID() == messageID {
@@ -268,9 +250,7 @@ final class MessageHolder {
                 
                 messagesToSend.remove(at: messageIndex)
                 
-                if messageTracker != nil {
-                    messageTracker!.messageListener.removed(message: message)
-                }
+                messageTracker?.messageListener.removed(message: message)
                 
                 return
             }
@@ -348,12 +328,12 @@ final class MessageHolder {
                                                 
                                                 if !messages.isEmpty {
                                                     self?.historyStorage.receiveHistoryBefore(messages: messages,
-                                                                                             hasMoreMessages: hasMoreMessages)
+                                                                                              hasMoreMessages: hasMoreMessages)
                                                 }
                                                 
                                                 self?.respondTo(messages: messages,
-                                                               limitOfMessages: limit,
-                                                               completion: completion)
+                                                                limitOfMessages: limit,
+                                                                completion: completion)
         })
     }
     
@@ -362,24 +342,24 @@ final class MessageHolder {
                                               completion: @escaping ([Message]) -> ()) {
         if reachedEndOfLocalHistory != true {
             historyStorage.getHistoryBefore(id: id,
-                                     limitOfMessages: limit,
-                                     completion: { [weak self] messages in
-                                        if !messages.isEmpty {
-                                            completion(messages)
-                                            
-                                        } else {
-                                            self?.reachedEndOfLocalHistory = true
-                                            self?.getMessagesFromHistoryBefore(id: id,
-                                                                               limit: limit,
-                                                                               completion: completion)
-                                        }
+                                            limitOfMessages: limit,
+                                            completion: { [weak self] messages in
+                                                if !messages.isEmpty {
+                                                    completion(messages)
+                                                    
+                                                } else {
+                                                    self?.reachedEndOfLocalHistory = true
+                                                    self?.getMessagesFromHistoryBefore(id: id,
+                                                                                       limit: limit,
+                                                                                       completion: completion)
+                                                }
             })
         } else if reachedEndOfRemoteHistory == true {
             completion([MessageImpl]())
         } else {
             requestHistory(beforeID: id,
-                               limit: limit,
-                               completion: completion)
+                           limit: limit,
+                           completion: completion)
         }
     }
     
@@ -424,12 +404,10 @@ final class MessageHolder {
                         if previousMessage != newMessage {
                             currentChatMessages[previousMessageIndex] = newMessage
                             
-                            if messageTracker != nil {
-                                messageTracker!.changedCurrentChatMessage(from: previousMessage,
-                                                                          to: newMessage,
-                                                                          at: previousMessageIndex,
-                                                                          of: self)
-                            }
+                            messageTracker?.changedCurrentChatMessage(from: previousMessage,
+                                                                      to: newMessage,
+                                                                      at: previousMessageIndex,
+                                                                      of: self)
                         }
                         
                         isMerged = true
@@ -440,11 +418,9 @@ final class MessageHolder {
                     } else {
                         currentChatMessages.remove(at: previousMessageIndex)
                         
-                        if messageTracker != nil {
-                            messageTracker!.deletedCurrentChat(message: previousMessage,
-                                                               at: previousMessageIndex,
-                                                               messageHolder: self)
-                        }
+                        messageTracker?.deletedCurrentChat(message: previousMessage,
+                                                           at: previousMessageIndex,
+                                                           messageHolder: self)
                     }
                 }
                 
@@ -480,9 +456,7 @@ final class MessageHolder {
                 } else {
                     currentChatMessage.setSecondaryHistory(historyEquivalentMessage: message)
                     
-                    if messageTracker != nil {
-                        messageTracker!.idToHistoryMessageMap[(message.getHistoryID()?.getDBid())!] = message
-                    }
+                    messageTracker?.idToHistoryMessageMap[(message.getHistoryID()!.getDBid())] = message
                 }
                 
                 return true

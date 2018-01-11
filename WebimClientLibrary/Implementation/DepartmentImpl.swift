@@ -33,7 +33,7 @@ final class DepartmentImpl: Department {
     private let key: String
     private let name: String
     private let order: Int
-    private var localizedNames: [String : String]?
+    private var localizedNames: [String: String]?
     private var logoURL: URL?
     
     // MARK: - Initialization
@@ -41,7 +41,7 @@ final class DepartmentImpl: Department {
          name: String,
          departmentOnlineStatus: DepartmentOnlineStatus,
          order: Int,
-         localizedNames: [String : String]? = nil,
+         localizedNames: [String: String]? = nil,
          logo: URL? = nil) {
         self.key = key
         self.name = name
@@ -70,7 +70,7 @@ final class DepartmentImpl: Department {
         return order
     }
     
-    func getLocalizedNames() -> [String : String]? {
+    func getLocalizedNames() -> [String: String]? {
         return localizedNames
     }
     

@@ -89,7 +89,7 @@ public protocol Department {
      - Copyright:
      2017 Webim
      */
-    func getLocalizedNames() -> [String : String]?
+    func getLocalizedNames() -> [String: String]?
     
     /**
      - returns:

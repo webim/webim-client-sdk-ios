@@ -52,8 +52,9 @@
     -   [startChat(departmentKey:) method](#start-chat-department-key)
     -   [startChat(departmentKey:firstQuestion:) method](#start-chat-department-key-first-question)
     -   [closeChat() method](#close-chat)
+    -   [send(message:) method](#send-message)
     -   [setVisitorTyping(draftMessage:) method](#set-visitor-typing-draft-message)
-    -   [send(message:,data:) method](#send-message-data)
+    -   [send(message:,data:,completionHandler:) method](#send-message-data)
     -   [send(message:,isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:,filename:,mimeType:,completionHandler:) method](#send-file-filename-mime-type-completion-handler)
     -   [new(messageTracker messageListener:) method](#new-message-tracker-message-listener)
@@ -64,6 +65,9 @@
     -   [set(operatorTypingListener:) method](#set-operator-typing-listener)
     -   [set(locationSettingsChangeListener:) method](#set-location-settings-change-listener)
     -   [set(onlineStatusChangeListener:) method](#set-online-status-change-listener)
+-   [DataMessageCompletionHandler protocol](#data-message-completion-handler)
+    -   [onSuccess(messageID:) method](#on-success-message-id-data-message-completion-handler)
+    -   [onFailure(messageID:,error:) method](#on-failure-message-id-error-data-message-completion-handler)
 -   [SendFileCompletionHandler protocol](#send-file-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error)
@@ -107,6 +111,13 @@
    -   [IDLE_AFTER_CHAT case](#idle-after-chat)
    -   [OFFLINE_MESSAGE case](#offline-message)
    -   [UNKNOWN case](#unknown-visit-session-state)
+-   [DataMessageError enum](#data-message-error)
+   -   [UNKNOWN case](#unknown-data-message-error)
+   -   [QUOTED_MESSAGE_CANNOT_BE_REPLIED case](#quoted-message-cannot-be-replied)
+   -   [QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case](#quoted-message-from-another-visitor)
+   -   [QUOTED_MESSAGE_MULTIPLE_IDS case](#quoted-message-multiple-ids)
+   -   [QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case](#quoted-message-required-arguments-missing)
+   -   [QUOTED_MESSAGE_WRONG_ID case](#quoted-message-wrong-id)
 -   [SendFileError enum](#send-file-error)
    -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
    -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
@@ -403,6 +414,7 @@ Returns [MessageStream](#message-stream) object attached to this session. Each i
 
 Changes [location](https://webim.ru/help/help-terms/) without creating a new session.
 `location` parameter – new location name of `String` type.
+Can throw errors of [AccessError](#access-error) type.
 
 <h3 id="set-device-token">set(deviceToken:) method</h3>
 
@@ -492,12 +504,13 @@ This method must be called whenever there is a change of the input field of a me
 When there's multiple calls of this method occured, draft message is sending to service one time per second.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="send-message-is-hint-question">send(message:,data:) method</h3>
+<h3 id ="send-message-data">send(message:,data:) method</h3>
 
 Sends a text message.
 When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
 `message` parameter – `String`-typed message text.
 `data` parameter is optional, custom message parameters dictionary. Note that this functionality does not work as is – server version must support it.
+`completionHandler` parameter – optional [DataMessageCompletionHandler](#data-message-completion-handler) object.
 Returns randomly generated `String`-typed ID of the message.
 Can throw errors of [AccessError](#access-error) type.
 
@@ -555,6 +568,23 @@ Sets [LocationSettingsChangeListener](#location-settings-shange-listener) object
 <h3 id ="set-session-online-status-change-listener">set(onlineStatusChangeListener:) method</h3>
 
 Sets [OnlineStatusChangeListener](#session-online-status-change-listener) object.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="data-message-completion-handler">DataMessageCompletionHandler protocol</h2>
+
+Protocol which methods are called after [send(message:,data:,completionHandler:)](#send-message-data) method is finished. Must be adopted.
+
+<h3 id ="on-success-message-id-data-message-completion-handler">onSuccess(messageID:) method</h3>
+
+Executed when operation is done successfully.
+`messageID` parameter – ID of the appropriate message of `String` type.
+
+<h3 id ="on-failure-message-id-error-data-message-completion-handler">onFailure(messageID:,error:) method</h3>
+
+Executed when operation is failed.
+`messageID` parameter – ID of the appropriate message of `String` type.
+`error` parameter – appropriate [DataMessageError](#data-message-error) value.
 
 [Go to table of contents](#table-of-contents)
 
@@ -787,6 +817,38 @@ Offline state.
 <h3 id ="unknown-visit-session-state">UNKNOWN case</h3>
 
 First status is not recieved yet or status is not supported by this version of the library.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="data-message-error">DataMessageError enum</h2>
+
+Error types that could be passed in [onFailure(messageID:,error:) method](#on-failure-message-id-error-data-message-completion-handler).
+
+<h3 id ="unknown-data-message-error">UNKNOWN case</h3>
+
+Received error is not supported by current WebimClientLibrary version.
+
+<h3>Quoted message errors.</h3>
+
+<h3 id ="quoted-message-cannot-be-replied">QUOTED_MESSAGE_CANNOT_BE_REPLIED case</h3>
+
+To be raised when quoted message ID belongs to a message without `canBeReplied` flag set to `true` (this flag is to be set on the server-side).
+
+<h3 id ="quoted-message-from-another-visitor">QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case</h3>
+
+To be raised when quoted message ID belongs to another visitor chat.
+
+<h3 id ="quoted-message-multiple-ids">QUOTED_MESSAGE_MULTIPLE_IDS case</h3>
+
+To be raised when quoted message IG belongs to multiple messages (server DB error).
+
+<h3 id ="quoted-message-required-arguments-missing">QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case</h3>
+
+To be raised when one or more required arguments of quoting mechanism are missing.
+
+<h3 id ="quoted-message-wrong-id">QUOTED_MESSAGE_WRONG_ID case</h3>
+
+To be raised when wrong quoted message ID is sent.
 
 [Go to table of contents](#table-of-contents)
 
@@ -1094,7 +1156,7 @@ Presented by `Int` value. Higher numbers match higher priority.
 <h3 id ="get-localized-names">getLocalizedNames() method</h3>
 
 Returns dictionary of department localized names (if exists).
-Presented by `[String : String]` dictonary. Key is custom locale descriptor, value is matching name.
+Presented by `[String: String]` dictonary. Key is custom locale descriptor, value is matching name.
 
 <h3 id ="get-logo">getLogo() method</h3>
 

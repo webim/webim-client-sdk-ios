@@ -37,13 +37,25 @@ enum WebimInternalError: String, Error {
     case ACCOUNT_BLOCKED = "account-blocked"
     case FILE_SIZE_EXCEEDED = "max_file_size_exceeded"
     case FILE_TYPE_NOT_ALLOWED = "not_allowed_file_type"
-    case NO_CHAT = "no-chat"
-    case OPERATOR_NOT_IN_CHAT = "operator-not-in-chat"
-    case PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND = "provided-auth-token-not-found"
     case PROVIDED_VISITOR_EXPIRED = "provided-visitor-expired"
     case REINIT_REQUIRED = "reinit-required"
     case SERVER_NOT_READY = "server-not-ready"
-    case UNKNOWN
-    case VISITOR_BANNED = "visitor-banned"
+    case VISITOR_BANNED = "visitor_banned"
     case WRONG_PROVIDED_VISITOR_HASH = "wrong-provided-visitor-hash-value"
+    
+    // Data errors.
+    // Quoting message error.
+    case QUOTED_MESSAGE_CANNOT_BE_REPLIED = "quoting-message-that-cannot-be-replied"
+    case QUOTED_MESSAGE_FROM_ANOTHER_VISITOR = "quoting-message-from-another-visitor"
+    case QUOTED_MESSAGE_CORRUPTED_ID = "corrupted-quoted-message-id"
+    case QUOTED_MESSAGE_MULTIPLE_IDS = "multiple-quoted-messages-found"
+    case QUOTED_MESSAGE_NOT_FOUND = "quoted-message-not-found"
+    case QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING = "required-quote-args-missing"
+    
+    // Provided authorization token errors.
+    case PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND = "provided-auth-token-not-found"
+    
+    // Rate operator errors.
+    case NO_CHAT = "no-chat"
+    case OPERATOR_NOT_IN_CHAT = "operator-not-in-chat"
 }

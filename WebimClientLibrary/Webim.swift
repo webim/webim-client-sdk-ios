@@ -85,7 +85,7 @@ public final class Webim {
      - Copyright:
      2017 Webim
      */
-    static public func isWebim(remoteNotification: [AnyHashable : Any]) -> Bool {
+    static public func isWebim(remoteNotification: [AnyHashable: Any]) -> Bool {
         return InternalUtils.isWebim(remoteNotification: remoteNotification)
     }
     

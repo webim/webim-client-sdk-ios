@@ -49,7 +49,7 @@ struct RatingItem {
     
     
     // MARK: - Initialization
-    init?(jsonDictionary: [String : Any?]) {
+    init?(jsonDictionary: [String: Any?]) {
         guard let operatorID = jsonDictionary[JSONField.OPERATOR_ID.rawValue] as? String,
             let rating = jsonDictionary[JSONField.RATING.rawValue] as? Int else {
             return nil

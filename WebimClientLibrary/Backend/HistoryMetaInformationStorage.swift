@@ -38,10 +38,6 @@ protocol HistoryMetaInformationStorage {
     
     func set(historyEnded: Bool)
     
-    func getRevision() -> String?
-    
     func set(revision: String?)
-    
-    func clear()
     
 }

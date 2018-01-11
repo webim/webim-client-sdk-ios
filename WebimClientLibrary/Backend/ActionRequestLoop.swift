@@ -27,7 +27,7 @@
 import Foundation
 
 /**
- Class that handles HTTP-requests sending by SDK with client requested actions (e.g. sending messages, operator rating, chat closing etc.).
+ Class that handles HTTP-requests sended by WebimClientLibrary with visitor requested actions (e.g. sending messages, operator rating, chat closing etc.).
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -39,8 +39,7 @@ final class ActionRequestLoop: AbstractRequestLoop {
     private let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor
     private let internalErrorListener: InternalErrorListener
     private var authorizationData: AuthorizationData?
-    private var lastRequest: WebimRequest?
-    private lazy var requestQueue = [WebimRequest]()
+    private var operationQueue: OperationQueue?
     
     
     // MARK: - Initialization
@@ -53,19 +52,22 @@ final class ActionRequestLoop: AbstractRequestLoop {
     
     // MARK: - Methods
     
-    override func run() {
-        while isRunning() {
-            var currentAuthorizationData = authorizationData
-            if currentAuthorizationData == nil {
-                currentAuthorizationData = awaitForNewAuthorizationData(withLastAuthorizationData: nil)
-            }
+    override func start() {
+        guard operationQueue == nil else {
+            print("Can't start action loop because it is already started.")
             
-            if !isRunning() {
-                return
-            }
-            
-            self.runIteration(withAuthorizationData: currentAuthorizationData!)
+            return
         }
+        
+        operationQueue = OperationQueue()
+        operationQueue?.qualityOfService = .userInitiated
+    }
+    
+    override func stop() {
+        super.stop()
+        
+        operationQueue?.cancelAllOperations()
+        operationQueue = nil
     }
     
     func set(authorizationData: AuthorizationData?) {
@@ -73,100 +75,81 @@ final class ActionRequestLoop: AbstractRequestLoop {
     }
     
     func enqueue(request: WebimRequest) {
-        requestQueue.append(request)
-    }
-    
-    // MARK: Private methods
-    private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) -> AuthorizationData? {
-        while isRunning()
-            && (lastAuthorizationData == authorizationData) {
-                usleep(100000)
-        }
-        
-        return authorizationData
-    }
-    
-    private func runIteration(withAuthorizationData authorizationData: AuthorizationData) {
-        var currentRequest = lastRequest
-        if currentRequest == nil {
-            if !requestQueue.isEmpty {
-                let nextRequest = requestQueue.removeFirst()
-                lastRequest = nextRequest
-                currentRequest = nextRequest
+        operationQueue?.addOperation {
+            if self.authorizationData == nil {
+                self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil)
             }
-        }
-        
-        if let currentRequest = currentRequest {
-            var dataToPost = currentRequest.getPrimaryData()
-            dataToPost[WebimActions.Parameter.PAGE_ID.rawValue] = authorizationData.getPageID()
-            dataToPost[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = authorizationData.getAuthorizationToken()
-            let parametersString = dataToPost.stringFromHTTPParameters()
+            
+            if !self.isRunning() {
+                return
+            }
+            
+            var parameterDictionary = request.getPrimaryData()
+            parameterDictionary[WebimActions.Parameter.PAGE_ID.rawValue] = self.authorizationData!.getPageID()
+            parameterDictionary[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = self.authorizationData!.getAuthorizationToken()
+            let parametersString = parameterDictionary.stringFromHTTPParameters()
             
             var url: URL?
-            var request: URLRequest?
-            let httpMethod = currentRequest.getHTTPMethod()
+            var urlRequest: URLRequest?
+            let httpMethod = request.getHTTPMethod()
             if httpMethod == .GET {
-                url = URL(string: currentRequest.getBaseURLString() + "?" + parametersString)
-                request = URLRequest(url: url!)
-            } else {
-                if let httpBody = currentRequest.getHTTPBody() {
-                    // Assuming HTTP body is passed only for multipart requests.
-                    url = URL(string: currentRequest.getBaseURLString() + "?" + parametersString)
-                    request = URLRequest(url: url!)
-                    request!.httpBody = httpBody
+                url = URL(string: (request.getBaseURLString() + "?" + parametersString))
+                urlRequest = URLRequest(url: url!)
+            } else { // POST
+                if let httpBody = request.getHTTPBody() {
+                    // Assuming that ready HTTP body is passed only for multipart requests.
+                    url = URL(string: (request.getBaseURLString() + "?" + parametersString))
+                    urlRequest = URLRequest(url: url!)
+                    urlRequest!.httpBody = httpBody
                 } else {
                     // For URL encoded requests.
-                    url = URL(string: currentRequest.getBaseURLString())
-                    request = URLRequest(url: url!)
-                    request!.httpBody = parametersString.data(using: .utf8)
+                    url = URL(string: request.getBaseURLString())
+                    urlRequest = URLRequest(url: url!)
+                    urlRequest!.httpBody = parametersString.data(using: .utf8)
                 }
+                
+                // Assuming that content type field is always exists when it is POST request, and does not when request is of GET type.
+                urlRequest!.setValue(request.getContentType(),
+                                     forHTTPHeaderField: "Content-Type")
             }
             
-            request!.httpMethod = httpMethod.rawValue
-            
-            if let contentType = currentRequest.getConentType() {
-                request!.setValue(contentType,
-                                  forHTTPHeaderField: "Content-Type")
-            }
+            urlRequest!.httpMethod = httpMethod.rawValue
             
             do {
-                let data = try perform(request: request!)
-                if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String : Any] {
-                    if let error = dataJSON?["error"] as? String {
+                let data = try self.perform(request: urlRequest!)
+                if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    if let error = dataJSON?[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
                         if error == WebimInternalError.REINIT_REQUIRED.rawValue {
-                            self.authorizationData = awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
-                            
-                            return
+                            self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: self.authorizationData)
                         } else if (error == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue)
                             || (error == WebimInternalError.FILE_TYPE_NOT_ALLOWED.rawValue) {
-                            lastRequest = nil
-                            
-                            handleSendFile(error: error,
-                                           ofRequest: currentRequest)
-                            
-                            return
+                            self.handleSendFile(error: error,
+                                                ofRequest: request)
                         } else if (error == WebimInternalError.NO_CHAT.rawValue)
                             || (error == WebimInternalError.OPERATOR_NOT_IN_CHAT.rawValue) {
-                            lastRequest = nil
-                            
-                            handleRateOperator(error: error,
-                                               ofRequest: currentRequest)
-                            
-                            return
+                            self.handleRateOperator(error: error,
+                                                    ofRequest: request)
                         } else {
-                            running = false
+                            self.running = false
                             
-                            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                            self.completionHandlerExecutor.execute(task: DispatchWorkItem {
                                 self.internalErrorListener.on(error: error,
-                                                              urlString: request!.url!.path)
+                                                              urlString: urlRequest!.url!.path)
                             })
-                            
-                            return
                         }
+                        
+                        return
                     }
                     
-                    if let completionHandler = currentRequest.getCompletionHandler() {
-                        completionHandlerExecutor.execute(task: DispatchWorkItem {
+                    // Some internal errors can be received inside "error" field inside "data" field.
+                    if let dataDictionary = dataJSON?[AbstractRequestLoop.ResponseField.DATA.rawValue] as? [String: Any],
+                        let errorString = dataDictionary[AbstractRequestLoop.DataField.ERROR.rawValue] as? String {
+                        self.handleDataMessage(error: errorString,
+                                               ofRequest: request)
+                    }
+                    
+                    if let completionHandler = request.getCompletionHandler() {
+                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
@@ -176,57 +159,103 @@ final class ActionRequestLoop: AbstractRequestLoop {
                         })
                     }
                     
-                    if let sendFileCompletionHandler = currentRequest.getSendFileCompletionHandler() {
-                        completionHandlerExecutor.execute(task: DispatchWorkItem {
-                            sendFileCompletionHandler.onSuccess(messageID: currentRequest.getMessageID()!)
-                        })
-                    }
-                    
-                    if let rateOperatorCOmpletionHandler = currentRequest.getRateOperatorCompletionHandler() {
-                        completionHandlerExecutor.execute(task: DispatchWorkItem {
-                            rateOperatorCOmpletionHandler.onSuccess()
-                        })
-                    }
+                    self.handleClientCompletionHandlerOf(request: request)
+                } else {
+                    print("Error de-serializing server response.")
                 }
             } catch let sendFileError as SendFileError {
-                if let sendFileCompletionHandler = currentRequest.getSendFileCompletionHandler() {
-                    sendFileCompletionHandler.onFailure(messageID: currentRequest.getMessageID()!,
+                // SendFileErrors are generated from HTTP code.
+                if let sendFileCompletionHandler = request.getSendFileCompletionHandler() {
+                    sendFileCompletionHandler.onFailure(messageID: request.getMessageID()!,
                                                         error: sendFileError)
                 }
+            } catch let unknownError as UnknownError {
+                self.handleRequestLoop(error: unknownError)
             } catch {
                 print("Request failed with unknown error.")
             }
         }
+    }
+    
+    
+    // MARK: Private methods
+    
+    private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) -> AuthorizationData {
+        while isRunning()
+            && (lastAuthorizationData == authorizationData) {
+                usleep(100 * 1000) // 0.1 s.
+        }
         
-        lastRequest = nil
+        return authorizationData!
+    }
+    
+    private func handleDataMessage(error errorString: String,
+                                   ofRequest webimRequest: WebimRequest) {
+        if let dataMessageCompletionHandler = webimRequest.getDataMessageCompletionHandler() {
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                dataMessageCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                                                       error: ActionRequestLoop.convertToPublic(dataMessageErrorString: errorString))
+            })
+        }
+    }
+    
+    private func handleRateOperator(error errorString: String,
+                                    ofRequest webimRequest: WebimRequest) {
+        if let rateOperatorCompletionhandler = webimRequest.getRateOperatorCompletionHandler() {
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                let rateOperatorError: RateOperatorError
+                if errorString == WebimInternalError.NO_CHAT.rawValue {
+                    rateOperatorError = .NO_CHAT
+                } else {
+                    rateOperatorError = .WRONG_OPERATOR_ID
+                }
+                
+                rateOperatorCompletionhandler.onFailure(error: rateOperatorError)
+            })
+        }
     }
     
     private func handleSendFile(error errorString: String,
                                 ofRequest webimRequest: WebimRequest) {
         if let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler() {
-            let sendFileError: SendFileError
-            if errorString == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue {
-                sendFileError = .FILE_SIZE_EXCEEDED
-            } else {
-                sendFileError = .FILE_TYPE_NOT_ALLOWED
-            }
-            
-            sendFileCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
-                                                error: sendFileError)
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                let sendFileError: SendFileError
+                if errorString == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue {
+                    sendFileError = .FILE_SIZE_EXCEEDED
+                } else {
+                    sendFileError = .FILE_TYPE_NOT_ALLOWED
+                }
+                
+                sendFileCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                                                    error: sendFileError)
+            })
         }
     }
     
-    private func handleRateOperator(error errorString: String,
-                                    ofRequest webimReques: WebimRequest) {
-        if let rateOperatorCompletionhandler = webimReques.getRateOperatorCompletionHandler() {
-            let rateOperatorError: RateOperatorError
-            if errorString == WebimInternalError.NO_CHAT.rawValue {
-                rateOperatorError = .NO_CHAT
-            } else {
-                rateOperatorError = .WRONG_OPERATOR_ID
-            }
-            
-            rateOperatorCompletionhandler.onFailure(error: rateOperatorError)
+    private func handleClientCompletionHandlerOf(request: WebimRequest) {
+        completionHandlerExecutor.execute(task: DispatchWorkItem {
+            request.getDataMessageCompletionHandler()?.onSussess(messageID: request.getMessageID()!)
+            request.getSendFileCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            request.getRateOperatorCompletionHandler()?.onSuccess()
+        })
+    }
+    
+    private static func convertToPublic(dataMessageErrorString: String) -> DataMessageError {
+        switch dataMessageErrorString {
+        case WebimInternalError.QUOTED_MESSAGE_CANNOT_BE_REPLIED.rawValue:
+            return .QUOTED_MESSAGE_CANNOT_BE_REPLIED
+        case WebimInternalError.QUOTED_MESSAGE_CORRUPTED_ID.rawValue:
+            return .QUOTED_MESSAGE_WRONG_ID
+        case WebimInternalError.QUOTED_MESSAGE_FROM_ANOTHER_VISITOR.rawValue:
+            return .QUOTED_MESSAGE_FROM_ANOTHER_VISITOR
+        case WebimInternalError.QUOTED_MESSAGE_MULTIPLE_IDS.rawValue:
+            return .QUOTED_MESSAGE_MULTIPLE_IDS
+        case WebimInternalError.QUOTED_MESSAGE_NOT_FOUND.rawValue:
+            return .QUOTED_MESSAGE_WRONG_ID
+        case WebimInternalError.QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING.rawValue:
+            return .QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING
+        default:
+            return .UNKNOWN
         }
     }
     

@@ -75,6 +75,10 @@ class WebimActions {
         case VISITOR_TYPING = "typing"
     }
     
+    enum Platform: String {
+        case IOS = "ios"
+    }
+    
     enum ServerPathSuffix: String {
         case ACTION = "/l/v/m/action"
         case GET_DELTA = "/l/v/m/delta"
@@ -124,10 +128,11 @@ class WebimActions {
     func send(message: String,
               clientSideID: String,
               dataJSONString: String?,
-              isHintQuestion: Bool?) {
-        var dataToPost = [Parameter.ACTION.rawValue : Action.SEND_MESSAGE.rawValue,
-                          Parameter.CLIENT_SIDE_ID.rawValue : clientSideID,
-                          Parameter.MESSAGE.rawValue : message] as [String : Any]
+              isHintQuestion: Bool?,
+              dataMessageCompletionHandler: DataMessageCompletionHandler?) {
+        var dataToPost = [Parameter.ACTION.rawValue: Action.SEND_MESSAGE.rawValue,
+                          Parameter.CLIENT_SIDE_ID.rawValue: clientSideID,
+                          Parameter.MESSAGE.rawValue: message] as [String: Any]
         if let isHintQuestion = isHintQuestion {
             dataToPost[Parameter.HINT_QUESTION.rawValue] = isHintQuestion ? "1" : "0" // true / false
         }
@@ -148,8 +153,8 @@ class WebimActions {
               mimeType: String,
               clientSideID: String,
               completionHandler: SendFileCompletionHandler?) {
-        let dataToPost = [Parameter.CHAT_MODE.rawValue : ChatMode.ONLINE.rawValue,
-                          Parameter.CLIENT_SIDE_ID.rawValue : clientSideID] as [String : Any]
+        let dataToPost = [Parameter.CHAT_MODE.rawValue: ChatMode.ONLINE.rawValue,
+                          Parameter.CLIENT_SIDE_ID.rawValue: clientSideID] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.UPLOAD_FILE.rawValue
         
@@ -172,9 +177,9 @@ class WebimActions {
     func startChat(withClientSideID clientSideID: String,
                    firstQuestion: String? = nil,
                    departmentKey: String? = nil) {
-        var dataToPost = [Parameter.ACTION.rawValue : Action.START_CHAT.rawValue,
-                          Parameter.FORCE_ONLINE.rawValue : "1", // true
-                          Parameter.CLIENT_SIDE_ID.rawValue : clientSideID] as [String : Any]
+        var dataToPost = [Parameter.ACTION.rawValue: Action.START_CHAT.rawValue,
+                          Parameter.FORCE_ONLINE.rawValue: "1", // true
+                          Parameter.CLIENT_SIDE_ID.rawValue: clientSideID] as [String: Any]
         if let firstQuestion = firstQuestion {
             dataToPost[Parameter.FIRST_QUESTION.rawValue] = firstQuestion
         }
@@ -191,7 +196,7 @@ class WebimActions {
     }
     
     func closeChat() {
-        let dataToPost = [Parameter.ACTION.rawValue : Action.CLOSE_CHAT.rawValue] as [String : Any]
+        let dataToPost = [Parameter.ACTION.rawValue: Action.CLOSE_CHAT.rawValue] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         
@@ -204,9 +209,9 @@ class WebimActions {
     func set(visitorTyping: Bool,
              draft: String?,
              deleteDraft: Bool) {
-        var dataToPost = [Parameter.ACTION.rawValue : Action.SET_VISITOR_TYPING.rawValue,
-                          Parameter.DELETE_DRAFT.rawValue : deleteDraft ? "1" : "0", // true / false
-                          Parameter.VISITOR_TYPING.rawValue : visitorTyping ? "1" : "0"] as [String : Any]  // true / false
+        var dataToPost = [Parameter.ACTION.rawValue: Action.SET_VISITOR_TYPING.rawValue,
+                          Parameter.DELETE_DRAFT.rawValue: deleteDraft ? "1" : "0", // true / false
+                          Parameter.VISITOR_TYPING.rawValue: visitorTyping ? "1" : "0"] as [String: Any]  // true / false
         if let draft = draft {
             dataToPost[Parameter.DRAFT.rawValue] = draft
         }
@@ -221,7 +226,7 @@ class WebimActions {
     
     func requestHistory(since: String?,
                         completion: @escaping (_ data: Data?) throws -> ()) {
-        var dataToPost = [String : Any]()
+        var dataToPost = [String: Any]()
         if let since = since {
             dataToPost[Parameter.SINCE.rawValue] = since
         }
@@ -231,26 +236,26 @@ class WebimActions {
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .GET,
                                                         primaryData: dataToPost,
                                                         baseURLString: urlString,
-                                                        completion: completion))
+                                                        historyRequestCompletionHandler: completion))
     }
     
     func requestHistory(beforeMessageTimestamp: Int64,
                         completion: @escaping (_ data: Data?) throws -> ()) {
-        let dataToPost = [Parameter.BEFORE_TIMESTAMP.rawValue : String(beforeMessageTimestamp)] as [String : Any]
+        let dataToPost = [Parameter.BEFORE_TIMESTAMP.rawValue: String(beforeMessageTimestamp)] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.GET_HISTORY.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .GET,
                                                         primaryData: dataToPost,
                                                         baseURLString: urlString,
-                                                        completion: completion))
+                                                        historyRequestCompletionHandler: completion))
     }
     
     func rateOperatorWith(id: String?,
                           rating: Int,
                           completionHandler: RateOperatorCompletionHandler?) {
-        var dataToPost = [Parameter.ACTION.rawValue : Action.RATE_OPERATOR.rawValue,
-                          Parameter.RATING.rawValue : String(rating)] as [String : Any]
+        var dataToPost = [Parameter.ACTION.rawValue: Action.RATE_OPERATOR.rawValue,
+                          Parameter.RATING.rawValue: String(rating)] as [String: Any]
         if let id = id {
             dataToPost[Parameter.OPERATOR_ID.rawValue] = id
         }
@@ -265,8 +270,8 @@ class WebimActions {
     }
     
     func update(deviceToken: String) {
-        let dataToPost = [Parameter.ACTION.rawValue : Action.SET_DEVICE_TOKEN.rawValue,
-                          Parameter.DEVICE_TOKEN.rawValue : deviceToken] as [String : Any]
+        let dataToPost = [Parameter.ACTION.rawValue: Action.SET_DEVICE_TOKEN.rawValue,
+                          Parameter.DEVICE_TOKEN.rawValue: deviceToken] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
         

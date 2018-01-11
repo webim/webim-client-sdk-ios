@@ -16,6 +16,9 @@
 
 // MARK: - StringConstants.swift
 
+// EMPTY_TABLE_VIEW_TEXT
+"EmptyChat" = "Send first message to start chat.";
+
 // REFRESH_CONTROL_TEXT
 "LoadingMessages" = "Loading messages...";
 

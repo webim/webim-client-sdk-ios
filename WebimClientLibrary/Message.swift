@@ -62,7 +62,7 @@ public protocol Message {
      - Copyright:
      2017 Webim
      */
-    func getData() -> [String : Any?]?
+    func getData() -> [String: Any?]?
     
     /**
      Every message can be uniquefied by its ID. Messages also can be lined up by its IDs.

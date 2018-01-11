@@ -38,9 +38,10 @@ final class WebimRequest {
     // MARK: - Properties
     private let baseURLString: String
     private let httpMethod: AbstractRequestLoop.HTTPMethod
-    private let primaryData: [String : Any]
-    private var completionHandler: ((_ data: Data?) throws -> ())?
+    private let primaryData: [String: Any]
     private var contentType: String?
+    private var dataMessageCompletionHandler: DataMessageCompletionHandler?
+    private var historyRequestCompletionHandler: ((_ data: Data?) throws -> ())?
     private var httpBody: Data?
     private var messageID: String?
     private var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
@@ -48,12 +49,13 @@ final class WebimRequest {
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethod,
-         primaryData: [String : Any],
+         primaryData: [String: Any],
          messageID: String? = nil,
          httpBody: Data? = nil,
          contentType: String? = nil,
          baseURLString: String,
-         completion: ((_ data: Data?) throws -> ())? = nil,
+         historyRequestCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
+         dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
          rateOperatorCompletionHandler: RateOperatorCompletionHandler? = nil,
          sendFileCompletionHandler: SendFileCompletionHandler? = nil) {
         self.httpMethod = httpMethod
@@ -62,7 +64,8 @@ final class WebimRequest {
         self.httpBody = httpBody
         self.contentType = contentType
         self.baseURLString = baseURLString
-        self.completionHandler = completion
+        self.historyRequestCompletionHandler = historyRequestCompletionHandler
+        self.dataMessageCompletionHandler = dataMessageCompletionHandler
         self.rateOperatorCompletionHandler = rateOperatorCompletionHandler
         self.sendFileCompletionHandler = sendFileCompletionHandler
     }
@@ -78,12 +81,12 @@ final class WebimRequest {
         return baseURLString
     }
     
-    func getConentType() -> String? {
+    func getContentType() -> String? {
         return contentType
     }
     
     func getCompletionHandler() -> ((_ data: Data?) throws -> ())? {
-        return completionHandler
+        return historyRequestCompletionHandler
     }
     
     func getHTTPBody() -> Data? {
@@ -94,8 +97,12 @@ final class WebimRequest {
         return messageID
     }
     
-    func getPrimaryData() -> [String : Any] {
+    func getPrimaryData() -> [String: Any] {
         return primaryData
+    }
+    
+    func getDataMessageCompletionHandler() -> DataMessageCompletionHandler? {
+        return dataMessageCompletionHandler
     }
     
     func getRateOperatorCompletionHandler() -> RateOperatorCompletionHandler? {
@@ -117,7 +124,7 @@ extension WebimRequest: NSCopying {
                             messageID: messageID,
                             httpBody: httpBody,
                             baseURLString: baseURLString,
-                            completion: completionHandler,
+                            historyRequestCompletionHandler: historyRequestCompletionHandler,
                             sendFileCompletionHandler: sendFileCompletionHandler)
     }
     

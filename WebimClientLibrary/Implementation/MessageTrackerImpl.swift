@@ -32,12 +32,12 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class MessageTrackerImpl: MessageTracker {
+final class MessageTrackerImpl {
     
     // MARK: - Properties
     let messageListener: MessageListener
     private let messageHolder: MessageHolder
-    var idToHistoryMessageMap = [String : MessageImpl]()
+    var idToHistoryMessageMap = [String: MessageImpl]()
     private var allMessageSourcesEnded = false
     private var cachedCompletionHandler: MessageHolderCompletionHandlerWrapper?
     private var cachedLimit: Int?
@@ -182,10 +182,6 @@ final class MessageTrackerImpl: MessageTracker {
         }
     }
     
-    func set(messagesLoading: Bool) {
-        self.messagesLoading = messagesLoading
-    }
-    
     func endedHistoryBatch() {
         if firstHistoryUpdateReceived != true {
             firstHistoryUpdateReceived = true
@@ -264,159 +260,7 @@ final class MessageTrackerImpl: MessageTracker {
         }
     }
     
-    
-    // MARK: MessageTracker protocol methods
-    
-    func getLastMessages(byLimit limitOfMessages: Int,
-                         completion: @escaping ([Message]) -> ()) throws {
-        try messageHolder.checkAccess()
-        guard destroyed != true else {
-            print("MessageTracker object is destroyed. Unable to perform request to get new messages.")
-            
-            return
-        }
-        guard messagesLoading != true else {
-            print("Messages are already loading. Unable to perform a second request to get new messages.")
-            
-            return
-        }
-        guard limitOfMessages > 0 else {
-            print("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages)")
-            
-            return
-        }
-        
-        let currentChatMessages = messageHolder.getCurrentChatMessages()
-        if currentChatMessages.isEmpty {
-            messagesLoading = true
-            
-            cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
-            cachedLimit = limitOfMessages
-            
-            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { messages in
-                if let cachedCompletionHandler = self.cachedCompletionHandler,
-                    !messages.isEmpty {
-                    self.firstHistoryUpdateReceived = true
-                    
-                    let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
-                    self.receive(messages: messages as! [MessageImpl],
-                                 limit: limitOfMessages,
-                                 completion: completionHandlerToPass)
-                    
-                    self.cachedCompletionHandler = nil
-                }
-            }
-        } else {
-            let result = Array(currentChatMessages.suffix(limitOfMessages))
-            headMessage = result.first
-            completion(result)
-        }
-    }
-    
-    func getNextMessages(byLimit limitOfMessages: Int,
-                         completion: @escaping ([Message]) -> ()) throws {
-        try messageHolder.checkAccess()
-        guard destroyed != true else {
-            print("MessageTracker object is destroyed. Unable to perform request to get new messages.")
-            
-            return
-        }
-        guard messagesLoading != true else {
-            print("Messages are already loading. Unable to perform a second request to get new messages.")
-            
-            return
-        }
-        guard limitOfMessages > 0 else {
-            print("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages)")
-            
-            return
-        }
-        
-        messagesLoading = true
-        
-        let currentChatMessages = messageHolder.getCurrentChatMessages()
-        if (firstHistoryUpdateReceived == true)
-            || (!currentChatMessages.isEmpty
-                && (currentChatMessages.first != headMessage)) {
-            getNextUncheckedMessagesBy(limit: limitOfMessages,
-                                       completion: completion)
-        } else {
-            cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
-            cachedLimit = limitOfMessages
-            
-            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
-                if let cachedCompletionHandler = self?.cachedCompletionHandler,
-                    !messages.isEmpty {
-                    self?.firstHistoryUpdateReceived = true
-                    
-                    let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
-                    self?.receive(messages: messages as! [MessageImpl],
-                                  limit: limitOfMessages,
-                                  completion: completionHandlerToPass)
-                    
-                    self?.cachedCompletionHandler = nil
-                }
-            }
-        }
-    }
-    
-    func getAllMessages(completion: @escaping ([Message]) -> ()) throws {
-        try messageHolder.checkAccess()
-        guard destroyed != true else {
-            print("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
-            
-            return
-        }
-        
-        messageHolder.getHistoryStorage().getFullHistory(completion: completion)
-    }
-    
-    func resetTo(message: Message) throws {
-        try messageHolder.checkAccess()
-        guard destroyed != true else {
-            print("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
-            
-            return
-        }
-        guard messagesLoading != true else {
-            print("Messages is loading. Unable to perform a simultaneous request to reset to a message.")
-            
-            return
-        }
-        
-        let unwrappedMessage = message as! MessageImpl
-        if unwrappedMessage !== headMessage {
-            messageHolder.set(reachedEndOfLocalHistory: false)
-        }
-        if unwrappedMessage.getSource().isHistoryMessage() {
-            var newIDToHistoryMessageMap = [String : MessageImpl]()
-            for (id, iteratedMessage) in idToHistoryMessageMap {
-                if iteratedMessage.getTimeInMicrosecond() >= unwrappedMessage.getTimeInMicrosecond() {
-                    newIDToHistoryMessageMap[id] = iteratedMessage
-                }
-            }
-            idToHistoryMessageMap = newIDToHistoryMessageMap
-        } else {
-            idToHistoryMessageMap.removeAll()
-        }
-        
-        headMessage = unwrappedMessage
-    }
-    
-    func destroy() throws {
-        try messageHolder.checkAccess()
-        
-        if destroyed != true {
-            destroyed = true
-            
-            messageHolder.set(messagesToSend: [MessageToSend]())
-            
-            messageHolder.set(messageTracker: nil)
-        }
-    }
-    
-    
-    // MARK: - Private methods
+    // MARK: Private methods
     
     private func addNewOrMerge(message: MessageImpl,
                                of messageHolder: MessageHolder) {
@@ -583,6 +427,159 @@ final class MessageTrackerImpl: MessageTracker {
         messagesLoading = false
         
         completion(result!)
+    }
+    
+}
+
+// MARK: - MessageTracker
+extension MessageTrackerImpl: MessageTracker {
+    
+    func getLastMessages(byLimit limitOfMessages: Int,
+                         completion: @escaping ([Message]) -> ()) throws {
+        try messageHolder.checkAccess()
+        guard destroyed != true else {
+            print("MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            
+            return
+        }
+        guard messagesLoading != true else {
+            print("Messages are already loading. Unable to perform a second request to get new messages.")
+            
+            return
+        }
+        guard limitOfMessages > 0 else {
+            print("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages)")
+            
+            return
+        }
+        
+        let currentChatMessages = messageHolder.getCurrentChatMessages()
+        if currentChatMessages.isEmpty {
+            messagesLoading = true
+            
+            cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
+            cachedLimit = limitOfMessages
+            
+            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { messages in
+                if let cachedCompletionHandler = self.cachedCompletionHandler,
+                    !messages.isEmpty {
+                    self.firstHistoryUpdateReceived = true
+                    
+                    let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
+                    self.receive(messages: messages as! [MessageImpl],
+                                 limit: limitOfMessages,
+                                 completion: completionHandlerToPass)
+                    
+                    self.cachedCompletionHandler = nil
+                }
+            }
+        } else {
+            let result = Array(currentChatMessages.suffix(limitOfMessages))
+            headMessage = result.first
+            completion(result)
+        }
+    }
+    
+    func getNextMessages(byLimit limitOfMessages: Int,
+                         completion: @escaping ([Message]) -> ()) throws {
+        try messageHolder.checkAccess()
+        guard destroyed != true else {
+            print("MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            
+            return
+        }
+        guard messagesLoading != true else {
+            print("Messages are already loading. Unable to perform a second request to get new messages.")
+            
+            return
+        }
+        guard limitOfMessages > 0 else {
+            print("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages)")
+            
+            return
+        }
+        
+        messagesLoading = true
+        
+        let currentChatMessages = messageHolder.getCurrentChatMessages()
+        if (firstHistoryUpdateReceived == true)
+            || (!currentChatMessages.isEmpty
+                && (currentChatMessages.first != headMessage)) {
+            getNextUncheckedMessagesBy(limit: limitOfMessages,
+                                       completion: completion)
+        } else {
+            cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
+            cachedLimit = limitOfMessages
+            
+            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
+                if let cachedCompletionHandler = self?.cachedCompletionHandler,
+                    !messages.isEmpty {
+                    self?.firstHistoryUpdateReceived = true
+                    
+                    let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
+                    self?.receive(messages: messages as! [MessageImpl],
+                                  limit: limitOfMessages,
+                                  completion: completionHandlerToPass)
+                    
+                    self?.cachedCompletionHandler = nil
+                }
+            }
+        }
+    }
+    
+    func getAllMessages(completion: @escaping ([Message]) -> ()) throws {
+        try messageHolder.checkAccess()
+        guard destroyed != true else {
+            print("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
+            
+            return
+        }
+        
+        messageHolder.getHistoryStorage().getFullHistory(completion: completion)
+    }
+    
+    func resetTo(message: Message) throws {
+        try messageHolder.checkAccess()
+        guard destroyed != true else {
+            print("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
+            
+            return
+        }
+        guard messagesLoading != true else {
+            print("Messages is loading. Unable to perform a simultaneous request to reset to a message.")
+            
+            return
+        }
+        
+        let unwrappedMessage = message as! MessageImpl
+        if unwrappedMessage !== headMessage {
+            messageHolder.set(reachedEndOfLocalHistory: false)
+        }
+        if unwrappedMessage.getSource().isHistoryMessage() {
+            var newIDToHistoryMessageMap = [String: MessageImpl]()
+            for (id, iteratedMessage) in idToHistoryMessageMap {
+                if iteratedMessage.getTimeInMicrosecond() >= unwrappedMessage.getTimeInMicrosecond() {
+                    newIDToHistoryMessageMap[id] = iteratedMessage
+                }
+            }
+            idToHistoryMessageMap = newIDToHistoryMessageMap
+        } else {
+            idToHistoryMessageMap.removeAll()
+        }
+        
+        headMessage = unwrappedMessage
+    }
+    
+    func destroy() throws {
+        try messageHolder.checkAccess()
+        
+        if destroyed != true {
+            destroyed = true
+            
+            messageHolder.set(messagesToSend: [MessageToSend]())
+            
+            messageHolder.set(messageTracker: nil)
+        }
     }
     
 }

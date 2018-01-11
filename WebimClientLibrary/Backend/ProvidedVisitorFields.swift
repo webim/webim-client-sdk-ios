@@ -45,8 +45,8 @@ final class ProvidedVisitorFields {
     init?(jsonString: String,
           JSONObject: Data) throws {
         do {
-            if let jsonData = try JSONSerialization.jsonObject(with: JSONObject) as? [String : Any] {
-                if let fields = jsonData["fields"] as? [String : String] {
+            if let jsonData = try JSONSerialization.jsonObject(with: JSONObject) as? [String: Any] {
+                if let fields = jsonData["fields"] as? [String: String] {
                     if let id = fields["id"] {
                         self.id = id
                     } else {

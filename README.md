@@ -4,11 +4,13 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 ## Installation
 
+> Minimum iOS version supported – 8.0.
+
 ### CocoaPods
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.9.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.10.0'
 ```
 `use_frameworks!` must be specified.
 
@@ -16,10 +18,10 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.9.0
+github "webim/webim-client-sdk-ios" ~> 3.10.0
 ```
 
-> Minimum iOS version supported – 8.0.
+### Additional notes
 
 #### Objective-C
 
@@ -33,8 +35,15 @@ If you're already using previous version and don't plan to jump on the new one y
 
 ## Release notes
 
-* _Carthage_ support added.
-* Minor bug fixes, stability improvements and documentation additions.
+* Optional completion handler of type `DataMessageCompletionHandler` added to `send(message:,data:,completionHandler:)` method of `MessageStream` protocol. `DataMessageError` types support added.
+* Dramatically improved CPU usage.
+* Wrong `FatalErrorType` on `.VISITOR_BANNED` case fixed.
+* Internal server errors are prevented to go in cycles when occurs more than five times in a row.
+* Minor bug fixes, stability and performance improvements.
+* Documentation additions and improvements.
+
+### Demo app
+* Interface improvements.
 
 ## Example
 
@@ -107,6 +116,25 @@ Specific remote notification object can be getted through `Webim` class `parse(r
 **FatalErrorHandler.swift** contains `FatalErrorHandler` protocol description. Its methods can be implemented by an app for tracking errors which can arise in progress. All kinds of specific errors are described inside the same file.
 
 **MessageStream.swift** also contains additional protocols descriptions which can be implemented by an app classes for tracking different particular changes. E.g. `ChatStateListener` protocol methods are called when chat state is changed (all the specific chat states are described in the same file).
+
+### Remote notifications
+
+For iOS to be able to handle remote notifications automatically your app must be aware of possible remote notification types and arguments.
+
+Possible `loc-key` values:
+* `P.OA` means that operator accepted chat.
+* `P.OF` means that operator sent a flie.
+* `P.OM` means that operator sent a text message.
+
+`loc-args` values for this types:
+* `P.OA`: operator's name.
+* `P.OF`: operator's name, file name.
+* `P.OM`: operator's name, message text.
+
+Remote notification handling with Strings.localizable file example:
+```
+"P.OM" = "Message from %@ is received: %@."
+```
 
 ### Conclusion
 

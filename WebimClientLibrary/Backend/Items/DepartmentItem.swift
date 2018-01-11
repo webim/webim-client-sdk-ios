@@ -61,12 +61,12 @@ final class DepartmentItem {
     private let name: String
     private let onlineStatus: InternalDepartmentOnlineStatus
     private let order: Int
-    private var localizedNames: [String : String]?
+    private var localizedNames: [String: String]?
     private var logo: String?
     
     
     // MARK: - Initialization
-    init?(jsonDictionary: [String : Any?]) {
+    init?(jsonDictionary: [String: Any?]) {
         guard let key = jsonDictionary[JSONField.KEY.rawValue] as? String,
             let name = jsonDictionary[JSONField.NAME.rawValue] as? String,
             let onlineStatusString = jsonDictionary[JSONField.ONLINE_STATUS.rawValue] as? String,
@@ -83,7 +83,7 @@ final class DepartmentItem {
             self.logo = logoURLString
         }
         
-        if let localizedNames = jsonDictionary[JSONField.LOCALIZED_NAMES.rawValue] as? [String : String] {
+        if let localizedNames = jsonDictionary[JSONField.LOCALIZED_NAMES.rawValue] as? [String: String] {
             self.localizedNames = localizedNames
         }
     }
@@ -107,7 +107,7 @@ final class DepartmentItem {
         return order
     }
     
-    func getLocalizedNames() -> [String : String]? {
+    func getLocalizedNames() -> [String: String]? {
         return localizedNames
     }
     

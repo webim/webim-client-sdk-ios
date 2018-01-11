@@ -64,7 +64,6 @@ final class WebimSessionImpl {
     
     // MARK: - Constants
     private enum Settings: String {
-        case PLATFORM = "ios"
         case DEFAULT_PAGE_TITLE = "iOS Client"
     }
     
@@ -112,19 +111,18 @@ final class WebimSessionImpl {
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.MAIN.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
+        let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
         if isVisitorDataClearingEnabled {
             clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
         }
-        
-        let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
         checkSavedSessionFor(userDefaultsKey: userDefaultsKey,
                              newProvidedVisitorFields: visitorFields)
         
         let sessionDestroyer = SessionDestroyer()
         
-        let visitorJSON = userDefaults?[UserDefaultsMainPrefix.VISITOR.rawValue] ?? nil
+        let visitorJSON = (userDefaults?[UserDefaultsMainPrefix.VISITOR.rawValue] ?? nil)
         
         let visitorFieldsJSON = (visitorFields == nil) ? nil : visitorFields?.getJSONString()
         
@@ -158,7 +156,6 @@ final class WebimSessionImpl {
             .set(authorizationData: authorizationData)
             .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                               queue: queue))
-            .set(platform: Settings.PLATFORM.rawValue)
             .set(title: (pageTitle != nil) ? pageTitle! : Settings.DEFAULT_PAGE_TITLE.rawValue)
             .set(deviceToken: deviceToken)
             .set(deviceID: getDeviceID())
@@ -172,12 +169,13 @@ final class WebimSessionImpl {
             
             if dbName == nil {
                 dbName = "webim_" + ClientSideID.generateClientSideID() + ".db"
-                if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-                    userDefaults[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] = dbName
-                    UserDefaults.standard.set(userDefaults,
+                if let userDefaults = userDefaults {
+                    var renewedUserDefaults = userDefaults
+                    renewedUserDefaults[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] = dbName
+                    UserDefaults.standard.set(renewedUserDefaults,
                                               forKey: userDefaultsKey)
                 } else {
-                    UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue : dbName],
+                    UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue: dbName],
                                                    forKey: userDefaultsKey)
                 }
             }
@@ -237,12 +235,12 @@ final class WebimSessionImpl {
                                           messageHolder: messageHolder,
                                           historyMetaInformationStorage: historyMetaInformationStoragePreferences)
         
-        sessionDestroyer.add(action: { () -> Void in
+        sessionDestroyer.add() {
             webimClient.stop()
-        })
-        sessionDestroyer.add(action: { () -> Void in
+        }
+        sessionDestroyer.add() {
             historyPoller.pause()
-        })
+        }
         
         // Needed for message attachment secure download link generation.
         currentChatMessageMapper.set(webimClient: webimClient)
@@ -295,7 +293,7 @@ final class WebimSessionImpl {
         if newVisitorFieldsJSONString != previousVisitorFieldsJSONString {
             UserDefaults.standard.removeObject(forKey: userDefaultsKey)
             
-            let newVisitorFieldsDictionary = [UserDefaultsMainPrefix.VISITOR_EXT.rawValue : newVisitorFieldsJSONString]
+            let newVisitorFieldsDictionary = [UserDefaultsMainPrefix.VISITOR_EXT.rawValue: newVisitorFieldsJSONString]
             UserDefaults.standard.set(newVisitorFieldsDictionary,
                                       forKey: userDefaultsKey)
         }
@@ -303,7 +301,7 @@ final class WebimSessionImpl {
     
     private static func getDeviceID() -> String {
         let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.GUID.rawValue)
-        var uuidString = userDefaults?[UserDefaultsGUIDPrefix.UUID.rawValue] ?? nil
+        var uuidString = (userDefaults?[UserDefaultsGUIDPrefix.UUID.rawValue] ?? nil)
         
         if uuidString == nil {
             uuidString = UIDevice.current.identifierForVendor!.uuidString
@@ -312,7 +310,7 @@ final class WebimSessionImpl {
                 UserDefaults.standard.set(userDefaults,
                                           forKey: UserDefaultsName.GUID.rawValue)
             } else {
-                UserDefaults.standard.setValue([UserDefaultsGUIDPrefix.UUID.rawValue : uuidString],
+                UserDefaults.standard.setValue([UserDefaultsGUIDPrefix.UUID.rawValue: uuidString],
                                                forKey: UserDefaultsName.GUID.rawValue)
             }
         }
@@ -363,6 +361,8 @@ extension WebimSessionImpl: WebimSession {
     }
     
     func change(location: String) throws {
+        try checkAccess()
+        
         try webimClient.getDeltaRequestLoop().change(location: location)
     }
     
@@ -590,9 +590,9 @@ final private class SessionParametersListenerImpl: SessionParametersListener {
                     if let previousVisitorFieldsJSONData = previousVisitorFieldsJSONString.data(using: .utf8),
                         let visitorFieldsJSONData = visitorFieldsJSONString.data(using: .utf8) {
                         if let previousVisitorFieldsDictionary = try? JSONSerialization.jsonObject(with: previousVisitorFieldsJSONData,
-                                                                                                   options: []) as? [String : Any],
+                                                                                                   options: []) as? [String: Any],
                             let visitorFieldsDictionary = try? JSONSerialization.jsonObject(with: visitorFieldsJSONData,
-                                                                                            options: []) as? [String : Any] {
+                                                                                            options: []) as? [String: Any] {
                             if let previousID = previousVisitorFieldsDictionary?[VisitorFieldsJSONField.ID.rawValue] as? String,
                                 let id = visitorFieldsDictionary?[VisitorFieldsJSONField.ID.rawValue] as? String {
                                 if previousID != id {
@@ -611,10 +611,10 @@ final private class SessionParametersListenerImpl: SessionParametersListener {
             UserDefaults.standard.set(userDefaults,
                                       forKey: userDefaultsKey)
         } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.VISITOR.rawValue : visitorFieldsJSONString,
-                                            UserDefaultsMainPrefix.SESSION_ID.rawValue : sessionID,
-                                            UserDefaultsMainPrefix.PAGE_ID.rawValue : authorizationData.getPageID(),
-                                            UserDefaultsMainPrefix.AUTHORIZATION_TOKEN.rawValue : authorizationData.getAuthorizationToken()],
+            UserDefaults.standard.setValue([UserDefaultsMainPrefix.VISITOR.rawValue: visitorFieldsJSONString,
+                                            UserDefaultsMainPrefix.SESSION_ID.rawValue: sessionID,
+                                            UserDefaultsMainPrefix.PAGE_ID.rawValue: authorizationData.getPageID(),
+                                            UserDefaultsMainPrefix.AUTHORIZATION_TOKEN.rawValue: authorizationData.getAuthorizationToken()],
                                            forKey: userDefaultsKey)
         }
     }
@@ -735,13 +735,9 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
             UserDefaults.standard.set(userDefaults,
                                       forKey: userDefaultsKey)
         } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_ENDED.rawValue : historyEnded],
+            UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_ENDED.rawValue: historyEnded],
                                            forKey: userDefaultsKey)
         }
-    }
-    
-    func getRevision() -> String? {
-        return UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_REVISION.rawValue] as? String
     }
     
     func set(revision: String?) {
@@ -750,16 +746,8 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
             UserDefaults.standard.set(userDefaults,
                                       forKey: userDefaultsKey)
         } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_REVISION.rawValue : revision],
+            UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_REVISION.rawValue: revision],
                                            forKey: userDefaultsKey)
-        }
-    }
-    
-    func clear() {
-        if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults.removeValue(forKey: UserDefaultsMainPrefix.HISTORY_REVISION.rawValue)
-            userDefaults.removeValue(forKey: UserDefaultsMainPrefix.HISTORY_ENDED.rawValue)
-            UserDefaults.standard.setValue(userDefaults, forKey: userDefaultsKey)
         }
     }
     

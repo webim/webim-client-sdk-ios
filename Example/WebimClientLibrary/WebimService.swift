@@ -90,8 +90,7 @@ final class WebimService {
             .set(webimLogger: self)
         
         if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
-            // Hardcoded values that work with "demo" account only!
-            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}")
+            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}") // Hardcoded values that work with "demo" account only!
         }
         
         do {
@@ -211,9 +210,7 @@ final class WebimService {
                 setMessageStream()
             }
             
-            // Function returns an unique message ID. In this app it is not used.
-            _ = try messageStream?.send(message: message,
-                                        data: ["quotedMessageID": "abcd12345678"])
+            _ = try messageStream?.send(message: message) // Function returns an unique message ID. In this app it is not used.
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:

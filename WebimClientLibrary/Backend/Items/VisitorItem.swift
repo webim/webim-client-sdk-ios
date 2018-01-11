@@ -27,7 +27,7 @@
 import Foundation
 
 // This class is not used anywhere yet. Implemented for the future tasks.
-// FIXME: Fix SessionParametersListenerImpl for using this class instead of visitorJSONString and manual deserialization.
+// TODO: Fix SessionParametersListenerImpl for using this class instead of visitorJSONString and manual deserialization.
 /**
  - Author:
  Nikita Lazarev-Zubov
@@ -52,17 +52,51 @@ struct VisitorItem {
     
     
     // MARK: - Initialization
-    init(jsonDictionary: [String : Any?]) {
-        if let iconValue = jsonDictionary[JSONField.ICON.rawValue] as? [String : Any?] {
+    init(jsonDictionary: [String: Any?]) {
+        if let iconValue = jsonDictionary[JSONField.ICON.rawValue] as? [String: Any?] {
             icon = IconItem(jsonDictionary: iconValue)
         }
         
-        if let visitorFieldsValue = jsonDictionary[JSONField.VISITOR_FIELDS.rawValue] as? [String : Any?] {
+        if let visitorFieldsValue = jsonDictionary[JSONField.VISITOR_FIELDS.rawValue] as? [String: Any?] {
             visitorFields = VisitorFields(jsonDictionary: visitorFieldsValue)
         }
         
         if let id = jsonDictionary[JSONField.ID.rawValue] as? String {
             self.id = id
+        }
+    }
+    
+}
+
+/**
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2017 Webim
+ */
+struct IconItem {
+    
+    // MARK: - Constants
+    // Raw values equal to field names received in responses from server.
+    private enum JSONField: String {
+        case COLOR = "color"
+        case SHAPE = "shape"
+    }
+    
+    
+    // MARK: - Properties
+    private var color: String?
+    private var shape: String?
+    
+    
+    // MARK: - Initialization
+    init(jsonDictionary: [String: Any?]) {
+        if let color = jsonDictionary[JSONField.COLOR.rawValue] as? String {
+            self.color = color
+        }
+        
+        if let shape = jsonDictionary[JSONField.SHAPE.rawValue] as? String {
+            self.shape = shape
         }
     }
     
@@ -103,11 +137,6 @@ struct VisitorFields {
         if let phone = jsonDictionary[JSONField.PHONE.rawValue] as? String {
             self.phone = phone
         }
-    }
-    
-    // MARK: - Methods
-    func getName() -> String? {
-        return name
     }
     
 }

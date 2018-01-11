@@ -294,7 +294,6 @@
 		FDD30F5778BBCAECCDEA2D0A90F252CE /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2579314AFDDD32BD6E4F73160BD7FE13 /* TransitionAnimator.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		FE7E07B4AC6E0CC9C44B8D0C3A7F1FDD /* PBKDF2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81794BB15EDE9B325C032A6DE76BF6D /* PBKDF2.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		FE8352DAD3E2EC6C8E00621F8E003075 /* SecureBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E214F419426D643F66D631E0E81F76 /* SecureBytes.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		FF286FCAA61A742BB79FD44E07E626EA /* IconItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66936A786E6660899C945F4118100D9 /* IconItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -601,7 +600,6 @@
 		A4FFFFF4B6F2C140235EA276BF1B2923 /* SLKTextViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKTextViewController.h; path = Source/SLKTextViewController.h; sourceTree = "<group>"; };
 		A5B07858FE04D463759C416E7DC0F920 /* SLKInputAccessoryView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SLKInputAccessoryView.m; path = Source/SLKInputAccessoryView.m; sourceTree = "<group>"; };
 		A5EA7641B4EC6773B856C6D645259E53 /* CosmosText.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosText.swift; path = Cosmos/CosmosText.swift; sourceTree = "<group>"; };
-		A66936A786E6660899C945F4118100D9 /* IconItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IconItem.swift; sourceTree = "<group>"; };
 		A72B65E7410AF1E44D4834F97D2EFE79 /* ExecIfNotDestroyedHandlerExecutor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExecIfNotDestroyedHandlerExecutor.swift; sourceTree = "<group>"; };
 		A746E05309062CC208B314D4CA5659F6 /* CosmosLayers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosLayers.swift; path = Cosmos/CosmosLayers.swift; sourceTree = "<group>"; };
 		A76DB7905C0837408C9DA1C835ECA5E7 /* PKCS7.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PKCS7.swift; path = Sources/CryptoSwift/PKCS/PKCS7.swift; sourceTree = "<group>"; };
@@ -800,7 +798,6 @@
 				D712EED3E689D54A8D366E2CA121CA4E /* ChatItem.swift */,
 				04E9D217963328688504B4F8C58D4CDD /* DepartmentItem.swift */,
 				22FC1A51BDA2D55ADFFCBDCF565D1EC9 /* FileParametersItem.swift */,
-				A66936A786E6660899C945F4118100D9 /* IconItem.swift */,
 				05B4C26497205D415A38FF79DA58D6FC /* MessageItem.swift */,
 				E7EF485CCF92F8D3240EC90525CA4116 /* OnlineStatusItem.swift */,
 				F3E952B60667818B7B41BE2D557B9EA7 /* OperatorItem.swift */,
@@ -1801,7 +1798,6 @@
 				2D0A0BA75CD9146842E024A01DCB4116 /* HistoryMetaInformationStorage.swift in Sources */,
 				A630E736D63EA560748DF801E4C3A354 /* HistorySinceResponse.swift in Sources */,
 				CE4C24A69DF208B72BE30C6AC973F65F /* HistoryStorage.swift in Sources */,
-				FF286FCAA61A742BB79FD44E07E626EA /* IconItem.swift in Sources */,
 				0EFBDCDDD8ABA94C3EE2D33B400A28EA /* InternalErrorListener.swift in Sources */,
 				DE54A3F46ADAF5C19A7824A879B98BF8 /* InternalUtils.swift in Sources */,
 				A4ECAF80795CB9CA5E651A2F9C5EEA7F /* LocationSettingsHolder.swift in Sources */,

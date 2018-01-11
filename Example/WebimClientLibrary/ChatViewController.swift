@@ -41,7 +41,7 @@ class ChatViewController: SLKTextViewController {
     // MARK: - Properties
     private let imagePicker = UIImagePickerController()
     private let refreshControl = UIRefreshControl()
-    private lazy var alreadyRated = [String : Bool]()
+    private lazy var alreadyRated = [String: Bool]()
     private var lastOperatorID: String?
     private lazy var messages = [Message]()
     private lazy var webimService = WebimService()
@@ -94,7 +94,15 @@ class ChatViewController: SLKTextViewController {
     
     // MARK: UICollectionViewDataSource methods
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if messages.count > 0 {
+            tableView.backgroundView = nil
+            
+            return 1
+        } else {
+            tableView.emptyTableView(message: EMPTY_TABLE_VIEW_TEXT)
+            
+            return 0
+        }
     }
     
     
@@ -222,6 +230,7 @@ class ChatViewController: SLKTextViewController {
             
             DispatchQueue.main.async() {
                 self?.tableView?.reloadData()
+                
                 self?.scrollToBottom()
             }
         }
@@ -435,7 +444,7 @@ class ChatViewController: SLKTextViewController {
 extension ChatViewController: UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [String : Any]) {
+                               didFinishPickingMediaWithInfo info: [String: Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             let imageData = UIImagePNGRepresentation(image)!
             
@@ -495,6 +504,7 @@ extension ChatViewController: MessageListener {
         
         DispatchQueue.main.async() {
             self.tableView?.reloadData()
+            
             self.scrollToBottom()
         }
     }
@@ -514,6 +524,7 @@ extension ChatViewController: MessageListener {
         if toUpdate {
             DispatchQueue.main.async() {
                 self.tableView?.reloadData()
+                
                 self.scrollToBottom()
             }
         }
@@ -543,6 +554,7 @@ extension ChatViewController: MessageListener {
         if toUpdate {
             DispatchQueue.main.async() {
                 self.tableView?.reloadData()
+                
                 self.scrollToBottom()
             }
         }

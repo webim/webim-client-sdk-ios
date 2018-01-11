@@ -50,17 +50,8 @@ final class MemoryHistoryMetaInformationStorage: HistoryMetaInformationStorage {
         self.historyEnded = historyEnded
     }
     
-    func getRevision() -> String? {
-        return revision
-    }
-    
     func set(revision: String?) {
         self.revision = revision
-    }
-    
-    func clear() {
-        historyEnded = false
-        revision = nil
     }
     
 }

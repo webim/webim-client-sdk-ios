@@ -94,7 +94,7 @@ final class ChatItem {
     private var modificationTimestamp: Double?
     private var offline: Bool?
     private var `operator`: OperatorItem?
-    private lazy var operatorIDToRate = [String : RatingItem]()
+    private lazy var operatorIDToRate = [String: RatingItem]()
     private var operatorTyping: Bool?
     private var readByVisitor: Bool?
     private var state: String?
@@ -106,18 +106,7 @@ final class ChatItem {
     
     
     // MARK: - Initializers
-    
-    init(id: String? = nil) {
-        creationTimestamp = ChatItem.createCreationTimestamp()
-        
-        if id == nil {
-            self.id = String(Int(-creationTimestamp))
-        } else {
-            self.id = id!
-        }
-    }
-    
-    init(jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String: Any?]) {
         if let creationTimestampValue = jsonDictionary[JSONField.CREATION_TIMESTAMP.rawValue] as? Double {
             creationTimestamp = creationTimestampValue
         } else {
@@ -132,20 +121,20 @@ final class ChatItem {
         
         if let messagesValue = jsonDictionary[JSONField.MESSAGES.rawValue] as? [Any] {
             for message in messagesValue {
-                if let messageValue = message as? [String : Any?] {
+                if let messageValue = message as? [String: Any?] {
                     let messageItem = MessageItem(jsonDictionary: messageValue)
                     messages.append(messageItem)
                 }
             }
         }
 
-        if let operatorValue = jsonDictionary[JSONField.OPERATOR.rawValue] as? [String : Any?] {
+        if let operatorValue = jsonDictionary[JSONField.OPERATOR.rawValue] as? [String: Any?] {
             `operator` = OperatorItem(jsonDictionary: operatorValue)
         }
         
-        if let operatorIDToRateValue = jsonDictionary[JSONField.OPERATOR_ID_TO_RATE.rawValue] as? [String : Any?] {
+        if let operatorIDToRateValue = jsonDictionary[JSONField.OPERATOR_ID_TO_RATE.rawValue] as? [String: Any?] {
             for (operatorIDValue, ratingValue) in operatorIDToRateValue {
-                if let ratingItemValue = ratingValue as? [String : Any?] {
+                if let ratingItemValue = ratingValue as? [String: Any?] {
                     let rating = RatingItem(jsonDictionary: ratingItemValue)
                     operatorIDToRate[operatorIDValue] = rating
                 }
@@ -250,7 +239,7 @@ final class ChatItem {
         self.readByVisitor = readByVisitor
     }
     
-    func getOperatorIDToRate() -> [String : RatingItem]? {
+    func getOperatorIDToRate() -> [String: RatingItem]? {
         return operatorIDToRate
     }
     

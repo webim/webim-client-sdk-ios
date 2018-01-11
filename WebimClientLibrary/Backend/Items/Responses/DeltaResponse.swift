@@ -51,18 +51,18 @@ final class DeltaResponse {
     
     
     // MARK: - Initialization
-    init(jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String: Any?]) {
         if let revision = jsonDictionary[JSONField.REVISION.rawValue] as? Int64 {
             self.revision = revision
         }
         
-        if let fullUpdateValue = jsonDictionary[JSONField.FULL_UPDATE.rawValue] as? [String : Any?] {
+        if let fullUpdateValue = jsonDictionary[JSONField.FULL_UPDATE.rawValue] as? [String: Any?] {
             fullUpdate = FullUpdate(jsonDictionary: fullUpdateValue)
         }
         
         if let deltaItemArray = jsonDictionary[JSONField.DELTA_LIST.rawValue] as? [Any] {
             for arrayItem in deltaItemArray {
-                if let arrayItem = arrayItem as? [String : Any?] {
+                if let arrayItem = arrayItem as? [String: Any?] {
                     if let deltaItem = DeltaItem(jsonDictionary: arrayItem) {
                         deltaList.append(deltaItem)
                     }

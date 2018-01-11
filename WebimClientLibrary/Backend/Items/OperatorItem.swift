@@ -53,7 +53,7 @@ struct OperatorItem {
     
     
     // MARK: - Initialization
-    init(jsonDictionary: [String : Any?]) {
+    init(jsonDictionary: [String: Any?]) {
         if let departmentKeysArray = jsonDictionary[JSONField.DEPARTMENT_KEYS.rawValue] as? [Any] {
             for departmentKey in departmentKeysArray {
                 departmentKeys.append(departmentKey as! String)

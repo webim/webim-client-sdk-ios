@@ -46,7 +46,6 @@ final class WebimClientBuilder {
     private var deviceToken: String?
     private var internalErrorListener: InternalErrorListener?
     private var location: String?
-    private var platform: String?
     private var providedAuthenticationToken: String?
     private var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var sessionID: String?
@@ -133,12 +132,6 @@ final class WebimClientBuilder {
         return self
     }
     
-    func set(platform: String) -> WebimClientBuilder {
-        self.platform = platform
-        
-        return self
-    }
-    
     func set(title: String) -> WebimClientBuilder {
         self.title = title
         
@@ -175,7 +168,6 @@ final class WebimClientBuilder {
                                                                                                             actionRequestLoop: actionRequestLoop),
                                                 internalErrorListener: internalErrorListener!,
                                                 baseURL: baseURL!,
-                                                platform: platform!,
                                                 title: title!,
                                                 location: location!,
                                                 appVersion: appVersion,
@@ -192,7 +184,7 @@ final class WebimClientBuilder {
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
                            webimActions: WebimActions(baseURL: baseURL!,
-                           actionRequestLoop: actionRequestLoop))
+                                                      actionRequestLoop: actionRequestLoop))
     }
     
 }
@@ -289,11 +281,9 @@ final private class SessionParametersListenerWrapper: SessionParametersListener 
                                     authorizationData: AuthorizationData) {
         actionRequestLoop.set(authorizationData: authorizationData)
         
-        if wrappedSessionParametersListener != nil {
-            wrappedSessionParametersListener!.onSessionParametersChanged(visitorFieldsJSONString: visitorJSONString,
-                                                                         sessionID: sessionID,
-                                                                         authorizationData: authorizationData)
-        }
+        wrappedSessionParametersListener?.onSessionParametersChanged(visitorFieldsJSONString: visitorJSONString,
+                                                                     sessionID: sessionID,
+                                                                     authorizationData: authorizationData)
     }
     
 }

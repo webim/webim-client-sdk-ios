@@ -115,11 +115,13 @@ final class MemoryHistoryStorage: HistoryStorage {
                           completion: completion)
         mergeHistoryChanges(messages: messages,
                             completion: completion)
+        
         completion(true, false, nil, false, nil, false, nil, nil)
     }
     
     
     // MARK: Private methods
+    
     private func respondTo(messages: [MessageImpl],
                            limitOfMessages: Int,
                            completion: ([Message]) -> ()) {

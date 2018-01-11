@@ -510,9 +510,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
             text = ""
         }
         
-        var serverData: [String : Any?]?
+        var serverData: [String: Any?]?
         if let serverDataValue = row[SQLiteHistoryStorage.serverData] {
-            serverData = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(serverDataValue)) as? [String : Any?]
+            serverData = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(serverDataValue)) as? [String: Any?]
         }
         
         
@@ -538,7 +538,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            rawText: rawText)
     }
     
-    private static func convertToBlob(dictionary: [String : Any?]?) -> Blob? {
+    private static func convertToBlob(dictionary: [String: Any?]?) -> Blob? {
         if let dictionary = dictionary {
             let data = NSKeyedArchiver.archivedData(withRootObject: dictionary)
             

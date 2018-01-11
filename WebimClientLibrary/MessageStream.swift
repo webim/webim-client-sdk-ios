@@ -271,6 +271,8 @@ public protocol MessageStream {
      Text of the message.
      - parameter data:
      Optional. Custom message parameters dictionary. Note that this functionality does not work as is – server version must support it.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
      - returns:
      ID of the message.
      - throws:
@@ -282,7 +284,8 @@ public protocol MessageStream {
      2017 Webim
      */
     func send(message: String,
-              data: [String: Any]?) throws -> String
+              data: [String: Any]?,
+              completionHandler: DataMessageCompletionHandler?) throws -> String
     
     /**
      Sends a text message.
@@ -464,6 +467,45 @@ public protocol LocationSettings {
 
 
 // MARK: -
+/**
+ - SeeAlso:
+ `MessageStream.send(message:,data:,completionHandler:)`.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2018 Webim
+ */
+public protocol DataMessageCompletionHandler {
+    
+    /**
+     Executed when operation is done successfully.
+     - parameter messageID:
+     ID of the message.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    func onSussess(messageID: String)
+    
+    /**
+     Executed when operation is failed.
+     - parameter messageID:
+     ID of the message.
+     - parameter error:
+     Error.
+     - SeeAlso:
+     `DataMessageError`.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    func onFailure(messageID: String,
+                   error: DataMessageError)
+    
+}
+
 /**
  - SeeAlso:
  `MessageStream.send(file:filename:mimeType:completionHandler:)`
@@ -949,6 +991,75 @@ public enum VisitSessionState {
      2017 Webim
      */
     case UNKNOWN
+    
+}
+
+/**
+ - SeeAlso:
+ `DataMessageCompletionHandler.onFailure(messageID:error:)`.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2018 Webim
+ */
+public enum DataMessageError: Error {
+    
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case UNKNOWN
+    
+    // MARK: Quoted message errors.
+    // Note that quoted message mechanism is not a standard feature – it must be implemented by a server. For more information please contact with Webim support service.
+    
+    /**
+     To be raised when quoted message ID belongs to a message without `canBeReplied` flag set to `true` (this flag is to be set on the server-side).
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case QUOTED_MESSAGE_CANNOT_BE_REPLIED
+    
+    /**
+     To be raised when quoted message ID belongs to another visitor's chat.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case QUOTED_MESSAGE_FROM_ANOTHER_VISITOR
+    
+    /**
+     To be raised when quoted message ID belongs to multiple messages (server DB error).
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case QUOTED_MESSAGE_MULTIPLE_IDS
+    
+    /**
+     To be raised when one or more required arguments of quoting mechanism are missing.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING
+    
+    /**
+     To be raised when wrong quoted message ID is sent.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case QUOTED_MESSAGE_WRONG_ID
     
 }
 
