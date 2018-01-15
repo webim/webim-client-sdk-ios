@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "WebimClientLibrary.h"
 
 FOUNDATION_EXPORT double WebimClientLibraryVersionNumber;
 FOUNDATION_EXPORT const unsigned char WebimClientLibraryVersionString[];
