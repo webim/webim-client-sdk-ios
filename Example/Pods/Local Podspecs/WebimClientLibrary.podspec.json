@@ -1,6 +1,6 @@
 {
   "name": "WebimClientLibrary",
-  "version": "3.9.0",
+  "version": "3.10.0",
   "summary": "Webim.ru client SDK for iOS.",
   "homepage": "https://webim.ru/integration/mobile-sdk/ios-sdk-howto/",
   "license": {
@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "https://github.com/webim/webim-client-sdk-ios.git",
-    "tag": "3.9.0"
+    "tag": "3.10.0"
   },
   "platforms": {
     "ios": "8.0"

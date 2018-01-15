@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CBADE42A4CB6D4D0122FB2E1D02FE580"
+               BlueprintIdentifier = "8FD24279200CDB18007EB9CB"
                BuildableName = "WebimClientLibrary.framework"
                BlueprintName = "WebimClientLibrary"
-               ReferencedContainer = "container:Pods.xcodeproj">
+               ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,7 +29,26 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8FD24282200CDB18007EB9CB"
+               BuildableName = "WebimClientLibraryTests.xctest"
+               BlueprintName = "WebimClientLibraryTests"
+               ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8FD24279200CDB18007EB9CB"
+            BuildableName = "WebimClientLibrary.framework"
+            BlueprintName = "WebimClientLibrary"
+            ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -47,10 +66,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CBADE42A4CB6D4D0122FB2E1D02FE580"
+            BlueprintIdentifier = "8FD24279200CDB18007EB9CB"
             BuildableName = "WebimClientLibrary.framework"
             BlueprintName = "WebimClientLibrary"
-            ReferencedContainer = "container:Pods.xcodeproj">
+            ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,10 +84,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CBADE42A4CB6D4D0122FB2E1D02FE580"
+            BlueprintIdentifier = "8FD24279200CDB18007EB9CB"
             BuildableName = "WebimClientLibrary.framework"
             BlueprintName = "WebimClientLibrary"
-            ReferencedContainer = "container:Pods.xcodeproj">
+            ReferencedContainer = "container:WebimClientLibrary.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
