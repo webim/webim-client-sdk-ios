@@ -53,7 +53,6 @@ final class WebimClientBuilder {
     private var title: String?
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
-    private var webimLogger: WebimLogger?
     
     
     // MARK: - Builder methods
@@ -150,17 +149,10 @@ final class WebimClientBuilder {
         return self
     }
     
-    func set(webimLogger: WebimLogger?) -> WebimClientBuilder {
-        self.webimLogger = webimLogger
-        
-        return self
-    }
-    
     func build() -> WebimClient {
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: completionHandlerExecutor!,
                                                   internalErrorListener: internalErrorListener!)
         actionRequestLoop.set(authorizationData: authorizationData)
-        actionRequestLoop.set(webimLogger: webimLogger)
         
         let deltaRequestLoop = DeltaRequestLoop(deltaCallback: deltaCallback!,
                                                 completionHandlerExecutor: completionHandlerExecutor!,
@@ -179,7 +171,6 @@ final class WebimClientBuilder {
                                                 visitorJSONString: visitorJSONString,
                                                 sessionID: sessionID,
                                                 authorizationData: authorizationData)
-        deltaRequestLoop.set(webimLogger: webimLogger)
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,

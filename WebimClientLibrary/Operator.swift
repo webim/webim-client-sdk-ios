@@ -41,7 +41,7 @@ public protocol Operator {
      - returns:
      Unique ID of the operator.
      - SeeAlso:
-     `MessageStream.rateOperatorWith(id:,byRate rate:)`
+     `MessageStream.rateOperatorWith(id:byRate:completionHandler:)`
      `MessageStream.getLastRatingOfOperatorWith(id:)`
      - Author:
      Nikita Lazarev-Zubov

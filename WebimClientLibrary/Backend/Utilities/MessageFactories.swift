@@ -95,7 +95,8 @@ class AbstractMapper: MessageFactoriesMapper {
         case .VISITOR:
             return .VISITOR
         default:
-            print("Invalid message type received: \(messageKind.rawValue)")
+            WebimInternalLogger.shared.log(entry: "Invalid message type received: \(messageKind.rawValue)",
+                verbosityLevel: .WARNING)
             
             return nil
         }
@@ -119,7 +120,8 @@ class AbstractMapper: MessageFactoriesMapper {
         var rawText: String? = nil
         
         let messageItemText = messageItem.getText()
-        if (kind == .FILE_FROM_VISITOR) || (kind == .FILE_FROM_OPERATOR) {
+        if (kind == .FILE_FROM_VISITOR)
+            || (kind == .FILE_FROM_OPERATOR) {
             attachment = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
                                                              webimClient: webimClient!,
                                                              text: messageItemText!)
@@ -130,10 +132,10 @@ class AbstractMapper: MessageFactoriesMapper {
             text = attachment?.getFileName()
             rawText = messageItemText!
         } else {
-            text = (messageItemText == nil) ? "" : messageItemText!
+            text = ((messageItemText == nil) ? "" : messageItemText!)
         }
         
-        return MessageImpl(withServerURLString: serverURLString,
+        return MessageImpl(serverURLString: serverURLString,
                            id: messageItem.getClientSideID()!,
                            operatorID: messageItem.getSenderID(),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),

@@ -102,8 +102,8 @@ final class MessageComposingHandler {
     }
     
     private func send(draft: String?) {
-        let visitorTyping = (draft == nil) ? false : (draft!.isEmpty ? false : true)
-        let deleteDraft = (draft == nil) ? true : (draft!.isEmpty ? true : false)
+        let visitorTyping = ((draft == nil) ? false : (draft!.isEmpty ? false : true))
+        let deleteDraft = ((draft == nil) ? true : (draft!.isEmpty ? true : false))
         webimActions.set(visitorTyping: visitorTyping,
                          draft: draft,
                          deleteDraft: deleteDraft)

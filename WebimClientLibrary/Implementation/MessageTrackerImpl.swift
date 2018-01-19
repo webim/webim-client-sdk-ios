@@ -62,7 +62,8 @@ final class MessageTrackerImpl {
         do {
             try message.getSource().assertIsCurrentChat()
         } catch {
-            print("Message which is being added is not a part of current chat.")
+            WebimInternalLogger.shared.log(entry: "Message which is being added is not a part of current chat: \(message.toString()).",
+                verbosityLevel: .DEBUG)
             
             return
         }
@@ -117,14 +118,16 @@ final class MessageTrackerImpl {
         do {
             try previousVersion.getSource().assertIsCurrentChat()
         } catch {
-            print("Message which is being changed is not a part of current chat.")
+            WebimInternalLogger.shared.log(entry: "Message which is being changed is not a part of current chat: \(previousVersion.toString()).",
+                verbosityLevel: .DEBUG)
             
             return
         }
         do {
             try newVersion.getSource().assertIsCurrentChat()
         } catch {
-            print("Replacement message for a current chat message is not a part of current chat.")
+            WebimInternalLogger.shared.log(entry: "Replacement message for a current chat message is not a part of current chat: \(newVersion.toString()).",
+                verbosityLevel: .DEBUG)
             
             return
         }
@@ -163,7 +166,8 @@ final class MessageTrackerImpl {
         do {
             try message.getSource().assertIsCurrentChat()
         } catch {
-            print("Message which is being deleted is not a part of current chat.")
+            WebimInternalLogger.shared.log(entry: "Message which is being deleted is not a part of current chat: \(message.toString())",
+                verbosityLevel: .DEBUG)
         }
         
         let currentChatMessages = messageHolder.getCurrentChatMessages()
@@ -214,7 +218,8 @@ final class MessageTrackerImpl {
         do {
             try message.getSource().assertIsHistory()
         } catch {
-            print("Message which is being changed is not a part of histoty.")
+            WebimInternalLogger.shared.log(entry: "Message which is being changed is not a part of history: \(message.toString()).",
+                verbosityLevel: .DEBUG)
         }
         
         
@@ -227,7 +232,8 @@ final class MessageTrackerImpl {
                     messageListener.changed(message: previousMessage!,
                                             to: message)
                 } else {
-                    print("Unknown message was changed: \(message.toString())")
+                    WebimInternalLogger.shared.log(entry: "Unknown message was changed: \(message.toString())",
+                        verbosityLevel: .DEBUG)
                 }
             }
         }
@@ -238,7 +244,8 @@ final class MessageTrackerImpl {
         do {
             try message.getSource().assertIsHistory()
         } catch {
-            print("Message which is being added is not a part of history.")
+            WebimInternalLogger.shared.log(entry: "Message which is being added is not a part of history: \(message.toString()).",
+                verbosityLevel: .DEBUG)
         }
         
         
@@ -260,6 +267,11 @@ final class MessageTrackerImpl {
         }
     }
     
+    // For testing purposes.
+    func set(messagesLoading: Bool) {
+        self.messagesLoading = messagesLoading
+    }
+    
     // MARK: Private methods
     
     private func addNewOrMerge(message: MessageImpl,
@@ -267,7 +279,8 @@ final class MessageTrackerImpl {
         do {
             try message.getSource().assertIsCurrentChat()
         } catch {
-            print("Message which is being added is not a part of current chat.")
+            WebimInternalLogger.shared.log(entry: "Message which is being added is not a part of current chat: \(message.toString()).",
+                verbosityLevel: .DEBUG)
             
             return
         }
@@ -302,6 +315,17 @@ final class MessageTrackerImpl {
         }
         
         if toCallMessageAdded {
+            for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
+                if currentChatMessage.getID() == message.getID() {
+                    currentChatMessages[currentChatMessageIndex] = message
+                    messageListener.changed(message: currentChatMessage,
+                                            to: message)
+                    messageHolder.set(currentChatMessages: currentChatMessages)
+                    
+                    break
+                }
+            }
+            
             currentChatMessages.append(message)
             
             if let messageToSend = getToSendMirrorOf(message: message,
@@ -311,7 +335,7 @@ final class MessageTrackerImpl {
             } else {
                 let messagesToSend = messageHolder.getMessagesToSend()
                 messageListener.added(message: message,
-                                      after: messageHolder.getMessagesToSend().isEmpty ? nil : messagesToSend.first!)
+                                      after: (messageHolder.getMessagesToSend().isEmpty ? nil : messagesToSend.first!))
             }
         }
         
@@ -438,17 +462,20 @@ extension MessageTrackerImpl: MessageTracker {
                          completion: @escaping ([Message]) -> ()) throws {
         try messageHolder.checkAccess()
         guard destroyed != true else {
-            print("MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            WebimInternalLogger.shared.log(entry: "MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            completion([Message]())
             
             return
         }
         guard messagesLoading != true else {
-            print("Messages are already loading. Unable to perform a second request to get new messages.")
+            WebimInternalLogger.shared.log(entry: "Messages are already loading. Unable to perform a second request to get new messages.")
+            completion([Message]())
             
             return
         }
         guard limitOfMessages > 0 else {
-            print("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages)")
+            WebimInternalLogger.shared.log(entry: "Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages).")
+            completion([Message]())
             
             return
         }
@@ -484,17 +511,20 @@ extension MessageTrackerImpl: MessageTracker {
                          completion: @escaping ([Message]) -> ()) throws {
         try messageHolder.checkAccess()
         guard destroyed != true else {
-            print("MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            WebimInternalLogger.shared.log(entry: "MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            completion([Message]())
             
             return
         }
         guard messagesLoading != true else {
-            print("Messages are already loading. Unable to perform a second request to get new messages.")
+            WebimInternalLogger.shared.log(entry: "Messages are already loading. Unable to perform a second request to get new messages.")
+            completion([Message]())
             
             return
         }
         guard limitOfMessages > 0 else {
-            print("Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages)")
+            WebimInternalLogger.shared.log(entry: "Limit of messages to perform request to get new messages must be greater that zero. Passed value – \(limitOfMessages).")
+            completion([Message]())
             
             return
         }
@@ -530,7 +560,8 @@ extension MessageTrackerImpl: MessageTracker {
     func getAllMessages(completion: @escaping ([Message]) -> ()) throws {
         try messageHolder.checkAccess()
         guard destroyed != true else {
-            print("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
+            WebimInternalLogger.shared.log(entry: "MessageTracker object is destroyed. Unable to perform request to get new messages.")
+            completion([Message]())
             
             return
         }
@@ -541,12 +572,12 @@ extension MessageTrackerImpl: MessageTracker {
     func resetTo(message: Message) throws {
         try messageHolder.checkAccess()
         guard destroyed != true else {
-            print("MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
+            WebimInternalLogger.shared.log(entry: "MessageTracker object was destroyed. Unable to perform a request to reset to a message.")
             
             return
         }
         guard messagesLoading != true else {
-            print("Messages is loading. Unable to perform a simultaneous request to reset to a message.")
+            WebimInternalLogger.shared.log(entry: "Messages is loading. Unable to perform a simultaneous request to reset to a message.")
             
             return
         }

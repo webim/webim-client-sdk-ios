@@ -42,7 +42,7 @@ final class MessageToSend: MessageImpl {
          type: MessageType,
          text: String,
          timeInMicrosecond: Int64) {
-        super.init(withServerURLString: serverURLString,
+        super.init(serverURLString: serverURLString,
                    id: id,
                    operatorID: nil,
                    senderAvatarURLString: nil,

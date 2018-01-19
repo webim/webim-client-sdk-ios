@@ -25,7 +25,6 @@
 //
 
 
-
 import Foundation
 
 
@@ -51,7 +50,7 @@ public final class Webim {
     
     /**
      Deserializes received remote notification.
-     This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:,didReceiveRemoteNotification:)`.
+     This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:didReceiveRemoteNotification:)`.
      Remote notification dictionary must be stored inside standard APNs key "aps".
      - parameter remoteNotification:
      User info of received remote notification.
@@ -71,7 +70,7 @@ public final class Webim {
     
     /**
      If remote notifications (SessionBuilder.setRemoteNotificationSystem) are enabled for the session, then you can receive remote notifications belonging to this session.
-     This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:,didReceiveRemoteNotification:)`.
+     This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:didReceiveRemoteNotification:)`.
      Remote notification dictionary must be stored inside standard APNs key "aps".
      - parameter remoteNotification:
      User info of received remote notification.
@@ -119,7 +118,6 @@ public final class Webim {
 public final class SessionBuilder  {
     
     // MARK: - Properties
-    
     private var accountName: String?
     private var appVersion: String?
     private var deviceToken: String?
@@ -133,6 +131,7 @@ public final class SessionBuilder  {
     private var visitorDataClearingEnabled = false
     private var visitorFields: ProvidedVisitorFields?
     private var webimLogger: WebimLogger?
+    private var webimLoggerVerbosityLevel: WebimLoggerVerbosityLevel?
     
     // MARK: - Methods
     
@@ -201,21 +200,21 @@ public final class SessionBuilder  {
      Authorizing of a visitor can be useful when there are internal mechanisms of authorization in your application and you want the message history to exist regardless of a device communication occurs from.
      This method takes as a parameter a string containing the signed fields of a user in JSON format. Since the fields are necessary to be signed with a private key that can never be included into the code of a client's application, this string must be created and signed somewhere on your backend side. Read more about forming a string and a signature here: https://webim.ru/help/identification/
      - important:
-     Can't be used simultanously with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`.
+     Can't be used simultanously with `set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)`.
      - parameter jsonString:
      JSON-string containing the signed fields of a visitor.
      - returns:
      `SessionBuilder` object with visitor fields set.
      - SeeAlso:
      https://webim.ru/help/identification/
-     set(visitorFieldsJSON jsonData:)
+     set(visitorFieldsJSONdata:)
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    public func set(visitorFieldsJSONString jsonString: String) -> SessionBuilder {
-        self.visitorFields = ProvidedVisitorFields(withJSONString: jsonString)
+    public func set(visitorFieldsJSONString: String) -> SessionBuilder {
+        self.visitorFields = ProvidedVisitorFields(withJSONString: visitorFieldsJSONString)
         
         return self
     }
@@ -226,20 +225,20 @@ public final class SessionBuilder  {
      Authorizing of a visitor can be useful when there are internal mechanisms of authorization in your application and you want the message history to exist regardless of a device communication occurs from.
      This method takes as a parameter a string containing the signed fields of a user in JSON format. Since the fields are necessary to be signed with a private key that can never be included into the code of a client's application, this string must be created and signed somewhere on your backend side. Read more about forming a string and a signature here: https://webim.ru/help/identification/
      - important:
-     Can't be used simultanously with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`.
+     Can't be used simultanously with `set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)`.
      - parameter jsonData:
      JSON-data containing the signed fields of a visitor.
      - returns:
      `SessionBuilder` object with visitor fields set.
      - SeeAlso:
-     `set(visitorFieldsJSON jsonString:)`
+     `set(visitorFieldsJSONstring:)`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
      2017 Webim
      */
-    public func set(visitorFieldsJSONData jsonData: Data) -> SessionBuilder {
-        self.visitorFields = ProvidedVisitorFields(withJSONObject: jsonData)
+    public func set(visitorFieldsJSONData: Data) -> SessionBuilder {
+        self.visitorFields = ProvidedVisitorFields(withJSONObject: visitorFieldsJSONData)
         
         return self
     }
@@ -309,7 +308,7 @@ public final class SessionBuilder  {
      - important:
      If remote notification system is set you must set device token.
      - parameter remoteNotificationSystem:
-     Enum that indicates which system of remote notification is used. By default – NONE (remote notifications are not sent).
+     Enum that indicates which system of remote notification is used. By default – `NONE` (remote notifications are not to be sent).
      - returns:
      `SessionBuilder` object with remote notification system set.
      - Author:
@@ -397,8 +396,10 @@ public final class SessionBuilder  {
      - Copyright:
      2017 Webim
      */
-    public func set(webimLogger: WebimLogger) -> SessionBuilder {
+    public func set(webimLogger: WebimLogger,
+                    verbosityLevel: WebimLoggerVerbosityLevel = .WARNING) -> SessionBuilder {
         self.webimLogger = webimLogger
+        webimLoggerVerbosityLevel = verbosityLevel
         
         return self
     }
@@ -464,10 +465,86 @@ public final class SessionBuilder  {
                                                 deviceToken: deviceToken,
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled,
-                                                webimLogger: webimLogger) as WebimSession
+                                                webimLogger: webimLogger,
+                                                verbosityLevel: webimLoggerVerbosityLevel) as WebimSession
     }
     
+    
     // MARK: -
+    /**
+     Verbosity level of `WebimLogger`.
+     - SeeAlso:
+     `SessionBuilder.set(webimLogger:verbosityLevel:)`
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    public enum WebimLoggerVerbosityLevel {
+        
+        /**
+         All available information will be delivered to `WebimLogger` instance with maximum verbosity level:
+         * session network setup parameters;
+         * network requests' URLs, HTTP method and parameters;
+         * network responses' HTTP codes, received data and errors;
+         * SQL queries and errors;
+         * full debug information and additional notes.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2018 Webim
+         */
+        case VERBOSE
+        
+        /**
+         All information which is useful when debugging will be delivered to `WebimLogger` instance with necessary verbosity level:
+         * session network setup parameters;
+         * network requests' URLs, HTTP method and parameters;
+         * network responses' HTTP codes, received data and errors;
+         * SQL queries and errors;
+         * moderate debug information.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2018 Webim
+         */
+        case DEBUG
+        
+        /**
+         Reference information and all warnings and errors will be delivered to `WebimLogger` instance:
+         * network requests' URLS, HTTP method and parameters;
+         * HTTP codes and errors descriptions of failed requests.
+         * SQL errors.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2018 Webim
+         */
+        case INFO
+        
+        /**
+         Errors and warnings only will be delivered to `WebimLogger` instance:
+         * network requests' URLs, HTTP method, parameters, HTTP code and error description.
+         * SQL errors.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2018 Webim
+         */
+        case WARNING
+        
+        /**
+         Only errors will be delivered to `WebimLogger` instance:
+         * network requests' URLs, HTTP method, parameters, HTTP code and error description.
+         - Author:
+         Nikita Lazarev-Zubov
+         - Copyright:
+         2018 Webim
+         */
+        case ERROR
+        
+    }
+    
     /**
      Error types that can be throwed by `SessionBuilder` `build()` method.
      - SeeAlso:
@@ -484,7 +561,7 @@ public final class SessionBuilder  {
          - SeeAlso:
          `set(visitorFieldsJSONString:)`
          `set(visitorFieldsJSONData:)`
-         `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`
+         `set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)`
          - Author:
          Nikita Lazarev-Zubov
          - Copyright:

@@ -245,7 +245,7 @@ public protocol MessageStream {
     
     /**
      Sends a text message.
-     When calling this method, if there is an active `MessageTracker` (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` (see newMessageTracker(messageListener:)). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -264,7 +264,7 @@ public protocol MessageStream {
     
     /**
      Sends a text message.
-     When calling this method, if there is an active `MessageTracker` object (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -289,7 +289,7 @@ public protocol MessageStream {
     
     /**
      Sends a text message.
-     When calling this method, if there is an active `MessageTracker` object (see new(messageTracker messageListener:)). `MessageListener.added(message newMessage:,after previousMessage:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -311,7 +311,7 @@ public protocol MessageStream {
     
     /**
      Sends a file message.
-     When calling this method, if there is an active `MessageTracker` object (see new(messageTracker messageListener:)), `MessageListener.added(message newMessage:,after previousMessage:)` with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method), `MessageListener.added(message:after:)` with a message `MessageSendStatus.SENDING` in the status is also called.
      - SeeAlso:
      Method could fail. See `SendFileError`.
      - parameter path:
@@ -352,7 +352,7 @@ public protocol MessageStream {
      - Copyright:
      2017 Webim
      */
-    func new(messageTracker messageListener: MessageListener) throws -> MessageTracker
+    func newMessageTracker(messageListener: MessageListener) throws -> MessageTracker
     
     /**
      Sets `VisitSessionStateListener` object.
@@ -469,7 +469,7 @@ public protocol LocationSettings {
 // MARK: -
 /**
  - SeeAlso:
- `MessageStream.send(message:,data:,completionHandler:)`.
+ `MessageStream.send(message:data:completionHandler:)`.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -547,7 +547,7 @@ public protocol SendFileCompletionHandler {
 
 /**
  - SeeAlso:
- `MessageStream.rateOperatorWith(id:,byRating rating:,comletionHandler:)`.
+ `MessageStream.rateOperatorWith(id:byRating:comletionHandler:)`.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -766,7 +766,7 @@ public protocol OnlineStatusChangeListener {
 /**
  A chat is seen in different ways by an operator depending on ChatState.
  The initial state is `NONE`.
- Then if a visitor sends a message (`MessageStream.send(message:,isHintQuestion:)`), the chat changes it's state to `QUEUE`. The chat can be turned into this state by calling `MessageStream.startChat()`.
+ Then if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`), the chat changes it's state to `QUEUE`. The chat can be turned into this state by calling `MessageStream.startChat()`.
  After that, if an operator takes the chat to process, the state changes to `CHATTING`. The chat is being in this state until the visitor or the operator closes it.
  When closing a chat by the visitor `MessageStream.closeChat()`, it turns into the state `CLOSED_BY_VISITOR`, by the operator - `CLOSED_BY_OPERATOR`.
  When both the visitor and the operator close the chat, it's state changes to the initial – `NONE`. A chat can also automatically turn into the initial state during long-term absence of activity in it.
@@ -795,7 +795,7 @@ public enum ChatState {
      Means that an operator has closed the chat.
      From this state a chat can be turned into:
      * `NONE`, if the chat is also closed by a visitor (`MessageStream.closeChat()`), or automatically during long-term absence of activity;
-     * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:,isHintQuestion:)`).
+     * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -807,7 +807,7 @@ public enum ChatState {
      Means that a visitor has closed the chat.
      From this state a chat can be turned into:
      * `NONE`, if the chat is also closed by an operator or automatically during long-term absence of activity;
-     * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:,isHintQuestion:)`).
+     * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -818,7 +818,7 @@ public enum ChatState {
     /**
      Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
      From this state a chat can be turned into:
-     * `CHATTING`, if a visitor sends a message (`MessageStream.send(message:,isHintQuestion:)`);
+     * `CHATTING`, if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`);
      * `NONE`, if an operator or a visitor closes the chat (`MessageStream.closeChat()`).
      - Author:
      Nikita Lazarev-Zubov

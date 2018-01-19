@@ -1,9 +1,33 @@
+//
+//  MessageHolderTests.swift
+//  WebimClientLibrary_Tests
+//
+//  Created by Nikita Lazarev-Zubov on 01.09.17.
+//  Copyright © 2017 Webim. All rights reserved.
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
+
 import UIKit
 import XCTest
 @testable import WebimClientLibrary
 
-
-// MARK: -
 class MessageHolderTests: XCTestCase {
     
     // MARK: - Constants
@@ -17,13 +41,12 @@ class MessageHolderTests: XCTestCase {
     
     
     // MARK: - Properties
-    private var messagesCount = 0
-    
     private var lastAddedMessage: MessageImpl?
     private var lastMessageBeforeAdded: MessageImpl?
     private var lastRemovedMessage: MessageImpl?
     private var lastNewVersionChangedMessage: MessageImpl?
     private var lastOldVersionChangedMessage: MessageImpl?
+    private var messagesCount = 0
     
     
     // MARK: - Tests
@@ -1409,7 +1432,7 @@ class MessageHolderTests: XCTestCase {
         var history = [MessageImpl]()
         
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
-            history.append(MessageImpl(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+            history.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
                                        id: String(index),
                                        operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
                                        senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
@@ -1433,7 +1456,7 @@ class MessageHolderTests: XCTestCase {
         var currentChat = [MessageImpl]()
         
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
-            currentChat.append(MessageImpl(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+            currentChat.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
                                            id: String(index),
                                            operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
                                            senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
@@ -1457,7 +1480,7 @@ class MessageHolderTests: XCTestCase {
         var result = [MessageImpl]()
         
         for message in currentChat {
-            let newMessage = MessageImpl(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+            let newMessage = MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
                                          id: message.getID(),
                                          operatorID: message.getOperatorID(),
                                          senderAvatarURLString: message.getSenderAvatarURLString(),
@@ -1479,7 +1502,7 @@ class MessageHolderTests: XCTestCase {
     private func newCurrentChat() -> MessageImpl {
         messagesCount = messagesCount + messagesCount
         
-        return MessageImpl(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
                            id: String(messagesCount),
                            operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
                            senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
@@ -1495,7 +1518,7 @@ class MessageHolderTests: XCTestCase {
     }
     
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
-        return MessageImpl(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
                            id: currentChatMessage.getID(),
                            operatorID: currentChatMessage.getOperatorID(),
                            senderAvatarURLString: currentChatMessage.getSenderAvatarURLString(),
@@ -1511,7 +1534,7 @@ class MessageHolderTests: XCTestCase {
     }
     
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
-        return MessageImpl(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
                            id: historyMessage.getID(),
                            operatorID: historyMessage.getOperatorID(),
                            senderAvatarURLString: historyMessage.getSenderAvatarURLString(),

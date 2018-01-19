@@ -3,7 +3,7 @@
 //  WebimClientLibrary_Example
 //
 //  Created by Nikita Lazarev-Zubov on 20.11.17.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright © 2017 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -84,10 +84,11 @@ final class WebimService {
             .set(location: Settings.shared.location)
             .set(pageTitle: Settings.shared.pageTitle)
             .set(fatalErrorHandler: self)
-            .set(remoteNotificationSystem: (deviceToken != nil) ? .APNS : .NONE)
+            .set(remoteNotificationSystem: ((deviceToken != nil) ? .APNS : .NONE))
             .set(deviceToken: deviceToken)
             .set(isVisitorDataClearingEnabled: false)
-            .set(webimLogger: self)
+            .set(webimLogger: self,
+                 verbosityLevel: .VERBOSE)
         
         if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
             sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}") // Hardcoded values that work with "demo" account only!
@@ -100,12 +101,20 @@ final class WebimService {
             switch error {
             case .NIL_ACCOUNT_NAME:
                 print("Webim session object creating failed because of passing nil account name.")
+                
+                break
             case .NIL_LOCATION:
                 print("Webim session object creating failed because of passing nil location name.")
+                
+                break
             case .INVALID_REMOTE_NOTIFICATION_CONFIGURATION:
                 print("Webim session object creating failed because of invalid remote notifications configuration.")
+                
+                break
             case .INVALID_AUTHENTICATION_PARAMETERS:
                 print("Webim session object creating failed because of invalid visitor authentication system configuration.")
+                
+                break
             }
         } catch {
             print("Webim session object creating failed with unknown error: \(error.localizedDescription)")
@@ -129,11 +138,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
@@ -180,11 +193,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Visitor status sending failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle.
+                print("Visitor status sending failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Visitor status sending failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Visitor status sending failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Visitor typing status sending failed with unknown error: \(error.localizedDescription)")
@@ -214,11 +231,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Message sending failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Message sending failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Message sending failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Message sending failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Message status sending failed with unknown error: \(error.localizedDescription)")
@@ -261,11 +282,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Message sending failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Message sending failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Message sending failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Message sending failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Message status sending failed with unknown error: \(error.localizedDescription)")
@@ -293,11 +318,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
@@ -333,11 +362,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
@@ -351,7 +384,7 @@ final class WebimService {
      - important:
      Assuming session is created and started.
      - SeeAlso:
-     `new(messageTracker:)` method of `MessageStream` protocol of WebimClientLibrary.
+     `newMessageTracker(messageListener:)` method of `MessageStream` protocol of WebimClientLibrary.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -363,15 +396,19 @@ final class WebimService {
                 setMessageStream()
             }
             
-            try messageTracker = messageStream?.new(messageTracker: messageListener)
+            try messageTracker = messageStream?.newMessageTracker(messageListener: messageListener)
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
@@ -403,11 +440,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
@@ -438,11 +479,15 @@ final class WebimService {
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+                print("Webim session starting/resuming failed because it was called when session object is invalid.")
+                
+                break
             case .INVALID_THREAD:
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Webim session starting/resuming failed because it was called from a wrong thread.")
+                
+                break
             }
         } catch {
             print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
@@ -465,11 +510,17 @@ extension WebimService: FatalErrorHandler {
                             message: SessionCreationErrorDialog.ACCOUNT_BLOCKED.rawValue,
                             button: SessionCreationErrorDialog.BUTTON_TITLE.rawValue,
                             hint: SessionCreationErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue)
+            
+            break
         case .PROVIDED_VISITOR_FIELDS_EXPIRED:
             // Assuming to re-authorize it and re-create session object.
             print("Provided visitor fields expired. See \"expires\" key of this fields.")
+            
+            break
         case .UNKNOWN:
-            print("An unknown error occured.")
+            print("An unknown error occured: \(error.getErrorString()).")
+            
+            break
         case .VISITOR_BANNED:
             print("Visitor with provided visitor fields is banned by an operator.")
             
@@ -477,9 +528,13 @@ extension WebimService: FatalErrorHandler {
                             message: SessionCreationErrorDialog.VISITOR_BANNED.rawValue,
                             button: SessionCreationErrorDialog.BUTTON_TITLE.rawValue,
                             hint: SessionCreationErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue)
+            
+            break
         case .WRONG_PROVIDED_VISITOR_HASH:
             // Assuming to check visitor field generating.
             print("Wrong CRC passed with visitor fields.")
+            
+            break
         }
     }
     

@@ -57,20 +57,36 @@ final class MessageItem {
             switch messageType {
             case .ACTION_REQUEST:
                 self = .ACTION_REQUEST
+                
+                break
             case .CONTACTS_REQUEST:
                 self = .CONTACTS_REQUEST
+                
+                break
             case .FILE_FROM_OPERATOR:
                 self = .FILE_FROM_OPERATOR
+                
+                break
             case .FILE_FROM_VISITOR:
                 self = .FILE_FROM_VISITOR
+                
+                break
             case .INFO:
                 self = .INFO
+                
+                break
             case .OPERATOR:
                 self = .OPERATOR
+                
+                break
             case .OPERATOR_BUSY:
                 self = .OPERATOR_BUSY
+                
+                break
             case .VISITOR:
                 self = .VISITOR
+                
+                break
             }
         }
         
@@ -202,7 +218,7 @@ final class MessageItem {
     }
     
     func getTimeInMicrosecond() -> Int64? {
-        return (timestampInMicrosecond != -1) ? timestampInMicrosecond : Int64(timestampInSecond! * 1000000)
+        return ((timestampInMicrosecond != -1) ? timestampInMicrosecond : Int64(timestampInSecond! * 1_000_000))
     }
     
 }

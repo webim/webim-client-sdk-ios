@@ -46,7 +46,7 @@ public protocol ProvidedAuthorizationTokenStateListener {
      - parameter providedAuthorizationToken:
      Provided authorization token which corresponds to session.
      - SeeAlso:
-     `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)`
+     `set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

@@ -10,7 +10,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.10.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.11.0'
 ```
 `use_frameworks!` must be specified.
 
@@ -18,7 +18,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.10.0
+github "webim/webim-client-sdk-ios" ~> 3.11.0
 ```
 
 ### Additional notes
@@ -35,15 +35,20 @@ If you're already using previous version and don't plan to jump on the new one y
 
 ## Release notes
 
-* Optional completion handler of type `DataMessageCompletionHandler` added to `send(message:,data:,completionHandler:)` method of `MessageStream` protocol. `DataMessageError` types support added.
-* Dramatically improved CPU usage.
-* Wrong `FatalErrorType` on `.VISITOR_BANNED` case fixed.
-* Internal server errors are prevented to go in cycles when occurs more than five times in a row.
-* Minor bug fixes, stability and performance improvements.
-* Documentation additions and improvements.
+* `set(webimLogger:verbosityLevel:)` now has optional parameter `verbosityLevel` (see `SessionBuilder.WebimLoggerVerbosityLevel`).
+* `getLastMessages(byLimit:completion:)`, `getNextMessages(byLimit:completion:)`, `getAllMessages(completion:)` methods of `MessageTracker` protocol in case of wrong calling now execute passed completion with empty `Message` array.
+* `getContentType()`, `getFileName()` and `getURL()` methods of `MessageAttachment` protocol now return non-optional values.
+* _CryptoSwift_ dependency liquidated.
+* `new(messageTracker:)` method of `MessageStream` renamed to more adequate `newMessageTracker(messageListener:)`.
+* Bug with `nil` `Operator` ID fixed.
+* Bug with not updating value of `getUnreadByVisitorTimesamp()` method of `MessageStream` fixed.
+* Documentation improvements.
+* Other minor improvements and bug fixes.
 
-### Demo app
+### Example app
+* New app icon. 😎
 * Interface improvements.
+* Other minor improvements.
 
 ## Example
 
@@ -80,20 +85,20 @@ For this methods usage ability the `MessageStream` object is have to be getted t
 
 Methods examples:
 `send(message:)` – send message,
-`rateOperatorWith(id:,byRating:)` – rate operator,
+`rateOperatorWith(id:byRating:)` – rate operator,
 `closeChat()` – close chat.
 
 ### MessageTracker
 
-`new(messageTracker:)`  method by `MessageStream` object creates `MessageTracker` object, which can be used to control a message stream inside an app.
+`newMessageTracker(messageListener:)`  method by `MessageStream` object creates `MessageTracker` object, which can be used to control a message stream inside an app.
 
-E.g. `getNextMessages(byLimit:,completion:)` method requests a certain amount of messages from the history.
+E.g. `getNextMessages(byLimit:completion:)` method requests a certain amount of messages from the history.
 
 Methods descriptions can be found inside **MessageTracker.swift** file.
 
 ### MessageListener
 
-`MessageListener` protocol describes methods which can help to track changes in the message stream. An app must have a class which implements this protocol methods: `added(message:,after:)`, `removed(message:)`, `removedAllMessages()`, `changed(message:,to:)`. This methods are called automatically when new message is added, a message is deleted, all messages are deleted and a message is changed respectively.
+`MessageListener` protocol describes methods which can help to track changes in the message stream. An app must have a class which implements this protocol methods: `added(message:after:)`, `removed(message:)`, `removedAllMessages()`, `changed(message:to:)`. This methods are called automatically when new message is added, a message is deleted, all messages are deleted and a message is changed respectively.
 
 Full methods descriptions can be found inside **MessageListener.swift** file.
 
@@ -142,7 +147,7 @@ Entities and methods described above are all that it necessary for working in an
 
 Abilities described In this manual are not all of the existing ones, so after necessary minimum is implemented it is recommended to get acquainted with full list of protocols and methods listed in SDK public files.
 
-All public interfaces, classes and methods are described inside 10 files (in alphabetical order):
+All public interfaces, classes and methods are described inside this files (in alphabetical order):
 * **Department.swift**,
 * **FatalErrorHandler.swift**,
 * **Message.swift**,
@@ -153,6 +158,7 @@ All public interfaces, classes and methods are described inside 10 files (in alp
 * **ProvidedAuthorizationTokenStateListener.swift**
 * **Webim.swift**,
 * **WebimError.swift**,
+* **WebimLogger.swift**,
 * **WebimRemoteNotification.swift**,
 * **WebimSession.swift**.
 
@@ -160,7 +166,7 @@ Every single class, protocol, method etc. description provided inside [documenta
 
 ## Additional information
 
-_WebimClientLibrary_ uses [_SQLite.swift_](https://github.com/stephencelis/SQLite.swift) and [_CryptoSwift_](https://github.com/krzyzanowskim/CryptoSwift). (There's no need to add this depencies into Podfile.)
+_WebimClientLibrary_ uses [_SQLite.swift_](https://github.com/stephencelis/SQLite.swift). (There's no need to add this depencies into Podfile.)
 
 In the sake of ease of several functionalities implementation Example app uses (in alphabetical order):
 * [_Cosmos_](https://github.com/evgenyneu/Cosmos) – for visual implementation of operator rating mechanism.

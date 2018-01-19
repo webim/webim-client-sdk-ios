@@ -54,7 +54,7 @@ class MessageImpl {
     
     
     // MARK: - Initialization
-    init(withServerURLString serverURLString: String,
+    init(serverURLString: String,
          id: String,
          operatorID: String?,
          senderAvatarURLString: String?,
@@ -105,7 +105,8 @@ class MessageImpl {
     
     func getHistoryID() -> HistoryID? {
         guard historyID != nil else {
-            print("Message \(self.toString()) do not have history component.")
+            WebimInternalLogger.shared.log(entry: "Message \(self.toString()) do not have history component.",
+                verbosityLevel: .DEBUG)
             
             return nil
         }
@@ -115,7 +116,8 @@ class MessageImpl {
     
     func getCurrentChatID() -> String? {
         guard currentChatID != nil else {
-            print("Message \(self.toString()) do not have an ID in current chat or do not exist in current chat or chat exists itself not.")
+            WebimInternalLogger.shared.log(entry: "Message \(self.toString()) do not have an ID in current chat or do not exist in current chat or chat exists itself not.",
+                verbosityLevel: .DEBUG)
             
             return nil
         }
@@ -158,7 +160,8 @@ class MessageImpl {
     func invertHistoryStatus() {
         guard historyID != nil,
             currentChatID != nil else {
-                print("Message \(self.toString()) has not history component or does not belong to current chat.")
+                WebimInternalLogger.shared.log(entry: "Message \(self.toString()) has not history component or does not belong to current chat.",
+                    verbosityLevel: .DEBUG)
                 
                 return
         }
@@ -169,7 +172,8 @@ class MessageImpl {
     func setSecondaryHistory(historyEquivalentMessage: MessageImpl) {
         guard !getSource().isHistoryMessage(),
             historyEquivalentMessage.getSource().isHistoryMessage() else {
-                print("Message \(self.toString()) is already has history component.")
+                WebimInternalLogger.shared.log(entry: "Message \(self.toString()) is already has history component.",
+                    verbosityLevel: .DEBUG)
                 
                 return
         }
@@ -180,7 +184,8 @@ class MessageImpl {
     func setSecondaryCurrentChat(currentChatEquivalentMessage: MessageImpl) {
         guard getSource().isHistoryMessage(),
             !currentChatEquivalentMessage.getSource().isHistoryMessage() else {
-                print("Current chat equivalent of the message \(self.toString()) is already has history component.")
+                WebimInternalLogger.shared.log(entry: "Current chat equivalent of the message \(self.toString()) is already has history component.",
+                    verbosityLevel: .DEBUG)
                 
                 return
         }
@@ -198,7 +203,7 @@ class MessageImpl {
             "type = \(type),\n" +
             "text = \(text),\n" +
             "timeInMicrosecond = \(timeInMicrosecond),\n" +
-            "attachment = \((attachment != nil) ? ((attachment!.getURL() != nil) ? ((attachment!.getURL()?.absoluteString != nil) ? attachment!.getURL()!.absoluteString : "nil") : "nil") : "nil"),\n" +
+            "attachment = \((attachment == nil) ? "nil" : attachment!.getURL().absoluteString),\n" +
             "historyMessage = \(historyMessage),\n" +
             "currentChatID = \((currentChatID != nil) ? currentChatID! : "nil"),\n" +
             "historyID = \((historyID != nil) ? historyID!.getDBid() : "nil"),\n" +
@@ -344,18 +349,18 @@ final class MessageAttachmentImpl {
     
     
     // MARK: - Properties
-    private let urlString: String?
+    private let urlString: String
     private let size: Int64?
-    private let filename: String?
-    private let contentType: String?
+    private let filename: String
+    private let contentType: String
     private let imageInfo: ImageInfo?
     
     
     // MARK: - Initialization
-    init(urlString: String?,
+    init(urlString: String,
          size: Int64?,
-         filename: String?,
-         contentType: String?,
+         filename: String,
+         contentType: String,
          imageInfo: ImageInfo? = nil) {
         self.urlString = urlString
         self.size = size
@@ -372,7 +377,8 @@ final class MessageAttachmentImpl {
         let textData = text.data(using: .utf8)
         guard let textDictionary = try? JSONSerialization.jsonObject(with: textData!,
                                                                      options: []) as? [String: Any?] else {
-                                                                        print("Message attachment parameters parsing failed.")
+                                                                        WebimInternalLogger.shared.log(entry: "Message attachment parameters parsing failed: \(text).",
+                                                                            verbosityLevel: .WARNING)
                                                                         
                                                                         return nil
         }
@@ -386,9 +392,9 @@ final class MessageAttachmentImpl {
         
         guard let pageID = webimClient.getDeltaRequestLoop().getAuthorizationData()?.getPageID(),
             let authorizationToken = webimClient.getDeltaRequestLoop().getAuthorizationData()?.getAuthorizationToken() else {
-            print("Tried to access to message attachment without authorization data.")
-            
-            return nil
+                WebimInternalLogger.shared.log(entry: "Tried to access to message attachment without authorization data.")
+                
+                return nil
         }
         
         let expires = Int64(Date().timeIntervalSince1970) + Period.ATTACHMENT_URL_EXPIRES_PERIOD.rawValue
@@ -408,7 +414,7 @@ final class MessageAttachmentImpl {
                                          imageInfo: extractImageInfoOf(fileParameters: fileParameters,
                                                                        with: fileURLString))
         } else {
-            print("Error creating message attachment link due to HMAC SHA256 encoding error.")
+            WebimInternalLogger.shared.log(entry: "Error creating message attachment link due to HMAC SHA256 encoding error.")
             
             return nil
         }
@@ -443,11 +449,11 @@ final class MessageAttachmentImpl {
 // MARK: - MessageAttachment
 extension MessageAttachmentImpl: MessageAttachment {
     
-    func getContentType() -> String? {
+    func getContentType() -> String {
         return contentType
     }
     
-    func getFileName() -> String? {
+    func getFileName() -> String {
         return filename
     }
     
@@ -459,8 +465,8 @@ extension MessageAttachmentImpl: MessageAttachment {
         return size
     }
     
-    func getURL() -> URL? {
-        return ((urlString != nil) ? URL(string: urlString!) : nil)
+    func getURL() -> URL {
+        return URL(string: urlString)!
     }
     
 }

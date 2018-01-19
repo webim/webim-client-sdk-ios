@@ -106,6 +106,7 @@ final class ChatItem {
     
     
     // MARK: - Initializers
+    
     init(jsonDictionary: [String: Any?]) {
         if let creationTimestampValue = jsonDictionary[JSONField.CREATION_TIMESTAMP.rawValue] as? Double {
             creationTimestamp = creationTimestampValue
@@ -190,6 +191,17 @@ final class ChatItem {
         }
     }
     
+    // For testing purpoeses.
+    init(id: String? = nil) {
+        creationTimestamp = ChatItem.createCreationTimestamp()
+        
+        if id == nil {
+            self.id = String(Int(-creationTimestamp))
+        } else {
+            self.id = id!
+        }
+    }
+    
     
     // MARK: - Methods
     
@@ -233,6 +245,10 @@ final class ChatItem {
     
     func set(operator: OperatorItem) {
         self.`operator` = `operator`
+    }
+    
+    func getReadByVisitor() -> Bool? {
+        return readByVisitor
     }
     
     func set(readByVisitor: Bool?) {

@@ -41,6 +41,7 @@ enum WebimInternalError: String, Error {
     case REINIT_REQUIRED = "reinit-required"
     case SERVER_NOT_READY = "server-not-ready"
     case VISITOR_BANNED = "visitor_banned"
+    case WRONG_ARGUMENT_VALUE = "wrong-argument-value"
     case WRONG_PROVIDED_VISITOR_HASH = "wrong-provided-visitor-hash-value"
     
     // Data errors.

@@ -59,8 +59,6 @@ final class DeltaCallback {
     func process(deltaList: [DeltaItem]) {
         guard messageStream != nil,
             messageHolder != nil else {
-                print("Unable to process received delta list, because Message Stream object doesn't exist.")
-                
                 return
         }
         
@@ -74,33 +72,53 @@ final class DeltaCallback {
             case .CHAT:
                 handleChatUpdateBy(delta: delta,
                                    messageStream: messageStream!)
+                
+                break
             case .CHAT_MESSAGE:
                 handleChatMessageUpdateBy(delta: delta,
                                           messageStream: messageStream!,
                                           messageHolder: messageHolder!,
                                           currentChatMessageMapper: currentChatMessageMapper)
+                
+                break
             case .CHAT_OPERATOR:
                 handleChatOperatorUpdateBy(delta: delta,
                                            messageStream: messageStream!)
+                
+                break
             case .CHAT_OPERATOR_TYPING:
                 handleChatOperatorTypingUpdateBy(delta: delta,
                                                  messageStream: messageStream!)
+                
+                break
             case .CHAT_READ_BY_VISITOR:
                 handleChatReadByVisitorUpdateBy(delta: delta,
                                                 messageStream: messageStream!)
+                
+                break
             case .CHAT_STATE:
                 handleChatStateUpdateBy(delta: delta,
                                         messageStream: messageStream!)
+                
+                break
             case .DEPARTMENT_LIST:
                 handleDepartmentListUpdateBy(delta: delta,
                                              messageStream: messageStream!)
+                
+                break
             case .OPERATOR_RATE:
                 handleOperatorRateUpdateBy(delta: delta,
                                            messageStream: messageStream!)
+                
+                break
             case .VISIT_SESSION_STATE:
                 handleVisitSessionStateUpdateBy(delta: delta,
                                                 messageStream: messageStream!)
+                
+                break
             default:
+                // Not supported delta type.
+                
                 break
             }
         }
@@ -149,13 +167,13 @@ final class DeltaCallback {
                                            messageHolder: MessageHolder,
                                            currentChatMessageMapper: MessageFactoriesMapper) {
         let deltaEvent = delta.getEvent()
-        let sessionID = delta.getSessionID()
+        let deltaID = delta.getID()
         
         if deltaEvent == .DELETE {
             if currentChat != nil {
                 var currentChatMessages = currentChat!.getMessages()
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
-                    if currentChatMessage.getID() == sessionID {
+                    if currentChatMessage.getID() == deltaID { // Deleted message ID is passed as delta ID.
                         currentChatMessages.remove(at: currentChatMessageIndex)
                         currentChat!.set(messages: currentChatMessages)
                         
@@ -164,7 +182,7 @@ final class DeltaCallback {
                 }
             }
             
-            messageHolder.deletedMessageWith(id: sessionID)
+            messageHolder.deletedMessageWith(id: deltaID)
         } else {
             if let deltaData = delta.getData() as? [String: Any?] {
                 let messageItem = MessageItem(jsonDictionary: deltaData)
@@ -224,6 +242,11 @@ final class DeltaCallback {
         if let readByVisitor = delta.getData() as? Bool {
             if delta.getEvent() == .UPDATE {
                 currentChat?.set(readByVisitor: readByVisitor)
+                
+                // Set unread messages by visitor timestamp to current date after receiving information that chat is read by visitor.
+                if readByVisitor {
+                    messageStream.set(unreadByVisitorTimestamp: Date())
+                }
             }
         }
     }

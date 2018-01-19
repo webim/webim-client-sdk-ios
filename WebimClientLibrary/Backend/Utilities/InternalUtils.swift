@@ -59,8 +59,6 @@ final class InternalUtils {
     
     static func getCurrentTimeInMicrosecond() -> Int64 {
         return Int64(Date().timeIntervalSince1970 * 1000)
-        
-        // Alternative: CFAbsoluteTimeGetCurrent()
     }
     
     static func parse(remoteNotification: [AnyHashable: Any]) -> WebimRemoteNotification? {
@@ -71,7 +69,8 @@ final class InternalUtils {
                 return nil
             }
         } else {
-            print("Unknown remote notification format.")
+            WebimInternalLogger.shared.log(entry: "Unknown remote notification format: \(remoteNotification).",
+                verbosityLevel: .DEBUG)
             
             return nil
         }

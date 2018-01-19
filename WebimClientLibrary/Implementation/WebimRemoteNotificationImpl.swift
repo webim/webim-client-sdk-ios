@@ -80,9 +80,15 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
             switch event {
             case InternalNotificationEvent.ADD.rawValue:
                 self.event = .ADD
+                
+                break
             case InternalNotificationEvent.DELETE.rawValue:
                 self.event = .DELETE
+                
+                break
             default:
+                // Not supported notification event.
+                
                 break
             }
         }
@@ -90,11 +96,19 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
         switch type {
         case InternalNotificationType.OPERATOR_ACCEPTED.rawValue:
             self.type = .OPERATOR_ACCEPTED
+            
+            break
         case InternalNotificationType.OPERATOR_FILE.rawValue:
             self.type = .OPERATOR_FILE
+            
+            break
         case InternalNotificationType.OPERATOR_MESSAGE.rawValue:
             self.type = .OPERATOR_MESSAGE
+            
+            break
         default:
+            // Not supported notification type.
+            
             return nil
         }
 

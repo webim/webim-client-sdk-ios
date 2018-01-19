@@ -225,7 +225,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
         <!--Chat View Controller-->
         <scene sceneID="VfN-dW-J2d">
             <objects>
-                <viewController id="b0b-FK-5tW" customClass="ChatViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatViewController" id="b0b-FK-5tW" customClass="ChatViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cA7-73-aJ8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

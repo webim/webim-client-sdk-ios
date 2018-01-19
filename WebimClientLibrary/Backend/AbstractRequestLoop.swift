@@ -59,7 +59,6 @@ class AbstractRequestLoop {
     var running = true
     private var currentDataTask: URLSessionDataTask?
     private var paused = true
-    private var webimLogger: WebimLogger?
     
     
     // MARK: - Methods
@@ -112,26 +111,27 @@ class AbstractRequestLoop {
                     return
                 }
                 
-                var webimLoggerEntry = "Webim response:\n"
-                    + "URL – " + request.url!.absoluteString
-                if let httpBody = request.httpBody {
-                    if let dataString = String(data: httpBody,
-                                               encoding: .utf8) {
-                        webimLoggerEntry += ("\nParameters – " + dataString)
-                    }
-                }
+                
                 
                 if let response = response {
                     httpCode = (response as! HTTPURLResponse).statusCode
-                    
-                    webimLoggerEntry += "\nHTTP code – " + String(httpCode)
                 }
                 
                 if error != nil {
                     semaphore.signal()
                     
+                    // Error log.
+                    var webimLoggerEntry = "Webim response:\n"
+                        + "URL – " + request.url!.absoluteString
+                    if let httpBody = request.httpBody {
+                        if let dataString = String(data: httpBody,
+                                                   encoding: .utf8) {
+                            webimLoggerEntry += ("\nParameters – " + dataString)
+                        }
+                    }
+                    webimLoggerEntry += "\nHTTP code – " + String(httpCode)
                     webimLoggerEntry += "\nError – " + error!.localizedDescription
-                    self.webimLogger?.log(entry: webimLoggerEntry)
+                    WebimInternalLogger.shared.log(entry: webimLoggerEntry)
                     
                     return
                 }
@@ -139,8 +139,17 @@ class AbstractRequestLoop {
                 if let data = data {
                     receivedData = data
                     
+                    var webimLoggerEntry = "Webim response:\n"
+                        + "URL – " + request.url!.absoluteString
+                    if let httpBody = request.httpBody {
+                        if let dataString = String(data: httpBody,
+                                                   encoding: .utf8) {
+                            webimLoggerEntry += ("\nParameters – " + dataString)
+                        }
+                    }
+                    webimLoggerEntry += "\nHTTP code – " + String(httpCode)
                     webimLoggerEntry += self.encode(responseData: data)
-                    self.webimLogger?.log(entry: webimLoggerEntry)
+                    WebimInternalLogger.shared.log(entry: webimLoggerEntry, verbosityLevel: .DEBUG)
                 }
                 
                 semaphore.signal()
@@ -172,7 +181,15 @@ class AbstractRequestLoop {
                 }
                 
                 if httpCode == lastHTTPCode {
-                    print("Request failed with HTTP code: \(httpCode)")
+                    var parametersString: String?
+                    if let httpBody = request.httpBody {
+                        parametersString = String(data: httpBody,
+                                                  encoding: .utf8)
+                    }
+                    WebimInternalLogger.shared.log(entry: "Request \(request.url!.absoluteString)"
+                        + "\((parametersString != nil) ? " \(parametersString!)" : "") "
+                        + "failed with HTTP code: \(httpCode).",
+                        verbosityLevel: .WARNING)
                 }
                 
                 errorCounter += 1
@@ -199,14 +216,14 @@ class AbstractRequestLoop {
     func handleRequestLoop(error: UnknownError) {
         switch error {
         case .INTERRUPTED:
-            print("Request failed with application internal error.")
+            WebimInternalLogger.shared.log(entry: "Request failed with application internal error.")
+            
+            break
         case .SERVER_ERROR:
-            print("Request failed with server error.")
+            WebimInternalLogger.shared.log(entry: "Request failed with server error.")
+            
+            break
         }
-    }
-    
-    func set(webimLogger: WebimLogger?) {
-        self.webimLogger = webimLogger
     }
     
     // MARK: Private methods
@@ -221,8 +238,8 @@ class AbstractRequestLoop {
     
     private func log(request: URLRequest) {
         var webimLoggerEntry = "Webim request:\n"
-            + "HTTP method - " + request.httpMethod! + "\n"
-            + "URL – " + request.url!.absoluteString
+        webimLoggerEntry += ("HTTP method - " + request.httpMethod! + "\n")
+        webimLoggerEntry += ("URL – " + request.url!.absoluteString)
         if let httpBody = request.httpBody {
             if let dataString = String(data: httpBody,
                                        encoding: .utf8) {
@@ -230,7 +247,8 @@ class AbstractRequestLoop {
             }
         }
         
-        webimLogger?.log(entry: webimLoggerEntry)
+        WebimInternalLogger.shared.log(entry: webimLoggerEntry,
+                                       verbosityLevel: .INFO)
     }
     
     private func encode(responseData: Data) -> String {

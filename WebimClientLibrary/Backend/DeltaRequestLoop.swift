@@ -100,8 +100,6 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     
     override func start() {
         guard queue == nil else {
-            print("Can't start delta loop because it is already started.")
-            
             return
         }
         
@@ -155,29 +153,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
             let data = try perform(request: request)
             if let dataJSON = try? JSONSerialization.jsonObject(with: data) as! [String: Any] {
                 if let error = dataJSON[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
-                    if error == WebimInternalError.REINIT_REQUIRED.rawValue {
-                        authorizationData = nil
-                        since = 0
-                    } else if error == WebimInternalError.PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND.rawValue {
-                        DeltaRequestLoop.providedAuthTokenErrorCount += 1
-                        
-                        if DeltaRequestLoop.providedAuthTokenErrorCount < 5 {
-                            sleepBetweenInitializationAttempts()
-                        } else {
-                            providedAuthenticationTokenStateListener?.update(providedAuthorizationToken: providedAuthenticationToken!)
-                            
-                            DeltaRequestLoop.providedAuthTokenErrorCount = 0
-                            
-                            sleepBetweenInitializationAttempts()
-                        }
-                    } else {
-                        running = false
-                        
-                        completionHandlerExecutor.execute(task: DispatchWorkItem {
-                            self.internalErrorListener.on(error: error,
-                                                          urlString: (request.url?.path)!)
-                        })
-                    }
+                    handleInitialization(error: error,
+                                         url: url!)
                 } else {
                     DeltaRequestLoop.providedAuthTokenErrorCount = 0
                     
@@ -204,12 +181,14 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                     process(fullUpdate: fullUpdate)
                 }
             } else {
-                print("Error de-serializing server response.")
+                WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                    verbosityLevel: .WARNING)
             }
         } catch let unknownError as UnknownError {
             handleRequestLoop(error: unknownError)
         } catch {
-            print("Request failed with unknown error.")
+            WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(error.localizedDescription)",
+                verbosityLevel: .WARNING)
         }
     }
     
@@ -222,15 +201,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
             let data = try perform(request: request)
             if let dataJSON = try? JSONSerialization.jsonObject(with: data) as! [String: Any] {
                 if let error = dataJSON[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
-                    if error == WebimInternalError.REINIT_REQUIRED.rawValue {
-                        authorizationData = nil
-                        since = 0
-                    } else {
-                        completionHandlerExecutor.execute(task: DispatchWorkItem {
-                            self.internalErrorListener.on(error: error,
-                                                          urlString: (request.url?.path)!)
-                        })
-                    }
+                    handleDeltaRequest(error: error,
+                                       url: url!)
                 } else {
                     let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
                     
@@ -253,12 +225,14 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                     }
                 }
             } else {
-                print("Error de-serializing server response.")
+                WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                    verbosityLevel: .WARNING)
             }
         } catch let unknownError as UnknownError {
             handleRequestLoop(error: unknownError)
         } catch {
-            print("Request failed with unknown error.")
+            WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(error.localizedDescription).",
+                verbosityLevel: .WARNING)
         }
     }
     
@@ -267,7 +241,6 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func getInitializationParameterString() -> String {
-        let currentTimestamp = Int64(CFAbsoluteTimeGetCurrent() * 1000)
         var parameterDictionary = [WebimActions.Parameter.DEVICE_ID.rawValue: deviceID,
                                    WebimActions.Parameter.EVENT.rawValue: WebimActions.Event.INITIALIZATION.rawValue,
                                    WebimActions.Parameter.LOCATION.rawValue: location,
@@ -275,7 +248,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                                    WebimActions.Parameter.RESPOND_IMMEDIATELY.rawValue: String(1), // true
             WebimActions.Parameter.SINCE.rawValue: String(0),
             WebimActions.Parameter.TITLE.rawValue: title,
-            WebimActions.Parameter.TIMESTAMP.rawValue: String(currentTimestamp)] as [String: Any]
+            WebimActions.Parameter.TIMESTAMP.rawValue: String(Int(Date().timeIntervalSince1970))] as [String: Any]
         if let appVersion = appVersion {
             parameterDictionary[WebimActions.Parameter.APP_VERSION.rawValue] = appVersion
         }
@@ -318,9 +291,64 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func handleIncorrectServerAnswer() {
-        print("Incorrect server answer while requesting initialization.")
+        WebimInternalLogger.shared.log(entry: "Incorrect server answer while requesting initialization.",
+                                       verbosityLevel: .DEBUG)
         
         usleep(1000 * 1000)  // 1 s.
+    }
+    
+    private func handleInitialization(error: String,
+                                      url: URL) {
+        switch error {
+        case WebimInternalError.REINIT_REQUIRED.rawValue:
+            handleReinitializationRequiredError()
+            
+            break
+        case WebimInternalError.PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND.rawValue:
+            handleProvidedAuthorizationTokenNotFoundError()
+            
+            break
+        default:
+            running = false
+            
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                self.internalErrorListener.on(error: error,
+                                              urlString: url.path)
+            })
+            
+            break
+        }
+    }
+    
+    private func handleDeltaRequest(error: String,
+                                    url: URL) {
+        if error == WebimInternalError.REINIT_REQUIRED.rawValue {
+            handleReinitializationRequiredError()
+        } else {
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                self.internalErrorListener.on(error: error,
+                                              urlString: url.path)
+            })
+        }
+    }
+    
+    private func handleReinitializationRequiredError() {
+        authorizationData = nil
+        since = 0
+    }
+    
+    private func handleProvidedAuthorizationTokenNotFoundError() {
+        DeltaRequestLoop.providedAuthTokenErrorCount += 1
+        
+        if DeltaRequestLoop.providedAuthTokenErrorCount < 5 {
+            sleepBetweenInitializationAttempts()
+        } else {
+            providedAuthenticationTokenStateListener?.update(providedAuthorizationToken: providedAuthenticationToken!)
+            
+            DeltaRequestLoop.providedAuthTokenErrorCount = 0
+            
+            sleepBetweenInitializationAttempts()
+        }
     }
     
     private func process(fullUpdate: FullUpdate) {

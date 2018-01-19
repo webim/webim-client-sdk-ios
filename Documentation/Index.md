@@ -13,16 +13,23 @@
     -   [Instance method set(accountName:)](#set-account-name)
     -   [Instance method set(location:)](#set-location)
     -   [Instance method set(appVersion:)](#set-app-version)
-    -   [Instance method set(visitorFieldsJSONString jsonString:)](#set-visitor-fields-json-string-json-string)
-    -   [Instance method set(visitorFieldsJSONData jsonData:)](#set-visitor-fields-json-data-json-data)
-    -   [Instance method set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)](#set-provided-authorization-token-state-listener-provided-authorization-token)
+    -   [Instance method set(visitorFieldsJSONString:)](#set-visitor-fields-json-string-json-string)
+    -   [Instance method set(visitorFieldsJSONData:)](#set-visitor-fields-json-data-json-data)
+    -   [Instance method set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)](#set-provided-authorization-token-state-listener-provided-authorization-token)
     -   [Instance method set(pageTitle:)](#set-page-title)
     -   [Instance method set(fatalErrorHandler:)](#set-fatal-error-handler)
     -   [Instance method set(remoteNotificationSystem:)](#set-remote-notification-system)
     -   [Instance method set(deviceToken:)](#set-device-token)
     -   [Instance method set(isLocalHistoryStoragingEnabled:)](#set-is-local-history-storaging-enabled)
     -   [Instance method set(isVisitorDataClearingEnabled:)](#set-is-visitor-data-clearing-enabled)
+    -   [Instance method set(webimLogger:verbosityLevel:)](#set-webim-logger-verbosity-level)
     -   [Instance method build()](#build)
+    -   [WebimLoggerVerbosityLevel enum](#webim-logger-verbosity-level)
+        -   [VERBOSE case](#verbose)
+        -   [DEBUG case](#debug)
+        -   [INFO](#info)
+        -   [WARNING case](#warning)
+        -   [ERROR case](#error)
     -   [SessionBuilderError enum](#session-builder-error)
         -   [NIL_ACCOUNT_NAME case](#nil-account-name)
         -   [NIL_LOCATION case](#nil-location)
@@ -46,7 +53,7 @@
     -   [getLocationSettings() method](#get-location-settings)
     -   [getCurrentOperator() method](#get-current-operator)
     -   [getLastRatingOfOperatorWith(id:) method](#get-last-rating-of-operator-with-id)
-    -   [rateOperatorWith(id:,byRating rating:,completionHandler:) method](#rate-operator-with-id-by-rating-rating)
+    -   [rateOperatorWith(id:byRating:completionHandler:) method](#rate-operator-with-id-by-rating-rating)
     -   [startChat() method](#start-chat)
     -   [startChat(firstQuestion:) method](#start-chat-first-question)
     -   [startChat(departmentKey:) method](#start-chat-department-key)
@@ -54,10 +61,10 @@
     -   [closeChat() method](#close-chat)
     -   [send(message:) method](#send-message)
     -   [setVisitorTyping(draftMessage:) method](#set-visitor-typing-draft-message)
-    -   [send(message:,data:,completionHandler:) method](#send-message-data)
-    -   [send(message:,isHintQuestion:) method](#send-message-is-hint-question)
-    -   [send(file:,filename:,mimeType:,completionHandler:) method](#send-file-filename-mime-type-completion-handler)
-    -   [new(messageTracker messageListener:) method](#new-message-tracker-message-listener)
+    -   [send(message:data:completionHandler:) method](#send-message-data)
+    -   [send(message:isHintQuestion:) method](#send-message-is-hint-question)
+    -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
+    -   [newMessageTracker(messageListener:) method](#new-message-tracker-message-listener)
     -   [set(visitSessionStateListener:)](#set-visit-session-state-listener)
     -   [set(chatStateListener:) method](#set-chat-state-listener)
     -   [set(currentOperatorChangeListener:) method](#set-current-operator-change-listener)
@@ -75,21 +82,21 @@
     -   [onSuccess() method](#on-success)
     -   [onFailure(error:) method](#on-failure-error)
 -   [VisitSessionStateListener protocol](#visit-session-state-listener)
-    -   [changed(state previousState:,to newState:)](#changed-state-previous-state-to-new-state-visit-session-state-listener)
+    -   [changed(state:to:)](#changed-state-previous-state-to-new-state-visit-session-state-listener)
 -   [DepartmentListChangeListener protocol](#department-list-change-listener)
     -   [received(departmentList:) method](#received-department-list)
 -   [LocationSettings protocol](#location-settings)
     -   [areHintsEnabled() method](#are-hints-enabled)
 -   [ChatStateListener protocol](#chat-state-listener)
-    -   [changed(state previousState:,to newState:) method](#changed-state-previous-state-to-new-state)
+    -   [changed(state:to:) method](#changed-state-previous-state-to-new-state)
 -   [CurrentOperatorChangeListener protocol](#current-operator-change-listener)
-    -   [changed(operator previousOperator:,to newOperator:) method](#changed-operator-previous-operator-to-new-operator)
+    -   [changed(operator:to:) method](#changed-operator-previous-operator-to-new-operator)
 -   [OperatorTypingListener protocol](#operator-typing-listener)
     -   [onOperatorTypingStateChanged(isTyping:) method](#on-operator-typing-state-changed-is-typing)
 -   [LocationSettingsChangeListener protocol](#location-settings-shange-listener)
-    -   [changed(locationSettings previousLocationSettings:,to newLocationSettings:) method](#changed-location-settings-previous-location-settings-to-new-location-settings)
+    -   [changed(locationSettings:to:) method](#changed-location-settings-previous-location-settings-to-new-location-settings)
 -   [OnlineStatusChangeListener protocol](#online-status-change-listener)
-    -   [changed(onlineStatus previousOnlineStatus:,to newOnlineStatus:) method](#changed-session-online-status-previous-session-online-status-to-new-session-online-status)
+    -   [changed(onlineStatus:to:) method](#changed-session-online-status-previous-session-online-status-to-new-session-online-status)
 -   [ChatState enum](#chat-state)
     -   [CHATTING case](#chatting)
     -   [CLOSED_BY_OPERATOR case](#closed-by-operator)
@@ -125,16 +132,16 @@
     -   [NO_CHAT case](#no-chat)
     -   [WRONG_OPERATOR_ID case](#wrong-operator-id)
 -   [MessageTracker protocol](#message-tracker)
-    -   [getLastMessages(byLimit limitOfMessages:,completion:) method](#get-last-messages-by-limit-limit-of-messages-completion)
-    -   [getNextMessages(byLimit limitOfMessages:,completion:) method](#get-next-nessages-by-limit-limit-of-messages-completion)
+-   [getLastMessages(byLimit:completion:) method](#get-last-messages-by-limit-limit-of-messages-completion)
+-   [getNextMessages(byLimit:completion:) method](#get-next-nessages-by-limit-limit-of-messages-completion)
     -   [getAllMessages(completion:) method](#get-all-messages-completion)
     -   [resetTo(message:) method](#reset-to-message)
     -   [destroy() method](#destroy-message-tracker)
 -   [MessageListener protocol](#message-listener)
-    -   [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)
+    -   [added(message:after:) method](#added-message-new-message-after-previous-message)
     -   [removed(message:) method](#removed-message)
     -   [removedAllMessages() method](#removed-all-messages)
-    -   [changed(message oldVersion:,to newVersion:) method](#changed-message-old-version-to-new-version)
+    -   [changed(message:to:) method](#changed-message-old-version-to-new-version)
 -   [Message protocol](#message)
     -   [getAttachment() method](#get-attachment)
     -   [getData() method](#get-data)
@@ -146,7 +153,7 @@
     -   [getText() method](#get-text)
     -   [getTime() method](#get-time)
     -   [getType() method](#get-type)
-    -   [isEqual(to message:) method](#is-equal-to-message)
+    -   [isEqual(to:) method](#is-equal-to-message)
 -   [MessageAttachment protocol](#message-attachment)
     -   [getContentType() method](#get-content-type)
     -   [getFileName() method](#get-file-name)
@@ -275,7 +282,7 @@ Sets app version number if it is necessary to differentiate its values inside _W
 Returns `self` with app version set. When passed `nil` it does nothing.
 Method is not mandatory to create [WebimSession](#webim-session) object.
 
-<h3 id ="set-visitor-fields-json-string-json-string">Instance method set(visitorFieldsJSONString jsonString:)</h3>
+<h3 id ="set-visitor-fields-json-string-json-string">Instance method set(visitorFieldsJSONString:)</h3>
 
 Sets visitor authorization data.
 Without this method calling a visitor is anonymous, with randomly generated ID. This ID is saved inside app UserDefaults and can be lost (e.g. when app is uninstalled), thereby message history is lost too.
@@ -285,12 +292,12 @@ Returns `self` with visitor authorization data set.
 Method is not mandatory to create [WebimSession](#webim-session) object.
 Can't be used simultanously with [set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:) method](#set-provided-authorization-token-state-listener-provided-authorization-token).
 
-<h3 id ="set-visitor-fields-json-data-json-data">Instance method set(visitorFieldsJSONData jsonData:)</h3>
+<h3 id ="set-visitor-fields-json-data-json-data">Instance method set(visitorFieldsJSONData:)</h3>
 
 Absolutely similar to [method set(visitorFieldsJSONString jsonString:)](#set-visitor-fields-json-string-json-string).
 `jsonData` parameter – _JSON_-formatted `Data`-typed [visitor fields](https://webim.ru/help/identification/).
 
-<h3 id ="set-provided-authorization-token-state-listener-provided-authorization-token">Instance method set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)</h3>
+<h3 id ="set-provided-authorization-token-state-listener-provided-authorization-token">Instance method set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)</h3>
 
 When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
 Method sets [ProvidedAuthorizationTokenStateListener](#provided-authorization-token-state-listener) object and provided authorization token. Setting custom token is optional, if is not set, library generates its own.
@@ -340,6 +347,14 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 
 Sets necesarity to clear all visitor data before session is created.
 With false `isVisitorDataClearingEnabled` parameter value passed it does nothing.
+Returns `self` with the functionality activation setting.
+Method is not mandatory to create [WebimSession](#webim-session) object.
+
+<h3 id ="set-webim-logger-verbosity-level">Instance method set(webimLogger:verbosityLevel:)</h3>
+
+Method to pass [WebimLogger](#webim-logger) object.
+Parameter `verbosityLevel` – [WebimLoggerVerbosityLevel](#webim-logger-verbosity-level) case (can be skipped).
+Returns `self` with the functionality activation setting.
 Method is not mandatory to create [WebimSession](#webim-session) object.
 
 <h3 id ="build">Instance method build()</h3>
@@ -347,6 +362,46 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 Final method that returns [WebimSession](#webim-session) object.
 Can throw errors of [SessionBuilderError](#session-builder-error) type.
 The only two mandatory method to call preliminarily are [set(accountName:)](#set-account-name) and [set(location:)](#set-location).
+
+<h3 id ="webim-logger-verbosity-level">WebimLoggerVerbosityLevel enum</h3>
+
+Verbosity level of [WebimLogger](#webim-logger).
+
+<h4 id ="verbose">VERBOSE case</h4>
+
+All available information will be delivered to [WebimLogger](#webim-logger) instance with maximum verbosity level:
+* session network setup parameters;
+* network requests' URLs, HTTP method and parameters;
+* network responses' HTTP codes, received data and errors;
+* SQL queries and errors;
+* full debug information and additional notes.
+
+<h4 id ="debug">DEBUG case</h4>
+
+All information which is useful when debugging will be delivered to [WebimLogger](#webim-logger) instance with necessary verbosity level:
+* session network setup parameters;
+* network requests' URLs, HTTP method and parameters;
+* network responses' HTTP codes, received data and errors;
+* SQL queries and errors;
+* moderate debug information.
+
+<h4 id ="info">INFO case</h4>
+
+Reference information and all warnings and errors will be delivered to [WebimLogger](#webim-logger) instance:
+* network requests' URLS, HTTP method and parameters;
+* HTTP codes and errors descriptions of failed requests.
+* SQL errors.
+
+<h4 id ="warning">WARNING case</h4>
+
+Errors and warnings only will be delivered to [WebimLogger](#webim-logger) instance:
+* network requests' URLs, HTTP method, parameters, HTTP code and error description.
+* SQL errors.
+
+<h4 id ="error">ERROR case</h4>
+
+Only errors will be delivered to [WebimLogger](#webim-logger) instance:
+* network requests' URLs, HTTP method, parameters, HTTP code and error description.
 
 <h3 id ="session-builder-error">SessionBuilderError enum</h3>
 
@@ -459,7 +514,7 @@ Returns [Operator](#operator-protocol) object of the current chat or `nil` if on
 Returns previous rating of the operator or `0` if it was not rated before.
 `id` parameter – `String`-typed ID of operator.
 
-<h3 id ="rate-operator-with-id-by-rating-rating">rateOperatorWith(id:,byRating rating:,completionHandler:) method</h3>
+<h3 id ="rate-operator-with-id-by-rating-rating">rateOperatorWith(id:byRating:completionHandler:) method</h3>
 
 Rates an operator.
 To get an ID of the current operator call [getCurrentOperator()](#get-current-operator).
@@ -504,7 +559,7 @@ This method must be called whenever there is a change of the input field of a me
 When there's multiple calls of this method occured, draft message is sending to service one time per second.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="send-message-data">send(message:,data:) method</h3>
+<h3 id ="send-message-data">send(message:data:completionHandler:) method</h3>
 
 Sends a text message.
 When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
@@ -514,7 +569,7 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 Returns randomly generated `String`-typed ID of the message.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="send-message-is-hint-question">send(message:,isHintQuestion:) method</h3>
+<h3 id ="send-message-is-hint-question">send(message:isHintQuestion:) method</h3>
 
 Sends a text message.
 When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
@@ -523,7 +578,7 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 Returns randomly generated `String`-typed ID of the message.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="send-file-filename-mime-type-completion-handler">send(file:,filename:,mimeType:,completionHandler:) method</h3>
+<h3 id ="send-file-filename-mime-type-completion-handler">send(file:filename:mimeType:completionHandler:) method</h3>
 
 Sends a file message.
 When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
@@ -534,7 +589,7 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 Returns randomly generated `String`-typed ID of the message.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="new-message-tracker-message-listener">new(messageTracker messageListener:) method</h3>
+<h3 id ="new-message-tracker-message-listener">newMessageTracker(messageListener:) method</h3>
 
 Returns [MessageTracker](#message-tracker) object wich (via [getNextMessages(byLimit limitOfMessages:,completion:)](#get-next-nessages-by-limit-limit-of-messages-completion)) allows to request the messages from above in the history. Each next call [getNextMessages(byLimit limitOfMessages:,completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) returns earlier messages in relation to the already requested ones.
 Changes of user-visible messages (e.g. ever requested from [MessageTracker](#message-tracker)) are transmitted to [MessageListener](#message-listener). That is why [MessageListener](#message-listener) object is needed when creating [MessageTracker](#message-tracker).
@@ -573,14 +628,14 @@ Sets [OnlineStatusChangeListener](#session-online-status-change-listener) object
 
 <h2 id ="data-message-completion-handler">DataMessageCompletionHandler protocol</h2>
 
-Protocol which methods are called after [send(message:,data:,completionHandler:)](#send-message-data) method is finished. Must be adopted.
+Protocol which methods are called after [send(message:data:completionHandler:)](#send-message-data) method is finished. Must be adopted.
 
 <h3 id ="on-success-message-id-data-message-completion-handler">onSuccess(messageID:) method</h3>
 
 Executed when operation is done successfully.
 `messageID` parameter – ID of the appropriate message of `String` type.
 
-<h3 id ="on-failure-message-id-error-data-message-completion-handler">onFailure(messageID:,error:) method</h3>
+<h3 id ="on-failure-message-id-error-data-message-completion-handler">onFailure(messageID:error:) method</h3>
 
 Executed when operation is failed.
 `messageID` parameter – ID of the appropriate message of `String` type.
@@ -590,14 +645,14 @@ Executed when operation is failed.
 
 <h2 id ="send-file-completion-handler">SendFileCompletionHandler protocol</h2>
 
-Protocol which methods are called after [send(file:,filename:,mimeType:,completionHandler:)](#send-file-filename-mime-type-completion-handler) method is finished. Must be adopted.
+Protocol which methods are called after [send(file:filename:mimeType:completionHandler:)](#send-file-filename-mime-type-completion-handler) method is finished. Must be adopted.
 
 <h3 id ="on-success-message-id">onSuccess(messageID:) method</h3>
 
 Executed when operation is done successfully.
 `messageID` parameter – ID of the appropriate message of `String` type.
 
-<h3 id ="on-failure-message-id-error">onFailure(messageID:,error:) method</h3>
+<h3 id ="on-failure-message-id-error">onFailure(messageID:error:) method</h3>
 
 Executed when operation is failed.
 `messageID` parameter – ID of the appropriate message of `String` type.
@@ -607,7 +662,7 @@ Executed when operation is failed.
 
 <h2 id ="rate-operator-completion-handler">RateOperatorCompletionHandler protocol</h2>
 
-Protocol which methods are called after [rateOperatorWith(id:,byRating rating:,completionHandler:)](#rate-operator-with-id-by-rating-rating) method is finished. Must be adopted.
+Protocol which methods are called after [rateOperatorWith(id:byRating:completionHandler:)](#rate-operator-with-id-by-rating-rating) method is finished. Must be adopted.
 
 <h3 id ="on-success">onSuccess() method</h3>
 
@@ -624,7 +679,7 @@ Executed when operation is failed.
 
 Provides methods to track changes of [VisitSessionState](#visit-session-state) status.
 
-<h3 id ="#changed-state-previous-state-to-new-state-visit-session-state-listener">changed(state previousState:,to newState:) method</h3>
+<h3 id ="#changed-state-previous-state-to-new-state-visit-session-state-listener">changed(state:to:) method</h3>
 
 Called when [VisitSessionState](#visit-session-state) status is changed. Parameters contain its previous and new values.
 
@@ -654,7 +709,7 @@ This method shows to an app if it should show hint questions to visitor. Returns
 
 Protocol that is to be adopted to track [ChatState](#chat-state) changes.
 
-<h3 id ="changed-state-previous-state-to-new-state">changed(state previousState:,to newState:) method</h3>
+<h3 id ="changed-state-previous-state-to-new-state">changed(state:to:) method</h3>
 
 Called during [ChatState](#chat-state)transition. Parameters are of [ChatState](#chat-state) type.
 
@@ -664,7 +719,7 @@ Called during [ChatState](#chat-state)transition. Parameters are of [ChatState](
 
 Protocol that is to be adopted to track if current [Operator](#operator-protocol) object is changed.
 
-<h3 id ="changed-operator-previous-operator-to-new-operator">changed(operator previousOperator:,to newOperator:) method</h3>
+<h3 id ="changed-operator-previous-operator-to-new-operator">changed(operator:to:) method</h3>
 
 Called when [Operator](#operator-protocol) object of the current chat changed. New one value can be `nil` (if an operator leaved the chat).
 
@@ -685,7 +740,7 @@ Parameter `isTyping` is `true` if operator is typing, `false` otherwise.
 
 Interface that provides methods for handling changes in [LocationSettings](#location-settings).
 
-<h3 id ="changed-location-settings-previous-location-settings-to-new-location-settings">changed(locationSettings previousLocationSettings:,to newLocationSettings:) method</h3>
+<h3 id ="changed-location-settings-previous-location-settings-to-new-location-settings">changed(locationSettings:to:) method</h3>
 
 Method called by an app when new [LocationSettings](#location-settings) object is received with parameters that represent previous and new [LocationSettings](#location-settings) objects.
 
@@ -695,7 +750,7 @@ Method called by an app when new [LocationSettings](#location-settings) object i
 
 Interface that provides methods for handling changes of session status.
 
-<h3 id ="changed-session-online-status-previous-session-online-status-to-new-session-online-status">changed(onlineStatus previousOnlineStatus:,to newOnlineStatus:) method</h3>
+<h3 id ="changed-session-online-status-previous-session-online-status-to-new-session-online-status">changed(onlineStatus:to:) method</h3>
 
 Called when new session status is received with parameters that represent previous and new [OnlineStatus](#session-online-status) values.
 
@@ -705,7 +760,7 @@ Called when new session status is received with parameters that represent previo
 
 A chat is seen in different ways by an operator depending on ChatState.
 The initial state is [NONE](#none-chat-state).
-Then if a visitor sends a message ([send(message:,isHintQuestion:)](#send-message-is-hint-question)), the chat changes it's state to [QUEUE](#queue). The chat can be turned into this state by calling [startChat() method](#start-chat).
+Then if a visitor sends a message ([send(message:isHintQuestion:)](#send-message-is-hint-question)), the chat changes it's state to [QUEUE](#queue). The chat can be turned into this state by calling [startChat() method](#start-chat).
 After that, if an operator takes the chat to process, the state changes to [CHATTING](#chatting). The chat is being in this state until the visitor or the operator closes it.
 When closing a chat by the visitor [closeChat() method](#close-chat) it turns into the state [CLOSED_BY_VISITOR](#closed-by-visitor), by the operator - [CLOSED_BY_OPERATOR](#closed-by-operator).
 When both the visitor and the operator close the chat, it's state changes to the initial – [NONE](#none-chat-state). A chat can also automatically turn into the initial state during long-term absence of activity in it.
@@ -724,20 +779,20 @@ From this state a chat can be turned into:
 Means that an operator has closed the chat.
 From this state a chat can be turned into:
 * [NONE](#none-chat-state), if the chat is also closed by a visitor ([closeChat() method](#close-chat)), or automatically during long-term absence of activity;
-* [QUEUE](#queue), if a visitor sends a new message ([send(message:,isHintQuestion:) method](#send-message-is-hint-question)).
+* [QUEUE](#queue), if a visitor sends a new message ([send(message:isHintQuestion:) method](#send-message-is-hint-question)).
 
 <h3 id ="closed-by-visitor">CLOSED_BY_VISITOR case</h3>
 
 Means that a visitor has closed the chat.
 From this state a chat can be turned into:
 * [NONE](#none-chat-state), if the chat is also closed by an operator or automatically during long-term absence of activity;
-* [QUEUE](#queue), if a visitor sends a new message ([send(message:,isHintQuestion:) method](#send-message-is-hint-question)).
+* [QUEUE](#queue), if a visitor sends a new message ([send(message:isHintQuestion:) method](#send-message-is-hint-question)).
 
 <h3 id ="invitation">INVITATION case</h3>
 
 Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
 From this state a chat can be turned into:
-* [CHATTING](#chatting), if a visitor sends a message ([send(message:,isHintQuestion:) method](#send-message-is-hint-question));
+* [CHATTING](#chatting), if a visitor sends a message ([send(message:isHintQuestion:) method](#send-message-is-hint-question));
 * [NONE](#none-chat-state), if an operator or a visitor closes the chat ([closeChat() method](#close-chat)).
 
 <h3 id ="none-chat-state">NONE case</h3>
@@ -822,7 +877,7 @@ First status is not recieved yet or status is not supported by this version of t
 
 <h2 id ="data-message-error">DataMessageError enum</h2>
 
-Error types that could be passed in [onFailure(messageID:,error:) method](#on-failure-message-id-error-data-message-completion-handler).
+Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-data-message-completion-handler).
 
 <h3 id ="unknown-data-message-error">UNKNOWN case</h3>
 
@@ -830,23 +885,23 @@ Received error is not supported by current WebimClientLibrary version.
 
 <h3>Quoted message errors.</h3>
 
-<h3 id ="quoted-message-cannot-be-replied">QUOTED_MESSAGE_CANNOT_BE_REPLIED case</h3>
+<h4 id ="quoted-message-cannot-be-replied">QUOTED_MESSAGE_CANNOT_BE_REPLIED case</h4>
 
 To be raised when quoted message ID belongs to a message without `canBeReplied` flag set to `true` (this flag is to be set on the server-side).
 
-<h3 id ="quoted-message-from-another-visitor">QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case</h3>
+<h4 id ="quoted-message-from-another-visitor">QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case</h4>
 
 To be raised when quoted message ID belongs to another visitor chat.
 
-<h3 id ="quoted-message-multiple-ids">QUOTED_MESSAGE_MULTIPLE_IDS case</h3>
+<h4 id ="quoted-message-multiple-ids">QUOTED_MESSAGE_MULTIPLE_IDS case</h4>
 
-To be raised when quoted message IG belongs to multiple messages (server DB error).
+To be raised when quoted message ID belongs to multiple messages (server data base error).
 
-<h3 id ="quoted-message-required-arguments-missing">QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case</h3>
+<h4 id ="quoted-message-required-arguments-missing">QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case</h4>
 
 To be raised when one or more required arguments of quoting mechanism are missing.
 
-<h3 id ="quoted-message-wrong-id">QUOTED_MESSAGE_WRONG_ID case</h3>
+<h4 id ="quoted-message-wrong-id">QUOTED_MESSAGE_WRONG_ID case</h4>
 
 To be raised when wrong quoted message ID is sent.
 
@@ -854,7 +909,7 @@ To be raised when wrong quoted message ID is sent.
 
 <h2 id ="send-file-error">SendFileError enum</h2>
 
-Error types that could be passed in [onFailure(messageID:,error:) method](#on-failure-message-id-error).
+Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error).
 
 <h3 id ="file-size-exceeded">FILE_SIZE_EXCEEDED case</h3>
 
@@ -886,17 +941,17 @@ Arised when trying to send operator rating request if passed operator ID doesn't
 
 [MessageTracker](#message-tracker) object has two purposes:
 - it allows to request the messages which are above in the history;
-- it defines an interval within which message changes are transmitted to the listener (see [new(messageTracker messageListener:) method](#new-message-tracker-message-listener)).
+- it defines an interval within which message changes are transmitted to the listener (see [newMessageTracker(messageListener:) method](#new-message-tracker-message-listener)).
 
-<h3 id ="get-last-messages-by-limit-limit-of-messages-completion">getLastMessages(byLimit limitOfMessages:,completion:) method</h3>
+<h3 id ="get-last-messages-by-limit-limit-of-messages-completion">getLastMessages(byLimit:completion:) method</h3>
 
 Requests last messages from history. Returns not more than `limitOfMessages` of messages. If an empty list is passed inside completion, there no messages in history yet.
 If there is any previous [MessageTracker](#message-tracker) request that is not completed, or limit of messages is less than 1, or current [MessageTracker](#message-tracker) has been destroyed, this method will do nothing.
-Following history request can be fulfilled by [getLastMessages(byLimit limitOfMessages:,completion:)](#get-last-messages-by-limit-limit-of-messages-completion) method.
+Following history request can be fulfilled by [getLastMessages(byLimit:completion:)](#get-last-messages-by-limit-limit-of-messages-completion) method.
 Completion is called with received array of [Message](#message) objects as the parameter.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="get-next-nessages-by-limit-limit-of-messages-completion">getNextMessages(byLimit limitOfMessages:,completion:) method</h3>
+<h3 id ="get-next-nessages-by-limit-limit-of-messages-completion">getNextMessages(byLimit:completion:) method</h3>
 
 Requests the messages above in history. Returns not more than `limitOfMessages` of messages. If an empty list is passed inside completion, the end of the message history is reached.
 If there is any previous [MessageTracker](#message-tracker) request that is not completed, or limit of messages is less than 1, or current [MessageTracker](#message-tracker) has been destroyed, this method will do nothing.
@@ -908,7 +963,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 Requests all messages from history. If an empty list is passed inside completion, there no messages in history yet.
 If there is any previous [MessageTracker](#message-tracker) request that is not completed, or current [MessageTracker](#message-tracker) has been destroyed, this method will do nothing.
-This method is totally independent on [getLastMessages(byLimit limitOfMessages:,completion:)](#get-last-messages-by-limit-limit-of-messages-completion) and [getNextMessages(byLimit limitOfMessages:,completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) methods calls.
+This method is totally independent on [getLastMessages(byLimit:completion:)](#get-last-messages-by-limit-limit-of-messages-completion) and [getNextMessages(byLimit:completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) methods calls.
 Completion is called with received array of [Message](#message) objects as the parameter.
 Can throw errors of [AccessError](#access-error) type.
 
@@ -916,7 +971,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 [MessageTracker](#message-tracker) retains some range of messages. By using this method one can move the upper limit of this range to another message.
 If there is any previous [MessageTracker](#message-tracker) request that is not completed, this method will do nothing.
-Notice that this method can not be used unless the previous call [getNextMessages(byLimit limitOfMessages:,completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) was finished (completion handler was invoked).
+Notice that this method can not be used unless the previous call [getNextMessages(byLimit:completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) was finished (completion handler was invoked).
 Parameter `message` – [Message](#message) object reset to.
 Can throw errors of [AccessError](#access-error) type.
 
@@ -931,11 +986,11 @@ Isn't mandatory to be called.
 
 Should be adopted. Provides methods to track changes inside message stream.
 
-<h3 id ="added-message-new-message-after-previous-message">added(message newMessage:,after previousMessage:) method</h3>
+<h3 id ="added-message-new-message-after-previous-message">added(message:after:) method</h3>
 
 Called when added a new message.
 If `previousMessage == nil` then it should be added to the end of message history (the lowest message is added), in other cases the message should be inserted before the message (i.e. above in history) which was given as a parameter `previousMessage`.
-Notice that this is a logical insertion of a message. I.e. calling this method does not necessarily mean receiving a new (unread) message. Moreover, at the first call [getNextMessages(byLimit limitOfMessages:,completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) most often the last messages of a local history (i.e. which is stored on a user's device) are returned, and this method will be called for each message received from a server after a successful connection.
+Notice that this is a logical insertion of a message. I.e. calling this method does not necessarily mean receiving a new (unread) message. Moreover, at the first call [getNextMessages(byLimit:completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) most often the last messages of a local history (i.e. which is stored on a user's device) are returned, and this method will be called for each message received from a server after a successful connection.
 Parameters are of type [Message](#message). `previousMessage` represents a message after which it is needed to make a message insert. If `nil` then an insert is performed at the end of the list.
 
 <h3 id ="removed-message">removed(message:) method</h3>
@@ -947,7 +1002,7 @@ Called when removing a message.
 
 Called when removed all the messages.
 
-<h3 id ="changed-message-old-version-to-new-version">changed(message oldVersion:,to newVersion:) method</h3>
+<h3 id ="changed-message-old-version-to-new-version">changed(message:to:) method</h3>
 
 Called when changing a message.
 [Message](#message) is an immutable type and field values can not be changed. That is why message changing occurs as replacing one object with another. Thereby you can find out, for example, which certain message fields have changed by comparing an old and a new object values.
@@ -958,7 +1013,7 @@ Parameters are of type [Message](#message).
 <h2 id ="message">Message protocol</h2>
 
 Abstracts a single message in the message history.
-A message is an immutable object. It means that changing some of the message fields creates a new object. Messages can be compared by using [isEqual(to message:)](#is-equal-to-message) method for searching messages with the same set of fields or by ID (`message1.getID() == message2.getID()`) for searching logically identical messages. ID is formed on the client side when sending a message ([send(message:,isHintQuestion:)](#send-message-is-hint-question) or [send(file:,filename:,mimeType:,completionHandler:)](#send-file-filename-mime-type-completion-handler)).
+A message is an immutable object. It means that changing some of the message fields creates a new object. Messages can be compared by using [isEqual(to:)](#is-equal-to-message) method for searching messages with the same set of fields or by ID (`message1.getID() == message2.getID()`) for searching logically identical messages. ID is formed on the client side when sending a message ([send(message:isHintQuestion:)](#send-message-is-hint-question) or [send(file:filename:mimeType:completionHandler:)](#send-file-filename-mime-type-completion-handler)).
 
 <h3 id ="get-attachment">getAttachment() method</h3>
 
@@ -1003,7 +1058,7 @@ Returns `Date` the message was processed by the server.
 
 Returns type of a message of [MessageType](#message-type) type.
 
-<h3 id ="is-equal-to-message">isEqual(to message:) method</h3>
+<h3 id ="is-equal-to-message">isEqual(to:) method</h3>
 
 Method which can be used to compare if two [Message](#message) objects have identical contents.
 Returns `true` if two [Message](#message) objects are identical and `false` otherwise.

@@ -105,6 +105,10 @@ final class MessageStreamImpl {
         self.onlineStatus = onlineStatus
     }
     
+    func set(unreadByVisitorTimestamp: Date) {
+        self.unreadByVisitorTimestamp = unreadByVisitorTimestamp
+    }
+    
     func changingChatStateOf(chat: ChatItem?) {
         let previousChat = self.chat
         self.chat = chat
@@ -143,8 +147,13 @@ final class MessageStreamImpl {
         if let unreadByOperatorTimestamp = chat?.getUnreadByOperatorTimestamp() {
             self.unreadByOperatorTimestamp = Date(timeIntervalSince1970: unreadByOperatorTimestamp)
         }
+        
         if let unreadByVisitorTimestamp = chat?.getUnreadByVisitorTimestamp() {
             self.unreadByVisitorTimestamp = Date(timeIntervalSince1970: unreadByVisitorTimestamp)
+        }
+        if chat?.getReadByVisitor() == true {
+            // Set unread messages by visitor timestamp to current date after receiving information that chat is read by visitor.
+            unreadByVisitorTimestamp = Date()
         }
     }
     
@@ -301,7 +310,7 @@ extension MessageStreamImpl: MessageStream {
     func getLastRatingOfOperatorWith(id: String) -> Int {
         let rating = ((chat != nil) ? chat!.getOperatorIDToRate()?[id] : nil)
         
-        return (rating == nil) ? 0 : (rating?.getRating())!
+        return ((rating == nil) ? 0 : rating!.getRating())
     }
     
     
@@ -406,7 +415,7 @@ extension MessageStreamImpl: MessageStream {
         return messageID
     }
     
-    func new(messageTracker messageListener: MessageListener) throws -> MessageTracker {
+    func newMessageTracker(messageListener: MessageListener) throws -> MessageTracker {
         try accessChecker.checkAccess()
         
         return try messageHolder.newMessageTracker(withMessageListener: messageListener) as MessageTracker
@@ -455,7 +464,8 @@ extension MessageStreamImpl: MessageStream {
         case 5:
             return 2
         default:
-            print("Rating must be within from 1 to 5 range. Passed value: \(rating)")
+            WebimInternalLogger.shared.log(entry: "Rating must be within from 1 to 5 range. Passed value: \(rating)",
+                verbosityLevel: .WARNING)
             
             return nil
         }

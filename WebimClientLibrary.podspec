@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name             = 'WebimClientLibrary'
-  s.version          = '3.10.0'
+  s.version          = '3.11.0'
   s.summary          = 'Webim.ru client SDK for iOS.'
   s.homepage         = 'https://webim.ru/integration/mobile-sdk/ios-sdk-howto/'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -15,6 +15,5 @@ Pod::Spec.new do |s|
   s.frameworks = 'Foundation'
 
   s.dependency 'SQLite.swift'
-  s.dependency 'CryptoSwift'
 
 end

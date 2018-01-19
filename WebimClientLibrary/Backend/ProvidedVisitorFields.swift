@@ -63,7 +63,8 @@ final class ProvidedVisitorFields {
             
             self.jsonString = jsonString
         } catch {
-            print("Error serializing provided visitor fields")
+            WebimInternalLogger.shared.log(entry: "Error serializing provided visitor fields: \(String(data: JSONObject, encoding: .utf8) ?? "unreadable data").",
+                verbosityLevel: .DEBUG)
             
             return nil
         }
@@ -75,11 +76,13 @@ final class ProvidedVisitorFields {
                 try self.init(jsonString: jsonString,
                               JSONObject: jsonData)
             } catch VisitorFieldsError.invalidVisitorFields(let error) {
-                print(error)
+                WebimInternalLogger.shared.log(entry: "\(error).",
+                    verbosityLevel: .DEBUG)
                 
                 return nil
             } catch VisitorFieldsError.serializingFail(let error) {
-                print(error)
+                WebimInternalLogger.shared.log(entry: "\(error).",
+                    verbosityLevel: .DEBUG)
                 
                 return nil
             } catch {
@@ -98,11 +101,13 @@ final class ProvidedVisitorFields {
             try self.init(jsonString: jsonString!,
                           JSONObject: jsonData)
         } catch VisitorFieldsError.invalidVisitorFields(let error) {
-            print(error)
+            WebimInternalLogger.shared.log(entry: "\(error).",
+                verbosityLevel: .DEBUG)
             
             return nil
         } catch VisitorFieldsError.serializingFail(let error) {
-            print(error)
+            WebimInternalLogger.shared.log(entry: "\(error).",
+                verbosityLevel: .DEBUG)
             
             return nil
         } catch {

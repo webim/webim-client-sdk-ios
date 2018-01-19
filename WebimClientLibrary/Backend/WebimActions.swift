@@ -134,7 +134,7 @@ class WebimActions {
                           Parameter.CLIENT_SIDE_ID.rawValue: clientSideID,
                           Parameter.MESSAGE.rawValue: message] as [String: Any]
         if let isHintQuestion = isHintQuestion {
-            dataToPost[Parameter.HINT_QUESTION.rawValue] = isHintQuestion ? "1" : "0" // true / false
+            dataToPost[Parameter.HINT_QUESTION.rawValue] = isHintQuestion ? "1" : "0" // True / false.
         }
         if let dataJSONString = dataJSONString {
             dataToPost[Parameter.DATA.rawValue] = dataJSONString

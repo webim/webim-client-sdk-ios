@@ -30,7 +30,7 @@ import Foundation
 
 /**
  Abstracts a single message in the message history.
- A message is an immutable object. It means that changing some of the message fields creates a new object. Messages can be compared by using `isEqual(to:)` method for searching messages with the same set of fields or by ID (`message1.getID() == message2.getID()`) for searching logically identical messages. ID is formed on the client side when sending a message (`MessageStream.send(message:,isHintQuestion:)` or `MessageStream.sendFile(atPath:mimeType:completion:)).
+ A message is an immutable object. It means that changing some of the message fields creates a new object. Messages can be compared by using `isEqual(to:)` method for searching messages with the same set of fields or by ID (`message1.getID() == message2.getID()`) for searching logically identical messages. ID is formed on the client side when sending a message (`MessageStream.send(message:isHintQuestion:)` or `MessageStream.sendFile(atPath:mimeType:completion:)).
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -183,7 +183,7 @@ public protocol MessageAttachment {
      - Copyright:
      2017 Webim
      */
-    func getContentType() -> String?
+    func getContentType() -> String
     
     /**
      - returns:
@@ -193,7 +193,7 @@ public protocol MessageAttachment {
      - Copyright:
      2017 Webim
      */
-    func getFileName() -> String?
+    func getFileName() -> String
     
     /**
      - SeeAlso:
@@ -227,7 +227,7 @@ public protocol MessageAttachment {
      - Copyright:
      2017 Webim
      */
-    func getURL() -> URL?
+    func getURL() -> URL
     
 }
 

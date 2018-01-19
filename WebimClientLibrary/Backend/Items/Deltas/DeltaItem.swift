@@ -62,15 +62,15 @@ final class DeltaItem {
         case DATA = "data"
         case EVENT = "event"
         case OBJECT_TYPE = "objectType"
-        case SESSION_ID = "id"
+        case ID = "id"
     }
     
     
     // MARK: - Properties
-    private var data: Any
+    private var data: Any?
     private var event: Event
     private var objectType: DeltaType?
-    private var sessionID: String
+    private var id: String
     
     
     // MARK: - Initialization
@@ -86,15 +86,10 @@ final class DeltaItem {
             return nil
         }
         
-        if let data = jsonDictionary[JSONField.DATA.rawValue],
-            data != nil {
-            self.data = data!
-        } else {
-            return nil
-        }
+        self.data = jsonDictionary[JSONField.DATA.rawValue] ?? nil
         
-        if let sessionID = jsonDictionary[JSONField.SESSION_ID.rawValue] as? String {
-            self.sessionID = sessionID
+        if let id = jsonDictionary[JSONField.ID.rawValue] as? String {
+            self.id = id
         } else {
             return nil
         }
@@ -111,15 +106,15 @@ final class DeltaItem {
         return objectType
     }
     
-    func getSessionID() -> String {
-        return sessionID
+    func getID() -> String {
+        return id
     }
     
     func getEvent() -> Event {
         return event
     }
     
-    func getData() -> Any {
+    func getData() -> Any? {
         return data
     }
     

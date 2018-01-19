@@ -54,8 +54,6 @@ final class ActionRequestLoop: AbstractRequestLoop {
     
     override func start() {
         guard operationQueue == nil else {
-            print("Can't start action loop because it is already started.")
-            
             return
         }
         
@@ -119,23 +117,36 @@ final class ActionRequestLoop: AbstractRequestLoop {
                 let data = try self.perform(request: urlRequest!)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     if let error = dataJSON?[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
-                        if error == WebimInternalError.REINIT_REQUIRED.rawValue {
+                        switch error {
+                        case WebimInternalError.REINIT_REQUIRED.rawValue:
                             self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: self.authorizationData)
-                        } else if (error == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue)
-                            || (error == WebimInternalError.FILE_TYPE_NOT_ALLOWED.rawValue) {
+                            
+                            break
+                        case WebimInternalError.FILE_SIZE_EXCEEDED.rawValue,
+                             WebimInternalError.FILE_TYPE_NOT_ALLOWED.rawValue:
                             self.handleSendFile(error: error,
                                                 ofRequest: request)
-                        } else if (error == WebimInternalError.NO_CHAT.rawValue)
-                            || (error == WebimInternalError.OPERATOR_NOT_IN_CHAT.rawValue) {
+                            
+                            break
+                        case WebimInternalError.WRONG_ARGUMENT_VALUE.rawValue:
+                            self.handleWrongArgumentValueError(ofRequest: request)
+                            
+                            break
+                        case WebimInternalError.NO_CHAT.rawValue,
+                             WebimInternalError.OPERATOR_NOT_IN_CHAT.rawValue:
                             self.handleRateOperator(error: error,
                                                     ofRequest: request)
-                        } else {
+                            
+                            break
+                        default:
                             self.running = false
                             
                             self.completionHandlerExecutor.execute(task: DispatchWorkItem {
                                 self.internalErrorListener.on(error: error,
                                                               urlString: urlRequest!.url!.path)
                             })
+                            
+                            break
                         }
                         
                         return
@@ -153,7 +164,8 @@ final class ActionRequestLoop: AbstractRequestLoop {
                             do {
                                 try completionHandler(data)
                             } catch {
-                                print("Error executing callback.")
+                                WebimInternalLogger.shared.log(entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                                    verbosityLevel: .WARNING)
                             }
                             
                         })
@@ -161,7 +173,8 @@ final class ActionRequestLoop: AbstractRequestLoop {
                     
                     self.handleClientCompletionHandlerOf(request: request)
                 } else {
-                    print("Error de-serializing server response.")
+                    WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
+                        verbosityLevel: .WARNING)
                 }
             } catch let sendFileError as SendFileError {
                 // SendFileErrors are generated from HTTP code.
@@ -172,7 +185,8 @@ final class ActionRequestLoop: AbstractRequestLoop {
             } catch let unknownError as UnknownError {
                 self.handleRequestLoop(error: unknownError)
             } catch {
-                print("Request failed with unknown error.")
+                WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(request.getBaseURLString()).",
+                    verbosityLevel: .WARNING)
             }
         }
     }
@@ -230,6 +244,11 @@ final class ActionRequestLoop: AbstractRequestLoop {
                                                     error: sendFileError)
             })
         }
+    }
+    
+    private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
+        WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.WRONG_ARGUMENT_VALUE.rawValue)",
+            verbosityLevel: .WARNING)
     }
     
     private func handleClientCompletionHandlerOf(request: WebimRequest) {

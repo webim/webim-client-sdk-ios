@@ -64,8 +64,8 @@ struct OperatorItem {
             self.avatarURLString = avatarURLString
         }
         
-        if let id = jsonDictionary[JSONField.ID.rawValue] as? String {
-            self.id = id
+        if let id = jsonDictionary[JSONField.ID.rawValue] as? Int {
+            self.id = String(id)
         }
         
         if let fullName = jsonDictionary[JSONField.FULL_NAME.rawValue] as? String {

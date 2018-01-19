@@ -21,6 +21,7 @@
 		CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
 		CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
 		CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE5A03BC1FDEB756009D320A /* Localizable.strings */; };
+		CE6741C8200F9A600061EEFD /* HMACsha256Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6741C7200F9A600061EEFD /* HMACsha256Tests.swift */; };
 		CE88BCD11FCD7F9A00A4FA2E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */; };
 		CE88BCD31FCD88EA00A4FA2E /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD21FCD88EA00A4FA2E /* Settings.swift */; };
 		CE88BCD51FCDA45C00A4FA2E /* ButtonConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD41FCDA45C00A4FA2E /* ButtonConstants.swift */; };
@@ -30,6 +31,8 @@
 		CEA832681F9906C0004845F0 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832671F9906BF004845F0 /* ColorConstants.swift */; };
 		CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832691F99079A004845F0 /* StringConstants.swift */; };
 		CEA849051FFCE29A006CC417 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA849041FFCE29A006CC417 /* UITableView.swift */; };
+		CED72596200E20EF00CD1623 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED72594200E20E500CD1623 /* ChatViewControllerTests.swift */; };
+		CED72599200E5B2200CD1623 /* WebimInternalLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED72597200E5B1C00CD1623 /* WebimInternalLoggerTests.swift */; };
 		CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61A381F82A4C700BF7071 /* ChatViewController.swift */; };
 		DDFC632B1F924D41008E1ACC /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFC632A1F924D41008E1ACC /* UIImage.swift */; };
 		DDFC63CB1F93F23E008E1ACC /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */; };
@@ -74,6 +77,7 @@
 		CE591A421FC2F31E004C95EE /* WebimService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimService.swift; sourceTree = "<group>"; };
 		CE5A03B71FDEB573009D320A /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/Main.strings"; sourceTree = "<group>"; };
 		CE5A03BB1FDEB756009D320A /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CE6741C7200F9A600061EEFD /* HMACsha256Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HMACsha256Tests.swift; sourceTree = "<group>"; };
 		CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = WebimClientLibrary/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		CE88BCD21FCD88EA00A4FA2E /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CE88BCD41FCDA45C00A4FA2E /* ButtonConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonConstants.swift; sourceTree = "<group>"; };
@@ -84,6 +88,8 @@
 		CEA832671F9906BF004845F0 /* ColorConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
 		CEA832691F99079A004845F0 /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		CEA849041FFCE29A006CC417 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
+		CED72594200E20E500CD1623 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
+		CED72597200E5B1C00CD1623 /* WebimInternalLoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimInternalLoggerTests.swift; sourceTree = "<group>"; };
 		CEF61A381F82A4C700BF7071 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		DDFC632A1F924D41008E1ACC /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		DDFC63CA1F93F23E008E1ACC /* RatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
@@ -170,7 +176,10 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				CED72594200E20E500CD1623 /* ChatViewControllerTests.swift */,
+				CE6741C7200F9A600061EEFD /* HMACsha256Tests.swift */,
 				607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */,
+				CED72597200E5B1C00CD1623 /* WebimInternalLoggerTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -410,7 +419,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'CryptoSwift' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
+			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
 		};
 		BB203665164CEE6B1814FD79 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -504,7 +513,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED72596200E20EF00CD1623 /* ChatViewControllerTests.swift in Sources */,
+				CE6741C8200F9A600061EEFD /* HMACsha256Tests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */,
+				CED72599200E5B2200CD1623 /* WebimInternalLoggerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

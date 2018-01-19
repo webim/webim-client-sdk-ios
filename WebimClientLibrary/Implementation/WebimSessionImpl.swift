@@ -105,8 +105,12 @@ final class WebimSessionImpl {
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool,
                                 isVisitorDataClearingEnabled: Bool,
-                                webimLogger: WebimLogger?) -> WebimSessionImpl {
+                                webimLogger: WebimLogger?,
+                                verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?) -> WebimSessionImpl {
         // FIXME: Dare and refactor!
+        
+        WebimInternalLogger.setup(webimLogger: webimLogger,
+                                  verbosityLevel: verbosityLevel)
         
         let queue = DispatchQueue.global(qos: .userInteractive)
         
@@ -127,7 +131,8 @@ final class WebimSessionImpl {
         let visitorFieldsJSON = (visitorFields == nil) ? nil : visitorFields?.getJSONString()
         
         let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
-        webimLogger?.log(entry: "Webim server URL: \(serverURLString)")
+        WebimInternalLogger.shared.log(entry: "Specified Webim server – \(serverURLString).",
+            verbosityLevel: .DEBUG)
         
         let currentChatMessageMapper: MessageFactoriesMapper = CurrentChatMapper(withServerURLString: serverURLString)
         
@@ -159,7 +164,6 @@ final class WebimSessionImpl {
             .set(title: (pageTitle != nil) ? pageTitle! : Settings.DEFAULT_PAGE_TITLE.rawValue)
             .set(deviceToken: deviceToken)
             .set(deviceID: getDeviceID())
-            .set(webimLogger: webimLogger)
             .build() as WebimClient
         
         var historyStorage: HistoryStorage
@@ -253,6 +257,8 @@ final class WebimSessionImpl {
                                 messageStream: messageStream)
     }
     
+    // MARK: Private methods
+    
     // Deletes local message history SQLite DB file.
     private static func clearVisitorDataFor(userDefaultsKey: String) {
         if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] {
@@ -266,7 +272,8 @@ final class WebimSessionImpl {
             do {
                 try fileManager.removeItem(at: dbURL)
             } catch {
-                print("Error deleting DB file at \(dbURL) or file doesn't exist.")
+                WebimInternalLogger.shared.log(entry: "Error deleting DB file at \(dbURL) or file doesn't exist.",
+                    verbosityLevel: .VERBOSE)
             }
         }
         

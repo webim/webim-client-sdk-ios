@@ -28,7 +28,7 @@ import Foundation
 
 /**
  - SeeAlso:
- `MessageStream.new(messageTracker messageListener:)`
+ `MessageStream.newMessageTracker(messageListener:)`
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:

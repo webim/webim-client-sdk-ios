@@ -29,9 +29,9 @@ import Foundation
 /**
  MessageTracker has two purposes:
  - it allows to request the messages which are above in the history;
- - it defines an interval within which message changes are transmitted to the listener (see `MessageStream.new(messageTracker messageListener:)`).
+ - it defines an interval within which message changes are transmitted to the listener (see `MessageStream.newMessageTracker(messageListener:)`).
  - SeeAlso:
- `MessageStream.new(messageTracker messageListener:)`
+ `MessageStream.newMessageTracker(messageListener:)`
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -42,11 +42,12 @@ public protocol MessageTracker {
     /**
      Requests last messages from history. Returns not more than `limitOfMessages` of messages. If an empty list is passed inside completion, there no messages in history yet.
      If there is any previous `MessageTracker` request that is not completed, or limit of messages is less than 1, or current `MessageTracker` has been destroyed, this method will do nothing.
-     Following history request can be fulfilled by `getLastMessages(byLimit limitOfMessages:,completion:)` method.
+     Following history request can be fulfilled by `getLastMessages(byLimit:completion:)` method.
      - important:
      Notice that this method can not be called again until the callback for the previous call will be invoked.
+     When an error occurs (e.g. there's one request is still running) an empty list will be returned inside completion block.
      - SeeAlso:
-     `getLastMessages(byLimit limitOfMessages:,completion:)` method.
+     `getLastMessages(byLimit:completion:)` method.
      `destroy()` method.
      `Message` protocol.
      - parameter limitOfMessages:
@@ -74,6 +75,7 @@ public protocol MessageTracker {
      `Message` protocol.
      - important:
      Notice that this method can not be called again until the callback for the previous call will be invoked.
+     When an error occurs (e.g. there's one request is still running) an empty list will be returned inside completion block.
      - parameter limitOfMessages:
      A number of messages will be returned (not more than this specified number).
      - parameter completion:
@@ -95,7 +97,8 @@ public protocol MessageTracker {
      Requests all messages from history. If an empty list is passed inside completion, there no messages in history yet.
      If there is any previous `MessageTracker` request that is not completed, or current `MessageTracker` has been destroyed, this method will do nothing.
      - important:
-     This method is totally independent on `getLastMessages(byLimit limitOfMessages:,completion:)` and `getLastMessages(byLimit limitOfMessages:,completion:)` methods' calls.
+     This method is totally independent on `getNextMessages(byLimit:completion:)` and `getLastMessages(byLimit:completion:)` methods' calls.
+     When an error occurs (e.g. `MessageTracker` object is destroyed) an empty list will be returned inside completion block.
      - SeeAlso:
      `destroy()` method.
      `Message` protocol.

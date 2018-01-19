@@ -92,8 +92,8 @@ public enum FatalErrorType {
      - important:
      Notice that the session will be destroyed if this error occured.
      - SeeAlso:
-     `Webim.SessionBuilder.set(visitorFieldsJSON jsonString:)`
-     `Webim.SessionBuilder.set(visitorFieldsJSON jsonData:)`
+     `Webim.SessionBuilder.set(visitorFieldsJSONstring:)`
+     `Webim.SessionBuilder.set(visitorFieldsJSONdata:)`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -135,8 +135,8 @@ public enum FatalErrorType {
      - important:
      Notice that the session will be destroyed if this error occured.
      - SeeAlso:
-     `Webim.SessionBuilder.set(visitorFieldsJSON jsonString:)`
-     `Webim.SessionBuilder.set(visitorFieldsJSON jsonData:)`
+     `Webim.SessionBuilder.set(visitorFieldsJSONstring:)`
+     `Webim.SessionBuilder.set(visitorFieldsJSONdata:)`
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

@@ -97,7 +97,8 @@ final class MessageHolder {
                        completion: @escaping ([Message]) -> ()) {
         if message.getSource().isCurrentChatMessage() {
             if currentChatMessages.isEmpty {
-                print("Current chat is empty. Requesting history rejected.")
+                WebimInternalLogger.shared.log(entry: "Current chat is empty. Requesting history rejected.",
+                                               verbosityLevel: .VERBOSE)
                 
                 return
             }
@@ -257,6 +258,20 @@ final class MessageHolder {
         }
     }
     
+    // MARK: For testing purposes.
+    
+    func getLastChatMessageIndex() -> Int {
+        return lastChatMessageIndex
+    }
+    
+    func getRemoteHistoryProvider() -> RemoteHistoryProvider {
+        return remoteHistoryProvider
+    }
+    
+    func set(endOfHistoryReached: Bool) {
+        reachedEndOfRemoteHistory = endOfHistoryReached
+        historyStorage.set(reachedHistoryEnd: endOfHistoryReached)
+    }
     
     // MARK: Private methods
     
@@ -369,7 +384,8 @@ final class MessageHolder {
         do {
             try message.getSource().assertIsCurrentChat()
         } catch {
-            print("Message before which messages are requested is not a part of current chat.")
+            WebimInternalLogger.shared.log(entry: "Message before which messages are requested is not a part of current chat: \(message.toString()).",
+                verbosityLevel: .DEBUG)
             
             return
         }
@@ -377,7 +393,8 @@ final class MessageHolder {
         let messageIndex = currentChatMessages.index(of: message)!
         
         guard messageIndex >= 1 else {
-            print("Message \(message.toString()) before which messages of current chat are requested can't have index less than 1.")
+            WebimInternalLogger.shared.log(entry: "Message \(message.toString()) before which messages of current chat are requested can't have index less than 1. Current index: \(messageIndex).",
+                verbosityLevel: .DEBUG)
             
             return
         }
@@ -422,13 +439,13 @@ final class MessageHolder {
                                                            at: previousMessageIndex,
                                                            messageHolder: self)
                     }
-                }
+                } // End of "while previousMessageIndex < currentChatMessages.count".
                 
                 if !isMerged &&
                     (previousMessageIndex >= currentChatMessages.count) {
                     areOldMessagesEnded = true
                 }
-            }
+            } // End of "if !areOldMessagesEnded".
             
             if areOldMessagesEnded {
                 receive(newMessage: newMessage)
@@ -445,9 +462,9 @@ final class MessageHolder {
                     
                     let replacementMessage = currentChatMessage.transferToHistory(message: message)
                     if messageTracker != nil {
-                        messageTracker!.idToHistoryMessageMap[(message.getHistoryID()?.getDBid())!] = replacementMessage
+                        messageTracker!.idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = replacementMessage
                         
-                        if replacementMessage !== currentChatMessage {
+                        if replacementMessage != currentChatMessage {
                             messageTracker!.messageListener.changed(message: currentChatMessage,
                                                                     to: replacementMessage)
                         }

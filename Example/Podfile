@@ -9,11 +9,10 @@ target 'WebimClientLibrary_Example' do
     pod 'WebimClientLibrary', :path => '../'
     
     pod 'Cosmos', :inhibit_warnings => true
-    pod 'CryptoSwift', :inhibit_warnings => true
     pod 'SlackTextViewController', :inhibit_warnings => true
     pod 'SnapKit', :inhibit_warnings => true
     pod 'SQLite.swift', :inhibit_warnings => true
-    pod 'PopupDialog', :inhibit_warnings => true
+    pod 'PopupDialog', '~> 0.6.2', :inhibit_warnings => true
     
     
     target 'WebimClientLibrary_Tests' do
@@ -23,7 +22,7 @@ target 'WebimClientLibrary_Example' do
     
     post_install do |installer|
         installer.pods_project.targets.each do |target|
-            if target.name == 'Cosmos' || target.name == 'CryptoSwift' || target.name == 'SnapKit' || target.name == 'WebimClientLibrary'
+            if target.name == 'Cosmos' || target.name == 'SnapKit' || target.name == 'WebimClientLibrary'
                 target.build_configurations.each do |config|
                     config.build_settings['SWIFT_VERSION'] = '4.0'
                 end

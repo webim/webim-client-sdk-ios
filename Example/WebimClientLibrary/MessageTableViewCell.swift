@@ -145,20 +145,36 @@ class MessageTableViewCell: UITableViewCell {
         switch messageType {
         case .ACTION_REQUEST:
             layoutActionRequest(message: message)
+            
+            break
         case .CONTACTS_REQUEST:
             layoutOperator(message: message)
+            
+            break
         case .FILE_FROM_OPERATOR:
             layoutFileFromOperator(message: message)
+            
+            break
         case .FILE_FROM_VISITOR:
             layoutFileFromVisitor(message: message)
+            
+            break
         case .INFO:
             layoutInfo(message: message)
+            
+            break
         case .OPERATOR:
             layoutOperator(message: message)
+            
+            break
         case .OPERATOR_BUSY:
             layoutOperatorBusy(message: message)
+            
+            break
         case .VISITOR:
             layoutVisitor(message: message)
+            
+            break
         }
     }
     

@@ -60,6 +60,11 @@ class ChatViewController: SLKTextViewController {
         setupWebimSession()
     }
     
+    // For testing purposes.
+    func set(messages: [Message]) {
+        self.messages = messages
+    }
+    
     // MARK: SlackTextViewController methods
     
     override func textViewDidChange(_ textView: UITextView) {
@@ -188,6 +193,11 @@ class ChatViewController: SLKTextViewController {
                                                           comment: "")
         leftButton.accessibilityHint = NSLocalizedString(LeftButton.ACCESSIBILITY_HINT.rawValue,
                                                          comment: "")
+        
+        rightButton.setImage(#imageLiteral(resourceName: "SendMessageIcon"),
+                             for: .normal)
+        rightButton.setTitle(nil,
+                             for: .normal)
     }
     
     /**
@@ -313,17 +323,13 @@ class ChatViewController: SLKTextViewController {
             if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
                 let message = messages[tapIndexPath.row]
                 
-                if let attachment = message.getAttachment(),
-                    let fileName = attachment.getFileName(),
-                    let attachmentURL = attachment.getURL() {
+                if let attachment = message.getAttachment() {
+                    let attachmentURL = attachment.getURL()
+                    
                     var popupMessage: String?
                     var image: UIImage?
                     
-                    let attachmentContentType = attachment.getContentType()
-                    if (attachmentContentType == "image/gif")
-                        || (attachmentContentType == "image/jpeg")
-                        || (attachmentContentType == "image/png")
-                        || (attachmentContentType == "image/tiff") {
+                    if isImage(contentType: attachment.getContentType()) {
                         let semaphore = DispatchSemaphore(value: 0)
                         let request = URLRequest(url: attachmentURL)
                         
@@ -357,7 +363,7 @@ class ChatViewController: SLKTextViewController {
                     button.accessibilityHint = NSLocalizedString(ShowFileDialog.ACCESSIBILITY_HINT.rawValue,
                                                                  comment: "")
                     
-                    let popup = PopupDialog(title: fileName,
+                    let popup = PopupDialog(title: attachment.getFileName(),
                                             message: popupMessage,
                                             image: image,
                                             buttonAlignment: .horizontal,
@@ -371,6 +377,24 @@ class ChatViewController: SLKTextViewController {
                 }
             }
         }
+    }
+    
+    /**
+     Check if passed MIME type is supproted image type.
+     - parameter contentType:
+     MIME type.
+     - returns:
+     True if passed MIME type is supported image type and false otherwise.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    private func isImage(contentType: String) -> Bool {
+        return ((contentType == "image/gif")
+            || (contentType == "image/jpeg")
+            || (contentType == "image/png")
+            || (contentType == "image/tiff"))
     }
     
     /**
@@ -448,15 +472,14 @@ extension ChatViewController: UIImagePickerControllerDelegate {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             let imageData = UIImagePNGRepresentation(image)!
             
-            if let imageURL = info[UIImagePickerControllerReferenceURL] as? NSURL {
-                if let imageName = imageURL.lastPathComponent {
-                    let mimeType = MimeType(url: imageURL as URL)
-                    
-                    webimService.send(file: imageData,
-                                      fileName: imageName,
-                                      mimeType: mimeType.value,
-                                      completionHandler: self)
-                }
+            if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
+                let imageName = imageURL.lastPathComponent
+                let mimeType = MimeType(url: imageURL as URL)
+                
+                webimService.send(file: imageData,
+                                  fileName: imageName,
+                                  mimeType: mimeType.value,
+                                  completionHandler: self)
             }
         }
         
@@ -577,9 +600,13 @@ extension ChatViewController: SendFileCompletionHandler {
             case .FILE_SIZE_EXCEEDED:
                 message = NSLocalizedString(SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue,
                                             comment: "")
+                
+                break
             case .FILE_TYPE_NOT_ALLOWED:
                 message = NSLocalizedString(SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue,
                                             comment: "")
+                
+                break
             }
             
             let popupDialog = PopupDialog(title: NSLocalizedString(SendFileErrorMessage.TITLE.rawValue,
