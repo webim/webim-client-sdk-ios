@@ -123,14 +123,18 @@ Specific remote notification object can be getted through `Webim` class `parse(r
 For iOS to be able to handle remote notifications automatically your app must be aware of possible remote notification types and arguments.
 
 Possible `loc-key` values:
+* `P.CR` means that operator sent contact information request.
 * `P.OA` means that operator accepted chat.
 * `P.OF` means that operator sent a flie.
 * `P.OM` means that operator sent a text message.
+* `P.WM` means that operator sent a widget message (for this functionality support one should contact _Webim_ support).
 
 `loc-args` values for this types:
+* `P.CR`: empty.
 * `P.OA`: operator's name.
 * `P.OF`: operator's name, file name.
 * `P.OM`: operator's name, message text.
+* `P.WM`: empty.
 
 Remote notification handling with Strings.localizable file example:
 ```
