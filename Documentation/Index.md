@@ -112,22 +112,22 @@
     -   [ONLINE case](#online)
     -   [UNKNOWN case](#unknown-session-online-status)
 -   [VisitSessionState enum](#visit-session-state)
-   -   [CHAT case](#chat-visit-session-state)
-   -   [DEPARTMENT_SELECTION case](#department-selection)
-   -   [IDLE case](#idle)
-   -   [IDLE_AFTER_CHAT case](#idle-after-chat)
-   -   [OFFLINE_MESSAGE case](#offline-message)
-   -   [UNKNOWN case](#unknown-visit-session-state)
+    -   [CHAT case](#chat-visit-session-state)
+    -   [DEPARTMENT_SELECTION case](#department-selection)
+    -   [IDLE case](#idle)
+    -   [IDLE_AFTER_CHAT case](#idle-after-chat)
+    -   [OFFLINE_MESSAGE case](#offline-message)
+    -   [UNKNOWN case](#unknown-visit-session-state)
 -   [DataMessageError enum](#data-message-error)
-   -   [UNKNOWN case](#unknown-data-message-error)
-   -   [QUOTED_MESSAGE_CANNOT_BE_REPLIED case](#quoted-message-cannot-be-replied)
-   -   [QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case](#quoted-message-from-another-visitor)
-   -   [QUOTED_MESSAGE_MULTIPLE_IDS case](#quoted-message-multiple-ids)
-   -   [QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case](#quoted-message-required-arguments-missing)
-   -   [QUOTED_MESSAGE_WRONG_ID case](#quoted-message-wrong-id)
+    -   [UNKNOWN case](#unknown-data-message-error)
+    -   [QUOTED_MESSAGE_CANNOT_BE_REPLIED case](#quoted-message-cannot-be-replied)
+    -   [QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case](#quoted-message-from-another-visitor)
+    -   [QUOTED_MESSAGE_MULTIPLE_IDS case](#quoted-message-multiple-ids)
+    -   [QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case](#quoted-message-required-arguments-missing)
+    -   [QUOTED_MESSAGE_WRONG_ID case](#quoted-message-wrong-id)
 -   [SendFileError enum](#send-file-error)
-   -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
-   -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
+    -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
+    -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
 -   [RateOperatorError enum](#rate-operator-error)
     -   [NO_CHAT case](#no-chat)
     -   [WRONG_OPERATOR_ID case](#wrong-operator-id)
@@ -198,9 +198,11 @@
     -   [getEvent() method](#get-event)
     -   [getParameters() method](#get-parameters)
 -   [NotificationType enum](#notification-type)
+    -   [CONTACT_INFORMATION_REQUEST](#contact-information-request)
     -   [OPERATOR_ACCEPTED case](#operator-accepted)
     -   [OPERATOR_FILE case](#operator-file)
     -   [OPERATOR_MESSAGE case](#operator-message)
+    -   [WIDGET case](#widget)
 -   [NotificationEvent enum](#notification-event)
     -   [ADD case](#add)
     -   [DELETE case](#delete)
@@ -518,9 +520,9 @@ Returns previous rating of the operator or `0` if it was not rated before.
 
 Rates an operator.
 To get an ID of the current operator call [getCurrentOperator()](#get-current-operator).
-id parameter – String-typed ID of the operator to be rated.
-rating parameter – a number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
-completionHandler parameter – [RateOperatorCompletionHandler](#rate-operator-completion-handler) object.
+`id` parameter – String-typed ID of the operator to be rated. Optional: if `nil` is passed, current chat operator will be rated.
+`rating` parameter – a number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
+`completionHandler` parameter – [RateOperatorCompletionHandler](#rate-operator-completion-handler) object.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat">startChat() method</h3>
@@ -933,7 +935,7 @@ Arised when trying to send operator rating request if no chat is exists.
 
 <h3 id ="wrong-operator-id">WRONG_OPERATOR_ID case</h3>
 
-Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator.
+Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator  (or, in the same place, chat doesn't have an operator at all).
 
 [Go to table of contents](#table-of-contents)
 
@@ -1287,6 +1289,12 @@ Returns parameters of this remote notification of array of type `String` type. E
 
 Represents payload type of remote notification.
 
+<h3 id ="contact-information-request">CONTACT_INFORMATION_REQUEST case</h3>
+
+This notification type indicated that contact information request is sent to a visitor.
+
+Parameters: empty.
+
 <h3 id ="operator-accepted">OPERATOR_ACCEPTED case</h3>
 
 This notification type indicated that an operator has connected to a dialogue.
@@ -1309,6 +1317,13 @@ This notification type indicated that an operator has sent a text message.
 Parameters:
 * Operator's name;
 * Message text.
+
+<h3 id ="widget">WIDGET case</h3>
+
+This notification type indicated that an operator has sent a widget message.
+This type can be received only if server supports this functionality.
+
+Parameters: empty.
 
 [Go to table of contents](#table-of-contents)
 
