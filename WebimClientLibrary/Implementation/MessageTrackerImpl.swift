@@ -134,7 +134,7 @@ final class MessageTrackerImpl {
         
         if let headMessage = headMessage {
             if headMessage.getSource().isHistoryMessage() {
-                if previousVersion === headMessage {
+                if previousVersion == headMessage {
                     self.headMessage = newVersion
                 }
                 
@@ -145,7 +145,7 @@ final class MessageTrackerImpl {
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                     if currentChatMessage.getID() == headMessage.getID() {
                         if index >= currentChatMessageIndex {
-                            if previousVersion === headMessage {
+                            if previousVersion == headMessage {
                                 self.headMessage = newVersion
                             }
                             
@@ -219,7 +219,7 @@ final class MessageTrackerImpl {
             try message.getSource().assertIsHistory()
         } catch {
             WebimInternalLogger.shared.log(entry: "Message which is being changed is not a part of history: \(message.toString()).",
-                verbosityLevel: .DEBUG)
+                                           verbosityLevel: .DEBUG)
         }
         
         
@@ -233,7 +233,7 @@ final class MessageTrackerImpl {
                                             to: message)
                 } else {
                     WebimInternalLogger.shared.log(entry: "Unknown message was changed: \(message.toString())",
-                        verbosityLevel: .DEBUG)
+                                                   verbosityLevel: .DEBUG)
                 }
             }
         }
@@ -245,7 +245,7 @@ final class MessageTrackerImpl {
             try message.getSource().assertIsHistory()
         } catch {
             WebimInternalLogger.shared.log(entry: "Message which is being added is not a part of history: \(message.toString()).",
-                verbosityLevel: .DEBUG)
+                                           verbosityLevel: .DEBUG)
         }
         
         
@@ -302,7 +302,7 @@ final class MessageTrackerImpl {
                     
                     let replacingMessage = historyMessage.transferToCurrentChat(message: message)
                     currentChatMessages.append(replacingMessage)
-                    if (replacingMessage !== historyMessage) {
+                    if (replacingMessage != historyMessage) {
                         messageListener.changed(message: historyMessage,
                                                 to: replacingMessage)
                     }
@@ -360,6 +360,8 @@ final class MessageTrackerImpl {
             self?.receive(messages: messages as! [MessageImpl],
                           limit: limit,
                           completion: completion)
+            
+            self?.messagesLoading = false
         }
         
         if headMessage != nil {
@@ -448,8 +450,6 @@ final class MessageTrackerImpl {
             allMessageSourcesEnded = true
         }
         
-        messagesLoading = false
-        
         completion(result!)
     }
     
@@ -487,17 +487,19 @@ extension MessageTrackerImpl: MessageTracker {
             cachedCompletionHandler = MessageHolderCompletionHandlerWrapper(completionHandler: completion)
             cachedLimit = limitOfMessages
             
-            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { messages in
-                if let cachedCompletionHandler = self.cachedCompletionHandler,
+            messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
+                if let cachedCompletionHandler = self?.cachedCompletionHandler,
                     !messages.isEmpty {
-                    self.firstHistoryUpdateReceived = true
+                    self?.firstHistoryUpdateReceived = true
                     
                     let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
-                    self.receive(messages: messages as! [MessageImpl],
-                                 limit: limitOfMessages,
-                                 completion: completionHandlerToPass)
+                    self?.receive(messages: messages as! [MessageImpl],
+                                  limit: limitOfMessages,
+                                  completion: completionHandlerToPass)
                     
-                    self.cachedCompletionHandler = nil
+                    self?.cachedCompletionHandler = nil
+                    
+                    self?.messagesLoading = false
                 }
             }
         } else {
@@ -552,6 +554,8 @@ extension MessageTrackerImpl: MessageTracker {
                                   completion: completionHandlerToPass)
                     
                     self?.cachedCompletionHandler = nil
+                    
+                    self?.messagesLoading = false
                 }
             }
         }
@@ -583,7 +587,7 @@ extension MessageTrackerImpl: MessageTracker {
         }
         
         let unwrappedMessage = message as! MessageImpl
-        if unwrappedMessage !== headMessage {
+        if unwrappedMessage != headMessage {
             messageHolder.set(reachedEndOfLocalHistory: false)
         }
         if unwrappedMessage.getSource().isHistoryMessage() {

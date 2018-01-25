@@ -1,9 +1,9 @@
 //
-//  UITableView.swift
+//  UIViewController.swift
 //  WebimClientLibrary_Example
 //
-//  Created by Nikita Lazarev-Zubov on 03.01.18.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by Nikita Lazarev-Zubov on 24.01.18.
+//  Copyright © 2018 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,38 +26,43 @@
 
 import UIKit
 
-extension UITableView {
+extension UIViewController {
     
     // MARK: - Methods
+    
     /**
-     Sets text message to table view background view to show if table view is empty.
-     Code example inside `numberOfSections(in tableView:)`:
-     ```
-     if rows.count > 0 {
-        return 1
-     } else {
-        tableView.emptyTableView(message: "Table is empty.")
-     
-        return 0
-     }
-     ```
+     Sets custom image for navigation bar back button.
+     - parameter image:
+     Image to set.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
-     2017 Webim
+     2018 Webim
      */
-    func emptyTableView(message: NSAttributedString) {
-        let messageLabel = UILabel(frame: CGRect(x: 0.0,
-                                                 y: 0.0,
-                                                 width: self.bounds.size.width,
-                                                 height: self.bounds.size.height))
-        messageLabel.attributedText = message
-        messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .center
-        messageLabel.sizeToFit()
-        
-        self.backgroundView = messageLabel
-        self.separatorStyle = .none
+    func setBackButton(image: UIImage) {
+        let backButton = UIButton(type: .custom)
+        backButton.setImage(image,
+                            for: .normal)
+        backButton.accessibilityLabel = BackButton.ACCESSIBILITY_LABEL.rawValue.localized
+        backButton.accessibilityHint = BackButton.ACCESSIBILITY_HINT.rawValue.localized
+        backButton.addTarget(self,
+                             action: #selector(backButtonClick(sender:)),
+                             for: .touchUpInside)
+        let leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        self.navigationItem.leftBarButtonItem = leftBarButtonItem
+    }
+    
+    // MARK: Private methods
+    /**
+     Pops current view controller.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    @objc
+    private func backButtonClick(sender: UIButton) {
+        self.navigationController?.popViewController(animated: true);
     }
     
 }

@@ -66,7 +66,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                     <color key="titleColor" red="0.26418037130142835" green="0.26418037130142835" blue="0.26418037130142835" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="b0b-FK-5tW" kind="show" identifier="ShowChatViewController" id="0zw-c1-liK"/>
+                                    <segue destination="b0b-FK-5tW" kind="show" identifier="ShowChatViewController" id="ogv-Sq-dxa"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -236,7 +236,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5E6-DH-fjS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1310" y="37"/>
+            <point key="canvasLocation" x="1260" y="37"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="yDz-A0-jZT">

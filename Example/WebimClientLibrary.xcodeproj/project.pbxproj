@@ -31,6 +31,8 @@
 		CEA832681F9906C0004845F0 /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832671F9906BF004845F0 /* ColorConstants.swift */; };
 		CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA832691F99079A004845F0 /* StringConstants.swift */; };
 		CEA849051FFCE29A006CC417 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA849041FFCE29A006CC417 /* UITableView.swift */; };
+		CEBFB67F2018CB0F00D9E5F6 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFB67E2018CB0F00D9E5F6 /* String.swift */; };
+		CEBFB6812018E50500D9E5F6 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFB6802018E50500D9E5F6 /* UIViewController.swift */; };
 		CED72596200E20EF00CD1623 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED72594200E20E500CD1623 /* ChatViewControllerTests.swift */; };
 		CED72599200E5B2200CD1623 /* WebimInternalLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED72597200E5B1C00CD1623 /* WebimInternalLoggerTests.swift */; };
 		CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF61A381F82A4C700BF7071 /* ChatViewController.swift */; };
@@ -88,6 +90,8 @@
 		CEA832671F9906BF004845F0 /* ColorConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
 		CEA832691F99079A004845F0 /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		CEA849041FFCE29A006CC417 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
+		CEBFB67E2018CB0F00D9E5F6 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		CEBFB6802018E50500D9E5F6 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		CED72594200E20E500CD1623 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		CED72597200E5B1C00CD1623 /* WebimInternalLoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimInternalLoggerTests.swift; sourceTree = "<group>"; };
 		CEF61A381F82A4C700BF7071 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -226,9 +230,11 @@
 		CE45EDDB1F9108E200F56319 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CEBFB67E2018CB0F00D9E5F6 /* String.swift */,
 				DDFC632A1F924D41008E1ACC /* UIImage.swift */,
 				CE45EDDC1F9108FA00F56319 /* UIImageView.swift */,
 				CEA849041FFCE29A006CC417 /* UITableView.swift */,
+				CEBFB6802018E50500D9E5F6 /* UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -492,12 +498,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */,
+				CEBFB67F2018CB0F00D9E5F6 /* String.swift in Sources */,
 				607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */,
 				CEA849051FFCE29A006CC417 /* UITableView.swift in Sources */,
 				CE88BCD31FCD88EA00A4FA2E /* Settings.swift in Sources */,
 				CE45EDDD1F9108FA00F56319 /* UIImageView.swift in Sources */,
 				CE44AE651F87CA8E009787E5 /* MessageTableViewCell.swift in Sources */,
 				CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */,
+				CEBFB6812018E50500D9E5F6 /* UIViewController.swift in Sources */,
 				DDFC632B1F924D41008E1ACC /* UIImage.swift in Sources */,
 				CEF61A391F82A4C700BF7071 /* ChatViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,

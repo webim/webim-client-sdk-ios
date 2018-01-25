@@ -135,7 +135,7 @@ public protocol MessageStream {
      - SeeAlso:
      `RateOperatorCompletionHandler` protocol.
      - parameter id:
-     ID of the operator to be rated.
+     ID of the operator to be rated. If passed `nil` current chat operator will be rated.
      - parameter rate:
      A number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
      - parameter comletionHandler:
@@ -148,7 +148,7 @@ public protocol MessageStream {
      - Copyright:
      2017 Webim
      */
-    func rateOperatorWith(id: String,
+    func rateOperatorWith(id: String?,
                           byRating rating: Int,
                           comletionHandler: RateOperatorCompletionHandler?) throws
     
@@ -1115,7 +1115,7 @@ public enum RateOperatorError: Error {
     case NO_CHAT
     
     /**
-     Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator.
+     Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator (or, in the same place, chat doesn't have an operator at all).
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:

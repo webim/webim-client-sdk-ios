@@ -58,7 +58,7 @@ class ChatViewControllerTests: XCTestCase {
     func testBackgroundViewEmpty() {
         // MARK: Set up
         var messages = [Message]()
-        for index in 0...2 {
+        for index in 0 ... 2 {
             let message = MessageImpl(serverURLString: "http://demo.webim.ru/",
                                       id: String(index),
                                       operatorID: nil,

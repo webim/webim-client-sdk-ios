@@ -53,7 +53,7 @@ class StartViewController: UIViewController {
         setupSettingstButton()
         
         // Xcode does not localize UITextView text automatically.
-        welcomeTextView.text = NSLocalizedString("Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios",
+        welcomeTextView.text = NSLocalizedString(START_TEXT_VIEW,
                                                  tableName: "Main",
                                                  bundle: .main,
                                                  value: "",
@@ -87,7 +87,9 @@ class StartViewController: UIViewController {
      2017 Webim
      */
     private func setupStartChatButton() {
-        startChatButton.layer.cornerRadius = CORNER_RADIOUS
+        startChatButton.layer.cornerRadius = CORNER_RADIUS
+        startChatButton.layer.borderWidth = LIGHT_BORDER_WIDTH
+        startChatButton.layer.borderColor = GREY_COLOR.cgColor
     }
     
     /**
@@ -98,7 +100,7 @@ class StartViewController: UIViewController {
      2017 Webim
      */
     private func setupSettingstButton() {
-        settingsButton.layer.cornerRadius = CORNER_RADIOUS
+        settingsButton.layer.cornerRadius = CORNER_RADIUS
         settingsButton.layer.borderWidth = BORDER_WIDTH
         settingsButton.layer.borderColor = GREY_COLOR.cgColor
     }

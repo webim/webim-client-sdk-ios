@@ -26,14 +26,24 @@
 
 import Foundation
 
-let EMPTY_TABLE_VIEW_TEXT = NSAttributedString(string: NSLocalizedString("EmptyChat",
-                                                                         comment: ""))
-let REFRESH_CONTROL_TEXT = NSAttributedString(string: NSLocalizedString("LoadingMessages",
-                                                                        comment: ""))
+let EMPTY_TABLE_VIEW_TEXT = NSAttributedString(string: "EmptyChat".localized)
+let REFRESH_CONTROL_TEXT = NSAttributedString(string: "LoadingMessages".localized)
+let SETTINGS_TEXT_VIEW = "If you are registered in Webim service you can use your own account name and location."
+let START_TEXT_VIEW = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"
 
 enum Avatar: String {
     case ACCESSIBILITY_LABEL = "SenderAvatarImage"
     case ACCESSIBILITY_HINT_FOR_OPERATOR = "ShowsRatingDialog"
+}
+
+enum BackButton: String {
+    case ACCESSIBILITY_LABEL = "Back"
+    case ACCESSIBILITY_HINT = "ClosesScreen"
+}
+
+enum CloseChatButton: String {
+    case ACCESSIBILITY_LABEL = "CloseChat"
+    case ACCESSIBILITY_HINT = "ClosesChat"
 }
 
 enum FileMessage: String {

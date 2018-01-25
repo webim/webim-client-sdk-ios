@@ -94,6 +94,7 @@ final class MemoryHistoryStorage: HistoryStorage {
                           limitOfMessages: limitOfMessages,
                           offset: index,
                           completion: completion)
+                
                 break
             }
         }

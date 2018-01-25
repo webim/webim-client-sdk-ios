@@ -556,17 +556,14 @@ extension WebimService: FatalErrorHandler {
                                  hint: String) {
         DispatchQueue.main.sync {
             if let viewController = viewController {
-                let popup = PopupDialog(title: NSLocalizedString(title,
-                                                                 comment: ""),
-                                        message: NSLocalizedString(message,
-                                                                   comment: ""))
+                let popup = PopupDialog(title: title.localized,
+                                        message: message.localized)
                 
-                let okButton = CancelButton(title: NSLocalizedString(button,
-                                                                     comment: "") ,
+                let okButton = CancelButton(title: button.localized,
                                             action: nil)
-                okButton.accessibilityHint = NSLocalizedString(hint,
-                                                               comment: "")
+                okButton.accessibilityHint = hint.localized
                 popup.addButton(okButton)
+                
                 viewController.present(popup,
                                        animated: true,
                                        completion: nil)

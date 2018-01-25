@@ -59,7 +59,7 @@ class SettingsViewController: UIViewController {
         setupSaveButton()
         
         // Xcode does not localize UITextView text automatically.
-        welcomeTextView.text = NSLocalizedString("If you are registered in Webim service you can use your own account name and location.",
+        welcomeTextView.text = NSLocalizedString(SETTINGS_TEXT_VIEW,
                                                  tableName: "Main",
                                                  bundle: .main,
                                                  value: "",
@@ -74,15 +74,13 @@ class SettingsViewController: UIViewController {
         let pageTitle = pageTitleTextField.text!
         
         if accountName.isEmpty {
-            showSettingsAlert(withMessage: NSLocalizedString(SettingsErrorDialog.WRONG_ACCOUNT_NAME_MESSAGE.rawValue,
-                                                             comment: ""))
+            showSettingsAlert(withMessage: SettingsErrorDialog.WRONG_ACCOUNT_NAME_MESSAGE.rawValue.localized)
             
             return false
         }
         
         if location.isEmpty {
-            showSettingsAlert(withMessage: NSLocalizedString(SettingsErrorDialog.WRONG_LOCATION_MESSAGE.rawValue,
-                                                             comment: ""))
+            showSettingsAlert(withMessage: SettingsErrorDialog.WRONG_LOCATION_MESSAGE.rawValue.localized)
             
             return false
         }
@@ -107,6 +105,15 @@ class SettingsViewController: UIViewController {
      2017 Webim
      */
     private func setupNavigationItem() {
+        self.setBackButton(image: #imageLiteral(resourceName: "Back"))
+        
+        // Need for title view to be centered.
+        let closeChatButton = UIButton(type: .custom)
+        closeChatButton.setImage(#imageLiteral(resourceName: "Empty"),
+                                 for: .normal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeChatButton)
+        
+        // Setting an image to NavigationItem TitleView.
         let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
         navigationItemImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = navigationItemImageView
@@ -120,7 +127,9 @@ class SettingsViewController: UIViewController {
      2017 Webim
      */
     private func setupSaveButton() {
-        saveButton.layer.cornerRadius = CORNER_RADIOUS
+        saveButton.layer.borderWidth = LIGHT_BORDER_WIDTH
+        saveButton.layer.borderColor = GREY_COLOR.cgColor
+        saveButton.layer.cornerRadius = CORNER_RADIUS
     }
     
     /**
@@ -134,15 +143,12 @@ class SettingsViewController: UIViewController {
      2017 Webim
      */
     private func showSettingsAlert(withMessage message: String) {
-        let popup = PopupDialog(title: NSLocalizedString(SettingsErrorDialog.TITLE.rawValue,
-                                                         comment: "") ,
+        let popup = PopupDialog(title: SettingsErrorDialog.TITLE.rawValue.localized,
                                 message: message)
         
-        let okButton = CancelButton(title: NSLocalizedString(SettingsErrorDialog.BUTTON_TITLE.rawValue,
-                                                             comment: ""),
+        let okButton = CancelButton(title: SettingsErrorDialog.BUTTON_TITLE.rawValue.localized,
                                     action: nil)
-        okButton.accessibilityHint = NSLocalizedString(SettingsErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue,
-                                                       comment: "") 
+        okButton.accessibilityHint = SettingsErrorDialog.BUTTON_ACCESSIBILITY_HINT.rawValue.localized
         popup.addButton(okButton)
         self.present(popup,
                      animated: true,

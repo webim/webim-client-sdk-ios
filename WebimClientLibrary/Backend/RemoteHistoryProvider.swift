@@ -53,6 +53,8 @@ class RemoteHistoryProvider {
                         completion: @escaping ([MessageImpl], Bool) -> ()) {
         webimActions.requestHistory(beforeMessageTimestamp: beforeTimestamp) { data in
             guard data != nil else {
+                completion([MessageImpl](), false)
+                
                 return
             }
             
@@ -67,6 +69,8 @@ class RemoteHistoryProvider {
                     if historyBeforeResponse.getData()?.isHasMore() != true {
                         self.historyMetaInformationStorage.set(historyEnded: true)
                     }
+                } else {
+                    completion([MessageImpl](), false)
                 }
             }
         }

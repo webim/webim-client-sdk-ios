@@ -104,7 +104,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         }
         
         queue = DispatchQueue(label: "ru.webim.DeltaDispatchQueue")
-        queue?.async {
+        queue!.async {
             self.run()
         }
     }
@@ -237,7 +237,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func getDeltaServerURLString() -> String! {
-        return baseURL + WebimActions.ServerPathSuffix.GET_DELTA.rawValue
+        return (baseURL + WebimActions.ServerPathSuffix.GET_DELTA.rawValue)
     }
     
     private func getInitializationParameterString() -> String {
@@ -246,9 +246,8 @@ final class DeltaRequestLoop: AbstractRequestLoop {
                                    WebimActions.Parameter.LOCATION.rawValue: location,
                                    WebimActions.Parameter.PLATFORM.rawValue: WebimActions.Platform.IOS.rawValue,
                                    WebimActions.Parameter.RESPOND_IMMEDIATELY.rawValue: String(1), // true
-            WebimActions.Parameter.SINCE.rawValue: String(0),
-            WebimActions.Parameter.TITLE.rawValue: title,
-            WebimActions.Parameter.TIMESTAMP.rawValue: String(Int(Date().timeIntervalSince1970))] as [String: Any]
+                                   WebimActions.Parameter.SINCE.rawValue: String(0),
+                                   WebimActions.Parameter.TITLE.rawValue: title] as [String: Any]
         if let appVersion = appVersion {
             parameterDictionary[WebimActions.Parameter.APP_VERSION.rawValue] = appVersion
         }

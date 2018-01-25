@@ -26,5 +26,7 @@
 
 import UIKit
 
+// Buttons
 let BORDER_WIDTH: CGFloat = 2.0
-let CORNER_RADIOUS: CGFloat = 5.0
+let CORNER_RADIUS: CGFloat = 5.0
+let LIGHT_BORDER_WIDTH: CGFloat = 0.5

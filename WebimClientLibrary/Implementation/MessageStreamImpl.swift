@@ -113,7 +113,7 @@ final class MessageStreamImpl {
         let previousChat = self.chat
         self.chat = chat
         
-        if self.chat !== previousChat {
+        if self.chat != previousChat {
             messageHolder.receiving(newChat: self.chat,
                                     previousChat: previousChat,
                                     newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: self.chat!.getMessages()))
@@ -314,7 +314,7 @@ extension MessageStreamImpl: MessageStream {
     }
     
     
-    func rateOperatorWith(id: String,
+    func rateOperatorWith(id: String?,
                           byRating rating: Int,
                           comletionHandler: RateOperatorCompletionHandler?) throws {
         if let ratingValue = convertToInternal(rating: rating) {

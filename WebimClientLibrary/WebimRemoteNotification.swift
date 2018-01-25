@@ -91,6 +91,16 @@ public protocol WebimRemoteNotification {
 public enum NotificationType {
     
     /**
+     This notification type indicated that contact information request is sent to a visitor.
+     Parameters: empty.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case CONTACT_INFORMATION_REQUEST
+    
+    /**
      This notification type indicated that an operator has connected to a dialogue.
      Parameters:
      * Operator's name.
@@ -124,6 +134,18 @@ public enum NotificationType {
      2017 Webim
      */
     case OPERATOR_MESSAGE
+    
+    /**
+     This notification type indicated that an operator has sent a widget message.
+     Parameters: empty.
+     - important:
+     This type can be received only if server supports this functionality.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case WIDGET
 }
 
 /**

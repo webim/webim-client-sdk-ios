@@ -210,23 +210,23 @@ final class WebimClient {
     // MARK: - Methods
     
     func start() {
-        actionRequestLoop.start()
         deltaRequestLoop.start()
+        actionRequestLoop.start()
     }
     
     func pause() {
-        actionRequestLoop.pause()
         deltaRequestLoop.pause()
+        actionRequestLoop.pause()
     }
     
     func resume() {
-        actionRequestLoop.resume()
         deltaRequestLoop.resume()
+        actionRequestLoop.resume()
     }
     
     func stop() {
-        actionRequestLoop.stop()
         deltaRequestLoop.stop()
+        actionRequestLoop.stop()
     }
     
     func set(deviceToken: String) {
@@ -247,7 +247,6 @@ final class WebimClient {
 // MARK: -
 // Need to update AuthorizationData in ActionRequestLoop on update in DeltaRequestLoop.
 /**
- Class that is responsible for history storage when it is set to memory mode.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:

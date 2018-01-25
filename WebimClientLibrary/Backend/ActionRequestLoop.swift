@@ -77,14 +77,15 @@ final class ActionRequestLoop: AbstractRequestLoop {
             if self.authorizationData == nil {
                 self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil)
             }
+            let usedAuthorizationData = self.authorizationData!
             
             if !self.isRunning() {
                 return
             }
             
             var parameterDictionary = request.getPrimaryData()
-            parameterDictionary[WebimActions.Parameter.PAGE_ID.rawValue] = self.authorizationData!.getPageID()
-            parameterDictionary[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = self.authorizationData!.getAuthorizationToken()
+            parameterDictionary[WebimActions.Parameter.PAGE_ID.rawValue] = usedAuthorizationData.getPageID()
+            parameterDictionary[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = usedAuthorizationData.getAuthorizationToken()
             let parametersString = parameterDictionary.stringFromHTTPParameters()
             
             var url: URL?
@@ -119,7 +120,8 @@ final class ActionRequestLoop: AbstractRequestLoop {
                     if let error = dataJSON?[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
                         switch error {
                         case WebimInternalError.REINIT_REQUIRED.rawValue:
-                            self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: self.authorizationData)
+                            self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: usedAuthorizationData)
+                            self.enqueue(request: request)
                             
                             break
                         case WebimInternalError.FILE_SIZE_EXCEEDED.rawValue,

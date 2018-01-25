@@ -10,7 +10,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.11.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.12.0'
 ```
 `use_frameworks!` must be specified.
 
@@ -18,7 +18,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.11.0
+github "webim/webim-client-sdk-ios" ~> 3.12.0
 ```
 
 ### Additional notes
@@ -35,19 +35,15 @@ If you're already using previous version and don't plan to jump on the new one y
 
 ## Release notes
 
-* `set(webimLogger:verbosityLevel:)` now has optional parameter `verbosityLevel` (see `SessionBuilder.WebimLoggerVerbosityLevel`).
-* `getLastMessages(byLimit:completion:)`, `getNextMessages(byLimit:completion:)`, `getAllMessages(completion:)` methods of `MessageTracker` protocol in case of wrong calling now execute passed completion with empty `Message` array.
-* `getContentType()`, `getFileName()` and `getURL()` methods of `MessageAttachment` protocol now return non-optional values.
-* _CryptoSwift_ dependency liquidated.
-* `new(messageTracker:)` method of `MessageStream` renamed to more adequate `newMessageTracker(messageListener:)`.
-* Bug with `nil` `Operator` ID fixed.
-* Bug with not updating value of `getUnreadByVisitorTimesamp()` method of `MessageStream` fixed.
-* Documentation improvements.
-* Other minor improvements and bug fixes.
+* `rateOperatorWith(id:byRating:comletionHandler:)` method of `MessageStream` protocol now can take `nil` value of <operator> `id` parameter. If so, current operator will be rated.
+* Contact information request and widget remote notifications type basic support added.
+* Some history request bugs fixed:
+    - Case when initial history request fails and prevents further requests fixed.
+    - Case when further history request doesn't call passed completion.
+* Other minor improvements.
 
 ### Example app
-* New app icon. 😎
-* Interface improvements.
+* Appearance improvements.
 * Other minor improvements.
 
 ## Example

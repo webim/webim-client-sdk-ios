@@ -187,17 +187,17 @@ class ChatViewController: SLKTextViewController {
     private func setupSlackTextViewController() {
         isInverted = false
         
-        leftButton.setImage(#imageLiteral(resourceName: "ClipIcon"),
+        leftButton.setImage(#imageLiteral(resourceName: "Clip"),
                             for: .normal)
-        leftButton.accessibilityLabel = NSLocalizedString(LeftButton.ACCESSIBILITY_LABEL.rawValue,
-                                                          comment: "")
-        leftButton.accessibilityHint = NSLocalizedString(LeftButton.ACCESSIBILITY_HINT.rawValue,
-                                                         comment: "")
+        leftButton.accessibilityLabel = LeftButton.ACCESSIBILITY_LABEL.rawValue.localized
+        leftButton.accessibilityHint = LeftButton.ACCESSIBILITY_HINT.rawValue.localized
         
-        rightButton.setImage(#imageLiteral(resourceName: "SendMessageIcon"),
+        rightButton.setImage(#imageLiteral(resourceName: "SendMessage"),
                              for: .normal)
         rightButton.setTitle(nil,
                              for: .normal)
+        
+        textInputbar.backgroundColor = MAIN_BACKGROUND_COLOR
     }
     
     /**
@@ -208,9 +208,17 @@ class ChatViewController: SLKTextViewController {
      2017 Webim
      */
     private func setupNavigationItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,
-                                                            target: self,
-                                                            action: #selector(endChat))
+        self.setBackButton(image: #imageLiteral(resourceName: "Back"))
+        
+        let closeChatButton = UIButton(type: .custom)
+        closeChatButton.setImage(#imageLiteral(resourceName: "Close"),
+                                 for: .normal)
+        closeChatButton.accessibilityLabel = CloseChatButton.ACCESSIBILITY_LABEL.rawValue.localized
+        closeChatButton.accessibilityHint = CloseChatButton.ACCESSIBILITY_HINT.rawValue.localized
+        closeChatButton.addTarget(self,
+                                  action: #selector(endChat),
+                                  for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeChatButton)
         
         // Setting an image to NavigationItem TitleView.
         let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
@@ -255,7 +263,8 @@ class ChatViewController: SLKTextViewController {
      - Copyright:
      2017 Webim
      */
-    @objc private func requestMessages() {
+    @objc
+    private func requestMessages() {
         webimService.getNextMessages() { [weak self] messages in
             self?.messages.insert(contentsOf: messages,
                                   at: 0)
@@ -277,7 +286,8 @@ class ChatViewController: SLKTextViewController {
      - Copyright:
      2017 Webim
      */
-    @objc private func endChat() {
+    @objc
+    private func endChat() {
         webimService.closeChat()
         
         if let operatorID = lastOperatorID {
@@ -296,7 +306,8 @@ class ChatViewController: SLKTextViewController {
      - Copyright:
      2017 Webim
      */
-    @objc private func rateOperator(_ recognizer: UITapGestureRecognizer) {
+    @objc
+    private func rateOperator(_ recognizer: UITapGestureRecognizer) {
         if recognizer.state == .ended {
             let tapLocation = recognizer.location(in: tableView)
             if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
@@ -317,7 +328,8 @@ class ChatViewController: SLKTextViewController {
      - Copyright:
      2017 Webim
      */
-    @objc private func showFile(_ recognizer: UITapGestureRecognizer) {
+    @objc
+    private func showFile(_ recognizer: UITapGestureRecognizer) {
         if recognizer.state == .ended {
             let tapLocation = recognizer.location(in: tableView)
             if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
@@ -341,12 +353,10 @@ class ChatViewController: SLKTextViewController {
                                                         if let downloadedImage = UIImage(data: data) {
                                                             image = downloadedImage
                                                         } else {
-                                                            popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue,
-                                                                                             comment: "")
+                                                            popupMessage = ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue.localized
                                                         }
                                                     } else {
-                                                        popupMessage = NSLocalizedString(ShowFileDialog.INVALID_IMAGE_LINK.rawValue,
-                                                                                         comment: "")
+                                                        popupMessage = ShowFileDialog.INVALID_IMAGE_LINK.rawValue.localized
                                                     }
                                                     
                                                     semaphore.signal()
@@ -357,11 +367,9 @@ class ChatViewController: SLKTextViewController {
                         popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
                     }
                     
-                    let button = CancelButton(title: NSLocalizedString(ShowFileDialog.BUTTON_TITLE.rawValue,
-                                                                       comment: "") ,
+                    let button = CancelButton(title: ShowFileDialog.BUTTON_TITLE.rawValue.localized,
                                               action: nil)
-                    button.accessibilityHint = NSLocalizedString(ShowFileDialog.ACCESSIBILITY_HINT.rawValue,
-                                                                 comment: "")
+                    button.accessibilityHint = ShowFileDialog.ACCESSIBILITY_HINT.rawValue.localized
                     
                     let popup = PopupDialog(title: attachment.getFileName(),
                                             message: popupMessage,
@@ -407,33 +415,29 @@ class ChatViewController: SLKTextViewController {
      2017 Webim
      */
     private func showRatingDialog(forOperator operatorID: String) {
-        let ratingVC = RatingViewController(nibName: "RatingViewController",
-                                            bundle: nil)
-        let popup = PopupDialog(viewController: ratingVC,
+        let ratingViewController = RatingViewController(nibName: "RatingViewController",
+                                                        bundle: nil)
+        let popup = PopupDialog(viewController: ratingViewController,
                                 buttonAlignment: .horizontal,
                                 transitionStyle: .bounceUp,
                                 gestureDismissal: true)
         
-        let cancelButton = CancelButton(title: NSLocalizedString(RatingDialog.CANCEL_BUTTON_TITLE.rawValue,
-                                                                 comment: ""),
+        let cancelButton = CancelButton(title: RatingDialog.CANCEL_BUTTON_TITLE.rawValue.localized,
                                         height: 60,
                                         dismissOnTap: true,
                                         action: nil)
-        cancelButton.accessibilityHint = NSLocalizedString(RatingDialog.CANCEL_BUTTON_ACCESSIBILITY_HINT.rawValue,
-                                                           comment: "")
+        cancelButton.accessibilityHint = RatingDialog.CANCEL_BUTTON_ACCESSIBILITY_HINT.rawValue.localized
         
-        let rateButton = DefaultButton(title: NSLocalizedString(RatingDialog.ACTION_BUTTON_TITLE.rawValue,
-                                                                comment: "") ,
+        let rateButton = DefaultButton(title: RatingDialog.ACTION_BUTTON_TITLE.rawValue.localized,
                                        height: 60,
                                        dismissOnTap: true) { [weak self] in
                                         self?.alreadyRated[operatorID] = true
                                         
                                         self?.webimService.rateOperator(withID: operatorID,
-                                                                        byRating: Int(ratingVC.ratingView.rating),
+                                                                        byRating: Int(ratingViewController.ratingView.rating),
                                                                         completionHandler: self)
         }
-        rateButton.accessibilityHint = NSLocalizedString(RatingDialog.ACTION_BUTTON_ACCESSIBILITY_HINT.rawValue,
-                                                         comment: "")
+        rateButton.accessibilityHint = RatingDialog.ACTION_BUTTON_ACCESSIBILITY_HINT.rawValue.localized
         
         popup.addButtons([cancelButton,
                           rateButton])
@@ -598,41 +602,36 @@ extension ChatViewController: SendFileCompletionHandler {
             var message: String?
             switch error {
             case .FILE_SIZE_EXCEEDED:
-                message = NSLocalizedString(SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue,
-                                            comment: "")
+                message = SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue.localized
                 
                 break
             case .FILE_TYPE_NOT_ALLOWED:
-                message = NSLocalizedString(SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue,
-                                            comment: "")
+                message = SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue.localized
                 
                 break
             }
             
-            let popupDialog = PopupDialog(title: NSLocalizedString(SendFileErrorMessage.TITLE.rawValue,
-                                                                   comment: ""),
+            let popupDialog = PopupDialog(title: SendFileErrorMessage.TITLE.rawValue.localized,
                                           message: message)
             
-            let okButton = CancelButton(title: NSLocalizedString(SendFileErrorMessage.BUTTON_TITLE.rawValue,
-                                                                 comment: "")) { [weak self] in
-                                                                    guard let `self` = self else {
-                                                                        return
-                                                                    }
-                                                                    
-                                                                    for (index, message) in self.messages.enumerated() {
-                                                                        if message.getID() == messageID {
-                                                                            self.messages.remove(at: index)
-                                                                            
-                                                                            DispatchQueue.main.async() {
-                                                                                self.tableView?.reloadData()
-                                                                            }
-                                                                            
-                                                                            return
-                                                                        }
-                                                                    }
+            let okButton = CancelButton(title: SendFileErrorMessage.BUTTON_TITLE.rawValue.localized) { [weak self] in
+                guard let `self` = self else {
+                    return
+                }
+                
+                for (index, message) in self.messages.enumerated() {
+                    if message.getID() == messageID {
+                        self.messages.remove(at: index)
+                        
+                        DispatchQueue.main.async() {
+                            self.tableView?.reloadData()
+                        }
+                        
+                        return
+                    }
+                }
             }
-            okButton.accessibilityHint = NSLocalizedString(SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue,
-                                                           comment: "")
+            okButton.accessibilityHint = SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue.localized
             popupDialog.addButton(okButton)
             
             self.present(popupDialog,
@@ -652,18 +651,14 @@ extension ChatViewController: RateOperatorCompletionHandler {
     
     func onFailure(error: RateOperatorError) {
         DispatchQueue.main.sync {
-            let message = NSLocalizedString(RateOperatorErrorMessage.MESSAGE.rawValue,
-                                            comment: "")
+            let message = RateOperatorErrorMessage.MESSAGE.rawValue.localized
             
-            let popupDialog = PopupDialog(title: NSLocalizedString(RateOperatorErrorMessage.TITLE.rawValue,
-                                                                   comment: ""),
+            let popupDialog = PopupDialog(title: RateOperatorErrorMessage.TITLE.rawValue.localized,
                                           message: message)
             
-            let okButton = CancelButton(title: NSLocalizedString(RateOperatorErrorMessage.BUTTON_TITLE.rawValue,
-                                                                 comment: ""),
+            let okButton = CancelButton(title: RateOperatorErrorMessage.BUTTON_TITLE.rawValue.localized,
                                         action: nil)
-            okButton.accessibilityHint = NSLocalizedString(RateOperatorErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue,
-                                                           comment: "")
+            okButton.accessibilityHint = RateOperatorErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue.localized
             popupDialog.addButton(okButton)
             
             self.present(popupDialog,

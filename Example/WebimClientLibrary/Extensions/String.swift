@@ -1,9 +1,9 @@
 //
-//  MessageToSend.swift
-//  WebimClientLibrary
+//  String.swift
+//  WebimClientLibrary_Example
 //
-//  Created by Nikita Lazarev-Zubov on 17.08.17.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by Nikita Lazarev-Zubov on 24.01.18.
+//  Copyright © 2018 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,36 +26,12 @@
 
 import Foundation
 
-/**
- Message subtype which is used when message is sending by visitor at the moment.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-final class MessageToSend: MessageImpl {
+extension String {
     
-    // MARK: - Initialization
-    init(serverURLString: String,
-         id: String,
-         senderName: String,
-         type: MessageType,
-         text: String,
-         timeInMicrosecond: Int64) {
-        super.init(serverURLString: serverURLString,
-                   id: id,
-                   operatorID: nil,
-                   senderAvatarURLString: nil,
-                   senderName: senderName,
-                   sendStatus: .SENDING,
-                   type: type,
-                   data: nil,
-                   text: text,
-                   timeInMicrosecond: timeInMicrosecond,
-                   attachment: nil,
-                   historyMessage: false,
-                   internalID: nil,
-                   rawText: nil)
+    // MARK: - Properties
+    var localized: String {
+        return NSLocalizedString(self,
+                                 comment: "")
     }
     
 }

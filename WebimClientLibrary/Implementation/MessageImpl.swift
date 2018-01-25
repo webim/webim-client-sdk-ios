@@ -43,6 +43,7 @@ class MessageImpl {
     private let rawText: String?
     private let senderAvatarURLString: String?
     private let senderName: String
+    private let sendStatus: MessageSendStatus
     private let serverURLString: String
     private let text: String
     private let timeInMicrosecond: Int64
@@ -59,6 +60,7 @@ class MessageImpl {
          operatorID: String?,
          senderAvatarURLString: String?,
          senderName: String,
+         sendStatus: MessageSendStatus = .SENT,
          type: MessageType,
          data: [String: Any?]?,
          text: String,
@@ -74,6 +76,7 @@ class MessageImpl {
         self.rawText = rawText
         self.senderAvatarURLString = senderAvatarURLString
         self.senderName = senderName
+        self.sendStatus = sendStatus
         self.serverURLString = serverURLString
         self.text = text
         self.timeInMicrosecond = timeInMicrosecond
@@ -280,7 +283,7 @@ extension MessageImpl: Message {
     }
     
     func getSendStatus() -> MessageSendStatus {
-        return .SENT
+        return sendStatus
     }
     
     func getSenderName() -> String {
@@ -300,7 +303,7 @@ extension MessageImpl: Message {
     }
     
     func isEqual(to message: Message) -> Bool {
-        return self == message as! MessageImpl
+        return (self == message as! MessageImpl)
     }
     
 }

@@ -28,6 +28,7 @@ import UIKit
 
 extension UIImage {
     
+    // MARK: - Methods
     /**
      Converts a UIImage object into round shaped one.
      - returns:

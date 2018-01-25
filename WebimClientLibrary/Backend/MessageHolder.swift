@@ -100,11 +100,13 @@ final class MessageHolder {
                 WebimInternalLogger.shared.log(entry: "Current chat is empty. Requesting history rejected.",
                                                verbosityLevel: .VERBOSE)
                 
+                completion([Message]())
+                
                 return
             }
             
             let firstMessage = currentChatMessages.first!
-            if message === firstMessage {
+            if message == firstMessage {
                 if !firstMessage.hasHistoryComponent() {
                     historyStorage.getLatestHistory(byLimit: limit,
                                                     completion: completion)
@@ -361,7 +363,6 @@ final class MessageHolder {
                                             completion: { [weak self] messages in
                                                 if !messages.isEmpty {
                                                     completion(messages)
-                                                    
                                                 } else {
                                                     self?.reachedEndOfLocalHistory = true
                                                     self?.getMessagesFromHistoryBefore(id: id,

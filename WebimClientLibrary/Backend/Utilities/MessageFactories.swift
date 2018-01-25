@@ -157,15 +157,7 @@ class AbstractMapper: MessageFactoriesMapper {
     }
     
     func mapAll(messages: [MessageItem]) -> [MessageImpl] {
-        var mappedList = [MessageImpl]()
-        
-        for message in messages {
-            if let mappedMessage = map(message: message) {
-                mappedList.append(mappedMessage)
-            }
-        }
-        
-        return mappedList
+        return messages.map { map(message: $0) }.flatMap { $0 }
     }
     
     func map(message: MessageItem) -> MessageImpl? {

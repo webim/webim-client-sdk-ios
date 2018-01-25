@@ -28,6 +28,7 @@ import UIKit
 
 extension UIImageView {
     
+    // MARK: - Methods
     /**
      Asynchronously load an image to current UIImageView.
      Use `someImageView.loadImageAsynchronouslyFrom(url: someURL)`.

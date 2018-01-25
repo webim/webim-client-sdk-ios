@@ -57,10 +57,11 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     }
     
     private enum InternalNotificationType: String {
-        // case CONTACTS_REQUEST = "P.CR"
+        case CONTACT_INFORMATION_REQUEST = "P.CR"
         case OPERATOR_ACCEPTED = "P.OA"
         case OPERATOR_FILE = "P.OF"
         case OPERATOR_MESSAGE = "P.OM"
+        case WIDGET = "P.WM"
     }
     
     // MARK: - Properties
@@ -71,8 +72,32 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        guard let parameters = jsonDictionary[AlertField.PARAMETERS.rawValue] as? [String],
-            let type = jsonDictionary[AlertField.TYPE.rawValue] as? String else {
+        guard let type = jsonDictionary[AlertField.TYPE.rawValue] as? String else {
+            return nil
+        }
+        switch type {
+        case InternalNotificationType.CONTACT_INFORMATION_REQUEST.rawValue:
+            self.type = .CONTACT_INFORMATION_REQUEST
+            
+            break
+        case InternalNotificationType.OPERATOR_ACCEPTED.rawValue:
+            self.type = .OPERATOR_ACCEPTED
+            
+            break
+        case InternalNotificationType.OPERATOR_FILE.rawValue:
+            self.type = .OPERATOR_FILE
+            
+            break
+        case InternalNotificationType.OPERATOR_MESSAGE.rawValue:
+            self.type = .OPERATOR_MESSAGE
+            
+            break
+        case InternalNotificationType.WIDGET.rawValue:
+            self.type = .WIDGET
+            
+            break
+        default:
+            // Not supported notification type.
             return nil
         }
         
@@ -88,31 +113,13 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
                 break
             default:
                 // Not supported notification event.
-                
                 break
             }
         }
         
-        switch type {
-        case InternalNotificationType.OPERATOR_ACCEPTED.rawValue:
-            self.type = .OPERATOR_ACCEPTED
-            
-            break
-        case InternalNotificationType.OPERATOR_FILE.rawValue:
-            self.type = .OPERATOR_FILE
-            
-            break
-        case InternalNotificationType.OPERATOR_MESSAGE.rawValue:
-            self.type = .OPERATOR_MESSAGE
-            
-            break
-        default:
-            // Not supported notification type.
-            
-            return nil
+        if let parameters = jsonDictionary[AlertField.PARAMETERS.rawValue] as? [String] {
+            self.parameters = parameters
         }
-
-        self.parameters = parameters
     }
     
     
@@ -121,12 +128,16 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     func getType() -> NotificationType {
         switch type {
+        case .CONTACT_INFORMATION_REQUEST:
+            return .CONTACT_INFORMATION_REQUEST
         case .OPERATOR_ACCEPTED:
             return .OPERATOR_ACCEPTED
         case .OPERATOR_FILE:
             return .OPERATOR_FILE
         case .OPERATOR_MESSAGE:
             return .OPERATOR_MESSAGE
+        case .WIDGET:
+            return .WIDGET
         }
     }
     
