@@ -50,6 +50,24 @@ NSString *const CHATS_FIELD = @"chats";
 NSString *const ERROR_FIELD = @"error";
 NSString *const LAST_CHANGE_TIMESTAMP_FIELD = @"lastChangeTs";
 NSString *const MESSAGES_FIELD = @"messages";
+// Delta fields
+NSString *const DATA = @"data";
+NSString *const EVENT = @"event";
+NSString *const OBJECT_TYPE = @"objectType";
+
+// MARK: Delta events
+NSString *const ADD = @"add";
+NSString *const UPDATE = @"upd";
+
+// MARK: Delta types
+NSString *const DELTA_CHAT = @"CHAT";
+NSString *const DELTA_CHAT_MESSAGE = @"CHAT_MESSAGE";
+NSString *const DELTA_CHAT_OPERATOR = @"CHAT_OPERATOR";
+NSString *const DELTA_CHAT_OPERATOR_TYPING = @"CHAT_OPERATOR_TYPING";
+NSString *const DELTA_CHAT_READ_BY_VISITOR = @"CHAT_READ_BY_VISITOR";
+NSString *const DELTA_CHAT_STATE = @"CHAT_STATE";
+NSString *const DELTA_CHAT_UNREAD_BY_OPERATOR_SINCE_TIMESTAMP = @"CHAT_UNREAD_BY_OPERATOR_SINCE_TS";
+NSString *const DELTA_VISIT_SESSION_STATE = @"VISIT_SESSION_STATE";
 
 // MARK: Keys of result dictionary of history methods.
 NSString *const WMHistoryChatsKey = @"chats";
@@ -75,14 +93,15 @@ NSString *const WMVisitorParameterLogin = @"login";
 NSString *const WMVisitorParameterCRC = @"crc";
 
 
+// MARK: -
 @interface WMSession ()
     
     @property (nonatomic, strong) NSNumber *revision;
     @property (nonatomic, assign) BOOL isStopped;
     
-    @end
+@end
 
-
+// MARK: -
 @implementation WMSession {
     NSNumber *activeDeltaRevisionNumber_;
     NSString *appVersion_; // Client app version to pass to a server. Can be nil.
@@ -1271,58 +1290,80 @@ isEqualToDictionary:(NSDictionary *)right {
 }
     
 - (void)processDeltaDeltaList:(NSDictionary *)deltaList {
-    if (deltaList == nil ||
-        ![deltaList isKindOfClass:[NSArray class]]) {
+    if ((deltaList == nil)
+        || ![deltaList isKindOfClass:[NSArray class]]) {
         return;
     }
     
     for (NSDictionary *deltaDictionary in deltaList) {
-        NSString *objectTypeString = deltaDictionary[@"objectType"];
-        NSString *eventString = deltaDictionary[@"event"];
-        NSMutableDictionary *dataDictionary = deltaDictionary[@"data"];
+        NSString *objectTypeString = deltaDictionary[OBJECT_TYPE];
+        NSString *eventString = deltaDictionary[EVENT];
+        NSMutableDictionary *dataDictionary = deltaDictionary[DATA];
         
-        // MARK: TODO: Refactor this!
-        if ([@"VISIT_SESSION_STATE" isEqualToString:objectTypeString]) {
-            if ([@"upd" isEqualToString:eventString]) {
+        if ([DELTA_VISIT_SESSION_STATE isEqualToString:objectTypeString]) {
+            if ([UPDATE isEqualToString:eventString]) {
                 [self updateSessionStateWithObject:dataDictionary];
             } else {
-                WMDebugLog(@"Warning: %@ is not expected for %@", eventString, objectTypeString);
+                WMDebugLog(@"Warning: %@ is not expected for %@.",
+                           eventString,
+                           objectTypeString);
             }
-        } else if ([@"CHAT" isEqualToString:objectTypeString]) {
-            if ([@"upd" isEqualToString:eventString]) {
+        } else if ([DELTA_CHAT isEqualToString:objectTypeString]) {
+            if ([UPDATE isEqualToString:eventString]) {
                 [self updateChatWithObject:dataDictionary];
             } else {
-                WMDebugLog(@"Warning: %@ is not expected for %@", eventString, objectTypeString);
+                WMDebugLog(@"Warning: %@ is not expected for %@.",
+                           eventString,
+                           objectTypeString);
             }
-        } else if ([@"CHAT_MESSAGE" isEqualToString:objectTypeString]) {
-            if ([@"add" isEqualToString:eventString]) {
+        } else if ([DELTA_CHAT_MESSAGE isEqualToString:objectTypeString]) {
+            if ([ADD isEqualToString:eventString]) {
                 [self addChatMessageFromObject:dataDictionary];
             } else {
-                WMDebugLog(@"Warning: %@ is not expected for %@", eventString, objectTypeString);
+                WMDebugLog(@"Warning: %@ is not expected for %@.",
+                           eventString,
+                           objectTypeString);
             }
-        } else if ([@"CHAT_STATE" isEqualToString:objectTypeString]) {
-            if ([@"upd" isEqualToString:eventString]) {
+        } else if ([DELTA_CHAT_STATE isEqualToString:objectTypeString]) {
+            if ([UPDATE isEqualToString:eventString]) {
                 [self updateChatStatusWithObject:dataDictionary];
             } else {
-                WMDebugLog(@"Warning: %@ is not expected for %@", eventString, objectTypeString);
+                WMDebugLog(@"Warning: %@ is not expected for %@.",
+                           eventString,
+                           objectTypeString);
             }
-        } else if ([@"CHAT_OPERATOR" isEqualToString:objectTypeString]) {
-            if ([@"upd" isEqualToString:eventString]) {
+        } else if ([DELTA_CHAT_OPERATOR isEqualToString:objectTypeString]) {
+            if ([UPDATE isEqualToString:eventString]) {
                 [self updateChatOperatorWithObject:dataDictionary];
             } else {
-                WMDebugLog(@"Warning: %@ is not expected for %@", eventString, objectTypeString);
+                WMDebugLog(@"Warning: %@ is not expected for %@.",
+                           eventString,
+                           objectTypeString);
             }
-        } else if ([@"CHAT_READ_BY_VISITOR" isEqualToString:objectTypeString]) {
-            if ([@"upd" isEqualToString:eventString]) {
+        } else if ([DELTA_CHAT_READ_BY_VISITOR isEqualToString:objectTypeString]) {
+            if ([UPDATE isEqualToString:eventString]) {
                 [self updateChatReadByVisitorWithObject:dataDictionary];
+            } else {
+                WMDebugLog(@"Warning: %@ is not expected for %@.",
+                           eventString,
+                           objectTypeString);
             }
-        } else if ([@"CHAT_OPERATOR_TYPING" isEqualToString:objectTypeString]) {
-            if ([@"upd" isEqualToString:eventString]) {
+        } else if ([DELTA_CHAT_UNREAD_BY_OPERATOR_SINCE_TIMESTAMP isEqualToString:objectTypeString]) {
+            if ([UPDATE isEqualToString:eventString]) {
+                [self updateChatUnreadByOperatorSinceTimestamp:dataDictionary];
+            } else {
+                WMDebugLog(@"Warning: %@ is not expected for %@.",
+                           eventString,
+                           objectTypeString);
+            }
+        } else if ([DELTA_CHAT_OPERATOR_TYPING isEqualToString:objectTypeString]) {
+            if ([UPDATE isEqualToString:eventString]) {
                 [self updateChatOperatorTypingWithObject:dataDictionary];
             }
         } else {
-            WMDebugLog(@"Warning: ProcessDelta: uncotegorized object %@:\n%@",
-                       objectTypeString, deltaDictionary);
+            WMDebugLog(@"Warning: ProcessDelta: uncategorized object %@:\n%@.",
+                       objectTypeString,
+                       deltaDictionary);
         }
     }
 }
@@ -1384,6 +1425,14 @@ isEqualToDictionary:(NSDictionary *)right {
     if ([_delegate respondsToSelector:@selector(session:didChangeOperatorTyping:)]) {
         [_delegate session:self
    didChangeOperatorTyping:operatorTyping];
+    }
+}
+
+- (void)updateChatUnreadByOperatorSinceTimestamp:(id)object {
+    if ([object isKindOfClass:[NSNull class]]) {
+        _chat.unreadByOperatorTimestamp = nil;
+    } else {
+        _chat.unreadByOperatorTimestamp = [NSDate dateWithTimeIntervalSince1970:[object doubleValue]];
     }
 }
     
