@@ -63,14 +63,19 @@ final class ChatItem {
         case UNKNOWN = "unknown"
         case QUEUE = "queue"
         case CHATTING = "chatting"
+        case CHATTING_WITH_ROBOT = "chatting_with_robot"
         case CLOSED = "closed"
         case CLOSED_BY_VISITOR = "closed_by_visitor"
         case CLOSED_BY_OPERATOR = "closed_by_operator"
         case INVITATION = "invitation"
         
         // MARK: - Initialization
-        init(withType typeValue: String) {
-            self = ChatItemState(rawValue: typeValue)!
+        init?(withType typeValue: String) {
+            guard let chatItemState = ChatItemState(rawValue: typeValue) else {
+                return nil
+            }
+            
+            self = chatItemState
         }
         
         
@@ -231,7 +236,7 @@ final class ChatItem {
         self.operatorTyping = operatorTyping
     }
     
-    func getState() -> ChatItemState {
+    func getState() -> ChatItemState? {
         return ChatItemState(withType: state!)
     }
     

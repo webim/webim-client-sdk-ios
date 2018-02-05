@@ -322,14 +322,14 @@ extension MessageImpl: Equatable {
     
     static func == (lhs: MessageImpl,
                     rhs: MessageImpl) -> Bool {
-        return (((((((lhs.id == rhs.id)
+        return ((((((((lhs.id == rhs.id)
             && (lhs.operatorID == rhs.operatorID))
             && (lhs.rawText == rhs.rawText))
             && (lhs.senderAvatarURLString == rhs.senderAvatarURLString))
             && (lhs.senderName == rhs.senderName))
             && (lhs.text == rhs.text))
             && (lhs.timeInMicrosecond == rhs.timeInMicrosecond))
-            && (lhs.type == rhs.type)
+            && (lhs.type == rhs.type))
     }
     
 }

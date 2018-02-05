@@ -36,7 +36,7 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class DeltaRequestLoop: AbstractRequestLoop {
+class DeltaRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
     private static var providedAuthTokenErrorCount = 0
@@ -48,14 +48,14 @@ final class DeltaRequestLoop: AbstractRequestLoop {
     private let internalErrorListener: InternalErrorListener
     private let sessionParametersListener: SessionParametersListener?
     private let title: String
-    private var authorizationData: AuthorizationData?
+    var authorizationData: AuthorizationData?
+    var queue: DispatchQueue?
+    var since: Int64 = 0
     private var deviceToken: String?
     private var location: String
     private var providedAuthenticationToken: String?
     private var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
-    private var queue: DispatchQueue?
     private var sessionID: String?
-    private var since: Int64 = 0
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
     
@@ -132,9 +132,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         return authorizationData
     }
     
-    // MARK: Private methods
-    
-    private func run() {
+    func run() {
         while isRunning() {
             if authorizationData != nil {
                 requestDelta()
@@ -144,7 +142,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
-    private func requestInitialization() {
+    func requestInitialization() {
         let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
         request.httpMethod = AbstractRequestLoop.HTTPMethod.GET.rawValue
@@ -192,7 +190,7 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
-    private func requestDelta() {
+    func requestDelta() {
         let url = URL(string: getDeltaServerURLString() + "?" + getDeltaParameterString())
         var request = URLRequest(url: url!)
         request.httpMethod = AbstractRequestLoop.HTTPMethod.GET.rawValue
@@ -236,9 +234,11 @@ final class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
-    private func getDeltaServerURLString() -> String! {
+    func getDeltaServerURLString() -> String! {
         return (baseURL + WebimActions.ServerPathSuffix.GET_DELTA.rawValue)
     }
+    
+    // MARK: Private methods
     
     private func getInitializationParameterString() -> String {
         var parameterDictionary = [WebimActions.Parameter.DEVICE_ID.rawValue: deviceID,

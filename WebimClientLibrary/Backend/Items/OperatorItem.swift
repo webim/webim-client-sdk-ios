@@ -48,12 +48,24 @@ struct OperatorItem {
     // MARK: - Properties
     private var avatarURLString: String?
     private var departmentKeys = [String]()
-    private var id: String?
-    private var fullName: String?
+    private var id: String
+    private var fullName: String
     
     
     // MARK: - Initialization
-    init(jsonDictionary: [String: Any?]) {
+    init?(jsonDictionary: [String: Any?]) {
+        if let id = jsonDictionary[JSONField.ID.rawValue] as? Int {
+            self.id = String(id)
+        } else {
+            return nil
+        }
+        
+        if let fullName = jsonDictionary[JSONField.FULL_NAME.rawValue] as? String {
+            self.fullName = fullName
+        } else {
+            return nil
+        }
+        
         if let departmentKeysArray = jsonDictionary[JSONField.DEPARTMENT_KEYS.rawValue] as? [Any] {
             for departmentKey in departmentKeysArray {
                 departmentKeys.append(departmentKey as! String)
@@ -63,29 +75,21 @@ struct OperatorItem {
         if let avatarURLString = jsonDictionary[JSONField.AVATAR_URL_STRING.rawValue] as? String {
             self.avatarURLString = avatarURLString
         }
-        
-        if let id = jsonDictionary[JSONField.ID.rawValue] as? Int {
-            self.id = String(id)
-        }
-        
-        if let fullName = jsonDictionary[JSONField.FULL_NAME.rawValue] as? String {
-            self.fullName = fullName
-        }
     }
     
     
     // MARK: - Methods
     
-    func getID() -> String? {
+    func getID() -> String {
         return id
+    }
+    
+    func getFullName() -> String {
+        return fullName
     }
     
     func getAvatarURLString() -> String? {
         return avatarURLString
-    }
-    
-    func getFullName() -> String? {
-        return fullName
     }
     
 }

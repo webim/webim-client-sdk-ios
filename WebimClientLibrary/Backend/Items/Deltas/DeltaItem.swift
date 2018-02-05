@@ -37,7 +37,6 @@ final class DeltaItem {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
-    
     enum DeltaType: String {
         case CHAT = "CHAT"
         case CHAT_MESSAGE = "CHAT_MESSAGE"
@@ -45,19 +44,18 @@ final class DeltaItem {
         case CHAT_OPERATOR_TYPING = "CHAT_OPERATOR_TYPING"
         case CHAT_READ_BY_VISITOR = "CHAT_READ_BY_VISITOR"
         case CHAT_STATE = "CHAT_STATE"
+        case CHAT_UNREAD_BY_OPERATOR_SINCE_TS = "CHAT_UNREAD_BY_OPERATOR_SINCE_TS"
         case DEPARTMENT_LIST = "DEPARTMENT_LIST"
         case OFFLINE_CHAT_MESSAGE = "OFFLINE_CHAT_MESSAGE"
         case OPERATOR_RATE = "OPERATOR_RATE"
         case VISIT_SESSION = "VISIT_SESSION"
         case VISIT_SESSION_STATE = "VISIT_SESSION_STATE"
     }
-    
     enum Event: String {
         case ADD = "add"
         case DELETE = "del"
         case UPDATE = "upd"
     }
-    
     private enum JSONField: String {
         case DATA = "data"
         case EVENT = "event"
@@ -69,7 +67,7 @@ final class DeltaItem {
     // MARK: - Properties
     private var data: Any?
     private var event: Event
-    private var objectType: DeltaType?
+    private var deltaType: DeltaType?
     private var id: String
     
     
@@ -95,15 +93,15 @@ final class DeltaItem {
         }
         
         if let objectTypeString = jsonDictionary[JSONField.OBJECT_TYPE.rawValue] as? String {
-            objectType = DeltaType(rawValue: objectTypeString)
+            deltaType = DeltaType(rawValue: objectTypeString)
         }
     }
     
     
     // MARK: - Methods
     
-    func getObjectType() -> DeltaType? {
-        return objectType
+    func getDeltaType() -> DeltaType? {
+        return deltaType
     }
     
     func getID() -> String {

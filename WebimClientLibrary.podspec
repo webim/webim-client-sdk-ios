@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name = 'WebimClientLibrary'
-  s.version = '3.12.0'
+  s.version = '3.13.0'
   
   s.author = { 'Webim.ru Ltd.' => 'n.lazarev-zubov@webim.ru' }
   s.homepage = 'https://webim.ru/integration/mobile-sdk/ios-sdk-howto/'
@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.summary = 'Webim.ru client SDK for iOS.'
   
   s.ios.deployment_target = '8.0'
+  s.swift_version = '4.0'
   s.source = { :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => s.version.to_s }
   
   s.dependency 'SQLite.swift'

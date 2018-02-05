@@ -32,6 +32,8 @@ extension Dictionary {
     /**
      Build string representation of HTTP parameter dictionary of keys and objects.
      This percent escapes in compliance with RFC 3986.
+     - important:
+     Supports only non-optional String keys and values.
      - SeeAlso:
      http://www.ietf.org/rfc/rfc3986.txt
      - returns:
@@ -42,7 +44,7 @@ extension Dictionary {
      2017 Webim
      */
     func stringFromHTTPParameters() -> String {
-        let parameterArray = map { key, value -> String in
+        let parameterArray = map { (key, value) -> String in
             let percentEscapedKey = (key as! String).addingPercentEncodingForURLQueryValue()!
             let percentEscapedValue = (value as! String).addingPercentEncodingForURLQueryValue()!
             return "\(percentEscapedKey)=\(percentEscapedValue)"

@@ -153,6 +153,37 @@ final class WebimService {
         }
     }
     
+    // TODO: Call on pop ChatViewController.
+    /**
+     Destroys `MessageTracker` and `WebimSession` objects.
+     - SeeAlso:
+     `closeChat()` method. `destroy()` method of `MessageTracker` protocol and `destroy()` method of `WebimSession` protocol of WebimClientLibrary.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    func stopSession() {
+        do {
+            try messageTracker?.destroy()
+            try webimSession?.destroy()
+        } catch let error as AccessError {
+            switch error {
+            case .INVALID_SESSION:
+                // Ignored because if session is already destroyed, we don't care (it's the same thing that we try to achieve).
+                
+                break
+            case .INVALID_THREAD:
+                // Assuming to check concurrent calls of WebimClientLibrary methods.
+                print("Webim session or message tracker destroing failed because it was called from a wrong thread.")
+                
+                break
+            }
+        } catch {
+            print("Webim session or message tracker destroing failed with unknown error: \(error.localizedDescription)")
+        }
+    }
+    
     // MARK: MessageStream methods.
     
     /**

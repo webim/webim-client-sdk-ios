@@ -1,6 +1,6 @@
 //
 //  MessageHolderTests.swift
-//  WebimClientLibrary_Tests
+//  WebimClientLibrary
 //
 //  Created by Nikita Lazarev-Zubov on 01.09.17.
 //  Copyright © 2017 Webim. All rights reserved.
@@ -1636,16 +1636,6 @@ class MessageHolderTests: XCTestCase {
         
     }
     
-    // MARK: - Mocking InternalErrorListener
-    final class InternalErrorListenerForTests: InternalErrorListener {
-        
-        func on(error: String,
-                urlString: String) {
-            // No need to do anything when testing.
-        }
-        
-    }
-    
 }
 
 // MARK: - MessageListener
@@ -1677,7 +1667,7 @@ extension MessageHolderTests: MessageListener {
 extension MessageImpl {
     
     func getPrimaryID() -> String! {
-        return getSource().isHistoryMessage() ? getHistoryID()!.getDBid() : getCurrentChatID()
+        return (getSource().isHistoryMessage() ? getHistoryID()!.getDBid() : getCurrentChatID())
     }
     
 }

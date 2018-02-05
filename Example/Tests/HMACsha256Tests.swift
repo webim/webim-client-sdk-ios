@@ -1,6 +1,6 @@
 //
-//  HMACsha256Tests.swift
-//  WebimClientLibrary_Tests
+//  HMACSha256Tests.swift
+//  WebimClientLibrary
 //
 //  Created by Nikita Lazarev-Zubov on 17.01.18.
 //  Copyright © 2018 Webim. All rights reserved.
@@ -28,7 +28,7 @@ import Foundation
 import XCTest
 @testable import WebimClientLibrary
 
-class HMACsha256Tests: XCTestCase {
+class HMACSha256Tests: XCTestCase {
     
     func testHMACsha256() {
         // Setup.

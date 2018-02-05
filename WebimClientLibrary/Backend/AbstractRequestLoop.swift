@@ -56,9 +56,9 @@ class AbstractRequestLoop {
     // MARK: - Properties
     private let pauseCondition = NSCondition()
     private let pauseLock = NSRecursiveLock()
+    var paused = true
     var running = true
     private var currentDataTask: URLSessionDataTask?
-    private var paused = true
     
     
     // MARK: - Methods
@@ -110,8 +110,6 @@ class AbstractRequestLoop {
                 guard let `self` = `self` else {
                     return
                 }
-                
-                
                 
                 if let response = response {
                     httpCode = (response as! HTTPURLResponse).statusCode

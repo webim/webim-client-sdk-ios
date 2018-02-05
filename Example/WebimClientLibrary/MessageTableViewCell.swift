@@ -329,7 +329,7 @@ class MessageTableViewCell: UITableViewCell {
      2017 Webim
      */
     private func layoutInfo(message: Message) {
-        bodyLabel.text = message.getText()
+        bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
         bodyLabel.textColor = .darkGray
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
@@ -355,7 +355,7 @@ class MessageTableViewCell: UITableViewCell {
      2017 Webim
      */
     private func layoutOperator(message: Message) {
-        bodyLabel.text = message.getText()
+        bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
         bodyLabel.textColor = .black
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
@@ -384,7 +384,7 @@ class MessageTableViewCell: UITableViewCell {
      2017 Webim
      */
     private func layoutOperatorBusy(message: Message) {
-        bodyLabel.text = message.getText()
+        bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
         bodyLabel.textColor = .darkGray
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
@@ -409,7 +409,7 @@ class MessageTableViewCell: UITableViewCell {
      2017 Webim
      */
     private func layoutVisitor(message: Message) {
-        bodyLabel.text = message.getText()
+        bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
         bodyLabel.textColor = .black
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none

@@ -78,14 +78,14 @@ final class WebimSessionImpl {
     
     
     // MARK: - Initialization
-    private init(withAccessChecker accessChecker: AccessChecker,
+    private init(accessChecker: AccessChecker,
                  sessionDestroyer: SessionDestroyer,
-                 webimClient client: WebimClient,
+                 webimClient: WebimClient,
                  historyPoller: HistoryPoller,
                  messageStream: MessageStreamImpl) {
         self.accessChecker = accessChecker
         self.sessionDestroyer = sessionDestroyer
-        self.webimClient = client
+        self.webimClient = webimClient
         self.historyPoller = historyPoller
         self.messageStream = messageStream
     }
@@ -250,7 +250,7 @@ final class WebimSessionImpl {
         currentChatMessageMapper.set(webimClient: webimClient)
         historyMessageMapper.set(webimClient: webimClient)
         
-        return WebimSessionImpl(withAccessChecker: accessChecker,
+        return WebimSessionImpl(accessChecker: accessChecker,
                                 sessionDestroyer: sessionDestroyer,
                                 webimClient: webimClient,
                                 historyPoller: historyPoller,
@@ -259,8 +259,12 @@ final class WebimSessionImpl {
     
     // MARK: Private methods
     
-    // Deletes local message history SQLite DB file.
     private static func clearVisitorDataFor(userDefaultsKey: String) {
+        deleteDBFileFor(userDefaultsKey: userDefaultsKey)
+        UserDefaults.standard.removeObject(forKey: userDefaultsKey)
+    }
+    
+    private static func deleteDBFileFor(userDefaultsKey: String) {
         if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] {
             let fileManager = FileManager.default
             let documentsDirectory = try! fileManager.url(for: .documentDirectory,
@@ -276,8 +280,6 @@ final class WebimSessionImpl {
                     verbosityLevel: .VERBOSE)
             }
         }
-        
-        UserDefaults.standard.removeObject(forKey: userDefaultsKey)
     }
     
     private static func checkSavedSessionFor(userDefaultsKey: String,
@@ -401,7 +403,7 @@ final private class HistoryPoller {
     
     // MARK: - Constants
     private enum TimeInterval: Int64 {
-        case HISTORY_POLL = 60000 // ms
+        case HISTORY_POLL = 60_000 // ms
     }
     
     
@@ -568,7 +570,7 @@ final private class HistoryPoller {
  - Copyright:
  2017 Webim
  */
-final private class SessionParametersListenerImpl: SessionParametersListener {
+final class SessionParametersListenerImpl: SessionParametersListener {
     
     // MARL: - Constants
     private enum VisitorFieldsJSONField: String {
@@ -748,13 +750,15 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     }
     
     func set(revision: String?) {
-        if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsMainPrefix.HISTORY_REVISION.rawValue] = revision
-            UserDefaults.standard.set(userDefaults,
-                                      forKey: userDefaultsKey)
-        } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_REVISION.rawValue: revision],
-                                           forKey: userDefaultsKey)
+        if let revision = revision {
+            if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
+                userDefaults[UserDefaultsMainPrefix.HISTORY_REVISION.rawValue] = revision
+                UserDefaults.standard.set(userDefaults,
+                                          forKey: userDefaultsKey)
+            } else {
+                UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_REVISION.rawValue: revision],
+                                               forKey: userDefaultsKey)
+            }
         }
     }
     

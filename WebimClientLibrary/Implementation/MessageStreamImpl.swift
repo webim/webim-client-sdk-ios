@@ -105,7 +105,11 @@ final class MessageStreamImpl {
         self.onlineStatus = onlineStatus
     }
     
-    func set(unreadByVisitorTimestamp: Date) {
+    func set(unreadByOperatorTimestamp: Date?) {
+        self.unreadByOperatorTimestamp = unreadByOperatorTimestamp
+    }
+    
+    func set(unreadByVisitorTimestamp: Date?) {
         self.unreadByVisitorTimestamp = unreadByVisitorTimestamp
     }
     
@@ -120,12 +124,15 @@ final class MessageStreamImpl {
         }
         
         let newChatState = (self.chat == nil) ? .CLOSED : self.chat!.getState()
-        if (chatStateListener != nil)
-            && (lastChatState != newChatState) {
-            chatStateListener!.changed(state: publicState(ofChatState: lastChatState),
-                                       to: publicState(ofChatState: newChatState))
+        if let newChatState = newChatState {
+            // Recieved chat state can be unsupported by the library.
+            if (chatStateListener != nil)
+                && (lastChatState != newChatState) {
+                chatStateListener!.changed(state: publicState(ofChatState: lastChatState),
+                                           to: publicState(ofChatState: newChatState))
+            }
+            lastChatState = newChatState
         }
-        lastChatState = newChatState
         
         let newOperator = operatorFactory.createOperatorFrom(operatorItem: (self.chat != nil) ? self.chat!.getOperator() : nil)
         if newOperator != currentOperator {
@@ -152,8 +159,7 @@ final class MessageStreamImpl {
             self.unreadByVisitorTimestamp = Date(timeIntervalSince1970: unreadByVisitorTimestamp)
         }
         if chat?.getReadByVisitor() == true {
-            // Set unread messages by visitor timestamp to current date after receiving information that chat is read by visitor.
-            unreadByVisitorTimestamp = Date()
+            unreadByVisitorTimestamp = nil
         }
     }
     
@@ -214,6 +220,8 @@ final class MessageStreamImpl {
             return .QUEUE
         case .CHATTING:
             return .CHATTING
+        case .CHATTING_WITH_ROBOT:
+            return .CHATTING_WITH_ROBOT
         case .CLOSED:
             return .NONE
         case .CLOSED_BY_VISITOR:

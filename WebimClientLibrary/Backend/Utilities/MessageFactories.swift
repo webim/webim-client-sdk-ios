@@ -261,9 +261,9 @@ final class OperatorFactory {
     
     // MARK: - Methods
     func createOperatorFrom(operatorItem: OperatorItem?) -> OperatorImpl? {
-        return (operatorItem == nil) ? nil : OperatorImpl(id: operatorItem!.getID(),
+        return ((operatorItem == nil) ? nil : OperatorImpl(id: operatorItem!.getID(),
                                                           name: operatorItem!.getFullName(),
-                                                          avatarURLString: (operatorItem!.getAvatarURLString() == nil) ? nil : (serverURLString + operatorItem!.getAvatarURLString()!))
+                                                          avatarURLString: ((operatorItem!.getAvatarURLString() == nil) ? nil : (serverURLString + operatorItem!.getAvatarURLString()!))))
     }
 
 }

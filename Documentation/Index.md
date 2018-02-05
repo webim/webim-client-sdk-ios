@@ -99,6 +99,7 @@
     -   [changed(onlineStatus:to:) method](#changed-session-online-status-previous-session-online-status-to-new-session-online-status)
 -   [ChatState enum](#chat-state)
     -   [CHATTING case](#chatting)
+    -   [CHATTING_WITH_ROBOT](#chatting-with-robot)
     -   [CLOSED_BY_OPERATOR case](#closed-by-operator)
     -   [CLOSED_BY_VISITOR case](#closed-by-visitor)
     -   [INVITATION case](#invitation)
@@ -497,7 +498,7 @@ Returns timestamp (of type `Date`) after which all chat messages are unread by o
 
 <h3 id ="get-unread-by-visitor-timestamp">getUnreadByVisitorTimestamp() method</h3>
 
-Returns timestamp (of type `Date`) after which all chat messages are unread by visitor (at the moment of last server update recieved).
+Returns timestamp (of type `Date`) after which all chat messages are unread by visitor (at the moment of last server update recieved) or `nil` if there's no unread by visitor messages.
 
 <h3 id ="get-department-list">getDepartmentList() method</h3>
 
@@ -771,6 +772,14 @@ Furthermore, the first message can be sent not only by a visitor but also by an 
 <h3 id ="chatting">CHATTING case</h3>
 
 Means that an operator has taken a chat for processing.
+From this state a chat can be turned into:
+* [CHATTING](#chatting), if an operator intercepted the chat;
+* [CLOSED_BY_VISITOR](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
+* [NONE](#none-chat-state), automatically during long-term absence of activity.
+
+<h3 id ="chatting-with-robot">CHATTING_WITH_ROBOT case</h3>
+
+Means that chat is picked up by a bot.
 From this state a chat can be turned into:
 * [CLOSED_BY_OPERATOR](#closed-by-operator), if an operator closes the chat;
 * [CLOSED_BY_VISITOR](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
@@ -1255,11 +1264,11 @@ Presents chat operator object.
 
 <h3 id ="get-id-operator">getID() method</h3>
 
-Returns unique ID of the operator of `String` type or nil.
+Returns unique ID of the operator of `String` type.
 
 <h3 id ="get-name">getName() method</h3>
 
-Returns display name of the operator of `String` type or nil.
+Returns display name of the operator of `String` type.
 
 <h3 id ="get-avatar-url">getAvatarURL() method</h3>
 

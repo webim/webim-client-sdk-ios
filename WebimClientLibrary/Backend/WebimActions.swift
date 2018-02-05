@@ -36,11 +36,13 @@ import Foundation
 class WebimActions {
     
     // MARK: - Constants
-    
+    enum ContentType: String {
+        case MULTIPART_BODY = "multipart/form-data; boundary=" // + boundary string
+        case URL_ENCODED = "application/x-www-form-urlencoded"
+    }
     enum Event: String {
         case INITIALIZATION = "init"
     }
-    
     enum Parameter: String {
         case ACTION = "action"
         case APP_VERSION = "app-version"
@@ -60,7 +62,7 @@ class WebimActions {
         case HINT_QUESTION = "hint_question"
         case LOCATION = "location"
         case MESSAGE = "message"
-        case OPERATOR_ID = "operator-id"
+        case OPERATOR_ID = "operator_id"
         case PAGE_ID = "page-id"
         case PLATFORM = "platform"
         case PROVIDED_AUTHENTICATION_TOKEN = "provided_auth_token"
@@ -74,11 +76,9 @@ class WebimActions {
         case VISITOR_FIELDS = "visitor-ext"
         case VISITOR_TYPING = "typing"
     }
-    
     enum Platform: String {
         case IOS = "ios"
     }
-    
     enum ServerPathSuffix: String {
         case ACTION = "/l/v/m/action"
         case GET_DELTA = "/l/v/m/delta"
@@ -86,7 +86,6 @@ class WebimActions {
         case GET_HISTORY = "/l/v/m/history"
         case UPLOAD_FILE = "/l/v/m/upload"
     }
-    
     private enum Action: String {
         case CLOSE_CHAT = "chat.close"
         case RATE_OPERATOR = "chat.operator_rate_select"
@@ -95,16 +94,9 @@ class WebimActions {
         case SET_VISITOR_TYPING = "chat.visitor_typing"
         case START_CHAT = "chat.start"
     }
-    
     private enum ChatMode: String {
         case ONLINE = "online"
     }
-    
-    private enum ContentType: String {
-        case MULTIPART_BODY = "multipart/form-data; boundary=" // + boundary string
-        case URL_ENCODED = "application/x-www-form-urlencoded"
-    }
-    
     private enum MultipartBody: String {
         case NAME = "webim_upload_file"
     }

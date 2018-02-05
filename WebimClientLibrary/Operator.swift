@@ -48,7 +48,7 @@ public protocol Operator {
      - Copyright:
      2017 Webim
      */
-    func getID() -> String?
+    func getID() -> String
     
     /**
      - returns:
@@ -58,7 +58,7 @@ public protocol Operator {
      - Copyright:
      2017 Webim
      */
-    func getName() -> String?
+    func getName() -> String
     
     /**
      - returns:

@@ -93,7 +93,9 @@ final class MessageComposingHandler {
     }
     
     // MARK: Private methods
-    @objc private func resetTypingStatus() {
+    
+    @objc
+    private func resetTypingStatus() {
         queue.async {
             self.webimActions.set(visitorTyping: false,
                                   draft: nil,

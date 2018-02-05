@@ -39,15 +39,18 @@ struct ClientSideID {
     enum StringSize: Int {
         case CLIENT_SIDE_ID = 32
     }
+    enum StringSymbols: NSString {
+        case UID = "abcdef0123456789"
+    }
     
     // MARK: - Methods
+    
     static func generateClientSideID() -> String {
         return generateRandomString(ofCharactersNumber: StringSize.CLIENT_SIDE_ID.rawValue)
     }
     
-    // MARK: - Private methods
     static func generateRandomString(ofCharactersNumber numberOfCharacters: Int) -> String {
-        let letters: NSString = "abcdef0123456789"
+        let letters: NSString = StringSymbols.UID.rawValue
         let length = UInt32(letters.length)
         
         var randomString = ""

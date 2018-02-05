@@ -33,13 +33,13 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class ActionRequestLoop: AbstractRequestLoop {
+class ActionRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
     private let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor
     private let internalErrorListener: InternalErrorListener
+    var operationQueue: OperationQueue?
     private var authorizationData: AuthorizationData?
-    private var operationQueue: OperationQueue?
     
     
     // MARK: - Initialization

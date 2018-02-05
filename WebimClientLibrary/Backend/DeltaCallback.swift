@@ -63,7 +63,7 @@ final class DeltaCallback {
         }
         
         for delta in deltaList {
-            let deltaType = delta.getObjectType()
+            let deltaType = delta.getDeltaType()
             guard deltaType != nil else {
                 continue
             }
@@ -99,6 +99,11 @@ final class DeltaCallback {
             case .CHAT_STATE:
                 handleChatStateUpdateBy(delta: delta,
                                         messageStream: messageStream!)
+                
+                break
+            case .CHAT_UNREAD_BY_OPERATOR_SINCE_TS:
+                handleUnreadByOperatorTimestampUpdateBy(delta: delta,
+                                                        messageStream: messageStream!)
                 
                 break
             case .DEPARTMENT_LIST:
@@ -217,11 +222,12 @@ final class DeltaCallback {
     private func handleChatOperatorUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
         if let deltaData = delta.getData() as? [String: Any?] {
-            let operatorItem = OperatorItem(jsonDictionary: deltaData)
-            if delta.getEvent() == .UPDATE {
-                currentChat?.set(operator: operatorItem)
-                
-                messageStream.changingChatStateOf(chat: currentChat)
+            if let operatorItem = OperatorItem(jsonDictionary: deltaData) {
+                if delta.getEvent() == .UPDATE {
+                    currentChat?.set(operator: operatorItem)
+                    
+                    messageStream.changingChatStateOf(chat: currentChat)
+                }
             }
         }
     }
@@ -243,9 +249,8 @@ final class DeltaCallback {
             if delta.getEvent() == .UPDATE {
                 currentChat?.set(readByVisitor: readByVisitor)
                 
-                // Set unread messages by visitor timestamp to current date after receiving information that chat is read by visitor.
                 if readByVisitor {
-                    messageStream.set(unreadByVisitorTimestamp: Date())
+                    messageStream.set(unreadByVisitorTimestamp: nil)
                 }
             }
         }
@@ -278,6 +283,15 @@ final class DeltaCallback {
         }
         
         messageStream.onReceiving(departmentItemList: departmentItems)
+    }
+    
+    private func handleUnreadByOperatorTimestampUpdateBy(delta: DeltaItem,
+                                                         messageStream: MessageStreamImpl) {
+        if let unreadByOperatorTimestamp = delta.getData() as? Double {
+            if delta.getEvent() == .UPDATE {
+                messageStream.set(unreadByOperatorTimestamp: Date(timeIntervalSince1970: unreadByOperatorTimestamp))
+            }
+        }
     }
     
     private func handleOperatorRateUpdateBy(delta: DeltaItem,

@@ -32,30 +32,25 @@ import Foundation
  - Copyright:
  2017 Webim
  */
-final class WebimRemoteNotificationImpl: WebimRemoteNotification {
+final class WebimRemoteNotificationImpl {
     
     // MARK: - Constants
-    
     enum APNsField: String {
         case APS = "aps"
         case WEBIM = "webim"
     }
-    
     enum APSField: String {
         case ALERT = "alert"
     }
-    
     private enum AlertField: String {
         case EVENT = "event"
         case PARAMETERS = "loc-args"
         case TYPE = "loc-key"
     }
-    
     private enum InternalNotificationEvent: String {
         case ADD = "add"
         case DELETE = "del"
     }
-    
     private enum InternalNotificationType: String {
         case CONTACT_INFORMATION_REQUEST = "P.CR"
         case OPERATOR_ACCEPTED = "P.OA"
@@ -68,7 +63,6 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
     private var event: InternalNotificationEvent? = nil
     private lazy var parameters = [String]()
     private var type: InternalNotificationType
-    
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
@@ -122,6 +116,10 @@ final class WebimRemoteNotificationImpl: WebimRemoteNotification {
         }
     }
     
+}
+
+// MARK: - WebimRemoteNotification
+extension WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     // MARK: - Methods
     // MARK: WebimRemoteNotification protocol methods

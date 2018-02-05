@@ -27,9 +27,7 @@
 import Foundation
 
 /**
- MessageTracker has two purposes:
- - it allows to request the messages which are above in the history;
- - it defines an interval within which message changes are transmitted to the listener (see `MessageStream.newMessageTracker(messageListener:)`).
+ MessageTracker allows to request the messages which are above in the history.
  - SeeAlso:
  `MessageStream.newMessageTracker(messageListener:)`
  - Author:

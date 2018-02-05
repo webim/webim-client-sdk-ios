@@ -1,6 +1,6 @@
 //
 //  WebimInternalLoggerTests.swift
-//  WebimClientLibrary_Tests
+//  WebimClientLibrary
 //
 //  Created by Nikita Lazarev-Zubov on 16.01.18.
 //  Copyright © 2018 Webim. All rights reserved.

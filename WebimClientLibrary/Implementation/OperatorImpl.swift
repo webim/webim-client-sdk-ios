@@ -36,14 +36,14 @@ import Foundation
 struct OperatorImpl: Operator {
     
     // MARK: - Properties
-    private let id: String?
-    private let name: String?
+    private let id: String
+    private let name: String
     private let avatarURLString: String?
     
     
     // MARK: - Initialization
-    init(id: String?,
-         name: String?,
+    init(id: String,
+         name: String,
          avatarURLString: String? = nil) {
         self.id = id
         self.name = name
@@ -54,11 +54,11 @@ struct OperatorImpl: Operator {
     // MARK: - Methods
     // MARK: Operator protocol methods
     
-    func getID() -> String? {
+    func getID() -> String {
         return id
     }
     
-    func getName() -> String? {
+    func getName() -> String {
         return name
     }
     

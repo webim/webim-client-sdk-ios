@@ -64,7 +64,7 @@ public protocol MessageStream {
     
     /**
      - returns:
-     Timestamp after which all chat messages are unread by operator (at the moment of last server update recieved.)
+     Timestamp after which all chat messages are unread by operator (at the moment of last server update recieved).
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -74,7 +74,7 @@ public protocol MessageStream {
     
     /**
      - returns:
-     Timestamp after which all chat messages are unread by visitor (at the moment of last server update recieved.)
+     Timestamp after which all chat messages are unread by visitor (at the moment of last server update recieved) or `nil` if there's no unread by visitor messages.
      - Author:
      Nikita Lazarev-Zubov
      - Copyright:
@@ -790,6 +790,19 @@ public enum ChatState {
      2017 Webim
      */
     case CHATTING
+    
+    /**
+     Means that chat is picked up by a bot.
+     From this state a chat can be turned into:
+     * `CHATTING`, if an operator intercepted the chat;
+     * `CLOSED_BY_VISITOR`, if a visitor closes the chat (`MessageStream.closeChat()`);
+     * `NONE`, automatically during long-term absence of activity.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    case CHATTING_WITH_ROBOT
     
     /**
      Means that an operator has closed the chat.

@@ -10,7 +10,6 @@
 		8FD24284200CDB18007EB9CB /* WebimClientLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */; };
 		8FD24289200CDB18007EB9CB /* WebimClientLibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD24288200CDB18007EB9CB /* WebimClientLibraryTests.swift */; };
 		8FD2428B200CDB18007EB9CB /* WebimClientLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8FD2445B200CE02A007EB9CB /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FD24459200CE02A007EB9CB /* SQLite.framework */; };
 		8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445C200CE258007EB9CB /* WebimLogger.swift */; };
 		8FD244A9200CE25C007EB9CB /* MessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445D200CE258007EB9CB /* MessageListener.swift */; };
 		8FD244AA200CE25C007EB9CB /* WebimRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445E200CE259007EB9CB /* WebimRemoteNotification.swift */; };
@@ -103,8 +102,6 @@
 		8FD24283200CDB18007EB9CB /* WebimClientLibraryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebimClientLibraryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD24288200CDB18007EB9CB /* WebimClientLibraryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimClientLibraryTests.swift; sourceTree = "<group>"; };
 		8FD2428A200CDB18007EB9CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8FD24458200CE02A007EB9CB /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
-		8FD24459200CE02A007EB9CB /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		8FD2445C200CE258007EB9CB /* WebimLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimLogger.swift; sourceTree = "<group>"; };
 		8FD2445D200CE258007EB9CB /* MessageListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageListener.swift; sourceTree = "<group>"; };
 		8FD2445E200CE259007EB9CB /* WebimRemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimRemoteNotification.swift; sourceTree = "<group>"; };
@@ -187,7 +184,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8FD2445B200CE02A007EB9CB /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +254,6 @@
 		8FD24457200CE029007EB9CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8FD24458200CE02A007EB9CB /* CryptoSwift.framework */,
-				8FD24459200CE02A007EB9CB /* SQLite.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -400,7 +394,6 @@
 				8FD24276200CDB18007EB9CB /* Frameworks */,
 				8FD24277200CDB18007EB9CB /* Headers */,
 				8FD24278200CDB18007EB9CB /* Resources */,
-				8FD24456200CDFEB007EB9CB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -484,23 +477,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		8FD24456200CDFEB007EB9CB /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SQLite.framework",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8FD24275200CDB18007EB9CB /* Sources */ = {

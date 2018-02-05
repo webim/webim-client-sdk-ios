@@ -1,9 +1,9 @@
 //
-//  HistoryID.swift
+//  AbstractRequestLoopTests.swift
 //  WebimClientLibrary
 //
-//  Created by Nikita Lazarev-Zubov on 15.08.17.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by Nikita Lazarev-Zubov on 30.01.18.
+//  Copyright © 2018 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,53 +25,39 @@
 //
 
 import Foundation
+import XCTest
+@testable import WebimClientLibrary
 
-/**
- Class that encapsulates message ID in history context.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-final class HistoryID {
-
+class AbstractRequestLoopTests: XCTestCase {
+    
     // MARK: - Properties
-    private let dbID: String
-    private let timeInMicrosecond: Int64
+    private let abstractRequestLoop = AbstractRequestLoopForTests()
     
+    // MARK: - Tests
     
-    // MARK: - Initialization
-    init(dbID: String,
-         timeInMicrosecond: Int64) {
-        self.dbID = dbID
-        self.timeInMicrosecond = timeInMicrosecond
+    func testResume() {
+        abstractRequestLoop.resume()
+        abstractRequestLoop.pause()
+        abstractRequestLoop.resume()
+        
+        XCTAssertFalse(abstractRequestLoop.isPaused())
     }
     
+    func testPause() {
+        abstractRequestLoop.resume()
+        abstractRequestLoop.pause()
+        
+        XCTAssertTrue(abstractRequestLoop.isPaused())
+    }
+    
+}
+
+// MARK: - Mocking AbstractRequestLoop
+fileprivate final class AbstractRequestLoopForTests: AbstractRequestLoop {
     
     // MARK: - Methods
-    
-    func getDBid() -> String {
-        return dbID
-    }
-    
-}
-
-// MARK: - MicrosecondsTimeHolder
-extension HistoryID: MicrosecondsTimeHolder {
-    
-    func getTimeInMicrosecond() -> Int64 {
-        return timeInMicrosecond
-    }
-    
-}
-
-// MARK: - Equatable
-extension HistoryID: Equatable {
-    
-    static func == (lhs: HistoryID,
-                    rhs: HistoryID) -> Bool {
-        return ((lhs.dbID == rhs.dbID)
-            && (lhs.timeInMicrosecond == rhs.timeInMicrosecond))
+    func isPaused() -> Bool {
+        return paused
     }
     
 }
