@@ -528,13 +528,14 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat">startChat() method</h3>
 
-Changes [ChatState](#chat-state) to [QUEUE](#queue). Method call is not mandatory, send message or send file methods start chat automatically.
+Changes [ChatState](#chat-state) to [QUEUE](#queue).
+Method call is not mandatory, send message or send file methods start chat automatically. If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-first-question">startChat(firstQuestion:) method</h3>
 
 Changes [ChatState](#chat-state) to [QUEUE](#queue). Starts chat and sends first message simultaneously.
-Method call is not mandatory, send message or send file methods start chat automatically.
+Method call is not mandatory, send message or send file methods start chat automatically. If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-department-key">startChat(departmentKey:) method</h3>
@@ -542,6 +543,7 @@ Can throw errors of [AccessError](#access-error) type.
 Starts chat with particular department. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
 Changes [ChatState](#chat-state) to [QUEUE](#queue).
 In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-department-key-first-question">startChat(departmentKey:firstQuestion:) method</h3>
@@ -549,6 +551,7 @@ Can throw errors of [AccessError](#access-error) type.
 Starts chat with particular department  and sends first message simultaneously. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
 Changes [ChatState](#chat-state) to [QUEUE](#queue).
 In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="close-chat">closeChat() method</h3>

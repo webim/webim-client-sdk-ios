@@ -63,17 +63,14 @@ final class DeltaItem {
         case ID = "id"
     }
     
-    
     // MARK: - Properties
     private var data: Any?
     private var event: Event
     private var deltaType: DeltaType?
     private var id: String
     
-    
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        // FIXME: Refactor this.
         if let eventString = jsonDictionary[JSONField.EVENT.rawValue] as? String {
             guard let event = Event(rawValue: eventString) else {
                 return nil
@@ -96,7 +93,6 @@ final class DeltaItem {
             deltaType = DeltaType(rawValue: objectTypeString)
         }
     }
-    
     
     // MARK: - Methods
     

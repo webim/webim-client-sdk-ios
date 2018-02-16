@@ -24,7 +24,6 @@
 //  SOFTWARE.
 //
 
-
 import UIKit
 import WebimClientLibrary
 
@@ -36,16 +35,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case DEVICE_TOKEN = "device-token"
     }
 
-    
     // MARK: - Properties
     var window: UIWindow?
 
-    
     // MARK: - Methods
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Remote notifications configuration.
+        // Remote notifications configuration
         let notificationTypes: UIUserNotificationType = [.alert,
                                                          .badge,
                                                          .sound]
@@ -53,8 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                     categories: nil)
         application.registerUserNotificationSettings(remoteNotificationSettings)
         application.registerForRemoteNotifications()
-        
         application.applicationIconBadgeNumber = 0
+        
+        
         
         return true
     }
@@ -62,11 +60,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        
-        print("Device token: \(deviceToken)")
-        
         UserDefaults.standard.set(deviceToken,
                                   forKey: UserDefaultsKey.DEVICE_TOKEN.rawValue)
+        
+        print("Device token: \(deviceToken)")
     }
     
     func application(_ application: UIApplication,
@@ -84,6 +81,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Handle Webim remote notification.
         } else {
             // Handle another type of remote notification.
+        }
+    }
+    
+    func setStatusBarColor() {
+        switch ColorScheme.shared.option {
+        case .CLASSIC:
+            UIApplication.shared.statusBarStyle = .default
+            
+            break
+        case .DARK:
+            UIApplication.shared.statusBarStyle = .lightContent
+            
+            break
         }
     }
 

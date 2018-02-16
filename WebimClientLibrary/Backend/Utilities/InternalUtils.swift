@@ -40,7 +40,6 @@ final class InternalUtils {
         case DATA = "data"
     }
     
-    
     // MARK: - Methods
     
     static func createServerURLStringBy(accountName: String) -> String {

@@ -38,7 +38,6 @@ final class MemoryHistoryMetaInformationStorage: HistoryMetaInformationStorage {
     private var historyEnded = false
     private var revision: String?
     
-    
     // MARK: - Methods
     // MARK: HistoryMetaInformationStorage protocol methods
     

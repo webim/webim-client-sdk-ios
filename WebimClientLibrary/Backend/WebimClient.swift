@@ -24,9 +24,7 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
-
 
 /**
  - Author:
@@ -53,7 +51,6 @@ final class WebimClientBuilder {
     private var title: String?
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
-    
     
     // MARK: - Builder methods
     
@@ -196,7 +193,6 @@ final class WebimClient {
     private let deltaRequestLoop: DeltaRequestLoop
     private let webimActions: WebimActions
     
-    
     // MARK: - Initialization
     init(withActionRequestLoop actionRequestLoop: ActionRequestLoop,
          deltaRequestLoop: DeltaRequestLoop,
@@ -205,7 +201,6 @@ final class WebimClient {
         self.deltaRequestLoop = deltaRequestLoop
         self.webimActions = webimActions
     }
-    
     
     // MARK: - Methods
     

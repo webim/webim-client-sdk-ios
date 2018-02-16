@@ -39,11 +39,9 @@ import Foundation
  2017 Webim
  */
 enum OnlineStatusItem: String {
-    
     case BUSY_OFFLINE = "busy_offline"
     case BUSY_ONLINE = "busy_online"
     case OFFLINE = "offline"
     case ONLINE = "online"
     case UNKNOWN = "unknown"
-    
 }

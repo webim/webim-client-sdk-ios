@@ -49,7 +49,6 @@ class ActionRequestLoop: AbstractRequestLoop {
         self.internalErrorListener = internalErrorListener
     }
     
-    
     // MARK: - Methods
     
     override func start() {
@@ -193,13 +192,12 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
-    
     // MARK: Private methods
     
     private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) -> AuthorizationData {
         while isRunning()
             && (lastAuthorizationData == authorizationData) {
-                usleep(100 * 1000) // 0.1 s.
+                usleep(100_000) // 0.1 s.
         }
         
         return authorizationData!

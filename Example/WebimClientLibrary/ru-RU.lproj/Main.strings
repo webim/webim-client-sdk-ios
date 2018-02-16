@@ -1,18 +1,12 @@
 
-/* Class = "UITextField"; accessibilityLabel = "Page title field"; ObjectID = "5OU-6u-MM0"; */
-"5OU-6u-MM0.accessibilityLabel" = "Поле имени чата";
+/* Class = "UILabel"; text = "Account name *"; ObjectID = "7Wr-eX-iv8"; */
+"7Wr-eX-iv8.text" = "Размещение *";
 
-/* Class = "UITextField"; text = "iOS Demo App"; ObjectID = "5OU-6u-MM0"; */
-"5OU-6u-MM0.text" = "iOS Demo App";
+/* Class = "UITableViewSection"; footerTitle = "If you are registered in Webim service you can use your own account name and location."; ObjectID = "FX1-M6-A8v"; */
+"FX1-M6-A8v.footerTitle" = "Если вы зарегистрированы в сервисе \"Webim\", вы можете использовать свою учетную запись.";
 
-/* Class = "UITextField"; accessibilityLabel = "Location name field"; ObjectID = "DCi-74-SZ1"; */
-"DCi-74-SZ1.accessibilityLabel" = "Поле названия размещения";
-
-/* Class = "UITextField"; text = "mobile"; ObjectID = "DCi-74-SZ1"; */
-"DCi-74-SZ1.text" = "mobile";
-
-/* Class = "UILabel"; text = "Location"; ObjectID = "Nw9-pU-o26"; */
-"Nw9-pU-o26.text" = "Размещение";
+/* Class = "UITableViewSection"; headerTitle = "ACCOUNT"; ObjectID = "FX1-M6-A8v"; */
+"FX1-M6-A8v.headerTitle" = "УЧЕТНАЯ ЗАПИСЬ";
 
 /* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "QrB-ab-D1k"; */
 "QrB-ab-D1k.accessibilityHint" = "Сохраняет текущие настройки и возвращается к начальной странице.";
@@ -23,21 +17,23 @@
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "QrB-ab-D1k"; */
 "QrB-ab-D1k.normalTitle" = "Сохранить";
 
-/* Class = "UITextField"; accessibilityLabel = "Account name field"; ObjectID = "W2o-Tj-nJy"; */
-"W2o-Tj-nJy.accessibilityLabel" = "Поле имени учетной записи";
+/* Class = "UILabel"; accessibilityLabel = "Classic color theme"; ObjectID = "Xp5-8q-gOf"; */
+"Xp5-8q-gOf.accessibilityLabel" = "Стандартная цветовая схема";
 
-/* Class = "UITextField"; text = "demo"; ObjectID = "W2o-Tj-nJy"; */
-"W2o-Tj-nJy.text" = "demo";
+/* Class = "UILabel"; text = "Classic"; ObjectID = "Xp5-8q-gOf"; */
+"Xp5-8q-gOf.text" = "Стандартная";
 
-/* Class = "UILabel"; text = "Page title"; ObjectID = "W9e-BQ-hTd"; */
-"W9e-BQ-hTd.text" = "Имя чата (Page title)";
+/* Class = "UITextField"; accessibilityLabel = "Page title field"; ObjectID = "YbA-Bc-Fio"; */
+"YbA-Bc-Fio.accessibilityLabel" = "Поле названия страницы чата";
 
-/* Class = "UITextView"; accessibilityLabel = "Settings instruction"; ObjectID = "X1c-3e-DTs"; */
-"X1c-3e-DTs.accessibilityLabel" = "Инструкция к экрану настроек";
+/* Class = "UITextField"; text = "iOS Demo App"; ObjectID = "YbA-Bc-Fio"; */
+"YbA-Bc-Fio.text" = "iOS Demo App";
 
-// Xcode does not localize UITextView text automatically.
-/* Class = "UITextView"; text = "If you are registered in Webim service you can use your own account name and location."; ObjectID = "X1c-3e-DTs"; */
-"If you are registered in Webim service you can use your own account name and location." = "Если вы зарегистрированы в сервисе \"Webim\", вы можете использовать свою учетную запись.";
+/* Class = "UITextField"; accessibilityLabel = "Location name field"; ObjectID = "ZbE-AG-UMG"; */
+"ZbE-AG-UMG.accessibilityLabel" = "Поле названия размещения (локации)";
+
+/* Class = "UITextField"; text = "mobile"; ObjectID = "ZbE-AG-UMG"; */
+"ZbE-AG-UMG.text" = "mobile";
 
 /* Class = "UITextView"; accessibilityLabel = "Greeting words"; ObjectID = "bPt-yP-yHN"; */
 "bPt-yP-yHN.accessibilityLabel" = "Приветственные слова";
@@ -55,14 +51,38 @@
 /* Class = "UIButton"; normalTitle = "Start chat"; ObjectID = "edo-SU-HN8"; */
 "edo-SU-HN8.normalTitle" = "Начать чат";
 
-/* Class = "UILabel"; text = "Account name"; ObjectID = "oZI-yJ-Boe"; */
-"oZI-yJ-Boe.text" = "Название учетной записи";
+/* Class = "UITableViewSection"; headerTitle = "COLOR THEME"; ObjectID = "fJX-AG-mdU"; */
+"fJX-AG-mdU.headerTitle" = "ЦВЕТОВАЯ СХЕМА";
 
-/* Class = "UIButton"; accessibilityHint = "Shows custom account settings."; ObjectID = "rMR-x2-dzu"; */
-"rMR-x2-dzu.accessibilityHint" = "Показывает настройки учетной записи.";
+/* Class = "UILabel"; text = "Page title"; ObjectID = "kTz-jD-ziQ"; */
+"kTz-jD-ziQ.text" = "Название экрана чата";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name field"; ObjectID = "qLZ-bH-B74"; */
+"qLZ-bH-B74.accessibilityLabel" = "Поле названия учетной записи";
+
+/* Class = "UITextField"; text = "demo"; ObjectID = "qLZ-bH-B74"; */
+"qLZ-bH-B74.text" = "demo";
+
+/* Class = "UILabel"; text = "Location *"; ObjectID = "qQH-qh-OFD"; */
+"qQH-qh-OFD.text" = "Размещение (локация) *";
+
+/* Class = "UIButton"; accessibilityHint = "Shows settings."; ObjectID = "rMR-x2-dzu"; */
+"rMR-x2-dzu.accessibilityHint" = "Показывает настройки.";
 
 /* Class = "UIButton"; accessibilityLabel = "Settings"; ObjectID = "rMR-x2-dzu"; */
 "rMR-x2-dzu.accessibilityLabel" = "Настройки";
 
 /* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "rMR-x2-dzu"; */
 "rMR-x2-dzu.normalTitle" = "Настройки";
+
+/* Class = "UILabel"; accessibilityLabel = "Dark color theme"; ObjectID = "slT-Ti-eBV"; */
+"slT-Ti-eBV.accessibilityLabel" = "Темная цветовая СХЕМА";
+
+/* Class = "UILabel"; text = "Dark"; ObjectID = "slT-Ti-eBV"; */
+"slT-Ti-eBV.text" = "Темная";
+
+/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "5Lf-Fb-XN7"; */
+"5Lf-Fb-XN7.text" = "* Название учетной записи не может быть пустым.";
+
+/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "6r5-5x-xIB"; */
+"6r5-5x-xIB.text" = "* Размещение (локация) не может быть пустым.";

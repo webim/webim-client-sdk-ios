@@ -39,7 +39,6 @@ class MessageHolderTests: XCTestCase {
         case TEXT = "Text."
     }
     
-    
     // MARK: - Properties
     private var lastAddedMessage: MessageImpl?
     private var lastMessageBeforeAdded: MessageImpl?
@@ -48,6 +47,173 @@ class MessageHolderTests: XCTestCase {
     private var lastOldVersionChangedMessage: MessageImpl?
     private var messagesCount = 0
     
+    // MARK: - Methods
+    // MARK: Private methods
+    
+    private func generateHistory(ofCount numberOfMessages: Int) -> [MessageImpl] {
+        var history = [MessageImpl]()
+        
+        for index in messagesCount ..< (messagesCount + numberOfMessages) {
+            history.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                                       id: String(index),
+                                       operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
+                                       senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
+                                       senderName: MessageImplMockData.SENDER_NAME.rawValue,
+                                       type: MessageType.OPERATOR,
+                                       data: nil,
+                                       text: MessageImplMockData.TEXT.rawValue,
+                                       timeInMicrosecond: Int64(index),
+                                       attachment: nil,
+                                       historyMessage: true,
+                                       internalID: String(index),
+                                       rawText: nil))
+        }
+        
+        messagesCount = messagesCount + numberOfMessages
+        
+        return history
+    }
+    
+    private func generateCurrentChat(ofCount numberOfMessages: Int) -> [MessageImpl] {
+        var currentChat = [MessageImpl]()
+        
+        for index in messagesCount ..< (messagesCount + numberOfMessages) {
+            currentChat.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                                           id: String(index),
+                                           operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
+                                           senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
+                                           senderName: MessageImplMockData.SENDER_NAME.rawValue,
+                                           type: MessageType.OPERATOR,
+                                           data: nil,
+                                           text: MessageImplMockData.TEXT.rawValue,
+                                           timeInMicrosecond: Int64(index),
+                                           attachment: nil,
+                                           historyMessage: false,
+                                           internalID: String(index),
+                                           rawText: nil))
+        }
+        
+        messagesCount = messagesCount + numberOfMessages
+        
+        return currentChat
+    }
+    
+    private func generateHistoryFrom(currentChat: [MessageImpl]) -> [MessageImpl] {
+        var result = [MessageImpl]()
+        
+        for message in currentChat {
+            let newMessage = MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                                         id: message.getID(),
+                                         operatorID: message.getOperatorID(),
+                                         senderAvatarURLString: message.getSenderAvatarURLString(),
+                                         senderName: message.getSenderName(),
+                                         type: message.getType(),
+                                         data: message.getData(),
+                                         text: message.getText(),
+                                         timeInMicrosecond: message.getTimeInMicrosecond(),
+                                         attachment: message.getAttachment(),
+                                         historyMessage: true,
+                                         internalID: String(message.getTimeInMicrosecond()),
+                                         rawText: message.getRawText())
+            result.append(newMessage)
+        }
+        
+        return result
+    }
+    
+    private func newCurrentChat() -> MessageImpl {
+        messagesCount = messagesCount + messagesCount
+        
+        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                           id: String(messagesCount),
+                           operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
+                           senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
+                           senderName: MessageImplMockData.SENDER_NAME.rawValue,
+                           type: MessageType.OPERATOR,
+                           data: nil,
+                           text: MessageImplMockData.TEXT.rawValue,
+                           timeInMicrosecond: Int64(messagesCount),
+                           attachment: nil,
+                           historyMessage: false,
+                           internalID: String(messagesCount),
+                           rawText: nil)
+    }
+    
+    private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
+        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                           id: currentChatMessage.getID(),
+                           operatorID: currentChatMessage.getOperatorID(),
+                           senderAvatarURLString: currentChatMessage.getSenderAvatarURLString(),
+                           senderName: currentChatMessage.getSenderName(),
+                           type: currentChatMessage.getType(),
+                           data: nil,
+                           text: (currentChatMessage.getText() + " One more thing."),
+                           timeInMicrosecond: currentChatMessage.getTimeInMicrosecond(),
+                           attachment: nil,
+                           historyMessage: false,
+                           internalID: currentChatMessage.getCurrentChatID(),
+                           rawText: nil)
+    }
+    
+    private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
+        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                           id: historyMessage.getID(),
+                           operatorID: historyMessage.getOperatorID(),
+                           senderAvatarURLString: historyMessage.getSenderAvatarURLString(),
+                           senderName: historyMessage.getSenderName(),
+                           type: historyMessage.getType(),
+                           data: nil,
+                           text: (historyMessage.getText() + " One more thing."),
+                           timeInMicrosecond: historyMessage.getTimeInMicrosecond(),
+                           attachment: nil,
+                           historyMessage: true,
+                           internalID: historyMessage.getHistoryID()?.getDBid(),
+                           rawText: nil)
+    }
+    
+    private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {
+        let sessionDestroyer = SessionDestroyer()
+        let accessChecker = AccessChecker(thread: Thread.current,
+                                          sessionDestroyer: sessionDestroyer)
+        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
+                                                                                  queue: DispatchQueue.global(qos: .userInteractive))
+        let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+                                                  internalErrorListener: InternalErrorListenerForTests())
+        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                                        actionRequestLoop: actionRequestLoop)
+        let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
+                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
+                                                                  historyMetaInformation: MemoryHistoryMetaInformationStorage(),
+                                                                  history: history)
+        
+        return MessageHolder(accessChecker: accessChecker,
+                             remoteHistoryProvider: remoteHistoryProvider,
+                             historyStorage: MemoryHistoryStorage(),
+                             reachedEndOfRemoteHistory: false)
+    }
+    
+    private func newMessageHolder(withHistory history: [MessageImpl],
+                                  localHistory: [MessageImpl]) -> MessageHolder {
+        let sessionDestroyer = SessionDestroyer()
+        let accessChecker = AccessChecker(thread: Thread.current,
+                                          sessionDestroyer: sessionDestroyer)
+        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
+                                                                                  queue: DispatchQueue.global(qos: .userInteractive))
+        let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+                                                  internalErrorListener: InternalErrorListenerForTests())
+        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
+                                        actionRequestLoop: actionRequestLoop)
+        let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
+                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
+                                                                  historyMetaInformation: MemoryHistoryMetaInformationStorage(),
+                                                                  history: history)
+        let memoryHistoryStorage = MemoryHistoryStorage(messagesToAdd: localHistory)
+        
+        return MessageHolder(accessChecker: accessChecker,
+                             remoteHistoryProvider: remoteHistoryProvider,
+                             historyStorage: memoryHistoryStorage,
+                             reachedEndOfRemoteHistory: false)
+    }
     
     // MARK: - Tests
     
@@ -1425,174 +1591,48 @@ class MessageHolderTests: XCTestCase {
         XCTAssertEqual(lastAddedMessage, currentChat[0])
     }
     
-    
-    // MARK: - Methods
-    
-    private func generateHistory(ofCount numberOfMessages: Int) -> [MessageImpl] {
-        var history = [MessageImpl]()
+    func testSetMessagesToSend() {
+        let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
+                                          id: "1",
+                                          senderName: "Sender",
+                                          type: .OPERATOR,
+                                          text: "Text",
+                                          timeInMicrosecond: 1)
+        let messageHolder = newMessageHolder()
+        messageHolder.set(messagesToSend: [messageToSend])
         
-        for index in messagesCount ..< (messagesCount + numberOfMessages) {
-            history.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                                       id: String(index),
-                                       operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
-                                       senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
-                                       senderName: MessageImplMockData.SENDER_NAME.rawValue,
-                                       type: MessageType.OPERATOR,
-                                       data: nil,
-                                       text: MessageImplMockData.TEXT.rawValue,
-                                       timeInMicrosecond: Int64(index),
-                                       attachment: nil,
-                                       historyMessage: true,
-                                       internalID: String(index),
-                                       rawText: nil))
-        }
-        
-        messagesCount = messagesCount + numberOfMessages
-        
-        return history
+        XCTAssertEqual([messageToSend],
+                       messageHolder.getMessagesToSend())
     }
     
-    private func generateCurrentChat(ofCount numberOfMessages: Int) -> [MessageImpl] {
-        var currentChat = [MessageImpl]()
+    func testSendingMessage() {
+        let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
+                                          id: "1",
+                                          senderName: "Sender",
+                                          type: .OPERATOR,
+                                          text: "Text",
+                                          timeInMicrosecond: 1)
+        let messageHolder = newMessageHolder()
+        messageHolder.sending(message: messageToSend)
         
-        for index in messagesCount ..< (messagesCount + numberOfMessages) {
-            currentChat.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                                           id: String(index),
-                                           operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
-                                           senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
-                                           senderName: MessageImplMockData.SENDER_NAME.rawValue,
-                                           type: MessageType.OPERATOR,
-                                           data: nil,
-                                           text: MessageImplMockData.TEXT.rawValue,
-                                           timeInMicrosecond: Int64(index),
-                                           attachment: nil,
-                                           historyMessage: false,
-                                           internalID: String(index),
-                                           rawText: nil))
-        }
-        
-        messagesCount = messagesCount + numberOfMessages
-        
-        return currentChat
+        XCTAssertEqual([messageToSend],
+                       messageHolder.getMessagesToSend())
     }
     
-    private func generateHistoryFrom(currentChat: [MessageImpl]) -> [MessageImpl] {
-        var result = [MessageImpl]()
+    func testSendingCancelled() {
+        let messageID = "1"
+        let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
+                                          id: messageID,
+                                          senderName: "Sender",
+                                          type: .OPERATOR,
+                                          text: "Text",
+                                          timeInMicrosecond: 1)
+        let messageHolder = newMessageHolder()
+        messageHolder.sending(message: messageToSend)
+        messageHolder.sendingCancelledWith(messageID: messageID)
         
-        for message in currentChat {
-            let newMessage = MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                                         id: message.getID(),
-                                         operatorID: message.getOperatorID(),
-                                         senderAvatarURLString: message.getSenderAvatarURLString(),
-                                         senderName: message.getSenderName(),
-                                         type: message.getType(),
-                                         data: message.getData(),
-                                         text: message.getText(),
-                                         timeInMicrosecond: message.getTimeInMicrosecond(),
-                                         attachment: message.getAttachment(),
-                                         historyMessage: true,
-                                         internalID: String(message.getTimeInMicrosecond()),
-                                         rawText: message.getRawText())
-            result.append(newMessage)
-        }
-        
-        return result
+        XCTAssertTrue(messageHolder.getMessagesToSend().isEmpty)
     }
-    
-    private func newCurrentChat() -> MessageImpl {
-        messagesCount = messagesCount + messagesCount
-        
-        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                           id: String(messagesCount),
-                           operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
-                           senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
-                           senderName: MessageImplMockData.SENDER_NAME.rawValue,
-                           type: MessageType.OPERATOR,
-                           data: nil,
-                           text: MessageImplMockData.TEXT.rawValue,
-                           timeInMicrosecond: Int64(messagesCount),
-                           attachment: nil,
-                           historyMessage: false,
-                           internalID: String(messagesCount),
-                           rawText: nil)
-    }
-    
-    private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
-        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                           id: currentChatMessage.getID(),
-                           operatorID: currentChatMessage.getOperatorID(),
-                           senderAvatarURLString: currentChatMessage.getSenderAvatarURLString(),
-                           senderName: currentChatMessage.getSenderName(),
-                           type: currentChatMessage.getType(),
-                           data: nil,
-                           text: (currentChatMessage.getText() + " One more thing."),
-                           timeInMicrosecond: currentChatMessage.getTimeInMicrosecond(),
-                           attachment: nil,
-                           historyMessage: false,
-                           internalID: currentChatMessage.getCurrentChatID(),
-                           rawText: nil)
-    }
-    
-    private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
-        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                           id: historyMessage.getID(),
-                           operatorID: historyMessage.getOperatorID(),
-                           senderAvatarURLString: historyMessage.getSenderAvatarURLString(),
-                           senderName: historyMessage.getSenderName(),
-                           type: historyMessage.getType(),
-                           data: nil,
-                           text: (historyMessage.getText() + " One more thing."),
-                           timeInMicrosecond: historyMessage.getTimeInMicrosecond(),
-                           attachment: nil,
-                           historyMessage: true,
-                           internalID: historyMessage.getHistoryID()?.getDBid(),
-                           rawText: nil)
-    }
-    
-    private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {
-        let sessionDestroyer = SessionDestroyer()
-        let accessChecker = AccessChecker(thread: Thread.current,
-                                          sessionDestroyer: sessionDestroyer)
-        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
-                                                                                  queue: DispatchQueue.global(qos: .userInteractive))
-        let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                  internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                                        actionRequestLoop: actionRequestLoop)
-        let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
-                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
-                                                                  historyMetaInformation: MemoryHistoryMetaInformationStorage(),
-                                                                  history: history)
-        
-        return MessageHolder(accessChecker: accessChecker,
-                             remoteHistoryProvider: remoteHistoryProvider,
-                             historyStorage: MemoryHistoryStorage(),
-                             reachedEndOfRemoteHistory: false)
-    }
-    
-    private func newMessageHolder(withHistory history: [MessageImpl],
-                                  localHistory: [MessageImpl]) -> MessageHolder {
-        let sessionDestroyer = SessionDestroyer()
-        let accessChecker = AccessChecker(thread: Thread.current,
-                                          sessionDestroyer: sessionDestroyer)
-        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
-                                                                                  queue: DispatchQueue.global(qos: .userInteractive))
-        let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                  internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
-                                        actionRequestLoop: actionRequestLoop)
-        let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
-                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
-                                                                  historyMetaInformation: MemoryHistoryMetaInformationStorage(),
-                                                                  history: history)
-        let memoryHistoryStorage = MemoryHistoryStorage(messagesToAdd: localHistory)
-        
-        return MessageHolder(accessChecker: accessChecker,
-                             remoteHistoryProvider: remoteHistoryProvider,
-                             historyStorage: memoryHistoryStorage,
-                             reachedEndOfRemoteHistory: false)
-    }
-    
     
     // MARK: - Mocking RemoteHistoryProvider
     final class RemoteHistoryProviderForTests: RemoteHistoryProvider {

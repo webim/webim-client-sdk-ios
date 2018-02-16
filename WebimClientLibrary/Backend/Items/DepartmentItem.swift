@@ -55,7 +55,6 @@ final class DepartmentItem {
         case UNKNOWN
     }
     
-    
     // MARK: - Properties
     private let key: String
     private let name: String
@@ -63,7 +62,6 @@ final class DepartmentItem {
     private let order: Int
     private var localizedNames: [String: String]?
     private var logo: String?
-    
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
@@ -87,7 +85,6 @@ final class DepartmentItem {
             self.localizedNames = localizedNames
         }
     }
-    
     
     // MARK: - Methods
     

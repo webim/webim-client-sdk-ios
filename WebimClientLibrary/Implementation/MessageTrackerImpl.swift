@@ -27,6 +27,7 @@
 import Foundation
 
 /**
+ Class that is responsible for tracking changes of message stream.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -46,14 +47,12 @@ final class MessageTrackerImpl {
     private var firstHistoryUpdateReceived: Bool?
     private var messagesLoading: Bool?
     
-    
     // MARK: - Initialization
     init(messageListener: MessageListener,
          messageHolder: MessageHolder) {
         self.messageListener = messageListener
         self.messageHolder = messageHolder
     }
-    
     
     // MARK: - Methods
     
@@ -379,7 +378,6 @@ final class MessageTrackerImpl {
                          completion: @escaping ([Message]) -> ()) {
         var result: [MessageImpl]?
         
-        // FIXME: Refactor this.
         if !messages.isEmpty {
             let currentChatMessages = messageHolder.getCurrentChatMessages()
             if !currentChatMessages.isEmpty {
@@ -438,13 +436,12 @@ final class MessageTrackerImpl {
             
             let firstMessage = result!.first!
             
-            // FIXME: Refactor this.
             if headMessage == nil {
                 headMessage = firstMessage
             } else if firstMessage.getTimeInMicrosecond() < headMessage!.getTimeInMicrosecond() {
                 headMessage = firstMessage
             }
-        } else {
+        } else { // End `if !messages.isEmpty`
             result = messages
             
             allMessageSourcesEnded = true

@@ -11,14 +11,13 @@ target 'WebimClientLibrary_Example' do
     pod 'Cosmos', :inhibit_warnings => true
     pod 'SlackTextViewController', :inhibit_warnings => true
     pod 'SnapKit', :inhibit_warnings => true
-    pod 'SQLite.swift', :inhibit_warnings => true
+    pod 'SQLite.swift', :inhibit_warnings => true # WebimClientLibrary dependency – added to inhibit its warnings.
     pod 'PopupDialog', '~> 0.6.2', :inhibit_warnings => true
     
     
     target 'WebimClientLibrary_Tests' do
         inherit! :search_paths
     end
-    
     
     post_install do |installer|
         installer.pods_project.targets.each do |target|

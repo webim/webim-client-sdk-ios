@@ -40,7 +40,6 @@ struct OperatorImpl: Operator {
     private let name: String
     private let avatarURLString: String?
     
-    
     // MARK: - Initialization
     init(id: String,
          name: String,
@@ -49,7 +48,6 @@ struct OperatorImpl: Operator {
         self.name = name
         self.avatarURLString = avatarURLString
     }
-    
     
     // MARK: - Methods
     // MARK: Operator protocol methods
@@ -75,6 +73,7 @@ struct OperatorImpl: Operator {
 // MARK: - Equatable
 extension OperatorImpl: Equatable {
     
+    // MARK: - Methods
     static func == (lhs: OperatorImpl,
                     rhs: OperatorImpl) -> Bool {
         return ((lhs.id == rhs.id)

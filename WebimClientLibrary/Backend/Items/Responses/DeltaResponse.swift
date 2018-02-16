@@ -43,12 +43,10 @@ final class DeltaResponse {
         case REVISION = "revision"
     }
     
-    
     // MARK: - Properties
     private lazy var deltaList = [DeltaItem]()
     private var fullUpdate: FullUpdate?
     private var revision: Int64?
-    
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -70,7 +68,6 @@ final class DeltaResponse {
             }
         }
     }
-    
     
     // MARK: - Methods
     

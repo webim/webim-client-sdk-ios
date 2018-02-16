@@ -27,17 +27,20 @@
 import Cosmos
 import UIKit
 
-/**
- View controller that represents operator rating dialogue.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-class RatingViewController: UIViewController {
+final class RatingViewController: UIViewController {
 
     // MARK: - Properties
     // MARK: Outlets
+    @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var ratingView: CosmosView!
+    @IBOutlet weak var textLabel: UILabel!
+    
+    // MARK: - Methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        textLabel.textColor = textMainColor.color()
+        backgroundView.backgroundColor = backgroundSecondaryColor.color()
+    }
     
 }

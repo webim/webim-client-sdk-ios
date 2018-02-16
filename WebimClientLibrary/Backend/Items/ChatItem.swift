@@ -58,38 +58,6 @@ final class ChatItem {
         case VISITOR_TYPING = "visitorTyping"
     }
     
-    enum ChatItemState: String {
-        
-        case UNKNOWN = "unknown"
-        case QUEUE = "queue"
-        case CHATTING = "chatting"
-        case CHATTING_WITH_ROBOT = "chatting_with_robot"
-        case CLOSED = "closed"
-        case CLOSED_BY_VISITOR = "closed_by_visitor"
-        case CLOSED_BY_OPERATOR = "closed_by_operator"
-        case INVITATION = "invitation"
-        
-        // MARK: - Initialization
-        init?(withType typeValue: String) {
-            guard let chatItemState = ChatItemState(rawValue: typeValue) else {
-                return nil
-            }
-            
-            self = chatItemState
-        }
-        
-        
-        // MARK: - Methods
-        func isClosed() -> Bool {
-            return (((self == .CLOSED)
-                || (self == .CLOSED_BY_VISITOR))
-                || (self == .CLOSED_BY_OPERATOR))
-                || (self == .UNKNOWN)
-        }
-        
-    }
-    
-    
     // MARK: - Properties
     private var category: String?
     private var clientSideID: String?
@@ -109,8 +77,7 @@ final class ChatItem {
     private var unreadByVisitorTimestamp: Double?
     private var visitorTyping: Bool?
     
-    
-    // MARK: - Initializers
+    // MARK: - Initialization
     
     init(jsonDictionary: [String: Any?]) {
         if let creationTimestampValue = jsonDictionary[JSONField.CREATION_TIMESTAMP.rawValue] as? Double {
@@ -207,7 +174,6 @@ final class ChatItem {
         }
     }
     
-    
     // MARK: - Methods
     
     func getMessages() -> [MessageItem] {
@@ -229,7 +195,7 @@ final class ChatItem {
     }
     
     func isOperatorTyping() -> Bool {
-        return operatorTyping == true
+        return (operatorTyping == true)
     }
     
     func set(operatorTyping: Bool?) {
@@ -283,12 +249,44 @@ final class ChatItem {
         return Double(InternalUtils.getCurrentTimeInMicrosecond()) / 1000.0
     }
     
+    // MARK: -
+    enum ChatItemState: String {
+        
+        case UNKNOWN = "unknown"
+        case QUEUE = "queue"
+        case CHATTING = "chatting"
+        case CHATTING_WITH_ROBOT = "chatting_with_robot"
+        case CLOSED = "closed"
+        case CLOSED_BY_VISITOR = "closed_by_visitor"
+        case CLOSED_BY_OPERATOR = "closed_by_operator"
+        case INVITATION = "invitation"
+        
+        // MARK: - Initialization
+        init?(withType typeValue: String) {
+            guard let chatItemState = ChatItemState(rawValue: typeValue) else {
+                return nil
+            }
+            
+            self = chatItemState
+        }
+        
+        
+        // MARK: - Methods
+        func isClosed() -> Bool {
+            return (((self == .CLOSED)
+                || (self == .CLOSED_BY_VISITOR))
+                || (self == .CLOSED_BY_OPERATOR))
+                || (self == .UNKNOWN)
+        }
+        
+    }
     
 }
 
 // MARK: - Equatable
 extension ChatItem: Equatable {
     
+    // MARK: - Methods
     // Used inside MessageHolderImpl.receiving(newChat:previousChat:newMessages:) only.
     static func == (lhs: ChatItem,
                     rhs: ChatItem) -> Bool {

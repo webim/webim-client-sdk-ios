@@ -40,7 +40,6 @@ final class MemoryHistoryStorage: HistoryStorage {
     private lazy var historyMessages = [MessageImpl]()
     private var reachedHistoryEnd = false
     
-    
     // MARK: - Initialization
     
     init() {
@@ -53,7 +52,6 @@ final class MemoryHistoryStorage: HistoryStorage {
             historyMessages.append(message)
         }
     }
-    
     
     // MARK: - Methods
     // MARK: HistoryStorage protocol methods
@@ -120,7 +118,6 @@ final class MemoryHistoryStorage: HistoryStorage {
         completion(true, false, nil, false, nil, false, nil, nil)
     }
     
-    
     // MARK: Private methods
     
     private func respondTo(messages: [MessageImpl],
@@ -153,7 +150,6 @@ final class MemoryHistoryStorage: HistoryStorage {
     
     private func mergeHistoryChanges(messages: [MessageImpl],
                                      completion: (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
-        // FIXME: Refactor this.
         /*
          Algorithm merges messages with history messages.
          Messages before first history message are ignored.

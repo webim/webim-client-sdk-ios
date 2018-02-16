@@ -10,7 +10,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.13.0'
+pod 'WebimClientLibrary'
 ```
 `use_frameworks!` must be specified.
 
@@ -18,7 +18,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.13.0
+github "webim/webim-client-sdk-ios" ~> 3.13.1
 ```
 
 ### Additional notes
@@ -34,20 +34,25 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 If you're already using previous version and don't plan to jump on the new one you don't have to update your **Podfile**, depencies on version numbers 2.7.0 and lower will work properly. But for all renewals of the previous version usage, you have to switch your depency on the **version2** branch.
 
 ## Release notes
+For this particular update an app should be reinstalled on device.
 
-* `getUnreadByVisitorTimestamp()` method of `MessageStream` protocol logic is changed: now it returns `nil` if there's no unread by visitor messages or timestamp after which messages are unread by visitor.
-* `getID()` and `getName()` methods of `Operator` protocol now return non-optionals.
-* `CHATTING_WITH_ROBOT` chat state support added.
-* Working with local storaged messages bugs fixed.
-* Additional interaction with server provided.
-* Minor _WebimClientLibrary_ framework optimization.
+* Important history bugs fixed. 🤞
+* Documentation improvements. 📚
+* Tests fulfilled. ⚒️
 
 ### Example app
-* Links display inside messages improved.
+* `destroy()` methods of `WebimSession` and `MessageTracker` protocols and `getChatState()` method of `MessageStream` protocol usage added. ❌
+* Departments support added. 💬
+* Scroll to bottom button. ⏬
+* Color themes support + dark color theme. 🔲
+* UI bug fixes and improvements. 🤞
+* Refactoring. 🤓
 
 ## Example
 
-![Start screen screenshot](Screenshots/StartScreen.png) ![Settings screen screenshot](Screenshots/SettingsScreen.png) ![Chat screen screenshot](Screenshots/ChatScreen.png)
+![Start screen screenshot Classic theme](Screenshots/StartScreenClassic.png) ![Settings screen screenshot Classic theme](Screenshots/SettingsScreenClassic.png) ![Chat screen screenshot Classic theme](Screenshots/ChatScreenClassic.png) ![Image preview screenshot Classic theme](Screenshots/ImageScreenClassic.png) ![Rating window screenshot Classic theme](Screenshots/RatingScreenClassic.png)
+
+![Start screen screenshot Dark theme](Screenshots/StartScreenDark.png) ![Settings screen screenshot Dark theme](Screenshots/SettingsScreenDark.png) ![Chat screen screenshot Dark theme](Screenshots/ChatScreenDark.png) ![Image preview screenshot Dark theme](Screenshots/ImageScreenDark.png) ![Rating window screenshot Dark theme](Screenshots/RatingScreenDark.png)
 
 If you don't have _CocoaPods_ installed you should firstly run `sudo gem install cocoapods`.
 

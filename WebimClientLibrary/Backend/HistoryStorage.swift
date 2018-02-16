@@ -34,7 +34,9 @@ import Foundation
  */
 protocol HistoryStorage {
     
-    // When this values is changed history will be re-requested.
+    /**
+     When this values is changed history will be re-requested.
+     */
     func getMajorVersion() -> Int
     
     func set(reachedHistoryEnd: Bool)

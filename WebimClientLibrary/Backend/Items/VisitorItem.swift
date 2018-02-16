@@ -27,7 +27,6 @@
 import Foundation
 
 // This class is not used anywhere yet. Implemented for the future tasks.
-// TODO: Fix SessionParametersListenerImpl for using this class instead of visitorJSONString and manual deserialization.
 /**
  - Author:
  Nikita Lazarev-Zubov
@@ -44,12 +43,10 @@ struct VisitorItem {
         case VISITOR_FIELDS = "fields"
     }
     
-    
     // MARK: - Properties
     private var icon: IconItem?
     private var id: String?
     private var visitorFields: VisitorFields?
-    
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -83,11 +80,9 @@ struct IconItem {
         case SHAPE = "shape"
     }
     
-    
     // MARK: - Properties
     private var color: String?
     private var shape: String?
-    
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {

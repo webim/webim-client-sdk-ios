@@ -24,9 +24,7 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
-
 
 /**
  Abstracts a remote notifications from Webim service.
@@ -76,7 +74,6 @@ public protocol WebimRemoteNotification {
     func getParameters() -> [String]
 
 }
-
 
 // MARK: -
 /**

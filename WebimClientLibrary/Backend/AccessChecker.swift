@@ -48,8 +48,7 @@ class AccessChecker {
     
     // MARK: - Methods
     func checkAccess() throws {
-        let currentThread = Thread.current
-        guard thread == currentThread else {
+        guard thread == Thread.current else {
             throw AccessError.INVALID_THREAD
         }
         

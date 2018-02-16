@@ -62,7 +62,6 @@ final class MessageStreamImpl {
     private var visitSessionState: VisitSessionStateItem = .UNKNOWN
     private var visitSessionStateListener: VisitSessionStateListener?
     
-    
     // MARK: - Initialization
     init(serverURLString: String,
          currentChatMessageFactoriesMapper: MessageFactoriesMapper,
@@ -83,7 +82,6 @@ final class MessageStreamImpl {
         self.messageComposingHandler = messageComposingHandler
         self.locationSettingsHolder = locationSettingsHolder
     }
-    
     
     // MARK: - Methods
     
@@ -287,6 +285,8 @@ final class MessageStreamImpl {
 // MARK: - MessageStream
 extension MessageStreamImpl: MessageStream {
     
+    // MARK: - Methods
+    
     func getVisitSessionState() -> VisitSessionState {
         return publicState(ofVisitSessionState: visitSessionState)
     }
@@ -325,13 +325,19 @@ extension MessageStreamImpl: MessageStream {
     func rateOperatorWith(id: String?,
                           byRating rating: Int,
                           comletionHandler: RateOperatorCompletionHandler?) throws {
-        if let ratingValue = convertToInternal(rating: rating) {
-            try accessChecker.checkAccess()
+        guard rating >= 1,
+            rating <= 5 else {
+            WebimInternalLogger.shared.log(entry: "Rating must be within from 1 to 5 range. Passed value: \(rating)",
+                verbosityLevel: .WARNING)
             
-            webimActions.rateOperatorWith(id: id,
-                                          rating: ratingValue,
-                                          completionHandler: comletionHandler)
+            return
         }
+        
+        try accessChecker.checkAccess()
+        
+        webimActions.rateOperatorWith(id: id,
+                                      rating: (rating - 3), // Accepted range: (-2, -1, 0, 1, 2).
+                                      completionHandler: comletionHandler)
     }
     
     func startChat() throws {
@@ -418,7 +424,8 @@ extension MessageStreamImpl: MessageStream {
                           filename: filename,
                           mimeType: mimeType,
                           clientSideID: messageID,
-                          completionHandler: completionHandler)
+                          completionHandler: SendFileCompletionHandlerWrapper(sendFileCompletionHandler: completionHandler,
+                                                                              messageHolder: messageHolder))
         
         return messageID
     }
@@ -458,27 +465,6 @@ extension MessageStreamImpl: MessageStream {
     }
     
     // MARK: Private methods
-    
-    private func convertToInternal(rating: Int) -> Int? {
-        switch rating {
-        case 1:
-            return -2
-        case 2:
-            return -1
-        case 3:
-            return 0
-        case 4:
-            return 1
-        case 5:
-            return 2
-        default:
-            WebimInternalLogger.shared.log(entry: "Rating must be within from 1 to 5 range. Passed value: \(rating)",
-                verbosityLevel: .WARNING)
-            
-            return nil
-        }
-    }
-    
     private func sendMessageInternally(messageText: String,
                                        dataJSONString: String? = nil,
                                        isHintQuestion: Bool? = nil,
@@ -495,6 +481,35 @@ extension MessageStreamImpl: MessageStream {
                                                                                          text: messageText))
         
         return messageID
+    }
+    
+}
+
+// MARK: -
+fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHandler {
+    
+    // MARK: - Properties
+    let messageHolder: MessageHolder
+    let sendFileCompletionHandler: SendFileCompletionHandler?
+    
+    // MARK: - Initialization
+    init(sendFileCompletionHandler: SendFileCompletionHandler?,
+         messageHolder: MessageHolder) {
+        self.sendFileCompletionHandler = sendFileCompletionHandler
+        self.messageHolder = messageHolder
+    }
+    
+    // MARK: - Methods
+    
+    func onSuccess(messageID: String) {
+        sendFileCompletionHandler?.onSuccess(messageID: messageID)
+    }
+    
+    func onFailure(messageID: String,
+                   error: SendFileError) {
+        messageHolder.sendingCancelledWith(messageID: messageID)
+        sendFileCompletionHandler?.onFailure(messageID: messageID,
+                                             error: error)
     }
     
 }

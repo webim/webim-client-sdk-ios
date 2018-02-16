@@ -25,53 +25,21 @@
 //  SOFTWARE.
 //
 
-
-import UIKit
-
 import SnapKit
+import UIKit
 import WebimClientLibrary
 
-
-// Custom colors for MessageTableViewCell objects.
-extension UIColor {
-    
-    static var operatorName: UIColor {
-        return UIColor(red: (128.0 / 255.0),
-                       green: (0.0 / 255.0),
-                       blue: (64.0 / 255.0),
-                       alpha: 1.0)
-    }
-    static var visitorName: UIColor {
-        return UIColor(red: (0.0 / 255.0),
-                       green: (128.0 / 255.0),
-                       blue: (64.0 / 255.0),
-                       alpha: 1.0)
-    }
-    
-}
-
-
 // MARK: -
-/**
- Custom cell representation for ChatViewController.
- - SeeAlso:
- `ChatViewController` class.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-class MessageTableViewCell: UITableViewCell {
+final class MessageTableViewCell: UITableViewCell {
     
     // MARK: - Constants
     private enum Size: CGFloat {
         case AVATAR = 40.0
     }
     
-    
     // MARK: - Properties
     private static var imageCache = [URL: UIImage]()
-    private static let dateFormatter: DateFormatter = {
+    private let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMM yyyy hh:mm:ss"
         
@@ -114,35 +82,16 @@ class MessageTableViewCell: UITableViewCell {
     }
     
     required init?(coder aDecoder: NSCoder) {
+        // UITableViewCell requirement.
+        
         super.init(coder: aDecoder)
     }
     
     
     // MARK: - Methods
     
-    /**
-     Manages content layout of the cell.
-     - SeeAlso:
-     `layoutActionRequest(message:)` method.
-     `layoutFileFromOperator(message:)` method.
-     `layoutFileFromVisitor(message:)` method.
-     `layoutInfo(message:)` method.
-     `layoutOperator(message:)` method.
-     `layoutOperatorBusy(message:)` method.
-     `layoutVisitor(message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     func setContent(withMessage message: Message) {
-        // MARK: WEBIM: Using message type.
-        let messageType = message.getType()
-        
-        switch messageType {
+        switch message.getType() {
         case .ACTION_REQUEST:
             layoutActionRequest(message: message)
             
@@ -176,17 +125,12 @@ class MessageTableViewCell: UITableViewCell {
             
             break
         }
+        
+        backgroundColor = backgroundTableViewColor.color()
     }
     
     // MARK: Private methods
     
-    /**
-     Layouts subviews of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func configureSubviews() {
         self.addSubview(avatarImageView)
         self.addSubview(nameLabel)
@@ -236,47 +180,23 @@ class MessageTableViewCell: UITableViewCell {
         }
     }
     
-    /**
-     Configure content layout of the cell when message type is action request.
-     - SeeAlso:
-     `setContent(withMessage message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func layoutActionRequest(message: Message) {
         // Action request messages are kind of customization. There's no such messages at demo account.
     }
     
-    /**
-     Configure content layout of the cell when message type is file from operator.
-     - SeeAlso:
-     `setContent(withMessage message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func layoutFileFromOperator(message: Message) {
         if let fileName = message.getAttachment()?.getFileName() {
             bodyLabel.text = fileName
         } else {
             bodyLabel.text = FileMessage.FILE_UNAVAILABLE.rawValue.localized
         }
-        bodyLabel.textColor = .blue
+        bodyLabel.textColor = textTintColor.color()
         bodyLabel.isUserInteractionEnabled = true
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
         
-        timeLabel.text = getTime(forMessage: message)
+        timeLabel.text = dateFormatter.string(from: message.getTime())
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
@@ -284,53 +204,29 @@ class MessageTableViewCell: UITableViewCell {
         avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue.localized
     }
     
-    /**
-     Configure content layout of the cell when message type is file from visitor.
-     - SeeAlso:
-     `setContent(withMessage message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func layoutFileFromVisitor(message: Message) {
         if let fileName = message.getAttachment()?.getFileName() {
             bodyLabel.text = fileName
         } else {
             bodyLabel.text = FileMessage.FILE_UNAVAILABLE.rawValue.localized
         }
-        bodyLabel.textColor = .blue
+        bodyLabel.textColor = textTintColor.color()
         bodyLabel.isUserInteractionEnabled = true
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
         
-        timeLabel.text = getTime(forMessage: message)
+        timeLabel.text = dateFormatter.string(from: message.getTime())
         
-        avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
+        avatarImageView.image = #imageLiteral(resourceName: "HardcodedVisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
         avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue.localized
     }
     
-    /**
-     Configure content layout of the cell when message type is info.
-     - SeeAlso:
-     `setContent(withMessage message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func layoutInfo(message: Message) {
         bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
-        bodyLabel.textColor = .darkGray
+        bodyLabel.textColor = textSecondaryColor.color()
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
@@ -339,31 +235,18 @@ class MessageTableViewCell: UITableViewCell {
         timeLabel.text = ""
         
         avatarImageView.isHidden = true
-        nameLabel.textColor = .visitorName
     }
     
-    /**
-     Configure content layout of the cell when message type is operator text message.
-     - SeeAlso:
-     `setContent(withMessage message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func layoutOperator(message: Message) {
         bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
-        bodyLabel.textColor = .black
+        bodyLabel.textColor = textMainColor.color()
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
-        nameLabel.textColor = .operatorName
+        nameLabel.textColor = textNameOperatorColor.color()
         
-        timeLabel.text = getTime(forMessage: message)
+        timeLabel.text = dateFormatter.string(from: message.getTime())
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
@@ -371,21 +254,9 @@ class MessageTableViewCell: UITableViewCell {
         avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue.localized
     }
     
-    /**
-     Configure content layout of the cell when message type is operator is busy info message.
-     - SeeAlso:
-     `setContent(withMessage message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func layoutOperatorBusy(message: Message) {
         bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
-        bodyLabel.textColor = .darkGray
+        bodyLabel.textColor = textSecondaryColor.color()
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
@@ -396,48 +267,23 @@ class MessageTableViewCell: UITableViewCell {
         avatarImageView.isHidden = true
     }
     
-    /**
-     Configure content layout of the cell when message type is visitor text message.
-     - SeeAlso:
-     `setContent(withMessage message:)` method.
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Current message which is influenced layout of the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func layoutVisitor(message: Message) {
         bodyLabel.text = message.getText().decodePercentEscapedLinksIfPresent()
-        bodyLabel.textColor = .black
+        bodyLabel.textColor = textMainColor.color()
         bodyLabel.isUserInteractionEnabled = false
         selectionStyle = .none
         
         nameLabel.text = message.getSenderName()
-        nameLabel.textColor = .visitorName
+        nameLabel.textColor = textNameVisitorColor.color()
         
-        timeLabel.text = getTime(forMessage: message)
+        timeLabel.text = dateFormatter.string(from: message.getTime())
         
-        avatarImageView.image = #imageLiteral(resourceName: "VisitorAvatar")
+        avatarImageView.image = #imageLiteral(resourceName: "HardcodedVisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
         avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue.localized
     }
     
-    /**
-     Loads operator avatar into appropriate image view of the cell.
-     - SeeAlso:
-     `Message` protocol of WebimClientLibrary.
-     - parameter imageView:
-     Image view which is supposed to show operator avater.
-     - parameter message:
-     Message that is appropriate to the cell.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func getOperatorAvatar(forImageView imageView: UIImageView,
                                    message: Message) {
         // FIXME: Could load wrong image to cell due to cell reuse mechanism.
@@ -445,33 +291,19 @@ class MessageTableViewCell: UITableViewCell {
         imageView.image = #imageLiteral(resourceName: "DefaultAvatar")
         imageView.isHidden = false
         imageView.isUserInteractionEnabled = true
-        if let avatarURL = message.getSenderAvatarFullURL() {
-            if let image = MessageTableViewCell.imageCache[avatarURL] {
-                imageView.image = image
-            } else {
-                imageView.loadImageAsynchronouslyFrom(url: avatarURL,
-                                                      rounded: true) { image in
-                                                        MessageTableViewCell.imageCache[avatarURL] = image
-                }
+        
+        guard let avatarURL = message.getSenderAvatarFullURL() else {
+            return
+        }
+        
+        if let image = MessageTableViewCell.imageCache[avatarURL] {
+            imageView.image = image
+        } else {
+            imageView.loadImageAsynchronouslyFrom(url: avatarURL,
+                                                  rounded: true) { image in
+                                                    MessageTableViewCell.imageCache[avatarURL] = image
             }
         }
-    }
-    
-    /**
-     Gets time string of the message.
-     - SeeAlso:
-     `Message` protocol of WebimClientLibrary.
-     - parameter message:
-     Message that is appropriate to the cell.
-     - returns:
-     Formatted message date and time string.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    private func getTime(forMessage message: Message) -> String {
-        return MessageTableViewCell.dateFormatter.string(from: message.getTime())
     }
     
 }

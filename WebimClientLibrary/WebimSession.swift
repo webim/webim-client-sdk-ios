@@ -24,9 +24,7 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
-
 
 /**
  - Author:
@@ -117,7 +115,6 @@ public protocol WebimSession {
     func set(deviceToken: String) throws
     
 }
-
 
 // MARK: -
 /**

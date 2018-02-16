@@ -45,7 +45,6 @@ final class MessageHolder {
     private var reachedEndOfLocalHistory = false
     private var reachedEndOfRemoteHistory: Bool
     
-    
     // MARK: - Initialization
     init(accessChecker: AccessChecker,
          remoteHistoryProvider: RemoteHistoryProvider,
@@ -56,7 +55,6 @@ final class MessageHolder {
         self.historyStorage = historyStorage
         self.reachedEndOfRemoteHistory = reachedEndOfRemoteHistory
     }
-    
     
     // MARK: - Methods
     
@@ -245,7 +243,6 @@ final class MessageHolder {
                                               after: nil)
     }
     
-    // TODO: Use it on image sending failed.
     func sendingCancelledWith(messageID: String) {
         for messageIndex in 0 ..< messagesToSend.count {
             if messagesToSend[messageIndex].getID() == messageID {

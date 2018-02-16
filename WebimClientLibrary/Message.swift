@@ -290,7 +290,6 @@ public protocol ImageInfo {
     func getWidth() -> Int?
 }
 
-
 // MARK: -
 /**
  Supported message types.

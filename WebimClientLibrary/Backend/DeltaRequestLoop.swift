@@ -59,7 +59,6 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
     
-    
     // MARK: - Initialization
     init(deltaCallback: DeltaCallback,
          completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
@@ -94,7 +93,6 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
     }
-    
     
     // MARK: - Methods
     
@@ -286,14 +284,14 @@ class DeltaRequestLoop: AbstractRequestLoop {
         authorizationData = nil
         since = 0
         
-        usleep(1000 * 1000)  // 1 s.
+        usleep(1_000_000)  // 1s
     }
     
     private func handleIncorrectServerAnswer() {
         WebimInternalLogger.shared.log(entry: "Incorrect server answer while requesting initialization.",
                                        verbosityLevel: .DEBUG)
         
-        usleep(1000 * 1000)  // 1 s.
+        usleep(1_000_000)  // 1s
     }
     
     private func handleInitialization(error: String,

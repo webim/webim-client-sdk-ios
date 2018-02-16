@@ -26,11 +26,6 @@
 
 import Foundation
 
-let EMPTY_TABLE_VIEW_TEXT = NSAttributedString(string: "EmptyChat".localized)
-let REFRESH_CONTROL_TEXT = NSAttributedString(string: "LoadingMessages".localized)
-let SETTINGS_TEXT_VIEW = "If you are registered in Webim service you can use your own account name and location."
-let START_TEXT_VIEW = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"
-
 enum Avatar: String {
     case ACCESSIBILITY_LABEL = "SenderAvatarImage"
     case ACCESSIBILITY_HINT_FOR_OPERATOR = "ShowsRatingDialog"
@@ -41,9 +36,25 @@ enum BackButton: String {
     case ACCESSIBILITY_HINT = "ClosesScreen"
 }
 
+enum ChatClosedDialog: String {
+    case MESSAGE = "ChatClosed"
+    
+    case BUTTON_TITLE = "OK"
+    case BUTTON_ACCESSIBILITY_HINT = "ClosesDialog"
+}
+
 enum CloseChatButton: String {
     case ACCESSIBILITY_LABEL = "CloseChat"
     case ACCESSIBILITY_HINT = "ClosesChat"
+}
+
+enum DepartmentListDialog: String {
+    case TITLE = "ContactTopic"
+    
+    case BUTTON_ACCESSIBILITY_HINT = "ChoosesTopic"
+    
+    case CANCEL_BUTTON_TITLE = "Cancel"
+    case CANCEL_BUTTON_ACCESSIBILITY_HINT = "ClosesDialog"
 }
 
 enum FileMessage: String {
@@ -78,7 +89,7 @@ enum SendFileErrorMessage: String {
     case BUTTON_TITLE = "OK"
     case BUTTON_ACCESSIBILITY_HINT = "ClosesSendFileError"
     
-    // Error messages.
+    // Error messages
     case FILE_SIZE_EXCEEDED = "FileTooLarge"
     case FILE_TYPE_NOT_ALLOWED = "FileTypeNotSupported"
 }
@@ -105,10 +116,19 @@ enum SettingsErrorDialog: String {
 enum ShowFileDialog: String {
     case BUTTON_TITLE = "OK"
     
-    // Message.
+    // Message
     case INVALID_IMAGE_FORMAT = "ImageFormatInvalid."
     case INVALID_IMAGE_LINK = "ImageLinkInvalid."
     case NOT_IMAGE = "PreviewUnavailable."
     
     case ACCESSIBILITY_HINT = "ClosesFilePreview"
+}
+
+enum StartView: String {
+    case WELCOME_TEXT = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"
+}
+
+enum TableView: String {
+    case REFRESH_CONTROL_TEXT = "LoadingMessages"
+    case EMPTY_TABLE_VIEW_TEXT = "EmptyChat"
 }

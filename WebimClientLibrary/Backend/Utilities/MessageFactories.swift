@@ -26,7 +26,6 @@
 
 import Foundation
 
-
 /**
  Protocol which is implemented by several mappers classes.
  - SeeAlso:
@@ -47,9 +46,9 @@ protocol MessageFactoriesMapper {
     
 }
 
-
 // MARK: -
 /**
+ Abstract class that supposed to be parent of mapper classes that are responsible for converting internal message model objects to public one.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -62,17 +61,14 @@ class AbstractMapper: MessageFactoriesMapper {
         case INVALID_MESSAGE_TYPE(String)
     }
     
-    
     // MARK: - Properties
     private let serverURLString: String
     private var webimClient: WebimClient?
-    
     
     // MARK: - Initialization
     init(withServerURLString serverURLString: String) {
         self.serverURLString = serverURLString
     }
-    
     
     // MARK: - Methods
     
@@ -168,6 +164,7 @@ class AbstractMapper: MessageFactoriesMapper {
 
 // MARK: -
 /**
+ Concrete mapper class that is responsible for converting internal message model objects to public message model objects of current chat.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -185,6 +182,7 @@ final class CurrentChatMapper: AbstractMapper {
 
 // MARK: -
 /**
+ Concrete mapper class that is responsible for converting internal message model objects to public message model objects of previous chats.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -202,6 +200,7 @@ final class HistoryMapper: AbstractMapper {
 
 // MARK: -
 /**
+ Class that responsible for creating child class objects for public message model objects of messages that are to be sent by visitor.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -244,6 +243,7 @@ final class SendingFactory {
 
 // MARK: -
 /**
+ Mapper class that is responsible for converting internal operator model objects to public ones.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:

@@ -44,13 +44,11 @@ struct OperatorItem {
         case FULL_NAME = "fullname"
     }
     
-    
     // MARK: - Properties
     private var avatarURLString: String?
     private var departmentKeys = [String]()
     private var id: String
     private var fullName: String
-    
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
@@ -76,7 +74,6 @@ struct OperatorItem {
             self.avatarURLString = avatarURLString
         }
     }
-    
     
     // MARK: - Methods
     

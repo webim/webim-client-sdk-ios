@@ -48,9 +48,20 @@
 "Back" = "Закрыть экран";
 "ClosesScreen" = "Закрывает экран и возвращает на предыдущий.";
 
+// ChatClosedDialog
+"ChatClosed" = "Чат уже закрыт.";
+"OK" = "OK";
+"ClosesRateOperatorError" = "Закрывает окно.";
+
 // CloseChatButton
 "CloseChat" = "Закрыть чат";
 "ClosesChat" = "Закрывает чат не закрывая данный экран.";
+
+// DepartmentListDialog
+"ContactTopic" = "Тема обращения";
+"ChoosesTopic" = "Выбирает данную тему для обращения";
+"Cancel" = "Отмена";
+"ClosesDialog" = "Закрывает окно.";
 
 // FileMessage
 "FileUnavailable" = "Файл недоступен.";
@@ -61,6 +72,7 @@
 
 // RateOperatorErrorMessage
 "OperatorRatingFailed" = "Неудачная попытка оценить оператора";
+"OK" = "OK";
 "ClosesRateOperatorError" = "Закрывает окно.";
 "RateOperatorErrorMessage" = "Произошла неизвестная ошибка.";
 

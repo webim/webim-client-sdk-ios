@@ -41,7 +41,6 @@ final class MessageComposingHandler {
         case RESET_STATUS_DELAY = 5 // Second
     }
     
-    
     // MARK: - Properties
     private let queue: DispatchQueue
     private let webimActions: WebimActions
@@ -49,14 +48,12 @@ final class MessageComposingHandler {
     private var resetTimer: Timer?
     private var updateDraftScheduled = false
     
-    
     // MARK: - Initialization
     init(webimActions: WebimActions,
          queue: DispatchQueue) {
         self.webimActions = webimActions
         self.queue = queue
     }
-    
     
     // MARK: - Methods
     

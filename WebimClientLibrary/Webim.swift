@@ -24,9 +24,7 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
-
 
 /**
  - Author:
@@ -64,7 +62,7 @@ public final class Webim {
      - Copyright:
      2017 Webim
      */
-    static public func parse(remoteNotification: [AnyHashable: Any]) -> WebimRemoteNotification? {
+    static public func parse(remoteNotification: [AnyHashable : Any]) -> WebimRemoteNotification? {
         return InternalUtils.parse(remoteNotification: remoteNotification)
     }
     
@@ -426,11 +424,10 @@ public final class SessionBuilder  {
      2017 Webim
      */
     public func build() throws -> WebimSession {
-        guard self.accountName != nil else {
+        guard let accountName = accountName else {
             throw SessionBuilderError.NIL_ACCOUNT_NAME
         }
-        
-        guard self.location != nil else {
+        guard let location = location else {
             throw SessionBuilderError.NIL_LOCATION
         }
         
@@ -453,22 +450,20 @@ public final class SessionBuilder  {
             providedAuthorizationTokenStateListener!.update(providedAuthorizationToken: providedAuthorizationToken!)
         }
         
-        return WebimSessionImpl.newInstanceWith(accountName: accountName!,
-                                                location: location!,
+        return WebimSessionImpl.newInstanceWith(accountName: accountName,
+                                                location: location,
                                                 appVersion: appVersion,
                                                 visitorFields: visitorFields,
                                                 providedAuthorizationTokenStateListener: providedAuthorizationTokenStateListener,
                                                 providedAuthorizationToken: providedAuthorizationToken,
                                                 pageTitle: pageTitle,
                                                 fatalErrorHandler: fatalErrorHandler,
-                                                areRemoteNotificationsEnabled: remoteNotificationsEnabled,
                                                 deviceToken: deviceToken,
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled,
                                                 webimLogger: webimLogger,
                                                 verbosityLevel: webimLoggerVerbosityLevel) as WebimSession
     }
-    
     
     // MARK: -
     /**

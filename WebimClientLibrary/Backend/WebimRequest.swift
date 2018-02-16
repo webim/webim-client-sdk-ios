@@ -118,6 +118,7 @@ final class WebimRequest {
 // MARK: - NSCopying
 extension WebimRequest: NSCopying {
     
+    // MARK: - Methods
     func copy(with zone: NSZone? = nil) -> Any {
         return WebimRequest(httpMethod: httpMethod,
                             primaryData: primaryData,

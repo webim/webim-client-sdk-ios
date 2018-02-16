@@ -26,14 +26,7 @@
 
 import UIKit
 
-/**
- Information view controller which is shown when tha app is started.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-class StartViewController: UIViewController {
+final class StartViewController: UIViewController {
     
     // MARK: - Properties
     // MARK: Outlets
@@ -41,23 +34,27 @@ class StartViewController: UIViewController {
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var welcomeTextView: UITextView!
     
-    
     // MARK: - Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupNavigationItem()
-        
         setupStartChatButton()
-        setupSettingstButton()
+        setupSettingsButton()
         
         // Xcode does not localize UITextView text automatically.
-        welcomeTextView.text = NSLocalizedString(START_TEXT_VIEW,
+        welcomeTextView.text = NSLocalizedString(StartView.WELCOME_TEXT.rawValue,
                                                  tableName: "Main",
                                                  bundle: .main,
                                                  value: "",
                                                  comment: "")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setupColorScheme()
+        setupNavigationItem()
     }
     
     @IBAction func unwindFromSettings(_: UIStoryboardSegue) {
@@ -66,43 +63,40 @@ class StartViewController: UIViewController {
     
     // MARK: Private methods
     
-    /**
-     Sets up navigation item.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    private func setupNavigationItem() {
-        let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
-        navigationItemImageView.contentMode = .scaleAspectFit
-        navigationItem.titleView = navigationItemImageView
-    }
-    
-    /**
-     Sets up Start Chat button.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func setupStartChatButton() {
         startChatButton.layer.cornerRadius = CORNER_RADIUS
         startChatButton.layer.borderWidth = LIGHT_BORDER_WIDTH
-        startChatButton.layer.borderColor = GREY_COLOR.cgColor
+        startChatButton.layer.borderColor = buttonBorderColor.color().cgColor
     }
     
-    /**
-     Sets up Settings button.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    private func setupSettingstButton() {
+    private func setupSettingsButton() {
         settingsButton.layer.cornerRadius = CORNER_RADIUS
         settingsButton.layer.borderWidth = BORDER_WIDTH
-        settingsButton.layer.borderColor = GREY_COLOR.cgColor
+    }
+    
+    private func setupColorScheme() {
+        view.backgroundColor = backgroundMainColor.color()
+        navigationController?.navigationBar.barTintColor = backgroundSecondaryColor.color()
+        
+        welcomeTextView.backgroundColor = backgroundMainColor.color()
+        welcomeTextView.textColor = textMainColor.color()
+        welcomeTextView.tintColor = textTintColor.color()
+        
+        startChatButton.backgroundColor = buttonColor.color()
+        startChatButton.setTitleColor(textButtonColor.color(),
+                                      for: .normal)
+        
+        settingsButton.setTitleColor(textButtonTransparentColor.color(),
+                                     for: .normal)
+        settingsButton.setTitleColor(textButtonTransparentHighlightedColor.color(),
+                                     for: .highlighted)
+        settingsButton.layer.borderColor = textButtonTransparentColor.color().cgColor
+    }
+    
+    private func setupNavigationItem() {
+        let navigationItemImageView = UIImageView(image: ColorScheme.shared.navigationItemImage())
+        navigationItemImageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = navigationItemImageView
     }
     
 }

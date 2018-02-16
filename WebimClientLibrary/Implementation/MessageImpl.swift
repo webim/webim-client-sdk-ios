@@ -26,7 +26,6 @@
 
 import Foundation
 
-
 /**
  Internal messages representasion.
  - Author:
@@ -52,7 +51,6 @@ class MessageImpl {
     private var data: [String: Any?]?
     private var historyID: HistoryID?
     private var historyMessage: Bool
-    
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -90,7 +88,6 @@ class MessageImpl {
             currentChatID = internalID
         }
     }
-    
     
     // MARK: - Methods
     
@@ -214,7 +211,6 @@ class MessageImpl {
         "}"
     }
     
-    
     // MARK: -
     enum MessageSource {
         
@@ -295,7 +291,7 @@ extension MessageImpl: Message {
     }
     
     func getTime() -> Date {
-        return Date(timeIntervalSince1970: TimeInterval(timeInMicrosecond / 1000000))
+        return Date(timeIntervalSince1970: TimeInterval(timeInMicrosecond / 1_000_000))
     }
     
     func getType() -> MessageType {
@@ -334,7 +330,6 @@ extension MessageImpl: Equatable {
     
 }
 
-
 // MARK: -
 /**
  Internal messages' attachments representation.
@@ -371,7 +366,6 @@ final class MessageAttachmentImpl {
         self.contentType = contentType
         self.imageInfo = imageInfo
     }
-    
     
     // MARK: - Methods
     static func getAttachment(byServerURL serverURLString: String,
@@ -423,7 +417,6 @@ final class MessageAttachmentImpl {
         }
     }
     
-    
     // MARK: Private methods
     private static func extractImageInfoOf(fileParameters: FileParametersItem?,
                                            with fileURLString: String?) -> ImageInfo? {
@@ -474,7 +467,6 @@ extension MessageAttachmentImpl: MessageAttachment {
     
 }
 
-
 // MARK: -
 /**
  Internal image information representation.
@@ -492,7 +484,6 @@ final class ImageInfoImpl: ImageInfo {
     private let width: Int?
     private let height: Int?
     
-    
     // MARK: - Initialization
     init(withThumbURLString thumbURLString: String,
          width: Int?,
@@ -501,7 +492,6 @@ final class ImageInfoImpl: ImageInfo {
         self.width = width
         self.height = height
     }
-    
     
     // MARK: - Methods
     // MARK: ImageInfo protocol methods

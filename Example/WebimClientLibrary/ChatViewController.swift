@@ -24,19 +24,11 @@
 //  SOFTWARE.
 //
 
-import PopupDialog
 import SlackTextViewController
 import UIKit
 import WebimClientLibrary
 
-/**
- View controller that visualize chat.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-class ChatViewController: SLKTextViewController {
+final class ChatViewController: SLKTextViewController {
     
     // MARK: - Properties
     private let imagePicker = UIImagePickerController()
@@ -44,7 +36,9 @@ class ChatViewController: SLKTextViewController {
     private lazy var alreadyRated = [String: Bool]()
     private var lastOperatorID: String?
     private lazy var messages = [Message]()
-    private lazy var webimService = WebimService()
+    private var popupDialogHandler: PopupDialogHandler?
+    private var scrollToBottomButton: UIButton?
+    private var webimService: WebimService?
     
     
     // MARK: - Methods
@@ -52,12 +46,24 @@ class ChatViewController: SLKTextViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        webimService = WebimService(fatalErrorHandlerDelegate: self,
+                                    departmentListHandlerDelegate: self)
+        popupDialogHandler = PopupDialogHandler(delegate: self)
+        
         imagePicker.delegate = self
         
-        setupTableView()
         setupNavigationItem()
         setupSlackTextViewController()
         setupWebimSession()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        setupTableView()
+        
+        scrollToBottomButton?.removeFromSuperview() // Need for redrawing after device is rotated.
+        setupScrollToBottomButton()
     }
     
     // For testing purposes.
@@ -68,22 +74,21 @@ class ChatViewController: SLKTextViewController {
     // MARK: SlackTextViewController methods
     
     override func textViewDidChange(_ textView: UITextView) {
-        webimService.setVisitorTyping(draft: textView.text)
+        webimService!.setVisitorTyping(draft: textView.text)
     }
     
-    // Send message button.
     override func didPressRightButton(_ sender: Any?) {
+        // Send message button
+        
         textView.refreshFirstResponder()
         
         if let text = textView.text,
             !text.isEmpty {
-            webimService.send(message: text)
+            webimService!.send(message: text) { [weak self] in
+                self?.textView.text = ""
+                self?.webimService!.setVisitorTyping(draft: nil) // Delete visitor typing draft after message is sent.
+            }
         }
-        
-        textView.text = ""
-        
-        // Delete visitor typing draft after message is sent.
-        webimService.setVisitorTyping(draft: nil)
     }
     
     // Send file buton.
@@ -104,7 +109,7 @@ class ChatViewController: SLKTextViewController {
             
             return 1
         } else {
-            tableView.emptyTableView(message: EMPTY_TABLE_VIEW_TEXT)
+            tableView.emptyTableView(message: TableView.EMPTY_TABLE_VIEW_TEXT.rawValue.localized)
             
             return 0
         }
@@ -145,24 +150,38 @@ class ChatViewController: SLKTextViewController {
         return cell
     }
     
+    // MARK: UIScrollViewDelegate protocol methods
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if tableView!.contentOffset.y >= (tableView!.contentSize.height - tableView!.frame.size.height - ScrollToBottomButton.VISIBILITY_THRESHOLD.rawValue) {
+            UIView.animate(withDuration: ScrollToBottomButtonAnimation.DURATION.rawValue,
+                           delay: 0.1,
+                           options: [],
+                           animations: { [weak self] in
+                            self?.scrollToBottomButton?.alpha = 0.0
+            }
+                , completion: nil)
+        } else {
+            UIView.animate(withDuration: ScrollToBottomButtonAnimation.DURATION.rawValue,
+                           delay: 0.1,
+                           options: [],
+                           animations: { [weak self] in
+                            self?.scrollToBottomButton?.alpha = 1.0
+            }
+                , completion: nil)
+        }
+    }
     
     // MARK: Private methods
     
-    /**
-     Sets up table view.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func setupTableView() {
+        tableView?.backgroundColor = backgroundTableViewColor.color()
+        
         tableView?.estimatedRowHeight = 64.0
         tableView?.rowHeight = UITableViewAutomaticDimension
         tableView?.separatorStyle = .none
         tableView?.register(MessageTableViewCell.self,
                             forCellReuseIdentifier: "MessageCell")
         
-        // Setup refresh control.
         if #available(iOS 10.0, *) {
             tableView?.refreshControl = refreshControl
         } else {
@@ -171,19 +190,11 @@ class ChatViewController: SLKTextViewController {
         refreshControl.addTarget(self,
                                  action: #selector(requestMessages),
                                  for: .valueChanged)
-        refreshControl.tintColor = MAIN_BACKGROUND_COLOR
-        refreshControl.attributedTitle = REFRESH_CONTROL_TEXT
+        refreshControl.tintColor = textMainColor.color()
+        refreshControl.attributedTitle = NSAttributedString(string: TableView.REFRESH_CONTROL_TEXT.rawValue.localized,
+                                                            attributes: [.foregroundColor : textMainColor.color()])
     }
     
-    /**
-     Sets up SlackTextViewController view.
-     - SeeAlso:
-     `SLKTextViewController` protocol.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func setupSlackTextViewController() {
         isInverted = false
         
@@ -197,263 +208,202 @@ class ChatViewController: SLKTextViewController {
         rightButton.setTitle(nil,
                              for: .normal)
         
-        textInputbar.backgroundColor = MAIN_BACKGROUND_COLOR
+        textInputbar.tintColor = textTintColor.color()
+        textInputbar.backgroundColor = backgroundSecondaryColor.color()
+        textInputbar.textView.textInputView.backgroundColor = backgroundTextFieldColor.color()
+        textInputbar.textView.textColor = textTextFieldColor.color()
+        textInputbar.textView.keyboardAppearance = ColorScheme.shared.keyboardAppearance()
     }
     
-    /**
-     Sets up navigation item.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     private func setupNavigationItem() {
-        self.setBackButton(image: #imageLiteral(resourceName: "Back"))
+        setupLeftBarButtonItem()
+        setupRightBarButtonItem()
+        setupTitleView()
+    }
+    
+    private func setupLeftBarButtonItem() {
+        let backButton = UIButton(type: .custom)
+        backButton.setImage(ColorScheme.shared.backButtonImage(),
+                            for: .normal)
+        backButton.imageView?.contentMode = .scaleAspectFit
+        backButton.accessibilityLabel = BackButton.ACCESSIBILITY_LABEL.rawValue.localized
+        backButton.accessibilityHint = BackButton.ACCESSIBILITY_HINT.rawValue.localized
+        backButton.addTarget(self,
+                             action: #selector(onBackButtonClick(sender:)),
+                             for: .touchUpInside)
+        let leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+    }
+    
+    @objc
+    private func onBackButtonClick(sender: UIButton) {
+        webimService!.stopSession()
         
+        navigationController?.popViewController(animated: true)
+    }
+    
+    private func setupRightBarButtonItem() {
         let closeChatButton = UIButton(type: .custom)
-        closeChatButton.setImage(#imageLiteral(resourceName: "Close"),
+        closeChatButton.setImage(ColorScheme.shared.closeChatButtonImage(),
                                  for: .normal)
+        closeChatButton.imageView?.contentMode = .scaleAspectFit
         closeChatButton.accessibilityLabel = CloseChatButton.ACCESSIBILITY_LABEL.rawValue.localized
         closeChatButton.accessibilityHint = CloseChatButton.ACCESSIBILITY_HINT.rawValue.localized
         closeChatButton.addTarget(self,
                                   action: #selector(endChat),
                                   for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeChatButton)
+    }
+    
+    @objc
+    private func endChat() {
+        webimService!.closeChat()
         
-        // Setting an image to NavigationItem TitleView.
-        let navigationItemImageView = UIImageView(image: #imageLiteral(resourceName: "LogoWebimNavigationBar"))
+        if let operatorID = lastOperatorID {
+            if alreadyRated[operatorID] != true { // Don't offer to rate an operator if a visitor already did it independently.
+                if showRatingDialog(forOperator: operatorID) {
+                    return
+                }
+            }
+        }
+        
+        popupDialogHandler?.showChatClosedDialog()
+    }
+    
+    private func setupTitleView() {
+        let navigationItemImageView = UIImageView(image: ColorScheme.shared.navigationItemImage())
         navigationItemImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = navigationItemImageView
     }
     
-    /**
-     Sets up `WebimService` class.
-     - SeeAlso:
-     `WebimService` class.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
+    private func setupScrollToBottomButton() {
+        let xPosition = view.frame.size.width - ScrollToBottomButton.SIZE.rawValue - ScrollToBottomButton.MARGIN.rawValue
+        let yPosition = UIApplication.shared.statusBarFrame.height + navigationController!.navigationBar.frame.size.height + ScrollToBottomButton.MARGIN.rawValue
+        scrollToBottomButton = UIButton(frame: CGRect(x: xPosition,
+                                                      y: yPosition,
+                                                      width: ScrollToBottomButton.SIZE.rawValue,
+                                                      height: ScrollToBottomButton.SIZE.rawValue))
+        scrollToBottomButton!.setImage(ColorScheme.shared.scrollToBottomButtonImage(),
+                                       for: .normal)
+        scrollToBottomButton!.addTarget(self,
+                                        action: #selector(scrollToBottom),
+                                        for: .touchUpInside)
+        scrollToBottomButton!.alpha = 0.0
+        view.addSubview(scrollToBottomButton!)
+    }
+    
     private func setupWebimSession() {
-        webimService.createSession(viewController: self)
-        webimService.startSession()
+        webimService!.createSession()
+        webimService!.startSession()
         
-        webimService.setMessageStream()
-        
-        webimService.setMessageTracker(withMessageListener: self)
-        webimService.getLastMessages() { [weak self] messages in
+        webimService!.setMessageStream()
+        webimService!.setMessageTracker(withMessageListener: self)
+        webimService!.getLastMessages() { [weak self] messages in
             self?.messages.insert(contentsOf: messages,
                                   at: 0)
-            
             DispatchQueue.main.async() {
                 self?.tableView?.reloadData()
-                
                 self?.scrollToBottom()
             }
         }
     }
     
-    /**
-     Requests messages from above of the message history.
-     - SeeAlso:
-     `WebimService` class.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     @objc
     private func requestMessages() {
-        webimService.getNextMessages() { [weak self] messages in
+        webimService!.getNextMessages() { [weak self] messages in
             self?.messages.insert(contentsOf: messages,
                                   at: 0)
-            
             DispatchQueue.main.async() {
                 self?.tableView?.reloadData()
-                
                 self?.refreshControl.endRefreshing()
             }
         }
     }
     
-    /**
-     Closes chat in virtual context.
-     - SeeAlso:
-     `WebimService` class.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    @objc
-    private func endChat() {
-        webimService.closeChat()
-        
-        if let operatorID = lastOperatorID {
-            if alreadyRated[operatorID] != true { // Don't offer to rate an operator if a visitor already did it independently.
-                showRatingDialog(forOperator: operatorID)
-            }
-        }
-    }
-    
-    /**
-     Rates current operator.
-     - SeeAlso:
-     `WebimService` class.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
     @objc
     private func rateOperator(_ recognizer: UITapGestureRecognizer) {
-        if recognizer.state == .ended {
-            let tapLocation = recognizer.location(in: tableView)
-            if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
-                let message = messages[tapIndexPath.row]
-                if let operatorID = message.getOperatorID() {
-                    showRatingDialog(forOperator: operatorID)
-                }
+        guard recognizer.state == .ended else {
+            return
+        }
+        
+        let tapLocation = recognizer.location(in: tableView)
+        if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
+            let message = messages[tapIndexPath.row]
+            if let operatorID = message.getOperatorID() {
+                _ = showRatingDialog(forOperator: operatorID)
             }
         }
     }
     
-    /**
-     Show preview of file inside a chat message.
-     - SeeAlso:
-     `WebimService` class.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
+    private func showRatingDialog(forOperator operatorID: String) -> Bool {
+        guard webimService!.isChatExist() else {
+            return false
+        }
+        
+        popupDialogHandler?.showRatingDialog(forOperator: operatorID) { [weak self] rating in
+            self?.alreadyRated[operatorID] = true
+            
+            self?.webimService!.rateOperator(withID: operatorID,
+                                            byRating: rating,
+                                            completionHandler: self)
+        }
+        
+        return true
+    }
+    
     @objc
     private func showFile(_ recognizer: UITapGestureRecognizer) {
-        if recognizer.state == .ended {
-            let tapLocation = recognizer.location(in: tableView)
-            if let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) {
-                let message = messages[tapIndexPath.row]
-                
-                if let attachment = message.getAttachment() {
-                    let attachmentURL = attachment.getURL()
-                    
-                    var popupMessage: String?
-                    var image: UIImage?
-                    
-                    if isImage(contentType: attachment.getContentType()) {
-                        let semaphore = DispatchSemaphore(value: 0)
-                        let request = URLRequest(url: attachmentURL)
-                        
-                        print("Requesting file: \(attachmentURL.absoluteString)")
-                        
-                        URLSession.shared.dataTask(with: request,
-                                                   completionHandler: { data, _, _ in
-                                                    if let data = data {
-                                                        if let downloadedImage = UIImage(data: data) {
-                                                            image = downloadedImage
-                                                        } else {
-                                                            popupMessage = ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue.localized
-                                                        }
-                                                    } else {
-                                                        popupMessage = ShowFileDialog.INVALID_IMAGE_LINK.rawValue.localized
-                                                    }
-                                                    
-                                                    semaphore.signal()
-                        }).resume()
-                        
-                        _ = semaphore.wait(timeout: .distantFuture)
-                    } else {
-                        popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
-                    }
-                    
-                    let button = CancelButton(title: ShowFileDialog.BUTTON_TITLE.rawValue.localized,
-                                              action: nil)
-                    button.accessibilityHint = ShowFileDialog.ACCESSIBILITY_HINT.rawValue.localized
-                    
-                    let popup = PopupDialog(title: attachment.getFileName(),
-                                            message: popupMessage,
-                                            image: image,
-                                            buttonAlignment: .horizontal,
-                                            transitionStyle: .bounceUp,
-                                            gestureDismissal: true,
-                                            completion: nil)
-                    popup.addButton(button)
-                    self.present(popup,
-                                 animated: true,
-                                 completion: nil)
-                }
-            }
+        guard recognizer.state == .ended else {
+            return
         }
-    }
-    
-    /**
-     Check if passed MIME type is supproted image type.
-     - parameter contentType:
-     MIME type.
-     - returns:
-     True if passed MIME type is supported image type and false otherwise.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2018 Webim
-     */
-    private func isImage(contentType: String) -> Bool {
-        return ((contentType == "image/gif")
-            || (contentType == "image/jpeg")
-            || (contentType == "image/png")
-            || (contentType == "image/tiff"))
-    }
-    
-    /**
-     Shows RatingViewController.
-     - SeeAlso:
-     `RatingViewController` class.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
-    private func showRatingDialog(forOperator operatorID: String) {
-        let ratingViewController = RatingViewController(nibName: "RatingViewController",
-                                                        bundle: nil)
-        let popup = PopupDialog(viewController: ratingViewController,
-                                buttonAlignment: .horizontal,
-                                transitionStyle: .bounceUp,
-                                gestureDismissal: true)
         
-        let cancelButton = CancelButton(title: RatingDialog.CANCEL_BUTTON_TITLE.rawValue.localized,
-                                        height: 60,
-                                        dismissOnTap: true,
-                                        action: nil)
-        cancelButton.accessibilityHint = RatingDialog.CANCEL_BUTTON_ACCESSIBILITY_HINT.rawValue.localized
+        let tapLocation = recognizer.location(in: tableView)
+        guard let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) else {
+            return
+        }
         
-        let rateButton = DefaultButton(title: RatingDialog.ACTION_BUTTON_TITLE.rawValue.localized,
-                                       height: 60,
-                                       dismissOnTap: true) { [weak self] in
-                                        self?.alreadyRated[operatorID] = true
+        let message = messages[tapIndexPath.row]
+        guard let attachment = message.getAttachment() else {
+            return
+        }
+        
+        let attachmentURL = attachment.getURL()
+        
+        var popupMessage: String?
+        var image: UIImage?
+        
+        if isImage(contentType: attachment.getContentType()) {
+            let semaphore = DispatchSemaphore(value: 0)
+            let request = URLRequest(url: attachmentURL)
+            
+            print("Requesting file: \(attachmentURL.absoluteString)")
+            
+            URLSession.shared.dataTask(with: request,
+                                       completionHandler: { data, _, _ in
+                                        if let data = data {
+                                            if let downloadedImage = UIImage(data: data) {
+                                                image = downloadedImage
+                                            } else {
+                                                popupMessage = ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue.localized
+                                            }
+                                        } else {
+                                            popupMessage = ShowFileDialog.INVALID_IMAGE_LINK.rawValue.localized
+                                        }
                                         
-                                        self?.webimService.rateOperator(withID: operatorID,
-                                                                        byRating: Int(ratingViewController.ratingView.rating),
-                                                                        completionHandler: self)
+                                        semaphore.signal()
+            }).resume()
+            
+            _ = semaphore.wait(timeout: .distantFuture)
+        } else {
+            popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
         }
-        rateButton.accessibilityHint = RatingDialog.ACTION_BUTTON_ACCESSIBILITY_HINT.rawValue.localized
         
-        popup.addButtons([cancelButton,
-                          rateButton])
-        
-        present(popup,
-                animated: true,
-                completion: nil)
+        popupDialogHandler?.showFileDialog(withMessage: popupMessage,
+                                           title: attachment.getFileName(),
+                                           image: image)
     }
     
-    /**
-     Scroll table view to the bottom.
-     - Author:
-     Nikita Lazarev-Zubov
-     - Copyright:
-     2017 Webim
-     */
+    @objc
     private func scrollToBottom() {
         if messages.isEmpty {
             return
@@ -471,6 +421,8 @@ class ChatViewController: SLKTextViewController {
 // MARK: - UIImagePickerControllerDelegate
 extension ChatViewController: UIImagePickerControllerDelegate {
     
+    // MARK: - Methods
+    
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String: Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
@@ -480,10 +432,10 @@ extension ChatViewController: UIImagePickerControllerDelegate {
                 let imageName = imageURL.lastPathComponent
                 let mimeType = MimeType(url: imageURL as URL)
                 
-                webimService.send(file: imageData,
-                                  fileName: imageName,
-                                  mimeType: mimeType.value,
-                                  completionHandler: self)
+                webimService!.send(file: imageData,
+                                   fileName: imageName,
+                                   mimeType: mimeType.value,
+                                   completionHandler: self)
             }
         }
         
@@ -506,32 +458,30 @@ extension ChatViewController: UINavigationControllerDelegate {
 // MARK: - WEBIM: MessageListener
 extension ChatViewController: MessageListener {
     
+    // MARK: - Methods
+    
     func added(message newMessage: Message,
                after previousMessage: Message?) {
+        var added = false
+        
         if let previousMessage = previousMessage {
-            var added = false
-            
             for (index, message) in messages.enumerated() {
                 if previousMessage.isEqual(to: message) {
                     messages.insert(newMessage,
                                     at: index + 1)
-                    
                     added = true
                     
                     break
                 }
             }
-            
-            if !added {
-                messages.append(newMessage)
-            }
-        } else {
+        }
+        
+        if !added {
             messages.append(newMessage)
         }
         
         DispatchQueue.main.async() {
             self.tableView?.reloadData()
-            
             self.scrollToBottom()
         }
     }
@@ -551,7 +501,6 @@ extension ChatViewController: MessageListener {
         if toUpdate {
             DispatchQueue.main.async() {
                 self.tableView?.reloadData()
-                
                 self.scrollToBottom()
             }
         }
@@ -581,7 +530,6 @@ extension ChatViewController: MessageListener {
         if toUpdate {
             DispatchQueue.main.async() {
                 self.tableView?.reloadData()
-                
                 self.scrollToBottom()
             }
         }
@@ -591,6 +539,8 @@ extension ChatViewController: MessageListener {
 
 // MARK: - SendFileCompletionHandler
 extension ChatViewController: SendFileCompletionHandler {
+    
+    // MARK: - Methods
     
     func onSuccess(messageID: String) {
         // Ignored.
@@ -611,10 +561,7 @@ extension ChatViewController: SendFileCompletionHandler {
                 break
             }
             
-            let popupDialog = PopupDialog(title: SendFileErrorMessage.TITLE.rawValue.localized,
-                                          message: message)
-            
-            let okButton = CancelButton(title: SendFileErrorMessage.BUTTON_TITLE.rawValue.localized) { [weak self] in
+            popupDialogHandler?.showFileSendFailureDialog(withMessage: message!) { [weak self] in
                 guard let `self` = self else {
                     return
                 }
@@ -622,7 +569,6 @@ extension ChatViewController: SendFileCompletionHandler {
                 for (index, message) in self.messages.enumerated() {
                     if message.getID() == messageID {
                         self.messages.remove(at: index)
-                        
                         DispatchQueue.main.async() {
                             self.tableView?.reloadData()
                         }
@@ -631,12 +577,6 @@ extension ChatViewController: SendFileCompletionHandler {
                     }
                 }
             }
-            okButton.accessibilityHint = SendFileErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue.localized
-            popupDialog.addButton(okButton)
-            
-            self.present(popupDialog,
-                         animated: true,
-                         completion: nil)
         }
     }
     
@@ -645,26 +585,36 @@ extension ChatViewController: SendFileCompletionHandler {
 // MARK: - RateOperatorCompletionHandler
 extension ChatViewController: RateOperatorCompletionHandler {
     
+    // MARK: - Methods
+    
     func onSuccess() {
         // Ignored.
     }
     
     func onFailure(error: RateOperatorError) {
-        DispatchQueue.main.sync {
-            let message = RateOperatorErrorMessage.MESSAGE.rawValue.localized
-            
-            let popupDialog = PopupDialog(title: RateOperatorErrorMessage.TITLE.rawValue.localized,
-                                          message: message)
-            
-            let okButton = CancelButton(title: RateOperatorErrorMessage.BUTTON_TITLE.rawValue.localized,
-                                        action: nil)
-            okButton.accessibilityHint = RateOperatorErrorMessage.BUTTON_ACCESSIBILITY_HINT.rawValue.localized
-            popupDialog.addButton(okButton)
-            
-            self.present(popupDialog,
-                         animated: true,
-                         completion: nil)
-        }
+        popupDialogHandler?.showRatingFailureDialog()
+    }
+    
+}
+
+// MARK: - FatalErrorHandler
+extension ChatViewController: FatalErrorHandlerDelegate {
+    
+    // MARK: - Methods
+    func showErrorDialog(withMessage message: String) {
+        popupDialogHandler?.showCreatingSessionFailureDialog(withMessage: message)
+    }
+    
+}
+
+// MARK: - DepartmentListHandlerDelegate
+extension ChatViewController: DepartmentListHandlerDelegate {
+    
+    // MARK: - Methods
+    func show(departmentList: [Department],
+              action: @escaping (String) -> ()) {
+        popupDialogHandler?.showDepartmentListDialog(withDepartmentList: departmentList,
+                                                     action: action)
     }
     
 }

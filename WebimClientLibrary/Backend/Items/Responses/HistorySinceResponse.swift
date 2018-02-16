@@ -41,11 +41,9 @@ struct HistorySinceResponse {
         case RESULT = "result"
     }
     
-    
     // MARK: - Properties
     private var historyResponseData: HistoryResponseData?
     private var result: String?
-    
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -58,12 +56,10 @@ struct HistorySinceResponse {
         }
     }
     
-    
     // MARK: - Methods
     func getData() -> HistoryResponseData? {
         return historyResponseData
     }
-    
     
     // MARK: -
     struct HistoryResponseData {
@@ -76,12 +72,10 @@ struct HistorySinceResponse {
             case REVISION = "revision"
         }
         
-        
         // MARK: - Properties
         private var hasMore: Bool?
         private var messages: [MessageItem]?
         private var revision: String?
-        
         
         // MARK: - Initialization
         init(jsonDictionary: [String: Any?]) {
@@ -99,7 +93,6 @@ struct HistorySinceResponse {
             self.hasMore = jsonDictionary[JSONField.HAS_MORE.rawValue] as! Bool?
             self.revision = jsonDictionary[JSONField.REVISION.rawValue] as! String?
         }
-        
         
         // MARK: - Methods
         

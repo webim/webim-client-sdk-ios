@@ -1,12 +1,12 @@
 PODS:
-  - Cosmos (13.0.0)
+  - Cosmos (14.0.0)
   - PopupDialog (0.6.2)
   - SlackTextViewController (1.9.6)
   - SnapKit (4.0.0)
   - SQLite.swift (0.11.4):
     - SQLite.swift/standard (= 0.11.4)
   - SQLite.swift/standard (0.11.4)
-  - WebimClientLibrary (3.11.0):
+  - WebimClientLibrary (3.13.1):
     - SQLite.swift
 
 DEPENDENCIES:
@@ -22,13 +22,13 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  Cosmos: af3973becc045af335b64498c9812034876b7661
+  Cosmos: 6dd44b65d587033e690ae1c350c875d262a23fda
   PopupDialog: d4336d7274a6aa3af4cb26d8b6691510eba90cc3
   SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
-  WebimClientLibrary: e4d9b576740c21991be2f7ef4f4da97b8f0d2243
+  WebimClientLibrary: 94bb9730431b1d661c2244fd48be3989db02a2a8
 
-PODFILE CHECKSUM: e3a75b7f79b2653db9eff306f7c9b44b8096bb12
+PODFILE CHECKSUM: 520aeffbd3fc1a2013840be13fb6584cb05e6728
 
-COCOAPODS: 1.4.0.rc.1
+COCOAPODS: 1.4.0

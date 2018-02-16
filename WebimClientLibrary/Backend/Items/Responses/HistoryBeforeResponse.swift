@@ -61,7 +61,6 @@ struct HistoryBeforeResponse {
         return historyResponseData
     }
     
-    
     // MARK: -
     struct HistoryResponseData {
         
@@ -75,7 +74,6 @@ struct HistoryBeforeResponse {
         // MARK: - Properties
         private var hasMore: Bool?
         private var messages: [MessageItem]?
-        
         
         // MARK: - Initialization
         init(jsonDictionary: [String: Any?]) {
@@ -93,7 +91,6 @@ struct HistoryBeforeResponse {
                 self.hasMore = hasMore
             }
         }
-        
         
         // MARK: - Methods
         

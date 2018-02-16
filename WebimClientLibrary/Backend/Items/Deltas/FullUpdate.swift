@@ -49,7 +49,6 @@ struct FullUpdate {
         case VISITOR_JSON = "visitor"
     }
     
-    
     // MARK: - Properties
     private var authorizationToken: String?
     private var chat: ChatItem?
@@ -61,7 +60,6 @@ struct FullUpdate {
     private var state: String?
     private var visitorJSONString: String?
 
-    
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
         if let authorizationToken = jsonDictionary[JSONField.AUTHORIZATION_TOKEN.rawValue] as? String {
@@ -107,7 +105,6 @@ struct FullUpdate {
             self.departments = departmentItems
         }
     }
-    
     
     // MARK: - Methods
     

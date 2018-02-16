@@ -38,7 +38,6 @@ final class SessionDestroyer {
     private lazy var actions = [() -> ()]()
     private var destroyed = false
     
-    
     // MARK: - Methods
     
     func add(action: @escaping () -> ()) {

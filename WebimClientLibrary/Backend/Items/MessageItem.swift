@@ -36,62 +36,7 @@ import Foundation
 final class MessageItem {
     
     // MARK: - Constants
-    
     // Raw values equal to field names received in responses from server.
-    
-    enum MessageKind: String {
-        
-        case ACTION_REQUEST = "action_request"
-        case CONTACTS_REQUEST = "cont_req"
-        case CONTACTS = "contacts"
-        case FILE_FROM_OPERATOR = "file_operator"
-        case FILE_FROM_VISITOR = "file_visitor"
-        case FOR_OPERATOR = "for_operator"
-        case INFO = "info"
-        case OPERATOR = "operator"
-        case OPERATOR_BUSY = "operator_busy"
-        case VISITOR = "visitor"
-        
-        // MARK: - Initialization
-        init(messageType: MessageType) {
-            switch messageType {
-            case .ACTION_REQUEST:
-                self = .ACTION_REQUEST
-                
-                break
-            case .CONTACTS_REQUEST:
-                self = .CONTACTS_REQUEST
-                
-                break
-            case .FILE_FROM_OPERATOR:
-                self = .FILE_FROM_OPERATOR
-                
-                break
-            case .FILE_FROM_VISITOR:
-                self = .FILE_FROM_VISITOR
-                
-                break
-            case .INFO:
-                self = .INFO
-                
-                break
-            case .OPERATOR:
-                self = .OPERATOR
-                
-                break
-            case .OPERATOR_BUSY:
-                self = .OPERATOR_BUSY
-                
-                break
-            case .VISITOR:
-                self = .VISITOR
-                
-                break
-            }
-        }
-        
-    }
-    
     private enum JSONField: String {
         case AUTHOR_ID = "authorId"
         case AVATAR_URL_STRING = "avatar"
@@ -107,7 +52,6 @@ final class MessageItem {
         case TIMESTAMP_IN_SECOND = "ts"
     }
     
-    
     // MARK: - Properties
     private var authorID: String?
     private var avatarURLString: String?
@@ -121,7 +65,6 @@ final class MessageItem {
     private var text: String?
     private var timestampInMicrosecond: Int64 = -1
     private var timestampInSecond: Double?
-    
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -174,7 +117,6 @@ final class MessageItem {
         }
     }
     
-    
     // MARK: - Methods
     
     func getClientSideID() -> String? {
@@ -221,11 +163,67 @@ final class MessageItem {
         return ((timestampInMicrosecond != -1) ? timestampInMicrosecond : Int64(timestampInSecond! * 1_000_000))
     }
     
+    // MARK: -
+    enum MessageKind: String {
+        
+        // Raw values equal to field names received in responses from server.
+        case ACTION_REQUEST = "action_request"
+        case CONTACTS_REQUEST = "cont_req"
+        case CONTACTS = "contacts"
+        case FILE_FROM_OPERATOR = "file_operator"
+        case FILE_FROM_VISITOR = "file_visitor"
+        case FOR_OPERATOR = "for_operator"
+        case INFO = "info"
+        case OPERATOR = "operator"
+        case OPERATOR_BUSY = "operator_busy"
+        case VISITOR = "visitor"
+        
+        // MARK: - Initialization
+        init(messageType: MessageType) {
+            switch messageType {
+            case .ACTION_REQUEST:
+                self = .ACTION_REQUEST
+                
+                break
+            case .CONTACTS_REQUEST:
+                self = .CONTACTS_REQUEST
+                
+                break
+            case .FILE_FROM_OPERATOR:
+                self = .FILE_FROM_OPERATOR
+                
+                break
+            case .FILE_FROM_VISITOR:
+                self = .FILE_FROM_VISITOR
+                
+                break
+            case .INFO:
+                self = .INFO
+                
+                break
+            case .OPERATOR:
+                self = .OPERATOR
+                
+                break
+            case .OPERATOR_BUSY:
+                self = .OPERATOR_BUSY
+                
+                break
+            case .VISITOR:
+                self = .VISITOR
+                
+                break
+            }
+        }
+        
+    }
+    
 }
 
 // MARK: - Equatable
 extension MessageItem: Equatable {
     
+    // MARK: - Methods
     static func == (lhs: MessageItem,
                     rhs: MessageItem) -> Bool {
         if (((lhs.id == rhs.id)

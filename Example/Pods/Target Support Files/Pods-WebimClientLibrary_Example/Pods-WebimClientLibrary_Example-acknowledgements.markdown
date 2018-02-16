@@ -122,7 +122,7 @@ THE SOFTWARE.
 
 ## WebimClientLibrary
 
-Copyright (c) 2017 olegreg@webim.ru <n.lazarev-zubov@webim.ru>
+Copyright (c) 2017-2018 Webim <n.lazarev-zubov@webim.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

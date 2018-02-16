@@ -52,14 +52,12 @@ class AbstractRequestLoop {
         case SERVER_ERROR
     }
     
-    
     // MARK: - Properties
     private let pauseCondition = NSCondition()
     private let pauseLock = NSRecursiveLock()
     var paused = true
     var running = true
     private var currentDataTask: URLSessionDataTask?
-    
     
     // MARK: - Methods
     
@@ -168,13 +166,10 @@ class AbstractRequestLoop {
             }
             
             if httpCode != 502 { // Bad Gateway
-                if httpCode == 413 {
-                    // Request Entity Too Large
+                if httpCode == 413 { // Request Entity Too Large
                     throw SendFileError.FILE_SIZE_EXCEEDED
                 }
-                
-                if httpCode == 415 {
-                    // Unsupported Media Type
+                if httpCode == 415 { // Unsupported Media Type
                     throw SendFileError.FILE_TYPE_NOT_ALLOWED
                 }
                 
@@ -204,7 +199,7 @@ class AbstractRequestLoop {
             let timeElapsed = Date().timeIntervalSince(startTime)
             if Double(timeElapsed) < Double(sleepTime) {
                 let remainingTime = Double(sleepTime) - Double(timeElapsed)
-                usleep(useconds_t(remainingTime * 1000000.0))
+                usleep(useconds_t(remainingTime * 1_000_000.0))
             }
         }
         
@@ -214,7 +209,8 @@ class AbstractRequestLoop {
     func handleRequestLoop(error: UnknownError) {
         switch error {
         case .INTERRUPTED:
-            WebimInternalLogger.shared.log(entry: "Request failed with application internal error.")
+            WebimInternalLogger.shared.log(entry: "Request interrupted (it's OK if WebimSession object was destroyed).",
+                                           verbosityLevel: .DEBUG)
             
             break
         case .SERVER_ERROR:

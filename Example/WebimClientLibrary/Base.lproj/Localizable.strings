@@ -48,9 +48,20 @@
 "Back" = "Close screen";
 "ClosesScreen" = "Closes screen for returning to previous screen.";
 
+// ChatClosedDialog
+"ChatClosed" = "Chat is already closed.";
+"OK" = "OK";
+"ClosesRateOperatorError" = "Closes dialog.";
+
 // CloseChatButton
 "CloseChat" = "Close chat";
 "ClosesChat" = "Closes chat without closing this screen.";
+
+// DepartmentListDialog
+"ContactTopic" = "Contact topic";
+"ChoosesTopic" = "Chooses this topic for contacting.";
+"Cancel" = "Cancel";
+"ClosesDialog" = "Closes dialog.";
 
 // FileMessage
 "FileUnavailable" = "File is unavailable.";
@@ -61,6 +72,7 @@
 
 // RateOperatorErrorMessage
 "OperatorRatingFailed" = "Operator rating failed";
+"OK" = "OK";
 "ClosesRateOperatorError" = "Closes dialog.";
 "RateOperatorErrorMessage" = "Unknown error occured.";
 

@@ -51,7 +51,6 @@ final class FileParametersItem {
     private var imageParameters: ImageParameters?
     private var size: Int64?
     
-    
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
         if let imageParametersDictionary = jsonDictionary[JSONField.IMAGE_PARAMETERS.rawValue] as? [String: Any?] {
@@ -74,7 +73,6 @@ final class FileParametersItem {
             self.size = size
         }
     }
-    
     
     // MARK: - Methods
     
@@ -136,11 +134,9 @@ struct ImageSize {
         case WIDTH = "width"
     }
     
-    
     // MARK: - Properties
     private var width: Int?
     private var height: Int?
-    
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -152,7 +148,6 @@ struct ImageSize {
             self.width = width
         }
     }
-    
     
     // MARK: - Methods
     

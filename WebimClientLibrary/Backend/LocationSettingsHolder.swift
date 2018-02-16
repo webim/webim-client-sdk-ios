@@ -38,13 +38,11 @@ final class LocationSettingsHolder {
     private let locationSettings: LocationSettingsImpl
     private let userDefaultsKey: String
     
-    
     // MARK: - Initialization
     init(userDefaultsKey: String) {
         self.userDefaultsKey = userDefaultsKey
-        self.locationSettings = LocationSettingsImpl.getFrom(userDefaults: userDefaultsKey)
+        locationSettings = LocationSettingsImpl.getFrom(userDefaults: userDefaultsKey)
     }
-    
     
     // MARK: - Methods
     func getLocationSettings() -> LocationSettingsImpl {

@@ -24,9 +24,7 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
-
 
 /**
  - SeeAlso:
@@ -465,7 +463,6 @@ public protocol LocationSettings {
     
 }
 
-
 // MARK: -
 /**
  - SeeAlso:
@@ -760,7 +757,6 @@ public protocol OnlineStatusChangeListener {
                  to newOnlineStatus: OnlineStatus)
     
 }
-
 
 // MARK: -
 /**

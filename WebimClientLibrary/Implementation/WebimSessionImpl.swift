@@ -27,14 +27,11 @@
 import Foundation
 import UIKit
 
-
 // MARK: - Constants
-
 fileprivate enum UserDefaultsName: String {
     case GUID = "ru.webim.WebimClientSDKiOS.guid"
     case MAIN = "ru.webim.WebimClientSDKiOS.visitor."
 }
-
 fileprivate enum UserDefaultsMainPrefix: String {
     case AUTHORIZATION_TOKEN = "auth_token"
     case DEVICE_TOKEN = "push_token"
@@ -47,11 +44,9 @@ fileprivate enum UserDefaultsMainPrefix: String {
     case VISITOR = "visitor"
     case VISITOR_EXT = "visitor_ext"
 }
-
 fileprivate enum UserDefaultsGUIDPrefix: String {
     case UUID = "guid"
 }
-
 
 // MARK: -
 /**
@@ -67,7 +62,6 @@ final class WebimSessionImpl {
         case DEFAULT_PAGE_TITLE = "iOS Client"
     }
     
-    
     // MARK: - Properties
     private var accessChecker: AccessChecker
     private var clientStarted = false
@@ -75,7 +69,6 @@ final class WebimSessionImpl {
     private var messageStream: MessageStreamImpl
     private var sessionDestroyer: SessionDestroyer
     private var webimClient: WebimClient
-    
     
     // MARK: - Initialization
     private init(accessChecker: AccessChecker,
@@ -90,7 +83,6 @@ final class WebimSessionImpl {
         self.messageStream = messageStream
     }
     
-    
     // MARK: - Methods
     
     static func newInstanceWith(accountName: String,
@@ -101,14 +93,11 @@ final class WebimSessionImpl {
                                 providedAuthorizationToken: String?,
                                 pageTitle: String?,
                                 fatalErrorHandler: FatalErrorHandler?,
-                                areRemoteNotificationsEnabled: Bool,
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool,
                                 isVisitorDataClearingEnabled: Bool,
                                 webimLogger: WebimLogger?,
                                 verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?) -> WebimSessionImpl {
-        // FIXME: Dare and refactor!
-        
         WebimInternalLogger.setup(webimLogger: webimLogger,
                                   verbosityLevel: verbosityLevel)
         
@@ -389,9 +378,6 @@ extension WebimSessionImpl: WebimSession {
     
 }
 
-
-// MARK: - Private classes
-
 // MARK: -
 /**
  - Author:
@@ -406,7 +392,6 @@ final private class HistoryPoller {
         case HISTORY_POLL = 60_000 // ms
     }
     
-    
     // MARK: - Properties
     private let historyMessageMapper: MessageFactoriesMapper
     private let historyMetaInformationStorage: HistoryMetaInformationStorage
@@ -419,7 +404,6 @@ final private class HistoryPoller {
     private var lastPollingTime = -TimeInterval.HISTORY_POLL.rawValue
     private var lastRevision: String?
     private var running: Bool?
-    
     
     // MARK: - Initialization
     init(withSessionDestroyer sessionDestroyer: SessionDestroyer,
@@ -435,7 +419,6 @@ final private class HistoryPoller {
         self.messageHolder = messageHolder
         self.historyMetaInformationStorage = historyMetaInformationStorage
     }
-    
     
     // MARK: - Methods
     
@@ -473,21 +456,16 @@ final private class HistoryPoller {
         }
     }
     
-    
     // MARK: Private methods
     
     private func createHistorySinceCompletionHandler() -> (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> () {
         return { [weak self] (messageList: [MessageImpl], deleted: Set<String>, hasMore: Bool, isInitial: Bool, revision: String?) in
-            guard let `self` = self else {
-                return
-            }
-            
-            if self.sessionDestroyer.isDestroyed() {
+            guard let `self` = self,
+                !self.sessionDestroyer.isDestroyed() else {
                 return
             }
             
             self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
-            
             self.lastRevision = revision
             
             if isInitial
@@ -579,7 +557,6 @@ final class SessionParametersListenerImpl: SessionParametersListener {
     
     // MARK: - Properties
     private let userDefaultsKey: String
-    private var onVisitorIDChangeListener: (() -> ())?
     
     // MARK: - Initialization
     init(withUserDefaultsKey userDefaultsKey: String) {
@@ -591,28 +568,7 @@ final class SessionParametersListenerImpl: SessionParametersListener {
     func onSessionParametersChanged(visitorFieldsJSONString: String,
                                     sessionID: String,
                                     authorizationData: AuthorizationData) {
-        // FIXME: Refactor this hell of optionals.
         if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            if let previousVisitorFieldsJSONString = userDefaults[UserDefaultsMainPrefix.VISITOR.rawValue] as? String {
-                if (onVisitorIDChangeListener != nil)
-                    && (previousVisitorFieldsJSONString != visitorFieldsJSONString) {
-                    if let previousVisitorFieldsJSONData = previousVisitorFieldsJSONString.data(using: .utf8),
-                        let visitorFieldsJSONData = visitorFieldsJSONString.data(using: .utf8) {
-                        if let previousVisitorFieldsDictionary = try? JSONSerialization.jsonObject(with: previousVisitorFieldsJSONData,
-                                                                                                   options: []) as? [String: Any],
-                            let visitorFieldsDictionary = try? JSONSerialization.jsonObject(with: visitorFieldsJSONData,
-                                                                                            options: []) as? [String: Any] {
-                            if let previousID = previousVisitorFieldsDictionary?[VisitorFieldsJSONField.ID.rawValue] as? String,
-                                let id = visitorFieldsDictionary?[VisitorFieldsJSONField.ID.rawValue] as? String {
-                                if previousID != id {
-                                    onVisitorIDChangeListener!()
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
             userDefaults[UserDefaultsMainPrefix.VISITOR.rawValue] = visitorFieldsJSONString
             userDefaults[UserDefaultsMainPrefix.SESSION_ID.rawValue] = sessionID
             userDefaults[UserDefaultsMainPrefix.PAGE_ID.rawValue] = authorizationData.getPageID()

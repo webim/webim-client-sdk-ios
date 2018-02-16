@@ -42,11 +42,9 @@ struct RatingItem {
         case RATING = "rating"
     }
     
-    
     // MARK: - Properties
     private var operatorID: String
     private var rating: Int
-    
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
@@ -58,7 +56,6 @@ struct RatingItem {
         self.operatorID = operatorID
         self.rating = rating
     }
-    
     
     // MARK: - Methods
     

@@ -33,7 +33,6 @@ import Foundation
  2017 Webim
  */
 enum VisitSessionStateItem: String {
-    
     // Raw values equal to field names received in responses from server.
     case CALLBACK_HUNTER = "callback-hunter"
     case CHAT = "chat"
@@ -48,5 +47,4 @@ enum VisitSessionStateItem: String {
     case SHOWING_AUTO = "showing-auto"
     case SHOWING_BY_URL_PARAMETER = "showing-by-url-param"
     case UNKNOWN
-    
 }

@@ -39,7 +39,6 @@ final class ProvidedVisitorFields {
     private let id: String
     private let jsonString: String
     
-    
     // MARK: - Initialization
     
     init?(jsonString: String,
@@ -116,7 +115,6 @@ final class ProvidedVisitorFields {
         
     }
     
-    
     // MARK: - Methods
     
     func getID() -> String {
@@ -128,7 +126,7 @@ final class ProvidedVisitorFields {
     }
     
     
-    // MARK:
+    // MARK: -
     enum VisitorFieldsError: Error {
         case serializingFail(String)
         case invalidVisitorFields(String)

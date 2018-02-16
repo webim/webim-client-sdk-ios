@@ -52,7 +52,8 @@ class ChatViewControllerTests: XCTestCase {
         
         // Then: Table view background has the message.
         let label = tableView.backgroundView as! UILabel
-        XCTAssertEqual(label.attributedText?.string, EMPTY_TABLE_VIEW_TEXT.string)
+        XCTAssertEqual(label.attributedText?.string,
+                       "Send first message to start chat.")
     }
     
     func testBackgroundViewEmpty() {

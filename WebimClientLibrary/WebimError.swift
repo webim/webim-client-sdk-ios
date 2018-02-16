@@ -24,9 +24,7 @@
 //  SOFTWARE.
 //
 
-
 import Foundation
-
 
 /**
  Abstracts Webim service possible error responses.
@@ -60,7 +58,6 @@ public protocol WebimError {
     func getErrorString() -> String
     
 }
-
 
 // MARK: -
 /**

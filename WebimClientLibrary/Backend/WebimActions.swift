@@ -101,11 +101,9 @@ class WebimActions {
         case NAME = "webim_upload_file"
     }
     
-    
     // MARK: - Properties
     private let baseURL: String
     private let actionRequestLoop: ActionRequestLoop
-    
     
     // MARK: - Initialization
     init(baseURL: String,
@@ -113,7 +111,6 @@ class WebimActions {
         self.baseURL = baseURL
         self.actionRequestLoop = actionRequestLoop
     }
-    
     
     // MARK: - Methods
     
