@@ -37,8 +37,7 @@ struct HistoryBeforeResponse {
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     enum JSONField: String {
-        case HISTORY_RESPONSE_DATA = "data"
-        case RESULT = "result"
+        case data = "data"
     }
     
     // MARK: - Properties
@@ -47,12 +46,8 @@ struct HistoryBeforeResponse {
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
-        if let dataDictionary = jsonDictionary[JSONField.HISTORY_RESPONSE_DATA.rawValue] as? [String: Any?] {
+        if let dataDictionary = jsonDictionary[JSONField.data.rawValue] as? [String: Any?] {
             historyResponseData = HistoryResponseData(jsonDictionary: dataDictionary)
-        }
-        
-        if let result = jsonDictionary[JSONField.RESULT.rawValue] as? String {
-            self.result = result
         }
     }
     
@@ -67,18 +62,18 @@ struct HistoryBeforeResponse {
         // MARK: - Constants
         // Raw values equal to field names received in responses from server.
         enum JSONField: String {
-            case HAS_MORE = "hasMore"
-            case MESSAGES = "messages"
+            case hasMore = "hasMore"
+            case messages = "messages"
         }
         
         // MARK: - Properties
-        private var hasMore: Bool?
+        private var hasMore: Bool
         private var messages: [MessageItem]?
         
         // MARK: - Initialization
         init(jsonDictionary: [String: Any?]) {
             messages = [MessageItem]()
-            if let messagesArray = jsonDictionary[JSONField.MESSAGES.rawValue] as? [Any?] {
+            if let messagesArray = jsonDictionary[JSONField.messages.rawValue] as? [Any?] {
                 for item in messagesArray {
                     if let messageDictionary = item as? [String: Any?] {
                         let messageItem = MessageItem(jsonDictionary: messageDictionary)
@@ -87,14 +82,12 @@ struct HistoryBeforeResponse {
                 }
             }
             
-            if let hasMore = jsonDictionary[JSONField.HAS_MORE.rawValue] as? Bool {
-                self.hasMore = hasMore
-            }
+            hasMore = ((jsonDictionary[JSONField.hasMore.rawValue] as? Bool) ?? false)
         }
         
         // MARK: - Methods
         
-        func isHasMore() -> Bool? {
+        func isHasMore() -> Bool {
             return hasMore
         }
         

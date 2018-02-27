@@ -37,8 +37,8 @@ final class MessageComposingHandler {
     
     // MARK: - Constants
     private enum Deadline: Int {
-        case DRAFT_SENDING_INTERVAL = 1 // Second
-        case RESET_STATUS_DELAY = 5 // Second
+        case draftSendingInterval = 1 // Second
+        case resetStatusDelay = 5 // Second
     }
     
     // MARK: - Properties
@@ -64,8 +64,12 @@ final class MessageComposingHandler {
             send(draft: draft)
             updateDraftScheduled = true
             
-            queue.asyncAfter(deadline: (DispatchTime.now() + .seconds(Deadline.DRAFT_SENDING_INTERVAL.rawValue)),
-                             execute: {
+            queue.asyncAfter(deadline: (DispatchTime.now() + .seconds(Deadline.draftSendingInterval.rawValue)),
+                             execute: { [weak self] in
+                                guard let `self` = self else {
+                                    return
+                                }
+                                
                                 self.updateDraftScheduled = false
                                 
                                 if self.latestDraft != draft {
@@ -77,7 +81,7 @@ final class MessageComposingHandler {
         resetTimer?.invalidate()
         
         if draft != nil {
-            let resetTime = Date().addingTimeInterval(Double(Deadline.RESET_STATUS_DELAY.rawValue))
+            let resetTime = Date().addingTimeInterval(Double(Deadline.resetStatusDelay.rawValue))
             resetTimer = Timer(fireAt: resetTime,
                                interval: 0.0,
                                target: self,

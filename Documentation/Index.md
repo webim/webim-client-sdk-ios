@@ -72,6 +72,8 @@
     -   [set(operatorTypingListener:) method](#set-operator-typing-listener)
     -   [set(locationSettingsChangeListener:) method](#set-location-settings-change-listener)
     -   [set(onlineStatusChangeListener:) method](#set-online-status-change-listener)
+    -   [set(unreadByOperatorTimestampChangeListener:) method](#set-unread-by-operator-timestamp-change-listener)
+    -   [set(unreadByVisitorTimestampChangeListener:) method](#set-unread-by-visitor-timestamp-change-listener)
 -   [DataMessageCompletionHandler protocol](#data-message-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id-data-message-completion-handler)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error-data-message-completion-handler)
@@ -97,6 +99,10 @@
     -   [changed(locationSettings:to:) method](#changed-location-settings-previous-location-settings-to-new-location-settings)
 -   [OnlineStatusChangeListener protocol](#online-status-change-listener)
     -   [changed(onlineStatus:to:) method](#changed-session-online-status-previous-session-online-status-to-new-session-online-status)
+-   [UnreadByOperatorTimestampChangeListener protocol](#unread-by-operator-timestamp-change-listener)
+    -   [changedUnreadByOperatorTimestampTo(newValue:) method](#changed-unread-by-operator-timestamp-to-new-value)
+-   [UnreadByVisitorTimestampChangeListener protocol](#unread-by-visitor-timestamp-change-listener)
+    -    [changedUnreadByVisitorTimestampTo(newValue:) method](#changed-unread-by-visitor-timestamp-to-new-value)
 -   [ChatState enum](#chat-state)
     -   [CHATTING case](#chatting)
     -   [CHATTING_WITH_ROBOT](#chatting-with-robot)
@@ -630,6 +636,14 @@ Sets [LocationSettingsChangeListener](#location-settings-shange-listener) object
 
 Sets [OnlineStatusChangeListener](#session-online-status-change-listener) object.
 
+<h3 id ="set-unread-by-operator-timestamp-change-listener">set(unreadByOperatorTimestampChangeListener:) method</h3>
+
+Sets [UnreadByOperatorTimestampChangeListener](#unread-by-operator-timestamp-change-listener) object.
+
+<h3 id ="set-unread-by-visitor-timestamp-change-listener">set(unreadByVisitorTimestampChangeListener:) method</h3>
+
+Sets [UnreadByVisitorTimestampChangeListener](#unread-by-visitor-timestamp-change-listener) object.
+
 [Go to table of contents](#table-of-contents)
 
 <h2 id ="data-message-completion-handler">DataMessageCompletionHandler protocol</h2>
@@ -759,6 +773,28 @@ Interface that provides methods for handling changes of session status.
 <h3 id ="changed-session-online-status-previous-session-online-status-to-new-session-online-status">changed(onlineStatus:to:) method</h3>
 
 Called when new session status is received with parameters that represent previous and new [OnlineStatus](#session-online-status) values.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="unread-by-operator-timestamp-change-listener">UnreadByOperatorTimestampChangeListener protocol</h2>
+
+Interface that provides methods for handling changes of parameter that is to be returned by [getUnreadByOperatorTimestamp() method](#get-unread-by-operator-timestamp).
+Can be set by [set(unreadByOperatorTimestampChangeListener:) method](#set-unread-by-operator-timestamp-change-listener).
+
+<h3 id ="changed-unread-by-operator-timestamp-to-new-value">changedUnreadByOperatorTimestampTo(newValue:) method</h3>
+
+Method to be called when parameter that is to be returned by [getUnreadByOperatorTimestamp() method](#get-unread-by-operator-timestamp) method is changed.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="unread-by-visitor-timestamp-change-listener">UnreadByVisitorTimestampChangeListener protocol</h2>
+
+Interface that provides methods for handling changes of parameter that is to be returned by [getUnreadByVisitorTimestamp() method](#get-unread-by-visitor-timestamp).
+Can be set by [set(unreadByVisitorTimestampChangeListener:) method](#set-unread-by-visitor-timestamp-change-listener).
+
+<h3 id ="changed-unread-by-visitor-timestamp-to-new-value">changedUnreadByVisitorTimestampTo(newValue:) method</h3>
+
+Method to be called when parameter that is to be returned by [getUnreadByVisitorTimestamp() method](#get-unread-by-visitor-timestamp) method is changed.
 
 [Go to table of contents](#table-of-contents)
 

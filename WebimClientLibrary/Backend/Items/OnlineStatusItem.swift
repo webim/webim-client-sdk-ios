@@ -27,7 +27,7 @@
 import Foundation
 
 /**
- Raw values equal to field names received in responses from server.
+ Raw values equal to field names received in responses from server (except `unknown` case which is custom).
  * `BUSY_OFFLINE` - user can't send messages at all;
  * `BUSY_ONLINE` - user send offline messages, but server can return an error;
  * `OFFLINE` - user can send offline messages;
@@ -39,9 +39,9 @@ import Foundation
  2017 Webim
  */
 enum OnlineStatusItem: String {
-    case BUSY_OFFLINE = "busy_offline"
-    case BUSY_ONLINE = "busy_online"
-    case OFFLINE = "offline"
-    case ONLINE = "online"
-    case UNKNOWN = "unknown"
+    case busyOffline = "busy_offline"
+    case busyOnline = "busy_online"
+    case offline = "offline"
+    case online = "online"
+    case unknown = "unknown"
 }

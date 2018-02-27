@@ -32,11 +32,11 @@ class MessageHolderTests: XCTestCase {
     
     // MARK: - Constants
     private enum MessageImplMockData: String {
-        case SERVER_URL_STRING = "https://demo.webim.ru/"
-        case OPERATOR_ID = "operatorID"
-        case AVATAR_URL_STRING = "image.jpg"
-        case SENDER_NAME = "Sender Name"
-        case TEXT = "Text."
+        case serverURLString = "https://demo.webim.ru/"
+        case operatorID = "operatorID"
+        case avatarURLString = "image.jpg"
+        case senderName = "Sender Name"
+        case text = "Text."
     }
     
     // MARK: - Properties
@@ -54,14 +54,14 @@ class MessageHolderTests: XCTestCase {
         var history = [MessageImpl]()
         
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
-            history.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+            history.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                        id: String(index),
-                                       operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
-                                       senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
-                                       senderName: MessageImplMockData.SENDER_NAME.rawValue,
+                                       operatorID: MessageImplMockData.operatorID.rawValue,
+                                       senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
+                                       senderName: MessageImplMockData.senderName.rawValue,
                                        type: MessageType.OPERATOR,
                                        data: nil,
-                                       text: MessageImplMockData.TEXT.rawValue,
+                                       text: MessageImplMockData.text.rawValue,
                                        timeInMicrosecond: Int64(index),
                                        attachment: nil,
                                        historyMessage: true,
@@ -78,14 +78,14 @@ class MessageHolderTests: XCTestCase {
         var currentChat = [MessageImpl]()
         
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
-            currentChat.append(MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+            currentChat.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                            id: String(index),
-                                           operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
-                                           senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
-                                           senderName: MessageImplMockData.SENDER_NAME.rawValue,
+                                           operatorID: MessageImplMockData.operatorID.rawValue,
+                                           senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
+                                           senderName: MessageImplMockData.senderName.rawValue,
                                            type: MessageType.OPERATOR,
                                            data: nil,
-                                           text: MessageImplMockData.TEXT.rawValue,
+                                           text: MessageImplMockData.text.rawValue,
                                            timeInMicrosecond: Int64(index),
                                            attachment: nil,
                                            historyMessage: false,
@@ -102,7 +102,7 @@ class MessageHolderTests: XCTestCase {
         var result = [MessageImpl]()
         
         for message in currentChat {
-            let newMessage = MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+            let newMessage = MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                          id: message.getID(),
                                          operatorID: message.getOperatorID(),
                                          senderAvatarURLString: message.getSenderAvatarURLString(),
@@ -124,14 +124,14 @@ class MessageHolderTests: XCTestCase {
     private func newCurrentChat() -> MessageImpl {
         messagesCount = messagesCount + messagesCount
         
-        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: String(messagesCount),
-                           operatorID: MessageImplMockData.OPERATOR_ID.rawValue,
-                           senderAvatarURLString: MessageImplMockData.AVATAR_URL_STRING.rawValue,
-                           senderName: MessageImplMockData.SENDER_NAME.rawValue,
+                           operatorID: MessageImplMockData.operatorID.rawValue,
+                           senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
+                           senderName: MessageImplMockData.senderName.rawValue,
                            type: MessageType.OPERATOR,
                            data: nil,
-                           text: MessageImplMockData.TEXT.rawValue,
+                           text: MessageImplMockData.text.rawValue,
                            timeInMicrosecond: Int64(messagesCount),
                            attachment: nil,
                            historyMessage: false,
@@ -140,7 +140,7 @@ class MessageHolderTests: XCTestCase {
     }
     
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
-        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: currentChatMessage.getID(),
                            operatorID: currentChatMessage.getOperatorID(),
                            senderAvatarURLString: currentChatMessage.getSenderAvatarURLString(),
@@ -156,7 +156,7 @@ class MessageHolderTests: XCTestCase {
     }
     
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
-        return MessageImpl(serverURLString: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: historyMessage.getID(),
                            operatorID: historyMessage.getOperatorID(),
                            senderAvatarURLString: historyMessage.getSenderAvatarURLString(),
@@ -179,10 +179,10 @@ class MessageHolderTests: XCTestCase {
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                   internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        let webimActions = WebimActions(baseURL: MessageImplMockData.serverURLString.rawValue,
                                         actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
-                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
+                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
         
@@ -201,10 +201,10 @@ class MessageHolderTests: XCTestCase {
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                   internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(baseURL: MessageImplMockData.SERVER_URL_STRING.rawValue,
+        let webimActions = WebimActions(baseURL: MessageImplMockData.serverURLString.rawValue,
                                         actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
-                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.SERVER_URL_STRING.rawValue),
+                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
         let memoryHistoryStorage = MemoryHistoryStorage(messagesToAdd: localHistory)

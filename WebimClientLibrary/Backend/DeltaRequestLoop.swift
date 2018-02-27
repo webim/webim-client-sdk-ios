@@ -39,7 +39,7 @@ import Foundation
 class DeltaRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
-    private static var providedAuthTokenErrorCount = 0
+    private static var providedAuthenticationTokenErrorCount = 0
     private let appVersion: String?
     private let baseURL: String
     private let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor
@@ -143,16 +143,15 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestInitialization() {
         let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.httpMethod = AbstractRequestLoop.HTTPMethod.GET.rawValue
+        request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
             let data = try perform(request: request)
             if let dataJSON = try? JSONSerialization.jsonObject(with: data) as! [String: Any] {
-                if let error = dataJSON[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
-                    handleInitialization(error: error,
-                                         url: url!)
+                if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                    handleInitialization(error: error)
                 } else {
-                    DeltaRequestLoop.providedAuthTokenErrorCount = 0
+                    DeltaRequestLoop.providedAuthenticationTokenErrorCount = 0
                     
                     let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
                     
@@ -191,14 +190,13 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestDelta() {
         let url = URL(string: getDeltaServerURLString() + "?" + getDeltaParameterString())
         var request = URLRequest(url: url!)
-        request.httpMethod = AbstractRequestLoop.HTTPMethod.GET.rawValue
+        request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
             let data = try perform(request: request)
             if let dataJSON = try? JSONSerialization.jsonObject(with: data) as! [String: Any] {
-                if let error = dataJSON[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
-                    handleDeltaRequest(error: error,
-                                       url: url!)
+                if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                    handleDeltaRequest(error: error)
                 } else {
                     let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
                     
@@ -233,36 +231,36 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     func getDeltaServerURLString() -> String! {
-        return (baseURL + WebimActions.ServerPathSuffix.GET_DELTA.rawValue)
+        return (baseURL + WebimActions.ServerPathSuffix.getDelta.rawValue)
     }
     
     // MARK: Private methods
     
     private func getInitializationParameterString() -> String {
-        var parameterDictionary = [WebimActions.Parameter.DEVICE_ID.rawValue: deviceID,
-                                   WebimActions.Parameter.EVENT.rawValue: WebimActions.Event.INITIALIZATION.rawValue,
-                                   WebimActions.Parameter.LOCATION.rawValue: location,
-                                   WebimActions.Parameter.PLATFORM.rawValue: WebimActions.Platform.IOS.rawValue,
-                                   WebimActions.Parameter.RESPOND_IMMEDIATELY.rawValue: String(1), // true
-                                   WebimActions.Parameter.SINCE.rawValue: String(0),
-                                   WebimActions.Parameter.TITLE.rawValue: title] as [String: Any]
+        var parameterDictionary = [WebimActions.Parameter.deviceID.rawValue: deviceID,
+                                   WebimActions.Parameter.event.rawValue: WebimActions.Event.initialization.rawValue,
+                                   WebimActions.Parameter.location.rawValue: location,
+                                   WebimActions.Parameter.platform.rawValue: WebimActions.Platform.ios.rawValue,
+                                   WebimActions.Parameter.respondImmediately.rawValue: String(1), // true
+                                   WebimActions.Parameter.since.rawValue: String(0),
+                                   WebimActions.Parameter.title.rawValue: title] as [String: Any]
         if let appVersion = appVersion {
-            parameterDictionary[WebimActions.Parameter.APP_VERSION.rawValue] = appVersion
+            parameterDictionary[WebimActions.Parameter.applicationVersion.rawValue] = appVersion
         }
         if let deviceToken = deviceToken {
-            parameterDictionary[WebimActions.Parameter.DEVICE_TOKEN.rawValue] = deviceToken
+            parameterDictionary[WebimActions.Parameter.deviceToken.rawValue] = deviceToken
         }
         if let sessionID = sessionID {
-            parameterDictionary[WebimActions.Parameter.SESSION_ID.rawValue] = sessionID
+            parameterDictionary[WebimActions.Parameter.visitSessionID.rawValue] = sessionID
         }
         if let visitorJSONString = visitorJSONString {
-            parameterDictionary[WebimActions.Parameter.VISITOR.rawValue] = visitorJSONString
+            parameterDictionary[WebimActions.Parameter.visitor.rawValue] = visitorJSONString
         }
         if let visitorFieldsJSONString = visitorFieldsJSONString {
-            parameterDictionary[WebimActions.Parameter.VISITOR_FIELDS.rawValue] = visitorFieldsJSONString
+            parameterDictionary[WebimActions.Parameter.visitorExt.rawValue] = visitorFieldsJSONString
         }
         if let providedAuthenticationToken = providedAuthenticationToken {
-            parameterDictionary[WebimActions.Parameter.PROVIDED_AUTHENTICATION_TOKEN.rawValue] = providedAuthenticationToken
+            parameterDictionary[WebimActions.Parameter.providedAuthenticationToken.rawValue] = providedAuthenticationToken
         }
         
         return parameterDictionary.stringFromHTTPParameters()
@@ -270,11 +268,11 @@ class DeltaRequestLoop: AbstractRequestLoop {
     
     private func getDeltaParameterString() -> String {
         let currentTimestamp = Int64(CFAbsoluteTimeGetCurrent() * 1000)
-        var parameterDictionary = [WebimActions.Parameter.SINCE.rawValue: String(since),
-                                   WebimActions.Parameter.TIMESTAMP.rawValue: String(currentTimestamp)] as [String: Any]
+        var parameterDictionary = [WebimActions.Parameter.since.rawValue: String(since),
+                                   WebimActions.Parameter.timestamp.rawValue: String(currentTimestamp)] as [String: Any]
         if let authorizationData = authorizationData {
-            parameterDictionary[WebimActions.Parameter.PAGE_ID.rawValue] = authorizationData.getPageID()
-            parameterDictionary[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = authorizationData.getAuthorizationToken()
+            parameterDictionary[WebimActions.Parameter.pageID.rawValue] = authorizationData.getPageID()
+            parameterDictionary[WebimActions.Parameter.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
         }
         
         return parameterDictionary.stringFromHTTPParameters()
@@ -294,37 +292,33 @@ class DeltaRequestLoop: AbstractRequestLoop {
         usleep(1_000_000)  // 1s
     }
     
-    private func handleInitialization(error: String,
-                                      url: URL) {
+    private func handleInitialization(error: String) {
         switch error {
-        case WebimInternalError.REINIT_REQUIRED.rawValue:
+        case WebimInternalError.reinitializationRequired.rawValue:
             handleReinitializationRequiredError()
             
             break
-        case WebimInternalError.PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND.rawValue:
-            handleProvidedAuthorizationTokenNotFoundError()
+        case WebimInternalError.providedAuthenticationTokenNotFound.rawValue:
+            handleProvidedAuthenticationTokenNotFoundError()
             
             break
         default:
             running = false
             
             completionHandlerExecutor.execute(task: DispatchWorkItem {
-                self.internalErrorListener.on(error: error,
-                                              urlString: url.path)
+                self.internalErrorListener.on(error: error)
             })
             
             break
         }
     }
     
-    private func handleDeltaRequest(error: String,
-                                    url: URL) {
-        if error == WebimInternalError.REINIT_REQUIRED.rawValue {
+    private func handleDeltaRequest(error: String) {
+        if error == WebimInternalError.reinitializationRequired.rawValue {
             handleReinitializationRequiredError()
         } else {
             completionHandlerExecutor.execute(task: DispatchWorkItem {
-                self.internalErrorListener.on(error: error,
-                                              urlString: url.path)
+                self.internalErrorListener.on(error: error)
             })
         }
     }
@@ -334,15 +328,15 @@ class DeltaRequestLoop: AbstractRequestLoop {
         since = 0
     }
     
-    private func handleProvidedAuthorizationTokenNotFoundError() {
-        DeltaRequestLoop.providedAuthTokenErrorCount += 1
+    private func handleProvidedAuthenticationTokenNotFoundError() {
+        DeltaRequestLoop.providedAuthenticationTokenErrorCount += 1
         
-        if DeltaRequestLoop.providedAuthTokenErrorCount < 5 {
+        if DeltaRequestLoop.providedAuthenticationTokenErrorCount < 5 {
             sleepBetweenInitializationAttempts()
         } else {
             providedAuthenticationTokenStateListener?.update(providedAuthorizationToken: providedAuthenticationToken!)
             
-            DeltaRequestLoop.providedAuthTokenErrorCount = 0
+            DeltaRequestLoop.providedAuthenticationTokenErrorCount = 0
             
             sleepBetweenInitializationAttempts()
         }
@@ -369,12 +363,10 @@ class DeltaRequestLoop: AbstractRequestLoop {
             self.sessionID = sessionID
             self.authorizationData = authorizationData
             
-            if sessionParametersListener != nil {
-                DispatchQueue.global(qos: .background).async {
-                    self.sessionParametersListener!.onSessionParametersChanged(visitorFieldsJSONString: self.visitorJSONString!,
-                                                                               sessionID: self.sessionID!,
-                                                                               authorizationData: self.authorizationData!)
-                }
+            DispatchQueue.global(qos: .background).async {
+                self.sessionParametersListener?.onSessionParametersChanged(visitorFieldsJSONString: self.visitorJSONString!,
+                                                                           sessionID: self.sessionID!,
+                                                                           authorizationData: self.authorizationData!)
             }
         }
         

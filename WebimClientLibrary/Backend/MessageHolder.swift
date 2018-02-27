@@ -308,18 +308,15 @@ final class MessageHolder {
             if currentChatMessage.hasHistoryComponent() {
                 currentChatMessage.invertHistoryStatus()
                 
-                if messageTracker != nil {
-                    if let id = currentChatMessage.getHistoryID()?.getDBid() {
-                        if let historyMessage = messageTracker!.idToHistoryMessageMap[id] {
-                            if currentChatMessage != historyMessage {
-                                messageTracker!.messageListener.changed(message: currentChatMessage,
-                                                                        to: historyMessage)
-                            } else {
-                                messageTracker!.idToHistoryMessageMap[id] = currentChatMessage
-                            }
+                if let id = currentChatMessage.getHistoryID()?.getDBid() {
+                    if let historyMessage = messageTracker!.idToHistoryMessageMap[id] {
+                        if currentChatMessage != historyMessage {
+                            messageTracker?.messageListener.changed(message: currentChatMessage,
+                                                                    to: historyMessage)
+                        } else {
+                            messageTracker?.idToHistoryMessageMap[id] = currentChatMessage
                         }
                     }
-                    
                 }
             } else {
                 newCurrentChatMessages.append(currentChatMessage)
@@ -453,29 +450,28 @@ final class MessageHolder {
     
     private func tryMergeWithLastChat(message: MessageImpl) -> Bool {
         for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
-            if currentChatMessage.getID() == message.getID() {
-                if currentChatMessageIndex < lastChatMessageIndex {
-                    currentChatMessages.remove(at: currentChatMessageIndex)
-                    lastChatMessageIndex = lastChatMessageIndex - 1
-                    
-                    let replacementMessage = currentChatMessage.transferToHistory(message: message)
-                    if messageTracker != nil {
-                        messageTracker!.idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = replacementMessage
-                        
-                        if replacementMessage != currentChatMessage {
-                            messageTracker!.messageListener.changed(message: currentChatMessage,
-                                                                    to: replacementMessage)
-                        }
-                    }
-                    
-                } else {
-                    currentChatMessage.setSecondaryHistory(historyEquivalentMessage: message)
-                    
-                    messageTracker?.idToHistoryMessageMap[(message.getHistoryID()!.getDBid())] = message
+            guard currentChatMessage.getID() == message.getID() else {
+                continue
+            }
+            
+            if currentChatMessageIndex < lastChatMessageIndex {
+                let replacementMessage = currentChatMessage.transferToHistory(message: message)
+                messageTracker?.idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = replacementMessage
+                
+                if replacementMessage != currentChatMessage {
+                    messageTracker?.messageListener.changed(message: currentChatMessage,
+                                                            to: replacementMessage)
                 }
                 
-                return true
+                currentChatMessages.remove(at: currentChatMessageIndex)
+                lastChatMessageIndex -= 1
+            } else {
+                currentChatMessage.setSecondaryHistory(historyEquivalentMessage: message)
+                
+                messageTracker?.idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = message
             }
+            
+            return true
         }
         
         return false

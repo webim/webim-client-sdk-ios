@@ -31,7 +31,7 @@ import XCTest
 class WebimTests: XCTestCase {
     
     // MARK: - Constants
-    static let REMOTE_NOTIFICATION_JSON_STRING = """
+    private static let WEBIM_REMOTE_NOTIFICATION_JSON_STRING = """
 {
     "aps" : {
         "alert" : {
@@ -43,25 +43,52 @@ class WebimTests: XCTestCase {
     "webim": 1
 }
 """
+    private static let NOT_WEBIM_REMOTE_NOTIFICATION_JSON_STRING = """
+{
+    "aps" : {
+        "alert" : {
+            "loc-key" : "P.OM",
+            "loc-args" : ["Имя Оператора", "Сообщение"]
+        },
+        "sound" : "default",
+    }
+}
+"""
+    private static let INCORRECT_REMOTE_NOTIFICATION_JSON_STRING = """
+{
+    "alert" : {
+        "loc-key" : "P.OM",
+        "loc-args" : ["Имя Оператора", "Сообщение"]
+    },
+    "sound" : "default",
+}
+"""
     
     // MARK: - Properties
-    let remoteNotification = try! JSONSerialization.jsonObject(with: WebimTests.REMOTE_NOTIFICATION_JSON_STRING.data(using: .utf8)!,
-                                                               options: []) as! [AnyHashable : Any]
+    let webimRemoteNotification = try! JSONSerialization.jsonObject(with: WebimTests.WEBIM_REMOTE_NOTIFICATION_JSON_STRING.data(using: .utf8)!,
+                                                                    options: []) as! [AnyHashable : Any]
+    let notWebimRemoteNotification = try! JSONSerialization.jsonObject(with: WebimTests.NOT_WEBIM_REMOTE_NOTIFICATION_JSON_STRING.data(using: .utf8)!,
+                                                                       options: []) as! [AnyHashable : Any]
+    let incorrectRemoteNotification = try! JSONSerialization.jsonObject(with: WebimTests.INCORRECT_REMOTE_NOTIFICATION_JSON_STRING.data(using: .utf8)!,
+                                                                        options: []) as! [AnyHashable : Any]
     
     // MARK: - Tests
     
     func testParseRemoteNotification() {
-        let webimRemoteNotification = Webim.parse(remoteNotification: remoteNotification)!
+        let webimRemoteNotification = Webim.parse(remoteNotification: self.webimRemoteNotification)!
         
         XCTAssertNil(webimRemoteNotification.getEvent())
         XCTAssertEqual(webimRemoteNotification.getParameters(), ["Имя Оператора",
                                                                   "Сообщение"])
         XCTAssertEqual(webimRemoteNotification.getType(),
                        NotificationType.OPERATOR_MESSAGE)
+        
+        XCTAssertNil(Webim.parse(remoteNotification: self.incorrectRemoteNotification))
     }
     
     func testIsWebimRemoteNotificatin() {
-        XCTAssertTrue(Webim.isWebim(remoteNotification: remoteNotification))
+        XCTAssertTrue(Webim.isWebim(remoteNotification: webimRemoteNotification))
+        XCTAssertFalse(Webim.isWebim(remoteNotification: notWebimRemoteNotification))
     }
     
 }

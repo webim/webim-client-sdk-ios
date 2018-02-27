@@ -49,7 +49,7 @@
 "ClosesScreen" = "Закрывает экран и возвращает на предыдущий.";
 
 // ChatClosedDialog
-"ChatClosed" = "Чат уже закрыт.";
+"ChatClosed" = "Чат закончен.";
 "OK" = "OK";
 "ClosesRateOperatorError" = "Закрывает окно.";
 

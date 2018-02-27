@@ -31,26 +31,26 @@ final class WebimService {
     
     // MARK: - Constants
     private enum ChatSettings: Int {
-        case MESSAGES_PER_REQUEST = 5
+        case messagesPerRequest = 5
     }
-    private enum VisitorField: String {
-        case ID = "id"
-        case NAME = "display_name"
-        case CRC = "crc"
+    private enum VisitorFields: String {
+        case id = "id"
+        case name = "display_name"
+        case crc = "crc"
     }
-    private enum VisitorFieldValue: String {
+    private enum VisitorFieldsValues: String {
         // Hardcoded. See more at https://webim.ru/help/identification/
-        case ID = "1234567890987654321"
-        case NAME = "Никита"
-        case CRC = "ffadeb6aa3c788200824e311b9aa44cb"
+        case id = "1234567890987654321"
+        case name = "Никита"
+        case crc = "ffadeb6aa3c788200824e311b9aa44cb"
     }
     
     // MARK: - Properties
-    let fatalErrorHandlerDelegate: FatalErrorHandlerDelegate
-    let departmentListHandlerDelegate: DepartmentListHandlerDelegate
-    var messageStream: MessageStream?
-    var messageTracker: MessageTracker?
-    var webimSession: WebimSession?
+    private let fatalErrorHandlerDelegate: FatalErrorHandlerDelegate
+    private let departmentListHandlerDelegate: DepartmentListHandlerDelegate
+    private var messageStream: MessageStream?
+    private var messageTracker: MessageTracker?
+    private var webimSession: WebimSession?
     
     // MARK: - Initialization
     init(fatalErrorHandlerDelegate: FatalErrorHandlerDelegate,
@@ -64,7 +64,7 @@ final class WebimService {
     // MARK: Webim session methods
     
     func createSession() {
-        let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.DEVICE_TOKEN.rawValue) as? String
+        let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.deviceToken.rawValue) as? String
         
         var sessionBuilder = Webim.newSessionBuilder()
             .set(accountName: Settings.shared.accountName)
@@ -77,8 +77,8 @@ final class WebimService {
             .set(webimLogger: self,
                  verbosityLevel: .VERBOSE)
         
-        if (Settings.shared.accountName == Settings.Defaults.ACCOUNT_NAME.rawValue) {
-            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorField.ID.rawValue)\":\"\(VisitorFieldValue.ID.rawValue)\",\"\(VisitorField.NAME.rawValue)\":\"\(VisitorFieldValue.NAME.rawValue)\",\"\(VisitorField.CRC.rawValue)\":\"\(VisitorFieldValue.CRC.rawValue)\"}") // Hardcoded values that work with "demo" account only!
+        if (Settings.shared.accountName == Settings.DefaultSettings.accountName.rawValue) {
+            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorFields.id.rawValue)\":\"\(VisitorFieldsValues.id.rawValue)\",\"\(VisitorFields.name.rawValue)\":\"\(VisitorFieldsValues.name.rawValue)\",\"\(VisitorFields.crc.rawValue)\":\"\(VisitorFieldsValues.crc.rawValue)\"}") // Hardcoded values that work with "demo" account only!
         }
         
         do {
@@ -336,7 +336,7 @@ final class WebimService {
     
     func getLastMessages(completion: @escaping (_ result: [Message]) -> ()) {
         do {
-            try messageTracker?.getLastMessages(byLimit: ChatSettings.MESSAGES_PER_REQUEST.rawValue,
+            try messageTracker?.getLastMessages(byLimit: ChatSettings.messagesPerRequest.rawValue,
                                                 completion: completion)
         } catch let error as AccessError {
             switch error {
@@ -358,7 +358,7 @@ final class WebimService {
     
     func getNextMessages(completion: @escaping (_ result: [Message]) -> ()) {
         do {
-            try messageTracker?.getNextMessages(byLimit: ChatSettings.MESSAGES_PER_REQUEST.rawValue,
+            try messageTracker?.getNextMessages(byLimit: ChatSettings.messagesPerRequest.rawValue,
                                                 completion: completion)
         } catch let error as AccessError {
             switch error {
@@ -446,7 +446,7 @@ extension WebimService: FatalErrorHandler {
         case .ACCOUNT_BLOCKED:
             // Assuming to contact with Webim support.
             print("Account with used account name is blocked by Webim service.")
-            fatalErrorHandlerDelegate.showErrorDialog(withMessage: SessionCreationErrorDialog.ACCOUNT_BLOCKED.rawValue)
+            fatalErrorHandlerDelegate.showErrorDialog(withMessage: SessionCreationErrorDialog.accountBlocked.rawValue)
             
             break
         case .PROVIDED_VISITOR_FIELDS_EXPIRED:
@@ -460,7 +460,7 @@ extension WebimService: FatalErrorHandler {
             break
         case .VISITOR_BANNED:
             print("Visitor with provided visitor fields is banned by an operator.")
-            fatalErrorHandlerDelegate.showErrorDialog(withMessage: SessionCreationErrorDialog.VISITOR_BANNED.rawValue)
+            fatalErrorHandlerDelegate.showErrorDialog(withMessage: SessionCreationErrorDialog.visitorBanned.rawValue)
             
             break
         case .WRONG_PROVIDED_VISITOR_HASH:

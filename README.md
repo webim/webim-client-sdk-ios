@@ -1,3 +1,9 @@
+<center>
+
+![Webim logo](Documentation/Images/Logo.png)
+
+</center>
+
 # WebimClientLibrary
 
 This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobile-sdk/ios-sdk-howto/) – a way to integrate _Webim_ service into your _iOS_ app.
@@ -18,7 +24,7 @@ pod 'WebimClientLibrary'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.13.1
+github "webim/webim-client-sdk-ios" ~> 3.14.0
 ```
 
 ### Additional notes
@@ -31,28 +37,20 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
-If you're already using previous version and don't plan to jump on the new one you don't have to update your **Podfile**, depencies on version numbers 2.7.0 and lower will work properly. But for all renewals of the previous version usage, you have to switch your depency on the **version2** branch.
-
 ## Release notes
-For this particular update an app should be reinstalled on device.
-
-* Important history bugs fixed. 🤞
-* Documentation improvements. 📚
-* Tests fulfilled. ⚒️
+* `UnreadByOperatorTimestampChangeListener` and `UnreadByVisitorTimestampChangeListener` protocols added. They let to check updates when values that `getUnreadByOperatorTimestamp()` and `getUnreadByVisitorTimestamp()` methods of `MessageStream` protocol changed. 🕰
+* Minor improvements. 💩
+* Documentation additions and minor improvements. 📖
 
 ### Example app
-* `destroy()` methods of `WebimSession` and `MessageTracker` protocols and `getChatState()` method of `MessageStream` protocol usage added. ❌
-* Departments support added. 💬
-* Scroll to bottom button. ⏬
-* Color themes support + dark color theme. 🔲
-* UI bug fixes and improvements. 🤞
-* Refactoring. 🤓
+* Minor improvements. 💩
+* [_Crashlytics_](https://try.crashlytics.com) integrated. 💥
 
 ## Example
 
-![Start screen screenshot Classic theme](Screenshots/StartScreenClassic.png) ![Settings screen screenshot Classic theme](Screenshots/SettingsScreenClassic.png) ![Chat screen screenshot Classic theme](Screenshots/ChatScreenClassic.png) ![Image preview screenshot Classic theme](Screenshots/ImageScreenClassic.png) ![Rating window screenshot Classic theme](Screenshots/RatingScreenClassic.png)
+![Start screen screenshot Classic theme](Documentation/Images/Screenshots/StartScreenClassic.png) ![Settings screen screenshot Classic theme](Documentation/Images/Screenshots/SettingsScreenClassic.png) ![Chat screen screenshot Classic theme](Documentation/Images/Screenshots/ChatScreenClassic.png) ![Image preview screenshot Classic theme](Documentation/Images/Screenshots/ImageScreenClassic.png) ![Rating window screenshot Classic theme](Documentation/Images/Screenshots/RatingScreenClassic.png)
 
-![Start screen screenshot Dark theme](Screenshots/StartScreenDark.png) ![Settings screen screenshot Dark theme](Screenshots/SettingsScreenDark.png) ![Chat screen screenshot Dark theme](Screenshots/ChatScreenDark.png) ![Image preview screenshot Dark theme](Screenshots/ImageScreenDark.png) ![Rating window screenshot Dark theme](Screenshots/RatingScreenDark.png)
+![Start screen screenshot Dark theme](Documentation/Images/Screenshots/StartScreenDark.png) ![Settings screen screenshot Dark theme](Documentation/Images/Screenshots/SettingsScreenDark.png) ![Chat screen screenshot Dark theme](Documentation/Images/Screenshots/ChatScreenDark.png) ![Image preview screenshot Dark theme](Documentation/Images/Screenshots/ImageScreenDark.png) ![Rating window screenshot Dark theme](Documentation/Images/Screenshots/RatingScreenDark.png)
 
 If you don't have _CocoaPods_ installed you should firstly run `sudo gem install cocoapods`.
 
@@ -174,6 +172,7 @@ _WebimClientLibrary_ uses [_SQLite.swift_](https://github.com/stephencelis/SQLit
 
 In the sake of ease of several functionalities implementation Example app uses (in alphabetical order):
 * [_Cosmos_](https://github.com/evgenyneu/Cosmos) – for visual implementation of operator rating mechanism.
+* [_Crashlytics_](https://try.crashlytics.com) – for detecting crashes and investigating their causes.
 * [_PopupDialog_](https://github.com/Orderella/PopupDialog) – for implemetation of pop-up dialogs.
 * [_SnapKit_](https://github.com/SnapKit/SnapKit) – for AutoLayout mechanism implementation inside the code.
 * [_SlackTextViewController_](https://github.com/slackhq/SlackTextViewController) – for chat stream displaying inside Table View.

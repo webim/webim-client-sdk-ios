@@ -35,28 +35,28 @@ import Foundation
 final class WebimRemoteNotificationImpl {
     
     // MARK: - Constants
-    enum APNsField: String {
-        case APS = "aps"
-        case WEBIM = "webim"
+    enum APNSField: String {
+        case aps = "aps"
+        case webim = "webim"
     }
     enum APSField: String {
-        case ALERT = "alert"
+        case alert = "alert"
     }
     private enum AlertField: String {
-        case EVENT = "event"
-        case PARAMETERS = "loc-args"
-        case TYPE = "loc-key"
+        case event = "event"
+        case parameters = "loc-args"
+        case type = "loc-key"
     }
     private enum InternalNotificationEvent: String {
-        case ADD = "add"
-        case DELETE = "del"
+        case add = "add"
+        case delete = "del"
     }
     private enum InternalNotificationType: String {
-        case CONTACT_INFORMATION_REQUEST = "P.CR"
-        case OPERATOR_ACCEPTED = "P.OA"
-        case OPERATOR_FILE = "P.OF"
-        case OPERATOR_MESSAGE = "P.OM"
-        case WIDGET = "P.WM"
+        case contactInformationRequest = "P.CR"
+        case operatorAccepted = "P.OA"
+        case operatorFile = "P.OF"
+        case operatorMessage = "P.OM"
+        case widget = "P.WM"
     }
     
     // MARK: - Properties
@@ -66,52 +66,18 @@ final class WebimRemoteNotificationImpl {
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        guard let type = jsonDictionary[AlertField.TYPE.rawValue] as? String else {
+        guard let typeString = jsonDictionary[AlertField.type.rawValue] as? String,
+            let type = InternalNotificationType(rawValue: typeString) else {
             return nil
         }
-        switch type {
-        case InternalNotificationType.CONTACT_INFORMATION_REQUEST.rawValue:
-            self.type = .CONTACT_INFORMATION_REQUEST
-            
-            break
-        case InternalNotificationType.OPERATOR_ACCEPTED.rawValue:
-            self.type = .OPERATOR_ACCEPTED
-            
-            break
-        case InternalNotificationType.OPERATOR_FILE.rawValue:
-            self.type = .OPERATOR_FILE
-            
-            break
-        case InternalNotificationType.OPERATOR_MESSAGE.rawValue:
-            self.type = .OPERATOR_MESSAGE
-            
-            break
-        case InternalNotificationType.WIDGET.rawValue:
-            self.type = .WIDGET
-            
-            break
-        default:
-            // Not supported notification type.
-            return nil
+        self.type = type
+        
+        if let eventString = jsonDictionary[AlertField.event.rawValue] as? String,
+            let event = InternalNotificationEvent(rawValue: eventString) {
+            self.event = event
         }
         
-        if let event = jsonDictionary[AlertField.EVENT.rawValue] as? String {
-            switch event {
-            case InternalNotificationEvent.ADD.rawValue:
-                self.event = .ADD
-                
-                break
-            case InternalNotificationEvent.DELETE.rawValue:
-                self.event = .DELETE
-                
-                break
-            default:
-                // Not supported notification event.
-                break
-            }
-        }
-        
-        if let parameters = jsonDictionary[AlertField.PARAMETERS.rawValue] as? [String] {
+        if let parameters = jsonDictionary[AlertField.parameters.rawValue] as? [String] {
             self.parameters = parameters
         }
     }
@@ -126,15 +92,15 @@ extension WebimRemoteNotificationImpl: WebimRemoteNotification {
     
     func getType() -> NotificationType {
         switch type {
-        case .CONTACT_INFORMATION_REQUEST:
+        case .contactInformationRequest:
             return .CONTACT_INFORMATION_REQUEST
-        case .OPERATOR_ACCEPTED:
+        case .operatorAccepted:
             return .OPERATOR_ACCEPTED
-        case .OPERATOR_FILE:
+        case .operatorFile:
             return .OPERATOR_FILE
-        case .OPERATOR_MESSAGE:
+        case .operatorMessage:
             return .OPERATOR_MESSAGE
-        case .WIDGET:
+        case .widget:
             return .WIDGET
         }
     }
@@ -142,9 +108,9 @@ extension WebimRemoteNotificationImpl: WebimRemoteNotification {
     func getEvent() -> NotificationEvent? {
         if let event = event {
             switch event {
-            case .ADD:
+            case .add:
                 return .ADD
-            case .DELETE:
+            case .delete:
                 return .DELETE
             }
         }

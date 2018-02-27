@@ -83,14 +83,14 @@ class ActionRequestLoop: AbstractRequestLoop {
             }
             
             var parameterDictionary = request.getPrimaryData()
-            parameterDictionary[WebimActions.Parameter.PAGE_ID.rawValue] = usedAuthorizationData.getPageID()
-            parameterDictionary[WebimActions.Parameter.AUTHORIZATION_TOKEN.rawValue] = usedAuthorizationData.getAuthorizationToken()
+            parameterDictionary[WebimActions.Parameter.pageID.rawValue] = usedAuthorizationData.getPageID()
+            parameterDictionary[WebimActions.Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
             let parametersString = parameterDictionary.stringFromHTTPParameters()
             
             var url: URL?
             var urlRequest: URLRequest?
             let httpMethod = request.getHTTPMethod()
-            if httpMethod == .GET {
+            if httpMethod == .get {
                 url = URL(string: (request.getBaseURLString() + "?" + parametersString))
                 urlRequest = URLRequest(url: url!)
             } else { // POST
@@ -116,25 +116,25 @@ class ActionRequestLoop: AbstractRequestLoop {
             do {
                 let data = try self.perform(request: urlRequest!)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                    if let error = dataJSON?[AbstractRequestLoop.ResponseField.ERROR.rawValue] as? String {
+                    if let error = dataJSON?[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
                         switch error {
-                        case WebimInternalError.REINIT_REQUIRED.rawValue:
+                        case WebimInternalError.reinitializationRequired.rawValue:
                             self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: usedAuthorizationData)
                             self.enqueue(request: request)
                             
                             break
-                        case WebimInternalError.FILE_SIZE_EXCEEDED.rawValue,
-                             WebimInternalError.FILE_TYPE_NOT_ALLOWED.rawValue:
+                        case WebimInternalError.fileSizeExceeded.rawValue,
+                             WebimInternalError.fileTypeNotAllowed.rawValue:
                             self.handleSendFile(error: error,
                                                 ofRequest: request)
                             
                             break
-                        case WebimInternalError.WRONG_ARGUMENT_VALUE.rawValue:
+                        case WebimInternalError.wrongArgumentValue.rawValue:
                             self.handleWrongArgumentValueError(ofRequest: request)
                             
                             break
-                        case WebimInternalError.NO_CHAT.rawValue,
-                             WebimInternalError.OPERATOR_NOT_IN_CHAT.rawValue:
+                        case WebimInternalError.noChat.rawValue,
+                             WebimInternalError.operatorNotInChat.rawValue:
                             self.handleRateOperator(error: error,
                                                     ofRequest: request)
                             
@@ -143,8 +143,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                             self.running = false
                             
                             self.completionHandlerExecutor.execute(task: DispatchWorkItem {
-                                self.internalErrorListener.on(error: error,
-                                                              urlString: urlRequest!.url!.path)
+                                self.internalErrorListener.on(error: error)
                             })
                             
                             break
@@ -154,8 +153,8 @@ class ActionRequestLoop: AbstractRequestLoop {
                     }
                     
                     // Some internal errors can be received inside "error" field inside "data" field.
-                    if let dataDictionary = dataJSON?[AbstractRequestLoop.ResponseField.DATA.rawValue] as? [String: Any],
-                        let errorString = dataDictionary[AbstractRequestLoop.DataField.ERROR.rawValue] as? String {
+                    if let dataDictionary = dataJSON?[AbstractRequestLoop.ResponseFields.data.rawValue] as? [String: Any],
+                        let errorString = dataDictionary[AbstractRequestLoop.DataFields.error.rawValue] as? String {
                         self.handleDataMessage(error: errorString,
                                                ofRequest: request)
                     }
@@ -218,7 +217,7 @@ class ActionRequestLoop: AbstractRequestLoop {
         if let rateOperatorCompletionhandler = webimRequest.getRateOperatorCompletionHandler() {
             completionHandlerExecutor.execute(task: DispatchWorkItem {
                 let rateOperatorError: RateOperatorError
-                if errorString == WebimInternalError.NO_CHAT.rawValue {
+                if errorString == WebimInternalError.noChat.rawValue {
                     rateOperatorError = .NO_CHAT
                 } else {
                     rateOperatorError = .WRONG_OPERATOR_ID
@@ -234,7 +233,7 @@ class ActionRequestLoop: AbstractRequestLoop {
         if let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler() {
             completionHandlerExecutor.execute(task: DispatchWorkItem {
                 let sendFileError: SendFileError
-                if errorString == WebimInternalError.FILE_SIZE_EXCEEDED.rawValue {
+                if errorString == WebimInternalError.fileSizeExceeded.rawValue {
                     sendFileError = .FILE_SIZE_EXCEEDED
                 } else {
                     sendFileError = .FILE_TYPE_NOT_ALLOWED
@@ -247,7 +246,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
-        WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.WRONG_ARGUMENT_VALUE.rawValue)",
+        WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
             verbosityLevel: .WARNING)
     }
     
@@ -261,17 +260,17 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     private static func convertToPublic(dataMessageErrorString: String) -> DataMessageError {
         switch dataMessageErrorString {
-        case WebimInternalError.QUOTED_MESSAGE_CANNOT_BE_REPLIED.rawValue:
+        case WebimInternalError.quotedMessageCannotBeReplied.rawValue:
             return .QUOTED_MESSAGE_CANNOT_BE_REPLIED
-        case WebimInternalError.QUOTED_MESSAGE_CORRUPTED_ID.rawValue:
+        case WebimInternalError.quotedMessageCorruptedID.rawValue:
             return .QUOTED_MESSAGE_WRONG_ID
-        case WebimInternalError.QUOTED_MESSAGE_FROM_ANOTHER_VISITOR.rawValue:
+        case WebimInternalError.quotedMessageFromAnotherVisitor.rawValue:
             return .QUOTED_MESSAGE_FROM_ANOTHER_VISITOR
-        case WebimInternalError.QUOTED_MESSAGE_MULTIPLE_IDS.rawValue:
+        case WebimInternalError.quotedMessageMultipleID.rawValue:
             return .QUOTED_MESSAGE_MULTIPLE_IDS
-        case WebimInternalError.QUOTED_MESSAGE_NOT_FOUND.rawValue:
+        case WebimInternalError.quotedMessageNotFound.rawValue:
             return .QUOTED_MESSAGE_WRONG_ID
-        case WebimInternalError.QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING.rawValue:
+        case WebimInternalError.quotedMessageRequiredArgumentsMissing.rawValue:
             return .QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING
         default:
             return .UNKNOWN

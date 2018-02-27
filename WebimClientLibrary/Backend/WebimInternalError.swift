@@ -34,29 +34,29 @@ import Foundation
  2017 Webim
  */
 enum WebimInternalError: String, Error {
-    case ACCOUNT_BLOCKED = "account-blocked"
-    case FILE_SIZE_EXCEEDED = "max_file_size_exceeded"
-    case FILE_TYPE_NOT_ALLOWED = "not_allowed_file_type"
-    case PROVIDED_VISITOR_EXPIRED = "provided-visitor-expired"
-    case REINIT_REQUIRED = "reinit-required"
-    case SERVER_NOT_READY = "server-not-ready"
-    case VISITOR_BANNED = "visitor_banned"
-    case WRONG_ARGUMENT_VALUE = "wrong-argument-value"
-    case WRONG_PROVIDED_VISITOR_HASH = "wrong-provided-visitor-hash-value"
+    case accountBlocked = "account-blocked"
+    case fileSizeExceeded = "max_file_size_exceeded"
+    case fileTypeNotAllowed = "not_allowed_file_type"
+    case providedVisitorFieldsExpired = "provided-visitor-expired"
+    case reinitializationRequired = "reinit-required"
+    case serverNotReady = "server-not-ready"
+    case visitorBanned = "visitor_banned"
+    case wrongArgumentValue = "wrong-argument-value"
+    case wrongProvidedVisitorFieldsHashValue = "wrong-provided-visitor-hash-value"
     
-    // Data errors.
-    // Quoting message error.
-    case QUOTED_MESSAGE_CANNOT_BE_REPLIED = "quoting-message-that-cannot-be-replied"
-    case QUOTED_MESSAGE_FROM_ANOTHER_VISITOR = "quoting-message-from-another-visitor"
-    case QUOTED_MESSAGE_CORRUPTED_ID = "corrupted-quoted-message-id"
-    case QUOTED_MESSAGE_MULTIPLE_IDS = "multiple-quoted-messages-found"
-    case QUOTED_MESSAGE_NOT_FOUND = "quoted-message-not-found"
-    case QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING = "required-quote-args-missing"
+    // Data errors
+    // Quoting message errors
+    case quotedMessageCannotBeReplied = "quoting-message-that-cannot-be-replied"
+    case quotedMessageFromAnotherVisitor = "quoting-message-from-another-visitor"
+    case quotedMessageCorruptedID = "corrupted-quoted-message-id"
+    case quotedMessageMultipleID = "multiple-quoted-messages-found"
+    case quotedMessageNotFound = "quoted-message-not-found"
+    case quotedMessageRequiredArgumentsMissing = "required-quote-args-missing"
     
-    // Provided authorization token errors.
-    case PROVIDED_AUTHORIZATION_TOKEN_NOT_FOUND = "provided-auth-token-not-found"
+    // Provided authonication token errors
+    case providedAuthenticationTokenNotFound = "provided-auth-token-not-found"
     
-    // Rate operator errors.
-    case NO_CHAT = "no-chat"
-    case OPERATOR_NOT_IN_CHAT = "operator-not-in-chat"
+    // Rate operator errors
+    case noChat = "no-chat"
+    case operatorNotInChat = "operator-not-in-chat"
 }

@@ -34,17 +34,17 @@ import Foundation
  */
 enum VisitSessionStateItem: String {
     // Raw values equal to field names received in responses from server.
-    case CALLBACK_HUNTER = "callback-hunter"
-    case CHAT = "chat"
-    case CHAT_SHOWING = "chat-showing"
-    case DEPARTMENT_SELECTION = "department-selection"
-    case END = "end"
-    case FIRST_QUESTION = "first-question"
-    case IDLE = "idle"
-    case IDLE_AFTER_CHAT = "idle-after-chat"
-    case OFFLINE_MESSAGE = "offline-message"
-    case SHOWING = "showing"
-    case SHOWING_AUTO = "showing-auto"
-    case SHOWING_BY_URL_PARAMETER = "showing-by-url-param"
-    case UNKNOWN
+    case callbackHunter = "callback-hunter"
+    case chat = "chat"
+    case chatShowing = "chat-showing"
+    case departmentSelection = "department-selection"
+    case end = "end"
+    case firstQuestion = "first-question"
+    case idle = "idle"
+    case idleAfterChat = "idle-after-chat"
+    case offlineMessage = "offline-message"
+    case showing = "showing"
+    case showingAuto = "showing-auto"
+    case showingByURLParameter = "showing-by-url-param"
+    case unknown
 }

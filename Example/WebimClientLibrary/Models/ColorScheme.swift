@@ -30,73 +30,73 @@ final class ColorScheme {
     
     // MARK: - Properties
     static let shared = ColorScheme()
-    var option: Option
+    var schemeType: SchemeType
     
     // MARK: - Initialization
     private init() {
         if let settings = UserDefaults.standard.object(forKey: USER_DEFAULTS_NAME) as? [String : String] {
-            if let rawValue = settings[UserDefaultsKey.COLOR_SCHEME.rawValue],
-                let option = Option(rawValue: rawValue) {
-                self.option = option
+            if let rawValue = settings[UserDefaultsKey.colorScheme.rawValue],
+                let option = SchemeType(rawValue: rawValue) {
+                self.schemeType = option
             } else {
-                self.option = .CLASSIC
+                self.schemeType = .light
             }
         } else {
-            self.option = .CLASSIC
+            self.schemeType = .light
         }
     }
     
     // MARK: - Methods
     
     func navigationItemImage() -> UIImage {
-        switch option {
-        case .CLASSIC:
+        switch schemeType {
+        case .light:
             return #imageLiteral(resourceName: "LogoWebimNavigationBar")
-        case .DARK:
+        case .dark:
             return #imageLiteral(resourceName: "LogoWebimNavigationBar_dark")
         }
     }
     
     func backButtonImage() -> UIImage {
-        switch option {
-        case .CLASSIC:
+        switch schemeType {
+        case .light:
             return #imageLiteral(resourceName: "Back")
-        case .DARK:
+        case .dark:
             return #imageLiteral(resourceName: "Back_dark")
         }
     }
     
     func closeChatButtonImage() -> UIImage {
-        switch option {
-        case .CLASSIC:
+        switch schemeType {
+        case .light:
             return #imageLiteral(resourceName: "Close")
-        case .DARK:
+        case .dark:
             return #imageLiteral(resourceName: "Close_dark")
         }
     }
     
     func scrollToBottomButtonImage() -> UIImage {
-        switch option {
-        case .CLASSIC:
+        switch schemeType {
+        case .light:
             return #imageLiteral(resourceName: "ScrollToBottom")
-        case .DARK:
+        case .dark:
             return #imageLiteral(resourceName: "ScrollToBottom_dark")
         }
     }
     
     func keyboardAppearance() -> UIKeyboardAppearance {
-        switch option {
-        case .CLASSIC:
+        switch schemeType {
+        case .light:
             return .light
-        case .DARK:
+        case .dark:
             return .dark
         }
     }
     
     // MARK: -
-    enum Option: String {
-        case CLASSIC = "classic"
-        case DARK = "dark"
+    enum SchemeType: String {
+        case light = "classic"
+        case dark = "dark"
     }
     
 }
@@ -118,15 +118,15 @@ struct SchemeColor {
     // MARK: - Methods
     
     func color() -> UIColor {
-        return colorWith(scheme: ColorScheme.shared.option)
+        return colorWith(scheme: ColorScheme.shared.schemeType)
     }
     
     // MARK: Private methods
-    private func colorWith(scheme: ColorScheme.Option) -> UIColor {
+    private func colorWith(scheme: ColorScheme.SchemeType) -> UIColor {
         switch scheme {
-        case .CLASSIC:
+        case .light:
             return classic
-        case .DARK:
+        case .dark:
             return dark
         }
     }

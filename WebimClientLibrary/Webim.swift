@@ -432,7 +432,7 @@ public final class SessionBuilder  {
         }
         
         let remoteNotificationsEnabled = (self.remoteNotificationSystem != Webim.RemoteNotificationSystem.NONE)
-        if (deviceToken) != nil
+        if (deviceToken != nil)
             && !remoteNotificationsEnabled {
             throw SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION
         }

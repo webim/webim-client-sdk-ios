@@ -27,7 +27,7 @@
 import Foundation
 
 /**
- Class that encapsulates chat operator data, received from a server.
+ Class that encapsulates chat operator data, received from server.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -38,39 +38,32 @@ struct OperatorItem {
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case AVATAR_URL_STRING = "avatar"
-        case DEPARTMENT_KEYS = "departmentKeys"
-        case ID = "id"
-        case FULL_NAME = "fullname"
+        case avatarURLString = "avatar"
+        case departmentKeys = "departmentKeys"
+        case id = "id"
+        case fullName = "fullname"
     }
     
     // MARK: - Properties
     private var avatarURLString: String?
-    private var departmentKeys = [String]()
     private var id: String
     private var fullName: String
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        if let id = jsonDictionary[JSONField.ID.rawValue] as? Int {
+        if let id = jsonDictionary[JSONField.id.rawValue] as? Int {
             self.id = String(id)
         } else {
             return nil
         }
         
-        if let fullName = jsonDictionary[JSONField.FULL_NAME.rawValue] as? String {
+        if let fullName = jsonDictionary[JSONField.fullName.rawValue] as? String {
             self.fullName = fullName
         } else {
             return nil
         }
         
-        if let departmentKeysArray = jsonDictionary[JSONField.DEPARTMENT_KEYS.rawValue] as? [Any] {
-            for departmentKey in departmentKeysArray {
-                departmentKeys.append(departmentKey as! String)
-            }
-        }
-        
-        if let avatarURLString = jsonDictionary[JSONField.AVATAR_URL_STRING.rawValue] as? String {
+        if let avatarURLString = jsonDictionary[JSONField.avatarURLString.rawValue] as? String {
             self.avatarURLString = avatarURLString
         }
     }

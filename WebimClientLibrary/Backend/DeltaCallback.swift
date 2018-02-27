@@ -69,54 +69,54 @@ final class DeltaCallback {
             }
             
             switch deltaType! {
-            case .CHAT:
+            case .chat:
                 handleChatUpdateBy(delta: delta,
                                    messageStream: messageStream!)
                 
                 break
-            case .CHAT_MESSAGE:
+            case .chatMessage:
                 handleChatMessageUpdateBy(delta: delta,
                                           messageStream: messageStream!,
                                           messageHolder: messageHolder!,
                                           currentChatMessageMapper: currentChatMessageMapper)
                 
                 break
-            case .CHAT_OPERATOR:
+            case .chatOperator:
                 handleChatOperatorUpdateBy(delta: delta,
                                            messageStream: messageStream!)
                 
                 break
-            case .CHAT_OPERATOR_TYPING:
+            case .chatOperatorTyping:
                 handleChatOperatorTypingUpdateBy(delta: delta,
                                                  messageStream: messageStream!)
                 
                 break
-            case .CHAT_READ_BY_VISITOR:
+            case .chatReadByVisitor:
                 handleChatReadByVisitorUpdateBy(delta: delta,
                                                 messageStream: messageStream!)
                 
                 break
-            case .CHAT_STATE:
+            case .statState:
                 handleChatStateUpdateBy(delta: delta,
                                         messageStream: messageStream!)
                 
                 break
-            case .CHAT_UNREAD_BY_OPERATOR_SINCE_TS:
+            case .chatUnreadByOperatorTimestamp:
                 handleUnreadByOperatorTimestampUpdateBy(delta: delta,
                                                         messageStream: messageStream!)
                 
                 break
-            case .DEPARTMENT_LIST:
+            case .departmentList:
                 handleDepartmentListUpdateBy(delta: delta,
                                              messageStream: messageStream!)
                 
                 break
-            case .OPERATOR_RATE:
+            case .operatorRate:
                 handleOperatorRateUpdateBy(delta: delta,
                                            messageStream: messageStream!)
                 
                 break
-            case .VISIT_SESSION_STATE:
+            case .visitSessionState:
                 handleVisitSessionStateUpdateBy(delta: delta,
                                                 messageStream: messageStream!)
                 
@@ -135,7 +135,7 @@ final class DeltaCallback {
         }
         
         if let visitSessionState = fullUpdate.getState() {
-            messageStream!.set(visitSessionState: (VisitSessionStateItem(rawValue: visitSessionState) ?? .UNKNOWN))
+            messageStream!.set(visitSessionState: (VisitSessionStateItem(rawValue: visitSessionState) ?? .unknown))
         }
         
         if let departments = fullUpdate.getDepartments() {
@@ -159,12 +159,13 @@ final class DeltaCallback {
     
     private func handleChatUpdateBy(delta: DeltaItem,
                                     messageStream: MessageStreamImpl) {
-        if delta.getEvent() == .UPDATE {
-            if let deltaData = delta.getData() as? [String: Any?] {
-                currentChat = ChatItem(jsonDictionary: deltaData)
-                messageStream.changingChatStateOf(chat: currentChat)
-            }
+        guard delta.getEvent() == .update,
+            let deltaData = delta.getData() as? [String: Any?] else {
+                return
         }
+        
+        currentChat = ChatItem(jsonDictionary: deltaData)
+        messageStream.changingChatStateOf(chat: currentChat)
     }
     
     private func handleChatMessageUpdateBy(delta: DeltaItem,
@@ -174,7 +175,7 @@ final class DeltaCallback {
         let deltaEvent = delta.getEvent()
         let deltaID = delta.getID()
         
-        if deltaEvent == .DELETE {
+        if deltaEvent == .delete {
             if currentChat != nil {
                 var currentChatMessages = currentChat!.getMessages()
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
@@ -189,82 +190,86 @@ final class DeltaCallback {
             
             messageHolder.deletedMessageWith(id: deltaID)
         } else {
-            if let deltaData = delta.getData() as? [String: Any?] {
-                let messageItem = MessageItem(jsonDictionary: deltaData)
-                let message = currentChatMessageMapper.map(message: messageItem)
-                if deltaEvent == .ADD {
-                    currentChat?.add(message: messageItem)
-                    
-                    if message != nil {
-                        messageHolder.receive(newMessage: message!)
-                    }
-                } else if deltaEvent == .UPDATE {
-                    if currentChat != nil {
-                        var currentChatMessages = currentChat!.getMessages()
-                        for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
-                            if currentChatMessage.getID() == messageItem.getID() {
-                                currentChatMessages[currentChatMessageIndex] = messageItem
-                                
-                                break
-                            }
+            guard let deltaData = delta.getData() as? [String: Any?] else {
+                return
+            }
+            
+            let messageItem = MessageItem(jsonDictionary: deltaData)
+            let message = currentChatMessageMapper.map(message: messageItem)
+            if deltaEvent == .add {
+                currentChat?.add(message: messageItem)
+                
+                if message != nil {
+                    messageHolder.receive(newMessage: message!)
+                }
+            } else if deltaEvent == .update {
+                if currentChat != nil {
+                    var currentChatMessages = currentChat!.getMessages()
+                    for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
+                        if currentChatMessage.getID() == messageItem.getID() {
+                            currentChatMessages[currentChatMessageIndex] = messageItem
+                            
+                            break
                         }
-                    }
-                    
-                    if message != nil {
-                        messageHolder.changed(message: message!)
                     }
                 }
                 
+                if message != nil {
+                    messageHolder.changed(message: message!)
+                }
             }
         }
     }
     
     private func handleChatOperatorUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
-        if let deltaData = delta.getData() as? [String: Any?] {
-            if let operatorItem = OperatorItem(jsonDictionary: deltaData) {
-                if delta.getEvent() == .UPDATE {
-                    currentChat?.set(operator: operatorItem)
-                    
-                    messageStream.changingChatStateOf(chat: currentChat)
-                }
-            }
+        guard delta.getEvent() == .update,
+            let deltaData = delta.getData() as? [String: Any?] else {
+                return
+        }
+        
+        if let operatorItem = OperatorItem(jsonDictionary: deltaData) {
+            currentChat?.set(operator: operatorItem)
+            
+            messageStream.changingChatStateOf(chat: currentChat)
         }
     }
     
     private func handleChatOperatorTypingUpdateBy(delta: DeltaItem,
                                                   messageStream: MessageStreamImpl) {
-        if let operatorTyping = delta.getData() as? Bool {
-            if delta.getEvent() == .UPDATE {
-                currentChat?.set(operatorTyping: operatorTyping)
-                
-                messageStream.changingChatStateOf(chat: currentChat)
-            }
+        guard delta.getEvent() == .update,
+            let operatorTyping = delta.getData() as? Bool else {
+                return
         }
+        
+        currentChat?.set(operatorTyping: operatorTyping)
+        messageStream.changingChatStateOf(chat: currentChat)
     }
     
     private func handleChatReadByVisitorUpdateBy(delta: DeltaItem,
                                                  messageStream: MessageStreamImpl) {
-        if let readByVisitor = delta.getData() as? Bool {
-            if delta.getEvent() == .UPDATE {
-                currentChat?.set(readByVisitor: readByVisitor)
-                
-                if readByVisitor {
-                    messageStream.set(unreadByVisitorTimestamp: nil)
-                }
-            }
+        guard let readByVisitor = delta.getData() as? Bool,
+            delta.getEvent() == .update else {
+                return
+        }
+        
+        currentChat?.set(readByVisitor: readByVisitor)
+        
+        if readByVisitor {
+            messageStream.set(unreadByVisitorTimestamp: nil)
         }
     }
     
     private func handleChatStateUpdateBy(delta: DeltaItem,
                                          messageStream: MessageStreamImpl) {
-        if let chatState = delta.getData() as? String {
-            if delta.getEvent() == .UPDATE {
-                currentChat?.set(state: ChatItem.ChatItemState(rawValue: chatState)!)
-                
-                messageStream.changingChatStateOf(chat: currentChat)
-            }
+        guard delta.getEvent() == .update,
+            let chatState = delta.getData() as? String else {
+                return
         }
+        
+        currentChat?.set(state: ChatItem.ChatItemState(rawValue: chatState)!)
+        
+        messageStream.changingChatStateOf(chat: currentChat)
     }
     
     private func handleDepartmentListUpdateBy(delta: DeltaItem,
@@ -287,36 +292,45 @@ final class DeltaCallback {
     
     private func handleUnreadByOperatorTimestampUpdateBy(delta: DeltaItem,
                                                          messageStream: MessageStreamImpl) {
-        if let unreadByOperatorTimestamp = delta.getData() as? Double {
-            if delta.getEvent() == .UPDATE {
-                messageStream.set(unreadByOperatorTimestamp: Date(timeIntervalSince1970: unreadByOperatorTimestamp))
-            }
+        guard delta.getEvent() == .update else {
+            return
         }
+        
+        var unreadByOperatorTimestamp: Double?
+        if delta.getData() != nil {
+            unreadByOperatorTimestamp = delta.getData() as? Double
+        }
+        currentChat?.set(unreadByOperatorTimestamp: unreadByOperatorTimestamp)
+        messageStream.set(unreadByOperatorTimestamp: (unreadByOperatorTimestamp != nil ? Date(timeIntervalSince1970: unreadByOperatorTimestamp!) : nil))
     }
     
     private func handleOperatorRateUpdateBy(delta: DeltaItem,
                                             messageStream: MessageStreamImpl) {
-        if let deltaData = delta.getData() as? [String: Any?] {
-            if let rating = RatingItem(jsonDictionary: deltaData) {
-                if delta.getEvent() == .UPDATE {
-                    currentChat?.set(rating: rating,
-                                     toOperatorWithId: rating.getOperatorID())
-                }
+        guard let deltaData = delta.getData() as? [String: Any?] else {
+            return
+        }
+        
+        if let rating = RatingItem(jsonDictionary: deltaData) {
+            if delta.getEvent() == .update {
+                currentChat?.set(rating: rating,
+                                 toOperatorWithId: rating.getOperatorID())
             }
         }
     }
     
     private func handleVisitSessionStateUpdateBy(delta: DeltaItem,
                                                  messageStream: MessageStreamImpl) {
-        if let sessionState = delta.getData() as? String {
-            if sessionState == VisitSessionStateItem.OFFLINE_MESSAGE.rawValue {
-                messageStream.set(onlineStatus: .OFFLINE)
-                messageStream.getWebimActions().closeChat()
-            }
-            
-            if delta.getEvent() == .UPDATE {
-                messageStream.set(visitSessionState: (VisitSessionStateItem(rawValue: sessionState) ?? .UNKNOWN))
-            }
+        guard let sessionState = delta.getData() as? String else {
+            return
+        }
+        
+        if sessionState == VisitSessionStateItem.offlineMessage.rawValue {
+            messageStream.set(onlineStatus: .offline)
+            messageStream.getWebimActions().closeChat()
+        }
+        
+        if delta.getEvent() == .update {
+            messageStream.set(visitSessionState: (VisitSessionStateItem(rawValue: sessionState) ?? .unknown))
         }
     }
     

@@ -98,22 +98,22 @@ final class SettingsTableViewController: UITableViewController {
             return
         }
         
-        var selectedColorScheme: ColorScheme.Option?
+        var selectedColorScheme: ColorScheme.SchemeType?
         switch indexPath.row {
         case 0:
-            selectedColorScheme = .CLASSIC
+            selectedColorScheme = .light
             
             break
         case 2:
-            selectedColorScheme = .DARK
+            selectedColorScheme = .dark
             
             break
         default:
             return
         }
         
-        if ColorScheme.shared.option != selectedColorScheme {
-            ColorScheme.shared.option = selectedColorScheme!
+        if ColorScheme.shared.schemeType != selectedColorScheme {
+            ColorScheme.shared.schemeType = selectedColorScheme!
             UIView.animate(withDuration: 0.2) {
                 self.setupColorSchemeCheckboxes()
                 self.setupColorScheme()
@@ -124,11 +124,11 @@ final class SettingsTableViewController: UITableViewController {
     // MARK: Private mwethods
     
     private func setupColorSchemeCheckboxes() {
-        switch ColorScheme.shared.option {
-        case .CLASSIC:
+        switch ColorScheme.shared.schemeType {
+        case .light:
             classicCheckboxImageView.alpha = 1.0
             darkCheckboxImageView.alpha = 0.0
-        case .DARK:
+        case .dark:
             classicCheckboxImageView.alpha = 0.0
             darkCheckboxImageView.alpha = 1.0
         }

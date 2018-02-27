@@ -37,7 +37,7 @@ final class WebimRequest {
     
     // MARK: - Properties
     private let baseURLString: String
-    private let httpMethod: AbstractRequestLoop.HTTPMethod
+    private let httpMethod: AbstractRequestLoop.HTTPMethods
     private let primaryData: [String: Any]
     private var contentType: String?
     private var dataMessageCompletionHandler: DataMessageCompletionHandler?
@@ -48,7 +48,7 @@ final class WebimRequest {
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
-    init(httpMethod: AbstractRequestLoop.HTTPMethod,
+    init(httpMethod: AbstractRequestLoop.HTTPMethods,
          primaryData: [String: Any],
          messageID: String? = nil,
          httpBody: Data? = nil,
@@ -73,7 +73,7 @@ final class WebimRequest {
     
     // MARK: - Methods
     
-    func getHTTPMethod() -> AbstractRequestLoop.HTTPMethod {
+    func getHTTPMethod() -> AbstractRequestLoop.HTTPMethods {
         return httpMethod
     }
     
@@ -111,22 +111,6 @@ final class WebimRequest {
     
     func getSendFileCompletionHandler() -> SendFileCompletionHandler? {
         return sendFileCompletionHandler
-    }
-    
-}
-
-// MARK: - NSCopying
-extension WebimRequest: NSCopying {
-    
-    // MARK: - Methods
-    func copy(with zone: NSZone? = nil) -> Any {
-        return WebimRequest(httpMethod: httpMethod,
-                            primaryData: primaryData,
-                            messageID: messageID,
-                            httpBody: httpBody,
-                            baseURLString: baseURLString,
-                            historyRequestCompletionHandler: historyRequestCompletionHandler,
-                            sendFileCompletionHandler: sendFileCompletionHandler)
     }
     
 }

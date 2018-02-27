@@ -26,16 +26,22 @@
 
 import UIKit
 
-let BORDER_WIDTH: CGFloat = 2.0
-let CORNER_RADIUS: CGFloat = 5.0
-let LIGHT_BORDER_WIDTH: CGFloat = 0.5
+enum Button: CGFloat {
+    case borderWidth = 0.5
+    case cornerRadius = 5.0
+}
+
+enum TransparentButton: CGFloat {
+    case borderWidth = 2.0
+    case cornerRadius = 5.0
+}
 
 // Scroll to bottom button.
 enum ScrollToBottomButton: CGFloat {
-    case MARGIN = 8.0
-    case SIZE = 48.0
-    case VISIBILITY_THRESHOLD = 60.0
+    case margin = 8.0
+    case size = 48.0
+    case visibilityThreshold = 60.0
 }
 enum ScrollToBottomButtonAnimation: Double {
-    case DURATION = 0.2
+    case duration = 0.2
 }

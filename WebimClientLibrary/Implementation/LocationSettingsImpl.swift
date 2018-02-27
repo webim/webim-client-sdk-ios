@@ -37,7 +37,7 @@ final class LocationSettingsImpl {
     
     // MARK: - Constants
     enum UserDefaultsKey: String {
-        case HINTS_ENABLED = "hints_enabled"
+        case hintsEnabled = "hints_enabled"
     }
     
     
@@ -55,7 +55,7 @@ final class LocationSettingsImpl {
     
     static func getFrom(userDefaults userDefaultsKey: String) -> LocationSettingsImpl {
         if let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            if let hintsEnabled = userDefaults[UserDefaultsKey.HINTS_ENABLED.rawValue] as? Bool {
+            if let hintsEnabled = userDefaults[UserDefaultsKey.hintsEnabled.rawValue] as? Bool {
                 return LocationSettingsImpl(hintsEnabled: hintsEnabled)
             }
         }
@@ -65,12 +65,12 @@ final class LocationSettingsImpl {
     
     func saveTo(userDefaults userDefaultsKey: String) {
         if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsKey.HINTS_ENABLED.rawValue] = hintsEnabled
+            userDefaults[UserDefaultsKey.hintsEnabled.rawValue] = hintsEnabled
             UserDefaults.standard.set(userDefaults,
                                       forKey: userDefaultsKey)
         }
         
-        UserDefaults.standard.setValue([UserDefaultsKey.HINTS_ENABLED.rawValue: hintsEnabled],
+        UserDefaults.standard.setValue([UserDefaultsKey.hintsEnabled.rawValue: hintsEnabled],
                                        forKey: userDefaultsKey)
     }
     
@@ -81,7 +81,7 @@ extension LocationSettingsImpl: Equatable {
     
     static func == (lhs: LocationSettingsImpl,
                     rhs: LocationSettingsImpl) -> Bool {
-        return lhs.hintsEnabled == lhs.hintsEnabled
+        return lhs.hintsEnabled == rhs.hintsEnabled
     }
     
 }

@@ -58,7 +58,7 @@ class AbstractMapper: MessageFactoriesMapper {
     
     // MARK: - Constants
     private enum MapError: Error {
-        case INVALID_MESSAGE_TYPE(String)
+        case invalidMessageType(String)
     }
     
     // MARK: - Properties
@@ -74,21 +74,21 @@ class AbstractMapper: MessageFactoriesMapper {
     
     static func convert(messageKind: MessageItem.MessageKind) -> MessageType? {
         switch messageKind {
-        case .ACTION_REQUEST:
+        case .actionRequest:
             return .ACTION_REQUEST
-        case .CONTACTS_REQUEST:
+        case .contactInformationRequest:
             return .CONTACTS_REQUEST
-        case .FILE_FROM_OPERATOR:
+        case .fileFromOperator:
             return .FILE_FROM_OPERATOR
-        case .FILE_FROM_VISITOR:
+        case .fileFromVisitor:
             return .FILE_FROM_VISITOR
-        case .INFO:
+        case .info:
             return .INFO
-        case .OPERATOR:
+        case .operatorMessage:
             return .OPERATOR
-        case .OPERATOR_BUSY:
+        case .operatorBusy:
             return .OPERATOR_BUSY
-        case .VISITOR:
+        case .visitorMessage:
             return .VISITOR
         default:
             WebimInternalLogger.shared.log(entry: "Invalid message type received: \(messageKind.rawValue)",
@@ -102,8 +102,8 @@ class AbstractMapper: MessageFactoriesMapper {
                  historyMessage: Bool) -> MessageImpl? {
         let kind = messageItem.getKind()
         if (kind == nil)
-            || (kind == .CONTACTS)
-            || (kind == .FOR_OPERATOR) {
+            || (kind == .contactInformation)
+            || (kind == .forOperator) {
             return nil
         }
         let type = AbstractMapper.convert(messageKind: kind!)
@@ -116,8 +116,8 @@ class AbstractMapper: MessageFactoriesMapper {
         var rawText: String? = nil
         
         let messageItemText = messageItem.getText()
-        if (kind == .FILE_FROM_VISITOR)
-            || (kind == .FILE_FROM_OPERATOR) {
+        if (kind == .fileFromVisitor)
+            || (kind == .fileFromOperator) {
             attachment = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
                                                              webimClient: webimClient!,
                                                              text: messageItemText!)
@@ -225,7 +225,7 @@ final class SendingFactory {
         return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
-                             type: MessageType.VISITOR,
+                             type: .VISITOR,
                              text: text,
                              timeInMicrosecond: (InternalUtils.getCurrentTimeInMicrosecond() * 1000))
     }
@@ -234,36 +234,9 @@ final class SendingFactory {
         return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
-                             type: MessageType.FILE_FROM_VISITOR,
+                             type: .FILE_FROM_VISITOR,
                              text: "",
                              timeInMicrosecond: (InternalUtils.getCurrentTimeInMicrosecond() * 1000))
     }
     
-}
-
-// MARK: -
-/**
- Mapper class that is responsible for converting internal operator model objects to public ones.
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-final class OperatorFactory {
-    
-    // MARK: - Properties
-    var serverURLString: String
-    
-    // MARK: - Initialization
-    init(withServerURLString serverURLString: String) {
-        self.serverURLString = serverURLString
-    }
-    
-    // MARK: - Methods
-    func createOperatorFrom(operatorItem: OperatorItem?) -> OperatorImpl? {
-        return ((operatorItem == nil) ? nil : OperatorImpl(id: operatorItem!.getID(),
-                                                          name: operatorItem!.getFullName(),
-                                                          avatarURLString: ((operatorItem!.getAvatarURLString() == nil) ? nil : (serverURLString + operatorItem!.getAvatarURLString()!))))
-    }
-
 }

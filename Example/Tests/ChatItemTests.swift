@@ -31,7 +31,7 @@ import XCTest
 class ChatItemTests: XCTestCase {
     
     // MARK: - Constants
-    static let CHAT_ITEM_JSON_STRING = """
+    private static let CHAT_ITEM_JSON_STRING = """
 {
     "readByVisitor" : true,
     "category" : null,
@@ -88,7 +88,7 @@ class ChatItemTests: XCTestCase {
     }
 }
 """
-    static let MESSAGE_JSON_STRING = """
+    private static let MESSAGE_JSON_STRING = """
 {
     "avatar" : null,
     "authorId" : null,
@@ -100,7 +100,7 @@ class ChatItemTests: XCTestCase {
     "name" : ""
 }
 """
-    static let OPERATOR_JSON_STRING = """
+    private static let OPERATOR_JSON_STRING = """
 {
     "avatar" : "/webim/images/avatar/demo_33201.png",
     "fullname" : "Administrator 2",
@@ -117,8 +117,8 @@ class ChatItemTests: XCTestCase {
 """
     
     // MARK: - Properties
-    let chatItemDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.CHAT_ITEM_JSON_STRING.data(using: .utf8)!,
-                                                               options: []) as! [String: Any?]
+    private let chatItemDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.CHAT_ITEM_JSON_STRING.data(using: .utf8)!,
+                                                                       options: []) as! [String : Any?]
     
     // MARK: - Tests
     
@@ -127,7 +127,7 @@ class ChatItemTests: XCTestCase {
         
         XCTAssertFalse(chatItem.isOperatorTyping())
         XCTAssertEqual(chatItem.getState(),
-                       ChatItem.ChatItemState.CHATTING)
+                       ChatItem.ChatItemState.chatting)
         XCTAssertEqual(chatItem.getOperator()!.getID(),
                        "33201")
         XCTAssertTrue(chatItem.getReadByVisitor()!)
@@ -151,14 +151,16 @@ class ChatItemTests: XCTestCase {
     
     func testAddMessage() {
         let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
-        
         let messageDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.MESSAGE_JSON_STRING.data(using: .utf8)!,
                                                                   options: []) as! [String: Any?]
         let message = MessageItem(jsonDictionary: messageDictionary)
+        
         chatItem.add(message: message,
                      atPosition: chatItem.getMessages().count)
-        
         XCTAssertTrue(message == chatItem.getMessages()[2])
+        
+        chatItem.add(message: message)
+        XCTAssertTrue(message == chatItem.getMessages().last!)
     }
     
     func testSetOperatorTyping() {
@@ -174,11 +176,11 @@ class ChatItemTests: XCTestCase {
         let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
         
         XCTAssertEqual(chatItem.getState(),
-                       ChatItem.ChatItemState.CHATTING)
+                       ChatItem.ChatItemState.chatting)
         
-        chatItem.set(state: .CLOSED)
+        chatItem.set(state: .closed)
         XCTAssertEqual(chatItem.getState(),
-                       ChatItem.ChatItemState.CLOSED)
+                       ChatItem.ChatItemState.closed)
     }
     
     func testSetOperator() {
@@ -202,6 +204,18 @@ class ChatItemTests: XCTestCase {
         
         chatItem.set(readByVisitor: false)
         XCTAssertFalse(chatItem.getReadByVisitor()!)
+    }
+    
+    // MARK: ChatItemState tests
+    
+    func testInitChatItemState() {
+        XCTAssertNil(ChatItem.ChatItemState(withType: "new_state")) // Some unsupported value.
+    }
+    
+    func testIsClosed() {
+        let chatItemState = ChatItem.ChatItemState(withType: "chatting")!
+        
+        XCTAssertFalse(chatItemState.isClosed())
     }
 
 }

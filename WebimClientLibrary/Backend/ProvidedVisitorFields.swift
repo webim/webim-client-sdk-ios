@@ -41,8 +41,26 @@ final class ProvidedVisitorFields {
     
     // MARK: - Initialization
     
-    init?(jsonString: String,
-          JSONObject: Data) throws {
+    convenience init?(withJSONString jsonString: String) {
+        if let jsonData = jsonString.data(using: .utf8) {
+            self.init(jsonString: jsonString,
+                      JSONObject: jsonData)
+        } else {
+            return nil
+        }
+    }
+    
+    convenience init?(withJSONObject jsonData: Data) {
+        let jsonString = String(data: jsonData,
+                                encoding: .utf8)
+        
+        self.init(jsonString: jsonString!,
+                  JSONObject: jsonData)
+
+    }
+    
+    private init?(jsonString: String,
+                  JSONObject: Data) {
         do {
             if let jsonData = try JSONSerialization.jsonObject(with: JSONObject) as? [String: Any] {
                 if let fields = jsonData["fields"] as? [String: String] {
@@ -69,52 +87,6 @@ final class ProvidedVisitorFields {
         }
     }
     
-    convenience init?(withJSONString jsonString: String) {
-        if let jsonData = jsonString.data(using: .utf8) {
-            do {
-                try self.init(jsonString: jsonString,
-                              JSONObject: jsonData)
-            } catch VisitorFieldsError.invalidVisitorFields(let error) {
-                WebimInternalLogger.shared.log(entry: "\(error).",
-                    verbosityLevel: .DEBUG)
-                
-                return nil
-            } catch VisitorFieldsError.serializingFail(let error) {
-                WebimInternalLogger.shared.log(entry: "\(error).",
-                    verbosityLevel: .DEBUG)
-                
-                return nil
-            } catch {
-                return nil
-            }
-        } else {
-            return nil
-        }
-    }
-    
-    convenience init?(withJSONObject jsonData: Data) {
-        let jsonString = String(data: jsonData,
-                                encoding: .utf8)
-        
-        do {
-            try self.init(jsonString: jsonString!,
-                          JSONObject: jsonData)
-        } catch VisitorFieldsError.invalidVisitorFields(let error) {
-            WebimInternalLogger.shared.log(entry: "\(error).",
-                verbosityLevel: .DEBUG)
-            
-            return nil
-        } catch VisitorFieldsError.serializingFail(let error) {
-            WebimInternalLogger.shared.log(entry: "\(error).",
-                verbosityLevel: .DEBUG)
-            
-            return nil
-        } catch {
-            return nil
-        }
-        
-    }
-    
     // MARK: - Methods
     
     func getID() -> String {
@@ -124,7 +96,6 @@ final class ProvidedVisitorFields {
     func getJSONString() -> String {
         return jsonString
     }
-    
     
     // MARK: -
     enum VisitorFieldsError: Error {

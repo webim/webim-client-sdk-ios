@@ -43,7 +43,7 @@ final class StartViewController: UIViewController {
         setupSettingsButton()
         
         // Xcode does not localize UITextView text automatically.
-        welcomeTextView.text = NSLocalizedString(StartView.WELCOME_TEXT.rawValue,
+        welcomeTextView.text = NSLocalizedString(StartView.welcomeText.rawValue,
                                                  tableName: "Main",
                                                  bundle: .main,
                                                  value: "",
@@ -64,14 +64,14 @@ final class StartViewController: UIViewController {
     // MARK: Private methods
     
     private func setupStartChatButton() {
-        startChatButton.layer.cornerRadius = CORNER_RADIUS
-        startChatButton.layer.borderWidth = LIGHT_BORDER_WIDTH
+        startChatButton.layer.cornerRadius = Button.cornerRadius.rawValue
+        startChatButton.layer.borderWidth = Button.borderWidth.rawValue
         startChatButton.layer.borderColor = buttonBorderColor.color().cgColor
     }
     
     private func setupSettingsButton() {
-        settingsButton.layer.cornerRadius = CORNER_RADIUS
-        settingsButton.layer.borderWidth = BORDER_WIDTH
+        settingsButton.layer.cornerRadius = TransparentButton.cornerRadius.rawValue
+        settingsButton.layer.borderWidth = TransparentButton.borderWidth.rawValue
     }
     
     private func setupColorScheme() {

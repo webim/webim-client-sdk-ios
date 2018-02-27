@@ -29,20 +29,20 @@ import Foundation
 // MARK: - Global constants
 let USER_DEFAULTS_NAME = "settings"
 enum UserDefaultsKey: String {
-    case ACCOUNT_NAME = "account_name"
-    case COLOR_SCHEME = "color_scheme"
-    case LOCATION = "location"
-    case PAGE_TITLE = "page_title"
+    case accountName = "account_name"
+    case colorScheme = "color_scheme"
+    case location = "location"
+    case pageTitle = "page_title"
 }
 
 // MARK: -
 final class Settings {
     
     // MARK: - Constants
-    enum Defaults: String {
-        case ACCOUNT_NAME = "demo"
-        case LOCATION = "mobile"
-        case PAGE_TITLE = "iOS demo app"
+    enum DefaultSettings: String {
+        case accountName = "demo"
+        case location = "mobile"
+        case pageTitle = "iOS demo app"
     }
     
     // MARK: - Properties
@@ -54,22 +54,22 @@ final class Settings {
     // MARK: - Initialization
     private init() {
         if let settings = UserDefaults.standard.object(forKey: USER_DEFAULTS_NAME) as? [String : String] {
-            self.accountName = settings[UserDefaultsKey.ACCOUNT_NAME.rawValue] ?? Defaults.ACCOUNT_NAME.rawValue
-            self.location = settings[UserDefaultsKey.LOCATION.rawValue] ?? Defaults.LOCATION.rawValue
-            self.pageTitle = settings[UserDefaultsKey.PAGE_TITLE.rawValue] ?? Defaults.PAGE_TITLE.rawValue
+            self.accountName = settings[UserDefaultsKey.accountName.rawValue] ?? DefaultSettings.accountName.rawValue
+            self.location = settings[UserDefaultsKey.location.rawValue] ?? DefaultSettings.location.rawValue
+            self.pageTitle = settings[UserDefaultsKey.pageTitle.rawValue] ?? DefaultSettings.pageTitle.rawValue
         } else {
-            self.accountName = Defaults.ACCOUNT_NAME.rawValue
-            self.location = Defaults.LOCATION.rawValue
-            self.pageTitle = Defaults.PAGE_TITLE.rawValue
+            self.accountName = DefaultSettings.accountName.rawValue
+            self.location = DefaultSettings.location.rawValue
+            self.pageTitle = DefaultSettings.pageTitle.rawValue
         }
     }
     
     // MARK: - Methods
     func save() {
-        let settings = [UserDefaultsKey.ACCOUNT_NAME.rawValue : accountName,
-                        UserDefaultsKey.LOCATION.rawValue : location,
-                        UserDefaultsKey.PAGE_TITLE.rawValue : pageTitle,
-                        UserDefaultsKey.COLOR_SCHEME.rawValue : ColorScheme.shared.option.rawValue]
+        let settings = [UserDefaultsKey.accountName.rawValue : accountName,
+                        UserDefaultsKey.location.rawValue : location,
+                        UserDefaultsKey.pageTitle.rawValue : pageTitle,
+                        UserDefaultsKey.colorScheme.rawValue : ColorScheme.shared.schemeType.rawValue]
         UserDefaults.standard.set(settings,
                                   forKey: USER_DEFAULTS_NAME)
     }

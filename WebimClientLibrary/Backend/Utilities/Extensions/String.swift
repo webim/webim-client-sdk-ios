@@ -38,7 +38,7 @@ extension String {
      - returns:
      Percent-escaped string.
      - author:
-     Nikita Lazarev-Lubov
+     Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
@@ -59,7 +59,7 @@ extension String {
      - returns:
      Hash code of string taken with passed key.
      - author:
-     Nikita Lazarev-Lubov
+     Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */

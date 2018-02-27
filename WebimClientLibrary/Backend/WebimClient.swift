@@ -233,7 +233,7 @@ final class WebimClient {
         return deltaRequestLoop
     }
     
-    func getActions() -> WebimActions! {
+    func getActions() -> WebimActions {
         return webimActions
     }
     

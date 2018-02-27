@@ -37,11 +37,11 @@ final class FileParametersItem {
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case CONTENT_TYPE = "content_type"
-        case FILENAME = "filename"
-        case GUID = "guid"
-        case IMAGE_PARAMETERS = "image"
-        case SIZE = "size"
+        case contentType = "content_type"
+        case fileName = "filename"
+        case guid = "guid"
+        case imageParameters = "image"
+        case size = "size"
     }
     
     // MARK: - Properties
@@ -53,23 +53,23 @@ final class FileParametersItem {
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
-        if let imageParametersDictionary = jsonDictionary[JSONField.IMAGE_PARAMETERS.rawValue] as? [String: Any?] {
+        if let imageParametersDictionary = jsonDictionary[JSONField.imageParameters.rawValue] as? [String: Any?] {
             imageParameters = ImageParameters(jsonDictionary: imageParametersDictionary)
         }
         
-        if let contentType = jsonDictionary[JSONField.CONTENT_TYPE.rawValue] as? String {
+        if let contentType = jsonDictionary[JSONField.contentType.rawValue] as? String {
             self.contentType = contentType
         }
         
-        if let filename = jsonDictionary[JSONField.FILENAME.rawValue] as? String {
+        if let filename = jsonDictionary[JSONField.fileName.rawValue] as? String {
             self.filename = filename
         }
         
-        if let guid = jsonDictionary[JSONField.GUID.rawValue] as? String {
+        if let guid = jsonDictionary[JSONField.guid.rawValue] as? String {
             self.guid = guid
         }
         
-        if let size = jsonDictionary[JSONField.SIZE.rawValue] as? Int64 {
+        if let size = jsonDictionary[JSONField.size.rawValue] as? Int64 {
             self.size = size
         }
     }
@@ -104,7 +104,7 @@ final class ImageParameters {
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case IMAGE_SIZE = "size"
+        case size = "size"
     }
     
     // MARK: - Properties
@@ -112,7 +112,7 @@ final class ImageParameters {
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
-        if let sizeDictionary = jsonDictionary[JSONField.IMAGE_SIZE.rawValue] as? [String: Any?] {
+        if let sizeDictionary = jsonDictionary[JSONField.size.rawValue] as? [String: Any?] {
             self.size = ImageSize(jsonDictionary: sizeDictionary)
         }
     }
@@ -130,8 +130,8 @@ struct ImageSize {
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case HEIGHT = "height"
-        case WIDTH = "width"
+        case height = "height"
+        case width = "width"
     }
     
     // MARK: - Properties
@@ -140,11 +140,11 @@ struct ImageSize {
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
-        if let height = jsonDictionary[JSONField.HEIGHT.rawValue] as? Int {
+        if let height = jsonDictionary[JSONField.height.rawValue] as? Int {
             self.height = height
         }
         
-        if let width = jsonDictionary[JSONField.WIDTH.rawValue] as? Int {
+        if let width = jsonDictionary[JSONField.width.rawValue] as? Int {
             self.width = width
         }
     }

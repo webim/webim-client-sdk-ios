@@ -27,108 +27,111 @@
 import Foundation
 
 enum Avatar: String {
-    case ACCESSIBILITY_LABEL = "SenderAvatarImage"
-    case ACCESSIBILITY_HINT_FOR_OPERATOR = "ShowsRatingDialog"
+    case accessibilityLabel = "SenderAvatarImage"
+    case accessibilityHintOperator = "ShowsRatingDialog"
 }
 
 enum BackButton: String {
-    case ACCESSIBILITY_LABEL = "Back"
-    case ACCESSIBILITY_HINT = "ClosesScreen"
+    case accessibilityLabel = "Back"
+    case accessibilityHint = "ClosesScreen"
 }
 
 enum ChatClosedDialog: String {
-    case MESSAGE = "ChatClosed"
+    case message = "ChatClosed"
     
-    case BUTTON_TITLE = "OK"
-    case BUTTON_ACCESSIBILITY_HINT = "ClosesDialog"
+    case buttonTitle = "OK"
+    case buttonAccessibilityHint = "ClosesDialog"
 }
 
 enum CloseChatButton: String {
-    case ACCESSIBILITY_LABEL = "CloseChat"
-    case ACCESSIBILITY_HINT = "ClosesChat"
+    case accessibilityLabel = "CloseChat"
+    case accessibilityHint = "ClosesChat"
 }
 
 enum DepartmentListDialog: String {
-    case TITLE = "ContactTopic"
+    case title = "ContactTopic"
     
-    case BUTTON_ACCESSIBILITY_HINT = "ChoosesTopic"
+    case buttonAccessibilityHint = "ChoosesTopic"
     
-    case CANCEL_BUTTON_TITLE = "Cancel"
-    case CANCEL_BUTTON_ACCESSIBILITY_HINT = "ClosesDialog"
+    case cancelButtonTitle = "Cancel"
+    case cancelButtonAccessibilityHint = "ClosesDialog"
 }
 
 enum FileMessage: String {
-    case FILE_UNAVAILABLE = "FileUnavailable"
+    case fileUnavailable = "FileUnavailable"
 }
 
 enum LeftButton: String {
-    case ACCESSIBILITY_LABEL = "ChooseFile"
-    case ACCESSIBILITY_HINT = "ShowsImagePicker"
+    case accessibilityLabel = "ChooseFile"
+    case accessibilityHint = "ShowsImagePicker"
 }
 
 enum RateOperatorErrorMessage: String {
-    case TITLE = "OperatorRatingFailed"
+    case title = "OperatorRatingFailed"
     
-    case BUTTON_TITLE = "OK"
-    case BUTTON_ACCESSIBILITY_HINT = "ClosesRateOperatorError"
+    case buttonTitle = "OK"
+    case buttonAccessibilityHint = "ClosesRateOperatorError"
 
-    case MESSAGE = "RateOperatorErrorMessage"
+    case message = "RateOperatorErrorMessage"
 }
 
 enum RatingDialog: String {
-    case ACTION_BUTTON_TITLE = "Rate"
-    case CANCEL_BUTTON_TITLE = "Cancel"
+    case actionButtonAccessibilityHint = "RatesOperator"
+    case actionButtonTitle = "Rate"
     
-    case ACTION_BUTTON_ACCESSIBILITY_HINT = "RatesOperator"
-    case CANCEL_BUTTON_ACCESSIBILITY_HINT = "ClosesRatingDialog"
+    case cancelButtonAccessibilityHint = "ClosesRatingDialog"
+    case cancelButtonTitle = "Cancel"
 }
 
 enum SendFileErrorMessage: String {
-    case TITLE = "FileSendingFailed"
+    case title = "FileSendingFailed"
     
-    case BUTTON_TITLE = "OK"
-    case BUTTON_ACCESSIBILITY_HINT = "ClosesSendFileError"
+    case buttonTitle = "OK"
+    case buttonAccessibilityHint = "ClosesSendFileError"
     
     // Error messages
-    case FILE_SIZE_EXCEEDED = "FileTooLarge"
-    case FILE_TYPE_NOT_ALLOWED = "FileTypeNotSupported"
+    case fileSizeExceeded = "FileTooLarge"
+    case fileTypeNotAllowed = "FileTypeNotSupported"
 }
 
 enum SessionCreationErrorDialog: String {
-    case BUTTON_TITLE = "OK"
-    case BUTTON_ACCESSIBILITY_HINT = "ClosesSessionError"
+    case buttonTitle = "OK"
+    case buttonAccessibilityHint = "ClosesSessionError"
     
-    case TITLE = "SessionCreationFailed"
+    case title = "SessionCreationFailed"
     
-    case ACCOUNT_BLOCKED = "AccountBlocked"
-    case VISITOR_BANNED = "VisitorBanned"
+    // Error messages
+    case accountBlocked = "AccountBlocked"
+    case visitorBanned = "VisitorBanned"
 }
 
 enum SettingsErrorDialog: String {
-    case BUTTON_TITLE = "OK"
-    case BUTTON_ACCESSIBILITY_HINT = "ClosesSettingsError"
+    case buttonTitle = "OK"
+    case buttonAccessibilityHint = "ClosesSettingsError"
     
-    case TITLE = "InvalidSettings"
-    case WRONG_ACCOUNT_NAME_MESSAGE = "AccountNameEmpty"
-    case WRONG_LOCATION_MESSAGE = "LocationEmpty"
+    case title = "InvalidSettings"
+    
+    // Error messages
+    case wrongAccountName = "AccountNameEmpty"
+    case wrongLocation = "LocationEmpty"
 }
 
 enum ShowFileDialog: String {
-    case BUTTON_TITLE = "OK"
+    case buttonTitle = "OK"
     
-    // Message
-    case INVALID_IMAGE_FORMAT = "ImageFormatInvalid."
-    case INVALID_IMAGE_LINK = "ImageLinkInvalid."
-    case NOT_IMAGE = "PreviewUnavailable."
+    // Error messages
+    case imageFormatInvalid = "ImageFormatInvalid"
+    case imageLinkInvalid = "ImageLinkInvalid"
+    case notImage = "PreviewUnavailable"
     
-    case ACCESSIBILITY_HINT = "ClosesFilePreview"
+    case accessibilityHint = "ClosesFilePreview"
 }
 
 enum StartView: String {
-    case WELCOME_TEXT = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"
+    case welcomeText = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"
 }
 
 enum TableView: String {
-    case REFRESH_CONTROL_TEXT = "LoadingMessages"
-    case EMPTY_TABLE_VIEW_TEXT = "EmptyChat"
+    case refreshControlText = "LoadingMessages"
+    case emptyTableViewText = "EmptyChat"
 }

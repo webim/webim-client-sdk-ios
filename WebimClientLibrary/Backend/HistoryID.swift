@@ -47,16 +47,11 @@ final class HistoryID {
     }
     
     // MARK: - Methods
+    
     func getDBid() -> String {
         return dbID
     }
     
-}
-
-// MARK: - MicrosecondsTimeHolder
-extension HistoryID: MicrosecondsTimeHolder {
-    
-    // MARK: - Methods
     func getTimeInMicrosecond() -> Int64 {
         return timeInMicrosecond
     }

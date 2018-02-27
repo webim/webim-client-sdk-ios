@@ -38,8 +38,8 @@ struct RatingItem {
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case OPERATOR_ID = "operatorID"
-        case RATING = "rating"
+        case operatorID = "operatorId"
+        case rating = "rating"
     }
     
     // MARK: - Properties
@@ -47,13 +47,13 @@ struct RatingItem {
     private var rating: Int
     
     // MARK: - Initialization
-    init?(jsonDictionary: [String: Any?]) {
-        guard let operatorID = jsonDictionary[JSONField.OPERATOR_ID.rawValue] as? String,
-            let rating = jsonDictionary[JSONField.RATING.rawValue] as? Int else {
+    init?(jsonDictionary: [String : Any?]) {
+        guard let operatorID = jsonDictionary[JSONField.operatorID.rawValue] as? Int,
+            let rating = jsonDictionary[JSONField.rating.rawValue] as? Int else {
             return nil
         }
         
-        self.operatorID = operatorID
+        self.operatorID = String(operatorID)
         self.rating = rating
     }
     

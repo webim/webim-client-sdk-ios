@@ -29,23 +29,23 @@ import UIKit
 
 // MARK: - Constants
 fileprivate enum UserDefaultsName: String {
-    case GUID = "ru.webim.WebimClientSDKiOS.guid"
-    case MAIN = "ru.webim.WebimClientSDKiOS.visitor."
+    case guid = "ru.webim.WebimClientSDKiOS.guid"
+    case main = "ru.webim.WebimClientSDKiOS.visitor."
 }
 fileprivate enum UserDefaultsMainPrefix: String {
-    case AUTHORIZATION_TOKEN = "auth_token"
-    case DEVICE_TOKEN = "push_token"
-    case HISTORY_ENDED = "history_ended"
-    case HISTORY_DB_NAME = "history_db_name"
-    case HISTORY_MAJOR_VERSION = "history_major_version"
-    case HISTORY_REVISION = "history_revision"
-    case PAGE_ID = "page_id"
-    case SESSION_ID = "session_id"
-    case VISITOR = "visitor"
-    case VISITOR_EXT = "visitor_ext"
+    case authorizationToken = "auth_token"
+    case deviceToken = "push_token"
+    case historyEnded = "history_ended"
+    case historyDBname = "history_db_name"
+    case historyMajorVersion = "history_major_version"
+    case historyRevision = "history_revision"
+    case pageID = "page_id"
+    case sessionID = "session_id"
+    case visitor = "visitor"
+    case visitorExt = "visitor_ext"
 }
 fileprivate enum UserDefaultsGUIDPrefix: String {
-    case UUID = "guid"
+    case uuid = "guid"
 }
 
 // MARK: -
@@ -58,8 +58,8 @@ fileprivate enum UserDefaultsGUIDPrefix: String {
 final class WebimSessionImpl {
     
     // MARK: - Constants
-    private enum Settings: String {
-        case DEFAULT_PAGE_TITLE = "iOS Client"
+    private enum DefaultSettings: String {
+        case pageTitle = "iOS Client"
     }
     
     // MARK: - Properties
@@ -103,7 +103,7 @@ final class WebimSessionImpl {
         
         let queue = DispatchQueue.global(qos: .userInteractive)
         
-        let userDefaultsKey = UserDefaultsName.MAIN.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
+        let userDefaultsKey = UserDefaultsName.main.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
         let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
         if isVisitorDataClearingEnabled {
@@ -115,7 +115,7 @@ final class WebimSessionImpl {
         
         let sessionDestroyer = SessionDestroyer()
         
-        let visitorJSON = (userDefaults?[UserDefaultsMainPrefix.VISITOR.rawValue] ?? nil)
+        let visitorJSON = (userDefaults?[UserDefaultsMainPrefix.visitor.rawValue] ?? nil)
         
         let visitorFieldsJSON = (visitorFields == nil) ? nil : visitorFields?.getJSONString()
         
@@ -125,10 +125,10 @@ final class WebimSessionImpl {
         
         let currentChatMessageMapper: MessageFactoriesMapper = CurrentChatMapper(withServerURLString: serverURLString)
         
-        let sessionID = userDefaults?[UserDefaultsMainPrefix.SESSION_ID.rawValue] ?? nil
+        let sessionID = userDefaults?[UserDefaultsMainPrefix.sessionID.rawValue] ?? nil
         
-        let pageID = userDefaults?[UserDefaultsMainPrefix.PAGE_ID.rawValue] as! String?
-        let authorizationToken = userDefaults?[UserDefaultsMainPrefix.AUTHORIZATION_TOKEN.rawValue] as! String?
+        let pageID = userDefaults?[UserDefaultsMainPrefix.pageID.rawValue] as! String?
+        let authorizationToken = userDefaults?[UserDefaultsMainPrefix.authorizationToken.rawValue] as! String?
         let authorizationData = AuthorizationData(pageID: pageID,
                                                   authorizationToken: authorizationToken)
         
@@ -141,7 +141,7 @@ final class WebimSessionImpl {
             .set(visitorFieldsJSONString: visitorFieldsJSON)
             .set(deltaCallback: deltaCallback)
             .set(sessionParametersListener: SessionParametersListenerImpl(withUserDefaultsKey: userDefaultsKey))
-            .set(internalErrorListener: DestroyIfNotErrorListener(sessionDestroyer: sessionDestroyer,
+            .set(internalErrorListener: DestroyOnFatalErrorListener(sessionDestroyer: sessionDestroyer,
                                                                   internalErrorListener: ErrorHandlerToInternalAdapter(fatalErrorHandler: fatalErrorHandler)))
             .set(visitorJSONString: visitorJSON as! String?)
             .set(providedAuthenticationTokenStateListener: providedAuthorizationTokenStateListener,
@@ -150,7 +150,7 @@ final class WebimSessionImpl {
             .set(authorizationData: authorizationData)
             .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                               queue: queue))
-            .set(title: (pageTitle != nil) ? pageTitle! : Settings.DEFAULT_PAGE_TITLE.rawValue)
+            .set(title: (pageTitle != nil) ? pageTitle! : DefaultSettings.pageTitle.rawValue)
             .set(deviceToken: deviceToken)
             .set(deviceID: getDeviceID())
             .build() as WebimClient
@@ -158,17 +158,17 @@ final class WebimSessionImpl {
         var historyStorage: HistoryStorage
         var historyMetaInformationStoragePreferences: HistoryMetaInformationStorage
         if isLocalHistoryStoragingEnabled {
-            var dbName = userDefaults?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] as? String
+            var dbName = userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String
             
             if dbName == nil {
                 dbName = "webim_" + ClientSideID.generateClientSideID() + ".db"
                 if let userDefaults = userDefaults {
                     var renewedUserDefaults = userDefaults
-                    renewedUserDefaults[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] = dbName
+                    renewedUserDefaults[UserDefaultsMainPrefix.historyDBname.rawValue] = dbName
                     UserDefaults.standard.set(renewedUserDefaults,
                                               forKey: userDefaultsKey)
                 } else {
-                    UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue: dbName],
+                    UserDefaults.standard.setValue([UserDefaultsMainPrefix.historyDBname.rawValue: dbName],
                                                    forKey: userDefaultsKey)
                 }
             }
@@ -182,11 +182,11 @@ final class WebimSessionImpl {
                                                   queue: queue)
             
             let historyMajorVersion = historyStorage.getMajorVersion()
-            if (userDefaults?[UserDefaultsMainPrefix.HISTORY_MAJOR_VERSION.rawValue] as? Int) != historyMajorVersion {
+            if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
                 if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.HISTORY_REVISION.rawValue)
-                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.HISTORY_ENDED.rawValue)
-                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.HISTORY_MAJOR_VERSION.rawValue)
+                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyRevision.rawValue)
+                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyEnded.rawValue)
+                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
                     UserDefaults.standard.setValue(userDefaults,
                                                    forKey: userDefaultsKey)
                 }
@@ -202,7 +202,7 @@ final class WebimSessionImpl {
         let webimActions = webimClient.getActions()
         let historyMessageMapper: MessageFactoriesMapper = HistoryMapper(withServerURLString: serverURLString)
         let messageHolder = MessageHolder(accessChecker: accessChecker,
-                                          remoteHistoryProvider: RemoteHistoryProvider(webimActions: webimActions!,
+                                          remoteHistoryProvider: RemoteHistoryProvider(webimActions: webimActions,
                                                                                        historyMessageMapper: historyMessageMapper,
                                                                                        historyMetaInformationStorage: historyMetaInformationStoragePreferences),
                                           historyStorage: historyStorage,
@@ -212,9 +212,9 @@ final class WebimSessionImpl {
                                               sendingMessageFactory: SendingFactory(withServerURLString: serverURLString),
                                               operatorFactory: OperatorFactory(withServerURLString: serverURLString),
                                               accessChecker: accessChecker,
-                                              webimActions: webimActions!,
+                                              webimActions: webimActions,
                                               messageHolder: messageHolder,
-                                              messageComposingHandler: MessageComposingHandler(webimActions: webimActions!,
+                                              messageComposingHandler: MessageComposingHandler(webimActions: webimActions,
                                                                                                queue: queue),
                                               locationSettingsHolder: LocationSettingsHolder(userDefaultsKey: userDefaultsKey))
         
@@ -224,7 +224,7 @@ final class WebimSessionImpl {
         let historyPoller = HistoryPoller(withSessionDestroyer: sessionDestroyer,
                                           queue: queue,
                                           historyMessageMapper: historyMessageMapper,
-                                          webimActions: webimActions!,
+                                          webimActions: webimActions,
                                           messageHolder: messageHolder,
                                           historyMetaInformationStorage: historyMetaInformationStoragePreferences)
         
@@ -254,7 +254,7 @@ final class WebimSessionImpl {
     }
     
     private static func deleteDBFileFor(userDefaultsKey: String) {
-        if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_DB_NAME.rawValue] {
+        if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyDBname.rawValue] {
             let fileManager = FileManager.default
             let documentsDirectory = try! fileManager.url(for: .documentDirectory,
                                                           in: .userDomainMask,
@@ -274,7 +274,7 @@ final class WebimSessionImpl {
     private static func checkSavedSessionFor(userDefaultsKey: String,
                                              newProvidedVisitorFields: ProvidedVisitorFields?) {
         let newVisitorFieldsJSONString = (newProvidedVisitorFields == nil) ? nil : newProvidedVisitorFields?.getJSONString()
-        let previousVisitorFieldsJSONString = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.VISITOR_EXT.rawValue] as? String
+        let previousVisitorFieldsJSONString = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.visitorExt.rawValue] as? String
         
         let previousProvidedVisitorFields: ProvidedVisitorFields?
         if previousVisitorFieldsJSONString != nil {
@@ -291,25 +291,25 @@ final class WebimSessionImpl {
         if newVisitorFieldsJSONString != previousVisitorFieldsJSONString {
             UserDefaults.standard.removeObject(forKey: userDefaultsKey)
             
-            let newVisitorFieldsDictionary = [UserDefaultsMainPrefix.VISITOR_EXT.rawValue: newVisitorFieldsJSONString]
+            let newVisitorFieldsDictionary = [UserDefaultsMainPrefix.visitorExt.rawValue: newVisitorFieldsJSONString]
             UserDefaults.standard.set(newVisitorFieldsDictionary,
                                       forKey: userDefaultsKey)
         }
     }
     
     private static func getDeviceID() -> String {
-        let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.GUID.rawValue)
-        var uuidString = (userDefaults?[UserDefaultsGUIDPrefix.UUID.rawValue] ?? nil)
+        let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue)
+        var uuidString = (userDefaults?[UserDefaultsGUIDPrefix.uuid.rawValue] ?? nil)
         
         if uuidString == nil {
             uuidString = UIDevice.current.identifierForVendor!.uuidString
-            if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.GUID.rawValue) {
-                userDefaults[UserDefaultsGUIDPrefix.UUID.rawValue] = uuidString
+            if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue) {
+                userDefaults[UserDefaultsGUIDPrefix.uuid.rawValue] = uuidString
                 UserDefaults.standard.set(userDefaults,
-                                          forKey: UserDefaultsName.GUID.rawValue)
+                                          forKey: UserDefaultsName.guid.rawValue)
             } else {
-                UserDefaults.standard.setValue([UserDefaultsGUIDPrefix.UUID.rawValue: uuidString],
-                                               forKey: UserDefaultsName.GUID.rawValue)
+                UserDefaults.standard.setValue([UserDefaultsGUIDPrefix.uuid.rawValue: uuidString],
+                                               forKey: UserDefaultsName.guid.rawValue)
             }
         }
         
@@ -389,7 +389,7 @@ final private class HistoryPoller {
     
     // MARK: - Constants
     private enum TimeInterval: Int64 {
-        case HISTORY_POLL = 60_000 // ms
+        case historyPolling = 60_000 // ms
     }
     
     // MARK: - Properties
@@ -401,7 +401,7 @@ final private class HistoryPoller {
     private let webimActions: WebimActions
     private var dispatchWorkItem: DispatchWorkItem?
     private var historySinceCompletionHandler: ((_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> ())?
-    private var lastPollingTime = -TimeInterval.HISTORY_POLL.rawValue
+    private var lastPollingTime = -TimeInterval.historyPolling.rawValue
     private var lastRevision: String?
     private var running: Bool?
     
@@ -437,14 +437,14 @@ final private class HistoryPoller {
         self.historySinceCompletionHandler = createHistorySinceCompletionHandler()
         
         let uptime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
-        if (uptime - lastPollingTime) > TimeInterval.HISTORY_POLL.rawValue {
+        if (uptime - lastPollingTime) > TimeInterval.historyPolling.rawValue {
             requestHistory(since: lastRevision,
                            completion: historySinceCompletionHandler!)
         } else {
             // Setting next history polling in TimeInterval.HISTORY_POLL after lastPollingTime.
             
             let currentDispatchTime = DispatchTime.now()
-            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime * 1000) + (TimeInterval.HISTORY_POLL.rawValue * 1000)) - currentDispatchTime.uptimeNanoseconds))
+            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime * 1000) + (TimeInterval.historyPolling.rawValue * 1000)) - currentDispatchTime.uptimeNanoseconds))
             
             dispatchWorkItem = DispatchWorkItem() {
                 self.requestHistory(since: self.lastRevision,
@@ -485,7 +485,7 @@ final private class HistoryPoller {
             if self.running != true {
                 if !isInitial
                     && hasMore {
-                    self.lastPollingTime = -TimeInterval.HISTORY_POLL.rawValue
+                    self.lastPollingTime = -TimeInterval.historyPolling.rawValue
                 }
                 
                 return
@@ -500,7 +500,7 @@ final private class HistoryPoller {
                     self.requestHistory(since: revision,
                                         completion: self.createHistorySinceCompletionHandler())
                 }
-                let interval = Int(TimeInterval.HISTORY_POLL.rawValue)
+                let interval = Int(TimeInterval.historyPolling.rawValue)
                 self.queue.asyncAfter(deadline: (.now() + .milliseconds(interval)),
                                       execute: self.dispatchWorkItem!)
             }
@@ -552,7 +552,7 @@ final class SessionParametersListenerImpl: SessionParametersListener {
     
     // MARL: - Constants
     private enum VisitorFieldsJSONField: String {
-        case ID = "id"
+        case id = "id"
     }
     
     // MARK: - Properties
@@ -569,17 +569,17 @@ final class SessionParametersListenerImpl: SessionParametersListener {
                                     sessionID: String,
                                     authorizationData: AuthorizationData) {
         if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsMainPrefix.VISITOR.rawValue] = visitorFieldsJSONString
-            userDefaults[UserDefaultsMainPrefix.SESSION_ID.rawValue] = sessionID
-            userDefaults[UserDefaultsMainPrefix.PAGE_ID.rawValue] = authorizationData.getPageID()
-            userDefaults[UserDefaultsMainPrefix.AUTHORIZATION_TOKEN.rawValue] = authorizationData.getAuthorizationToken()
+            userDefaults[UserDefaultsMainPrefix.visitor.rawValue] = visitorFieldsJSONString
+            userDefaults[UserDefaultsMainPrefix.sessionID.rawValue] = sessionID
+            userDefaults[UserDefaultsMainPrefix.pageID.rawValue] = authorizationData.getPageID()
+            userDefaults[UserDefaultsMainPrefix.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
             UserDefaults.standard.set(userDefaults,
                                       forKey: userDefaultsKey)
         } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.VISITOR.rawValue: visitorFieldsJSONString,
-                                            UserDefaultsMainPrefix.SESSION_ID.rawValue: sessionID,
-                                            UserDefaultsMainPrefix.PAGE_ID.rawValue: authorizationData.getPageID(),
-                                            UserDefaultsMainPrefix.AUTHORIZATION_TOKEN.rawValue: authorizationData.getAuthorizationToken()],
+            UserDefaults.standard.setValue([UserDefaultsMainPrefix.visitor.rawValue: visitorFieldsJSONString,
+                                            UserDefaultsMainPrefix.sessionID.rawValue: sessionID,
+                                            UserDefaultsMainPrefix.pageID.rawValue: authorizationData.getPageID(),
+                                            UserDefaultsMainPrefix.authorizationToken.rawValue: authorizationData.getAuthorizationToken()],
                                            forKey: userDefaultsKey)
         }
     }
@@ -588,19 +588,20 @@ final class SessionParametersListenerImpl: SessionParametersListener {
 
 // MARK: -
 /**
+ Class that responsible on destroying session on service fatal error occured.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
  2017 Webim
  */
-final private class DestroyIfNotErrorListener: InternalErrorListener {
+final private class DestroyOnFatalErrorListener: InternalErrorListener {
     
     // MARK: - Properties
     private let internalErrorListener: InternalErrorListener?
-    private let sessionDestroyer: SessionDestroyer?
+    private var sessionDestroyer: SessionDestroyer
     
     // MARK: - Initialization
-    init(sessionDestroyer: SessionDestroyer?,
+    init(sessionDestroyer: SessionDestroyer,
          internalErrorListener: InternalErrorListener?) {
         self.sessionDestroyer = sessionDestroyer
         self.internalErrorListener = internalErrorListener
@@ -608,14 +609,11 @@ final private class DestroyIfNotErrorListener: InternalErrorListener {
     
     // MARK: - Methods
     // MARK: InternalErrorListener protocol methods
-    func on(error: String,
-            urlString: String) {
-        if (sessionDestroyer == nil)
-            || (sessionDestroyer?.isDestroyed() == false) {
-            sessionDestroyer?.destroy()
+    func on(error: String) {
+        if !sessionDestroyer.isDestroyed() {
+            sessionDestroyer.destroy()
             
-            internalErrorListener?.on(error: error,
-                                      urlString: urlString)
+            internalErrorListener?.on(error: error)
         }
     }
     
@@ -641,8 +639,7 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
     // MARK: - Methods
     
     // MARK: InternalErrorListener protocol methods
-    func on(error: String,
-            urlString: String) {
+    func on(error: String) {
         let webimError = WebimErrorImpl(errorType: toPublicErrorType(string: error),
                                         errorString: error)
         fatalErrorHandler?.on(error: webimError)
@@ -651,13 +648,13 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
     // MARK: Private methods
     private func toPublicErrorType(string: String) -> FatalErrorType {
         switch string {
-        case WebimInternalError.ACCOUNT_BLOCKED.rawValue:
+        case WebimInternalError.accountBlocked.rawValue:
             return .ACCOUNT_BLOCKED
-        case WebimInternalError.VISITOR_BANNED.rawValue:
+        case WebimInternalError.visitorBanned.rawValue:
             return .VISITOR_BANNED
-        case WebimInternalError.WRONG_PROVIDED_VISITOR_HASH.rawValue:
+        case WebimInternalError.wrongProvidedVisitorFieldsHashValue.rawValue:
             return .WRONG_PROVIDED_VISITOR_HASH
-        case WebimInternalError.PROVIDED_VISITOR_EXPIRED.rawValue:
+        case WebimInternalError.providedVisitorFieldsExpired.rawValue:
             return .PROVIDED_VISITOR_FIELDS_EXPIRED
         default:
             return .UNKNOWN
@@ -687,7 +684,7 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     // MARK: HistoryMetaInformationStorage protocol methods
     
     func isHistoryEnded() -> Bool {
-        if let historyEnded = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.HISTORY_ENDED.rawValue] as? Bool {
+        if let historyEnded = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyEnded.rawValue] as? Bool {
             return historyEnded
         }
         
@@ -696,11 +693,11 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     
     func set(historyEnded: Bool) {
         if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsMainPrefix.HISTORY_ENDED.rawValue] = historyEnded
+            userDefaults[UserDefaultsMainPrefix.historyEnded.rawValue] = historyEnded
             UserDefaults.standard.set(userDefaults,
                                       forKey: userDefaultsKey)
         } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_ENDED.rawValue: historyEnded],
+            UserDefaults.standard.setValue([UserDefaultsMainPrefix.historyEnded.rawValue: historyEnded],
                                            forKey: userDefaultsKey)
         }
     }
@@ -708,11 +705,11 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     func set(revision: String?) {
         if let revision = revision {
             if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-                userDefaults[UserDefaultsMainPrefix.HISTORY_REVISION.rawValue] = revision
+                userDefaults[UserDefaultsMainPrefix.historyRevision.rawValue] = revision
                 UserDefaults.standard.set(userDefaults,
                                           forKey: userDefaultsKey)
             } else {
-                UserDefaults.standard.setValue([UserDefaultsMainPrefix.HISTORY_REVISION.rawValue: revision],
+                UserDefaults.standard.setValue([UserDefaultsMainPrefix.historyRevision.rawValue: revision],
                                                forKey: userDefaultsKey)
             }
         }

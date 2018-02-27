@@ -34,7 +34,6 @@ import Foundation
  */
 protocol InternalErrorListener {
     
-    func on(error: String,
-            urlString: String)
+    func on(error: String)
     
 }

@@ -45,6 +45,7 @@ final class LocationSettingsHolder {
     }
     
     // MARK: - Methods
+    
     func getLocationSettings() -> LocationSettingsImpl {
         return locationSettings
     }

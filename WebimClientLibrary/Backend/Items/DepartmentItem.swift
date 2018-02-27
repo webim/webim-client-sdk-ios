@@ -39,20 +39,20 @@ final class DepartmentItem {
     
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case KEY = "key"
-        case LOCALIZED_NAMES = "localeToName"
-        case NAME = "name"
-        case ONLINE_STATUS = "online"
-        case ORDER = "order"
-        case LOGO = "logo"
+        case key = "key"
+        case localizedNames = "localeToName"
+        case name = "name"
+        case onlineStatus = "online"
+        case order = "order"
+        case logo = "logo"
     }
     
     enum InternalDepartmentOnlineStatus: String {
-        case BUSY_OFFLINE = "busy_offline"
-        case BUSY_ONLINE = "busy_online"
-        case OFFLINE = "offline"
-        case ONLINE = "online"
-        case UNKNOWN
+        case busyOffline = "busy_offline"
+        case busyOnline = "busy_online"
+        case offline = "offline"
+        case online = "online"
+        case unknown
     }
     
     // MARK: - Properties
@@ -65,23 +65,23 @@ final class DepartmentItem {
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        guard let key = jsonDictionary[JSONField.KEY.rawValue] as? String,
-            let name = jsonDictionary[JSONField.NAME.rawValue] as? String,
-            let onlineStatusString = jsonDictionary[JSONField.ONLINE_STATUS.rawValue] as? String,
-            let order = jsonDictionary[JSONField.ORDER.rawValue] as? Int else {
+        guard let key = jsonDictionary[JSONField.key.rawValue] as? String,
+            let name = jsonDictionary[JSONField.name.rawValue] as? String,
+            let onlineStatusString = jsonDictionary[JSONField.onlineStatus.rawValue] as? String,
+            let order = jsonDictionary[JSONField.order.rawValue] as? Int else {
             return nil
         }
         
         self.key = key
         self.name = name
-        self.onlineStatus = InternalDepartmentOnlineStatus(rawValue: onlineStatusString) ?? .UNKNOWN
+        self.onlineStatus = InternalDepartmentOnlineStatus(rawValue: onlineStatusString) ?? .unknown
         self.order = order
         
-        if let logoURLString = jsonDictionary[JSONField.LOGO.rawValue] as? String {
+        if let logoURLString = jsonDictionary[JSONField.logo.rawValue] as? String {
             self.logo = logoURLString
         }
         
-        if let localizedNames = jsonDictionary[JSONField.LOCALIZED_NAMES.rawValue] as? [String: String] {
+        if let localizedNames = jsonDictionary[JSONField.localizedNames.rawValue] as? [String: String] {
             self.localizedNames = localizedNames
         }
     }

@@ -31,7 +31,7 @@ extension UInt32 {
     // MARK: - Initialization
     /**
      - author:
-     Nikita Lazarev-Lubov
+     Nikita Lazarev-Zubov
      - copyright:
      2018 Webim
      */

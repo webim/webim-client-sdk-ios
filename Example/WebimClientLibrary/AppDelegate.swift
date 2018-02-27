@@ -24,6 +24,8 @@
 //  SOFTWARE.
 //
 
+import Crashlytics
+import Fabric
 import UIKit
 import WebimClientLibrary
 
@@ -32,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Constants
     enum UserDefaultsKey: String {
-        case DEVICE_TOKEN = "device-token"
+        case deviceToken = "device-token"
     }
 
     // MARK: - Properties
@@ -42,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        Fabric.with([Crashlytics.self])
+        
         // Remote notifications configuration
         let notificationTypes: UIUserNotificationType = [.alert,
                                                          .badge,
@@ -61,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         UserDefaults.standard.set(deviceToken,
-                                  forKey: UserDefaultsKey.DEVICE_TOKEN.rawValue)
+                                  forKey: UserDefaultsKey.deviceToken.rawValue)
         
         print("Device token: \(deviceToken)")
     }
@@ -85,12 +89,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setStatusBarColor() {
-        switch ColorScheme.shared.option {
-        case .CLASSIC:
+        switch ColorScheme.shared.schemeType {
+        case .light:
             UIApplication.shared.statusBarStyle = .default
             
             break
-        case .DARK:
+        case .dark:
             UIApplication.shared.statusBarStyle = .lightContent
             
             break

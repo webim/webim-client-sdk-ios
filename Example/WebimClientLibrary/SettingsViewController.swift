@@ -107,8 +107,8 @@ final class SettingsViewController: UIViewController {
         backButton.setImage(ColorScheme.shared.backButtonImage(),
                             for: .normal)
         backButton.imageView?.contentMode = .scaleAspectFit
-        backButton.accessibilityLabel = BackButton.ACCESSIBILITY_LABEL.rawValue.localized
-        backButton.accessibilityHint = BackButton.ACCESSIBILITY_HINT.rawValue.localized
+        backButton.accessibilityLabel = BackButton.accessibilityLabel.rawValue.localized
+        backButton.accessibilityHint = BackButton.accessibilityHint.rawValue.localized
         backButton.addTarget(self,
                              action: #selector(onBackButtonClick(sender:)),
                              for: .touchUpInside)
@@ -130,13 +130,13 @@ final class SettingsViewController: UIViewController {
     private func settingsValidated() -> Bool {
         guard let accountName = settingsTableViewController?.accountNameTextField.text,
             !accountName.isEmpty else {
-                popupDialogHandler?.showSettingsAlertDialog(withMessage: SettingsErrorDialog.WRONG_ACCOUNT_NAME_MESSAGE.rawValue.localized)
+                popupDialogHandler?.showSettingsAlertDialog(withMessage: SettingsErrorDialog.wrongAccountName.rawValue.localized)
                 
                 return false
         }
         guard let location = settingsTableViewController?.locationTextField.text,
             !location.isEmpty else {
-                popupDialogHandler?.showSettingsAlertDialog(withMessage: SettingsErrorDialog.WRONG_LOCATION_MESSAGE.rawValue.localized)
+                popupDialogHandler?.showSettingsAlertDialog(withMessage: SettingsErrorDialog.wrongLocation.rawValue.localized)
                 
                 return false
         }
@@ -162,9 +162,9 @@ final class SettingsViewController: UIViewController {
     }
     
     private func setupSaveButton() {
-        saveButton.layer.borderWidth = LIGHT_BORDER_WIDTH
+        saveButton.layer.borderWidth = Button.borderWidth.rawValue
         saveButton.layer.borderColor = buttonBorderColor.color().cgColor
-        saveButton.layer.cornerRadius = CORNER_RADIUS
+        saveButton.layer.cornerRadius = Button.cornerRadius.rawValue
     }
     
 }

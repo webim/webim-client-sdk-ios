@@ -39,7 +39,7 @@ extension Dictionary {
      - returns:
      String representation in the form of key1=value1&key2=value2 where the keys and values are percent escaped.
      - author:
-     Nikita Lazarev-Lubov
+     Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */

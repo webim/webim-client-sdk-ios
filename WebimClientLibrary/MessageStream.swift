@@ -437,6 +437,28 @@ public protocol MessageStream {
      */
     func set(onlineStatusChangeListener: OnlineStatusChangeListener)
     
+    /**
+     Sets listener for parameter that is to be returned by `MessageStream.getUnreadByOperatorTimestamp()` method.
+     - parameter unreadByOperatorTimestampChangeListener:
+     `UnreadByOperatorTimestampChangeListener` object.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    func set(unreadByOperatorTimestampChangeListener: UnreadByOperatorTimestampChangeListener)
+    
+    /**
+     Sets listener for parameter that is to be returned by `MessageStream.getUnreadByVisitorTimestamp()` method.
+     - parameter unreadByVisitorTimestampChangeListener:
+     `UnreadByVisitorTimestampChangeListener` object.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    func set(unreadByVisitorTimestampChangeListener: UnreadByVisitorTimestampChangeListener)
+    
 }
 
 /**
@@ -746,6 +768,10 @@ public protocol OnlineStatusChangeListener {
     
     /**
      Called when new session status is received.
+     - parameter previousOnlineStatus:
+     Previous value.
+     - parameter newOnlineStatus:
+     New value.
      - SeeAlso:
      `OnlineStatus`
      - Author:
@@ -758,7 +784,56 @@ public protocol OnlineStatusChangeListener {
     
 }
 
+/**
+ Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByOperatorTimestamp()` method.
+ - SeeAlso:
+ `MessageStream.set(unreadByOperatorTimestampChangeListener:)`.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2018 Webim
+ */
+public protocol UnreadByOperatorTimestampChangeListener {
+    
+    /**
+     Method to be called when parameter that is to be returned by `MessageStream.getUnreadByOperatorTimestamp()` method is changed.
+     - parameter newValue:
+     New unread by operator timestamp value.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    func changedUnreadByOperatorTimestampTo(newValue: Date?)
+    
+}
+
+/**
+ Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByVisitorTimestamp()` method.
+ - SeeAlso:
+ `MessageStream.set(unreadByVisitorTimestampChangeListener:)`.
+ - Author:
+ Nikita Lazarev-Zubov
+ - Copyright:
+ 2018 Webim
+ */
+public protocol UnreadByVisitorTimestampChangeListener {
+    
+    /**
+     Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByVisitorTimestamp()` method.
+     - parameter newValue:
+     New unread by visitor timestamp value.
+     - Author:
+     Nikita Lazarev-Zubov
+     - Copyright:
+     2018 Webim
+     */
+    func changedUnreadByVisitorTimestampTo(newValue: Date?)
+    
+}
+
 // MARK: -
+
 /**
  A chat is seen in different ways by an operator depending on ChatState.
  The initial state is `NONE`.

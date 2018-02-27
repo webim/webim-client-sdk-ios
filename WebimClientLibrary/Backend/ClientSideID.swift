@@ -37,20 +37,20 @@ struct ClientSideID {
     
     // MARK: - Constants
     enum StringSize: Int {
-        case CLIENT_SIDE_ID = 32
+        case clientSideID = 32
     }
     enum StringSymbols: NSString {
-        case UID = "abcdef0123456789"
+        case uid = "abcdef0123456789"
     }
     
     // MARK: - Methods
     
     static func generateClientSideID() -> String {
-        return generateRandomString(ofCharactersNumber: StringSize.CLIENT_SIDE_ID.rawValue)
+        return generateRandomString(ofCharactersNumber: StringSize.clientSideID.rawValue)
     }
     
     static func generateRandomString(ofCharactersNumber numberOfCharacters: Int) -> String {
-        let letters: NSString = StringSymbols.UID.rawValue
+        let letters: NSString = StringSymbols.uid.rawValue
         let length = UInt32(letters.length)
         
         var randomString = ""

@@ -31,7 +31,7 @@ extension Int {
     // MARK: - Methods
     /**
      - author:
-     Nikita Lazarev-Lubov
+     Nikita Lazarev-Zubov
      - copyright:
      2018 Webim
      */

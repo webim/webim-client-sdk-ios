@@ -42,35 +42,35 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     // MARK: SQLite tables and columns names
     private enum TableName: String {
-        case HISTORY = "history"
+        case history = "history"
     }
     private enum ColumnName: String {
         // In DB columns order.
-        case ID = "id"
-        case CLIENT_SIDE_ID = "client_side_id"
-        case TIMESTAMP = "timestamp"
-        case SENDER_ID = "sender_id"
-        case SENDER_NAME = "sender_name"
-        case AVATAR_URL_STRING = "avatar_url_string"
-        case TYPE = "type"
-        case TEXT = "text"
-        case DATA = "data"
+        case id = "id"
+        case clientSideID = "client_side_id"
+        case timestamp = "timestamp"
+        case senderID = "sender_id"
+        case senderName = "sender_name"
+        case avatarURLString = "avatar_url_string"
+        case type = "type"
+        case text = "text"
+        case data = "data"
     }
     
     // MARK: SQLite.swift abstractions
     
-    private static let history = Table(TableName.HISTORY.rawValue)
+    private static let history = Table(TableName.history.rawValue)
     
     // In DB columns order.
-    private static let id = Expression<String>(ColumnName.ID.rawValue)
-    private static let clientSideID = Expression<String?>(ColumnName.CLIENT_SIDE_ID.rawValue)
-    private static let timestamp = Expression<Int64>(ColumnName.TIMESTAMP.rawValue)
-    private static let senderID = Expression<String?>(ColumnName.SENDER_ID.rawValue)
-    private static let senderName = Expression<String>(ColumnName.SENDER_NAME.rawValue)
-    private static let avatarURLString = Expression<String?>(ColumnName.AVATAR_URL_STRING.rawValue)
-    private static let type = Expression<String>(ColumnName.TYPE.rawValue)
-    private static let text = Expression<String>(ColumnName.TEXT.rawValue)
-    private static let data = Expression<Blob?>(ColumnName.DATA.rawValue)
+    private static let id = Expression<String>(ColumnName.id.rawValue)
+    private static let clientSideID = Expression<String?>(ColumnName.clientSideID.rawValue)
+    private static let timestamp = Expression<Int64>(ColumnName.timestamp.rawValue)
+    private static let senderID = Expression<String?>(ColumnName.senderID.rawValue)
+    private static let senderName = Expression<String>(ColumnName.senderName.rawValue)
+    private static let avatarURLString = Expression<String?>(ColumnName.avatarURLString.rawValue)
+    private static let type = Expression<String>(ColumnName.type.rawValue)
+    private static let text = Expression<String>(ColumnName.text.rawValue)
+    private static let data = Expression<Blob?>(ColumnName.data.rawValue)
     
     
     // MARK: - Properties
@@ -240,14 +240,14 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      (message.getID(), message.getHistoryID()!.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), MessageItem.MessageKind(messageType: message.getType()).rawValue, message.getRawText() ?? message.getText(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
                      */
                     let statement = try self.db!.prepare("INSERT OR FAIL INTO history ("
-                        + "\(SQLiteHistoryStorage.ColumnName.ID.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.TIMESTAMP.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.SENDER_ID.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.SENDER_NAME.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.AVATAR_URL_STRING.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.TYPE.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.TEXT.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.DATA.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+                        + "\(SQLiteHistoryStorage.ColumnName.id.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.timestamp.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.senderID.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.senderName.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.avatarURLString.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.type.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.text.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.data.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
                     try statement.run(message.getID(),
                                       message.getHistoryID()!.getTimeInMicrosecond(),
                                       message.getOperatorID(),
@@ -506,8 +506,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
         var rawText: String? = nil
         var text = row[SQLiteHistoryStorage.text]
         let type = AbstractMapper.convert(messageKind: MessageItem.MessageKind(rawValue: row[SQLiteHistoryStorage.type])!)
-        if (type == MessageType.FILE_FROM_OPERATOR)
-            || (type == MessageType.FILE_FROM_VISITOR) {
+        if (type == .FILE_FROM_OPERATOR)
+            || (type == .FILE_FROM_VISITOR) {
             rawText = text
             text = ""
         }

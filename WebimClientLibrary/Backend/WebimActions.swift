@@ -37,68 +37,68 @@ class WebimActions {
     
     // MARK: - Constants
     enum ContentType: String {
-        case MULTIPART_BODY = "multipart/form-data; boundary=" // + boundary string
-        case URL_ENCODED = "application/x-www-form-urlencoded"
+        case multipartBody = "multipart/form-data; boundary=" // + boundary string
+        case urlEncoded = "application/x-www-form-urlencoded"
     }
     enum Event: String {
-        case INITIALIZATION = "init"
+        case initialization = "init"
     }
     enum Parameter: String {
-        case ACTION = "action"
-        case APP_VERSION = "app-version"
-        case AUTHORIZATION_TOKEN = "auth-token"
-        case BEFORE_TIMESTAMP = "before-ts"
-        case CHAT_MODE = "chat-mode"
-        case CLIENT_SIDE_ID = "client-side-id"
-        case DATA = "data"
-        case DELETE_DRAFT = "del-message-draft"
-        case DEPARTMENT_KEY = "department-key"
-        case DEVICE_ID = "device-id"
-        case DEVICE_TOKEN = "push-token"
-        case DRAFT = "message-draft"
-        case EVENT = "event"
-        case FIRST_QUESTION = "first-question"
-        case FORCE_ONLINE = "force-online"
-        case HINT_QUESTION = "hint_question"
-        case LOCATION = "location"
-        case MESSAGE = "message"
-        case OPERATOR_ID = "operator_id"
-        case PAGE_ID = "page-id"
-        case PLATFORM = "platform"
-        case PROVIDED_AUTHENTICATION_TOKEN = "provided_auth_token"
-        case RATING = "rate"
-        case RESPOND_IMMEDIATELY = "respond-immediately"
-        case SESSION_ID = "visit-session-id"
-        case SINCE = "since"
-        case TIMESTAMP = "ts"
-        case TITLE = "title"
-        case VISITOR = "visitor"
-        case VISITOR_FIELDS = "visitor-ext"
-        case VISITOR_TYPING = "typing"
+        case actionn = "action"
+        case applicationVersion = "app-version"
+        case authorizationToken = "auth-token"
+        case beforeTimestamp = "before-ts"
+        case chatMode = "chat-mode"
+        case clientSideID = "client-side-id"
+        case data = "data"
+        case deleteDraft = "del-message-draft"
+        case departmentKey = "department-key"
+        case deviceID = "device-id"
+        case deviceToken = "push-token"
+        case draft = "message-draft"
+        case event = "event"
+        case firstQuestion = "first-question"
+        case forceOnline = "force-online"
+        case hintQuestion = "hint_question"
+        case location = "location"
+        case message = "message"
+        case operatorID = "operator_id"
+        case pageID = "page-id"
+        case platform = "platform"
+        case providedAuthenticationToken = "provided_auth_token"
+        case rating = "rate"
+        case respondImmediately = "respond-immediately"
+        case visitSessionID = "visit-session-id"
+        case since = "since"
+        case timestamp = "ts"
+        case title = "title"
+        case visitor = "visitor"
+        case visitorExt = "visitor-ext"
+        case visitorTyping = "typing"
     }
     enum Platform: String {
-        case IOS = "ios"
+        case ios = "ios"
     }
     enum ServerPathSuffix: String {
-        case ACTION = "/l/v/m/action"
-        case GET_DELTA = "/l/v/m/delta"
-        case DOWNLOAD_FILE = "/l/v/m/download"
-        case GET_HISTORY = "/l/v/m/history"
-        case UPLOAD_FILE = "/l/v/m/upload"
+        case doAction = "/l/v/m/action"
+        case getDelta = "/l/v/m/delta"
+        case downloadFile = "/l/v/m/download"
+        case getHistory = "/l/v/m/history"
+        case uploadFile = "/l/v/m/upload"
     }
     private enum Action: String {
-        case CLOSE_CHAT = "chat.close"
-        case RATE_OPERATOR = "chat.operator_rate_select"
-        case SEND_MESSAGE = "chat.message"
-        case SET_DEVICE_TOKEN = "set_push_token"
-        case SET_VISITOR_TYPING = "chat.visitor_typing"
-        case START_CHAT = "chat.start"
+        case closeChat = "chat.close"
+        case rateOperator = "chat.operator_rate_select"
+        case sendMessage = "chat.message"
+        case setDeviceToken = "set_push_token"
+        case setVisitorTyping = "chat.visitor_typing"
+        case startChat = "chat.start"
     }
     private enum ChatMode: String {
-        case ONLINE = "online"
+        case online = "online"
     }
     private enum MultipartBody: String {
-        case NAME = "webim_upload_file"
+        case name = "webim_upload_file"
     }
     
     // MARK: - Properties
@@ -119,21 +119,21 @@ class WebimActions {
               dataJSONString: String?,
               isHintQuestion: Bool?,
               dataMessageCompletionHandler: DataMessageCompletionHandler?) {
-        var dataToPost = [Parameter.ACTION.rawValue: Action.SEND_MESSAGE.rawValue,
-                          Parameter.CLIENT_SIDE_ID.rawValue: clientSideID,
-                          Parameter.MESSAGE.rawValue: message] as [String: Any]
+        var dataToPost = [Parameter.actionn.rawValue: Action.sendMessage.rawValue,
+                          Parameter.clientSideID.rawValue: clientSideID,
+                          Parameter.message.rawValue: message] as [String: Any]
         if let isHintQuestion = isHintQuestion {
-            dataToPost[Parameter.HINT_QUESTION.rawValue] = isHintQuestion ? "1" : "0" // True / false.
+            dataToPost[Parameter.hintQuestion.rawValue] = isHintQuestion ? "1" : "0" // True / false.
         }
         if let dataJSONString = dataJSONString {
-            dataToPost[Parameter.DATA.rawValue] = dataJSONString
+            dataToPost[Parameter.data.rawValue] = dataJSONString
         }
         
-        let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
-                                                        contentType: ContentType.URL_ENCODED.rawValue,
+                                                        contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString))
     }
     
@@ -142,10 +142,10 @@ class WebimActions {
               mimeType: String,
               clientSideID: String,
               completionHandler: SendFileCompletionHandler?) {
-        let dataToPost = [Parameter.CHAT_MODE.rawValue: ChatMode.ONLINE.rawValue,
-                          Parameter.CLIENT_SIDE_ID.rawValue: clientSideID] as [String: Any]
+        let dataToPost = [Parameter.chatMode.rawValue: ChatMode.online.rawValue,
+                          Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.UPLOAD_FILE.rawValue
+        let urlString = baseURL + ServerPathSuffix.uploadFile.rawValue
         
         let boundaryString = createBoundaryString()
         
@@ -154,11 +154,11 @@ class WebimActions {
                                       fileData: file,
                                       boundaryString: boundaryString)
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
                                                         messageID: clientSideID,
                                                         httpBody: httpBody,
-                                                        contentType: (ContentType.MULTIPART_BODY.rawValue + boundaryString),
+                                                        contentType: (ContentType.multipartBody.rawValue + boundaryString),
                                                         baseURLString: urlString,
                                                         sendFileCompletionHandler: completionHandler))
     }
@@ -166,50 +166,50 @@ class WebimActions {
     func startChat(withClientSideID clientSideID: String,
                    firstQuestion: String? = nil,
                    departmentKey: String? = nil) {
-        var dataToPost = [Parameter.ACTION.rawValue: Action.START_CHAT.rawValue,
-                          Parameter.FORCE_ONLINE.rawValue: "1", // true
-                          Parameter.CLIENT_SIDE_ID.rawValue: clientSideID] as [String: Any]
+        var dataToPost = [Parameter.actionn.rawValue: Action.startChat.rawValue,
+                          Parameter.forceOnline.rawValue: "1", // true
+                          Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
         if let firstQuestion = firstQuestion {
-            dataToPost[Parameter.FIRST_QUESTION.rawValue] = firstQuestion
+            dataToPost[Parameter.firstQuestion.rawValue] = firstQuestion
         }
         if let departmentKey = departmentKey {
-            dataToPost[Parameter.DEPARTMENT_KEY.rawValue] = departmentKey
+            dataToPost[Parameter.departmentKey.rawValue] = departmentKey
         }
         
-        let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
-                                                        contentType: ContentType.URL_ENCODED.rawValue,
+                                                        contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString))
     }
     
     func closeChat() {
-        let dataToPost = [Parameter.ACTION.rawValue: Action.CLOSE_CHAT.rawValue] as [String: Any]
+        let dataToPost = [Parameter.actionn.rawValue: Action.closeChat.rawValue] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
-                                                        contentType: ContentType.URL_ENCODED.rawValue,
+                                                        contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString))
     }
     
     func set(visitorTyping: Bool,
              draft: String?,
              deleteDraft: Bool) {
-        var dataToPost = [Parameter.ACTION.rawValue: Action.SET_VISITOR_TYPING.rawValue,
-                          Parameter.DELETE_DRAFT.rawValue: deleteDraft ? "1" : "0", // true / false
-                          Parameter.VISITOR_TYPING.rawValue: visitorTyping ? "1" : "0"] as [String: Any]  // true / false
+        var dataToPost = [Parameter.actionn.rawValue: Action.setVisitorTyping.rawValue,
+                          Parameter.deleteDraft.rawValue: deleteDraft ? "1" : "0", // true / false
+                          Parameter.visitorTyping.rawValue: visitorTyping ? "1" : "0"] as [String: Any]  // true / false
         if let draft = draft {
-            dataToPost[Parameter.DRAFT.rawValue] = draft
+            dataToPost[Parameter.draft.rawValue] = draft
         }
         
-        let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
-                                                        contentType: ContentType.URL_ENCODED.rawValue,
+                                                        contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString))
     }
     
@@ -217,12 +217,12 @@ class WebimActions {
                         completion: @escaping (_ data: Data?) throws -> ()) {
         var dataToPost = [String: Any]()
         if let since = since {
-            dataToPost[Parameter.SINCE.rawValue] = since
+            dataToPost[Parameter.since.rawValue] = since
         }
         
-        let urlString = baseURL + ServerPathSuffix.GET_HISTORY.rawValue
+        let urlString = baseURL + ServerPathSuffix.getHistory.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .GET,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: dataToPost,
                                                         baseURLString: urlString,
                                                         historyRequestCompletionHandler: completion))
@@ -230,11 +230,11 @@ class WebimActions {
     
     func requestHistory(beforeMessageTimestamp: Int64,
                         completion: @escaping (_ data: Data?) throws -> ()) {
-        let dataToPost = [Parameter.BEFORE_TIMESTAMP.rawValue: String(beforeMessageTimestamp)] as [String: Any]
+        let dataToPost = [Parameter.beforeTimestamp.rawValue: String(beforeMessageTimestamp)] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.GET_HISTORY.rawValue
+        let urlString = baseURL + ServerPathSuffix.getHistory.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .GET,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: dataToPost,
                                                         baseURLString: urlString,
                                                         historyRequestCompletionHandler: completion))
@@ -243,30 +243,30 @@ class WebimActions {
     func rateOperatorWith(id: String?,
                           rating: Int,
                           completionHandler: RateOperatorCompletionHandler?) {
-        var dataToPost = [Parameter.ACTION.rawValue: Action.RATE_OPERATOR.rawValue,
-                          Parameter.RATING.rawValue: String(rating)] as [String: Any]
+        var dataToPost = [Parameter.actionn.rawValue: Action.rateOperator.rawValue,
+                          Parameter.rating.rawValue: String(rating)] as [String: Any]
         if let id = id {
-            dataToPost[Parameter.OPERATOR_ID.rawValue] = id
+            dataToPost[Parameter.operatorID.rawValue] = id
         }
         
-        let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
-                                                        contentType: ContentType.URL_ENCODED.rawValue,
+                                                        contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         rateOperatorCompletionHandler: completionHandler))
     }
     
     func update(deviceToken: String) {
-        let dataToPost = [Parameter.ACTION.rawValue: Action.SET_DEVICE_TOKEN.rawValue,
-                          Parameter.DEVICE_TOKEN.rawValue: deviceToken] as [String: Any]
+        let dataToPost = [Parameter.actionn.rawValue: Action.setDeviceToken.rawValue,
+                          Parameter.deviceToken.rawValue: deviceToken] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.ACTION.rawValue
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         
-        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .POST,
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
-                                                        contentType: ContentType.URL_ENCODED.rawValue,
+                                                        contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString))
     }
     
@@ -281,7 +281,7 @@ class WebimActions {
                                 fileData: Data,
                                 boundaryString: String) -> Data {
         let boundaryStart = "--\(boundaryString)\r\n"
-        let contentDispositionString = "Content-Disposition: form-data; name=\"\(MultipartBody.NAME.rawValue)\"; filename=\"\(filename)\"\r\n"
+        let contentDispositionString = "Content-Disposition: form-data; name=\"\(MultipartBody.name.rawValue)\"; filename=\"\(filename)\"\r\n"
         let contentTypeString = "Content-Type: \(mimeType)\r\n\r\n"
         let boundaryEnd = "--\(boundaryString)--\r\n"
         

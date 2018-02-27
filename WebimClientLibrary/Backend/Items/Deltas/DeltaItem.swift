@@ -38,29 +38,29 @@ final class DeltaItem {
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     enum DeltaType: String {
-        case CHAT = "CHAT"
-        case CHAT_MESSAGE = "CHAT_MESSAGE"
-        case CHAT_OPERATOR = "CHAT_OPERATOR"
-        case CHAT_OPERATOR_TYPING = "CHAT_OPERATOR_TYPING"
-        case CHAT_READ_BY_VISITOR = "CHAT_READ_BY_VISITOR"
-        case CHAT_STATE = "CHAT_STATE"
-        case CHAT_UNREAD_BY_OPERATOR_SINCE_TS = "CHAT_UNREAD_BY_OPERATOR_SINCE_TS"
-        case DEPARTMENT_LIST = "DEPARTMENT_LIST"
-        case OFFLINE_CHAT_MESSAGE = "OFFLINE_CHAT_MESSAGE"
-        case OPERATOR_RATE = "OPERATOR_RATE"
-        case VISIT_SESSION = "VISIT_SESSION"
-        case VISIT_SESSION_STATE = "VISIT_SESSION_STATE"
+        case chat = "CHAT"
+        case chatMessage = "CHAT_MESSAGE"
+        case chatOperator = "CHAT_OPERATOR"
+        case chatOperatorTyping = "CHAT_OPERATOR_TYPING"
+        case chatReadByVisitor = "CHAT_READ_BY_VISITOR"
+        case statState = "CHAT_STATE"
+        case chatUnreadByOperatorTimestamp = "CHAT_UNREAD_BY_OPERATOR_SINCE_TS"
+        case departmentList = "DEPARTMENT_LIST"
+        case offlineChatMessage = "OFFLINE_CHAT_MESSAGE"
+        case operatorRate = "OPERATOR_RATE"
+        case visitSession = "VISIT_SESSION"
+        case visitSessionState = "VISIT_SESSION_STATE"
     }
     enum Event: String {
-        case ADD = "add"
-        case DELETE = "del"
-        case UPDATE = "upd"
+        case add = "add"
+        case delete = "del"
+        case update = "upd"
     }
     private enum JSONField: String {
-        case DATA = "data"
-        case EVENT = "event"
-        case OBJECT_TYPE = "objectType"
-        case ID = "id"
+        case data = "data"
+        case event = "event"
+        case objectType = "objectType"
+        case id = "id"
     }
     
     // MARK: - Properties
@@ -71,25 +71,20 @@ final class DeltaItem {
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        if let eventString = jsonDictionary[JSONField.EVENT.rawValue] as? String {
-            guard let event = Event(rawValue: eventString) else {
-                return nil
-            }
-            
-            self.event = event
-        } else {
+        guard let eventString = jsonDictionary[JSONField.event.rawValue] as? String,
+            let event = Event(rawValue: eventString) else {
             return nil
         }
+        self.event = event
         
-        self.data = jsonDictionary[JSONField.DATA.rawValue] ?? nil
-        
-        if let id = jsonDictionary[JSONField.ID.rawValue] as? String {
-            self.id = id
-        } else {
+        guard let id = jsonDictionary[JSONField.id.rawValue] as? String else {
             return nil
         }
+        self.id = id
         
-        if let objectTypeString = jsonDictionary[JSONField.OBJECT_TYPE.rawValue] as? String {
+        self.data = jsonDictionary[JSONField.data.rawValue] ?? nil
+        
+        if let objectTypeString = jsonDictionary[JSONField.objectType.rawValue] as? String {
             deltaType = DeltaType(rawValue: objectTypeString)
         }
     }

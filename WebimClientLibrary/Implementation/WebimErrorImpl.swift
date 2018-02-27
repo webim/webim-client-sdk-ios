@@ -27,6 +27,7 @@
 import Foundation
 
 /**
+ Public Webim service error representation.
  - Author:
  Nikita Lazarev-Zubov
  - Copyright:
@@ -35,8 +36,8 @@ import Foundation
 final class WebimErrorImpl: WebimError {
     
     // MARK: - Properties
-    var errorType: FatalErrorType
-    var errorString: String?
+    private var errorType: FatalErrorType
+    private var errorString: String?
     
     // MARK: - Initialization
     init(errorType: FatalErrorType,

@@ -53,6 +53,7 @@ final class ChatViewController: SLKTextViewController {
         imagePicker.delegate = self
         
         setupNavigationItem()
+        setupRefreshControl()
         setupSlackTextViewController()
         setupWebimSession()
     }
@@ -77,9 +78,7 @@ final class ChatViewController: SLKTextViewController {
         webimService!.setVisitorTyping(draft: textView.text)
     }
     
-    override func didPressRightButton(_ sender: Any?) {
-        // Send message button
-        
+    override func didPressRightButton(_ sender: Any?) { // Send message button
         textView.refreshFirstResponder()
         
         if let text = textView.text,
@@ -91,8 +90,7 @@ final class ChatViewController: SLKTextViewController {
         }
     }
     
-    // Send file buton.
-    override func didPressLeftButton(_ sender: Any?) {
+    override func didPressLeftButton(_ sender: Any?) { // Send file buton
         dismissKeyboard(true)
         
         imagePicker.allowsEditing = false
@@ -109,7 +107,7 @@ final class ChatViewController: SLKTextViewController {
             
             return 1
         } else {
-            tableView.emptyTableView(message: TableView.EMPTY_TABLE_VIEW_TEXT.rawValue.localized)
+            tableView.emptyTableView(message: TableView.emptyTableViewText.rawValue.localized)
             
             return 0
         }
@@ -152,8 +150,8 @@ final class ChatViewController: SLKTextViewController {
     
     // MARK: UIScrollViewDelegate protocol methods
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if tableView!.contentOffset.y >= (tableView!.contentSize.height - tableView!.frame.size.height - ScrollToBottomButton.VISIBILITY_THRESHOLD.rawValue) {
-            UIView.animate(withDuration: ScrollToBottomButtonAnimation.DURATION.rawValue,
+        if tableView!.contentOffset.y >= (tableView!.contentSize.height - tableView!.frame.size.height - ScrollToBottomButton.visibilityThreshold.rawValue) {
+            UIView.animate(withDuration: ScrollToBottomButtonAnimation.duration.rawValue,
                            delay: 0.1,
                            options: [],
                            animations: { [weak self] in
@@ -161,7 +159,7 @@ final class ChatViewController: SLKTextViewController {
             }
                 , completion: nil)
         } else {
-            UIView.animate(withDuration: ScrollToBottomButtonAnimation.DURATION.rawValue,
+            UIView.animate(withDuration: ScrollToBottomButtonAnimation.duration.rawValue,
                            delay: 0.1,
                            options: [],
                            animations: { [weak self] in
@@ -181,7 +179,9 @@ final class ChatViewController: SLKTextViewController {
         tableView?.separatorStyle = .none
         tableView?.register(MessageTableViewCell.self,
                             forCellReuseIdentifier: "MessageCell")
-        
+    }
+    
+    private func setupRefreshControl() {
         if #available(iOS 10.0, *) {
             tableView?.refreshControl = refreshControl
         } else {
@@ -191,7 +191,7 @@ final class ChatViewController: SLKTextViewController {
                                  action: #selector(requestMessages),
                                  for: .valueChanged)
         refreshControl.tintColor = textMainColor.color()
-        refreshControl.attributedTitle = NSAttributedString(string: TableView.REFRESH_CONTROL_TEXT.rawValue.localized,
+        refreshControl.attributedTitle = NSAttributedString(string: TableView.refreshControlText.rawValue.localized,
                                                             attributes: [.foregroundColor : textMainColor.color()])
     }
     
@@ -200,8 +200,8 @@ final class ChatViewController: SLKTextViewController {
         
         leftButton.setImage(#imageLiteral(resourceName: "Clip"),
                             for: .normal)
-        leftButton.accessibilityLabel = LeftButton.ACCESSIBILITY_LABEL.rawValue.localized
-        leftButton.accessibilityHint = LeftButton.ACCESSIBILITY_HINT.rawValue.localized
+        leftButton.accessibilityLabel = LeftButton.accessibilityLabel.rawValue.localized
+        leftButton.accessibilityHint = LeftButton.accessibilityHint.rawValue.localized
         
         rightButton.setImage(#imageLiteral(resourceName: "SendMessage"),
                              for: .normal)
@@ -210,8 +210,9 @@ final class ChatViewController: SLKTextViewController {
         
         textInputbar.tintColor = textTintColor.color()
         textInputbar.backgroundColor = backgroundSecondaryColor.color()
-        textInputbar.textView.textInputView.backgroundColor = backgroundTextFieldColor.color()
+        textInputbar.textView.textInputView.layer.backgroundColor = backgroundTextFieldColor.color().cgColor
         textInputbar.textView.textColor = textTextFieldColor.color()
+        textInputbar.textView.tintColor = textTextFieldColor.color()
         textInputbar.textView.keyboardAppearance = ColorScheme.shared.keyboardAppearance()
     }
     
@@ -226,8 +227,8 @@ final class ChatViewController: SLKTextViewController {
         backButton.setImage(ColorScheme.shared.backButtonImage(),
                             for: .normal)
         backButton.imageView?.contentMode = .scaleAspectFit
-        backButton.accessibilityLabel = BackButton.ACCESSIBILITY_LABEL.rawValue.localized
-        backButton.accessibilityHint = BackButton.ACCESSIBILITY_HINT.rawValue.localized
+        backButton.accessibilityLabel = BackButton.accessibilityLabel.rawValue.localized
+        backButton.accessibilityHint = BackButton.accessibilityHint.rawValue.localized
         backButton.addTarget(self,
                              action: #selector(onBackButtonClick(sender:)),
                              for: .touchUpInside)
@@ -247,8 +248,8 @@ final class ChatViewController: SLKTextViewController {
         closeChatButton.setImage(ColorScheme.shared.closeChatButtonImage(),
                                  for: .normal)
         closeChatButton.imageView?.contentMode = .scaleAspectFit
-        closeChatButton.accessibilityLabel = CloseChatButton.ACCESSIBILITY_LABEL.rawValue.localized
-        closeChatButton.accessibilityHint = CloseChatButton.ACCESSIBILITY_HINT.rawValue.localized
+        closeChatButton.accessibilityLabel = CloseChatButton.accessibilityLabel.rawValue.localized
+        closeChatButton.accessibilityHint = CloseChatButton.accessibilityHint.rawValue.localized
         closeChatButton.addTarget(self,
                                   action: #selector(endChat),
                                   for: .touchUpInside)
@@ -277,12 +278,12 @@ final class ChatViewController: SLKTextViewController {
     }
     
     private func setupScrollToBottomButton() {
-        let xPosition = view.frame.size.width - ScrollToBottomButton.SIZE.rawValue - ScrollToBottomButton.MARGIN.rawValue
-        let yPosition = UIApplication.shared.statusBarFrame.height + navigationController!.navigationBar.frame.size.height + ScrollToBottomButton.MARGIN.rawValue
+        let xPosition = view.frame.size.width - ScrollToBottomButton.size.rawValue - ScrollToBottomButton.margin.rawValue
+        let yPosition = UIApplication.shared.statusBarFrame.height + navigationController!.navigationBar.frame.size.height + ScrollToBottomButton.margin.rawValue
         scrollToBottomButton = UIButton(frame: CGRect(x: xPosition,
                                                       y: yPosition,
-                                                      width: ScrollToBottomButton.SIZE.rawValue,
-                                                      height: ScrollToBottomButton.SIZE.rawValue))
+                                                      width: ScrollToBottomButton.size.rawValue,
+                                                      height: ScrollToBottomButton.size.rawValue))
         scrollToBottomButton!.setImage(ColorScheme.shared.scrollToBottomButtonImage(),
                                        for: .normal)
         scrollToBottomButton!.addTarget(self,
@@ -384,10 +385,10 @@ final class ChatViewController: SLKTextViewController {
                                             if let downloadedImage = UIImage(data: data) {
                                                 image = downloadedImage
                                             } else {
-                                                popupMessage = ShowFileDialog.INVALID_IMAGE_FORMAT.rawValue.localized
+                                                popupMessage = ShowFileDialog.imageFormatInvalid.rawValue.localized
                                             }
                                         } else {
-                                            popupMessage = ShowFileDialog.INVALID_IMAGE_LINK.rawValue.localized
+                                            popupMessage = ShowFileDialog.imageLinkInvalid.rawValue.localized
                                         }
                                         
                                         semaphore.signal()
@@ -395,7 +396,7 @@ final class ChatViewController: SLKTextViewController {
             
             _ = semaphore.wait(timeout: .distantFuture)
         } else {
-            popupMessage = ShowFileDialog.NOT_IMAGE.rawValue
+            popupMessage = ShowFileDialog.notImage.rawValue
         }
         
         popupDialogHandler?.showFileDialog(withMessage: popupMessage,
@@ -552,11 +553,11 @@ extension ChatViewController: SendFileCompletionHandler {
             var message: String?
             switch error {
             case .FILE_SIZE_EXCEEDED:
-                message = SendFileErrorMessage.FILE_SIZE_EXCEEDED.rawValue.localized
+                message = SendFileErrorMessage.fileSizeExceeded.rawValue.localized
                 
                 break
             case .FILE_TYPE_NOT_ALLOWED:
-                message = SendFileErrorMessage.FILE_TYPE_NOT_ALLOWED.rawValue.localized
+                message = SendFileErrorMessage.fileTypeNotAllowed.rawValue.localized
                 
                 break
             }

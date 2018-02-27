@@ -34,7 +34,7 @@ final class MessageTableViewCell: UITableViewCell {
     
     // MARK: - Constants
     private enum Size: CGFloat {
-        case AVATAR = 40.0
+        case avatar = 40.0
     }
     
     // MARK: - Properties
@@ -90,6 +90,12 @@ final class MessageTableViewCell: UITableViewCell {
     
     // MARK: - Methods
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        avatarImageView.image = nil
+    }
+    
     func setContent(withMessage message: Message) {
         switch message.getType() {
         case .ACTION_REQUEST:
@@ -142,7 +148,7 @@ final class MessageTableViewCell: UITableViewCell {
                 return
             }
             
-            constraintsMaker.height.equalTo(Size.AVATAR.rawValue)
+            constraintsMaker.height.equalTo(Size.avatar.rawValue)
             constraintsMaker.width.equalTo(avatarImageView.snp.height)
             constraintsMaker.top.equalTo(self).offset(10)
             constraintsMaker.left.equalTo(self).offset(20)
@@ -188,7 +194,7 @@ final class MessageTableViewCell: UITableViewCell {
         if let fileName = message.getAttachment()?.getFileName() {
             bodyLabel.text = fileName
         } else {
-            bodyLabel.text = FileMessage.FILE_UNAVAILABLE.rawValue.localized
+            bodyLabel.text = FileMessage.fileUnavailable.rawValue.localized
         }
         bodyLabel.textColor = textTintColor.color()
         bodyLabel.isUserInteractionEnabled = true
@@ -200,15 +206,15 @@ final class MessageTableViewCell: UITableViewCell {
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue.localized
-        avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue.localized
+        avatarImageView.accessibilityLabel = Avatar.accessibilityLabel.rawValue.localized
+        avatarImageView.accessibilityHint = Avatar.accessibilityHintOperator.rawValue.localized
     }
     
     private func layoutFileFromVisitor(message: Message) {
         if let fileName = message.getAttachment()?.getFileName() {
             bodyLabel.text = fileName
         } else {
-            bodyLabel.text = FileMessage.FILE_UNAVAILABLE.rawValue.localized
+            bodyLabel.text = FileMessage.fileUnavailable.rawValue.localized
         }
         bodyLabel.textColor = textTintColor.color()
         bodyLabel.isUserInteractionEnabled = true
@@ -221,7 +227,7 @@ final class MessageTableViewCell: UITableViewCell {
         avatarImageView.image = #imageLiteral(resourceName: "HardcodedVisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue.localized
+        avatarImageView.accessibilityLabel = Avatar.accessibilityLabel.rawValue.localized
     }
     
     private func layoutInfo(message: Message) {
@@ -250,8 +256,8 @@ final class MessageTableViewCell: UITableViewCell {
         
         getOperatorAvatar(forImageView: avatarImageView,
                           message: message)
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue.localized
-        avatarImageView.accessibilityHint = Avatar.ACCESSIBILITY_HINT_FOR_OPERATOR.rawValue.localized
+        avatarImageView.accessibilityLabel = Avatar.accessibilityLabel.rawValue.localized
+        avatarImageView.accessibilityHint = Avatar.accessibilityHintOperator.rawValue.localized
     }
     
     private func layoutOperatorBusy(message: Message) {
@@ -281,7 +287,7 @@ final class MessageTableViewCell: UITableViewCell {
         avatarImageView.image = #imageLiteral(resourceName: "HardcodedVisitorAvatar")
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
-        avatarImageView.accessibilityLabel = Avatar.ACCESSIBILITY_LABEL.rawValue.localized
+        avatarImageView.accessibilityLabel = Avatar.accessibilityLabel.rawValue.localized
     }
     
     private func getOperatorAvatar(forImageView imageView: UIImageView,

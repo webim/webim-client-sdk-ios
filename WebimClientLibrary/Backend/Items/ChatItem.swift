@@ -39,23 +39,23 @@ final class ChatItem {
     
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case CATEGORY = "category"
-        case CLIENT_SIDE_ID = "clientSideId"
-        case CREATION_TIMESTAMP = "creationTs"
-        case ID = "id"
-        case MESSAGES = "messages"
-        case MODIFICATION_TIMESTAMP = "modificationTs"
-        case OFFLINE = "offline"
-        case OPERATOR = "operator"
-        case OPERATOR_ID_TO_RATE = "operatorIdToRate"
-        case OPERATOR_TYPING = "operatorTyping"
-        case READ_BY_VISITOR = "readByVisitor"
-        case STATE = "state"
-        case SUBCATEGORY = "subcategory"
-        case SUBJECT = "subject"
-        case UNREAD_BY_OPERATOR_TIMESTAMP = "unreadByOperatorSinceTs"
-        case UNREAD_BY_VISITOR_TIMESTAMP = "unreadByVisitorSinceTs"
-        case VISITOR_TYPING = "visitorTyping"
+        case category = "category"
+        case clientSideID = "clientSideId"
+        case creationTimestamp = "creationTs"
+        case id = "id"
+        case messages = "messages"
+        case modificationTimestamp = "modificationTs"
+        case offline = "offline"
+        case `operator` = "operator"
+        case operatorIDToRate = "operatorIdToRate"
+        case operatorTyping = "operatorTyping"
+        case readByVisitor = "readByVisitor"
+        case state = "state"
+        case subcategory = "subcategory"
+        case subject = "subject"
+        case unreadByOperatorTimestamp = "unreadByOperatorSinceTs"
+        case unreadByVisitorTimestamp = "unreadByVisitorSinceTs"
+        case visitorTyping = "visitorTyping"
     }
     
     // MARK: - Properties
@@ -80,19 +80,19 @@ final class ChatItem {
     // MARK: - Initialization
     
     init(jsonDictionary: [String: Any?]) {
-        if let creationTimestampValue = jsonDictionary[JSONField.CREATION_TIMESTAMP.rawValue] as? Double {
+        if let creationTimestampValue = jsonDictionary[JSONField.creationTimestamp.rawValue] as? Double {
             creationTimestamp = creationTimestampValue
         } else {
             creationTimestamp = ChatItem.createCreationTimestamp()
         }
         
-        if let idValue = jsonDictionary[JSONField.ID.rawValue] as? String {
+        if let idValue = jsonDictionary[JSONField.id.rawValue] as? String {
             id = idValue
         } else {
             id = String(Int(-creationTimestamp))
         }
         
-        if let messagesValue = jsonDictionary[JSONField.MESSAGES.rawValue] as? [Any] {
+        if let messagesValue = jsonDictionary[JSONField.messages.rawValue] as? [Any] {
             for message in messagesValue {
                 if let messageValue = message as? [String: Any?] {
                     let messageItem = MessageItem(jsonDictionary: messageValue)
@@ -101,11 +101,11 @@ final class ChatItem {
             }
         }
 
-        if let operatorValue = jsonDictionary[JSONField.OPERATOR.rawValue] as? [String: Any?] {
+        if let operatorValue = jsonDictionary[JSONField.`operator`.rawValue] as? [String: Any?] {
             `operator` = OperatorItem(jsonDictionary: operatorValue)
         }
         
-        if let operatorIDToRateValue = jsonDictionary[JSONField.OPERATOR_ID_TO_RATE.rawValue] as? [String: Any?] {
+        if let operatorIDToRateValue = jsonDictionary[JSONField.operatorIDToRate.rawValue] as? [String: Any?] {
             for (operatorIDValue, ratingValue) in operatorIDToRateValue {
                 if let ratingItemValue = ratingValue as? [String: Any?] {
                     let rating = RatingItem(jsonDictionary: ratingItemValue)
@@ -114,51 +114,51 @@ final class ChatItem {
             }
         }
         
-        if let category = jsonDictionary[JSONField.CATEGORY.rawValue] as? String {
+        if let category = jsonDictionary[JSONField.category.rawValue] as? String {
             self.category = category
         }
         
-        if let clientSideID = jsonDictionary[JSONField.CLIENT_SIDE_ID.rawValue] as? String {
+        if let clientSideID = jsonDictionary[JSONField.clientSideID.rawValue] as? String {
             self.clientSideID = clientSideID
         }
         
-        if let modificationTimestamp = jsonDictionary[JSONField.MODIFICATION_TIMESTAMP.rawValue] as? Double {
+        if let modificationTimestamp = jsonDictionary[JSONField.modificationTimestamp.rawValue] as? Double {
             self.modificationTimestamp = modificationTimestamp
         }
         
-        if let offline = jsonDictionary[JSONField.OFFLINE.rawValue] as? Bool {
+        if let offline = jsonDictionary[JSONField.offline.rawValue] as? Bool {
             self.offline = offline
         }
         
-        if let operatorTyping = jsonDictionary[JSONField.OPERATOR_TYPING.rawValue] as? Bool {
+        if let operatorTyping = jsonDictionary[JSONField.operatorTyping.rawValue] as? Bool {
             self.operatorTyping = operatorTyping
         }
         
-        if let readByVisitor = jsonDictionary[JSONField.READ_BY_VISITOR.rawValue] as? Bool {
+        if let readByVisitor = jsonDictionary[JSONField.readByVisitor.rawValue] as? Bool {
             self.readByVisitor = readByVisitor
         }
         
-        if let state = jsonDictionary[JSONField.STATE.rawValue] as? String {
+        if let state = jsonDictionary[JSONField.state.rawValue] as? String {
             self.state = state
         }
         
-        if let subcategory = jsonDictionary[JSONField.SUBCATEGORY.rawValue] as? String {
+        if let subcategory = jsonDictionary[JSONField.subcategory.rawValue] as? String {
             self.subcategory = subcategory
         }
         
-        if let subject = jsonDictionary[JSONField.SUBJECT.rawValue] as? String {
+        if let subject = jsonDictionary[JSONField.subject.rawValue] as? String {
             self.subject = subject
         }
         
-        if let unreadByOperatorTimestamp = jsonDictionary[JSONField.UNREAD_BY_OPERATOR_TIMESTAMP.rawValue] as? Double {
+        if let unreadByOperatorTimestamp = jsonDictionary[JSONField.unreadByOperatorTimestamp.rawValue] as? Double {
             self.unreadByOperatorTimestamp = unreadByOperatorTimestamp
         }
         
-        if let unreadByVisitorTimestamp = jsonDictionary[JSONField.UNREAD_BY_VISITOR_TIMESTAMP.rawValue] as? Double {
+        if let unreadByVisitorTimestamp = jsonDictionary[JSONField.unreadByVisitorTimestamp.rawValue] as? Double {
             self.unreadByVisitorTimestamp = unreadByVisitorTimestamp
         }
         
-        if let visitorTyping = jsonDictionary[JSONField.VISITOR_TYPING.rawValue] as? Bool {
+        if let visitorTyping = jsonDictionary[JSONField.visitorTyping.rawValue] as? Bool {
             self.visitorTyping = visitorTyping
         }
     }
@@ -243,6 +243,10 @@ final class ChatItem {
         return unreadByOperatorTimestamp
     }
     
+    func set(unreadByOperatorTimestamp: Double?) {
+        self.unreadByOperatorTimestamp = unreadByOperatorTimestamp
+    }
+    
     
     // MARK: Private methods
     private static func createCreationTimestamp() -> Double {
@@ -251,15 +255,14 @@ final class ChatItem {
     
     // MARK: -
     enum ChatItemState: String {
-        
-        case UNKNOWN = "unknown"
-        case QUEUE = "queue"
-        case CHATTING = "chatting"
-        case CHATTING_WITH_ROBOT = "chatting_with_robot"
-        case CLOSED = "closed"
-        case CLOSED_BY_VISITOR = "closed_by_visitor"
-        case CLOSED_BY_OPERATOR = "closed_by_operator"
-        case INVITATION = "invitation"
+        case chatting = "chatting"
+        case chattingWithRobot = "chatting_with_robot"
+        case closed = "closed"
+        case closedByOperator = "closed_by_operator"
+        case closedByVisitor = "closed_by_visitor"
+        case invitation = "invitation"
+        case queue = "queue"
+        case unknown = "unknown"
         
         // MARK: - Initialization
         init?(withType typeValue: String) {
@@ -273,10 +276,10 @@ final class ChatItem {
         
         // MARK: - Methods
         func isClosed() -> Bool {
-            return (((self == .CLOSED)
-                || (self == .CLOSED_BY_VISITOR))
-                || (self == .CLOSED_BY_OPERATOR))
-                || (self == .UNKNOWN)
+            return (((self == .closed)
+                || (self == .closedByVisitor))
+                || (self == .closedByOperator))
+                || (self == .unknown)
         }
         
     }
