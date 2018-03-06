@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Message subtype which is used when message is sending by visitor at the moment.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class MessageToSend: MessageImpl {

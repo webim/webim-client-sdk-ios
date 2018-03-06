@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that is responsible for history storage when it is set to memory mode.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 class WebimActions {

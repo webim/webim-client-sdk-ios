@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Public Webim service error representation.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class WebimErrorImpl: WebimError {
@@ -54,7 +54,7 @@ final class WebimErrorImpl: WebimError {
     }
     
     func getErrorString() -> String {
-        return ((errorString != nil) ? errorString! : String(describing: errorType))
+        return (errorString ?? String(describing: errorType))
     }
     
 }

@@ -33,9 +33,9 @@ import Foundation
  * `OFFLINE` - user can send offline messages;
  * `ONLINE` - user can send online and offline messages;
  * `UNKNOWN` - session has not received data from server.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 enum OnlineStatusItem: String {

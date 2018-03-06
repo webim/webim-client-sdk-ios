@@ -27,21 +27,21 @@
 import Foundation
 
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 class RemoteHistoryProvider {
     
     // MARK: - Properties
     private var webimActions: WebimActions
-    private var historyMessageMapper: MessageFactoriesMapper
+    private var historyMessageMapper: MessageMapper
     private var historyMetaInformationStorage: HistoryMetaInformationStorage
     
     // MARK: - Initialization
     init(webimActions: WebimActions,
-         historyMessageMapper: MessageFactoriesMapper,
+         historyMessageMapper: MessageMapper,
          historyMetaInformationStorage: HistoryMetaInformationStorage) {
         self.webimActions = webimActions
         self.historyMessageMapper = historyMessageMapper
@@ -51,8 +51,9 @@ class RemoteHistoryProvider {
     // MARK: - Methods
     func requestHistory(beforeTimestamp: Int64,
                         completion: @escaping ([MessageImpl], Bool) -> ()) {
-        webimActions.requestHistory(beforeMessageTimestamp: beforeTimestamp) { data in
-            guard data != nil else {
+        webimActions.requestHistory(beforeMessageTimestamp: beforeTimestamp) { [weak self] data in
+            guard data != nil,
+                let `self` = self else {
                 completion([MessageImpl](), false)
                 
                 return

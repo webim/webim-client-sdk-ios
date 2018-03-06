@@ -29,14 +29,15 @@ import Foundation
 
 
 /**
- - SeeAlso:
+ Protocol that provides methods to handle errors are sent by Webim service.
+ - seealso:
  `set(fatalErrorHandler:)` method of `SessionBuilder` class.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol FatalErrorHandler {
+public protocol FatalErrorHandler: class {
     
     /**
      This method is to be called when Webim service error is received.
@@ -44,9 +45,9 @@ public protocol FatalErrorHandler {
      Method called NOT FROM THE MAIN THREAD!
      - parameter error:
      Error type.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func on(error: WebimError)

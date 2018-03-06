@@ -11,7 +11,7 @@
 		0368B47A73D6DD995EB7082393645FC3 /* SLKTypingIndicatorView.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = C98470DA861742FA94D3E549FF68530A /* SLKTypingIndicatorView.h */; };
 		03D142523D64FB0B6939BB7FF9325942 /* SLKUIConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C342D50880096E16DEE77520817A72E /* SLKUIConstants.h */; };
 		04709273591B23D1977D0E3C65F85D71 /* UIView+SLKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 89C66CDC24D923C2764C4ABF2A5F1A39 /* UIView+SLKAdditions.h */; };
-		04803B4140CAF67C4B8EF4AD4957AE19 /* SnapKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A5A1A59AFF219D005E63C823236AA851 /* SnapKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		04803B4140CAF67C4B8EF4AD4957AE19 /* SnapKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CB846EE4ADDB3DA5851E05625D7CAF99 /* SnapKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0579DE48229FE74AD9D4308D6470640F /* SLKTextInput.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 62A72ABAC306489335A995A96B554709 /* SLKTextInput.h */; };
 		05ED52A7ED4862AC84B7CF98A6A32624 /* ProvidedVisitorFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45D11EC7E8FF92719A0E1C630BE12DE /* ProvidedVisitorFields.swift */; };
 		073085F5F1405605F1830D7AE6B2F7BA /* FullUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184AE39EA003B696105AEF8FA304492C /* FullUpdate.swift */; };
@@ -32,7 +32,7 @@
 		175D79267199703F1C501A1C2893C49C /* ConstraintMultiplierTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BE798778A71FFBAC0A3F707F64868B /* ConstraintMultiplierTarget.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		1806A9A90F7D757C42150DFE7D674729 /* ConstraintViewDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E3FC8EBC71B7122F06AF64A1963779 /* ConstraintViewDSL.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		18675F5AD86CE37C931ED1842A27AB9C /* StarLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAB3D37248165415C063F97954B9467 /* StarLayer.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		18B59ABBFC0A0E603D1FED1E853BFF0E /* WebimClientLibrary-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 09A695E22C2203A64FDCB09ADC78915C /* WebimClientLibrary-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18B59ABBFC0A0E603D1FED1E853BFF0E /* WebimClientLibrary-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 14AE187B703B991040A2AC24ECE52DC8 /* WebimClientLibrary-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		194173392EC3FBC7955C04F0D8B73432 /* SLKTextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 62A72ABAC306489335A995A96B554709 /* SLKTextInput.h */; };
 		19560F5835B1CEE420384A926D6EB345 /* ConstraintInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FBC5329532C7920789EBD5112032F9 /* ConstraintInsets.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		19DDA4E78B7B6FFF2DEDEE5C4BB9D756 /* UInt32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9370B508D0493EBA8A10B99C825E26 /* UInt32.swift */; };
@@ -47,7 +47,7 @@
 		2808CCA8C390CAFA5E1872423D0CC0EB /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C463204C55F6BD61A19CDAFD1E1F6CC /* Statement.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		288612D4C058A4A1C3C5D4C4253CCFA8 /* ConstraintConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71BB5FD3648A1C88510492D54EFEBF5 /* ConstraintConfig.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		292ECD99B8553453095A947D05B482F5 /* SLKInputAccessoryView.h in Headers */ = {isa = PBXBuildFile; fileRef = C39D88E88CFF4C159390622BA985BE8B /* SLKInputAccessoryView.h */; };
-		2BEBB2C9681BD71AD0BA6254D077EEB0 /* WebimClientLibrary-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9302E87BE33953EF5C13B7CFEEF47E1C /* WebimClientLibrary-dummy.m */; };
+		2BEBB2C9681BD71AD0BA6254D077EEB0 /* WebimClientLibrary-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 754FCD497F6F3304F104C8E40D115A5B /* WebimClientLibrary-dummy.m */; };
 		2C8359CF6504E53C7B40EF02133260E9 /* DeltaCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EBB768A6F587EE78D14B9982DD1C99 /* DeltaCallback.swift */; };
 		2CEC25F06ADB6EBE5E0D0F20FCC7517D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		2DF860CE6F8AB96C8EDF925598BB90B0 /* UIScrollView+SLKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C3FED974F91A0222043C47CFAF00B8 /* UIScrollView+SLKAdditions.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -83,15 +83,15 @@
 		4CBBF30C84FC9371321379DD04A05602 /* ConstraintMakerEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB039E47DCDEF37A37FC345CF6E4E00 /* ConstraintMakerEditable.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4D1DEB769ED161DD5EF682BEF6D857B3 /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0491AFDCF982959F9324FD8393C1BAC9 /* Dictionary.swift */; };
 		529F8ECCA28DB86DD8018CEEDE53B6C9 /* PresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0C05557781C5379C725BBB2973421E /* PresentationManager.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		53BBF257F1AC96172448D6C18E01CC34 /* PopupDialog-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E3E6DBECBD7A859C3DBC61FB089FDE9 /* PopupDialog-dummy.m */; };
+		53BBF257F1AC96172448D6C18E01CC34 /* PopupDialog-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 15C03AA13FFEA43C3F4E6369D5788DCA /* PopupDialog-dummy.m */; };
 		5529DB04EEDD60B01EB6E2E77C7F8273 /* ConstraintMakerPriortizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6B0CAAD2E7AE71CCB59A4E0868433D /* ConstraintMakerPriortizable.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		553213ACE592E53A6883C10997D71BD8 /* MessageImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9CE38BF060921C9A191B0C55196638 /* MessageImpl.swift */; };
 		57168CA1F7A5949262AD0E017A370AFC /* MessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC7724A2982CDC1CD7D602ACA393B9E /* MessageItem.swift */; };
 		5954ED85FF8E3EF94901A0F8C6F977A0 /* Collation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC87F482F8E63EFA80A3DF32D0C5D /* Collation.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		5966873116473E4FBA7481A18E0603EA /* WebimSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7E45992B3B6C8E86885954DED1DB72 /* WebimSession.swift */; };
-		5B8E55075742BA73033A75DF44243CAC /* SlackTextViewController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 15EC117AA13D56264B1500F9EE65D3CE /* SlackTextViewController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5B8E55075742BA73033A75DF44243CAC /* SlackTextViewController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F8130E1042B3FA834B608E4E757DAF1E /* SlackTextViewController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BC327B7D347348FED9B8D1590982407 /* CustomFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6511D19F28E61BE5EB298D7D7CC35D3 /* CustomFunctions.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		5C1463B84EB5E0BE48AD11704AA3F2A9 /* PopupDialog-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 79BB1318FBFCB6B59F114820A3769347 /* PopupDialog-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5C1463B84EB5E0BE48AD11704AA3F2A9 /* PopupDialog-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D424D8D17487CF77887C3C014EF9BF2C /* PopupDialog-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5C28CA1C98612CFFA707E3ACE6EA4CE2 /* LayoutConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23F2AC0E8E6DFB2E563077C5296618 /* LayoutConstraintItem.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		5D86CDD0BFEF31D3BD29755A12826614 /* MessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FEFC2BAF7806C07EDF4371B51425B /* MessageListener.swift */; };
 		5DE905EB3F5DC5D9016ACC467EE4EDC1 /* PopupDialogButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCDE4C39116B4AAE6604CCAEDDDE9E00 /* PopupDialogButton.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -113,7 +113,7 @@
 		77E0030305B460C6E8C651361A90F1A8 /* SLKTextView.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 3E1657D49F34C96846D1FA55302BE31A /* SLKTextView.h */; };
 		78727828C971F51520D7131D7A597640 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B9FE92B60ADD3BC1A9F02F605DB108 /* Message.swift */; };
 		79B4172433092C12C390DAE1EE6123AD /* PopupDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEDB31AD7D4CEA880910146D1DC3811 /* PopupDialog.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		7A5AF785473D022BED6F6666F180845E /* SQLite.swift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD84403C699D068E37857FC80B3498A /* SQLite.swift-dummy.m */; };
+		7A5AF785473D022BED6F6666F180845E /* SQLite.swift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6509574FFFEBCF09E63C3F0A868B2A /* SQLite.swift-dummy.m */; };
 		7C8FDB880D03A67A76C0D8534534ACD0 /* SLKTextInputbar.h in Headers */ = {isa = PBXBuildFile; fileRef = D737EAF097E5B5581F3F28349AD1E978 /* SLKTextInputbar.h */; };
 		7CA88A887F80F16A9834741B8C4775DC /* SLKTextViewController.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 59D6646DF99628AAB8B30829DB393FA4 /* SLKTextViewController.h */; };
 		7CD127ED68C3D3BA919BDAE94966342A /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A778D4E523D12A12C64934A17B9F36 /* Query.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -160,7 +160,7 @@
 		AC8940A3A6684DBEE2976D042B2F4B92 /* MessageFactories.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8B33DCE33106F90A30A3202BCCDA76 /* MessageFactories.swift */; };
 		AD591FE6D26FB9AD3DB70B4EFEEF97F2 /* ConstraintLayoutGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8927D1A5A5D6E9A5F14E8C8F5509B527 /* ConstraintLayoutGuide.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		ADACCD3C8516415881A0E9BF752FA95E /* WebimLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C470023B540C860A6BFF2A528F003DB5 /* WebimLogger.swift */; };
-		B0D5EBAE5D15C27A8D1B88A4D43012A0 /* Pods-WebimClientLibrary_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 87A115B61721AACC4838BF38EFE98008 /* Pods-WebimClientLibrary_Tests-dummy.m */; };
+		B0D5EBAE5D15C27A8D1B88A4D43012A0 /* Pods-WebimClientLibrary_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F87105350AE77591C8FEC5EA2C3F7190 /* Pods-WebimClientLibrary_Tests-dummy.m */; };
 		B1A29B0DAE723028BD8F166D654B4518 /* CosmosDefaultSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35064B13F956BA1FA962ABE2A52192CA /* CosmosDefaultSettings.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		B4F25FA6C2B4C1C6E8CDED90A00F95A1 /* UIResponder+SLKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = B237068A8D72FEFF28592B7B49449CCD /* UIResponder+SLKAdditions.h */; };
 		B4FACEB58DD86F7607058505BB222EF2 /* PopupDialogDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6B79F4DA41D5130904FD456FE22113 /* PopupDialogDefaultViewController.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -177,9 +177,9 @@
 		BE69DAEA89E1095AC8135F4035292EDE /* PopupDialogOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6B1DB7FD2FDEA3527CA95DCD29E7D /* PopupDialogOverlayView.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		BE900C4EED9AE1382787AE71A6D7A587 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F60BC55DF51EEFB71240CBCA412ED0 /* UIColor.swift */; };
 		BF3CAE6CEB695CC05652F3718B43B57E /* DepartmentImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748EC9667F598F615C648373AC6A38C1 /* DepartmentImpl.swift */; };
-		C05067E2B788D60E220F4DD820AE4E56 /* Pods-WebimClientLibrary_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07296C0A194EC55E0FE2AB0A445CBCC1 /* Pods-WebimClientLibrary_Example-dummy.m */; };
+		C05067E2B788D60E220F4DD820AE4E56 /* Pods-WebimClientLibrary_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF4CB6D73818A89D9D94E40D5188687 /* Pods-WebimClientLibrary_Example-dummy.m */; };
 		C085203D2400238E7B9093BE8F720192 /* UILayoutSupport+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F5BBEFD90D802D74EC71D0366F81B4 /* UILayoutSupport+Extensions.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		C1221DCF9611285A857F0611283E95C0 /* Pods-WebimClientLibrary_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E998C6D1261117DCEF37760F069DB12 /* Pods-WebimClientLibrary_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C1221DCF9611285A857F0611283E95C0 /* Pods-WebimClientLibrary_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A39D8A7D919E04BCFAB21036A1AC4DC5 /* Pods-WebimClientLibrary_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C1FBA9CC5F92B91A16D8738718F17ED1 /* CosmosSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DC90CA6AB31326B645D490D36F360D /* CosmosSize.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C262A4829A4AF6EBE720DD05C7E6A29D /* ConstraintView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF576B4B964A0C4607573E1247EE26E /* ConstraintView+Extensions.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C4096C4048348106BBC4FC73959B3904 /* SLKTextView+SLKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A4183B44B9110396705711FCF422C303 /* SLKTextView+SLKAdditions.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -188,8 +188,8 @@
 		C7E38ADF05B5FF880F12DC485FCDAA75 /* CosmosLocalizedRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC15F1A566EBF7122EAC9D4CD61B73F /* CosmosLocalizedRating.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C94760311B079EF440D8C7C4B4079A15 /* WebimErrorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F220E304B22DAE4253EC4F1C3165C028 /* WebimErrorImpl.swift */; };
 		C96785929957B178268B125C1DAC0FB0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
-		C985911C78EAE193D54CD7BA73FA38D6 /* Cosmos-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 98534AE033EF4E2EC72DC976EEE36B7E /* Cosmos-dummy.m */; };
-		CAD9AD464EF384952650799F287BE410 /* SnapKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B40E6546BFC3B2915A06C69B2A040E /* SnapKit-dummy.m */; };
+		C985911C78EAE193D54CD7BA73FA38D6 /* Cosmos-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1A0160861949970986DC345DCE9ECB /* Cosmos-dummy.m */; };
+		CAD9AD464EF384952650799F287BE410 /* SnapKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A541555875AD8A3D9028E22DB39BE37D /* SnapKit-dummy.m */; };
 		CB719B1BB99BE48FE36943F083A7CF67 /* MessageTrackerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664E4FAF65FE576ABE814C9B4373ACF1 /* MessageTrackerImpl.swift */; };
 		CD0D9AB9BBA3DCB834EE272219090BD9 /* CompletionHandlerWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6689B5BD274AAAA1CE7E90FA4714B2 /* CompletionHandlerWrappers.swift */; };
 		D106BB6D56DB09120832D5D39EA639F7 /* SLKUIConstants.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 2C342D50880096E16DEE77520817A72E /* SLKUIConstants.h */; };
@@ -201,13 +201,13 @@
 		D40820A2317DBCE402D9A8A6ABD4ED45 /* Department.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799A957762BB118D419942064F856D37 /* Department.swift */; };
 		D44807392A7CF81BD72FE27BDF27907B /* VisitorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2B3B57C4BDFBED302FD55C3C496460 /* VisitorItem.swift */; };
 		D48858B2016EEA34882B578A4ABA7292 /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EBAD471601B480F694A6117222F362 /* ConstraintDescription.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		D594E95DE25942D298F6C10FC9693BF1 /* Pods-WebimClientLibrary_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9BCD8293F6AB2637AE7C2536475FDD0C /* Pods-WebimClientLibrary_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D594E95DE25942D298F6C10FC9693BF1 /* Pods-WebimClientLibrary_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 23C9CB269996E5AAF073C5F5636F096F /* Pods-WebimClientLibrary_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6F6FEDCDCCB07A17FD9E160314BA16E /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC537E206030C9AC6FCF246EA9F4E15A /* Operator.swift */; };
 		D83198D9864B579C005DABAB21D259E1 /* UIImageView+Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC653149D8C812AA5E52B48F2DD9498E /* UIImageView+Calculations.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		DC7887D00E41588C1FE942F3F70609AC /* HistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B94DB905432A1C4E89B011879CCF15EA /* HistoryStorage.swift */; };
-		DE5E91A47C1BF6869DF17747D61C2FF1 /* Cosmos-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 11E34F639EBD6FDF617BA57ADE074BDE /* Cosmos-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DE5E91A47C1BF6869DF17747D61C2FF1 /* Cosmos-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 441EEAF33DDB2A66F3A5FB470B679E64 /* Cosmos-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DE7A58F08ED919ABC36974C4A6EEF748 /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B391643705AE625944E65B46E68AA52 /* Expression.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		DFE084A3159F8AAAFA0A826B1FF799B0 /* SlackTextViewController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A78B82A0C5C953E718D49E9FC3765A /* SlackTextViewController-dummy.m */; };
+		DFE084A3159F8AAAFA0A826B1FF799B0 /* SlackTextViewController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B7EFE3E2822F1C37ACE1F18135E0818D /* SlackTextViewController-dummy.m */; };
 		E1782F0651BD149B282DD1E71859A440 /* InternalErrorListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EA98390ACC5C7B7679C0F507EA0F3E /* InternalErrorListener.swift */; };
 		E28402B9157224A272A36693D2E44332 /* UIScrollView+SLKAdditions.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = AAE8BD38ECC431D4935FFEC0AD1F1DD6 /* UIScrollView+SLKAdditions.h */; };
 		E40A836AC97F59D3FDE4113885E31E93 /* HistorySinceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFE11EDF8ED6FB356F670929F45B7B7 /* HistorySinceResponse.swift */; };
@@ -220,7 +220,7 @@
 		EB752B6411040DA981F9FC64E5F86F45 /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783698FAEE06C0CB74DA14E7EC431D5 /* ConstraintMaker.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EBC433AE6AD15BCDDBB15FEFA5CF8F76 /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916001497C7F1413D1405BF3113FB8BD /* ChatItem.swift */; };
 		ED101304227C3D4398888B722B83ABCE /* CosmosText.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31BB16AC664F4594A4DF5E537276CDE /* CosmosText.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		EF85564E244EEC196B9C8DB90D04A7C0 /* SQLite.swift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DD20B149531F377D3CE7DAA0F73EA32 /* SQLite.swift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EF85564E244EEC196B9C8DB90D04A7C0 /* SQLite.swift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D0693791EE1FF9F7A7FBA622466950F /* SQLite.swift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F010C4201AC891E3955763684F677250 /* DateAndTimeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A99E429CFF8B3AACFDDAE81E8E07D7 /* DateAndTimeFunctions.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		F30E02E2872568F11914A85F01A9B3B9 /* MessageStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE6492EF8EDB148139B49E96A365298 /* MessageStream.swift */; };
 		F448F0EDBD7D70511022128D59FD3345 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC124D9576482D972503ACCD3C48F86 /* String.swift */; };
@@ -321,10 +321,8 @@
 		044895A375E387E5F5695591955EF1F2 /* SLKTextView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SLKTextView.m; path = Source/SLKTextView.m; sourceTree = "<group>"; };
 		0491AFDCF982959F9324FD8393C1BAC9 /* Dictionary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		05E3FC8EBC71B7122F06AF64A1963779 /* ConstraintViewDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintViewDSL.swift; path = Source/ConstraintViewDSL.swift; sourceTree = "<group>"; };
-		07296C0A194EC55E0FE2AB0A445CBCC1 /* Pods-WebimClientLibrary_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-WebimClientLibrary_Example-dummy.m"; sourceTree = "<group>"; };
+		06D62980BACBB770306487FE4C185595 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		083F196AF47F7F9C0A3A1DA019D98BBC /* MemoryHistoryMetaInformationStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MemoryHistoryMetaInformationStorage.swift; sourceTree = "<group>"; };
-		0890E8887534092E1C10509A5249BB2F /* SnapKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.xcconfig; sourceTree = "<group>"; };
-		09A695E22C2203A64FDCB09ADC78915C /* WebimClientLibrary-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "WebimClientLibrary-umbrella.h"; sourceTree = "<group>"; };
 		0A242DC696A091612A93C381A0405C6F /* ConstraintRelation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintRelation.swift; path = Source/ConstraintRelation.swift; sourceTree = "<group>"; };
 		0AF48F4EEBF581512D4C679AF79F2DCF /* FTS5.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FTS5.swift; path = Sources/SQLite/Extensions/FTS5.swift; sourceTree = "<group>"; };
 		0B50DF8265348B3DF6C66646ED143614 /* MessageComposingHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageComposingHandler.swift; sourceTree = "<group>"; };
@@ -335,77 +333,83 @@
 		0D2AFB0776B9615FE086C08BE0BACDAC /* ConstraintConstantTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintConstantTarget.swift; path = Source/ConstraintConstantTarget.swift; sourceTree = "<group>"; };
 		0DC2978B1D9B8C22FE818340BF9B78C2 /* DeltaResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeltaResponse.swift; sourceTree = "<group>"; };
 		0DC7724A2982CDC1CD7D602ACA393B9E /* MessageItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageItem.swift; sourceTree = "<group>"; };
-		0DD20B149531F377D3CE7DAA0F73EA32 /* SQLite.swift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SQLite.swift-umbrella.h"; sourceTree = "<group>"; };
 		0E23F2AC0E8E6DFB2E563077C5296618 /* LayoutConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraintItem.swift; path = Source/LayoutConstraintItem.swift; sourceTree = "<group>"; };
 		0EC15F1A566EBF7122EAC9D4CD61B73F /* CosmosLocalizedRating.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosLocalizedRating.swift; path = Cosmos/CosmosLocalizedRating.swift; sourceTree = "<group>"; };
 		0FBC8379477B67860460DBA29C44823C /* OperatorFactory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OperatorFactory.swift; sourceTree = "<group>"; };
+		10D81E0177A9FAC99655E1B41654D535 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11187C43953CAFFFF1AE5EA9F649EBB6 /* VisitSessionStateItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VisitSessionStateItem.swift; sourceTree = "<group>"; };
 		1175CEEE6A6CE2A67BC15FD5F5DA8303 /* Schema.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Schema.swift; path = Sources/SQLite/Typed/Schema.swift; sourceTree = "<group>"; };
-		11A56FABF10A24216771AC84E410BD4F /* Cosmos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Cosmos.framework; path = Cosmos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		11E34F639EBD6FDF617BA57ADE074BDE /* Cosmos-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Cosmos-umbrella.h"; sourceTree = "<group>"; };
+		11A56FABF10A24216771AC84E410BD4F /* Cosmos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cosmos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		123BB0532A2810889D6942D8C0838937 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = iOS/Crashlytics.framework; sourceTree = "<group>"; };
 		130D261D6D66B4EB871D63BB225AE684 /* MessageHolder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageHolder.swift; sourceTree = "<group>"; };
-		14A604358BE60AC85BFECC4951F291C1 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		15EC117AA13D56264B1500F9EE65D3CE /* SlackTextViewController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SlackTextViewController-umbrella.h"; sourceTree = "<group>"; };
-		16A78B82A0C5C953E718D49E9FC3765A /* SlackTextViewController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SlackTextViewController-dummy.m"; sourceTree = "<group>"; };
+		14A604358BE60AC85BFECC4951F291C1 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		14AE187B703B991040A2AC24ECE52DC8 /* WebimClientLibrary-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "WebimClientLibrary-umbrella.h"; sourceTree = "<group>"; };
+		15C03AA13FFEA43C3F4E6369D5788DCA /* PopupDialog-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PopupDialog-dummy.m"; sourceTree = "<group>"; };
 		16AB9B6D895690822A693689EE57F20F /* SessionDestroyer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionDestroyer.swift; sourceTree = "<group>"; };
 		1783698FAEE06C0CB74DA14E7EC431D5 /* ConstraintMaker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMaker.swift; path = Source/ConstraintMaker.swift; sourceTree = "<group>"; };
 		178C90AFB8090C6F91A16A6307B84C2C /* WebimInternalError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimInternalError.swift; sourceTree = "<group>"; };
 		184AE39EA003B696105AEF8FA304492C /* FullUpdate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FullUpdate.swift; sourceTree = "<group>"; };
+		19BBC33E35927522DB4A5D5E3219048D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A47949C61BCCE7C8DEB72DF882ECD0C /* Pods-WebimClientLibrary_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		1B13DDE51DE201948A4F370B01AFA800 /* SlackTextViewController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SlackTextViewController.xcconfig; sourceTree = "<group>"; };
 		1BE6492EF8EDB148139B49E96A365298 /* MessageStream.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MessageStream.swift; path = WebimClientLibrary/MessageStream.swift; sourceTree = "<group>"; };
 		1D9370B508D0493EBA8A10B99C825E26 /* UInt32.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UInt32.swift; sourceTree = "<group>"; };
 		1E7C41FF27BC65BD8A082EE7D6DFBCB6 /* fts3_tokenizer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = fts3_tokenizer.h; path = Sources/SQLiteObjc/fts3_tokenizer.h; sourceTree = "<group>"; };
-		1F9870AEF255568274DC72A2E3D43A7E /* Pods-WebimClientLibrary_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-WebimClientLibrary_Tests.modulemap"; sourceTree = "<group>"; };
 		1FBD1628B05EBA4AFA2FA943EBE83E39 /* ConstraintOffsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintOffsetTarget.swift; path = Source/ConstraintOffsetTarget.swift; sourceTree = "<group>"; };
 		2014331447201D489E7F8B2178A4CED2 /* Errors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Errors.swift; path = Sources/SQLite/Core/Errors.swift; sourceTree = "<group>"; };
+		21E7CD506292AD43E31BAB7527070AD6 /* PopupDialog-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PopupDialog-prefix.pch"; sourceTree = "<group>"; };
 		23468802FA8FB875EC559DE300D8AEB5 /* Setter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Setter.swift; path = Sources/SQLite/Typed/Setter.swift; sourceTree = "<group>"; };
 		23540EBC02B4CDAC0FC39B408311CBF0 /* SLKTextInputbar.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SLKTextInputbar.m; path = Source/SLKTextInputbar.m; sourceTree = "<group>"; };
-		238B85EAB70E5259AA941E3550164495 /* SlackTextViewController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SlackTextViewController.xcconfig; sourceTree = "<group>"; };
-		23A488AC297B9634EDDFA6EA64EDDE4F /* Pods-WebimClientLibrary_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		23C9CB269996E5AAF073C5F5636F096F /* Pods-WebimClientLibrary_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-WebimClientLibrary_Tests-umbrella.h"; sourceTree = "<group>"; };
+		2622391C91F5B6214B33023DCD260A62 /* Pods-WebimClientLibrary_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		26241D6FD7DC6DF93EF4AB6991B9F771 /* PopupDialog.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = PopupDialog.modulemap; sourceTree = "<group>"; };
 		275ADDC61AB76931E634684AB15BF0A1 /* DepartmentFactory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DepartmentFactory.swift; sourceTree = "<group>"; };
 		27A99E429CFF8B3AACFDDAE81E8E07D7 /* DateAndTimeFunctions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DateAndTimeFunctions.swift; path = Sources/SQLite/Typed/DateAndTimeFunctions.swift; sourceTree = "<group>"; };
+		27AC9AB26C6035F63C7DEB7494C45D3A /* SQLite.swift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SQLite.swift-prefix.pch"; sourceTree = "<group>"; };
 		2B391643705AE625944E65B46E68AA52 /* Expression.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Expression.swift; path = Sources/SQLite/Typed/Expression.swift; sourceTree = "<group>"; };
 		2BDF424E8F4B8350C171B707D40E67B8 /* SLKTypingIndicatorProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKTypingIndicatorProtocol.h; path = Source/SLKTypingIndicatorProtocol.h; sourceTree = "<group>"; };
 		2C342D50880096E16DEE77520817A72E /* SLKUIConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKUIConstants.h; path = Source/SLKUIConstants.h; sourceTree = "<group>"; };
 		2DBD18B64CC7D939ECB27D7784B39754 /* SLKTextView+SLKAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "SLKTextView+SLKAdditions.h"; path = "Source/SLKTextView+SLKAdditions.h"; sourceTree = "<group>"; };
 		2DFB19BF17E22E5E8D00A3D8B2A4B65C /* DeltaItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeltaItem.swift; sourceTree = "<group>"; };
-		31439C10A32CA19A44588E0C5993F029 /* Pods-WebimClientLibrary_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-WebimClientLibrary_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		2EFCCE4F8D8906F8D5F76CA8AE894C87 /* SnapKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.xcconfig; sourceTree = "<group>"; };
+		2F919A175990F97BCDBDE83420483623 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		3242238072AD02323A0499BE3422F4F8 /* OnlineStatusItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OnlineStatusItem.swift; sourceTree = "<group>"; };
+		33B9D4FAC1A7C5B3F38BED0585AF2632 /* Pods-WebimClientLibrary_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-WebimClientLibrary_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		33EBB768A6F587EE78D14B9982DD1C99 /* DeltaCallback.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeltaCallback.swift; sourceTree = "<group>"; };
 		33F60BC55DF51EEFB71240CBCA412ED0 /* UIColor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		35064B13F956BA1FA962ABE2A52192CA /* CosmosDefaultSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosDefaultSettings.swift; path = Cosmos/CosmosDefaultSettings.swift; sourceTree = "<group>"; };
 		35E596152ADD915D8BD53033E5834584 /* ConstraintRelatableTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintRelatableTarget.swift; path = Source/ConstraintRelatableTarget.swift; sourceTree = "<group>"; };
+		361203BA40196D60F8B7297AC8188F57 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		365F83154629BD47C328EC8207E30F78 /* Debugging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Debugging.swift; path = Source/Debugging.swift; sourceTree = "<group>"; };
-		38D9E08A8A244C8143B80339AD10D311 /* PopupDialog.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = PopupDialog.modulemap; sourceTree = "<group>"; };
 		39EBAD471601B480F694A6117222F362 /* ConstraintDescription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDescription.swift; path = Source/ConstraintDescription.swift; sourceTree = "<group>"; };
 		3AE3CE47E298A5486AC08E1AE80FA32E /* PopupDialogContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PopupDialogContainerView.swift; path = PopupDialog/Classes/PopupDialogContainerView.swift; sourceTree = "<group>"; };
 		3B8C9A3A62FCF8E8D51A89FF3159ED4D /* Crashlytics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Crashlytics.h; path = iOS/Crashlytics.framework/Headers/Crashlytics.h; sourceTree = "<group>"; };
+		3D0693791EE1FF9F7A7FBA622466950F /* SQLite.swift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SQLite.swift-umbrella.h"; sourceTree = "<group>"; };
 		3DAE32AED11C1788D3D40B240179ABC4 /* FileParametersItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FileParametersItem.swift; sourceTree = "<group>"; };
 		3DE1F11718C901A07CFD427BD194D858 /* ConstraintLayoutGuide+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ConstraintLayoutGuide+Extensions.swift"; path = "Source/ConstraintLayoutGuide+Extensions.swift"; sourceTree = "<group>"; };
 		3E1657D49F34C96846D1FA55302BE31A /* SLKTextView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKTextView.h; path = Source/SLKTextView.h; sourceTree = "<group>"; };
-		3E3E6DBECBD7A859C3DBC61FB089FDE9 /* PopupDialog-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PopupDialog-dummy.m"; sourceTree = "<group>"; };
-		3F1C4FF89EFCD2BC749E6ACC12B3831C /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
 		41E92E8C07D5B2F02E47A0127C96D841 /* SLKTypingIndicatorView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SLKTypingIndicatorView.m; path = Source/SLKTypingIndicatorView.m; sourceTree = "<group>"; };
 		424064D2E146A3B86BE494CCFEFB13EE /* AbstractRequestLoop.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AbstractRequestLoop.swift; sourceTree = "<group>"; };
 		428FE0BAACC1D8E6E684DE697C79B180 /* Operators.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Sources/SQLite/Typed/Operators.swift; sourceTree = "<group>"; };
 		4375DF2C2EEB6B5F2F0774A75C331709 /* ConstraintView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintView.swift; path = Source/ConstraintView.swift; sourceTree = "<group>"; };
-		4381A133EB303440D7BECF494B49CA57 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		44BBF8F52F26A43ED24B5573F42004FB /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		441EEAF33DDB2A66F3A5FB470B679E64 /* Cosmos-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Cosmos-umbrella.h"; sourceTree = "<group>"; };
+		44ABF483FEB8DBFFA207EB62EA0A60F7 /* Pods-WebimClientLibrary_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Example-frameworks.sh"; sourceTree = "<group>"; };
 		45734B5573624C3BF0014DE3A678C722 /* CosmosLayers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosLayers.swift; path = Cosmos/CosmosLayers.swift; sourceTree = "<group>"; };
+		463223D08135539339108546B8852D5F /* Pods-WebimClientLibrary_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-WebimClientLibrary_Tests.modulemap"; sourceTree = "<group>"; };
 		46DC90CA6AB31326B645D490D36F360D /* CosmosSize.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosSize.swift; path = Cosmos/CosmosSize.swift; sourceTree = "<group>"; };
 		473D1F55471229ADC88FB88A6A14AA83 /* WebimClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimClient.swift; sourceTree = "<group>"; };
 		47A5C32AA9C9B2118090465607BF42D7 /* CLSLogging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CLSLogging.h; path = iOS/Crashlytics.framework/Headers/CLSLogging.h; sourceTree = "<group>"; };
-		480719C991887FAF6E1D2297F178DC8E /* Cosmos.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Cosmos.xcconfig; sourceTree = "<group>"; };
-		4833685AC5616026F0E9F61F12F09D52 /* WebimClientLibrary.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = WebimClientLibrary.modulemap; sourceTree = "<group>"; };
 		486C240F9A27DDB9E0B2DAD55FC4EBAB /* WebimRemoteNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WebimRemoteNotification.swift; path = WebimClientLibrary/WebimRemoteNotification.swift; sourceTree = "<group>"; };
 		48740EC71FBEF2D78841DBED6641CE48 /* RatingItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RatingItem.swift; sourceTree = "<group>"; };
-		4A4BD7FA64742E6BCA90D4AABE6FAB6B /* SQLite.swift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SQLite.swift-prefix.pch"; sourceTree = "<group>"; };
+		4BA2BB6E83604490D6997926386668F6 /* Cosmos.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Cosmos.modulemap; sourceTree = "<group>"; };
 		4DB039E47DCDEF37A37FC345CF6E4E00 /* ConstraintMakerEditable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerEditable.swift; path = Source/ConstraintMakerEditable.swift; sourceTree = "<group>"; };
 		4E97FF4DCF2C742492CAF208A5A57E4C /* WebimRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimRequest.swift; sourceTree = "<group>"; };
+		4EAB6F1595655C26A2D14C8CDA815B21 /* SlackTextViewController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SlackTextViewController-prefix.pch"; sourceTree = "<group>"; };
 		4FDD1338B037FEFD772B3283D5A1AE8D /* SessionParametersListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SessionParametersListener.swift; sourceTree = "<group>"; };
 		50AE43DCF31E0AAAF1C38A86666EB441 /* Value.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Value.swift; path = Sources/SQLite/Core/Value.swift; sourceTree = "<group>"; };
 		51763A3FC4BC6D4B3BF8F59647C04B9E /* WebimSessionImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimSessionImpl.swift; sourceTree = "<group>"; };
 		520FA0FAB92C60049AEC618B86BA9387 /* Connection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Connection.swift; path = Sources/SQLite/Core/Connection.swift; sourceTree = "<group>"; };
+		52595AB53ADE814912E6AF0F39689999 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53C0C139832A4ABB53099261AC7F9527 /* Fabric.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Fabric.h; path = iOS/Fabric.framework/Headers/Fabric.h; sourceTree = "<group>"; };
 		53F5BBEFD90D802D74EC71D0366F81B4 /* UILayoutSupport+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UILayoutSupport+Extensions.swift"; path = "Source/UILayoutSupport+Extensions.swift"; sourceTree = "<group>"; };
 		5461A01E462C46F9BF155B773265EB47 /* SQLiteHistoryStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SQLiteHistoryStorage.swift; sourceTree = "<group>"; };
@@ -415,142 +419,138 @@
 		589CDB8EE66225B61D953B5B2130BB1B /* CosmosAccessibility.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosAccessibility.swift; path = Cosmos/CosmosAccessibility.swift; sourceTree = "<group>"; };
 		59D6646DF99628AAB8B30829DB393FA4 /* SLKTextViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKTextViewController.h; path = Source/SLKTextViewController.h; sourceTree = "<group>"; };
 		5AF576B4B964A0C4607573E1247EE26E /* ConstraintView+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ConstraintView+Extensions.swift"; path = "Source/ConstraintView+Extensions.swift"; sourceTree = "<group>"; };
-		5B7EE681B87D8AAF1BF5016B46319D63 /* WebimClientLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = WebimClientLibrary.framework; path = WebimClientLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5BCBF7F2C5C672BF1C3402C170B547D7 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5B7EE681B87D8AAF1BF5016B46319D63 /* WebimClientLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WebimClientLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9951E0E06C067364D4A49099B53BEA /* ConstraintLayoutSupportDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupportDSL.swift; path = Source/ConstraintLayoutSupportDSL.swift; sourceTree = "<group>"; };
-		5EA5C4F1B2C6ECE26602317DEA2C7E61 /* PopupDialog-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PopupDialog-prefix.pch"; sourceTree = "<group>"; };
 		5FA97BBF09804ACE1BCF879C7A92F76C /* UIViewController+Visibility.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIViewController+Visibility.swift"; path = "PopupDialog/Classes/UIViewController+Visibility.swift"; sourceTree = "<group>"; };
-		6211F794E8F88648B724622EF6006A18 /* WebimClientLibrary-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "WebimClientLibrary-prefix.pch"; sourceTree = "<group>"; };
 		62A72ABAC306489335A995A96B554709 /* SLKTextInput.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKTextInput.h; path = Source/SLKTextInput.h; sourceTree = "<group>"; };
 		6314DC439A00AF1A001EDD2AE1178632 /* SQLite-Bridging.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "SQLite-Bridging.m"; path = "Sources/SQLiteObjc/SQLite-Bridging.m"; sourceTree = "<group>"; };
 		63716EFE92E8E8A8E9C48A5A13CB76DE /* ConstraintMakerFinalizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerFinalizable.swift; path = Source/ConstraintMakerFinalizable.swift; sourceTree = "<group>"; };
-		6426622D04E20EA925E2627C7F3F0C11 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SQLite.framework; path = SQLite.swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		64B40E6546BFC3B2915A06C69B2A040E /* SnapKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SnapKit-dummy.m"; sourceTree = "<group>"; };
+		63BA50E91B4381486E26B0365B635B0D /* SnapKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SnapKit.modulemap; sourceTree = "<group>"; };
+		6426622D04E20EA925E2627C7F3F0C11 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64FF9394922483DDA5448657B56E6E4E /* Pods-WebimClientLibrary_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-WebimClientLibrary_Example.modulemap"; sourceTree = "<group>"; };
 		65C3FED974F91A0222043C47CFAF00B8 /* UIScrollView+SLKAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+SLKAdditions.m"; path = "Source/UIScrollView+SLKAdditions.m"; sourceTree = "<group>"; };
 		65C6B1DB7FD2FDEA3527CA95DCD29E7D /* PopupDialogOverlayView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PopupDialogOverlayView.swift; path = PopupDialog/Classes/PopupDialogOverlayView.swift; sourceTree = "<group>"; };
+		65CBAECCE3C2CDB4BD5A332A08CA6766 /* Pods-WebimClientLibrary_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Tests-resources.sh"; sourceTree = "<group>"; };
 		66297257B46A0B04E1F0D23851BF3FB9 /* StarFillMode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StarFillMode.swift; path = Cosmos/StarFillMode.swift; sourceTree = "<group>"; };
 		664AC0A85E99720C015D8B7E8FAF5AE8 /* ANSCompatibility.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ANSCompatibility.h; path = iOS/Crashlytics.framework/Headers/ANSCompatibility.h; sourceTree = "<group>"; };
 		664E4FAF65FE576ABE814C9B4373ACF1 /* MessageTrackerImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageTrackerImpl.swift; sourceTree = "<group>"; };
+		66FF158F5D045BCF7312B62F4BD7F86C /* Pods-WebimClientLibrary_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Example-resources.sh"; sourceTree = "<group>"; };
 		674A84FEFE228BD6D26EDC0DC2768E99 /* CosmosRating.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosRating.swift; path = Cosmos/CosmosRating.swift; sourceTree = "<group>"; };
 		68A778D4E523D12A12C64934A17B9F36 /* Query.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Query.swift; path = Sources/SQLite/Typed/Query.swift; sourceTree = "<group>"; };
 		68DFF15284ED58C4872C8F7F7551A74A /* OperatorItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OperatorItem.swift; sourceTree = "<group>"; };
 		69FBC5329532C7920789EBD5112032F9 /* ConstraintInsets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintInsets.swift; path = Source/ConstraintInsets.swift; sourceTree = "<group>"; };
 		6B6B79F4DA41D5130904FD456FE22113 /* PopupDialogDefaultViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PopupDialogDefaultViewController.swift; path = PopupDialog/Classes/PopupDialogDefaultViewController.swift; sourceTree = "<group>"; };
-		6BFFB988006064367BA1BFEE64C2562B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C1F684EDBA435076F36F46FD1CA37AA /* CosmosView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosView.swift; path = Cosmos/CosmosView.swift; sourceTree = "<group>"; };
 		6FE020505CE6ECF61DC9692772335DF8 /* RTree.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RTree.swift; path = Sources/SQLite/Extensions/RTree.swift; sourceTree = "<group>"; };
 		701B1077AA9ABDCA06C1D36D0B20FD0B /* TransitionAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TransitionAnimator.swift; path = PopupDialog/Classes/TransitionAnimator.swift; sourceTree = "<group>"; };
-		7382968C9E00338B87296E02FD7F8E63 /* Pods-WebimClientLibrary_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-WebimClientLibrary_Example.modulemap"; sourceTree = "<group>"; };
 		74245141AFF147861EEF0E6E4DDC6BFE /* ClientSideID.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ClientSideID.swift; sourceTree = "<group>"; };
 		748EC9667F598F615C648373AC6A38C1 /* DepartmentImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DepartmentImpl.swift; sourceTree = "<group>"; };
+		753C10651B46B038EB66F243787DC617 /* WebimClientLibrary.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = WebimClientLibrary.xcconfig; sourceTree = "<group>"; };
+		754FCD497F6F3304F104C8E40D115A5B /* WebimClientLibrary-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "WebimClientLibrary-dummy.m"; sourceTree = "<group>"; };
 		75C56EE14CECF6E9521747F534561174 /* Int.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		7663A6AB1AAA074B75EAC8D69251B798 /* Pods-WebimClientLibrary_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-WebimClientLibrary_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		76B0F8B2A9EAF22095BFBEEF36FD2937 /* ConstraintPriority.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriority.swift; path = Source/ConstraintPriority.swift; sourceTree = "<group>"; };
-		787CF2058A06553EE8A3E5279784A2C2 /* Pods-WebimClientLibrary_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Example-frameworks.sh"; sourceTree = "<group>"; };
+		7713FFF549B559D0D25EC63F35B37D48 /* PopupDialog.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PopupDialog.xcconfig; sourceTree = "<group>"; };
+		77C15577D727B197B824E1FB659901D1 /* Pods-WebimClientLibrary_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-WebimClientLibrary_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		794782EEF80522A6D607C066166DFC58 /* ConstraintAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintAttributes.swift; path = Source/ConstraintAttributes.swift; sourceTree = "<group>"; };
 		799A957762BB118D419942064F856D37 /* Department.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Department.swift; path = WebimClientLibrary/Department.swift; sourceTree = "<group>"; };
-		79BB1318FBFCB6B59F114820A3769347 /* PopupDialog-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PopupDialog-umbrella.h"; sourceTree = "<group>"; };
 		7BF4D0C968280B1FEC1BE1681523B823 /* Blob.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Blob.swift; path = Sources/SQLite/Core/Blob.swift; sourceTree = "<group>"; };
 		7DD0DF542C4250DAAA403FC160A5A3BF /* LayoutConstraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraint.swift; path = Source/LayoutConstraint.swift; sourceTree = "<group>"; };
-		7DF24728930842F475EFA07CED5227D9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		7DF24728930842F475EFA07CED5227D9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7E05B0AB2A158BE0AED146D9CE9656DB /* CoreFunctions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoreFunctions.swift; path = Sources/SQLite/Typed/CoreFunctions.swift; sourceTree = "<group>"; };
-		7E998C6D1261117DCEF37760F069DB12 /* Pods-WebimClientLibrary_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-WebimClientLibrary_Example-umbrella.h"; sourceTree = "<group>"; };
 		7F1C12BE07902C611C23DE45A04DE3C0 /* SLKTextViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SLKTextViewController.m; path = Source/SLKTextViewController.m; sourceTree = "<group>"; };
 		7F9CE38BF060921C9A191B0C55196638 /* MessageImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageImpl.swift; sourceTree = "<group>"; };
-		7FD84403C699D068E37857FC80B3498A /* SQLite.swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SQLite.swift-dummy.m"; sourceTree = "<group>"; };
 		812B6CD93226E9E8F4A69539560951E2 /* DeltaRequestLoop.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeltaRequestLoop.swift; sourceTree = "<group>"; };
 		814A8AF4CE81F01C13A95BD22BA425CF /* CLSAttributes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CLSAttributes.h; path = iOS/Crashlytics.framework/Headers/CLSAttributes.h; sourceTree = "<group>"; };
-		816F044BC1887A143EAD4CD83D0551F8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83519CCDAB486B59FE551AF5C1D1DD75 /* UIView+Animations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+Animations.swift"; path = "PopupDialog/Classes/UIView+Animations.swift"; sourceTree = "<group>"; };
 		8387904866322F009CB5C5264A098B0D /* InteractiveTransition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InteractiveTransition.swift; path = PopupDialog/Classes/InteractiveTransition.swift; sourceTree = "<group>"; };
 		850A6435920A6F9CF58A8D8CE687D183 /* Collection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		862AC483DDA1ABA46DF332A2C1E7B123 /* ConstraintPriorityTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriorityTarget.swift; path = Source/ConstraintPriorityTarget.swift; sourceTree = "<group>"; };
-		87A115B61721AACC4838BF38EFE98008 /* Pods-WebimClientLibrary_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-WebimClientLibrary_Tests-dummy.m"; sourceTree = "<group>"; };
+		8631E31F47FE2F38449A1FB83F991806 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		8927D1A5A5D6E9A5F14E8C8F5509B527 /* ConstraintLayoutGuide.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutGuide.swift; path = Source/ConstraintLayoutGuide.swift; sourceTree = "<group>"; };
 		89C66CDC24D923C2764C4ABF2A5F1A39 /* UIView+SLKAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+SLKAdditions.h"; path = "Source/UIView+SLKAdditions.h"; sourceTree = "<group>"; };
-		89CFB84D3F6724698F730EBBF2D6C883 /* SlackTextViewController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SlackTextViewController.modulemap; sourceTree = "<group>"; };
-		8A1ED8FF126EA23FF31DFA9E61215D1F /* WebimClientLibrary.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = WebimClientLibrary.xcconfig; sourceTree = "<group>"; };
-		8A42EE793862227E204B1758B4C046AA /* SQLite.swift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SQLite.swift.modulemap; sourceTree = "<group>"; };
 		8D3650CB77674EF197916E050A152E59 /* Helpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = Sources/SQLite/Helpers.swift; sourceTree = "<group>"; };
-		8F13020A99D18213C035D3F69CA8749A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F6B0CAAD2E7AE71CCB59A4E0868433D /* ConstraintMakerPriortizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerPriortizable.swift; path = Source/ConstraintMakerPriortizable.swift; sourceTree = "<group>"; };
 		8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		9058DD2369437C210BD80C50F70DE0CF /* ConstraintMakerRelatable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerRelatable.swift; path = Source/ConstraintMakerRelatable.swift; sourceTree = "<group>"; };
 		916001497C7F1413D1405BF3113FB8BD /* ChatItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
+		91B6B8F69DA629C6A3D7B9E1F5BF6DD5 /* Pods-WebimClientLibrary_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-WebimClientLibrary_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		9208B4B52BDD1CA15A72FD72B2E3EF82 /* InternalUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InternalUtils.swift; sourceTree = "<group>"; };
-		9302E87BE33953EF5C13B7CFEEF47E1C /* WebimClientLibrary-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "WebimClientLibrary-dummy.m"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		93AF2F9D6990F04BB194656220401144 /* SQLite.swift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SQLite.swift.xcconfig; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9465A51D5A1C6097AC306AE5E029796E /* Webim.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Webim.swift; path = WebimClientLibrary/Webim.swift; sourceTree = "<group>"; };
 		94738B2F820AFDC3085F59678AE16A32 /* WebimInternalLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimInternalLogger.swift; sourceTree = "<group>"; };
-		94FAED3D135EE92E0C2CFE557F9F34CF /* SnapKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-prefix.pch"; sourceTree = "<group>"; };
 		976FEFC2BAF7806C07EDF4371B51425B /* MessageListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MessageListener.swift; path = WebimClientLibrary/MessageListener.swift; sourceTree = "<group>"; };
 		97E1BB7405A05BA96F5E47AE3E3606BA /* LocationSettingsImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LocationSettingsImpl.swift; sourceTree = "<group>"; };
 		983646B23C603BEE80E6377080B0D2AF /* CLSReport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CLSReport.h; path = iOS/Crashlytics.framework/Headers/CLSReport.h; sourceTree = "<group>"; };
-		98534AE033EF4E2EC72DC976EEE36B7E /* Cosmos-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Cosmos-dummy.m"; sourceTree = "<group>"; };
 		98B06FBFFF03146BA6B54D94A84437C5 /* ConstraintDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDSL.swift; path = Source/ConstraintDSL.swift; sourceTree = "<group>"; };
-		9AC1425D80688747818651F5602521B5 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		9AD66C3FE6FB01768ECB85396B708305 /* PopupDialogDefaultView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PopupDialogDefaultView.swift; path = PopupDialog/Classes/PopupDialogDefaultView.swift; sourceTree = "<group>"; };
-		9BCD8293F6AB2637AE7C2536475FDD0C /* Pods-WebimClientLibrary_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-WebimClientLibrary_Tests-umbrella.h"; sourceTree = "<group>"; };
 		9D0C05557781C5379C725BBB2973421E /* PresentationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PresentationManager.swift; path = PopupDialog/Classes/PresentationManager.swift; sourceTree = "<group>"; };
 		9D3BDD6C00F7116CCFFA9867453B329F /* FXBlurView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FXBlurView.m; path = PopupDialog/Classes/FXBlurView.m; sourceTree = "<group>"; };
 		9E1F93690F6CA2E6B9029C8863DDF46F /* WebimActions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimActions.swift; sourceTree = "<group>"; };
-		9E66ED366078205E23E6999EBF0EB4D6 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = WebimClientLibrary.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9E66ED366078205E23E6999EBF0EB4D6 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = WebimClientLibrary.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E77CC482E52D09A7B7C7111BEFBB5DF /* SLKTextInput+Implementation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "SLKTextInput+Implementation.m"; path = "Source/SLKTextInput+Implementation.m"; sourceTree = "<group>"; };
 		9EAB3D37248165415C063F97954B9467 /* StarLayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StarLayer.swift; path = Cosmos/StarLayer.swift; sourceTree = "<group>"; };
+		9EB0B529568CD1CAC40E0F6EBA1D4C94 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A193CC2710805DA939D32EC09565ACCB /* HistoryBeforeResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HistoryBeforeResponse.swift; sourceTree = "<group>"; };
 		A19D41CC83E90795ED8C2844D85DC4FF /* LocationSettingsHolder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LocationSettingsHolder.swift; sourceTree = "<group>"; };
+		A258925EDFD70F31A17398FEDCEDA7C3 /* SnapKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-prefix.pch"; sourceTree = "<group>"; };
 		A2B9FE92B60ADD3BC1A9F02F605DB108 /* Message.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Message.swift; path = WebimClientLibrary/Message.swift; sourceTree = "<group>"; };
+		A39D8A7D919E04BCFAB21036A1AC4DC5 /* Pods-WebimClientLibrary_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-WebimClientLibrary_Example-umbrella.h"; sourceTree = "<group>"; };
 		A4183B44B9110396705711FCF422C303 /* SLKTextView+SLKAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "SLKTextView+SLKAdditions.m"; path = "Source/SLKTextView+SLKAdditions.m"; sourceTree = "<group>"; };
 		A4461E947E27C56D20CE57FE9D3729E3 /* Answers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Answers.h; path = iOS/Crashlytics.framework/Headers/Answers.h; sourceTree = "<group>"; };
-		A5A1A59AFF219D005E63C823236AA851 /* SnapKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-umbrella.h"; sourceTree = "<group>"; };
+		A541555875AD8A3D9028E22DB39BE37D /* SnapKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SnapKit-dummy.m"; sourceTree = "<group>"; };
 		A5C6B603C8647D2F917E828B2834BD16 /* TransitionAnimations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TransitionAnimations.swift; path = PopupDialog/Classes/TransitionAnimations.swift; sourceTree = "<group>"; };
 		A748B325C96F357F4CB1EE5A92482766 /* UIView+SLKAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+SLKAdditions.m"; path = "Source/UIView+SLKAdditions.m"; sourceTree = "<group>"; };
+		A81F48F4145E840A2F3B171694AC483A /* WebimClientLibrary.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = WebimClientLibrary.modulemap; sourceTree = "<group>"; };
 		AAE8BD38ECC431D4935FFEC0AD1F1DD6 /* UIScrollView+SLKAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+SLKAdditions.h"; path = "Source/UIScrollView+SLKAdditions.h"; sourceTree = "<group>"; };
 		AB4AE55286E3B1E8445C6EA19AE51119 /* ConstraintInsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintInsetTarget.swift; path = Source/ConstraintInsetTarget.swift; sourceTree = "<group>"; };
 		AB8E60388D4FAB9EE5502C7BCD60E6B2 /* SQLite.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SQLite.h; path = Sources/SQLite/SQLite.h; sourceTree = "<group>"; };
-		AD7591D08108513394A934E00E90CF6C /* Pods-WebimClientLibrary_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-WebimClientLibrary_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		ADC553839505981D6131DE9A73A4D136 /* Pods-WebimClientLibrary_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		AE098FA70E560168BB99945C731A31E5 /* HistoryID.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HistoryID.swift; sourceTree = "<group>"; };
+		AE6509574FFFEBCF09E63C3F0A868B2A /* SQLite.swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SQLite.swift-dummy.m"; sourceTree = "<group>"; };
 		B01822C249BE61FF36B8D93944E4FEF9 /* ConstraintMakerExtendable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerExtendable.swift; path = Source/ConstraintMakerExtendable.swift; sourceTree = "<group>"; };
-		B086A8A7863637653F63B085754B7E02 /* Cosmos-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Cosmos-prefix.pch"; sourceTree = "<group>"; };
+		B16B0DDEECECCEACBF03FA417D4C0D7E /* WebimClientLibrary-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "WebimClientLibrary-prefix.pch"; sourceTree = "<group>"; };
 		B237068A8D72FEFF28592B7B49449CCD /* UIResponder+SLKAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIResponder+SLKAdditions.h"; path = "Source/UIResponder+SLKAdditions.h"; sourceTree = "<group>"; };
-		B291090813C99C50039F4FF8B1BC5D15 /* Pods-WebimClientLibrary_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-WebimClientLibrary_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		B31BB16AC664F4594A4DF5E537276CDE /* CosmosText.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosText.swift; path = Cosmos/CosmosText.swift; sourceTree = "<group>"; };
-		B57D6E90DD0A4D86D4D7007D4C5B72C0 /* PopupDialog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PopupDialog.framework; path = PopupDialog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B527214951BD11F916FF3930927320F5 /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
+		B57D6E90DD0A4D86D4D7007D4C5B72C0 /* PopupDialog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PopupDialog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6511D19F28E61BE5EB298D7D7CC35D3 /* CustomFunctions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CustomFunctions.swift; path = Sources/SQLite/Typed/CustomFunctions.swift; sourceTree = "<group>"; };
 		B65139E38C30F90DFA787ECA784C2DC2 /* FatalErrorHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FatalErrorHandler.swift; path = WebimClientLibrary/FatalErrorHandler.swift; sourceTree = "<group>"; };
-		B7DC74A4A14E825E1B75264EF79D050B /* SnapKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SnapKit.modulemap; sourceTree = "<group>"; };
+		B7EFE3E2822F1C37ACE1F18135E0818D /* SlackTextViewController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SlackTextViewController-dummy.m"; sourceTree = "<group>"; };
 		B82EC87F482F8E63EFA80A3DF32D0C5D /* Collation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Collation.swift; path = Sources/SQLite/Typed/Collation.swift; sourceTree = "<group>"; };
 		B94DB905432A1C4E89B011879CCF15EA /* HistoryStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HistoryStorage.swift; sourceTree = "<group>"; };
 		BA4C13B6D142392F31DCF6B47BB344DD /* Array.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		BBE7FD1D4E433F3FAAB93E1CF24A74E4 /* WebimClientLibrary.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WebimClientLibrary.h; path = WebimClientLibrary/WebimClientLibrary.h; sourceTree = "<group>"; };
-		BBF1706F1449CB319CCE9337587C5625 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC632DDED7CF1BF1421FE8E7F0FFE651 /* MessageToSend.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageToSend.swift; sourceTree = "<group>"; };
 		BCFE11EDF8ED6FB356F670929F45B7B7 /* HistorySinceResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HistorySinceResponse.swift; sourceTree = "<group>"; };
+		BF1A0160861949970986DC345DCE9ECB /* Cosmos-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Cosmos-dummy.m"; sourceTree = "<group>"; };
 		C004A8FC4B6BB5B475A1EFB306D86D19 /* OperatorImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OperatorImpl.swift; sourceTree = "<group>"; };
-		C20D8261294946B58B58B545C03ECCB4 /* PopupDialog.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PopupDialog.xcconfig; sourceTree = "<group>"; };
-		C2A1178569601D8B176CB323F6C1969A /* Cosmos.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = Cosmos.modulemap; sourceTree = "<group>"; };
 		C2BF07B73FDBB90C4C1A8897F9521A83 /* CosmosTouch.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosTouch.swift; path = Cosmos/CosmosTouch.swift; sourceTree = "<group>"; };
 		C2CBD32AFB9A00E3D09182E09197C258 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = iOS/Fabric.framework; sourceTree = "<group>"; };
 		C2F953AC0AC02DB901427DCF8BBE5451 /* PopupDialogDefaultButtons.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PopupDialogDefaultButtons.swift; path = PopupDialog/Classes/PopupDialogDefaultButtons.swift; sourceTree = "<group>"; };
 		C39D88E88CFF4C159390622BA985BE8B /* SLKInputAccessoryView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKInputAccessoryView.h; path = Source/SLKInputAccessoryView.h; sourceTree = "<group>"; };
 		C45D11EC7E8FF92719A0E1C630BE12DE /* ProvidedVisitorFields.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProvidedVisitorFields.swift; sourceTree = "<group>"; };
 		C470023B540C860A6BFF2A528F003DB5 /* WebimLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WebimLogger.swift; path = WebimClientLibrary/WebimLogger.swift; sourceTree = "<group>"; };
-		C5461A6FEECDCABF147D05EDA4A2FB72 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_WebimClientLibrary_Example.framework; path = "Pods-WebimClientLibrary_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C6B964B7AA0B3B4656F2E220F3FECE88 /* Pods-WebimClientLibrary_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Example-resources.sh"; sourceTree = "<group>"; };
+		C5461A6FEECDCABF147D05EDA4A2FB72 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C71BB5FD3648A1C88510492D54EFEBF5 /* ConstraintConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintConfig.swift; path = Source/ConstraintConfig.swift; sourceTree = "<group>"; };
 		C8E8B75EAA68CC151FB6616E545A864A /* SQLite-Bridging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "SQLite-Bridging.h"; path = "Sources/SQLiteObjc/include/SQLite-Bridging.h"; sourceTree = "<group>"; };
 		C98470DA861742FA94D3E549FF68530A /* SLKTypingIndicatorView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKTypingIndicatorView.h; path = Source/SLKTypingIndicatorView.h; sourceTree = "<group>"; };
 		C9DC431C1F0581F2DBF3B18B35028A1A /* CosmosSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosSettings.swift; path = Cosmos/CosmosSettings.swift; sourceTree = "<group>"; };
 		CA6689B5BD274AAAA1CE7E90FA4714B2 /* CompletionHandlerWrappers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CompletionHandlerWrappers.swift; sourceTree = "<group>"; };
+		CB846EE4ADDB3DA5851E05625D7CAF99 /* SnapKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-umbrella.h"; sourceTree = "<group>"; };
 		CC537E206030C9AC6FCF246EA9F4E15A /* Operator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Operator.swift; path = WebimClientLibrary/Operator.swift; sourceTree = "<group>"; };
 		CCDE4C39116B4AAE6604CCAEDDDE9E00 /* PopupDialogButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PopupDialogButton.swift; path = PopupDialog/Classes/PopupDialogButton.swift; sourceTree = "<group>"; };
 		CDC09A6794593E514725D5D5A0CC6C71 /* WebimRemoteNotificationImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimRemoteNotificationImpl.swift; sourceTree = "<group>"; };
+		CFB0283A14F19FA09E6EFCD689CD04CE /* Cosmos-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Cosmos-prefix.pch"; sourceTree = "<group>"; };
 		D04055536F5FE91CD5501A087E7DE968 /* Typealiases.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Typealiases.swift; path = Source/Typealiases.swift; sourceTree = "<group>"; };
-		D0590A7FFF11C65F879FF56C5905285A /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_WebimClientLibrary_Tests.framework; path = "Pods-WebimClientLibrary_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0590A7FFF11C65F879FF56C5905285A /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0FAB3E46C608770C483EA96E3773CCE /* Cosmos.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Cosmos.xcconfig; sourceTree = "<group>"; };
 		D412AD82B46FB3337211280A79EE1978 /* UIResponder+SLKAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIResponder+SLKAdditions.m"; path = "Source/UIResponder+SLKAdditions.m"; sourceTree = "<group>"; };
+		D424D8D17487CF77887C3C014EF9BF2C /* PopupDialog-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PopupDialog-umbrella.h"; sourceTree = "<group>"; };
+		D4866F233682791E792A409EDAFDC329 /* SQLite.swift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SQLite.swift.modulemap; sourceTree = "<group>"; };
+		D4F91B76119F30A014A9F3AE4F30B835 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5C5104C50B5210EE6672486CD7728BD /* ConstraintLayoutGuideDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutGuideDSL.swift; path = Source/ConstraintLayoutGuideDSL.swift; sourceTree = "<group>"; };
 		D63D3A5BBCD13F26961A54C552734BFB /* PresentationController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PresentationController.swift; path = PopupDialog/Classes/PresentationController.swift; sourceTree = "<group>"; };
+		D6F8177EE6789172507581ADFBC158FA /* SQLite.swift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SQLite.swift.xcconfig; sourceTree = "<group>"; };
 		D737EAF097E5B5581F3F28349AD1E978 /* SLKTextInputbar.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SLKTextInputbar.h; path = Source/SLKTextInputbar.h; sourceTree = "<group>"; };
 		D88C19AC19FDC7DE1A90CB39512B317D /* WebimError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WebimError.swift; path = WebimClientLibrary/WebimError.swift; sourceTree = "<group>"; };
 		D9A24F0FB73BA16952E0A2FD6AA94750 /* Foundation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Foundation.swift; path = Sources/SQLite/Foundation.swift; sourceTree = "<group>"; };
@@ -559,32 +559,32 @@
 		DC2A05AC20F044D9647C8FA90450C208 /* ConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintItem.swift; path = Source/ConstraintItem.swift; sourceTree = "<group>"; };
 		DCEDB31AD7D4CEA880910146D1DC3811 /* PopupDialog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PopupDialog.swift; path = PopupDialog/Classes/PopupDialog.swift; sourceTree = "<group>"; };
 		DE53FBAE4518028FA72FAEF79BA5A571 /* RemoteHistoryProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RemoteHistoryProvider.swift; sourceTree = "<group>"; };
-		DECD6819249F690EEA128B17F302994F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DFC124D9576482D972503ACCD3C48F86 /* String.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		E334599F24531CF54B4CDF423BCD705A /* ProvidedAuthorizationTokenStateListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProvidedAuthorizationTokenStateListener.swift; path = WebimClientLibrary/ProvidedAuthorizationTokenStateListener.swift; sourceTree = "<group>"; };
-		E358DE4A92DB5E6E4AD8CC4DDB695938 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SnapKit.framework; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E358DE4A92DB5E6E4AD8CC4DDB695938 /* SnapKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3EA98390ACC5C7B7679C0F507EA0F3E /* InternalErrorListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InternalErrorListener.swift; sourceTree = "<group>"; };
 		E44FDED000CFEA5E8997684166E94A14 /* HistoryMetaInformationStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HistoryMetaInformationStorage.swift; sourceTree = "<group>"; };
 		E61B74DC1E23B0D76F220BAA27F4D849 /* ExecIfNotDestroyedHandlerExecutor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExecIfNotDestroyedHandlerExecutor.swift; sourceTree = "<group>"; };
 		E875FDE45DED7A69F1967B35A3AB34AC /* ConstraintLayoutSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupport.swift; path = Source/ConstraintLayoutSupport.swift; sourceTree = "<group>"; };
 		E9ADE5CC421AA8C62E071B1CC4F626AF /* MessageTracker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MessageTracker.swift; path = WebimClientLibrary/MessageTracker.swift; sourceTree = "<group>"; };
+		EAF4CB6D73818A89D9D94E40D5188687 /* Pods-WebimClientLibrary_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-WebimClientLibrary_Example-dummy.m"; sourceTree = "<group>"; };
 		EB2B3B57C4BDFBED302FD55C3C496460 /* VisitorItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VisitorItem.swift; sourceTree = "<group>"; };
 		EB7E6F65C54F9DA6869D9EDC041125EC /* Coding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coding.swift; path = Sources/SQLite/Typed/Coding.swift; sourceTree = "<group>"; };
 		EC653149D8C812AA5E52B48F2DD9498E /* UIImageView+Calculations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIImageView+Calculations.swift"; path = "PopupDialog/Classes/UIImageView+Calculations.swift"; sourceTree = "<group>"; };
-		ED371C322CB1BD37DC14C571B972EA2F /* Pods-WebimClientLibrary_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WebimClientLibrary_Tests-resources.sh"; sourceTree = "<group>"; };
 		EE1668116AC3687EC96F741765F56E22 /* FTS4.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FTS4.swift; path = Sources/SQLite/Extensions/FTS4.swift; sourceTree = "<group>"; };
-		EF3285285259D6D00571BECD56343B5F /* SlackTextViewController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SlackTextViewController-prefix.pch"; sourceTree = "<group>"; };
 		EF3AE431C2755F726910335443B22A4D /* FABAttributes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FABAttributes.h; path = iOS/Fabric.framework/Headers/FABAttributes.h; sourceTree = "<group>"; };
-		F0555D753B0E9060B817298EE0E762A7 /* SlackTextViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SlackTextViewController.framework; path = SlackTextViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0555D753B0E9060B817298EE0E762A7 /* SlackTextViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SlackTextViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1BE798778A71FFBAC0A3F707F64868B /* ConstraintMultiplierTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMultiplierTarget.swift; path = Source/ConstraintMultiplierTarget.swift; sourceTree = "<group>"; };
 		F220E304B22DAE4253EC4F1C3165C028 /* WebimErrorImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimErrorImpl.swift; sourceTree = "<group>"; };
 		F2AD3B701744E1B73341944062B2919C /* FXBlurView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FXBlurView.h; path = PopupDialog/Classes/FXBlurView.h; sourceTree = "<group>"; };
-		F810EB0755F18C6EA8B242C07BED45A6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F9B0C7A80A6EBD2C74B8C7DCA5FAB961 /* Pods-WebimClientLibrary_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-WebimClientLibrary_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		F63138EEB9E10DBC2D1DDA9BCACA61C2 /* SlackTextViewController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SlackTextViewController.modulemap; sourceTree = "<group>"; };
+		F8130E1042B3FA834B608E4E757DAF1E /* SlackTextViewController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SlackTextViewController-umbrella.h"; sourceTree = "<group>"; };
+		F87105350AE77591C8FEC5EA2C3F7190 /* Pods-WebimClientLibrary_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-WebimClientLibrary_Tests-dummy.m"; sourceTree = "<group>"; };
 		FA8B33DCE33106F90A30A3202BCCDA76 /* MessageFactories.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageFactories.swift; sourceTree = "<group>"; };
 		FADBE7CC7D4AAA3D8572476A7EA2631F /* CLSStackFrame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CLSStackFrame.h; path = iOS/Crashlytics.framework/Headers/CLSStackFrame.h; sourceTree = "<group>"; };
 		FBEDC5C6F2A5CBB16A3A72B1B3BCD6AD /* RightToLeft.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RightToLeft.swift; path = Cosmos/Helpers/RightToLeft.swift; sourceTree = "<group>"; };
 		FD03B769FD977A4025C02108E374AC30 /* PopupDialog+Keyboard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "PopupDialog+Keyboard.swift"; path = "PopupDialog/Classes/PopupDialog+Keyboard.swift"; sourceTree = "<group>"; };
+		FE6F8E616FA96AE3FE2AADC952E629C0 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE9B210FE2EF8692B21BEEB1D7CBD887 /* MemoryHistoryStorage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MemoryHistoryStorage.swift; sourceTree = "<group>"; };
 		FF8580ECAD238587E0F5440EDAD11D6E /* CosmosTouchTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosmosTouchTarget.swift; path = Cosmos/Helpers/CosmosTouchTarget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -711,15 +711,14 @@
 				53C0C139832A4ABB53099261AC7F9527 /* Fabric.h */,
 				1354418EE61DAC0EF6EF89048B4DD2B5 /* Frameworks */,
 			);
-			name = Fabric;
 			path = Fabric;
 			sourceTree = "<group>";
 		};
 		0D12F68CC78C58417909B9B3C3AC3CD2 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				ED28F321E48F71471DA30BF1261D4FFD /* Pods-WebimClientLibrary_Example */,
-				F0AFC6E3EF9E3A70F944E585B863B9BD /* Pods-WebimClientLibrary_Tests */,
+				EA25FE0D70AB56FA61FD0659E4455628 /* Pods-WebimClientLibrary_Example */,
+				2300EE974EB027DF8D10FDA9834F67E0 /* Pods-WebimClientLibrary_Tests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
@@ -733,26 +732,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		115B111659510657FCD52C1BA4A5B18C /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				8F13020A99D18213C035D3F69CA8749A /* Info.plist */,
-				89CFB84D3F6724698F730EBBF2D6C883 /* SlackTextViewController.modulemap */,
-				238B85EAB70E5259AA941E3550164495 /* SlackTextViewController.xcconfig */,
-				16A78B82A0C5C953E718D49E9FC3765A /* SlackTextViewController-dummy.m */,
-				EF3285285259D6D00571BECD56343B5F /* SlackTextViewController-prefix.pch */,
-				15EC117AA13D56264B1500F9EE65D3CE /* SlackTextViewController-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/SlackTextViewController";
-			sourceTree = "<group>";
-		};
 		1354418EE61DAC0EF6EF89048B4DD2B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				C2CBD32AFB9A00E3D09182E09197C258 /* Fabric.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2300EE974EB027DF8D10FDA9834F67E0 /* Pods-WebimClientLibrary_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				361203BA40196D60F8B7297AC8188F57 /* Info.plist */,
+				463223D08135539339108546B8852D5F /* Pods-WebimClientLibrary_Tests.modulemap */,
+				91B6B8F69DA629C6A3D7B9E1F5BF6DD5 /* Pods-WebimClientLibrary_Tests-acknowledgements.markdown */,
+				77C15577D727B197B824E1FB659901D1 /* Pods-WebimClientLibrary_Tests-acknowledgements.plist */,
+				F87105350AE77591C8FEC5EA2C3F7190 /* Pods-WebimClientLibrary_Tests-dummy.m */,
+				2622391C91F5B6214B33023DCD260A62 /* Pods-WebimClientLibrary_Tests-frameworks.sh */,
+				65CBAECCE3C2CDB4BD5A332A08CA6766 /* Pods-WebimClientLibrary_Tests-resources.sh */,
+				23C9CB269996E5AAF073C5F5636F096F /* Pods-WebimClientLibrary_Tests-umbrella.h */,
+				8631E31F47FE2F38449A1FB83F991806 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
+				2F919A175990F97BCDBDE83420483623 /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
+			);
+			name = "Pods-WebimClientLibrary_Tests";
+			path = "Target Support Files/Pods-WebimClientLibrary_Tests";
+			sourceTree = "<group>";
+		};
+		4F04F5EF05B3CA4C518608B33CF778E7 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4BA2BB6E83604490D6997926386668F6 /* Cosmos.modulemap */,
+				D0FAB3E46C608770C483EA96E3773CCE /* Cosmos.xcconfig */,
+				BF1A0160861949970986DC345DCE9ECB /* Cosmos-dummy.m */,
+				CFB0283A14F19FA09E6EFCD689CD04CE /* Cosmos-prefix.pch */,
+				441EEAF33DDB2A66F3A5FB470B679E64 /* Cosmos-umbrella.h */,
+				FE6F8E616FA96AE3FE2AADC952E629C0 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Cosmos";
 			sourceTree = "<group>";
 		};
 		4F7219C21B5C0BD731FF3045802743C0 /* SlackTextViewController */ = {
@@ -780,9 +797,8 @@
 				65C3FED974F91A0222043C47CFAF00B8 /* UIScrollView+SLKAdditions.m */,
 				89C66CDC24D923C2764C4ABF2A5F1A39 /* UIView+SLKAdditions.h */,
 				A748B325C96F357F4CB1EE5A92482766 /* UIView+SLKAdditions.m */,
-				115B111659510657FCD52C1BA4A5B18C /* Support Files */,
+				5A9F5EA9276DB36C40552C9CEAEB8FE6 /* Support Files */,
 			);
-			name = SlackTextViewController;
 			path = SlackTextViewController;
 			sourceTree = "<group>";
 		};
@@ -796,13 +812,40 @@
 			name = Pod;
 			sourceTree = "<group>";
 		};
+		5A26FB8026FC0797467C702191A258E1 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				9EB0B529568CD1CAC40E0F6EBA1D4C94 /* Info.plist */,
+				D4866F233682791E792A409EDAFDC329 /* SQLite.swift.modulemap */,
+				D6F8177EE6789172507581ADFBC158FA /* SQLite.swift.xcconfig */,
+				AE6509574FFFEBCF09E63C3F0A868B2A /* SQLite.swift-dummy.m */,
+				27AC9AB26C6035F63C7DEB7494C45D3A /* SQLite.swift-prefix.pch */,
+				3D0693791EE1FF9F7A7FBA622466950F /* SQLite.swift-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SQLite.swift";
+			sourceTree = "<group>";
+		};
+		5A9F5EA9276DB36C40552C9CEAEB8FE6 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				19BBC33E35927522DB4A5D5E3219048D /* Info.plist */,
+				F63138EEB9E10DBC2D1DDA9BCACA61C2 /* SlackTextViewController.modulemap */,
+				1B13DDE51DE201948A4F370B01AFA800 /* SlackTextViewController.xcconfig */,
+				B7EFE3E2822F1C37ACE1F18135E0818D /* SlackTextViewController-dummy.m */,
+				4EAB6F1595655C26A2D14C8CDA815B21 /* SlackTextViewController-prefix.pch */,
+				F8130E1042B3FA834B608E4E757DAF1E /* SlackTextViewController-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SlackTextViewController";
+			sourceTree = "<group>";
+		};
 		5BA3711370ECA7DC734E8E7A9F37FBEE /* Deltas */ = {
 			isa = PBXGroup;
 			children = (
 				2DFB19BF17E22E5E8D00A3D8B2A4B65C /* DeltaItem.swift */,
 				184AE39EA003B696105AEF8FA304492C /* FullUpdate.swift */,
 			);
-			name = Deltas;
 			path = Deltas;
 			sourceTree = "<group>";
 		};
@@ -825,7 +868,6 @@
 				33F60BC55DF51EEFB71240CBCA412ED0 /* UIColor.swift */,
 				1D9370B508D0493EBA8A10B99C825E26 /* UInt32.swift */,
 			);
-			name = Extensions;
 			path = Extensions;
 			sourceTree = "<group>";
 		};
@@ -879,9 +921,8 @@
 				FBEDC5C6F2A5CBB16A3A72B1B3BCD6AD /* RightToLeft.swift */,
 				66297257B46A0B04E1F0D23851BF3FB9 /* StarFillMode.swift */,
 				9EAB3D37248165415C063F97954B9467 /* StarLayer.swift */,
-				F37D4198549441A0B16CE2B21D6C8E8E /* Support Files */,
+				4F04F5EF05B3CA4C518608B33CF778E7 /* Support Files */,
 			);
-			name = Cosmos;
 			path = Cosmos;
 			sourceTree = "<group>";
 		};
@@ -889,9 +930,8 @@
 			isa = PBXGroup;
 			children = (
 				6792C73D30346037F1AD7859F8E2032A /* standard */,
-				F89291C2903EBC1BFC287D69BA6BEE22 /* Support Files */,
+				5A26FB8026FC0797467C702191A258E1 /* Support Files */,
 			);
-			name = SQLite.swift;
 			path = SQLite.swift;
 			sourceTree = "<group>";
 		};
@@ -908,6 +948,20 @@
 				5B7EE681B87D8AAF1BF5016B46319D63 /* WebimClientLibrary.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		6C27F106E0D346141C6EB41C45389EAA /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				06D62980BACBB770306487FE4C185595 /* Info.plist */,
+				63BA50E91B4381486E26B0365B635B0D /* SnapKit.modulemap */,
+				2EFCCE4F8D8906F8D5F76CA8AE894C87 /* SnapKit.xcconfig */,
+				A541555875AD8A3D9028E22DB39BE37D /* SnapKit-dummy.m */,
+				A258925EDFD70F31A17398FEDCEDA7C3 /* SnapKit-prefix.pch */,
+				CB846EE4ADDB3DA5851E05625D7CAF99 /* SnapKit-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SnapKit";
 			sourceTree = "<group>";
 		};
 		6FC5B1F15A9B51ECE75DFEB94709466F /* WebimClientLibrary */ = {
@@ -930,7 +984,7 @@
 				05345C2AAE326B3D85361CF00B712995 /* Backend */,
 				EDD1AFB9D3B5C2C5697E64CEADE5486E /* Implementation */,
 				5370902B1A051C2D49E4D06B946D1C38 /* Pod */,
-				E6DEAF897B96FD64CB48EDA22A10A6C9 /* Support Files */,
+				DBAE63B10C9CB6DE39788D9B26EF4C72 /* Support Files */,
 			);
 			name = WebimClientLibrary;
 			path = ../..;
@@ -951,22 +1005,7 @@
 				5BA3711370ECA7DC734E8E7A9F37FBEE /* Deltas */,
 				8F9F8D85A679AB1B262A43317D2997BC /* Responses */,
 			);
-			name = Items;
 			path = Items;
-			sourceTree = "<group>";
-		};
-		7D0C826EB68CD21962DA984B4691A233 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				F810EB0755F18C6EA8B242C07BED45A6 /* Info.plist */,
-				B7DC74A4A14E825E1B75264EF79D050B /* SnapKit.modulemap */,
-				0890E8887534092E1C10509A5249BB2F /* SnapKit.xcconfig */,
-				64B40E6546BFC3B2915A06C69B2A040E /* SnapKit-dummy.m */,
-				94FAED3D135EE92E0C2CFE557F9F34CF /* SnapKit-prefix.pch */,
-				A5A1A59AFF219D005E63C823236AA851 /* SnapKit-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/SnapKit";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -981,15 +1020,15 @@
 			);
 			sourceTree = "<group>";
 		};
-		7F8B77343DBB6F330BB7A533325D6548 /* Support Files */ = {
+		81B175995141E0D53C22427069DDF84B /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				DECD6819249F690EEA128B17F302994F /* Info.plist */,
-				38D9E08A8A244C8143B80339AD10D311 /* PopupDialog.modulemap */,
-				C20D8261294946B58B58B545C03ECCB4 /* PopupDialog.xcconfig */,
-				3E3E6DBECBD7A859C3DBC61FB089FDE9 /* PopupDialog-dummy.m */,
-				5EA5C4F1B2C6ECE26602317DEA2C7E61 /* PopupDialog-prefix.pch */,
-				79BB1318FBFCB6B59F114820A3769347 /* PopupDialog-umbrella.h */,
+				D4F91B76119F30A014A9F3AE4F30B835 /* Info.plist */,
+				26241D6FD7DC6DF93EF4AB6991B9F771 /* PopupDialog.modulemap */,
+				7713FFF549B559D0D25EC63F35B37D48 /* PopupDialog.xcconfig */,
+				15C03AA13FFEA43C3F4E6369D5788DCA /* PopupDialog-dummy.m */,
+				21E7CD506292AD43E31BAB7527070AD6 /* PopupDialog-prefix.pch */,
+				D424D8D17487CF77887C3C014EF9BF2C /* PopupDialog-umbrella.h */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/PopupDialog";
@@ -1016,7 +1055,6 @@
 				A193CC2710805DA939D32EC09565ACCB /* HistoryBeforeResponse.swift */,
 				BCFE11EDF8ED6FB356F670929F45B7B7 /* HistorySinceResponse.swift */,
 			);
-			name = Responses;
 			path = Responses;
 			sourceTree = "<group>";
 		};
@@ -1041,9 +1079,8 @@
 				EC653149D8C812AA5E52B48F2DD9498E /* UIImageView+Calculations.swift */,
 				83519CCDAB486B59FE551AF5C1D1DD75 /* UIView+Animations.swift */,
 				5FA97BBF09804ACE1BCF879C7A92F76C /* UIViewController+Visibility.swift */,
-				7F8B77343DBB6F330BB7A533325D6548 /* Support Files */,
+				81B175995141E0D53C22427069DDF84B /* Support Files */,
 			);
-			name = PopupDialog;
 			path = PopupDialog;
 			sourceTree = "<group>";
 		};
@@ -1084,9 +1121,8 @@
 				0E23F2AC0E8E6DFB2E563077C5296618 /* LayoutConstraintItem.swift */,
 				D04055536F5FE91CD5501A087E7DE968 /* Typealiases.swift */,
 				53F5BBEFD90D802D74EC71D0366F81B4 /* UILayoutSupport+Extensions.swift */,
-				7D0C826EB68CD21962DA984B4691A233 /* Support Files */,
+				6C27F106E0D346141C6EB41C45389EAA /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
@@ -1100,37 +1136,36 @@
 				0FBC8379477B67860460DBA29C44823C /* OperatorFactory.swift */,
 				665560399382CB071AAF9886BA066DC2 /* Extensions */,
 			);
-			name = Utilities;
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		E6DEAF897B96FD64CB48EDA22A10A6C9 /* Support Files */ = {
+		DBAE63B10C9CB6DE39788D9B26EF4C72 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				BBF1706F1449CB319CCE9337587C5625 /* Info.plist */,
-				4833685AC5616026F0E9F61F12F09D52 /* WebimClientLibrary.modulemap */,
-				8A1ED8FF126EA23FF31DFA9E61215D1F /* WebimClientLibrary.xcconfig */,
-				9302E87BE33953EF5C13B7CFEEF47E1C /* WebimClientLibrary-dummy.m */,
-				6211F794E8F88648B724622EF6006A18 /* WebimClientLibrary-prefix.pch */,
-				09A695E22C2203A64FDCB09ADC78915C /* WebimClientLibrary-umbrella.h */,
+				10D81E0177A9FAC99655E1B41654D535 /* Info.plist */,
+				A81F48F4145E840A2F3B171694AC483A /* WebimClientLibrary.modulemap */,
+				753C10651B46B038EB66F243787DC617 /* WebimClientLibrary.xcconfig */,
+				754FCD497F6F3304F104C8E40D115A5B /* WebimClientLibrary-dummy.m */,
+				B16B0DDEECECCEACBF03FA417D4C0D7E /* WebimClientLibrary-prefix.pch */,
+				14AE187B703B991040A2AC24ECE52DC8 /* WebimClientLibrary-umbrella.h */,
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/WebimClientLibrary";
 			sourceTree = "<group>";
 		};
-		ED28F321E48F71471DA30BF1261D4FFD /* Pods-WebimClientLibrary_Example */ = {
+		EA25FE0D70AB56FA61FD0659E4455628 /* Pods-WebimClientLibrary_Example */ = {
 			isa = PBXGroup;
 			children = (
-				6BFFB988006064367BA1BFEE64C2562B /* Info.plist */,
-				7382968C9E00338B87296E02FD7F8E63 /* Pods-WebimClientLibrary_Example.modulemap */,
-				F9B0C7A80A6EBD2C74B8C7DCA5FAB961 /* Pods-WebimClientLibrary_Example-acknowledgements.markdown */,
-				31439C10A32CA19A44588E0C5993F029 /* Pods-WebimClientLibrary_Example-acknowledgements.plist */,
-				07296C0A194EC55E0FE2AB0A445CBCC1 /* Pods-WebimClientLibrary_Example-dummy.m */,
-				787CF2058A06553EE8A3E5279784A2C2 /* Pods-WebimClientLibrary_Example-frameworks.sh */,
-				C6B964B7AA0B3B4656F2E220F3FECE88 /* Pods-WebimClientLibrary_Example-resources.sh */,
-				7E998C6D1261117DCEF37760F069DB12 /* Pods-WebimClientLibrary_Example-umbrella.h */,
-				ADC553839505981D6131DE9A73A4D136 /* Pods-WebimClientLibrary_Example.debug.xcconfig */,
-				3F1C4FF89EFCD2BC749E6ACC12B3831C /* Pods-WebimClientLibrary_Example.release.xcconfig */,
+				52595AB53ADE814912E6AF0F39689999 /* Info.plist */,
+				64FF9394922483DDA5448657B56E6E4E /* Pods-WebimClientLibrary_Example.modulemap */,
+				7663A6AB1AAA074B75EAC8D69251B798 /* Pods-WebimClientLibrary_Example-acknowledgements.markdown */,
+				33B9D4FAC1A7C5B3F38BED0585AF2632 /* Pods-WebimClientLibrary_Example-acknowledgements.plist */,
+				EAF4CB6D73818A89D9D94E40D5188687 /* Pods-WebimClientLibrary_Example-dummy.m */,
+				44ABF483FEB8DBFFA207EB62EA0A60F7 /* Pods-WebimClientLibrary_Example-frameworks.sh */,
+				66FF158F5D045BCF7312B62F4BD7F86C /* Pods-WebimClientLibrary_Example-resources.sh */,
+				A39D8A7D919E04BCFAB21036A1AC4DC5 /* Pods-WebimClientLibrary_Example-umbrella.h */,
+				1A47949C61BCCE7C8DEB72DF882ECD0C /* Pods-WebimClientLibrary_Example.debug.xcconfig */,
+				B527214951BD11F916FF3930927320F5 /* Pods-WebimClientLibrary_Example.release.xcconfig */,
 			);
 			name = "Pods-WebimClientLibrary_Example";
 			path = "Target Support Files/Pods-WebimClientLibrary_Example";
@@ -1161,38 +1196,6 @@
 			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		F0AFC6E3EF9E3A70F944E585B863B9BD /* Pods-WebimClientLibrary_Tests */ = {
-			isa = PBXGroup;
-			children = (
-				816F044BC1887A143EAD4CD83D0551F8 /* Info.plist */,
-				1F9870AEF255568274DC72A2E3D43A7E /* Pods-WebimClientLibrary_Tests.modulemap */,
-				AD7591D08108513394A934E00E90CF6C /* Pods-WebimClientLibrary_Tests-acknowledgements.markdown */,
-				B291090813C99C50039F4FF8B1BC5D15 /* Pods-WebimClientLibrary_Tests-acknowledgements.plist */,
-				87A115B61721AACC4838BF38EFE98008 /* Pods-WebimClientLibrary_Tests-dummy.m */,
-				23A488AC297B9634EDDFA6EA64EDDE4F /* Pods-WebimClientLibrary_Tests-frameworks.sh */,
-				ED371C322CB1BD37DC14C571B972EA2F /* Pods-WebimClientLibrary_Tests-resources.sh */,
-				9BCD8293F6AB2637AE7C2536475FDD0C /* Pods-WebimClientLibrary_Tests-umbrella.h */,
-				9AC1425D80688747818651F5602521B5 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
-				44BBF8F52F26A43ED24B5573F42004FB /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
-			);
-			name = "Pods-WebimClientLibrary_Tests";
-			path = "Target Support Files/Pods-WebimClientLibrary_Tests";
-			sourceTree = "<group>";
-		};
-		F37D4198549441A0B16CE2B21D6C8E8E /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				C2A1178569601D8B176CB323F6C1969A /* Cosmos.modulemap */,
-				480719C991887FAF6E1D2297F178DC8E /* Cosmos.xcconfig */,
-				98534AE033EF4E2EC72DC976EEE36B7E /* Cosmos-dummy.m */,
-				B086A8A7863637653F63B085754B7E02 /* Cosmos-prefix.pch */,
-				11E34F639EBD6FDF617BA57ADE074BDE /* Cosmos-umbrella.h */,
-				5BCBF7F2C5C672BF1C3402C170B547D7 /* Info.plist */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Cosmos";
-			sourceTree = "<group>";
-		};
 		F81FF03F2692806734FF508D71D2CE3E /* Crashlytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -1205,22 +1208,7 @@
 				3B8C9A3A62FCF8E8D51A89FF3159ED4D /* Crashlytics.h */,
 				0B5318934A8F5D6E1E300C4CF2DAD6BD /* Frameworks */,
 			);
-			name = Crashlytics;
 			path = Crashlytics;
-			sourceTree = "<group>";
-		};
-		F89291C2903EBC1BFC287D69BA6BEE22 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				4381A133EB303440D7BECF494B49CA57 /* Info.plist */,
-				8A42EE793862227E204B1758B4C046AA /* SQLite.swift.modulemap */,
-				93AF2F9D6990F04BB194656220401144 /* SQLite.swift.xcconfig */,
-				7FD84403C699D068E37857FC80B3498A /* SQLite.swift-dummy.m */,
-				4A4BD7FA64742E6BCA90D4AABE6FAB6B /* SQLite.swift-prefix.pch */,
-				0DD20B149531F377D3CE7DAA0F73EA32 /* SQLite.swift-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/SQLite.swift";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1460,8 +1448,8 @@
 		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0700;
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1776,7 +1764,7 @@
 /* Begin XCBuildConfiguration section */
 		147754C2FF74FE88BA5C476F30417869 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0890E8887534092E1C10509A5249BB2F /* SnapKit.xcconfig */;
+			baseConfigurationReference = 2EFCCE4F8D8906F8D5F76CA8AE894C87 /* SnapKit.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1808,7 +1796,7 @@
 		};
 		19409CEEB15B67CB4A98AAA7DB6F97E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 238B85EAB70E5259AA941E3550164495 /* SlackTextViewController.xcconfig */;
+			baseConfigurationReference = 1B13DDE51DE201948A4F370B01AFA800 /* SlackTextViewController.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1840,7 +1828,7 @@
 		};
 		1C5E36FC1A14C17305D791D3AB9046D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A1ED8FF126EA23FF31DFA9E61215D1F /* WebimClientLibrary.xcconfig */;
+			baseConfigurationReference = 753C10651B46B038EB66F243787DC617 /* WebimClientLibrary.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1872,7 +1860,7 @@
 		};
 		26192F88F5A437EF1A977D7A9450E227 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C20D8261294946B58B58B545C03ECCB4 /* PopupDialog.xcconfig */;
+			baseConfigurationReference = 7713FFF549B559D0D25EC63F35B37D48 /* PopupDialog.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1902,75 +1890,7 @@
 			};
 			name = Debug;
 		};
-		659C49EB78C223808F096000090DE9DA /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 480719C991887FAF6E1D2297F178DC8E /* Cosmos.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/Cosmos/Cosmos-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Cosmos/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Cosmos/Cosmos.modulemap";
-				PRODUCT_NAME = Cosmos;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		6B95CDB8AEC09B063136B3A33622247A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = ADC553839505981D6131DE9A73A4D136 /* Pods-WebimClientLibrary_Example.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Onone";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_WebimClientLibrary_Example;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		6F9224530522DD3C735EC96CF142642E /* Release */ = {
+		26F954BA177A9A46FFFD4E23ED11D67A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1980,10 +1900,12 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1991,6 +1913,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -2025,9 +1948,77 @@
 			};
 			name = Release;
 		};
+		659C49EB78C223808F096000090DE9DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0FAB3E46C608770C483EA96E3773CCE /* Cosmos.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Cosmos/Cosmos-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Cosmos/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Cosmos/Cosmos.modulemap";
+				PRODUCT_NAME = Cosmos;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		6B95CDB8AEC09B063136B3A33622247A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A47949C61BCCE7C8DEB72DF882ECD0C /* Pods-WebimClientLibrary_Example.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Onone";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_WebimClientLibrary_Example;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		7613356B308EE6B537E42A1E0C2CC03E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93AF2F9D6990F04BB194656220401144 /* SQLite.swift.xcconfig */;
+			baseConfigurationReference = D6F8177EE6789172507581ADFBC158FA /* SQLite.swift.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2059,7 +2050,7 @@
 		};
 		837FA58DF46964A4928C5CA4B15F834B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AC1425D80688747818651F5602521B5 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */;
+			baseConfigurationReference = 8631E31F47FE2F38449A1FB83F991806 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2094,7 +2085,7 @@
 		};
 		8F9BFE90A3B229CF53E764907A6364E7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 238B85EAB70E5259AA941E3550164495 /* SlackTextViewController.xcconfig */;
+			baseConfigurationReference = 1B13DDE51DE201948A4F370B01AFA800 /* SlackTextViewController.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2125,7 +2116,7 @@
 		};
 		9AE8D8FF5F217400FB4B847AB1C9F967 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A1ED8FF126EA23FF31DFA9E61215D1F /* WebimClientLibrary.xcconfig */;
+			baseConfigurationReference = 753C10651B46B038EB66F243787DC617 /* WebimClientLibrary.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2155,7 +2146,172 @@
 			};
 			name = Release;
 		};
-		B57951D085A1B98A97F8A1062A5E5C5B /* Debug */ = {
+		BE64C6922AFF3C24AD51B9ADC50D123F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6F8177EE6789172507581ADFBC158FA /* SQLite.swift.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/SQLite.swift/SQLite.swift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SQLite.swift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SQLite.swift/SQLite.swift.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Onone";
+				PRODUCT_NAME = SQLite;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C33192F54DCC74BC9493B50BA8F52932 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7713FFF549B559D0D25EC63F35B37D48 /* PopupDialog.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/PopupDialog/PopupDialog-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PopupDialog/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PopupDialog/PopupDialog.modulemap";
+				PRODUCT_NAME = PopupDialog;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C913AD09FAFB3876F49E01146DF9EB06 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0FAB3E46C608770C483EA96E3773CCE /* Cosmos.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/Cosmos/Cosmos-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Cosmos/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Cosmos/Cosmos.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited) -Onone";
+				PRODUCT_NAME = Cosmos;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		DA0C44F4D6FDF19174564D48C71596BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B527214951BD11F916FF3930927320F5 /* Pods-WebimClientLibrary_Example.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_WebimClientLibrary_Example;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E287FE21F659936A0373F37FD2E75691 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F919A175990F97BCDBDE83420483623 /* Pods-WebimClientLibrary_Tests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-WebimClientLibrary_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_WebimClientLibrary_Tests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E2BF6D6731C31DE69900B7B24E6F0445 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -2165,10 +2321,12 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2176,6 +2334,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -2215,174 +2374,9 @@
 			};
 			name = Debug;
 		};
-		BE64C6922AFF3C24AD51B9ADC50D123F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93AF2F9D6990F04BB194656220401144 /* SQLite.swift.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/SQLite.swift/SQLite.swift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/SQLite.swift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/SQLite.swift/SQLite.swift.modulemap";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Onone";
-				PRODUCT_NAME = SQLite;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		C33192F54DCC74BC9493B50BA8F52932 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C20D8261294946B58B58B545C03ECCB4 /* PopupDialog.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/PopupDialog/PopupDialog-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/PopupDialog/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/PopupDialog/PopupDialog.modulemap";
-				PRODUCT_NAME = PopupDialog;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		C913AD09FAFB3876F49E01146DF9EB06 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 480719C991887FAF6E1D2297F178DC8E /* Cosmos.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/Cosmos/Cosmos-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Cosmos/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Cosmos/Cosmos.modulemap";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Onone";
-				PRODUCT_NAME = Cosmos;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		DA0C44F4D6FDF19174564D48C71596BB /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F1C4FF89EFCD2BC749E6ACC12B3831C /* Pods-WebimClientLibrary_Example.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_WebimClientLibrary_Example;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		E287FE21F659936A0373F37FD2E75691 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44BBF8F52F26A43ED24B5573F42004FB /* Pods-WebimClientLibrary_Tests.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-WebimClientLibrary_Tests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_WebimClientLibrary_Tests;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		E2DEB7CBC20A6EA6BB9AE3CBAA016FA0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0890E8887534092E1C10509A5249BB2F /* SnapKit.xcconfig */;
+			baseConfigurationReference = 2EFCCE4F8D8906F8D5F76CA8AE894C87 /* SnapKit.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2418,8 +2412,8 @@
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B57951D085A1B98A97F8A1062A5E5C5B /* Debug */,
-				6F9224530522DD3C735EC96CF142642E /* Release */,
+				E2BF6D6731C31DE69900B7B24E6F0445 /* Debug */,
+				26F954BA177A9A46FFFD4E23ED11D67A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

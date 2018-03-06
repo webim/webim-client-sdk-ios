@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Mapper class that is responsible for converting internal department model objects to public ones.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
 final class DepartmentFactory {

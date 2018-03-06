@@ -27,9 +27,9 @@
 import Foundation
 
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class WebimClientBuilder {
@@ -45,7 +45,7 @@ final class WebimClientBuilder {
     private var internalErrorListener: InternalErrorListener?
     private var location: String?
     private var providedAuthenticationToken: String?
-    private var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
+    private weak var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var sessionID: String?
     private var sessionParametersListener: SessionParametersListener?
     private var title: String?
@@ -181,9 +181,9 @@ final class WebimClientBuilder {
 // Need to update deviceToken in DeltaRequestLoop on update in WebimActions.
 /**
  Class that is responsible for history storage when it is set to memory mode.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class WebimClient {
@@ -242,9 +242,9 @@ final class WebimClient {
 // MARK: -
 // Need to update AuthorizationData in ActionRequestLoop on update in DeltaRequestLoop.
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final private class SessionParametersListenerWrapper: SessionParametersListener {

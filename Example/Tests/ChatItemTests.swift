@@ -31,7 +31,7 @@ import XCTest
 class ChatItemTests: XCTestCase {
     
     // MARK: - Constants
-    private static let CHAT_ITEM_JSON_STRING = """
+    static let CHAT_ITEM_JSON_STRING = """
 {
     "readByVisitor" : true,
     "category" : null,
@@ -206,14 +206,23 @@ class ChatItemTests: XCTestCase {
         XCTAssertFalse(chatItem.getReadByVisitor()!)
     }
     
+    func testSetUnreadByOperatorTimestamp() {
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        chatItem.set(unreadByOperatorTimestamp: 1.0)
+        
+        XCTAssertEqual(chatItem.getUnreadByOperatorTimestamp(),
+                       1.0)
+    }
+    
     // MARK: ChatItemState tests
     
     func testInitChatItemState() {
-        XCTAssertNil(ChatItem.ChatItemState(withType: "new_state")) // Some unsupported value.
+        XCTAssertEqual(ChatItem.ChatItemState(withType: "new_state").rawValue,
+                       "unknown") // Some unsupported value.
     }
     
     func testIsClosed() {
-        let chatItemState = ChatItem.ChatItemState(withType: "chatting")!
+        let chatItemState = ChatItem.ChatItemState(withType: "chatting")
         
         XCTAssertFalse(chatItemState.isClosed())
     }

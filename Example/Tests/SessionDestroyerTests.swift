@@ -25,8 +25,8 @@
 //
 
 import Foundation
-import XCTest
 @testable import WebimClientLibrary
+import XCTest
 
 class SessionDestroyerTests: XCTestCase {
     

@@ -28,7 +28,7 @@ import Foundation
 @testable import WebimClientLibrary
 import XCTest
 
-class MessageStremImplTests: XCTestCase {
+class MessageStreamImplTests: XCTestCase {
     
     // MARK: - Properties
     var messageStream: MessageStreamImpl?
@@ -48,14 +48,14 @@ class MessageStremImplTests: XCTestCase {
                                                                                                                                               queue: queue),
                                                                                  internalErrorListener: InternalErrorListenerForTests()))
         messageStream = MessageStreamImpl(serverURLString: serverURLString,
-                                          currentChatMessageFactoriesMapper: CurrentChatMapper(withServerURLString: serverURLString),
+                                          currentChatMessageFactoriesMapper: CurrentChatMessageMapper(withServerURLString: serverURLString),
                                           sendingMessageFactory: SendingFactory(withServerURLString: serverURLString),
                                           operatorFactory: OperatorFactory(withServerURLString: serverURLString),
                                           accessChecker: accessChecker,
                                           webimActions: webimActions!,
                                           messageHolder: MessageHolder(accessChecker: accessChecker,
                                                                        remoteHistoryProvider: RemoteHistoryProvider(webimActions: webimActions!,
-                                                                                                                    historyMessageMapper: HistoryMapper(withServerURLString: serverURLString),
+                                                                                                                    historyMessageMapper: HistoryMessageMapper(withServerURLString: serverURLString),
                                                                                                                     historyMetaInformationStorage: MemoryHistoryMetaInformationStorage()),
                                                                        historyStorage: MemoryHistoryStorage(),
                                                                        reachedEndOfRemoteHistory: true),
@@ -145,6 +145,19 @@ class MessageStremImplTests: XCTestCase {
         XCTAssertTrue(onlineStatusChangeListener.called)
         XCTAssertEqual(onlineStatusChangeListener.status!,
                        OnlineStatus.BUSY_OFFLINE)
+    }
+    
+    func testChangingChatState() {
+        let chatItemDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.CHAT_ITEM_JSON_STRING.data(using: .utf8)!,
+                                                                   options: []) as! [String : Any?]
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        messageStream!.changingChatStateOf(chat: chatItem)
+        
+        XCTAssertEqual(messageStream!.getChatState(),
+                       ChatState.CHATTING)
+        XCTAssertNil(messageStream!.getUnreadByOperatorTimestamp())
+        XCTAssertNil(messageStream!.getUnreadByVisitorTimestamp())
+        XCTAssertEqual(messageStream!.getCurrentOperator()!.getID(), "33201")
     }
     
 }

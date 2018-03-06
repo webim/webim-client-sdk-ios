@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that checks if session methods are called in appropriate conditions.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 class AccessChecker {

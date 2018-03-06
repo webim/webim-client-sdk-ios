@@ -27,9 +27,9 @@
 import Foundation
 
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class MessageHolder {
@@ -138,10 +138,10 @@ final class MessageHolder {
     }
     
     func newMessageTracker(withMessageListener messageListener: MessageListener) throws -> MessageTrackerImpl {
-        try self.messageTracker?.destroy()
+        try messageTracker?.destroy()
         
-        self.set(messageTracker: MessageTrackerImpl(messageListener: messageListener,
-                                                    messageHolder: self))
+        set(messageTracker: MessageTrackerImpl(messageListener: messageListener,
+                                               messageHolder: self))
         
         return messageTracker!
     }
@@ -239,8 +239,8 @@ final class MessageHolder {
     func sending(message: MessageToSend) {
         messagesToSend.append(message)
         
-        messageTracker?.messageListener.added(message: message,
-                                              after: nil)
+        messageTracker?.messageListener?.added(message: message,
+                                               after: nil)
     }
     
     func sendingCancelledWith(messageID: String) {
@@ -250,7 +250,7 @@ final class MessageHolder {
                 
                 messagesToSend.remove(at: messageIndex)
                 
-                messageTracker?.messageListener.removed(message: message)
+                messageTracker?.messageListener?.removed(message: message)
                 
                 return
             }
@@ -288,9 +288,9 @@ final class MessageHolder {
     private func respondTo(messages: [MessageImpl],
                            limitOfMessages: Int,
                            completion: ([Message]) -> ()) {
-        completion(messages.isEmpty ?
-            [MessageImpl]() :
-            (messages.count <= limitOfMessages) ? messages : Array(messages[(messages.count - limitOfMessages) ..< messages.count]))
+        completion(messages.isEmpty
+            ? [MessageImpl]()
+            : (messages.count <= limitOfMessages) ? messages : Array(messages[(messages.count - limitOfMessages) ..< messages.count]))
     }
     
     private func respondTo(messages: [MessageImpl],
@@ -309,10 +309,10 @@ final class MessageHolder {
                 currentChatMessage.invertHistoryStatus()
                 
                 if let id = currentChatMessage.getHistoryID()?.getDBid() {
-                    if let historyMessage = messageTracker!.idToHistoryMessageMap[id] {
+                    if let historyMessage = messageTracker?.idToHistoryMessageMap[id] {
                         if currentChatMessage != historyMessage {
-                            messageTracker?.messageListener.changed(message: currentChatMessage,
-                                                                    to: historyMessage)
+                            messageTracker?.messageListener?.changed(message: currentChatMessage,
+                                                                     to: historyMessage)
                         } else {
                             messageTracker?.idToHistoryMessageMap[id] = currentChatMessage
                         }
@@ -459,8 +459,8 @@ final class MessageHolder {
                 messageTracker?.idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = replacementMessage
                 
                 if replacementMessage != currentChatMessage {
-                    messageTracker?.messageListener.changed(message: currentChatMessage,
-                                                            to: replacementMessage)
+                    messageTracker?.messageListener?.changed(message: currentChatMessage,
+                                                             to: replacementMessage)
                 }
                 
                 currentChatMessages.remove(at: currentChatMessageIndex)

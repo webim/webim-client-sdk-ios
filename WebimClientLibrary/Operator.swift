@@ -28,11 +28,11 @@ import Foundation
 
 /**
  Abstracts a chat operator.
- - SeeAlso:
+ - seealso:
  `MessageStream.getCurrentOperator()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol Operator {
@@ -40,12 +40,12 @@ public protocol Operator {
     /**
      - returns:
      Unique ID of the operator.
-     - SeeAlso:
+     - seealso:
      `MessageStream.rateOperatorWith(id:byRate:completionHandler:)`
      `MessageStream.getLastRatingOfOperatorWith(id:)`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getID() -> String
@@ -53,9 +53,9 @@ public protocol Operator {
     /**
      - returns:
      Display name of the operator.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getName() -> String
@@ -63,9 +63,9 @@ public protocol Operator {
     /**
      - returns:
      URL of the operator’s avatar or `nil` if does not exist.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getAvatarURL() -> URL?

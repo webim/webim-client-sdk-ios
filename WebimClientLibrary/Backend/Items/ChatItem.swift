@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates chat data.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class ChatItem {
@@ -166,11 +166,11 @@ final class ChatItem {
     // For testing purpoeses.
     init(id: String? = nil) {
         creationTimestamp = ChatItem.createCreationTimestamp()
-        
+
         if id == nil {
             self.id = String(Int(-creationTimestamp))
         } else {
-            self.id = id!
+            self.id = id! 
         }
     }
     
@@ -265,12 +265,8 @@ final class ChatItem {
         case unknown = "unknown"
         
         // MARK: - Initialization
-        init?(withType typeValue: String) {
-            guard let chatItemState = ChatItemState(rawValue: typeValue) else {
-                return nil
-            }
-            
-            self = chatItemState
+        init(withType typeValue: String) {
+            self = ChatItemState(rawValue: typeValue) ?? .unknown
         }
         
         

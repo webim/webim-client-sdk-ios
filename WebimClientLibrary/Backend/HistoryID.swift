@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates message ID in history context.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class HistoryID {

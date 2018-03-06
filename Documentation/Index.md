@@ -998,7 +998,7 @@ Arised when trying to send operator rating request if passed operator ID doesn't
 Requests last messages from history. Returns not more than `limitOfMessages` of messages. If an empty list is passed inside completion, there no messages in history yet.
 If there is any previous [MessageTracker](#message-tracker) request that is not completed, or limit of messages is less than 1, or current [MessageTracker](#message-tracker) has been destroyed, this method will do nothing.
 Following history request can be fulfilled by [getLastMessages(byLimit:completion:)](#get-last-messages-by-limit-limit-of-messages-completion) method.
-Completion is called with received array of [Message](#message) objects as the parameter.
+Completion is called with received array of [Message](#message) objects as the parameter. It is guaranteed that completion will be called with empty or not result if call didn't throw an error. If current `MessageTracker` is destroyed completion will be called on empty result.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="get-next-nessages-by-limit-limit-of-messages-completion">getNextMessages(byLimit:completion:) method</h3>
@@ -1006,7 +1006,7 @@ Can throw errors of [AccessError](#access-error) type.
 Requests the messages above in history. Returns not more than `limitOfMessages` of messages. If an empty list is passed inside completion, the end of the message history is reached.
 If there is any previous [MessageTracker](#message-tracker) request that is not completed, or limit of messages is less than 1, or current [MessageTracker](#message-tracker) has been destroyed, this method will do nothing.
 Notice that this method can not be called again until the callback for the previous call will be invoked.
-Completion is called with received array of [Message](#message) objects as the parameter.
+Completion is called with received array of [Message](#message) objects as the parameter. It is guaranteed that completion will be called with empty or not result if call didn't throw an error. If current `MessageTracker` is destroyed completion will be called on empty result.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="get-all-messages-completion">getAllMessages(completion:) method</h3>
@@ -1014,7 +1014,7 @@ Can throw errors of [AccessError](#access-error) type.
 Requests all messages from history. If an empty list is passed inside completion, there no messages in history yet.
 If there is any previous [MessageTracker](#message-tracker) request that is not completed, or current [MessageTracker](#message-tracker) has been destroyed, this method will do nothing.
 This method is totally independent on [getLastMessages(byLimit:completion:)](#get-last-messages-by-limit-limit-of-messages-completion) and [getNextMessages(byLimit:completion:)](#get-next-nessages-by-limit-limit-of-messages-completion) methods calls.
-Completion is called with received array of [Message](#message) objects as the parameter.
+Completion is called with received array of [Message](#message) objects as the parameter. It is guaranteed that completion will be called with empty or not result if call didn't throw an error. If current `MessageTracker` is destroyed completion will be called on empty result.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="reset-to-message">resetTo(message:) method</h3>

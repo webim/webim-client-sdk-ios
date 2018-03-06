@@ -29,22 +29,22 @@ import Foundation
 /**
  Single department entity. Provides methods to get department information.
  Department objects can be received through `DepartmentListChangeListener` protocol methods and `getDepartmentList()` method of `MessageStream` protocol.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol Department {
     
     /**
      Department key is used to start chat with some department.
-     - SeeAlso:
+     - seealso:
      `startChat(departmentKey:)` method of `MessageStream` protocol.
      - returns:
      Department key value that uniquely identifies this department.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getKey() -> String
@@ -52,21 +52,21 @@ public protocol Department {
     /**
      - returns:
      Department public name.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getName() -> String
     
     /**
-     - SeeAlso:
+     - seealso:
      `DepartmentOnlineStatus`.
      - returns:
      Department online status.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getDepartmentOnlineStatus() -> DepartmentOnlineStatus
@@ -74,9 +74,9 @@ public protocol Department {
     /**
      - returns:
      Order number. Higher numbers match higher priority.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getOrder() -> Int
@@ -84,9 +84,9 @@ public protocol Department {
     /**
      - returns:
      Dictionary of department localized names (if exists). Key is custom locale descriptor, value is matching name.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getLocalizedNames() -> [String: String]?
@@ -94,9 +94,9 @@ public protocol Department {
     /**
      - returns:
      Department logo URL (if exists).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getLogoURL() -> URL?
@@ -105,56 +105,56 @@ public protocol Department {
 
 /**
  Possible department online statuses.
- - SeeAlso:
+ - seealso:
  `getDepartmentOnlineStatus()` of `Department` protocol.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum DepartmentOnlineStatus {
     
     /**
      Offline state with chats' count limit exceeded.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case BUSY_OFFLINE
     
     /**
      Online state with chats' count limit exceeded.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case BUSY_ONLINE
     
     /**
      Visitor is able to send offline messages.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OFFLINE
     
     /**
      Visitor is able to send both online and offline messages.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case ONLINE
     
     /**
      Any status that is not supported by this version of the library.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case UNKNOWN

@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates chat operator data, received from server.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 struct OperatorItem {

@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Errors that can be received from a server after a HTTP-request.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 enum WebimInternalError: String, Error {

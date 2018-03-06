@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Encapsulates internal representation of single department.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class DepartmentItem {

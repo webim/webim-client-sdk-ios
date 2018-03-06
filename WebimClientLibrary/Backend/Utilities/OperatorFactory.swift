@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Mapper class that is responsible for converting internal operator model objects to public ones.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class OperatorFactory {

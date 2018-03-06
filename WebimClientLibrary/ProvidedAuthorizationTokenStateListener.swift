@@ -1,6 +1,6 @@
 //
 //  ProvidedAuthorizationTokenStateListener.swift
-//  Cosmos
+//  WebimClientLibrary
 //
 //  Created by Nikita Lazarev-Zubov on 06.12.17.
 //  Copyright © 2017 Webim. All rights reserved.
@@ -31,12 +31,12 @@ import Foundation
  When provided authorization token is generated (or passed to session by client app), `update(providedAuthorizationToken:)` method is called. This method call indicates that client app must send provided authorisation token to its server which is responsible to send it to Webim service.
  - important:
  This mechanism can't be used as is. It requires that client server to support this mecahnism.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol ProvidedAuthorizationTokenStateListener {
+public protocol ProvidedAuthorizationTokenStateListener: class {
     
     /**
      Method is called in two cases:
@@ -45,11 +45,11 @@ public protocol ProvidedAuthorizationTokenStateListener {
      When this method is called, client server must send provided authorization token to Webim service.
      - parameter providedAuthorizationToken:
      Provided authorization token which corresponds to session.
-     - SeeAlso:
+     - seealso:
      `set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func update(providedAuthorizationToken: String)

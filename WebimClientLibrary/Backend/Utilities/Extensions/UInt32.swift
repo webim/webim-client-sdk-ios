@@ -30,6 +30,7 @@ extension UInt32 {
     
     // MARK: - Initialization
     /**
+     Part or HMAC SHA256 generation system.
      - author:
      Nikita Lazarev-Zubov
      - copyright:

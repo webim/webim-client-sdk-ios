@@ -463,21 +463,21 @@ extension ChatViewController: MessageListener {
     
     func added(message newMessage: Message,
                after previousMessage: Message?) {
-        var added = false
+        var inserted = false
         
         if let previousMessage = previousMessage {
             for (index, message) in messages.enumerated() {
                 if previousMessage.isEqual(to: message) {
                     messages.insert(newMessage,
-                                    at: index + 1)
-                    added = true
+                                    at: index - 1)
+                    inserted = true
                     
                     break
                 }
             }
         }
         
-        if !added {
+        if !inserted {
             messages.append(newMessage)
         }
         

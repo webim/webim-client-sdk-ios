@@ -33,7 +33,7 @@ extension String {
     /**
      Percent escapes values to be added to a URL query as specified in RFC 3986.
      This percent-escapes all characters besides the alphanumeric character set and "-", ".", "_", and "~".
-     - SeeAlso:
+     - seealso:
      http://ietf.org/rfc/rfc3986.txt
      - returns:
      Percent-escaped string.
@@ -75,9 +75,10 @@ extension String {
 
 // MARK: -
 /**
- - Author:
+ Part or HMAC SHA256 generation system.
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
 public final class HMACsha256 {
@@ -151,9 +152,10 @@ public final class HMACsha256 {
 
 // MARK: -
 /**
- - Author:
+ Part or HMAC SHA256 generation system.
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
 public final class SHA256 {

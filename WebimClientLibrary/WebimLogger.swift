@@ -29,20 +29,20 @@ import Foundation
 /**
  Protocol that provides methods for implementing custom WebimClientLibrary network requests logging.
  It can be useful for debugging production releases if debug logs are not available.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol WebimLogger {
+public protocol WebimLogger: class {
     
     /**
      Method which is called after new WebimClientLibrary network request log entry came out.
      - parameter entry:
      New WebimClientLibrary network request log entry.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func log(entry: String)

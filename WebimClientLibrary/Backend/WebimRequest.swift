@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates paramters or HTTP-requests sending by WebimClientLibrary.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class WebimRequest {
@@ -40,12 +40,12 @@ final class WebimRequest {
     private let httpMethod: AbstractRequestLoop.HTTPMethods
     private let primaryData: [String: Any]
     private var contentType: String?
-    private var dataMessageCompletionHandler: DataMessageCompletionHandler?
+    private weak var dataMessageCompletionHandler: DataMessageCompletionHandler?
     private var historyRequestCompletionHandler: ((_ data: Data?) throws -> ())?
     private var httpBody: Data?
     private var messageID: String?
-    private var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
-    private var sendFileCompletionHandler: SendFileCompletionHandler?
+    private weak var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
+    private weak var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,

@@ -56,7 +56,7 @@ final class ProvidedVisitorFields {
         
         self.init(jsonString: jsonString!,
                   JSONObject: jsonData)
-
+        
     }
     
     private init?(jsonString: String,

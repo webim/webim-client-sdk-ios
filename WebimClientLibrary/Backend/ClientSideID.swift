@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class which is responsible for generating random IDs (e.g. for sending messages).
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 struct ClientSideID {

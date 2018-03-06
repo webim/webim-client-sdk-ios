@@ -50,7 +50,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
         sqLiteHistoryStorage = SQLiteHistoryStorage(dbName: SQLiteHistoryStorageTests.DB_NAME,
                                                     serverURL: SQLiteHistoryStorageTests.DB_NAME,
                                                     webimClient: WebimClient(withActionRequestLoop: actionRequestLoop,
-                                                                             deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMapper(withServerURLString: SQLiteHistoryStorageTests.SERVER_URL_STRING)),
+                                                                             deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: SQLiteHistoryStorageTests.SERVER_URL_STRING)),
                                                                                                                 completionHandlerExecutor: exeIfNotDestroyedHandlerExecutor,
                                                                                                                 sessionParametersListener: nil,
                                                                                                                 internalErrorListener: internalErrorListener,

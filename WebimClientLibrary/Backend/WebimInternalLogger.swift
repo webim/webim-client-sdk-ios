@@ -29,11 +29,11 @@ import Foundation
 /**
  Class that wraps `WebimLogger` into singleton pattern and encapsulates its verbose level.
  First, one should call `setup(webimLogger:verbosityLevel:)` method with particular parameters, then it will be possible to use `WebimInternalLogger.shared`.
- - SeeAlso:
+ - seealso:
  `WebimLogger`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
 final class WebimInternalLogger {
@@ -118,17 +118,17 @@ final class WebimInternalLogger {
 
 /**
  Helper class for `WebimInternalLogger` singleton instance setup.
- - SeeAlso:
+ - seealso:
  `WebimInternalLogger`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
 final class WebimInternalLoggerParametersHelper {
     
     // MARK: - Properties
     var verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?
-    var webimLogger: WebimLogger?
+    weak var webimLogger: WebimLogger?
     
 }

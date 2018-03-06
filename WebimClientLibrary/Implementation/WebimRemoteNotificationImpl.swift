@@ -27,9 +27,9 @@
 import Foundation
 
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class WebimRemoteNotificationImpl {

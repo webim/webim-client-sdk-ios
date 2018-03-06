@@ -26,35 +26,15 @@
 
 import Foundation
 
-/**
- Protocol which is implemented by several mappers classes.
- - SeeAlso:
- `MessageItem`
- `Message`
- - Author:
- Nikita Lazarev-Zubov
- - Copyright:
- 2017 Webim
- */
-protocol MessageFactoriesMapper {
-    
-    func set(webimClient: WebimClient)
-    
-    func map(message: MessageItem) -> MessageImpl?
-    
-    func mapAll(messages: [MessageItem]) -> [MessageImpl]
-    
-}
-
 // MARK: -
 /**
  Abstract class that supposed to be parent of mapper classes that are responsible for converting internal message model objects to public one.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-class AbstractMapper: MessageFactoriesMapper {
+class MessageMapper {
     
     // MARK: - Constants
     private enum MapError: Error {
@@ -106,7 +86,7 @@ class AbstractMapper: MessageFactoriesMapper {
             || (kind == .forOperator) {
             return nil
         }
-        let type = AbstractMapper.convert(messageKind: kind!)
+        let type = MessageMapper.convert(messageKind: kind!)
         if type == nil {
             return nil
         }
@@ -128,7 +108,7 @@ class AbstractMapper: MessageFactoriesMapper {
             text = attachment?.getFileName()
             rawText = messageItemText!
         } else {
-            text = ((messageItemText == nil) ? "" : messageItemText!)
+            text = messageItemText ?? ""
         }
         
         return MessageImpl(serverURLString: serverURLString,
@@ -145,8 +125,6 @@ class AbstractMapper: MessageFactoriesMapper {
                            internalID: messageItem.getID(),
                            rawText: rawText)
     }
-    
-    // MARK: MessageFactoriesMapper protocol methods
     
     func set(webimClient: WebimClient) {
         self.webimClient = webimClient
@@ -165,12 +143,12 @@ class AbstractMapper: MessageFactoriesMapper {
 // MARK: -
 /**
  Concrete mapper class that is responsible for converting internal message model objects to public message model objects of current chat.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-final class CurrentChatMapper: AbstractMapper {
+final class CurrentChatMessageMapper: MessageMapper {
     
     // MARK: - Methods
     override func map(message: MessageItem) -> MessageImpl? {
@@ -183,12 +161,12 @@ final class CurrentChatMapper: AbstractMapper {
 // MARK: -
 /**
  Concrete mapper class that is responsible for converting internal message model objects to public message model objects of previous chats.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-final class HistoryMapper: AbstractMapper {
+final class HistoryMessageMapper: MessageMapper {
     
     // MARK: - Methods
     override func map(message: MessageItem) -> MessageImpl? {
@@ -201,9 +179,9 @@ final class HistoryMapper: AbstractMapper {
 // MARK: -
 /**
  Class that responsible for creating child class objects for public message model objects of messages that are to be sent by visitor.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class SendingFactory {

@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Struct that encapsulates session authorization data.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 struct AuthorizationData {

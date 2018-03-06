@@ -182,7 +182,7 @@ class MessageHolderTests: XCTestCase {
         let webimActions = WebimActions(baseURL: MessageImplMockData.serverURLString.rawValue,
                                         actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
-                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
+                                                                  historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
         
@@ -204,7 +204,7 @@ class MessageHolderTests: XCTestCase {
         let webimActions = WebimActions(baseURL: MessageImplMockData.serverURLString.rawValue,
                                         actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
-                                                                  historyMessageMapper: HistoryMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
+                                                                  historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
         let memoryHistoryStorage = MemoryHistoryStorage(messagesToAdd: localHistory)
@@ -432,7 +432,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: First history message should be inserted before first current chat message.
         XCTAssertEqual(lastAddedMessage, history2[1])
-        XCTAssertEqual(lastMessageBeforeAdded, currentChat[0])
+        XCTAssertEqual(lastMessageBeforeAdded, currentChat.last!)
     }
     
     func testReceiveHistoryPartOfCurrentChat() throws {
@@ -1643,7 +1643,7 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: - Initialization
         init(withWebimActions webimActions: WebimActions,
-             historyMessageMapper: MessageFactoriesMapper,
+             historyMessageMapper: MessageMapper,
              historyMetaInformation: HistoryMetaInformationStorage,
              history: [MessageImpl] = [MessageImpl]()) {
             self.history = history

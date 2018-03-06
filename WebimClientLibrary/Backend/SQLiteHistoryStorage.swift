@@ -29,11 +29,11 @@ import SQLite
 
 /**
  Class that is responsible for history storage inside SQLite DB. Uses SQLite.swift library.
- - SeeAlso:
+ - seealso:
  https://github.com/stephencelis/SQLite.swift
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class SQLiteHistoryStorage: HistoryStorage {
@@ -112,7 +112,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     }
     
     func getFullHistory(completion: @escaping ([Message]) -> ()) {
-        SQLiteHistoryStorage.queryQueue.sync {
+        SQLiteHistoryStorage.queryQueue.sync { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            
             /*
              SELECT * FROM history
              ORDER BY timestamp_in_microsecond ASC
@@ -146,7 +150,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func getLatestHistory(byLimit limitOfMessages: Int,
                           completion: @escaping ([Message]) -> ()) {
-        SQLiteHistoryStorage.queryQueue.sync {
+        SQLiteHistoryStorage.queryQueue.sync { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            
             /*
              SELECT * FROM history
              ORDER BY timestamp_in_microsecond DESC
@@ -184,7 +192,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     func getHistoryBefore(id: HistoryID,
                           limitOfMessages: Int,
                           completion: @escaping ([Message]) -> ()) {
-        SQLiteHistoryStorage.queryQueue.sync {
+        SQLiteHistoryStorage.queryQueue.sync { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            
             let beforeTimeInMicrosecond = id.getTimeInMicrosecond()
             
             /*
@@ -225,7 +237,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func receiveHistoryBefore(messages: [MessageImpl],
                               hasMoreMessages: Bool) {
-        SQLiteHistoryStorage.queryQueue.sync {
+        SQLiteHistoryStorage.queryQueue.sync { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            
             var newFirstKnownTimeInMicrosecond = Int64.max
             
             for message in messages {
@@ -287,7 +303,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     func receiveHistoryUpdate(withMessages messages: [MessageImpl],
                               idsToDelete: Set<String>,
                               completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ()) {
-        SQLiteHistoryStorage.queryQueue.sync {
+        SQLiteHistoryStorage.queryQueue.sync { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            
             self.prepare()
             
             var newFirstKnownTimestamp = Int64.max
@@ -396,7 +416,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     }
     
     private func createTableWith(name: String) {
-        SQLiteHistoryStorage.queryQueue.sync {
+        SQLiteHistoryStorage.queryQueue.sync { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            
             let fileManager = FileManager.default
             let documentsPath = try! fileManager.url(for: .documentDirectory,
                                                      in: .userDomainMask,
@@ -404,6 +428,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                      create: false)
             let dbPath = "\(documentsPath)/\(name)"
             self.db = try! Connection(dbPath)
+            self.db?.userVersion = 1
             self.db?.busyTimeout = 1.0
             self.db?.busyHandler() { tries in
                 if tries >= 3 {
@@ -452,7 +477,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
              CREATE UNIQUE INDEX index_history_on_timestamp_in_microsecond
              ON history (time_since_in_microsecond)
              */
-            _ = try self.db?.run(SQLiteHistoryStorage
+            _ = try db?.run(SQLiteHistoryStorage
                 .history
                 .createIndex(SQLiteHistoryStorage.timestamp,
                              unique: true))
@@ -461,7 +486,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                            verbosityLevel: .VERBOSE)
         }
         
-        self.db?.trace {
+        db?.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",
                 verbosityLevel: .DEBUG)
         }
@@ -485,7 +510,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             
             do {
                 if let row = try self.db!.pluck(query) {
-                    self.db?.trace {
+                    db?.trace {
                         WebimInternalLogger.shared.log(entry: "\($0)",
                             verbosityLevel: .DEBUG)
                     }
@@ -505,7 +530,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         
         var rawText: String? = nil
         var text = row[SQLiteHistoryStorage.text]
-        let type = AbstractMapper.convert(messageKind: MessageItem.MessageKind(rawValue: row[SQLiteHistoryStorage.type])!)
+        let type = MessageMapper.convert(messageKind: MessageItem.MessageKind(rawValue: row[SQLiteHistoryStorage.type])!)
         if (type == .FILE_FROM_OPERATOR)
             || (type == .FILE_FROM_VISITOR) {
             rawText = text
@@ -526,7 +551,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         }
         
         return MessageImpl(serverURLString: serverURLString,
-                           id: (clientSideID == nil) ? id : clientSideID!,
+                           id: (clientSideID ?? id),
                            operatorID: row[SQLiteHistoryStorage.senderID],
                            senderAvatarURLString: row[SQLiteHistoryStorage.avatarURLString],
                            senderName: row[SQLiteHistoryStorage.senderName],
@@ -562,7 +587,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
          (message.getRawText() ?? message.getText()),
          SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
          */
-        try self.db?.run(SQLiteHistoryStorage
+        try db?.run(SQLiteHistoryStorage
             .history
             .insert(SQLiteHistoryStorage.id <- message.getHistoryID()!.getDBid(),
                     SQLiteHistoryStorage.clientSideID <- message.getID(),
@@ -574,7 +599,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
         
-        self.db?.trace {
+        db?.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",
                 verbosityLevel: .DEBUG)
         }
@@ -594,7 +619,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
          data = SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
          WHERE id = message.getHistoryID()!.getDBid()
          */
-        try self.db!.run(SQLiteHistoryStorage
+        try db!.run(SQLiteHistoryStorage
             .history
             .where(SQLiteHistoryStorage.id == message.getHistoryID()!.getDBid())
             .update(SQLiteHistoryStorage.clientSideID <- message.getID(),
@@ -606,10 +631,21 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
         
-        self.db?.trace {
+        db?.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",
                 verbosityLevel: .DEBUG)
         }
+    }
+    
+}
+
+// MARK: -
+extension Connection {
+    
+    // MARK: - Properties
+    public var userVersion: Int32 {
+        get { return Int32(try! scalar("PRAGMA user_version") as! Int64) }
+        set { try! run("PRAGMA user_version = \(newValue)") }
     }
     
 }

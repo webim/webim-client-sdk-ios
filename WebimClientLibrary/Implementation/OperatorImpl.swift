@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Internal representation of a chat operator data.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 struct OperatorImpl: Operator {

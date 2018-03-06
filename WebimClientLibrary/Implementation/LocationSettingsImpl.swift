@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates various location settings received form server when initializing session.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class LocationSettingsImpl {

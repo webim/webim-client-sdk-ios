@@ -30,6 +30,7 @@ extension Array where Element == UInt8 {
     
     // MARK: - Methods
     /**
+     Part or HMAC SHA256 generation system.
      - author:
      Nikita Lazarev-Zubov
      - copyright:

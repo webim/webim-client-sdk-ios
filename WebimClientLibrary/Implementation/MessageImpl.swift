@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Internal messages representasion.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 class MessageImpl {
@@ -202,17 +202,17 @@ class MessageImpl {
 MessageImpl {
     serverURLString = \(serverURLString),
     ID = \(id),
-    operatorID = \((operatorID != nil) ? operatorID! : "nil"),
-    senderAvatarURLString = \((senderAvatarURLString != nil) ? senderAvatarURLString! : "nil"),
+    operatorID = \(operatorID ?? "nil"),
+    senderAvatarURLString = \(senderAvatarURLString ?? "nil"),
     senderName = \(senderName),
     type = \(type),
     text = \(text),
     timeInMicrosecond = \(timeInMicrosecond),
-    attachment = \((attachment == nil) ? "nil" : attachment!.getURL().absoluteString),
+    attachment = \(attachment?.getURL().absoluteString ?? "nil"),
     historyMessage = \(historyMessage),
-    currentChatID = \((currentChatID != nil) ? currentChatID! : "nil"),
-    historyID = \((historyID != nil) ? historyID!.getDBid() : "nil"),
-    rawText = \((rawText != nil) ? rawText! : "nil")
+    currentChatID = \(currentChatID ?? "nil"),
+    historyID = \(historyID?.getDBid() ?? "nil"),
+    rawText = \(rawText ?? "nil")
 }
 """
     }
@@ -277,9 +277,7 @@ extension MessageImpl: Message {
             return nil
         }
         
-        let fullSenderAvatarURLString = serverURLString + senderAvatarURLString
-        
-        return URL(string: fullSenderAvatarURLString)
+        return URL(string: (serverURLString + senderAvatarURLString))
     }
     
     func getSendStatus() -> MessageSendStatus {
@@ -328,9 +326,9 @@ extension MessageImpl: Equatable {
 // MARK: -
 /**
  Internal messages' attachments representation.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class MessageAttachmentImpl {
@@ -366,8 +364,8 @@ final class MessageAttachmentImpl {
     static func getAttachment(byServerURL serverURLString: String,
                               webimClient: WebimClient,
                               text: String) -> MessageAttachment? {
-        let textData = text.data(using: .utf8)
-        guard let textDictionary = try? JSONSerialization.jsonObject(with: textData!,
+        let textData = text.data(using: .utf8)!
+        guard let textDictionary = try? JSONSerialization.jsonObject(with: textData,
                                                                      options: []) as? [String: Any?] else {
                                                                         WebimInternalLogger.shared.log(entry: "Message attachment parameters parsing failed: \(text).",
                                                                             verbosityLevel: .WARNING)
@@ -420,7 +418,7 @@ final class MessageAttachmentImpl {
             return nil
         }
         
-        let imageSize = (fileParameters?.getImageParameters() == nil) ? nil : fileParameters?.getImageParameters()?.getSize()
+        let imageSize = fileParameters?.getImageParameters()?.getSize()
         guard imageSize != nil else {
             return nil
         }
@@ -465,11 +463,11 @@ extension MessageAttachmentImpl: MessageAttachment {
 // MARK: -
 /**
  Internal image information representation.
- - SeeAlso:
+ - seealso:
  `MessageAttachment`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class ImageInfoImpl: ImageInfo {

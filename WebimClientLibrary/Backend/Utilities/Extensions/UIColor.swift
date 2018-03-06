@@ -34,9 +34,9 @@ extension UIColor {
      Hex string representing color with or whithout "#" prefix.
      - returns:
      The color object or `nil` if passed string can't represent a color. The color information represented by this object is in an RGB colorspace. On applications linked for iOS 10 or later, the color is specified in an extended range sRGB color space. On earlier versions of iOS, the color is specified in a device RGB colorspace.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     convenience init?(hexString: String) {

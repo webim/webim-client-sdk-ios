@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates operator rating data.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 struct RatingItem {

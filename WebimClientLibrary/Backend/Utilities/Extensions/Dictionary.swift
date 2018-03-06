@@ -34,7 +34,7 @@ extension Dictionary {
      This percent escapes in compliance with RFC 3986.
      - important:
      Supports only non-optional String keys and values.
-     - SeeAlso:
+     - seealso:
      http://www.ietf.org/rfc/rfc3986.txt
      - returns:
      String representation in the form of key1=value1&key2=value2 where the keys and values are percent escaped.

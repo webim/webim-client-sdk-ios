@@ -27,9 +27,9 @@
 import Foundation
 
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol WebimSession {
@@ -41,9 +41,9 @@ public protocol WebimSession {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func resume() throws
@@ -53,9 +53,9 @@ public protocol WebimSession {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func pause() throws
@@ -65,9 +65,9 @@ public protocol WebimSession {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func destroy() throws
@@ -75,9 +75,9 @@ public protocol WebimSession {
     /**
      - returns:
      A `MessageStream` object attached to this session. Each invocation of this method returns the same object.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getStream() -> MessageStream
@@ -89,11 +89,11 @@ public protocol WebimSession {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - SeeAlso:
+     - seealso:
      `FatalErrorHandler`.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func change(location: String) throws
@@ -107,9 +107,9 @@ public protocol WebimSession {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(deviceToken: String) throws
@@ -119,29 +119,29 @@ public protocol WebimSession {
 // MARK: -
 /**
  Error types that can be throwed by MessageStream methods.
- - SeeAlso:
+ - seealso:
  `WebimSession` and `MessageStream` methods.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum AccessError: Error {
     
     /**
      Error that is thrown if the method was called not from the thread the WebimSession was created in.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case INVALID_THREAD
     
     /**
      Error that is thrown if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case INVALID_SESSION

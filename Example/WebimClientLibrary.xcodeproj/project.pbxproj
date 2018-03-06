@@ -15,6 +15,7 @@
 		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
 		7AC8771ADBD56B8F2687508D /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */; };
 		7EFD66A46B75AB0CACF8C5E8 /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */; };
+		CE07E9952049794C00E0A0D3 /* SessionBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */; };
 		CE0CD75A202338FD00719DBE /* HistoryIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD758202338EE00719DBE /* HistoryIDTests.swift */; };
 		CE0CD75D20234BD800719DBE /* SessionDestroyerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */; };
 		CE0CD7632024561B00719DBE /* InternalUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD7622024561B00719DBE /* InternalUtilsTests.swift */; };
@@ -48,6 +49,7 @@
 		CE48362F2032E3F100E18A20 /* PopupDialogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE48362D2032E0D900E18A20 /* PopupDialogHandler.swift */; };
 		CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
 		CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE5A03BC1FDEB756009D320A /* Localizable.strings */; };
+		CE5B7E5C20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5B7E5B20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift */; };
 		CE6741C8200F9A600061EEFD /* HMACSha256Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6741C7200F9A600061EEFD /* HMACSha256Tests.swift */; };
 		CE86FA97203AF44700CB9C2D /* VisitorItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FA96203AF44700CB9C2D /* VisitorItemTests.swift */; };
 		CE86FA99203AF6AC00CB9C2D /* UIColorHexStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FA98203AF6AC00CB9C2D /* UIColorHexStringTests.swift */; };
@@ -61,7 +63,6 @@
 		CE86FAB1203C18D600CB9C2D /* DepartmentFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FAB0203C18D600CB9C2D /* DepartmentFactoryTests.swift */; };
 		CE86FAB3203C1E8500CB9C2D /* SQLiteHistoryStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FAB2203C1E8500CB9C2D /* SQLiteHistoryStorageTests.swift */; };
 		CE86FAB8203C48DA00CB9C2D /* MemoryHistoryStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FAB7203C48DA00CB9C2D /* MemoryHistoryStorageTests.swift */; };
-		CE86FABA203C4C5100CB9C2D /* ProvidedVisitorFieldsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FAB9203C4C5100CB9C2D /* ProvidedVisitorFieldsTests.swift */; };
 		CE86FABC203C664F00CB9C2D /* LocationSettingsImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FABB203C664F00CB9C2D /* LocationSettingsImplTests.swift */; };
 		CE86FABE203C686600CB9C2D /* MessageImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FABD203C686600CB9C2D /* MessageImplTests.swift */; };
 		CE86FAC0203C6FBC00CB9C2D /* WebimErrorImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FABF203C6FBC00CB9C2D /* WebimErrorImplTests.swift */; };
@@ -113,6 +114,7 @@
 		B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4CD65CA48F80B5A4AD826B3 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimClientLibrary.podspec; path = ../WebimClientLibrary.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBuilderTests.swift; sourceTree = "<group>"; };
 		CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebimClientLibrary_Example.entitlements; sourceTree = "<group>"; };
 		CE0CD758202338EE00719DBE /* HistoryIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryIDTests.swift; sourceTree = "<group>"; };
 		CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDestroyerTests.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		CE54B2511FC452B9009C05BD /* Index.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Index.md; sourceTree = "<group>"; };
 		CE591A421FC2F31E004C95EE /* WebimService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimService.swift; sourceTree = "<group>"; };
 		CE5A03BB1FDEB756009D320A /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CE5B7E5B20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvidedVisitorFieldsTests.swift; sourceTree = "<group>"; };
 		CE6741C7200F9A600061EEFD /* HMACSha256Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HMACSha256Tests.swift; sourceTree = "<group>"; };
 		CE86FA96203AF44700CB9C2D /* VisitorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorItemTests.swift; sourceTree = "<group>"; };
 		CE86FA98203AF6AC00CB9C2D /* UIColorHexStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexStringTests.swift; sourceTree = "<group>"; };
@@ -162,7 +165,6 @@
 		CE86FAB0203C18D600CB9C2D /* DepartmentFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentFactoryTests.swift; sourceTree = "<group>"; };
 		CE86FAB2203C1E8500CB9C2D /* SQLiteHistoryStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteHistoryStorageTests.swift; sourceTree = "<group>"; };
 		CE86FAB7203C48DA00CB9C2D /* MemoryHistoryStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryHistoryStorageTests.swift; sourceTree = "<group>"; };
-		CE86FAB9203C4C5100CB9C2D /* ProvidedVisitorFieldsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvidedVisitorFieldsTests.swift; sourceTree = "<group>"; };
 		CE86FABB203C664F00CB9C2D /* LocationSettingsImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsImplTests.swift; sourceTree = "<group>"; };
 		CE86FABD203C686600CB9C2D /* MessageImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageImplTests.swift; sourceTree = "<group>"; };
 		CE86FABF203C6FBC00CB9C2D /* WebimErrorImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimErrorImplTests.swift; sourceTree = "<group>"; };
@@ -310,8 +312,9 @@
 				CE86FAAE203B2D1800CB9C2D /* OperatorFactoryTests.swift */,
 				CE0CD76620249C3E00719DBE /* OperatorImplTests.swift */,
 				CE24A013203735C8009EE7E7 /* OperatorItemTests.swift */,
-				CE86FAB9203C4C5100CB9C2D /* ProvidedVisitorFieldsTests.swift */,
+				CE5B7E5B20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift */,
 				CE24A018203ADF40009EE7E7 /* RatingItemTests.swift */,
+				CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */,
 				CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */,
 				CE86FAB2203C1E8500CB9C2D /* SQLiteHistoryStorageTests.swift */,
 				CE0CD764202461FE00719DBE /* StringFromHTTPParametersTests.swift */,
@@ -735,7 +738,6 @@
 				CE2845C62021CF40007B1C25 /* ClientSideIDTests.swift in Sources */,
 				CE2845B82020A891007B1C25 /* AbstractRequestLoopTests.swift in Sources */,
 				CE86FAA3203B122A00CB9C2D /* HistorySinceResponseTests.swift in Sources */,
-				CE86FABA203C4C5100CB9C2D /* ProvidedVisitorFieldsTests.swift in Sources */,
 				CE2845C22021B9D4007B1C25 /* DecodePercentEscapedLinksIfPresentTests.swift in Sources */,
 				CE2CD5952035DF6E00997628 /* MemoryHistoryMetaInformationStorageTests.swift in Sources */,
 				CE6741C8200F9A600061EEFD /* HMACSha256Tests.swift in Sources */,
@@ -743,6 +745,8 @@
 				CE2845BB2020B6A3007B1C25 /* ActionRequestLoopTests.swift in Sources */,
 				CE86FAA5203B1B7300CB9C2D /* MessageFactoriesTests.swift in Sources */,
 				CE86FAC0203C6FBC00CB9C2D /* WebimErrorImplTests.swift in Sources */,
+				CE07E9952049794C00E0A0D3 /* SessionBuilderTests.swift in Sources */,
+				CE5B7E5C20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift in Sources */,
 				CE0CD75D20234BD800719DBE /* SessionDestroyerTests.swift in Sources */,
 				CE86FAB1203C18D600CB9C2D /* DepartmentFactoryTests.swift in Sources */,
 				CE86FAAF203B2D1800CB9C2D /* OperatorFactoryTests.swift in Sources */,

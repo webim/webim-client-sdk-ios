@@ -28,11 +28,11 @@ import Foundation
 
 /**
  Abstracts Webim service possible error responses.
- - SeeAlso:
+ - seealso:
  `FatalErrorHandler` protocol.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol WebimError {
@@ -40,9 +40,9 @@ public protocol WebimError {
     /**
      - returns:
      Parsed type of the error.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getErrorType() -> FatalErrorType
@@ -50,9 +50,9 @@ public protocol WebimError {
     /**
      - returns:
      String representation of an error. Mostly useful if the error type is unknown.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getErrorString() -> String
@@ -64,9 +64,9 @@ public protocol WebimError {
  Webim service error types.
  - important:
  Mind that most of this errors causes session to destroy.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum FatalErrorType {
@@ -76,9 +76,9 @@ public enum FatalErrorType {
      Recommended response is to show the user an error message with a recommendation to try using the chat later.
      - important:
      Notice that the session will be destroyed if this error occured.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case ACCOUNT_BLOCKED
@@ -88,12 +88,12 @@ public enum FatalErrorType {
      The recommended response is to re-authorize it and to re-create session object.
      - important:
      Notice that the session will be destroyed if this error occured.
-     - SeeAlso:
+     - seealso:
      `Webim.SessionBuilder.set(visitorFieldsJSONstring:)`
      `Webim.SessionBuilder.set(visitorFieldsJSONdata:)`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case PROVIDED_VISITOR_FIELDS_EXPIRED
@@ -103,11 +103,11 @@ public enum FatalErrorType {
      Recommended response is to send an automatic bug report and show to a user an error message with the recommendation to try using the chat later.
      - important:
      Notice that the session will be destroyed if this error occured.
-     - SeeAlso:
+     - seealso:
      `WebimError.getErrorString()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case UNKNOWN
@@ -118,9 +118,9 @@ public enum FatalErrorType {
      Recommended response is to show the user an error message with the recommendation to try using the chat later or explain to the user that it was blocked for some reason.
      - important:
      Notice that the session will be destroyed if this error occured.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case VISITOR_BANNED
@@ -131,12 +131,12 @@ public enum FatalErrorType {
      Recommended response is to send an automatic bug report and show the user an error message with the recommendation to try using the chat later.
      - important:
      Notice that the session will be destroyed if this error occured.
-     - SeeAlso:
+     - seealso:
      `Webim.SessionBuilder.set(visitorFieldsJSONstring:)`
      `Webim.SessionBuilder.set(visitorFieldsJSONdata:)`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case WRONG_PROVIDED_VISITOR_HASH

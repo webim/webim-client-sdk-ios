@@ -28,35 +28,35 @@ import Foundation
 
 /**
  Abstracts a remote notifications from Webim service.
- - SeeAlso:
+ - seealso:
  `Webim.parseRemoteNotification()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol WebimRemoteNotification {
     
     /**
-     - SeeAlso:
+     - seealso:
      `NotificationType` enum.
      - returns:
      Type of this remote notification.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getType() -> NotificationType
     
     /**
-     - SeeAlso:
+     - seealso:
      `NotificationEvent` enum.
      - returns:
      Event of this remote notification.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getEvent() -> NotificationEvent?
@@ -64,11 +64,11 @@ public protocol WebimRemoteNotification {
     /**
      - returns:
      Parameters of this remote notification. Each `NotificationType` has specific list of parameters.
-     - SeeAlso:
+     - seealso:
      `NotificationType`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getParameters() -> [String]
@@ -77,12 +77,12 @@ public protocol WebimRemoteNotification {
 
 // MARK: -
 /**
- - SeeAlso:
+ - seealso:
  `WebimRemoteNotification.getType()`
  `WebimRemoteNotification.getParameters()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum NotificationType {
@@ -90,9 +90,9 @@ public enum NotificationType {
     /**
      This notification type indicated that contact information request is sent to a visitor.
      Parameters: empty.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case CONTACT_INFORMATION_REQUEST
@@ -101,9 +101,9 @@ public enum NotificationType {
      This notification type indicated that an operator has connected to a dialogue.
      Parameters:
      * Operator's name.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OPERATOR_ACCEPTED
@@ -113,9 +113,9 @@ public enum NotificationType {
      Parameters:
      * Operator's name;
      * File name.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OPERATOR_FILE
@@ -125,9 +125,9 @@ public enum NotificationType {
      Parameters:
      * Operator's name;
      * Message text.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OPERATOR_MESSAGE
@@ -137,38 +137,38 @@ public enum NotificationType {
      Parameters: empty.
      - important:
      This type can be received only if server supports this functionality.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case WIDGET
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `WebimRemoteNotification.getEvent()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum NotificationEvent {
     
     /**
      Means that a notification should be added by current remote notification.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case ADD
     
     /**
      Means that a notification should be deleted by current remote notification.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case DELETE

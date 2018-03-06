@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that handles HTTP-request sending by SDK.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 class AbstractRequestLoop {
@@ -179,7 +179,7 @@ class AbstractRequestLoop {
                                               encoding: .utf8)
                 }
                 WebimInternalLogger.shared.log(entry: "Request \(request.url!.absoluteString)"
-                    + "\((parametersString != nil) ? " \(parametersString!)" : "") "
+                    + "\(parametersString ?? "") "
                     + "failed with HTTP code: \(httpCode).",
                     verbosityLevel: .WARNING)
             }

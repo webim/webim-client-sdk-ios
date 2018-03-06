@@ -332,14 +332,14 @@
 			isa = PBXGroup;
 			children = (
 				8FD2449B200CE25B007EB9CB /* DepartmentImpl.swift */,
-				8FD2449C200CE25B007EB9CB /* OperatorImpl.swift */,
-				8FD2449D200CE25B007EB9CB /* MessageStreamImpl.swift */,
-				8FD2449E200CE25B007EB9CB /* WebimRemoteNotificationImpl.swift */,
-				8FD2449F200CE25B007EB9CB /* MessageImpl.swift */,
-				8FD244A0200CE25B007EB9CB /* WebimErrorImpl.swift */,
-				8FD244A1200CE25B007EB9CB /* MessageTrackerImpl.swift */,
-				8FD244A2200CE25B007EB9CB /* WebimSessionImpl.swift */,
 				8FD244A3200CE25B007EB9CB /* LocationSettingsImpl.swift */,
+				8FD2449F200CE25B007EB9CB /* MessageImpl.swift */,
+				8FD2449D200CE25B007EB9CB /* MessageStreamImpl.swift */,
+				8FD244A1200CE25B007EB9CB /* MessageTrackerImpl.swift */,
+				8FD2449C200CE25B007EB9CB /* OperatorImpl.swift */,
+				8FD244A0200CE25B007EB9CB /* WebimErrorImpl.swift */,
+				8FD2449E200CE25B007EB9CB /* WebimRemoteNotificationImpl.swift */,
+				8FD244A2200CE25B007EB9CB /* WebimSessionImpl.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";

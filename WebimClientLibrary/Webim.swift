@@ -27,19 +27,21 @@
 import Foundation
 
 /**
- - Author:
+ Main point of WebimClientLibrary.
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public final class Webim {
     
     /**
+     Returns new SessionBuilder object for creating WebimSession object.
      - returns:
      The instance of WebimSession builder.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     static public func newSessionBuilder() -> SessionBuilder {
@@ -54,12 +56,12 @@ public final class Webim {
      User info of received remote notification.
      - returns:
      Remote notification object or nil if there's no useful payload or this notification is sent not by Webim service.
-     - SeeAlso:
+     - seealso:
      `SessionBuilder.set(remoteNotificationsSystem:)`
      `isWebim(remoteNotification:)`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     static public func parse(remoteNotification: [AnyHashable : Any]) -> WebimRemoteNotification? {
@@ -74,12 +76,12 @@ public final class Webim {
      User info of received remote notification.
      - returns:
      Boolean value that indicates is received remote notification is sent by Webim service.
-     - SeeAlso:
+     - seealso:
      `SessionBuilder.set(remoteNotificationSystem:)`
      `parseRemoteNotification()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     static public func isWebim(remoteNotification: [AnyHashable: Any]) -> Bool {
@@ -89,11 +91,11 @@ public final class Webim {
     
     // MARK: -
     /**
-     - SeeAlso:
+     - seealso:
      `SessionBuilder.setRemoteNotificationSystem()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public enum RemoteNotificationSystem {
@@ -106,11 +108,11 @@ public final class Webim {
 // MARK: -
 /**
  `WebimSession` builder.
- - SeeAlso:
+ - seealso:
  `Webim.newSessionBuilder()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public final class SessionBuilder  {
@@ -119,21 +121,19 @@ public final class SessionBuilder  {
     private var accountName: String?
     private var appVersion: String?
     private var deviceToken: String?
-    private var fatalErrorHandler: FatalErrorHandler?
+    private weak var fatalErrorHandler: FatalErrorHandler?
     private var localHistoryStoragingEnabled = true
     private var location: String?
     private var pageTitle: String?
     private var providedAuthorizationToken: String?
-    private var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
+    private weak var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var remoteNotificationSystem: Webim.RemoteNotificationSystem = .NONE
     private var visitorDataClearingEnabled = false
     private var visitorFields: ProvidedVisitorFields?
-    private var webimLogger: WebimLogger?
+    private weak var webimLogger: WebimLogger?
     private var webimLoggerVerbosityLevel: WebimLoggerVerbosityLevel?
     
     // MARK: - Methods
-    
-    // MARK: Builder methods
     
     /**
      Sets company account name in Webim system.
@@ -143,9 +143,9 @@ public final class SessionBuilder  {
      Webim account name.
      - returns:
      `SessionBuilder` object with account name set.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func set(accountName: String) -> SessionBuilder {
@@ -161,11 +161,11 @@ public final class SessionBuilder  {
      Location name.
      - returns:
      `SessionBuilder` object with location set.
-     - SeeAlso:
+     - seealso:
      https://webim.ru/help/help-terms/#location
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func set(location: String) -> SessionBuilder {
@@ -181,9 +181,9 @@ public final class SessionBuilder  {
      Client app version name.
      - returns:
      `SessionBuilder` object with app version set.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func set(appVersion: String?) -> SessionBuilder {
@@ -244,19 +244,19 @@ public final class SessionBuilder  {
     /**
      When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
      - important:
-     Can't be used simultaneously with `set(visitorFieldsJSONString:)` or `set(visitorFieldsJSONString:)`.
+     Can't be used simultaneously with `set(visitorFields:)`.
      - parameter providedAuthorizationTokenStateListener:
      `ProvidedAuthorizationTokenStateListener` object.
      - parameter providedAuthorizationToken:
      Optional. Client generated provided authorization token. If it is not passed, library generates its own.
-     - SeeAlso:
+     - seealso:
      `ProvidedAuthorizationTokenStateListener`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
-    public func set(providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener,
+    public func set(providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?,
                     providedAuthorizationToken: String? = nil) -> SessionBuilder {
         self.providedAuthorizationTokenStateListener = providedAuthorizationTokenStateListener
         self.providedAuthorizationToken = providedAuthorizationToken
@@ -271,12 +271,12 @@ public final class SessionBuilder  {
      Page title that visible to an operator.
      - returns:
      `SessionBuilder` object with page title set.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
-    public func set(pageTitle: String) -> SessionBuilder {
+    public func set(pageTitle: String?) -> SessionBuilder {
         self.pageTitle = pageTitle
         
         return self
@@ -288,12 +288,12 @@ public final class SessionBuilder  {
      Fatal error handler.
      - returns:
      `SessionBuilder` object with fatal error handler set.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
-    public func set(fatalErrorHandler: FatalErrorHandler) -> SessionBuilder {
+    public func set(fatalErrorHandler: FatalErrorHandler?) -> SessionBuilder {
         self.fatalErrorHandler = fatalErrorHandler
         
         return self
@@ -309,9 +309,9 @@ public final class SessionBuilder  {
      Enum that indicates which system of remote notification is used. By default – `NONE` (remote notifications are not to be sent).
      - returns:
      `SessionBuilder` object with remote notification system set.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func set(remoteNotificationSystem: Webim.RemoteNotificationSystem) -> SessionBuilder {
@@ -328,11 +328,11 @@ public final class SessionBuilder  {
      Device token in hexadecimal format and without any spaces and service symbols.
      - returns:
      `SessionBuilder` object with device token set.
-     - SeeAlso:
+     - seealso:
      `setRemoteNotificationsSystem`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func set(deviceToken: String?) -> SessionBuilder {
@@ -340,8 +340,6 @@ public final class SessionBuilder  {
         
         return self
     }
-    
-    // MARK: Debugging methods
     
     /**
      By default a session stores a message history locally. This method allows to disable history storage.
@@ -351,9 +349,9 @@ public final class SessionBuilder  {
      Boolean parameter that indicated if an app should enable or disable local history storing.
      - returns:
      `SessionBuilder` object with isLocalHistoryStoragingEnabled parameter set.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func set(isLocalHistoryStoragingEnabled: Bool) -> SessionBuilder {
@@ -370,9 +368,9 @@ public final class SessionBuilder  {
      Boolean parameter that indicated if an app should clear visitor data before session starts.
      - returns:
      `SessionBuilder` object with isVisitorDataClearingEnabled parameter set.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func set(isVisitorDataClearingEnabled: Bool) -> SessionBuilder {
@@ -387,14 +385,14 @@ public final class SessionBuilder  {
      `WebimLogger` object.
      - returns:
      `SessionBuilder` object with `WebimLogger` object set.
-     - SeeAlso:
+     - seealso:
      `WebimLogger`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
-    public func set(webimLogger: WebimLogger,
+    public func set(webimLogger: WebimLogger?,
                     verbosityLevel: WebimLoggerVerbosityLevel = .WARNING) -> SessionBuilder {
         self.webimLogger = webimLogger
         webimLoggerVerbosityLevel = verbosityLevel
@@ -402,8 +400,6 @@ public final class SessionBuilder  {
         return self
     }
     
-    
-    // MARK: Finalization
     /**
      Builds new `WebimSession` object.
      - important:
@@ -416,11 +412,11 @@ public final class SessionBuilder  {
      `SessionBuilder.SessionBuilderError.NIL_LOCATION` if location wasn't set to a non-nil value.
      `SessionBuilder.SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to pass device token with `RemoteNotificationSystem` not set (or set to `.NONE`).
      `SessionBuilder.SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS` if methods `set(visitorFieldsJSONString:)` or `set(visitorFieldsJSONData:)` are called with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)` simultaneously.
-     - SeeAlso:
+     - seealso:
      `SessionBuilder.SessionBuilderError`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public func build() throws -> WebimSession {
@@ -442,13 +438,7 @@ public final class SessionBuilder  {
             throw SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS
         }
         
-        if providedAuthorizationTokenStateListener != nil {
-            if providedAuthorizationToken == nil {
-                providedAuthorizationToken = ClientSideID.generateClientSideID()
-            }
-            
-            providedAuthorizationTokenStateListener!.update(providedAuthorizationToken: providedAuthorizationToken!)
-        }
+        providedAuthorizationTokenStateListener?.update(providedAuthorizationToken: (providedAuthorizationToken ?? ClientSideID.generateClientSideID()))
         
         return WebimSessionImpl.newInstanceWith(accountName: accountName,
                                                 location: location,
@@ -468,11 +458,11 @@ public final class SessionBuilder  {
     // MARK: -
     /**
      Verbosity level of `WebimLogger`.
-     - SeeAlso:
+     - seealso:
      `SessionBuilder.set(webimLogger:verbosityLevel:)`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     public enum WebimLoggerVerbosityLevel {
@@ -484,9 +474,9 @@ public final class SessionBuilder  {
          * network responses' HTTP codes, received data and errors;
          * SQL queries and errors;
          * full debug information and additional notes.
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2018 Webim
          */
         case VERBOSE
@@ -498,9 +488,9 @@ public final class SessionBuilder  {
          * network responses' HTTP codes, received data and errors;
          * SQL queries and errors;
          * moderate debug information.
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2018 Webim
          */
         case DEBUG
@@ -510,9 +500,9 @@ public final class SessionBuilder  {
          * network requests' URLS, HTTP method and parameters;
          * HTTP codes and errors descriptions of failed requests.
          * SQL errors.
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2018 Webim
          */
         case INFO
@@ -521,9 +511,9 @@ public final class SessionBuilder  {
          Errors and warnings only will be delivered to `WebimLogger` instance:
          * network requests' URLs, HTTP method, parameters, HTTP code and error description.
          * SQL errors.
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2018 Webim
          */
         case WARNING
@@ -531,9 +521,9 @@ public final class SessionBuilder  {
         /**
          Only errors will be delivered to `WebimLogger` instance:
          * network requests' URLs, HTTP method, parameters, HTTP code and error description.
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2018 Webim
          */
         case ERROR
@@ -541,59 +531,59 @@ public final class SessionBuilder  {
     }
     
     /**
-     Error types that can be throwed by `SessionBuilder` `build()` method.
-     - SeeAlso:
+     Error types that can be thrown by `SessionBuilder` `build()` method.
+     - seealso:
      `SessionBuilder.build()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     public enum SessionBuilderError: Error {
         
         /**
          Error that is thrown when trying to use standard and custom visitor fields authentication simultaneously.
-         - SeeAlso:
+         - seealso:
          `set(visitorFieldsJSONString:)`
          `set(visitorFieldsJSONData:)`
          `set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)`
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2017 Webim
          */
         case INVALID_AUTHENTICATION_PARAMETERS
         
         /**
          Error that is thrown when trying to create session object with invalid remote notifications configuration.
-         - SeeAlso:
+         - seealso:
          `set(remoteNotificationSystem:)`
          `set(deviceToken:)`
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2017 Webim
          */
         case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
         
         /**
          Error that is thrown when trying to create session object with `nil` account name.
-         - SeeAlso:
+         - seealso:
          `set(accountName:)`
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2017 Webim
          */
         case NIL_ACCOUNT_NAME
         
         /**
          Error that is thrown when trying to create session object with `nil` location name.
-         - SeeAlso:
+         - seealso:
          `set(location:)`
-         - Author:
+         - author:
          Nikita Lazarev-Zubov
-         - Copyright:
+         - copyright:
          2017 Webim
          */
         case NIL_LOCATION

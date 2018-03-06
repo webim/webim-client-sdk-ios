@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates asynchronous callbacks calling.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class ExecIfNotDestroyedHandlerExecutor {

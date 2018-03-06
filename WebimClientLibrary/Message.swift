@@ -31,9 +31,9 @@ import Foundation
 /**
  Abstracts a single message in the message history.
  A message is an immutable object. It means that changing some of the message fields creates a new object. Messages can be compared by using `isEqual(to:)` method for searching messages with the same set of fields or by ID (`message1.getID() == message2.getID()`) for searching logically identical messages. ID is formed on the client side when sending a message (`MessageStream.send(message:isHintQuestion:)` or `MessageStream.sendFile(atPath:mimeType:completion:)).
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol Message {
@@ -42,13 +42,13 @@ public protocol Message {
      Messages of the types `MessageType.FILE_FROM_OPERATOR` and `MessageType.FILE_FROM_VISITOR` can contain attachments.
      - important:
      Notice that this method may return nil even in the case of previously listed types of messages. E.g. if a file is being sent.
-     - SeeAlso:
+     - seealso:
      `MessageAttachment` protocol.
      - returns:
      The attachment of the message.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getAttachment() -> MessageAttachment?
@@ -57,9 +57,9 @@ public protocol Message {
      Messages of type `MessageType.ACTION_REQUEST` contain custom dictionary.
      - returns:
      Dictionary which contains custom fields or `nil` if there's no such custom fields.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getData() -> [String: Any?]?
@@ -70,9 +70,9 @@ public protocol Message {
      ID doesn’t change while changing the content of a message.
      - returns:
      Unique ID of the message.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getID() -> String
@@ -80,9 +80,9 @@ public protocol Message {
     /**
      - returns:
      ID of a message sender, if the sender is an operator.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getOperatorID() -> String?
@@ -90,9 +90,9 @@ public protocol Message {
     /**
      - returns:
      URL of a sender's avatar or `nil` if one does not exist.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getSenderAvatarFullURL() -> URL?
@@ -100,9 +100,9 @@ public protocol Message {
     /**
      - returns:
      Name of a message sender.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getSenderName() -> String
@@ -110,9 +110,9 @@ public protocol Message {
     /**
      - returns:
      `MessageSendStatus.SENT` if a message had been sent to the server, was received by the server and was delivered to all the clients; `MessageSendStatus.SENDING` if not.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getSendStatus() -> MessageSendStatus
@@ -120,9 +120,9 @@ public protocol Message {
     /**
      - returns:
      Text of the message.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getText() -> String
@@ -130,21 +130,21 @@ public protocol Message {
     /**
      - returns:
      Timestamp of the moment the message was processed by the server.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getTime() -> Date
     
     /**
-     - SeeAlso:
+     - seealso:
      `MessageType` enum.
      - returns:
      Type of a message.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getType() -> MessageType
@@ -155,9 +155,9 @@ public protocol Message {
      Second `Message` object.
      - returns:
      True if two `Message` objects are identical and false otherwise.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func isEqual(to message: Message) -> Bool
@@ -166,11 +166,11 @@ public protocol Message {
 
 /**
  Contains information about an attachment file.
- - SeeAlso:
+ - seealso:
  `Message.getAttachment()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol MessageAttachment {
@@ -178,9 +178,9 @@ public protocol MessageAttachment {
     /**
      - returns:
      MIME-type of an attachment file.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getContentType() -> String
@@ -188,21 +188,21 @@ public protocol MessageAttachment {
     /**
      - returns:
      Name of an attachment file.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getFileName() -> String
     
     /**
-     - SeeAlso:
+     - seealso:
      `ImageInfo` protocol.
      - returns:
      If a file is an image, returns information about an image; in other cases returns nil.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getImageInfo() -> ImageInfo?
@@ -210,9 +210,9 @@ public protocol MessageAttachment {
     /**
      - returns:
      Attachment file size in bytes.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getSize() -> Int64?
@@ -222,9 +222,9 @@ public protocol MessageAttachment {
      Notice that this URL is short-living and is tied to a session.
      - returns:
      URL of attached file.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getURL() -> URL
@@ -233,11 +233,11 @@ public protocol MessageAttachment {
 
 /**
  Provides information about an image.
- - SeeAlso:
+ - seealso:
  `MessageAttachment.getImageInfo()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol ImageInfo {
@@ -262,9 +262,9 @@ public protocol ImageInfo {
      Notice that this URL is short-living and is tied to a session.
      - returns:
      URL of reduced image.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getThumbURL() -> URL
@@ -272,9 +272,9 @@ public protocol ImageInfo {
     /**
      - returns:
      Height of an image in pixels.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getHeight() -> Int?
@@ -282,9 +282,9 @@ public protocol ImageInfo {
     /**
      - returns:
      Width of an image in pixels.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getWidth() -> Int?
@@ -293,11 +293,11 @@ public protocol ImageInfo {
 // MARK: -
 /**
  Supported message types.
- - SeeAlso:
+ - seealso:
  `Message.getType()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum MessageType {
@@ -305,11 +305,11 @@ public enum MessageType {
     /**
      A message from operator which requests some actions from a visitor.
      E.g. choose an operator group by clicking on a button in this message.
-     - SeeAlso:
+     - seealso:
      `Message.getData()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case ACTION_REQUEST
@@ -318,11 +318,11 @@ public enum MessageType {
      Message type that is received after operator clicked contacts request button.
      - important:
      There's no this functionality automatic support yet. All payload is transfered inside standard text field.
-     - SeeAlso:
+     - seealso:
      `Message.getText()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case CONTACTS_REQUEST
@@ -331,11 +331,11 @@ public enum MessageType {
      A message sent by an operator which contains an attachment.
      - important:
      Notice that the method `Message.getAttachment()` may return nil even for messages of this type. E.g. if a file is being sent.
-     - SeeAlso:
+     - seealso:
      `Message.getAttachment()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case FILE_FROM_OPERATOR
@@ -344,11 +344,11 @@ public enum MessageType {
      A message sent by a visitor which contains an attachment.
      - important:
      Notice that the method `Message.getAttachment()` may return nil even for messages of this type. E.g. if a file is being sent.
-     - SeeAlso:
+     - seealso:
      `Message.getAttachment()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case FILE_FROM_VISITOR
@@ -356,40 +356,40 @@ public enum MessageType {
     /**
      A system information message.
      Messages of this type are automatically sent at specific events. E.g. when starting a chat, closing a chat or when an operator joins a chat.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case INFO
     
     /**
      A text message sent by an operator.
-     - SeeAlso:
+     - seealso:
      `Message.getText()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OPERATOR
     
     /**
      A system information message which indicates that an operator is busy and can't reply to a visitor at the moment.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OPERATOR_BUSY
     
     /**
      A text message sent by a visitor.
-     - SeeAlso:
+     - seealso:
      `Message.getText()`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case VISITOR
@@ -398,27 +398,27 @@ public enum MessageType {
 
 /**
  Until a message is sent to the server, is received by the server and is spreaded among clients, message can be seen as "being send"; at the same time `Message.getSendStatus()` will return `SENDING`. In other cases - `SENT`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum MessageSendStatus {
     
     /**
      A message is being sent.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case SENDING
     
     /**
      A message had been sent to the server, received by the server and was spreaded among clients.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case SENT

@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that is responsible for sending drafts of visitor typed messages to an operator side chat.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class MessageComposingHandler {

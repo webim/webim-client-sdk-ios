@@ -28,12 +28,12 @@ import Foundation
 
 /**
  Class that handles HTTP-requests sending by SDK with internal requested actions (initialization and chat updates).
- - SeeAlso:
+ - seealso:
  `DeltaCallback`
  `DeltaResponse`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 class DeltaRequestLoop: AbstractRequestLoop {
@@ -54,7 +54,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private var deviceToken: String?
     private var location: String
     private var providedAuthenticationToken: String?
-    private var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
+    private weak var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var sessionID: String?
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
@@ -230,11 +230,11 @@ class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
-    func getDeltaServerURLString() -> String! {
+    // MARK: Private methods
+    
+    private func getDeltaServerURLString() -> String {
         return (baseURL + WebimActions.ServerPathSuffix.getDelta.rawValue)
     }
-    
-    // MARK: Private methods
     
     private func getInitializationParameterString() -> String {
         var parameterDictionary = [WebimActions.Parameter.deviceID.rawValue: deviceID,
@@ -363,7 +363,11 @@ class DeltaRequestLoop: AbstractRequestLoop {
             self.sessionID = sessionID
             self.authorizationData = authorizationData
             
-            DispatchQueue.global(qos: .background).async {
+            DispatchQueue.global(qos: .background).async { [weak self] in
+                guard let `self` = self else {
+                    return
+                }
+                
                 self.sessionParametersListener?.onSessionParametersChanged(visitorFieldsJSONString: self.visitorJSONString!,
                                                                            sessionID: self.sessionID!,
                                                                            authorizationData: self.authorizationData!)

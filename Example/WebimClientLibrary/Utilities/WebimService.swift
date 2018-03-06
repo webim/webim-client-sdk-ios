@@ -38,7 +38,7 @@ final class WebimService {
         case name = "display_name"
         case crc = "crc"
     }
-    private enum VisitorFieldsValues: String {
+    private enum VisitorFieldsValue: String {
         // Hardcoded. See more at https://webim.ru/help/identification/
         case id = "1234567890987654321"
         case name = "Никита"
@@ -61,8 +61,6 @@ final class WebimService {
     
     // MARK: - Methods
     
-    // MARK: Webim session methods
-    
     func createSession() {
         let deviceToken: String? = UserDefaults.standard.object(forKey: AppDelegate.UserDefaultsKey.deviceToken.rawValue) as? String
         
@@ -78,7 +76,7 @@ final class WebimService {
                  verbosityLevel: .VERBOSE)
         
         if (Settings.shared.accountName == Settings.DefaultSettings.accountName.rawValue) {
-            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorFields.id.rawValue)\":\"\(VisitorFieldsValues.id.rawValue)\",\"\(VisitorFields.name.rawValue)\":\"\(VisitorFieldsValues.name.rawValue)\",\"\(VisitorFields.crc.rawValue)\":\"\(VisitorFieldsValues.crc.rawValue)\"}") // Hardcoded values that work with "demo" account only!
+            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorFields.id.rawValue)\":\"\(VisitorFieldsValue.id.rawValue)\",\"\(VisitorFields.name.rawValue)\":\"\(VisitorFieldsValue.name.rawValue)\",\"\(VisitorFields.crc.rawValue)\":\"\(VisitorFieldsValue.crc.rawValue)\"}") // Hardcoded values that work with "demo" account only!
         }
         
         do {
@@ -151,8 +149,6 @@ final class WebimService {
             print("Webim session or message tracker destroing failed with unknown error: \(error.localizedDescription)")
         }
     }
-    
-    // MARK: MessageStream methods.
     
     func setMessageStream() {
         messageStream = webimSession?.getStream()
@@ -307,8 +303,6 @@ final class WebimService {
         }
     }
     
-    // MARK: MessageTracker methods
-    
     func setMessageTracker(withMessageListener messageListener: MessageListener) {
         do {
             if messageStream == nil {
@@ -433,7 +427,7 @@ final class WebimService {
             print("Message status sending failed with unknown error: \(error.localizedDescription)")
         }
     }
-    
+
 }
 
 // MARK: - WEBIM: FatalErrorHandler

@@ -28,11 +28,11 @@ import Foundation
 
 /**
  Class used for handling storing cached completion handler in `MessageTrackerImpl` class.
- - SeeAlso:
+ - seealso:
  `MessageTrackerImpl.cachedCompletionHandler`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class MessageHolderCompletionHandlerWrapper {

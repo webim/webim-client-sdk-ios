@@ -38,7 +38,7 @@ class DeltaRequestLoopTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        deltaRequestLoop = DeltaRequestLoopForTests(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMapper(withServerURLString: "https://demo.webim.ru")),
+        deltaRequestLoop = DeltaRequestLoopForTests(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: "https://demo.webim.ru")),
                                                     completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
                                                                                                                  queue: DispatchQueue.global()),
                                                     sessionParametersListener: nil,
@@ -123,13 +123,6 @@ class DeltaRequestLoopTests: XCTestCase {
         // Then: Delta should be requested.
         XCTAssertNotNil(deltaRequestLoop?.getAuthorizationData())
         XCTAssertTrue(deltaRequestLoop!.initializationRunned)
-    }
-    
-    func testGetDeltaServerURLString() {
-        let expectedURLString = "https://demo.webim.ru/l/v/m/delta"
-        
-        XCTAssertEqual(deltaRequestLoop!.getDeltaServerURLString(),
-                       expectedURLString)
     }
     
 }

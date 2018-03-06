@@ -28,11 +28,11 @@ import Foundation
 
 /**
  MessageTracker allows to request the messages which are above in the history.
- - SeeAlso:
+ - seealso:
  `MessageStream.newMessageTracker(messageListener:)`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol MessageTracker {
@@ -44,22 +44,22 @@ public protocol MessageTracker {
      - important:
      Notice that this method can not be called again until the callback for the previous call will be invoked.
      When an error occurs (e.g. there's one request is still running) an empty list will be returned inside completion block.
-     - SeeAlso:
+     - seealso:
      `getLastMessages(byLimit:completion:)` method.
      `destroy()` method.
      `Message` protocol.
      - parameter limitOfMessages:
      A number of messages will be returned (not more than this specified number).
      - parameter completion:
-     Completion to be called on resulting array of messages if method call succeeded.
+     Completion to be called on resulting array of messages if method call succeeded. It is guaranteed that completion will be called with empty or not result if call didn't throw an error. If current `MessageTracker` is destroyed completion will be called on empty result.
      - parameter result:
      Resulting array of messages if method call succeeded.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getLastMessages(byLimit limitOfMessages: Int,
@@ -68,7 +68,7 @@ public protocol MessageTracker {
     /**
      Requests the messages above in history. Returns not more than `limitOfMessages` of messages. If an empty list is passed inside completion, the end of the message history is reached.
      If there is any previous `MessageTracker` request that is not completed, or limit of messages is less than 1, or current `MessageTracker` has been destroyed, this method will do nothing.
-     - SeeAlso:
+     - seealso:
      `destroy()` method.
      `Message` protocol.
      - important:
@@ -77,15 +77,15 @@ public protocol MessageTracker {
      - parameter limitOfMessages:
      A number of messages will be returned (not more than this specified number).
      - parameter completion:
-     Completion to be called on resulting array of messages if method call succeeded.
+     Completion to be called on resulting array of messages if method call succeeded. It is guaranteed that completion will be called with empty or not result if call didn't throw an error. If current `MessageTracker` is destroyed completion will be called on empty result.
      - parameter result:
      Resulting array of messages if method call succeeded.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getNextMessages(byLimit limitOfMessages: Int,
@@ -97,19 +97,19 @@ public protocol MessageTracker {
      - important:
      This method is totally independent on `getNextMessages(byLimit:completion:)` and `getLastMessages(byLimit:completion:)` methods' calls.
      When an error occurs (e.g. `MessageTracker` object is destroyed) an empty list will be returned inside completion block.
-     - SeeAlso:
+     - seealso:
      `destroy()` method.
      `Message` protocol.
      - parameter completion:
-     Completion to be called on resulting array of messages if method call succeeded.
+     Completion to be called on resulting array of messages if method call succeeded. It is guaranteed that completion will be called with empty or not result if call didn't throw an error. If current `MessageTracker` is destroyed completion will be called on empty result.
      - parameter result:
      Resulting array of messages if method call succeeded.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getAllMessages(completion: @escaping (_ result: [Message]) -> ()) throws
@@ -119,16 +119,16 @@ public protocol MessageTracker {
      If there is any previous `MessageTracker` request that is not completed, this method will do nothing.
      - important:
      Notice that this method can not be used unless the previous call `getNextMessages(byLimit:completion:)` was finished (completion handler was invoked).
-     - SeeAlso:
+     - seealso:
      `Message` protocol.
      - parameter message:
      A message reset to.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func resetTo(message: Message) throws
@@ -136,14 +136,14 @@ public protocol MessageTracker {
     /**
      Destroys the `MessageTracker`.
      It is impossible to use any `MessageTracker` methods after it was destroyed.
-     - SeeAlso:
+     - seealso:
      `Message` protocol.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
      `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func destroy() throws

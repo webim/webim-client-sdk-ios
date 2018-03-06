@@ -27,23 +27,23 @@
 import Foundation
 
 /**
- - SeeAlso:
+ - seealso:
  `WebimSession.getStream()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol MessageStream {
     
     /**
-     - SeeAlso:
+     - seealso:
      `VisitSessionState` type.
      - returns:
      Current session state.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getVisitSessionState() -> VisitSessionState
@@ -51,11 +51,11 @@ public protocol MessageStream {
     /**
      - returns:
      Current chat state.
-     - SeeAlso:
+     - seealso:
      `ChatState` type.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getChatState() -> ChatState
@@ -63,9 +63,9 @@ public protocol MessageStream {
     /**
      - returns:
      Timestamp after which all chat messages are unread by operator (at the moment of last server update recieved).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getUnreadByOperatorTimestamp() -> Date?
@@ -73,22 +73,22 @@ public protocol MessageStream {
     /**
      - returns:
      Timestamp after which all chat messages are unread by visitor (at the moment of last server update recieved) or `nil` if there's no unread by visitor messages.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getUnreadByVisitorTimestamp() -> Date?
     
     /**
-     - SeeAlso:
+     - seealso:
      `Department` protocol.
      `DepartmentListChangeListener` protocol.
      - returns:
      List of departments or `nil` if there're any or department list is not received yet.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getDepartmentList() -> [Department]?
@@ -96,9 +96,9 @@ public protocol MessageStream {
     /**
      - returns:
      Current LocationSettings of the MessageStream.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getLocationSettings() -> LocationSettings
@@ -106,9 +106,9 @@ public protocol MessageStream {
     /**
      - returns:
      Operator of the current chat.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getCurrentOperator() -> Operator?
@@ -118,9 +118,9 @@ public protocol MessageStream {
      ID of the operator.
      - returns:
      Previous rating of the operator or 0 if it was not rated before.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func getLastRatingOfOperatorWith(id: String) -> Int
@@ -130,7 +130,7 @@ public protocol MessageStream {
      To get an ID of the current operator call `getCurrentOperator()`.
      - important:
      Requires existing chat.
-     - SeeAlso:
+     - seealso:
      `RateOperatorCompletionHandler` protocol.
      - parameter id:
      ID of the operator to be rated. If passed `nil` current chat operator will be rated.
@@ -141,9 +141,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func rateOperatorWith(id: String?,
@@ -156,9 +156,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func startChat() throws
@@ -171,9 +171,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func startChat(firstQuestion: String?) throws
@@ -181,16 +181,16 @@ public protocol MessageStream {
     /**
      Starts chat with particular department.
      Changes `ChatState` to `ChatState.QUEUE`.
-     - SeeAlso:
+     - seealso:
      `Department` protocol.
      - parameter departmentKey:
      Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func startChat(departmentKey: String?) throws
@@ -198,7 +198,7 @@ public protocol MessageStream {
     /**
      Starts chat with particular department and sends first message simultaneously.
      Changes `ChatState` to `ChatState.QUEUE`.
-     - SeeAlso:
+     - seealso:
      `Department` protocol.
      - parameter departmentKey:
      Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
@@ -207,9 +207,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func startChat(departmentKey: String?,
@@ -220,9 +220,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func closeChat() throws
@@ -234,9 +234,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func setVisitorTyping(draftMessage: String?) throws
@@ -253,9 +253,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func send(message: String) throws -> String
@@ -276,9 +276,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func send(message: String,
@@ -299,9 +299,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func send(message: String,
@@ -310,10 +310,12 @@ public protocol MessageStream {
     /**
      Sends a file message.
      When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method), `MessageListener.added(message:after:)` with a message `MessageSendStatus.SENDING` in the status is also called.
-     - SeeAlso:
+     - seealso:
      Method could fail. See `SendFileError`.
-     - parameter path:
-     Path of the file to send.
+     - parameter file:
+     File data to send
+     - parameter filename:
+     File name with file extension.
      - parameter mimeType:
      MIME type of the file to send.
      - parameter completionHandler:
@@ -323,9 +325,9 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func send(file: Data,
@@ -345,23 +347,23 @@ public protocol MessageStream {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func newMessageTracker(messageListener: MessageListener) throws -> MessageTracker
     
     /**
      Sets `VisitSessionStateListener` object.
-     - SeeAlso:
+     - seealso:
      `VisitSessionStateListener` protocol.
      `VisitSessionState` type.
      - parameter visitSessionStateListener:
      `VisitSessionStateListener` object.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(visitSessionStateListener: VisitSessionStateListener)
@@ -370,9 +372,9 @@ public protocol MessageStream {
      Sets the `ChatState` change listener.
      - parameter chatStateListener:
      The `ChatState` change listener.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(chatStateListener: ChatStateListener)
@@ -381,23 +383,23 @@ public protocol MessageStream {
      Sets the current `Operator` change listener.
      - parameter currentOperatorChangeListener:
      Current `Operator` change listener.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(currentOperatorChangeListener: CurrentOperatorChangeListener)
     
     /**
      Sets `DepartmentListChangeListener` object.
-     - SeeAlso:
+     - seealso:
      `DepartmentListChangeListener` protocol.
      `Department` protocol.
      - parameter departmentListChangeListener:
      `DepartmentListChangeListener` object.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(departmentListChangeListener: DepartmentListChangeListener)
@@ -406,9 +408,9 @@ public protocol MessageStream {
      Sets the listener of the MessageStream LocationSettings changes.
      - parameter locationSettingsChangeListener:
      The listener of MessageStream LocationSettings changes.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(locationSettingsChangeListener: LocationSettingsChangeListener)
@@ -417,9 +419,9 @@ public protocol MessageStream {
      Sets the listener of the "operator typing" status changes.
      - parameter operatorTypingListener:
      The listener of the "operator typing" status changes.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(operatorTypingListener: OperatorTypingListener)
@@ -428,11 +430,11 @@ public protocol MessageStream {
      Sets the listener of session status changes.
      - parameter onlineStatusChangeListener:
      `OnlineStatusChangeListener` object.
-     - SeeAlso:
+     - seealso:
      `OnlineStatusChangeListener`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func set(onlineStatusChangeListener: OnlineStatusChangeListener)
@@ -441,9 +443,9 @@ public protocol MessageStream {
      Sets listener for parameter that is to be returned by `MessageStream.getUnreadByOperatorTimestamp()` method.
      - parameter unreadByOperatorTimestampChangeListener:
      `UnreadByOperatorTimestampChangeListener` object.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     func set(unreadByOperatorTimestampChangeListener: UnreadByOperatorTimestampChangeListener)
@@ -452,9 +454,9 @@ public protocol MessageStream {
      Sets listener for parameter that is to be returned by `MessageStream.getUnreadByVisitorTimestamp()` method.
      - parameter unreadByVisitorTimestampChangeListener:
      `UnreadByVisitorTimestampChangeListener` object.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     func set(unreadByVisitorTimestampChangeListener: UnreadByVisitorTimestampChangeListener)
@@ -463,11 +465,11 @@ public protocol MessageStream {
 
 /**
  Interface that provides methods for handling MessageStream LocationSettings which are received from server.
- - SeeAlso:
+ - seealso:
  `LocationSettingsChangeListener`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public protocol LocationSettings {
@@ -476,9 +478,9 @@ public protocol LocationSettings {
      This method shows to an app if it should show hint questions to visitor.
      - returns:
      True if an app should show hint questions to visitor, false otherwise.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func areHintsEnabled() -> Bool
@@ -487,22 +489,22 @@ public protocol LocationSettings {
 
 // MARK: -
 /**
- - SeeAlso:
+ - seealso:
  `MessageStream.send(message:data:completionHandler:)`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
-public protocol DataMessageCompletionHandler {
+public protocol DataMessageCompletionHandler: class {
     
     /**
      Executed when operation is done successfully.
      - parameter messageID:
      ID of the message.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     func onSussess(messageID: String)
@@ -513,11 +515,11 @@ public protocol DataMessageCompletionHandler {
      ID of the message.
      - parameter error:
      Error.
-     - SeeAlso:
+     - seealso:
      `DataMessageError`.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     func onFailure(messageID: String,
@@ -526,22 +528,22 @@ public protocol DataMessageCompletionHandler {
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `MessageStream.send(file:filename:mimeType:completionHandler:)`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol SendFileCompletionHandler {
+public protocol SendFileCompletionHandler: class {
     
     /**
      Executed when operation is done successfully.
      - parameter messageID:
      ID of the message.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func onSuccess(messageID: String)
@@ -552,11 +554,11 @@ public protocol SendFileCompletionHandler {
      ID of the message.
      - parameter error:
      Error.
-     - SeeAlso:
+     - seealso:
      `SendFileError`.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func onFailure(messageID: String,
@@ -565,20 +567,20 @@ public protocol SendFileCompletionHandler {
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `MessageStream.rateOperatorWith(id:byRating:comletionHandler:)`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol RateOperatorCompletionHandler {
+public protocol RateOperatorCompletionHandler: class {
     
     /**
      Executed when operation is done successfully.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func onSuccess()
@@ -587,11 +589,11 @@ public protocol RateOperatorCompletionHandler {
      Executed when operation is failed.
      - parameter error:
      Error.
-     - SeeAlso:
+     - seealso:
      `RateOperatorError`.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func onFailure(error: RateOperatorError)
@@ -600,14 +602,14 @@ public protocol RateOperatorCompletionHandler {
 
 /**
  Provides methods to track changes of `VisitSessionState` status.
- - SeeAlso:
+ - seealso:
  `VisitSessionState` protocol.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol VisitSessionStateListener {
+public protocol VisitSessionStateListener: class {
     
     /**
      Called when `VisitSessionState` status is changed.
@@ -615,9 +617,9 @@ public protocol VisitSessionStateListener {
      Previous value of `VisitSessionState` status.
      - parameter newState:
      New value of `VisitSessionState` status.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func changed(state previousState: VisitSessionState,
@@ -626,15 +628,16 @@ public protocol VisitSessionStateListener {
 }
 
 /**
- - SeeAlso:
+ Delegate protocol that provides methods to handle changes of chat state.
+ - seealso:
  `MessageStream.set(chatStateListener:)`
  `MessageStream.getChatState()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol ChatStateListener {
+public protocol ChatStateListener: class {
     
     /**
      Called during `ChatState` transition.
@@ -642,9 +645,9 @@ public protocol ChatStateListener {
      Previous state.
      - parameter newState:
      New state.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func changed(state previousState: ChatState,
@@ -653,15 +656,15 @@ public protocol ChatStateListener {
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `MessageStream.set(currentOperatorChangeListener:)`
  `MessageStream.getCurrentOperator()`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol CurrentOperatorChangeListener {
+public protocol CurrentOperatorChangeListener: class {
     
     /**
      Called when `Operator` of the current chat changed.
@@ -669,9 +672,9 @@ public protocol CurrentOperatorChangeListener {
      Previous operator.
      - parameter newOperator:
      New operator or nil if doesn't exist.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func changed(operator previousOperator: Operator,
@@ -681,24 +684,24 @@ public protocol CurrentOperatorChangeListener {
 
 /**
  Provides methods to track changes in departments list.
- - SeeAlso:
+ - seealso:
  `Department` protocol.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol DepartmentListChangeListener {
+public protocol DepartmentListChangeListener: class {
     
     /**
      Called when department list is received.
-     - SeeAlso:
+     - seealso:
      `Department` protocol.
      - parameter departmentList:
      Current department list.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func received(departmentList: [Department])
@@ -707,14 +710,14 @@ public protocol DepartmentListChangeListener {
 
 /**
  Interface that provides methods for handling changes in LocationSettings.
- - SeeAlso:
+ - seealso:
  `LocationSettings`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol LocationSettingsChangeListener {
+public protocol LocationSettingsChangeListener: class {
     
     /**
      Method called by an app when new LocationSettings object is received.
@@ -722,9 +725,9 @@ public protocol LocationSettingsChangeListener {
      Previous LocationSettings state.
      - parameter newLocationSettings:
      New LocationSettings state.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func changed(locationSettings previousLocationSettings: LocationSettings,
@@ -733,22 +736,22 @@ public protocol LocationSettingsChangeListener {
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `MessageStream.set(operatorTypingListener:)`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol OperatorTypingListener {
+public protocol OperatorTypingListener: class {
     
     /**
      Called when operator typing state changed.
      - parameter isTyping:
      True if operator is typing, false otherwise.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func onOperatorTypingStateChanged(isTyping: Bool)
@@ -757,14 +760,14 @@ public protocol OperatorTypingListener {
 
 /**
  Interface that provides methods for handling changes of session status.
- - SeeAlso:
+ - seealso:
  `MessageStream.set(onlineStatusChangeListener:)`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
-public protocol OnlineStatusChangeListener {
+public protocol OnlineStatusChangeListener: class {
     
     /**
      Called when new session status is received.
@@ -772,11 +775,11 @@ public protocol OnlineStatusChangeListener {
      Previous value.
      - parameter newOnlineStatus:
      New value.
-     - SeeAlso:
+     - seealso:
      `OnlineStatus`
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     func changed(onlineStatus previousOnlineStatus: OnlineStatus,
@@ -786,22 +789,22 @@ public protocol OnlineStatusChangeListener {
 
 /**
  Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByOperatorTimestamp()` method.
- - SeeAlso:
+ - seealso:
  `MessageStream.set(unreadByOperatorTimestampChangeListener:)`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
-public protocol UnreadByOperatorTimestampChangeListener {
+public protocol UnreadByOperatorTimestampChangeListener: class {
     
     /**
      Method to be called when parameter that is to be returned by `MessageStream.getUnreadByOperatorTimestamp()` method is changed.
      - parameter newValue:
      New unread by operator timestamp value.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     func changedUnreadByOperatorTimestampTo(newValue: Date?)
@@ -810,22 +813,22 @@ public protocol UnreadByOperatorTimestampChangeListener {
 
 /**
  Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByVisitorTimestamp()` method.
- - SeeAlso:
+ - seealso:
  `MessageStream.set(unreadByVisitorTimestampChangeListener:)`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
-public protocol UnreadByVisitorTimestampChangeListener {
+public protocol UnreadByVisitorTimestampChangeListener: class {
     
     /**
      Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByVisitorTimestamp()` method.
      - parameter newValue:
      New unread by visitor timestamp value.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     func changedUnreadByVisitorTimestampTo(newValue: Date?)
@@ -842,9 +845,9 @@ public protocol UnreadByVisitorTimestampChangeListener {
  When closing a chat by the visitor `MessageStream.closeChat()`, it turns into the state `CLOSED_BY_VISITOR`, by the operator - `CLOSED_BY_OPERATOR`.
  When both the visitor and the operator close the chat, it's state changes to the initial – `NONE`. A chat can also automatically turn into the initial state during long-term absence of activity in it.
  Furthermore, the first message can be sent not only by a visitor but also by an operator. In this case the state will change from the initial to `INVITATION`, and then, after the first message of the visitor, it changes to `CHATTING`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum ChatState {
@@ -855,9 +858,9 @@ public enum ChatState {
      * `CLOSED_BY_OPERATOR`, if an operator closes the chat;
      * `CLOSED_BY_VISITOR`, if a visitor closes the chat (`MessageStream.closeChat()`);
      * `NONE`, automatically during long-term absence of activity.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case CHATTING
@@ -868,9 +871,9 @@ public enum ChatState {
      * `CHATTING`, if an operator intercepted the chat;
      * `CLOSED_BY_VISITOR`, if a visitor closes the chat (`MessageStream.closeChat()`);
      * `NONE`, automatically during long-term absence of activity.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case CHATTING_WITH_ROBOT
@@ -880,9 +883,9 @@ public enum ChatState {
      From this state a chat can be turned into:
      * `NONE`, if the chat is also closed by a visitor (`MessageStream.closeChat()`), or automatically during long-term absence of activity;
      * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case CLOSED_BY_OPERATOR
@@ -892,9 +895,9 @@ public enum ChatState {
      From this state a chat can be turned into:
      * `NONE`, if the chat is also closed by an operator or automatically during long-term absence of activity;
      * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case CLOSED_BY_VISITOR
@@ -904,9 +907,9 @@ public enum ChatState {
      From this state a chat can be turned into:
      * `CHATTING`, if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`);
      * `NONE`, if an operator or a visitor closes the chat (`MessageStream.closeChat()`).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case INVITATION
@@ -916,9 +919,9 @@ public enum ChatState {
      From this state a chat can be turned into:
      * `QUEUE`, if the chat is started by a visitor (by the first message or by calling `MessageStream.startChat()`;
      * `INVITATION`, if the chat is started by an operator.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case NONE
@@ -929,9 +932,9 @@ public enum ChatState {
      * `CHATTING`, if an operator takes the chat for processing;
      * `NONE`, if a visitor closes the chat (by calling (`MessageStream.closeChat()`) before it is taken for processing;
      * `CLOSED_BY_OPERATOR`, if an operator closes the chat without taking it for processing.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case QUEUE
@@ -939,9 +942,9 @@ public enum ChatState {
     /**
      The state is undefined.
      This state is set as the initial when creating a new session, until the first response of the server containing the actual state is got. This state is also used as a fallback if WebimClientLibrary can not identify the server state (e.g. if the server has been updated to a version that contains new states).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case UNKNOWN
@@ -950,11 +953,11 @@ public enum ChatState {
 
 /**
  Online state possible cases.
- - SeeAlso:
+ - seealso:
  `OnlineStatusChangeListener`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum OnlineStatus {
@@ -962,9 +965,9 @@ public enum OnlineStatus {
     /**
      Offline state with chats' count limit exceeded.
      Means that visitor is not able to send messages at all.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case BUSY_OFFLINE
@@ -972,36 +975,36 @@ public enum OnlineStatus {
     /**
      Online state with chats' count limit exceeded.
      Visitor is able send offline messages, but the server can reject it.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case BUSY_ONLINE
     
     /**
      Visitor is able to send offline messages.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OFFLINE
     
     /**
      Visitor is able to send both online and offline messages.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case ONLINE
     
     /**
      First status is not recieved yet or status is not supported by this version of the library.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case UNKNOWN
@@ -1010,68 +1013,68 @@ public enum OnlineStatus {
 
 /**
  Session possible states.
- - SeeAlso:
+ - seealso:
  `getVisitSessionState()` method of `MessageStream` protocol.
  `VisitSessionStateListener` protocol.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum VisitSessionState {
     
     /**
      Chat in progress.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case CHAT
     
     /**
      Chat must be started with department selected (there was a try to start chat without department selected).
-     - SeeAlso:
+     - seealso:
      `startChat(departmentKey:)` of `MessageStream` protocol.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case DEPARTMENT_SELECTION
     
     /**
      Session is active but no chat is occuring (chat was not started yet).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case IDLE
     
     /**
      Session is active but no chat is occuring (chat was closed recently).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case IDLE_AFTER_CHAT
     
     /**
      Offline state.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case OFFLINE_MESSAGE
     
     /**
      First status is not received yet or status is not supported by this version of the library.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case UNKNOWN
@@ -1079,68 +1082,68 @@ public enum VisitSessionState {
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `DataMessageCompletionHandler.onFailure(messageID:error:)`.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2018 Webim
  */
 public enum DataMessageError: Error {
     
     /**
      Received error is not supported by current WebimClientLibrary version.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case UNKNOWN
     
-    // MARK: Quoted message errors.
+    // MARK: Quoted message errors
     // Note that quoted message mechanism is not a standard feature – it must be implemented by a server. For more information please contact with Webim support service.
     
     /**
      To be raised when quoted message ID belongs to a message without `canBeReplied` flag set to `true` (this flag is to be set on the server-side).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case QUOTED_MESSAGE_CANNOT_BE_REPLIED
     
     /**
      To be raised when quoted message ID belongs to another visitor's chat.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case QUOTED_MESSAGE_FROM_ANOTHER_VISITOR
     
     /**
      To be raised when quoted message ID belongs to multiple messages (server DB error).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case QUOTED_MESSAGE_MULTIPLE_IDS
     
     /**
      To be raised when one or more required arguments of quoting mechanism are missing.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING
     
     /**
      To be raised when wrong quoted message ID is sent.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2018 Webim
      */
     case QUOTED_MESSAGE_WRONG_ID
@@ -1148,11 +1151,11 @@ public enum DataMessageError: Error {
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `SendFileCompletionHandler.onFailure(messageID:error:)`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum SendFileError: Error {
@@ -1160,9 +1163,9 @@ public enum SendFileError: Error {
     /**
      The server may deny a request if the file size exceeds a limit.
      The maximum size of a file is configured on the server.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case FILE_SIZE_EXCEEDED
@@ -1170,9 +1173,9 @@ public enum SendFileError: Error {
     /**
      The server may deny a request if the file type is not allowed.
      The list of allowed file types is configured on the server.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case FILE_TYPE_NOT_ALLOWED
@@ -1180,29 +1183,29 @@ public enum SendFileError: Error {
 }
 
 /**
- - SeeAlso:
+ - seealso:
  `RateOperatorCompletionHandler.onFailure(error:)`
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 public enum RateOperatorError: Error {
     
     /**
      Arised when trying to send operator rating request if no chat is exists.
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case NO_CHAT
     
     /**
      Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator (or, in the same place, chat doesn't have an operator at all).
-     - Author:
+     - author:
      Nikita Lazarev-Zubov
-     - Copyright:
+     - copyright:
      2017 Webim
      */
     case WRONG_OPERATOR_ID

@@ -28,9 +28,9 @@ import Foundation
 
 /**
  Class that encapsulates chat update data, received from a server.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class DeltaItem {

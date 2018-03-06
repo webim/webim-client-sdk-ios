@@ -50,9 +50,9 @@ fileprivate enum UserDefaultsGUIDPrefix: String {
 
 // MARK: -
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class WebimSessionImpl {
@@ -103,7 +103,7 @@ final class WebimSessionImpl {
         
         let queue = DispatchQueue.global(qos: .userInteractive)
         
-        let userDefaultsKey = UserDefaultsName.main.rawValue + ((visitorFields == nil) ? "anonymous" : visitorFields!.getID())
+        let userDefaultsKey = UserDefaultsName.main.rawValue + (visitorFields?.getID() ?? "anonymous")
         let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
         if isVisitorDataClearingEnabled {
@@ -117,13 +117,13 @@ final class WebimSessionImpl {
         
         let visitorJSON = (userDefaults?[UserDefaultsMainPrefix.visitor.rawValue] ?? nil)
         
-        let visitorFieldsJSON = (visitorFields == nil) ? nil : visitorFields?.getJSONString()
+        let visitorFieldsJSONString = visitorFields?.getJSONString()
         
         let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
         WebimInternalLogger.shared.log(entry: "Specified Webim server – \(serverURLString).",
             verbosityLevel: .DEBUG)
         
-        let currentChatMessageMapper: MessageFactoriesMapper = CurrentChatMapper(withServerURLString: serverURLString)
+        let currentChatMessageMapper: MessageMapper = CurrentChatMessageMapper(withServerURLString: serverURLString)
         
         let sessionID = userDefaults?[UserDefaultsMainPrefix.sessionID.rawValue] ?? nil
         
@@ -138,7 +138,7 @@ final class WebimSessionImpl {
             .set(baseURL: serverURLString)
             .set(location: location)
             .set(appVersion: appVersion)
-            .set(visitorFieldsJSONString: visitorFieldsJSON)
+            .set(visitorFieldsJSONString: visitorFieldsJSONString)
             .set(deltaCallback: deltaCallback)
             .set(sessionParametersListener: SessionParametersListenerImpl(withUserDefaultsKey: userDefaultsKey))
             .set(internalErrorListener: DestroyOnFatalErrorListener(sessionDestroyer: sessionDestroyer,
@@ -150,7 +150,7 @@ final class WebimSessionImpl {
             .set(authorizationData: authorizationData)
             .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                               queue: queue))
-            .set(title: (pageTitle != nil) ? pageTitle! : DefaultSettings.pageTitle.rawValue)
+            .set(title: (pageTitle ?? DefaultSettings.pageTitle.rawValue))
             .set(deviceToken: deviceToken)
             .set(deviceID: getDeviceID())
             .build() as WebimClient
@@ -200,7 +200,7 @@ final class WebimSessionImpl {
                                           sessionDestroyer: sessionDestroyer)
         
         let webimActions = webimClient.getActions()
-        let historyMessageMapper: MessageFactoriesMapper = HistoryMapper(withServerURLString: serverURLString)
+        let historyMessageMapper: MessageMapper = HistoryMessageMapper(withServerURLString: serverURLString)
         let messageHolder = MessageHolder(accessChecker: accessChecker,
                                           remoteHistoryProvider: RemoteHistoryProvider(webimActions: webimActions,
                                                                                        historyMessageMapper: historyMessageMapper,
@@ -254,13 +254,13 @@ final class WebimSessionImpl {
     }
     
     private static func deleteDBFileFor(userDefaultsKey: String) {
-        if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyDBname.rawValue] {
+        if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String {
             let fileManager = FileManager.default
             let documentsDirectory = try! fileManager.url(for: .documentDirectory,
                                                           in: .userDomainMask,
                                                           appropriateFor: nil,
                                                           create: false)
-            let dbURL = documentsDirectory.appendingPathComponent(dbName as! String)
+            let dbURL = documentsDirectory.appendingPathComponent(dbName)
             
             do {
                 try fileManager.removeItem(at: dbURL)
@@ -273,14 +273,12 @@ final class WebimSessionImpl {
     
     private static func checkSavedSessionFor(userDefaultsKey: String,
                                              newProvidedVisitorFields: ProvidedVisitorFields?) {
-        let newVisitorFieldsJSONString = (newProvidedVisitorFields == nil) ? nil : newProvidedVisitorFields?.getJSONString()
+        let newVisitorFieldsJSONString = newProvidedVisitorFields?.getJSONString()
         let previousVisitorFieldsJSONString = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.visitorExt.rawValue] as? String
         
-        let previousProvidedVisitorFields: ProvidedVisitorFields?
+        var previousProvidedVisitorFields: ProvidedVisitorFields? = nil
         if previousVisitorFieldsJSONString != nil {
             previousProvidedVisitorFields = ProvidedVisitorFields(withJSONString: previousVisitorFieldsJSONString!)
-        } else {
-            previousProvidedVisitorFields = nil
         }
         
         if (newProvidedVisitorFields == nil)
@@ -380,9 +378,9 @@ extension WebimSessionImpl: WebimSession {
 
 // MARK: -
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final private class HistoryPoller {
@@ -393,7 +391,7 @@ final private class HistoryPoller {
     }
     
     // MARK: - Properties
-    private let historyMessageMapper: MessageFactoriesMapper
+    private let historyMessageMapper: MessageMapper
     private let historyMetaInformationStorage: HistoryMetaInformationStorage
     private let queue: DispatchQueue
     private let messageHolder: MessageHolder
@@ -408,7 +406,7 @@ final private class HistoryPoller {
     // MARK: - Initialization
     init(withSessionDestroyer sessionDestroyer: SessionDestroyer,
          queue: DispatchQueue,
-         historyMessageMapper: MessageFactoriesMapper,
+         historyMessageMapper: MessageMapper,
          webimActions: WebimActions,
          messageHolder: MessageHolder,
          historyMetaInformationStorage: HistoryMetaInformationStorage) {
@@ -434,7 +432,7 @@ final private class HistoryPoller {
         
         running = true
         
-        self.historySinceCompletionHandler = createHistorySinceCompletionHandler()
+        historySinceCompletionHandler = createHistorySinceCompletionHandler()
         
         let uptime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
         if (uptime - lastPollingTime) > TimeInterval.historyPolling.rawValue {
@@ -446,7 +444,11 @@ final private class HistoryPoller {
             let currentDispatchTime = DispatchTime.now()
             let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime * 1000) + (TimeInterval.historyPolling.rawValue * 1000)) - currentDispatchTime.uptimeNanoseconds))
             
-            dispatchWorkItem = DispatchWorkItem() {
+            dispatchWorkItem = DispatchWorkItem() { [weak self] in
+                guard let `self` = self else {
+                    return
+                }
+                
                 self.requestHistory(since: self.lastRevision,
                                     completion: self.historySinceCompletionHandler!)
             }
@@ -543,9 +545,9 @@ final private class HistoryPoller {
 
 // MARK: -
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final class SessionParametersListenerImpl: SessionParametersListener {
@@ -589,9 +591,9 @@ final class SessionParametersListenerImpl: SessionParametersListener {
 // MARK: -
 /**
  Class that responsible on destroying session on service fatal error occured.
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final private class DestroyOnFatalErrorListener: InternalErrorListener {
@@ -621,15 +623,15 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
 
 // MARK: -
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
     
     // MARK: - Parameters
-    private let fatalErrorHandler: FatalErrorHandler?
+    private weak var fatalErrorHandler: FatalErrorHandler?
     
     // MARK: - Initialization
     init(fatalErrorHandler: FatalErrorHandler?) {
@@ -665,9 +667,9 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
 
 // MARK: -
 /**
- - Author:
+ - author:
  Nikita Lazarev-Zubov
- - Copyright:
+ - copyright:
  2017 Webim
  */
 final private class HistoryMetaInformationStoragePreferences: HistoryMetaInformationStorage {

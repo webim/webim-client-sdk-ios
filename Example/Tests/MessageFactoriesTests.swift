@@ -50,7 +50,7 @@ fileprivate let MESSAGE_ITEM = MessageItem(jsonDictionary: MESSAGE_ITEM_DICTIONA
 class CurrentChatMapperTests: XCTestCase {
     
     // MARK: - Properties
-    let currentChatMapper = CurrentChatMapper(withServerURLString: "http://demo.webim.ru")
+    let currentChatMapper = CurrentChatMessageMapper(withServerURLString: "http://demo.webim.ru")
     
     // MARK: - Tests
     
@@ -84,7 +84,7 @@ class CurrentChatMapperTests: XCTestCase {
 class HistoryMapperTests: XCTestCase {
     
     // MARK: - Properties
-    let historyMapper = HistoryMapper(withServerURLString: "http://demo.webim.ru")
+    let historyMapper = HistoryMessageMapper(withServerURLString: "http://demo.webim.ru")
     
     // MARK: - Tests
     func testMap() {
