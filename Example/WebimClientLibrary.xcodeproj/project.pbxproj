@@ -50,6 +50,7 @@
 		CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
 		CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE5A03BC1FDEB756009D320A /* Localizable.strings */; };
 		CE5B7E5C20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5B7E5B20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift */; };
+		CE5B7E622056B26C00DDA407 /* WebimClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5B7E612056B26C00DDA407 /* WebimClientTests.swift */; };
 		CE6741C8200F9A600061EEFD /* HMACSha256Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6741C7200F9A600061EEFD /* HMACSha256Tests.swift */; };
 		CE86FA97203AF44700CB9C2D /* VisitorItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FA96203AF44700CB9C2D /* VisitorItemTests.swift */; };
 		CE86FA99203AF6AC00CB9C2D /* UIColorHexStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FA98203AF6AC00CB9C2D /* UIColorHexStringTests.swift */; };
@@ -152,6 +153,7 @@
 		CE591A421FC2F31E004C95EE /* WebimService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimService.swift; sourceTree = "<group>"; };
 		CE5A03BB1FDEB756009D320A /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CE5B7E5B20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvidedVisitorFieldsTests.swift; sourceTree = "<group>"; };
+		CE5B7E612056B26C00DDA407 /* WebimClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimClientTests.swift; sourceTree = "<group>"; };
 		CE6741C7200F9A600061EEFD /* HMACSha256Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HMACSha256Tests.swift; sourceTree = "<group>"; };
 		CE86FA96203AF44700CB9C2D /* VisitorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorItemTests.swift; sourceTree = "<group>"; };
 		CE86FA98203AF6AC00CB9C2D /* UIColorHexStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexStringTests.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				CE86FA98203AF6AC00CB9C2D /* UIColorHexStringTests.swift */,
 				CE86FA96203AF44700CB9C2D /* VisitorItemTests.swift */,
 				CED3BA07201F7E100071EC23 /* WebimActionsTests.swift */,
+				CE5B7E612056B26C00DDA407 /* WebimClientTests.swift */,
 				CE86FABF203C6FBC00CB9C2D /* WebimErrorImplTests.swift */,
 				CED72597200E5B1C00CD1623 /* WebimInternalLoggerTests.swift */,
 				CE995DC12020904300E27A3C /* WebimRemoteNotificationImplTests.swift */,
@@ -738,6 +741,7 @@
 				CE2845C62021CF40007B1C25 /* ClientSideIDTests.swift in Sources */,
 				CE2845B82020A891007B1C25 /* AbstractRequestLoopTests.swift in Sources */,
 				CE86FAA3203B122A00CB9C2D /* HistorySinceResponseTests.swift in Sources */,
+				CE5B7E622056B26C00DDA407 /* WebimClientTests.swift in Sources */,
 				CE2845C22021B9D4007B1C25 /* DecodePercentEscapedLinksIfPresentTests.swift in Sources */,
 				CE2CD5952035DF6E00997628 /* MemoryHistoryMetaInformationStorageTests.swift in Sources */,
 				CE6741C8200F9A600061EEFD /* HMACSha256Tests.swift in Sources */,

@@ -36,7 +36,6 @@ final class MemoryHistoryMetaInformationStorage: HistoryMetaInformationStorage {
     
     // MARK: - Properties
     private var historyEnded = false
-    private var revision: String?
     
     // MARK: - Methods
     // MARK: HistoryMetaInformationStorage protocol methods
@@ -50,7 +49,7 @@ final class MemoryHistoryMetaInformationStorage: HistoryMetaInformationStorage {
     }
     
     func set(revision: String?) {
-        self.revision = revision
+        // No need to do anything in this implementation.
     }
     
 }

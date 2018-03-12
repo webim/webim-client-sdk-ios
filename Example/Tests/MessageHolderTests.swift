@@ -1471,7 +1471,7 @@ class MessageHolderTests: XCTestCase {
     }
     
     func testReceiveEditedHistoryAndCloseChat() throws {
-        // MARK: Model set up
+        // MARK: Set up
         let currentChat = generateCurrentChat(ofCount: 10)
         var history = generateHistoryFrom(currentChat: currentChat)
         history[9] = newEdited(historyMessage: history[9])

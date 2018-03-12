@@ -83,7 +83,7 @@ final class DeltaCallback {
                 handleChatReadByVisitorUpdateBy(delta: delta)
                 
                 break
-            case .statState:
+            case .chatState:
                 handleChatStateUpdateBy(delta: delta)
                 
                 break
@@ -97,6 +97,10 @@ final class DeltaCallback {
                 break
             case .operatorRate:
                 handleOperatorRateUpdateBy(delta: delta)
+                
+                break
+            case .unreadByVisitor:
+                handleUnreadByVisitorUpdateBy(delta: delta)
                 
                 break
             case .visitSessionState:
@@ -136,7 +140,7 @@ final class DeltaCallback {
     
     private func handleChatUpdateBy(delta: DeltaItem) {
         guard delta.getEvent() == .update,
-            let deltaData = delta.getData() as? [String: Any?] else {
+            let deltaData = delta.getData() as? [String : Any?] else {
                 return
         }
         
@@ -163,7 +167,7 @@ final class DeltaCallback {
             
             messageHolder?.deletedMessageWith(id: deltaID)
         } else {
-            guard let deltaData = delta.getData() as? [String: Any?] else {
+            guard let deltaData = delta.getData() as? [String : Any] else {
                 return
             }
             
@@ -196,7 +200,7 @@ final class DeltaCallback {
     
     private func handleChatOperatorUpdateBy(delta: DeltaItem) {
         guard delta.getEvent() == .update,
-            let deltaData = delta.getData() as? [String: Any?] else {
+            let deltaData = delta.getData() as? [String : Any] else {
                 return
         }
         
@@ -241,6 +245,19 @@ final class DeltaCallback {
         messageStream?.changingChatStateOf(chat: currentChat)
     }
     
+    private func handleUnreadByOperatorTimestampUpdateBy(delta: DeltaItem) {
+        guard delta.getEvent() == .update else {
+            return
+        }
+        
+        var unreadByOperatorTimestamp: Double?
+        if delta.getData() != nil {
+            unreadByOperatorTimestamp = delta.getData() as? Double
+        }
+        currentChat?.set(unreadByOperatorTimestamp: unreadByOperatorTimestamp)
+        messageStream?.set(unreadByOperatorTimestamp: (unreadByOperatorTimestamp != nil ? Date(timeIntervalSince1970: unreadByOperatorTimestamp!) : nil))
+    }
+    
     private func handleDepartmentListUpdateBy(delta: DeltaItem) {
         guard let deltaData = delta.getData() as? [Any] else {
             return
@@ -258,21 +275,8 @@ final class DeltaCallback {
         messageStream?.onReceiving(departmentItemList: departmentItems)
     }
     
-    private func handleUnreadByOperatorTimestampUpdateBy(delta: DeltaItem) {
-        guard delta.getEvent() == .update else {
-            return
-        }
-        
-        var unreadByOperatorTimestamp: Double?
-        if delta.getData() != nil {
-            unreadByOperatorTimestamp = delta.getData() as? Double
-        }
-        currentChat?.set(unreadByOperatorTimestamp: unreadByOperatorTimestamp)
-        messageStream?.set(unreadByOperatorTimestamp: (unreadByOperatorTimestamp != nil ? Date(timeIntervalSince1970: unreadByOperatorTimestamp!) : nil))
-    }
-    
     private func handleOperatorRateUpdateBy(delta: DeltaItem) {
-        guard let deltaData = delta.getData() as? [String: Any?] else {
+        guard let deltaData = delta.getData() as? [String: Any] else {
             return
         }
         
@@ -282,6 +286,16 @@ final class DeltaCallback {
                                  toOperatorWithId: rating.getOperatorID())
             }
         }
+    }
+    
+    private func handleUnreadByVisitorUpdateBy(delta: DeltaItem) {
+        guard delta.getEvent() == .update,
+            let unreadByVisitorUpdate = delta.getData() as? [String: Any],
+            let unreadByVisitorTimestamp = unreadByVisitorUpdate[DeltaItem.UnreadByVisitorField.timestamp.rawValue] as? Double else {
+                return
+        }
+        
+        messageStream?.set(unreadByVisitorTimestamp: Date(timeIntervalSince1970: unreadByVisitorTimestamp))
     }
     
     private func handleVisitSessionStateUpdateBy(delta: DeltaItem) {

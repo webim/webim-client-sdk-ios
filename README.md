@@ -24,7 +24,7 @@ pod 'WebimClientLibrary'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.14.1
+github "webim/webim-client-sdk-ios" ~> 3.14.2
 ```
 
 ### Additional notes
@@ -38,14 +38,12 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
 ## Release notes
-* Bug that can crash an app if account is blocked fixed. 🤞
-* Bug that can lead to foreign messages getting after requesting history and immediate switching a visitor fixed. 🤞
-* All delegate protocols are now class protocols for better memory issues handling inside the library. 📱
-* Stability and other improvements. 💣
-* Documentation additions and improvements. 📖
+* Additional interoperability with service on unread by visitor timestamp. 🤳
+* Bug when `MessageListener` protocol delegate methods aren't called if there's no history request occured fixed. 🤞
+* Minor bug fixes and improvements. 🤥
 
 ### Example app
-* Wrong history messages order possibility bug fixed. 🤞
+* Minor bug fixes. 💩
 
 ## Example
 

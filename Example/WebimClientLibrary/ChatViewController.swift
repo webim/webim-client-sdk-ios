@@ -469,7 +469,7 @@ extension ChatViewController: MessageListener {
             for (index, message) in messages.enumerated() {
                 if previousMessage.isEqual(to: message) {
                     messages.insert(newMessage,
-                                    at: index - 1)
+                                    at: (index == 0) ? index : (index - 1))
                     inserted = true
                     
                     break

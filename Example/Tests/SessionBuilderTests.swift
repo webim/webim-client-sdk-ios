@@ -40,7 +40,8 @@ class SessionBuilderTests: XCTestCase {
             .build())
         XCTAssertThrowsError(try Webim
             .newSessionBuilder()
-            .set(accountName: "account").build())
+            .set(accountName: "account")
+            .build())
         
         XCTAssertThrowsError(try Webim
             .newSessionBuilder()
@@ -56,21 +57,39 @@ class SessionBuilderTests: XCTestCase {
             .set(remoteNotificationSystem: .APNS)
             .build())
         
-        XCTAssertThrowsError(try Webim.newSessionBuilder()
+        XCTAssertThrowsError(try Webim
+            .newSessionBuilder()
             .set(accountName: "account")
             .set(location: "location")
             .set(visitorFieldsJSONString: visitorFieldsJSONString)
             .set(providedAuthorizationTokenStateListener: self)
             .build())
-        XCTAssertNoThrow(try Webim.newSessionBuilder()
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
             .set(accountName: "account")
             .set(location: "location")
             .set(visitorFieldsJSONString: visitorFieldsJSONString)
             .build())
-        XCTAssertNoThrow(try Webim.newSessionBuilder()
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
             .set(accountName: "account")
             .set(location: "location")
             .set(providedAuthorizationTokenStateListener: self)
+            .build())
+        
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(appVersion: "version")
+            .set(visitorFieldsJSONData: visitorFieldsJSONString.data(using: .utf8)!)
+            .set(pageTitle: "title")
+            .set(fatalErrorHandler: self)
+            .set(remoteNotificationSystem: .APNS)
+            .set(deviceToken: "token")
+            .set(isLocalHistoryStoragingEnabled: true)
+            .set(isVisitorDataClearingEnabled: false)
+            .set(webimLogger: self)
             .build())
     }
     
@@ -83,6 +102,28 @@ extension SessionBuilderTests: ProvidedAuthorizationTokenStateListener {
     // MARK: ProvidedAuthorizationTokenStateListener protocol methods
     func update(providedAuthorizationToken: String) {
         // No need to do anything while testing.
+    }
+    
+}
+
+// MARK: -
+extension SessionBuilderTests: FatalErrorHandler {
+    
+    // MARK: - Methods
+    // MARK: FatalErrorHandler protocol methods
+    func on(error: WebimError) {
+        // No need to do anything when testing.
+    }
+    
+}
+
+// MARK: -
+extension SessionBuilderTests: WebimLogger {
+    
+    // MARK: - Methods
+    // MARK: WebimLogger protocol methods
+    func log(entry: String) {
+        // No need to do anything when testing.
     }
     
 }

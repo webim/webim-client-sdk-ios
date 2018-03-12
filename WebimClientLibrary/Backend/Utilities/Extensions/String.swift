@@ -236,11 +236,9 @@ public final class SHA256 {
                                            0xbef9a3f7,
                                            0xc67178f2]
     
-    
     // MARK: - Properties
     private var accumulatedHash32 = SHA256.h.map { UInt32($0) }
     private var processedBytesTotalCount: Int = 0
-    
     
     // MARK: - Methods
     

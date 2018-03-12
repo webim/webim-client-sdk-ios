@@ -160,6 +160,10 @@ class MessageStreamImplTests: XCTestCase {
         XCTAssertEqual(messageStream!.getCurrentOperator()!.getID(), "33201")
     }
     
+    func testGetWebimActions() {
+        XCTAssertTrue(webimActions! === messageStream!.getWebimActions())
+    }
+    
 }
 
 // MARK: -

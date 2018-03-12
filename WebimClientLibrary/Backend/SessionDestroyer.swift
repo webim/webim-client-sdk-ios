@@ -41,7 +41,7 @@ final class SessionDestroyer {
     // MARK: - Methods
     
     func add(action: @escaping () -> ()) {
-        self.actions.append(action)
+        actions.append(action)
     }
     
     func destroy() {

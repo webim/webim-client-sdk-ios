@@ -30,6 +30,20 @@ import XCTest
 
 class OperatorImplTests: XCTestCase {
     
+    // MARK: - Tests
+    
+    func testInit() {
+        let `operator` = OperatorImpl(id: "id",
+                                      name: "name",
+                                      avatarURLString: nil)
+        
+        XCTAssertEqual(`operator`.getID(),
+                       "id")
+        XCTAssertEqual(`operator`.getName(),
+                       "name")
+        XCTAssertNil(`operator`.getAvatarURL())
+    }
+    
     func testEquals() {
         var operator1: OperatorImpl? = OperatorImpl(id: "id1",
                                                     name: "name1",

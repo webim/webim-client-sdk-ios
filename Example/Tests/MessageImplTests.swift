@@ -241,6 +241,68 @@ MessageImpl {
         XCTAssertThrowsError(try message.getSource().assertIsHistory())
     }
     
+    func testGetHistoryID() {
+        let message = MessageImpl(serverURLString: "http://demo.webim.ru",
+                                  id: "id",
+                                  operatorID: nil,
+                                  senderAvatarURLString: nil,
+                                  senderName: "Name",
+                                  sendStatus: .SENT,
+                                  type: .VISITOR,
+                                  data: nil,
+                                  text: "Text",
+                                  timeInMicrosecond: 0,
+                                  attachment: nil,
+                                  historyMessage: false,
+                                  internalID: nil,
+                                  rawText: nil)
+        
+        XCTAssertNil(message.getHistoryID())
+    }
+    
+    func testGetCurrentChatID() {
+        let currentChatID = "id"
+        let message = MessageImpl(serverURLString: "http://demo.webim.ru",
+                                  id: "id",
+                                  operatorID: nil,
+                                  senderAvatarURLString: nil,
+                                  senderName: "Name",
+                                  sendStatus: .SENT,
+                                  type: .VISITOR,
+                                  data: nil,
+                                  text: "Text",
+                                  timeInMicrosecond: 0,
+                                  attachment: nil,
+                                  historyMessage: false,
+                                  internalID: currentChatID,
+                                  rawText: nil)
+        
+        XCTAssertEqual(currentChatID,
+                       message.getCurrentChatID())
+    }
+    
+    func testGetSenderAvatarFullURL() {
+        let baseURLString = "http://demo.webim.ru"
+        let avatarURLString = "/image.jpg"
+        let message = MessageImpl(serverURLString: baseURLString,
+                                  id: "id",
+                                  operatorID: nil,
+                                  senderAvatarURLString: avatarURLString,
+                                  senderName: "Name",
+                                  sendStatus: .SENT,
+                                  type: .VISITOR,
+                                  data: nil,
+                                  text: "Text",
+                                  timeInMicrosecond: 0,
+                                  attachment: nil,
+                                  historyMessage: false,
+                                  internalID: nil,
+                                  rawText: nil)
+        
+        XCTAssertEqual(URL(string: (baseURLString + avatarURLString)),
+                       message.getSenderAvatarFullURL())
+    }
+    
 }
 
 // MARK: -

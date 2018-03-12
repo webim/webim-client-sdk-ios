@@ -325,11 +325,16 @@ class WebimActionsTests: XCTestCase {
         let since = "1"
         
         // When: Requesting history since.
+        let expectaion = XCTestExpectation()
         webimActions?.requestHistory(since: since) { data in
-            // No need to do anything when testing.
+            expectaion.fulfill()
         }
         
         // Then: Request parameters should be like this.
+        
+        try! actionRequestLoop.webimRequest!.getCompletionHandler()!(nil)
+        wait(for: [expectaion],
+             timeout: 1.0)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getHTTPMethod(),
                        AbstractRequestLoop.HTTPMethods.get)
@@ -350,11 +355,16 @@ class WebimActionsTests: XCTestCase {
         let before = "1"
         
         // When: Requesting history before.
+        let expectaion = XCTestExpectation()
         webimActions?.requestHistory(beforeMessageTimestamp: Int64(before)!) { data in
-            // No need to do anything when testing.
+            expectaion.fulfill()
         }
         
         // Then: Request parameters should be like this.
+        
+        try! actionRequestLoop.webimRequest!.getCompletionHandler()!(nil)
+        wait(for: [expectaion],
+             timeout: 1.0)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getHTTPMethod(),
                        AbstractRequestLoop.HTTPMethods.get)

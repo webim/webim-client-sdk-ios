@@ -67,11 +67,11 @@ final class MessageTrackerImpl {
             return
         }
         
-        if (headMessage != nil)
+        addNewOrMerge(message: message,
+                      of: messageHolder)
+        
+        if (headMessage == nil)
             || allMessageSourcesEnded {
-            addNewOrMerge(message: message,
-                          of: messageHolder)
-        } else {
             var currentChatMessages = messageHolder.getCurrentChatMessages()
             currentChatMessages.append(message)
             messageHolder.set(currentChatMessages: currentChatMessages)
@@ -96,9 +96,7 @@ final class MessageTrackerImpl {
             }
         } else {
             var currentChatMessages = messageHolder.getCurrentChatMessages()
-            for message in messages {
-                currentChatMessages.append(message)
-            }
+            currentChatMessages.append(contentsOf: messages)
             messageHolder.set(currentChatMessages: currentChatMessages)
             
             if let completionHandler = cachedCompletionHandler {
