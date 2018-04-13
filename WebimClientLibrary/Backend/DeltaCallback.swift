@@ -231,6 +231,7 @@ final class DeltaCallback {
         
         if readByVisitor {
             messageStream?.set(unreadByVisitorTimestamp: nil)
+            messageStream?.set(unreadByVisitorMessageCount: 0)
         }
     }
     
@@ -291,11 +292,13 @@ final class DeltaCallback {
     private func handleUnreadByVisitorUpdateBy(delta: DeltaItem) {
         guard delta.getEvent() == .update,
             let unreadByVisitorUpdate = delta.getData() as? [String: Any],
+            let unreadByVisitorMessageConut = unreadByVisitorUpdate[DeltaItem.UnreadByVisitorField.messageCount.rawValue] as? Int,
             let unreadByVisitorTimestamp = unreadByVisitorUpdate[DeltaItem.UnreadByVisitorField.timestamp.rawValue] as? Double else {
                 return
         }
-        
+        currentChat?.set(unreadByVisitorMessageCount: unreadByVisitorMessageConut)
         messageStream?.set(unreadByVisitorTimestamp: Date(timeIntervalSince1970: unreadByVisitorTimestamp))
+        messageStream?.set(unreadByVisitorMessageCount: unreadByVisitorMessageConut)
     }
     
     private func handleVisitSessionStateUpdateBy(delta: DeltaItem) {

@@ -24,7 +24,7 @@ pod 'WebimClientLibrary'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.14.2
+github "webim/webim-client-sdk-ios" ~> 3.15.0
 ```
 
 ### Additional notes
@@ -38,12 +38,8 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
 ## Release notes
-* Additional interoperability with service on unread by visitor timestamp. 🤳
-* Bug when `MessageListener` protocol delegate methods aren't called if there's no history request occured fixed. 🤞
-* Minor bug fixes and improvements. 🤥
-
-### Example app
-* Minor bug fixes. 💩
+* Added `UnreadByVisitorMessageCountListener`.
+* Minor bug fixes.
 
 ## Example
 

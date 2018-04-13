@@ -48,6 +48,7 @@
     -   [getVisitSessionState() method](#get-visit-session-state)
     -   [getChatState() method](#get-chat-state)
     -   [getUnreadByOperatorTimestamp() method](#get-unread-by-operator-timestamp)
+    -   [getUnreadByVisitorMessageCount() method](#get-unread-by-visitor-message-count)
     -   [getUnreadByVisitorTimestamp() method](#get-unread-by-visitor-timestamp)
     -   [getDepartmentList() method](#get-department-list)
     -   [getLocationSettings() method](#get-location-settings)
@@ -73,6 +74,7 @@
     -   [set(locationSettingsChangeListener:) method](#set-location-settings-change-listener)
     -   [set(onlineStatusChangeListener:) method](#set-online-status-change-listener)
     -   [set(unreadByOperatorTimestampChangeListener:) method](#set-unread-by-operator-timestamp-change-listener)
+    -   [set(unreadByVisitorMessageCountChangeListener:) method](#set-unread-by-visitor-message-count-change-listener)
     -   [set(unreadByVisitorTimestampChangeListener:) method](#set-unread-by-visitor-timestamp-change-listener)
 -   [DataMessageCompletionHandler protocol](#data-message-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id-data-message-completion-handler)
@@ -101,6 +103,8 @@
     -   [changed(onlineStatus:to:) method](#changed-session-online-status-previous-session-online-status-to-new-session-online-status)
 -   [UnreadByOperatorTimestampChangeListener protocol](#unread-by-operator-timestamp-change-listener)
     -   [changedUnreadByOperatorTimestampTo(newValue:) method](#changed-unread-by-operator-timestamp-to-new-value)
+-   [UnreadByVisitorMessageCountChangeListener protocol](#unread-by-visitor-message-count-change-listener)
+    -    [changedUnreadByVisitorMessageCountTo(newValue:) method](#changed-unread-by-visitor-message-count-to-new-value)
 -   [UnreadByVisitorTimestampChangeListener protocol](#unread-by-visitor-timestamp-change-listener)
     -    [changedUnreadByVisitorTimestampTo(newValue:) method](#changed-unread-by-visitor-timestamp-to-new-value)
 -   [ChatState enum](#chat-state)
@@ -502,6 +506,10 @@ Returns current chat state of [ChatState](#chat-state) type.
 
 Returns timestamp (of type `Date`) after which all chat messages are unread by operator (at the moment of last server update recieved).
 
+<h3 id ="get-unread-by-visitor-message-count">getUnreadByVisitorMessageCount() method</h3>
+
+Returns unread by visitor message count.
+
 <h3 id ="get-unread-by-visitor-timestamp">getUnreadByVisitorTimestamp() method</h3>
 
 Returns timestamp (of type `Date`) after which all chat messages are unread by visitor (at the moment of last server update recieved) or `nil` if there's no unread by visitor messages.
@@ -639,6 +647,10 @@ Sets [OnlineStatusChangeListener](#session-online-status-change-listener) object
 <h3 id ="set-unread-by-operator-timestamp-change-listener">set(unreadByOperatorTimestampChangeListener:) method</h3>
 
 Sets [UnreadByOperatorTimestampChangeListener](#unread-by-operator-timestamp-change-listener) object.
+
+<h3 id ="set-unread-by-visitor-message-count-change-listener">set(unreadByVisitorMessageCountChangeListener:) method</h3>
+
+Sets [UnreadByVisitorMessageCountChangeListener](#unread-by-visitor-message-count-change-listener) object.
 
 <h3 id ="set-unread-by-visitor-timestamp-change-listener">set(unreadByVisitorTimestampChangeListener:) method</h3>
 
@@ -784,6 +796,17 @@ Can be set by [set(unreadByOperatorTimestampChangeListener:) method](#set-unread
 <h3 id ="changed-unread-by-operator-timestamp-to-new-value">changedUnreadByOperatorTimestampTo(newValue:) method</h3>
 
 Method to be called when parameter that is to be returned by [getUnreadByOperatorTimestamp() method](#get-unread-by-operator-timestamp) method is changed.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="unread-by-visitor-message-count-change-listener">UnreadByVisitorMessageCountChangeListener protocol</h2>
+
+Interface that provides methods for handling changes of parameter that is to be returned by [getUnreadByVisitorMessageCount() method](#get-unread-by-visitor-message-count).
+Can be set by [set(unreadByVisitorMessageCountChangeListener:) method](#set-unread-by-visitor-message-count-change-listener).
+
+<h3 id ="changed-unread-by-visitor-message-count-to-new-value">changedUnreadByVisitorMessageCountTo(newValue:) method</h3>
+
+Method to be called when parameter that is to be returned by [getUnreadByVisitorMessageCount() method](#get-unread-by-visitor-message-count) method is changed.
 
 [Go to table of contents](#table-of-contents)
 

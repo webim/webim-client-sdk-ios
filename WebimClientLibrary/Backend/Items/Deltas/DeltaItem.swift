@@ -59,6 +59,7 @@ final class DeltaItem {
     }
     enum UnreadByVisitorField: String {
         case timestamp = "sinceTs"
+        case messageCount = "msgCnt"
     }
     private enum JSONField: String {
         case data = "data"

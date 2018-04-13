@@ -60,6 +60,8 @@ final class MessageStreamImpl {
     private weak var onlineStatusChangeListener: OnlineStatusChangeListener?
     private var unreadByOperatorTimestamp: Date?
     private weak var unreadByOperatorTimestampChangeListener: UnreadByOperatorTimestampChangeListener?
+    private var unreadByVisitorMessageCount: Int
+    private weak var unreadByVisitorMessageCountChangeListener: UnreadByVisitorMessageCountChangeListener?
     private var unreadByVisitorTimestamp: Date?
     private weak var unreadByVisitorTimestampChangeListener: UnreadByVisitorTimestampChangeListener?
     private var visitSessionState: VisitSessionStateItem = .unknown
@@ -84,6 +86,7 @@ final class MessageStreamImpl {
         self.messageHolder = messageHolder
         self.messageComposingHandler = messageComposingHandler
         self.locationSettingsHolder = locationSettingsHolder
+        self.unreadByVisitorMessageCount = -1
     }
     
     // MARK: - Methods
@@ -126,6 +129,16 @@ final class MessageStreamImpl {
         }
     }
     
+    func set(unreadByVisitorMessageCount: Int) {
+        let previousValue = self.unreadByVisitorMessageCount
+        
+        self.unreadByVisitorMessageCount = unreadByVisitorMessageCount
+        
+        if previousValue != unreadByVisitorMessageCount {
+            unreadByVisitorMessageCountChangeListener?.changedUnreadByVisitorMessageCountTo(newValue: self.unreadByVisitorMessageCount)
+        }
+    }
+    
     func changingChatStateOf(chat: ChatItem?) {
         let previousChat = self.chat
         self.chat = chat
@@ -164,6 +177,10 @@ final class MessageStreamImpl {
         
         if let unreadByOperatorTimestamp = chat?.getUnreadByOperatorTimestamp() {
             set(unreadByOperatorTimestamp: Date(timeIntervalSince1970: unreadByOperatorTimestamp))
+        }
+        
+        if let unreadByVisitorMessageCount = chat?.getUnreadByVisitorMessageCount() {
+            set(unreadByVisitorMessageCount: unreadByVisitorMessageCount)
         }
         
         if let unreadByVisitorTimestamp = chat?.getUnreadByVisitorTimestamp() {
@@ -284,6 +301,10 @@ extension MessageStreamImpl: MessageStream {
     
     func getUnreadByOperatorTimestamp() -> Date? {
         return unreadByOperatorTimestamp
+    }
+    
+    func getUnreadByVisitorMessageCount() -> Int {
+        return (unreadByVisitorMessageCount > 0) ? unreadByVisitorMessageCount : 0
     }
     
     func getUnreadByVisitorTimestamp() -> Date? {
@@ -453,6 +474,10 @@ extension MessageStreamImpl: MessageStream {
     
     func set(unreadByOperatorTimestampChangeListener: UnreadByOperatorTimestampChangeListener) {
         self.unreadByOperatorTimestampChangeListener = unreadByOperatorTimestampChangeListener
+    }
+    
+    func set(unreadByVisitorMessageCountChangeListener: UnreadByVisitorMessageCountChangeListener) {
+        self.unreadByVisitorMessageCountChangeListener = unreadByVisitorMessageCountChangeListener
     }
     
     func set(unreadByVisitorTimestampChangeListener: UnreadByVisitorTimestampChangeListener) {

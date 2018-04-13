@@ -81,6 +81,16 @@ public protocol MessageStream {
     func getUnreadByVisitorTimestamp() -> Date?
     
     /**
+     - returns:
+     Count of unread by visitor messages (at the moment of last server update recieved).
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func getUnreadByVisitorMessageCount() -> Int
+
+    /**
      - seealso:
      `Department` protocol.
      `DepartmentListChangeListener` protocol.
@@ -451,6 +461,17 @@ public protocol MessageStream {
     func set(unreadByOperatorTimestampChangeListener: UnreadByOperatorTimestampChangeListener)
     
     /**
+     Sets listener for parameter that is to be returned by `MessageStream.getUnreadByVisitorMessageCount()` method.
+     - parameter unreadByVisitorMessageCountChangeListener:
+     `UnreadByVisitorMessageCountChangeListener` object.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func set(unreadByVisitorMessageCountChangeListener: UnreadByVisitorMessageCountChangeListener)
+    
+    /**
      Sets listener for parameter that is to be returned by `MessageStream.getUnreadByVisitorTimestamp()` method.
      - parameter unreadByVisitorTimestampChangeListener:
      `UnreadByVisitorTimestampChangeListener` object.
@@ -808,6 +829,30 @@ public protocol UnreadByOperatorTimestampChangeListener: class {
      2018 Webim
      */
     func changedUnreadByOperatorTimestampTo(newValue: Date?)
+    
+}
+
+/**
+ Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByVisitorMessageCount()` method.
+ - seealso:
+ `MessageStream.set(unreadByVisitorMessageCountChangeListener:)`.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2018 Webim
+ */
+public protocol UnreadByVisitorMessageCountChangeListener: class {
+    
+    /**
+     Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByVisitorMessageCount()` method.
+     - parameter newValue:
+     New unread by visitor message count value.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func changedUnreadByVisitorMessageCountTo(newValue: Int)
     
 }
 
