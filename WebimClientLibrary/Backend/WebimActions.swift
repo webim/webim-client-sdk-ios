@@ -89,6 +89,7 @@ class WebimActions {
     private enum Action: String {
         case closeChat = "chat.close"
         case rateOperator = "chat.operator_rate_select"
+        case respondSentryCall = "chat.action_request.call_sentry_action_request"
         case sendMessage = "chat.message"
         case setDeviceToken = "set_push_token"
         case setVisitorTyping = "chat.visitor_typing"
@@ -256,6 +257,18 @@ class WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         rateOperatorCompletionHandler: completionHandler))
+    }
+    
+    func respondSentryCall(id: String) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.respondSentryCall.rawValue,
+                          Parameter.clientSideID.rawValue: id] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString))
     }
     
     func update(deviceToken: String) {

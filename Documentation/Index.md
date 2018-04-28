@@ -55,6 +55,7 @@
     -   [getCurrentOperator() method](#get-current-operator)
     -   [getLastRatingOfOperatorWith(id:) method](#get-last-rating-of-operator-with-id)
     -   [rateOperatorWith(id:byRating:completionHandler:) method](#rate-operator-with-id-by-rating-rating)
+    -   [respondSentryCall(id:) method](#respond-sentry-call)
     -   [startChat() method](#start-chat)
     -   [startChat(firstQuestion:) method](#start-chat-first-question)
     -   [startChat(departmentKey:) method](#start-chat-department-key)
@@ -538,6 +539,12 @@ To get an ID of the current operator call [getCurrentOperator()](#get-current-op
 `id` parameter – String-typed ID of the operator to be rated. Optional: if `nil` is passed, current chat operator will be rated.
 `rating` parameter – a number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
 `completionHandler` parameter – [RateOperatorCompletionHandler](#rate-operator-completion-handler) object.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="respond-sentry-call">respondSentryCall(id:) method</h3>
+
+Respond sentry call.
+`id` parameter – String-typed ID of redirect to sentry message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat">startChat() method</h3>

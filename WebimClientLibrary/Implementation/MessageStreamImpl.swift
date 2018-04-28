@@ -348,6 +348,12 @@ extension MessageStreamImpl: MessageStream {
                                       completionHandler: comletionHandler)
     }
     
+    func respondSentryCall(id: String) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.respondSentryCall(id: id)
+    }
+    
     func startChat() throws {
         try startChat(departmentKey: nil,
                       firstQuestion: nil)
