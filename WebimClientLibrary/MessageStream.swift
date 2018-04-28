@@ -161,6 +161,22 @@ public protocol MessageStream {
                           comletionHandler: RateOperatorCompletionHandler?) throws
     
     /**
+     Respond sentry call
+     - important:
+     Id of redirect to sentry message
+     - parameter id:
+     ID of the operator to be rated. If passed `nil` current chat operator will be rated.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func respondSentryCall(id: String) throws
+    
+    /**
      Changes `ChatState` to `ChatState.QUEUE`.
      Can cause `VisitSessionState.DEPARTMENT_SELECTION` session state. It means that chat must be started by `startChat(departmentKey:)` method.
      - throws:
