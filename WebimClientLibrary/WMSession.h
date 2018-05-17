@@ -260,6 +260,9 @@ extern NSString *const WMHistoryMessagesKey;
 - (void)rateOperator:(NSString *)authorID
             withRate:(WMOperatorRate)rate
           completion:(WMResponseCompletionBlock)block;
+
+// MARK: Respond sentry call method
+- (void)respondSentryCall:(NSString *)messageId;
     
     // MARK: Token methods
     

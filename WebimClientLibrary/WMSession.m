@@ -1039,6 +1039,32 @@ isEqualToDictionary:(NSDictionary *)right {
                   CALL_BLOCK(block, NO);
               }];
 }
+
+
+    // Mark: - Respond sentry call method
+
+- (void)respondSentryCall:(NSString *)messageId {
+    NSDictionary *storedValues = [self unarchiveClientData];
+    NSString *pageID = storedValues[WMStorePageIDKey];
+    NSString *visitSessionID = storedValues[WMStoreVisitSessionIDKey];
+    
+    if ((pageID.length == 0) ||
+        (visitSessionID.length == 0)) {
+        
+        return;
+    }
+
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"action"] = @"chat.action_request.call_sentry_action_request";
+    params[@"page-id"] = pageID;
+    params[@"client-cide-id"] = messageId;
+    
+    [client_ postPath:APIActionPath
+           parameters:params
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              }];
+}
     
     
     // MARK: - Token methods
