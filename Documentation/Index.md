@@ -140,6 +140,8 @@
 -   [SendFileError enum](#send-file-error)
     -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
     -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
+    -   [UPLOADED_FILE_NOT_FOUND case](#uploaded-file-not-found)
+    -   [UNKNOWN case](#file-sending-unknown)
 -   [RateOperatorError enum](#rate-operator-error)
     -   [NO_CHAT case](#no-chat)
     -   [WRONG_OPERATOR_ID case](#wrong-operator-id)
@@ -1000,6 +1002,14 @@ The maximum size of a file is configured on the server.
 
 The server may deny a request if the file type is not allowed.
 The list of allowed file types is configured on the server.
+
+<h3 id ="uploaded-file-not-found">UPLOADED_FILE_NOT_FOUND case</h3>
+
+Sending files in body is not supported. Use multipart form only.
+
+<h3 id ="file-sending-unknown">UNKNOWN case</h3>
+
+Received error is not supported by current WebimClientLibrary version.
 
 [Go to table of contents](#table-of-contents)
 

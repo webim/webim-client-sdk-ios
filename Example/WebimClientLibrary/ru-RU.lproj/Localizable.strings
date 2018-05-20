@@ -87,6 +87,8 @@
 "ClosesSendFileError" = "Закрывает окно.";
 "FileTooLarge" = "Размер файла превышен.";
 "FileTypeNotSupported" = "Данный тип файла не поддерживается.";
+"FileNotFound" = "Отправляемый файл не был получен.";
+"FileSendingUnknownError" = "Неизвестная ошибка при отправке файла";
 
 // SessionCreationErrorDialog
 "ClosesSessionError" = "Закрывает окно.";

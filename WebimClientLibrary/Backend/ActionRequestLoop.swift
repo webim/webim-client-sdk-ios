@@ -250,10 +250,18 @@ class ActionRequestLoop: AbstractRequestLoop {
         if let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler() {
             completionHandlerExecutor.execute(task: DispatchWorkItem {
                 let sendFileError: SendFileError
-                if errorString == WebimInternalError.fileSizeExceeded.rawValue {
+                switch errorString {
+                case WebimInternalError.fileSizeExceeded.rawValue:
                     sendFileError = .FILE_SIZE_EXCEEDED
-                } else {
+                    break
+                case WebimInternalError.fileTypeNotAllowed.rawValue:
                     sendFileError = .FILE_TYPE_NOT_ALLOWED
+                    break
+                case WebimInternalError.uploadedFileNotFound.rawValue:
+                    sendFileError = .UPLOADED_FILE_NOT_FOUND
+                    break
+                default:
+                    sendFileError = .UNKNOWN
                 }
                 
                 sendFileCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,

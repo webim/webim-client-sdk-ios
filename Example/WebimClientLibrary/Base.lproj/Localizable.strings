@@ -87,6 +87,8 @@
 "ClosesSendFileError" = "Closes dialog.";
 "FileTooLarge" = "File is too large.";
 "FileTypeNotSupported" = "File type is not supported.";
+"FileNotFound" = "Sending files in body is not supported.";
+"FileSendingUnknownError" = "Find sending unknown error.";
 
 // SessionCreationErrorDialog
 "ClosesSessionError" = "Closes dialog.";

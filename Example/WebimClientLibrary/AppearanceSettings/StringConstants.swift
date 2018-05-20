@@ -92,6 +92,8 @@ enum SendFileErrorMessage: String {
     // Error messages
     case fileSizeExceeded = "FileTooLarge"
     case fileTypeNotAllowed = "FileTypeNotSupported"
+    case fileNotFound = "FileNotFound"
+    case unknownError = "FileSendingUnknownError"
 }
 
 enum SessionCreationErrorDialog: String {

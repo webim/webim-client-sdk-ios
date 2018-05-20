@@ -560,6 +560,14 @@ extension ChatViewController: SendFileCompletionHandler {
                 message = SendFileErrorMessage.fileTypeNotAllowed.rawValue.localized
                 
                 break
+            case .UNKNOWN:
+                message = SendFileErrorMessage.unknownError.rawValue.localized
+                
+                break
+            case .UPLOADED_FILE_NOT_FOUND:
+                message = SendFileErrorMessage.fileNotFound.rawValue.localized
+                
+                break
             }
             
             popupDialogHandler?.showFileSendFailureDialog(withMessage: message!) { [weak self] in

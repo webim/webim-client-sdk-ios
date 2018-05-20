@@ -35,11 +35,20 @@ import Foundation
  */
 enum WebimInternalError: String, Error {
     case accountBlocked = "account-blocked"
+    case chatRequired = "chat-required"
+    case contentTypeNotRecognized = "content_type_not_recognized";
+    case domainNotFromWhitelist = "domain-not-from-whitelist";
     case fileSizeExceeded = "max_file_size_exceeded"
     case fileTypeNotAllowed = "not_allowed_file_type"
+    case notAllowedMimeType = "not_allowed_mime_type";
+    case noPreviousChats = "no_previous_chats";
+    case notMatchingMagicNumbers = "not_matching_magic_numbers";
     case providedVisitorFieldsExpired = "provided-visitor-expired"
     case reinitializationRequired = "reinit-required"
+    case settingDisabled = "setting_disabled";
     case serverNotReady = "server-not-ready"
+    case sessionNotFound = "session_not_found";
+    case uploadedFileNotFound = "uploaded-file-not-found";
     case visitorBanned = "visitor_banned"
     case wrongArgumentValue = "wrong-argument-value"
     case wrongProvidedVisitorFieldsHashValue = "wrong-provided-visitor-hash-value"

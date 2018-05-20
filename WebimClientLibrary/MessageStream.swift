@@ -1241,6 +1241,23 @@ public enum SendFileError: Error {
      */
     case FILE_TYPE_NOT_ALLOWED
     
+    /**
+     Sending files in body is not supported. Use multipart form only.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case UPLOADED_FILE_NOT_FOUND
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case UNKNOWN
+    
 }
 
 /**

@@ -174,11 +174,16 @@ final class DeltaCallback {
             let messageItem = MessageItem(jsonDictionary: deltaData)
             let message = currentChatMessageMapper.map(message: messageItem)
             if deltaEvent == .add {
-                currentChat?.add(message: messageItem)
+                var isNewMessage = false
+                if currentChat != nil && !currentChat!.getMessages().contains(messageItem) {
+                    currentChat?.add(message: messageItem)
+                    isNewMessage = true
+                }
                 
-                if message != nil {
+                if isNewMessage && message != nil {
                     messageHolder?.receive(newMessage: message!)
                 }
+                
             } else if deltaEvent == .update {
                 if currentChat != nil {
                     var currentChatMessages = currentChat!.getMessages()
