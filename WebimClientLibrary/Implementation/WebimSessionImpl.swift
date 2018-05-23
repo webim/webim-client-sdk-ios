@@ -434,15 +434,14 @@ final private class HistoryPoller {
         
         historySinceCompletionHandler = createHistorySinceCompletionHandler()
         
-        let uptime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
+        let uptime = Int64(ProcessInfo.processInfo.systemUptime)
         if (uptime - lastPollingTime) > TimeInterval.historyPolling.rawValue {
             requestHistory(since: lastRevision,
                            completion: historySinceCompletionHandler!)
         } else {
             // Setting next history polling in TimeInterval.HISTORY_POLL after lastPollingTime.
             
-            let currentDispatchTime = DispatchTime.now()
-            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime * 1000) + (TimeInterval.historyPolling.rawValue * 1000)) - currentDispatchTime.uptimeNanoseconds))
+            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64(lastPollingTime + TimeInterval.historyPolling.rawValue) - UInt64(uptime)))
             
             dispatchWorkItem = DispatchWorkItem() { [weak self] in
                 guard let `self` = self else {

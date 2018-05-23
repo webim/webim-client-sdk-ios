@@ -24,7 +24,7 @@ pod 'WebimClientLibrary'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.17.0
+github "webim/webim-client-sdk-ios" ~> 3.17.1
 ```
 
 ### Additional notes
@@ -38,7 +38,8 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
 ## Release notes
-* Added new errors types.
+* History request bug fixed.
+* Repeat requests if no network access.
 
 ## Example
 
