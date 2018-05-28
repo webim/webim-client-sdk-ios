@@ -38,7 +38,7 @@ final class MessageTrackerImpl {
     // MARK: - Properties
     private let messageHolder: MessageHolder
     var idToHistoryMessageMap = [String: MessageImpl]()
-    weak var messageListener: MessageListener?
+    var messageListener: MessageListener?
     private var allMessageSourcesEnded = false
     private var cachedCompletionHandler: MessageHolderCompletionHandlerWrapper?
     private var cachedLimit: Int?

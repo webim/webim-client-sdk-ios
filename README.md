@@ -24,7 +24,7 @@ pod 'WebimClientLibrary'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.17.1
+github "webim/webim-client-sdk-ios" ~> 3.17.2
 ```
 
 ### Additional notes
@@ -39,7 +39,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 * History request bug fixed.
-* Repeat requests if no network access.
+* Weak references replace strong references. Weak references are bad for `webim-client-sdk-ios-wrapper`.
 
 ## Example
 

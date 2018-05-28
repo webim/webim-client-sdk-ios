@@ -129,6 +129,6 @@ final class WebimInternalLoggerParametersHelper {
     
     // MARK: - Properties
     var verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?
-    weak var webimLogger: WebimLogger?
+    var webimLogger: WebimLogger?
     
 }

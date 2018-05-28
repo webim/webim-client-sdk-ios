@@ -441,7 +441,7 @@ final private class HistoryPoller {
         } else {
             // Setting next history polling in TimeInterval.HISTORY_POLL after lastPollingTime.
             
-            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64(lastPollingTime + TimeInterval.historyPolling.rawValue) - UInt64(uptime)))
+            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64(lastPollingTime + TimeInterval.historyPolling.rawValue) * 1_000_000 - UInt64(uptime) * 1_000_000))
             
             dispatchWorkItem = DispatchWorkItem() { [weak self] in
                 guard let `self` = self else {

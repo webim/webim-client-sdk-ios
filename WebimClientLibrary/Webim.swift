@@ -121,16 +121,16 @@ public final class SessionBuilder  {
     private var accountName: String?
     private var appVersion: String?
     private var deviceToken: String?
-    private weak var fatalErrorHandler: FatalErrorHandler?
+    private var fatalErrorHandler: FatalErrorHandler?
     private var localHistoryStoragingEnabled = true
     private var location: String?
     private var pageTitle: String?
     private var providedAuthorizationToken: String?
-    private weak var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
+    private var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     private var remoteNotificationSystem: Webim.RemoteNotificationSystem = .NONE
     private var visitorDataClearingEnabled = false
     private var visitorFields: ProvidedVisitorFields?
-    private weak var webimLogger: WebimLogger?
+    private var webimLogger: WebimLogger?
     private var webimLoggerVerbosityLevel: WebimLoggerVerbosityLevel?
     
     // MARK: - Methods
