@@ -57,6 +57,7 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
         
         operationQueue = OperationQueue()
+        operationQueue?.maxConcurrentOperationCount = 1
         operationQueue?.qualityOfService = .userInitiated
     }
     

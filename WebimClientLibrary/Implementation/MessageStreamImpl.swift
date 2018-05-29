@@ -45,27 +45,27 @@ final class MessageStreamImpl {
     private let serverURLString: String
     private let webimActions: WebimActions
     private var chat: ChatItem?
-    private var chatStateListener: ChatStateListener?
+    private weak var chatStateListener: ChatStateListener?
     private var currentOperator: OperatorImpl?
     private var departmentList: [Department]?
-    private var departmentListChangeListener: DepartmentListChangeListener?
-    private var currentOperatorChangeListener: CurrentOperatorChangeListener?
+    private weak var departmentListChangeListener: DepartmentListChangeListener?
+    private weak var currentOperatorChangeListener: CurrentOperatorChangeListener?
     private var isChatIsOpening = false
     private var lastChatState: ChatItem.ChatItemState = .unknown
     private var lastOperatorTypingStatus: Bool?
-    private var locationSettingsChangeListener: LocationSettingsChangeListener?
+    private weak var locationSettingsChangeListener: LocationSettingsChangeListener?
     private var operatorFactory: OperatorFactory
-    private var operatorTypingListener: OperatorTypingListener?
+    private weak var operatorTypingListener: OperatorTypingListener?
     private var onlineStatus: OnlineStatusItem = .unknown
-    private var onlineStatusChangeListener: OnlineStatusChangeListener?
+    private weak var onlineStatusChangeListener: OnlineStatusChangeListener?
     private var unreadByOperatorTimestamp: Date?
-    private var unreadByOperatorTimestampChangeListener: UnreadByOperatorTimestampChangeListener?
+    private weak var unreadByOperatorTimestampChangeListener: UnreadByOperatorTimestampChangeListener?
     private var unreadByVisitorMessageCount: Int
-    private var unreadByVisitorMessageCountChangeListener: UnreadByVisitorMessageCountChangeListener?
+    private weak var unreadByVisitorMessageCountChangeListener: UnreadByVisitorMessageCountChangeListener?
     private var unreadByVisitorTimestamp: Date?
-    private var unreadByVisitorTimestampChangeListener: UnreadByVisitorTimestampChangeListener?
+    private weak var unreadByVisitorTimestampChangeListener: UnreadByVisitorTimestampChangeListener?
     private var visitSessionState: VisitSessionStateItem = .unknown
-    private var visitSessionStateListener: VisitSessionStateListener?
+    private weak var visitSessionStateListener: VisitSessionStateListener?
     
     // MARK: - Initialization
     init(serverURLString: String,
