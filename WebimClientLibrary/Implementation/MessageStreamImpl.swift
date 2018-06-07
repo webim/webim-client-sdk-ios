@@ -143,11 +143,9 @@ final class MessageStreamImpl {
         let previousChat = self.chat
         self.chat = chat
         
-        if self.chat != previousChat {
-            messageHolder.receiving(newChat: self.chat,
-                                    previousChat: previousChat,
-                                    newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: self.chat!.getMessages()))
-        }
+        messageHolder.receiving(newChat: self.chat,
+                                previousChat: previousChat,
+                                newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: self.chat!.getMessages()))
         
         let newChatState = (self.chat == nil) ? .closed : self.chat!.getState()
         if let newChatState = newChatState {
