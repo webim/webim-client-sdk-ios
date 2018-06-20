@@ -419,9 +419,16 @@ final class MessageTrackerImpl {
                     }
                     
                     if filteredMessages.isEmpty {
+                        let completionHandler = { [weak self] (messages: [Message]) -> () in
+                            self?.receive(messages: messages as! [MessageImpl],
+                                          limit: limit,
+                                          completion: completion)
+                            
+                            self?.messagesLoading = false
+                        }
                         messageHolder.getMessagesBy(limit: limit,
                                                     before: firstMessage,
-                                                    completion: completion)
+                                                    completion: completionHandler)
                         
                         return
                     }
