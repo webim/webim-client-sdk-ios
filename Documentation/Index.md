@@ -41,6 +41,7 @@
     -   [resume() method](#resume)
     -   [pause() method](#pause)
     -   [destroy() method](#destroy)
+    -   [destroyWithClearVisitorFields() method](#destroy-with-clear-visitor-fields)
     -   [getStream() method](#get-stream)
     -   [change(location:) method](#change-location)
     -   [set(deviceToken:) method](#set-device-token)
@@ -476,6 +477,12 @@ Can throw errors of [AccessError](#access-error) type.
 
 Deactivates session. After that any session methods are not available.
 Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="destroy-with-clear-visitor-fields">destroyWithClearVisitorFields() method</h3>
+
+Deactivates session, performing a cleanup. After that any session methods are not available.
+Can throw errors of [AccessError](#access-error) type.
+
 
 <h3 id ="get-stream">getStream() method</h3>
 

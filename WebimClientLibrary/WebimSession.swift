@@ -73,6 +73,18 @@ public protocol WebimSession {
     func destroy() throws
     
     /**
+     Destroys session, performing a cleanup.. After that any session methods are not available.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func destroyWithClearVisitorData() throws
+    
+    /**
      - returns:
      A `MessageStream` object attached to this session. Each invocation of this method returns the same object.
      - author:

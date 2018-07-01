@@ -113,7 +113,7 @@ final class WebimSessionImpl {
         checkSavedSessionFor(userDefaultsKey: userDefaultsKey,
                              newProvidedVisitorFields: visitorFields)
         
-        let sessionDestroyer = SessionDestroyer()
+        let sessionDestroyer = SessionDestroyer(userDefaultsKey: userDefaultsKey)
         
         let visitorJSON = (userDefaults?[UserDefaultsMainPrefix.visitor.rawValue] ?? nil)
         
@@ -279,11 +279,11 @@ final class WebimSessionImpl {
         var previousProvidedVisitorFields: ProvidedVisitorFields? = nil
         if previousVisitorFieldsJSONString != nil {
             previousProvidedVisitorFields = ProvidedVisitorFields(withJSONString: previousVisitorFieldsJSONString!)
-        }
         
-        if (newProvidedVisitorFields == nil)
-            || (previousProvidedVisitorFields?.getID() != newProvidedVisitorFields?.getID()) {
-            clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
+            if (newProvidedVisitorFields == nil)
+                || (previousProvidedVisitorFields?.getID() != newProvidedVisitorFields?.getID()) {
+                clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
+            }
         }
         
         if newVisitorFieldsJSONString != previousVisitorFieldsJSONString {
@@ -350,6 +350,17 @@ extension WebimSessionImpl: WebimSession {
         try checkAccess()
         
         sessionDestroyer.destroy()
+    }
+    
+    func destroyWithClearVisitorData() throws {
+        if sessionDestroyer.isDestroyed() {
+            return
+        }
+        
+        try checkAccess()
+        
+        sessionDestroyer.destroy()
+        WebimSessionImpl.clearVisitorDataFor(userDefaultsKey: sessionDestroyer.getUserDefaulstKey())
     }
     
     func getStream() -> MessageStream {
@@ -441,7 +452,7 @@ final private class HistoryPoller {
         } else {
             // Setting next history polling in TimeInterval.HISTORY_POLL after lastPollingTime.
             
-            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64(lastPollingTime + TimeInterval.historyPolling.rawValue) * 1_000_000 - UInt64(uptime) * 1_000_000))
+            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime + TimeInterval.historyPolling.rawValue) * 1_000_000) - UInt64((uptime) * 1_000_000)))
             
             dispatchWorkItem = DispatchWorkItem() { [weak self] in
                 guard let `self` = self else {
@@ -466,7 +477,7 @@ final private class HistoryPoller {
                 return
             }
             
-            self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
+            self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime)
             self.lastRevision = revision
             
             if isInitial
