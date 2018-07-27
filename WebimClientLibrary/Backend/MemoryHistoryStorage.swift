@@ -36,7 +36,7 @@ import Foundation
 final class MemoryHistoryStorage: HistoryStorage {
     
     // MARK: - Properties
-    private let majorVersion = Int(InternalUtils.getCurrentTimeInMicrosecond() % Int64.max)
+    private let majorVersion = Int(InternalUtils.getCurrentTimeInMicrosecond() % Int64(Int.max))
     private lazy var historyMessages = [MessageImpl]()
     private var reachedHistoryEnd = false
     

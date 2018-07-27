@@ -24,7 +24,7 @@ pod 'WebimClientLibrary'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.18.0
+github "webim/webim-client-sdk-ios" ~> 3.18.1
 ```
 
 ### Additional notes
@@ -38,8 +38,7 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
 ## Release notes
-* Added method `destroyWithClearVisitorData`.
-* Creating new data base for each session bug fixed.
+* Not enough bits to represent a signed value in 32-bits platforms error fixed.
 
 ## Example
 
