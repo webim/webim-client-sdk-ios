@@ -508,9 +508,14 @@ final private class HistoryPoller {
                 self.requestHistory(since: revision,
                                     completion: self.createHistorySinceCompletionHandler())
             } else {
-                self.dispatchWorkItem = DispatchWorkItem() {
+                self.dispatchWorkItem = DispatchWorkItem() { [weak self] in
+                    guard let `self` = self else {
+                        return
+                    }
                     self.requestHistory(since: revision,
-                                        completion: self.createHistorySinceCompletionHandler())
+                                           completion: self.createHistorySinceCompletionHandler())
+                    
+                    
                 }
                 let interval = Int(TimeInterval.historyPolling.rawValue)
                 self.queue.asyncAfter(deadline: (.now() + .milliseconds(interval)),
