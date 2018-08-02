@@ -60,6 +60,7 @@ final class SessionDestroyer {
             for action in actions {
                 action()
             }
+            actions.removeAll(keepingCapacity: false)
         }
     }
     

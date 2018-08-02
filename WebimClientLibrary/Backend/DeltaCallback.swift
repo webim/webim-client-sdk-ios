@@ -40,8 +40,8 @@ final class DeltaCallback {
     // MARK: - Properties
     private let currentChatMessageMapper: MessageMapper
     private var currentChat: ChatItem?
-    private var messageHolder: MessageHolder?
-    private var messageStream: MessageStreamImpl?
+    private weak var messageHolder: MessageHolder?
+    private weak var messageStream: MessageStreamImpl?
     
     // MARK: - Initialization
     init(currentChatMessageMapper: MessageMapper) {

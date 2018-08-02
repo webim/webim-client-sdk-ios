@@ -43,7 +43,7 @@ class MessageMapper {
     
     // MARK: - Properties
     private let serverURLString: String
-    private var webimClient: WebimClient?
+    private weak var webimClient: WebimClient?
     
     // MARK: - Initialization
     init(withServerURLString serverURLString: String) {

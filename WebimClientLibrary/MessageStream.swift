@@ -34,7 +34,7 @@ import Foundation
  - copyright:
  2017 Webim
  */
-public protocol MessageStream {
+public protocol MessageStream: class {
     
     /**
      - seealso:

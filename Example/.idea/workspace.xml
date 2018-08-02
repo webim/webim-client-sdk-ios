@@ -106,7 +106,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="1920" />
     <option name="y" value="26" />
     <option name="width" value="1920" />
@@ -241,7 +241,7 @@
     <option name="totallyTimeSpent" value="6787000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="26" width="1920" height="977" extended-state="1" />
+    <frame x="1920" y="26" width="1920" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" order="2" />

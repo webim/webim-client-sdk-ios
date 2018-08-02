@@ -437,8 +437,13 @@ public final class SessionBuilder  {
             && (providedAuthorizationTokenStateListener != nil) {
             throw SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS
         }
-        
-        providedAuthorizationTokenStateListener?.update(providedAuthorizationToken: (providedAuthorizationToken ?? ClientSideID.generateClientSideID()))
+
+        var providedAuthorizationToken = self.providedAuthorizationToken
+
+        if let listener = providedAuthorizationTokenStateListener {
+            providedAuthorizationToken = providedAuthorizationToken ?? ClientSideID.generateClientSideID()
+            listener.update(providedAuthorizationToken: providedAuthorizationToken!)
+        }
         
         return WebimSessionImpl.newInstanceWith(accountName: accountName,
                                                 location: location,

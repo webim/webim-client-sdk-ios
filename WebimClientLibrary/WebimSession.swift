@@ -32,7 +32,7 @@ import Foundation
  - copyright:
  2017 Webim
  */
-public protocol WebimSession {
+public protocol WebimSession: class {
     
     /**
      Resumes session networking.
