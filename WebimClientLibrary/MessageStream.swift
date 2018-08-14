@@ -220,6 +220,22 @@ public protocol MessageStream: class {
      2017 Webim
      */
     func startChat(departmentKey: String?) throws
+
+    
+    /**
+     Starts chat with custom fields.
+     Changes `ChatState` to `ChatState.QUEUE`.
+     - parameter customFields:
+     Custom fields in JSON format.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+    */
+    func startChat(customFields:String?) throws
     
     /**
      Starts chat with particular department and sends first message simultaneously.
@@ -234,12 +250,74 @@ public protocol MessageStream: class {
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
      - author:
-     Nikita Lazarev-Zubov
+     Nikita Lazarev
      - copyright:
      2017 Webim
      */
     func startChat(departmentKey: String?,
                    firstQuestion: String?) throws
+    
+    /**
+     Starts chat with custom fields and sends first message simultaneously.
+     Changes `ChatState` to `ChatState.QUEUE`.
+     - parameter firstQuestion:
+     First message to send.
+     - parameter customFields:
+     Custom fields in JSON format.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func startChat(firstQuestion:String?,
+                   customFields: String?) throws
+    
+    /**
+     Starts chat with particular department and custom fields.
+     Changes `ChatState` to `ChatState.QUEUE`.
+     - seealso:
+     `Department` protocol.
+     - parameter departmentKey:
+     Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
+     - parameter customFields:
+     Custom fields in JSON format.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func startChat(departmentKey: String?,
+                   customFields: String?) throws
+    
+    /**
+     Starts chat with particular department and custom fields and sends first message simultaneously.
+     Changes `ChatState` to `ChatState.QUEUE`.
+     - seealso:
+     `Department` protocol.
+     - parameter departmentKey:
+     Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
+     - parameter firstQuestion:
+     First message to send.
+     - parameter customFields:
+     Custom fields in JSON format.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func startChat(departmentKey: String?,
+                   firstQuestion: String?,
+                   customFields: String?) throws
+    
     
     /**
      Changes `ChatState` to `ChatState.CLOSED_BY_VISITOR`.

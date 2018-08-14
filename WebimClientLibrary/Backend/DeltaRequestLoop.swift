@@ -58,6 +58,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private var sessionID: String?
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
+    private var prechat: String?
     
     // MARK: - Initialization
     init(deltaCallback: DeltaCallback,
@@ -75,6 +76,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
          deviceToken: String?,
          visitorJSONString: String?,
          sessionID: String?,
+         prechat:String?,
          authorizationData: AuthorizationData?) {
         self.deltaCallback = deltaCallback
         self.completionHandlerExecutor = completionHandlerExecutor
@@ -92,6 +94,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.authorizationData = authorizationData
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
+        self.prechat = prechat
     }
     
     // MARK: - Methods
@@ -261,6 +264,9 @@ class DeltaRequestLoop: AbstractRequestLoop {
         }
         if let providedAuthenticationToken = providedAuthenticationToken {
             parameterDictionary[WebimActions.Parameter.providedAuthenticationToken.rawValue] = providedAuthenticationToken
+        }
+        if let prechat = prechat {
+            parameterDictionary[WebimActions.Parameter.prechat.rawValue] = prechat
         }
         
         return parameterDictionary.stringFromHTTPParameters()

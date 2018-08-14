@@ -23,7 +23,6 @@
 		102648086CE9BD5C75BD7C73E39A1E3C /* ConstraintPriorityTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 862AC483DDA1ABA46DF332A2C1E7B123 /* ConstraintPriorityTarget.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		10DAFA02E0AECBB1D23BB9D9DF816850 /* SLKTextInputbar.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = D737EAF097E5B5581F3F28349AD1E978 /* SLKTextInputbar.h */; };
 		11256408FF19BA0DA9E9AD29EAF7D6FD /* WebimRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E97FF4DCF2C742492CAF208A5A57E4C /* WebimRequest.swift */; };
-		14A8F69DDE6AB7C838F0C3030172152E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
 		14BA26CEDA5C323F570B0BEA075E2421 /* RTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE020505CE6ECF61DC9692772335DF8 /* RTree.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		14FEDB73E1D2C85437BC7AF222185E48 /* CosmosSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC431C1F0581F2DBF3B18B35028A1A /* CosmosSettings.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		15AE545E5F1D697B4E0DBE99E41A4B26 /* SLKTextViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 59D6646DF99628AAB8B30829DB393FA4 /* SLKTextViewController.h */; };
@@ -49,6 +48,7 @@
 		292ECD99B8553453095A947D05B482F5 /* SLKInputAccessoryView.h in Headers */ = {isa = PBXBuildFile; fileRef = C39D88E88CFF4C159390622BA985BE8B /* SLKInputAccessoryView.h */; };
 		2BEBB2C9681BD71AD0BA6254D077EEB0 /* WebimClientLibrary-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 754FCD497F6F3304F104C8E40D115A5B /* WebimClientLibrary-dummy.m */; };
 		2C8359CF6504E53C7B40EF02133260E9 /* DeltaCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EBB768A6F587EE78D14B9982DD1C99 /* DeltaCallback.swift */; };
+		2CEC25F06ADB6EBE5E0D0F20FCC7517D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		2DF860CE6F8AB96C8EDF925598BB90B0 /* UIScrollView+SLKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C3FED974F91A0222043C47CFAF00B8 /* UIScrollView+SLKAdditions.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		2EFFC5FC683AC69386BAD006D0E63680 /* DeltaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC2978B1D9B8C22FE818340BF9B78C2 /* DeltaResponse.swift */; };
 		30078E48C9D6C9A21952BA34F6968B6E /* WebimClientLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = BBE7FD1D4E433F3FAAB93E1CF24A74E4 /* WebimClientLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -74,7 +74,6 @@
 		423FA63D4207AE060D5E507BCB75DD6A /* ConstraintLayoutGuideDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C5104C50B5210EE6672486CD7728BD /* ConstraintLayoutGuideDSL.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		445775B44311AFA69988E51AB8CF47C3 /* WebimActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F93690F6CA2E6B9029C8863DDF46F /* WebimActions.swift */; };
 		457F3AD817A51BE0C8AB8AC7904962E2 /* SLKTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 044895A375E387E5F5695591955EF1F2 /* SLKTextView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		45B8D829B6CA4E520C28C4AB25877142 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
 		480DACC4394DCB4EB0A3691C831845FA /* VisitSessionStateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11187C43953CAFFFF1AE5EA9F649EBB6 /* VisitSessionStateItem.swift */; };
 		487A12D8A86BE2848977C49FACE364B3 /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365F83154629BD47C328EC8207E30F78 /* Debugging.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		49B9B7ACEBE5C9949CF7B2CFA7AB365F /* PopupDialog+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD03B769FD977A4025C02108E374AC30 /* PopupDialog+Keyboard.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -130,15 +129,17 @@
 		8890F2C0289B76D9433406F4ACD399AA /* ConstraintMakerFinalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63716EFE92E8E8A8E9C48A5A13CB76DE /* ConstraintMakerFinalizable.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8966C8D46613000137FF53B51035DB4E /* CosmosTouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BF07B73FDBB90C4C1A8897F9521A83 /* CosmosTouch.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8A27F9DEF8034FBA4CA00624F4BC8F12 /* ProvidedAuthorizationTokenStateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334599F24531CF54B4CDF423BCD705A /* ProvidedAuthorizationTokenStateListener.swift */; };
+		8BFED89C672D62A60060DA78D17F5385 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
+		8C52135013EBA88F194A782BE5FCBCBB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		8C7AD3D681F4CC3AB2D68AF7F4E2A278 /* UIViewController+Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA97BBF09804ACE1BCF879C7A92F76C /* UIViewController+Visibility.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8F60410D77422A35D4A283EFF8A220FB /* SQLite-Bridging.m in Sources */ = {isa = PBXBuildFile; fileRef = 6314DC439A00AF1A001EDD2AE1178632 /* SQLite-Bridging.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		920315650E7C6C0894A10DBC122BF357 /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD0DF542C4250DAAA403FC160A5A3BF /* LayoutConstraint.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		9305DB8D6E0AE01B0639C4FE0228EF1C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
 		934FDA9BA70962A0847C67560ADB088E /* HistoryMetaInformationStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44FDED000CFEA5E8997684166E94A14 /* HistoryMetaInformationStorage.swift */; };
 		9381A48F38AA7712DB1B5D9341E0B91C /* MessageComposingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B50DF8265348B3DF6C66646ED143614 /* MessageComposingHandler.swift */; };
 		9429BBCD0A1EC42D8526C88FC200B870 /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794782EEF80522A6D607C066166DFC58 /* ConstraintAttributes.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		962A6F8DEAD63D3CFC8AFFA10BC39536 /* UIScrollView+SLKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = AAE8BD38ECC431D4935FFEC0AD1F1DD6 /* UIScrollView+SLKAdditions.h */; };
 		96795FCEEE8380824077CB0E26F03DF3 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3650CB77674EF197916E050A152E59 /* Helpers.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		99A47405AFF179C73C1E7EC187865AD9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		9A4C7CE21AD5CE2252D2CA6D83E156B8 /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2A05AC20F044D9647C8FA90450C208 /* ConstraintItem.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		9C0E2662CE90024605CF4FB899980082 /* CosmosTouchTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8580ECAD238587E0F5440EDAD11D6E /* CosmosTouchTarget.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		9C72C6760F67F3BAB89FC7BFDA60E4FB /* FileParametersItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DAE32AED11C1788D3D40B240179ABC4 /* FileParametersItem.swift */; };
@@ -151,6 +152,7 @@
 		A2F52641894301FDC0419A722975B5A1 /* TransitionAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C6B603C8647D2F917E828B2834BD16 /* TransitionAnimations.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		A6A207E44A3FA9B6C76A7B659CF099A2 /* HistoryID.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE098FA70E560168BB99945C731A31E5 /* HistoryID.swift */; };
 		A6B183D6FE96B043500F46D942C2F31C /* SLKTextView+SLKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DBD18B64CC7D939ECB27D7784B39754 /* SLKTextView+SLKAdditions.h */; };
+		A8D0F1C3405DD1451822DBEDCB4925BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		AA22E71D47154C7B1AF0B4FC61D6D1F7 /* OperatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DFF15284ED58C4872C8F7F7551A74A /* OperatorItem.swift */; };
 		AB198CE679F63F242BA3CCF6B0CF782C /* ActionRequestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031A76851F5F9F83F68BBE2D84A11914 /* ActionRequestLoop.swift */; };
 		ABBD2703BB29C452FDF4C6AEFA6B954B /* Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A24F0FB73BA16952E0A2FD6AA94750 /* Foundation.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -169,6 +171,7 @@
 		B9F0F0899A855E695FACD9DD284846C2 /* WebimError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88C19AC19FDC7DE1A90CB39512B317D /* WebimError.swift */; };
 		BC43409EA90311017700268AC6CE247A /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4C13B6D142392F31DCF6B47BB344DD /* Array.swift */; };
 		BD2BA8A861B75017909C493340255E96 /* DepartmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA9CFC058B0DE538EA6458F17C60EF0 /* DepartmentItem.swift */; };
+		BE0C55A548F6B2983FB84B475F847E9C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		BE3FB8CDAB6E0B16E45309CD9297BB6D /* SLKTextInputbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 23540EBC02B4CDAC0FC39B408311CBF0 /* SLKTextInputbar.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		BE69DAEA89E1095AC8135F4035292EDE /* PopupDialogOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6B1DB7FD2FDEA3527CA95DCD29E7D /* PopupDialogOverlayView.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		BE900C4EED9AE1382787AE71A6D7A587 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F60BC55DF51EEFB71240CBCA412ED0 /* UIColor.swift */; };
@@ -183,13 +186,13 @@
 		C744A449E282079C9884AF86333FAF7A /* WebimInternalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178C90AFB8090C6F91A16A6307B84C2C /* WebimInternalError.swift */; };
 		C7E38ADF05B5FF880F12DC485FCDAA75 /* CosmosLocalizedRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC15F1A566EBF7122EAC9D4CD61B73F /* CosmosLocalizedRating.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C94760311B079EF440D8C7C4B4079A15 /* WebimErrorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F220E304B22DAE4253EC4F1C3165C028 /* WebimErrorImpl.swift */; };
+		C96785929957B178268B125C1DAC0FB0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		C985911C78EAE193D54CD7BA73FA38D6 /* Cosmos-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1A0160861949970986DC345DCE9ECB /* Cosmos-dummy.m */; };
 		CAD9AD464EF384952650799F287BE410 /* SnapKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A541555875AD8A3D9028E22DB39BE37D /* SnapKit-dummy.m */; };
 		CB719B1BB99BE48FE36943F083A7CF67 /* MessageTrackerImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664E4FAF65FE576ABE814C9B4373ACF1 /* MessageTrackerImpl.swift */; };
 		CD05386EBF79DF81A50AEC0E4DD5F0D0 /* Pods-WebimClientLibrary_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 23C9CB269996E5AAF073C5F5636F096F /* Pods-WebimClientLibrary_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CD0D9AB9BBA3DCB834EE272219090BD9 /* CompletionHandlerWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6689B5BD274AAAA1CE7E90FA4714B2 /* CompletionHandlerWrappers.swift */; };
 		D106BB6D56DB09120832D5D39EA639F7 /* SLKUIConstants.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 2C342D50880096E16DEE77520817A72E /* SLKUIConstants.h */; };
-		D170EB0FFCB1EFF4157E524783F11972 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
 		D20320DBDF35AAAD909D272E44F51B6D /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A242DC696A091612A93C381A0405C6F /* ConstraintRelation.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		D20FF84A5469DE98C9B86C10C143761E /* WebimInternalLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94738B2F820AFDC3085F59678AE16A32 /* WebimInternalLogger.swift */; };
 		D22DAA757FE7E92CF6057C62B8653BFA /* LocationSettingsImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E1BB7405A05BA96F5E47AE3E3606BA /* LocationSettingsImpl.swift */; };
@@ -198,24 +201,21 @@
 		D40820A2317DBCE402D9A8A6ABD4ED45 /* Department.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799A957762BB118D419942064F856D37 /* Department.swift */; };
 		D44807392A7CF81BD72FE27BDF27907B /* VisitorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2B3B57C4BDFBED302FD55C3C496460 /* VisitorItem.swift */; };
 		D48858B2016EEA34882B578A4ABA7292 /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39EBAD471601B480F694A6117222F362 /* ConstraintDescription.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		D54AD2E7B275B428B100E19DCC357DED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
 		D6F6FEDCDCCB07A17FD9E160314BA16E /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC537E206030C9AC6FCF246EA9F4E15A /* Operator.swift */; };
 		D83198D9864B579C005DABAB21D259E1 /* UIImageView+Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC653149D8C812AA5E52B48F2DD9498E /* UIImageView+Calculations.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		DC7887D00E41588C1FE942F3F70609AC /* HistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B94DB905432A1C4E89B011879CCF15EA /* HistoryStorage.swift */; };
 		DE5E91A47C1BF6869DF17747D61C2FF1 /* Cosmos-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 441EEAF33DDB2A66F3A5FB470B679E64 /* Cosmos-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DE7A58F08ED919ABC36974C4A6EEF748 /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B391643705AE625944E65B46E68AA52 /* Expression.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		DFE084A3159F8AAAFA0A826B1FF799B0 /* SlackTextViewController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B7EFE3E2822F1C37ACE1F18135E0818D /* SlackTextViewController-dummy.m */; };
+		E0A8E24AAB4C41B58F3D2876A91DB3C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */; };
 		E1782F0651BD149B282DD1E71859A440 /* InternalErrorListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EA98390ACC5C7B7679C0F507EA0F3E /* InternalErrorListener.swift */; };
 		E28402B9157224A272A36693D2E44332 /* UIScrollView+SLKAdditions.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = AAE8BD38ECC431D4935FFEC0AD1F1DD6 /* UIScrollView+SLKAdditions.h */; };
 		E40A836AC97F59D3FDE4113885E31E93 /* HistorySinceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFE11EDF8ED6FB356F670929F45B7B7 /* HistorySinceResponse.swift */; };
 		E53BDD736A24FC3EF7F69015501617D8 /* AbstractRequestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424064D2E146A3B86BE494CCFEFB13EE /* AbstractRequestLoop.swift */; };
 		E654837DF555E0D1DCAFAE382EF02D93 /* AccessChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574DA971889D27700C255D23FB009E67 /* AccessChecker.swift */; };
 		E67527F52BB2772B0B32949F46965868 /* SQLite-Bridging.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E8B75EAA68CC151FB6616E545A864A /* SQLite-Bridging.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E76563DEE0DCD500CEB1F60E2CF29BCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
-		E773A257269771C24168714D4AF89B02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
 		E7ABC37944BE92E721CFAA3627AF2B40 /* LocationSettingsHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D41CC83E90795ED8C2844D85DC4FF /* LocationSettingsHolder.swift */; };
 		E7BBA66495C51E39456348927BBA852F /* CoreFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E05B0AB2A158BE0AED146D9CE9656DB /* CoreFunctions.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		EA373C2E081E648CEF09D2FBB93C69BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */; };
 		EA9C9F63B32919E2CA328D5343A52034 /* PopupDialogDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD66C3FE6FB01768ECB85396B708305 /* PopupDialogDefaultView.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EB752B6411040DA981F9FC64E5F86F45 /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1783698FAEE06C0CB74DA14E7EC431D5 /* ConstraintMaker.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EBC433AE6AD15BCDDBB15FEFA5CF8F76 /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916001497C7F1413D1405BF3113FB8BD /* ChatItem.swift */; };
@@ -478,6 +478,7 @@
 		89C66CDC24D923C2764C4ABF2A5F1A39 /* UIView+SLKAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+SLKAdditions.h"; path = "Source/UIView+SLKAdditions.h"; sourceTree = "<group>"; };
 		8D3650CB77674EF197916E050A152E59 /* Helpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = Sources/SQLite/Helpers.swift; sourceTree = "<group>"; };
 		8F6B0CAAD2E7AE71CCB59A4E0868433D /* ConstraintMakerPriortizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerPriortizable.swift; path = Source/ConstraintMakerPriortizable.swift; sourceTree = "<group>"; };
+		8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		9058DD2369437C210BD80C50F70DE0CF /* ConstraintMakerRelatable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerRelatable.swift; path = Source/ConstraintMakerRelatable.swift; sourceTree = "<group>"; };
 		916001497C7F1413D1405BF3113FB8BD /* ChatItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
 		91B6B8F69DA629C6A3D7B9E1F5BF6DD5 /* Pods-WebimClientLibrary_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-WebimClientLibrary_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -584,7 +585,6 @@
 		F220E304B22DAE4253EC4F1C3165C028 /* WebimErrorImpl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WebimErrorImpl.swift; sourceTree = "<group>"; };
 		F2AD3B701744E1B73341944062B2919C /* FXBlurView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FXBlurView.h; path = PopupDialog/Classes/FXBlurView.h; sourceTree = "<group>"; };
 		F63138EEB9E10DBC2D1DDA9BCACA61C2 /* SlackTextViewController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SlackTextViewController.modulemap; sourceTree = "<group>"; };
-		F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		F8130E1042B3FA834B608E4E757DAF1E /* SlackTextViewController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SlackTextViewController-umbrella.h"; sourceTree = "<group>"; };
 		F87105350AE77591C8FEC5EA2C3F7190 /* Pods-WebimClientLibrary_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-WebimClientLibrary_Tests-dummy.m"; sourceTree = "<group>"; };
 		FA8B33DCE33106F90A30A3202BCCDA76 /* MessageFactories.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MessageFactories.swift; sourceTree = "<group>"; };
@@ -601,7 +601,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45B8D829B6CA4E520C28C4AB25877142 /* Foundation.framework in Frameworks */,
+				E0A8E24AAB4C41B58F3D2876A91DB3C8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,7 +609,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9305DB8D6E0AE01B0639C4FE0228EF1C /* Foundation.framework in Frameworks */,
+				8BFED89C672D62A60060DA78D17F5385 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,7 +617,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D54AD2E7B275B428B100E19DCC357DED /* Foundation.framework in Frameworks */,
+				A8D0F1C3405DD1451822DBEDCB4925BC /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -625,7 +625,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D170EB0FFCB1EFF4157E524783F11972 /* Foundation.framework in Frameworks */,
+				99A47405AFF179C73C1E7EC187865AD9 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,7 +633,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E76563DEE0DCD500CEB1F60E2CF29BCA /* Foundation.framework in Frameworks */,
+				C96785929957B178268B125C1DAC0FB0 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,7 +641,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14A8F69DDE6AB7C838F0C3030172152E /* Foundation.framework in Frameworks */,
+				8C52135013EBA88F194A782BE5FCBCBB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,7 +649,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E773A257269771C24168714D4AF89B02 /* Foundation.framework in Frameworks */,
+				BE0C55A548F6B2983FB84B475F847E9C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,7 +657,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA373C2E081E648CEF09D2FBB93C69BB /* Foundation.framework in Frameworks */,
+				2CEC25F06ADB6EBE5E0D0F20FCC7517D /* Foundation.framework in Frameworks */,
 				71E5F7561583BB49A901AFA807C29F68 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -735,7 +735,7 @@
 			isa = PBXGroup;
 			children = (
 				DB44F0C85553660857F351B59660E399 /* SQLite.framework */,
-				BD6E1B90AA08234791918BB0C2672022 /* iOS */,
+				65B1C858147CB76A92839B0A83EB0B54 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -857,6 +857,14 @@
 			);
 			name = Deltas;
 			path = Deltas;
+			sourceTree = "<group>";
+		};
+		65B1C858147CB76A92839B0A83EB0B54 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				8FDD3A8A2B8526B21556B26BE40CA651 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		665560399382CB071AAF9886BA066DC2 /* Extensions */ = {
@@ -1090,14 +1098,6 @@
 			);
 			name = PopupDialog;
 			path = PopupDialog;
-			sourceTree = "<group>";
-		};
-		BD6E1B90AA08234791918BB0C2672022 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				F76DC2C907652127B4034C23D0EBC722 /* Foundation.framework */,
-			);
-			name = iOS;
 			sourceTree = "<group>";
 		};
 		C5D650CD2401DC6A9A676C3FE58F24B4 /* SnapKit */ = {

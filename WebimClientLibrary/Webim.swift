@@ -34,7 +34,7 @@ import Foundation
  2017 Webim
  */
 public final class Webim {
-    
+
     /**
      Returns new SessionBuilder object for creating WebimSession object.
      - returns:
@@ -47,7 +47,7 @@ public final class Webim {
     static public func newSessionBuilder() -> SessionBuilder {
         return SessionBuilder()
     }
-    
+
     /**
      Deserializes received remote notification.
      This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:didReceiveRemoteNotification:)`.
@@ -67,7 +67,7 @@ public final class Webim {
     static public func parse(remoteNotification: [AnyHashable : Any]) -> WebimRemoteNotification? {
         return InternalUtils.parse(remoteNotification: remoteNotification)
     }
-    
+
     /**
      If remote notifications (SessionBuilder.setRemoteNotificationSystem) are enabled for the session, then you can receive remote notifications belonging to this session.
      This method can be called with `userInfo` parameter of your UIApplicationDelegate method `application(_:didReceiveRemoteNotification:)`.
@@ -87,8 +87,8 @@ public final class Webim {
     static public func isWebim(remoteNotification: [AnyHashable: Any]) -> Bool {
         return InternalUtils.isWebim(remoteNotification: remoteNotification)
     }
-    
-    
+
+
     // MARK: -
     /**
      - seealso:
@@ -102,7 +102,7 @@ public final class Webim {
         case APNS
         case NONE
     }
-    
+
 }
 
 // MARK: -
@@ -116,7 +116,7 @@ public final class Webim {
  2017 Webim
  */
 public final class SessionBuilder  {
-    
+
     // MARK: - Properties
     private var accountName: String?
     private var appVersion: String?
@@ -132,9 +132,10 @@ public final class SessionBuilder  {
     private var visitorFields: ProvidedVisitorFields?
     private weak var webimLogger: WebimLogger?
     private var webimLoggerVerbosityLevel: WebimLoggerVerbosityLevel?
-    
+    private var prechat: String?
+
     // MARK: - Methods
-    
+
     /**
      Sets company account name in Webim system.
      Usually presented by full domain URL of the server (e.g "https://demo.webim.ru").
@@ -150,10 +151,10 @@ public final class SessionBuilder  {
      */
     public func set(accountName: String) -> SessionBuilder {
         self.accountName = accountName
-        
+
         return self
     }
-    
+
     /**
      Location on server.
      You can use "mobile" or contact support for creating new one.
@@ -170,10 +171,26 @@ public final class SessionBuilder  {
      */
     public func set(location: String) -> SessionBuilder {
         self.location = location
-        
+
         return self
     }
-    
+
+    /**
+     Set prechat fields with extra information.
+     - parameter prechat:
+     Prechat fields in JSON format.
+     - returns:
+     `SessionBuilder` object with location set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    public func set(prechat: String) -> SessionBuilder {
+        self.prechat = prechat
+        return self
+    }
+
     /**
      You can differentiate your app versions on server by setting this parameter. E.g. "2.9.11".
      This is optional.
@@ -188,10 +205,10 @@ public final class SessionBuilder  {
      */
     public func set(appVersion: String?) -> SessionBuilder {
         self.appVersion = appVersion
-        
+
         return self
     }
-    
+
     /**
      A visitor can be anonymous or authorized. Without calling this method when creating a session visitor is anonymous.
      In this case visitor receives a random ID, which is written in `UserDefaults`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
@@ -213,10 +230,10 @@ public final class SessionBuilder  {
      */
     public func set(visitorFieldsJSONString: String) -> SessionBuilder {
         self.visitorFields = ProvidedVisitorFields(withJSONString: visitorFieldsJSONString)
-        
+
         return self
     }
-    
+
     /**
      A visitor can be anonymous or authorized. Without calling this method when creating a session visitor is anonymous.
      In this case visitor receives a random ID, which is written in `UserDefaults`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
@@ -237,10 +254,10 @@ public final class SessionBuilder  {
      */
     public func set(visitorFieldsJSONData: Data) -> SessionBuilder {
         self.visitorFields = ProvidedVisitorFields(withJSONObject: visitorFieldsJSONData)
-        
+
         return self
     }
-    
+
     /**
      When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
      - important:
@@ -260,10 +277,10 @@ public final class SessionBuilder  {
                     providedAuthorizationToken: String? = nil) -> SessionBuilder {
         self.providedAuthorizationTokenStateListener = providedAuthorizationTokenStateListener
         self.providedAuthorizationToken = providedAuthorizationToken
-        
+
         return self
     }
-    
+
     /**
      Sets the page title visible to an operator. In the web version of a chat it is a title of a web page a user opens a chat from.
      By default "iOS Client".
@@ -278,10 +295,10 @@ public final class SessionBuilder  {
      */
     public func set(pageTitle: String?) -> SessionBuilder {
         self.pageTitle = pageTitle
-        
+
         return self
     }
-    
+
     /**
      Sets a fatal error handler. An error is considered fatal if after processing it the session can not be continued anymore.
      - parameter fatalErrorHandler:
@@ -295,10 +312,10 @@ public final class SessionBuilder  {
      */
     public func set(fatalErrorHandler: FatalErrorHandler?) -> SessionBuilder {
         self.fatalErrorHandler = fatalErrorHandler
-        
+
         return self
     }
-    
+
     /**
      Webim service can send remote notifications when new messages are received in chat.
      By default it does not. You have to handle receiving by yourself.
@@ -316,10 +333,10 @@ public final class SessionBuilder  {
      */
     public func set(remoteNotificationSystem: Webim.RemoteNotificationSystem) -> SessionBuilder {
         self.remoteNotificationSystem = remoteNotificationSystem
-        
+
         return self
     }
-    
+
     /**
      Sets device token.
      Example that shows how to change device token for the proper formatted one:
@@ -337,10 +354,10 @@ public final class SessionBuilder  {
      */
     public func set(deviceToken: String?) -> SessionBuilder {
         self.deviceToken = deviceToken
-        
+
         return self
     }
-    
+
     /**
      By default a session stores a message history locally. This method allows to disable history storage.
      - important:
@@ -356,10 +373,10 @@ public final class SessionBuilder  {
      */
     public func set(isLocalHistoryStoragingEnabled: Bool) -> SessionBuilder {
         self.localHistoryStoragingEnabled = isLocalHistoryStoragingEnabled
-        
+
         return self
     }
-    
+
     /**
      If set to true, all the visitor data is cleared before the session starts.
      - important:
@@ -375,10 +392,10 @@ public final class SessionBuilder  {
      */
     public func set(isVisitorDataClearingEnabled: Bool) -> SessionBuilder {
         self.visitorDataClearingEnabled = isVisitorDataClearingEnabled
-        
+
         return self
     }
-    
+
     /**
      Method to pass WebimLogger object.
      - parameter webimLogger:
@@ -396,10 +413,10 @@ public final class SessionBuilder  {
                     verbosityLevel: WebimLoggerVerbosityLevel = .WARNING) -> SessionBuilder {
         self.webimLogger = webimLogger
         webimLoggerVerbosityLevel = verbosityLevel
-        
+
         return self
     }
-    
+
     /**
      Builds new `WebimSession` object.
      - important:
@@ -426,13 +443,13 @@ public final class SessionBuilder  {
         guard let location = location else {
             throw SessionBuilderError.NIL_LOCATION
         }
-        
+
         let remoteNotificationsEnabled = (self.remoteNotificationSystem != Webim.RemoteNotificationSystem.NONE)
         if (deviceToken != nil)
             && !remoteNotificationsEnabled {
             throw SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION
         }
-        
+
         if (visitorFields != nil)
             && (providedAuthorizationTokenStateListener != nil) {
             throw SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS
@@ -445,6 +462,50 @@ public final class SessionBuilder  {
             listener.update(providedAuthorizationToken: providedAuthorizationToken!)
         }
         
+        if var prechat = self.prechat {
+            if !prechat.contains(":") {
+                //not json or string data
+                if prechat.count % 2 != 0 {
+                    throw SessionBuilderError.INVALIDE_HEX
+                }
+                var byteArray = [UInt8]()
+                var index = prechat.startIndex
+                byteArray.reserveCapacity(prechat.count/2)
+                for _ in 0..<prechat.count / 2 {
+                    let nextIndex = prechat.index(index, offsetBy: 2)
+                    if let b = UInt8(prechat[index..<nextIndex], radix: 16) {
+                        byteArray.append(b)
+                    } else {
+                        throw SessionBuilderError.INVALIDE_HEX
+                    }
+                    
+                    index = nextIndex
+                }
+                let data = Data(bytes: byteArray)
+                prechat = String(data:data, encoding: .utf8)!
+                print("prechat parsed: \(prechat)")
+            }
+            //prechat is json or string data
+            if !prechat.contains("{") {
+                // not json
+                let pairs = prechat.components(separatedBy: "\\n").map{pair in
+                    pair.split(separator: ":").map(String.init)
+                }
+                let hasError = pairs.contains { pair in
+                    pair.count != 2
+                }
+                if hasError {
+                    throw SessionBuilderError.INVALIDE_HEX
+                }
+                let result = pairs.map { pair in
+                    "\"\(pair[0])\": \"\(pair[1])\""
+                }.joined(separator: ", ")
+                
+                self.prechat = "{\(result)}"
+                print("json: \(self.prechat ?? "{}")")
+            }
+        }
+
         return WebimSessionImpl.newInstanceWith(accountName: accountName,
                                                 location: location,
                                                 appVersion: appVersion,
@@ -457,9 +518,10 @@ public final class SessionBuilder  {
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled,
                                                 webimLogger: webimLogger,
-                                                verbosityLevel: webimLoggerVerbosityLevel) as WebimSession
+                                                verbosityLevel: webimLoggerVerbosityLevel,
+                prechat: prechat) as WebimSession
     }
-    
+
     // MARK: -
     /**
      Verbosity level of `WebimLogger`.
@@ -471,7 +533,7 @@ public final class SessionBuilder  {
      2018 Webim
      */
     public enum WebimLoggerVerbosityLevel {
-        
+
         /**
          All available information will be delivered to `WebimLogger` instance with maximum verbosity level:
          * session network setup parameters;
@@ -485,7 +547,7 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case VERBOSE
-        
+
         /**
          All information which is useful when debugging will be delivered to `WebimLogger` instance with necessary verbosity level:
          * session network setup parameters;
@@ -499,7 +561,7 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case DEBUG
-        
+
         /**
          Reference information and all warnings and errors will be delivered to `WebimLogger` instance:
          * network requests' URLS, HTTP method and parameters;
@@ -511,7 +573,7 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case INFO
-        
+
         /**
          Errors and warnings only will be delivered to `WebimLogger` instance:
          * network requests' URLs, HTTP method, parameters, HTTP code and error description.
@@ -522,7 +584,7 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case WARNING
-        
+
         /**
          Only errors will be delivered to `WebimLogger` instance:
          * network requests' URLs, HTTP method, parameters, HTTP code and error description.
@@ -532,9 +594,9 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case ERROR
-        
+
     }
-    
+
     /**
      Error types that can be thrown by `SessionBuilder` `build()` method.
      - seealso:
@@ -545,7 +607,7 @@ public final class SessionBuilder  {
      2017 Webim
      */
     public enum SessionBuilderError: Error {
-        
+
         /**
          Error that is thrown when trying to use standard and custom visitor fields authentication simultaneously.
          - seealso:
@@ -558,7 +620,7 @@ public final class SessionBuilder  {
          2017 Webim
          */
         case INVALID_AUTHENTICATION_PARAMETERS
-        
+
         /**
          Error that is thrown when trying to create session object with invalid remote notifications configuration.
          - seealso:
@@ -570,7 +632,7 @@ public final class SessionBuilder  {
          2017 Webim
          */
         case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
-        
+
         /**
          Error that is thrown when trying to create session object with `nil` account name.
          - seealso:
@@ -581,7 +643,7 @@ public final class SessionBuilder  {
          2017 Webim
          */
         case NIL_ACCOUNT_NAME
-        
+
         /**
          Error that is thrown when trying to create session object with `nil` location name.
          - seealso:
@@ -593,6 +655,8 @@ public final class SessionBuilder  {
          */
         case NIL_LOCATION
         
+        case INVALIDE_HEX
+
     }
-    
+
 }

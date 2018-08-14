@@ -100,6 +100,8 @@ final class WebimService {
                 print("Webim session object creating failed because of invalid visitor authentication system configuration.")
                 
                 break
+            case .INVALIDE_HEX:
+                print("Webim can't parsed prechat fields")
             }
         } catch {
             print("Webim session object creating failed with unknown error: \(error.localizedDescription)")
@@ -382,7 +384,8 @@ final class WebimService {
             }
             
             try messageStream?.startChat(departmentKey: departmentKey,
-                                         firstQuestion: message)
+                                         firstQuestion: message,
+                                         customFields: "{\"custom_fields\": {\"restaurant_id\": \"123abc\",\"chat_reason\": \"Заказ потерян\",\"app_version\": \"5.6\",\"active_orders\": [\"123\", \"124\", \"126\"]}}")
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:

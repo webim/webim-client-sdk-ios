@@ -12,6 +12,7 @@
 -   [SessionBuilder class](#session-builder)
     -   [Instance method set(accountName:)](#set-account-name)
     -   [Instance method set(location:)](#set-location)
+    -   [Instance method set(prechat:)](#set-prechat)
     -   [Instance method set(appVersion:)](#set-app-version)
     -   [Instance method set(visitorFieldsJSONString:)](#set-visitor-fields-json-string-json-string)
     -   [Instance method set(visitorFieldsJSONData:)](#set-visitor-fields-json-data-json-data)
@@ -59,8 +60,12 @@
     -   [respondSentryCall(id:) method](#respond-sentry-call)
     -   [startChat() method](#start-chat)
     -   [startChat(firstQuestion:) method](#start-chat-first-question)
+    -   [startChat(customFields:) method](#start-chat-custom-fields)
     -   [startChat(departmentKey:) method](#start-chat-department-key)
     -   [startChat(departmentKey:firstQuestion:) method](#start-chat-department-key-first-question)
+    -   [startChat(firstQuestion:customFields) method](#start-chat-first-question-custom-fields)
+    -   [startChat(departmentKey:customFields) method](#start-chat-department-key-custom-fields)
+    -   [startChat(departmentKey:firstQuestion:customFields) method](#start-chat-department-key-first-question-custom-fields)
     -   [closeChat() method](#close-chat)
     -   [send(message:) method](#send-message)
     -   [setVisitorTyping(draftMessage:) method](#set-visitor-typing-draft-message)
@@ -289,6 +294,12 @@ Method is mandatory to create [WebimSession](#webim-session) object.
 
 Sets [location](https://webim.ru/help/help-terms/) name for the session.
 `location` parameter  – `String`-typed location name. Usually default available location names are "mobile" and "default". To create any other one you can contact service support.
+Returns `self` with location name set.
+Method is mandatory to create [WebimSession](#webim-session) object.
+
+<h3 id ="set-prechat">Instance method set(prechat:)</h3>
+Sets prechat fields for the session.
+`prechat` parameter  – `String`-typed prechat fields in JSON format.
 Returns `self` with location name set.
 Method is mandatory to create [WebimSession](#webim-session) object.
 
@@ -568,6 +579,13 @@ Changes [ChatState](#chat-state) to [QUEUE](#queue). Starts chat and sends first
 Method call is not mandatory, send message or send file methods start chat automatically. If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="start-chat-custom-fields">startChat(customFields:) method</h3>
+
+Changes [ChatState](#chat-state) to [QUEUE](#queue). Starts chat with custom fields.
+Method call is not mandatory. Starts chat with custom fields.
+`customFields` paramater – String-typed custom fields in JSON format.
+Can throw errors of [AccessError](#access-error) type.
+
 <h3 id ="start-chat-department-key">startChat(departmentKey:) method</h3>
 
 Starts chat with particular department. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
@@ -579,6 +597,29 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id ="start-chat-department-key-first-question">startChat(departmentKey:firstQuestion:) method</h3>
 
 Starts chat with particular department  and sends first message simultaneously. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
+Changes [ChatState](#chat-state) to [QUEUE](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="start-chat-first-question-custom-fields">startChat(firstQuestion:customFields:) method</h3>
+
+Starts chat with custom fields and sends first message simultaneously.
+Changes [ChatState](#chat-state) to [QUEUE](#queue).
+If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="start-chat-department-key-custom-fields">startChat(departmentKey:customFields:) method</h3>
+
+Starts chat with particular department and custom fields. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
+Changes [ChatState](#chat-state) to [QUEUE](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="start-chat-department-key-first-question-custom-fields">startChat(departmentKey:firstQuestion:customFields:) method</h3>
+
+Starts chat with particular department and customFields  and sends first message simultaneously. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
 Changes [ChatState](#chat-state) to [QUEUE](#queue).
 In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.

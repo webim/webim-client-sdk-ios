@@ -367,8 +367,25 @@ extension MessageStreamImpl: MessageStream {
                       firstQuestion: nil)
     }
     
+    func startChat(customFields:String?) throws {
+        try startChat(departmentKey: nil, firstQuestion: nil, customFields: customFields)
+    }
+    
+    func startChat(firstQuestion:String?, customFields: String?) throws {
+        try startChat(departmentKey: nil, firstQuestion: firstQuestion, customFields: customFields)
+    }
+    
+    func startChat(departmentKey: String?, customFields: String?) throws {
+        try startChat(departmentKey: departmentKey, firstQuestion: nil, customFields: customFields)
+    }
+    
+    func startChat(departmentKey: String?, firstQuestion: String?) throws {
+        try startChat(departmentKey: departmentKey, firstQuestion: firstQuestion, customFields: nil)
+    }
+    
     func startChat(departmentKey: String?,
-                   firstQuestion: String?) throws {
+                   firstQuestion: String?,
+                   customFields: String?) throws {
         try accessChecker.checkAccess()
         
         if (lastChatState.isClosed()
@@ -376,7 +393,8 @@ extension MessageStreamImpl: MessageStream {
             && !isChatIsOpening {
             webimActions.startChat(withClientSideID: ClientSideID.generateClientSideID(),
                                    firstQuestion: firstQuestion,
-                                   departmentKey: departmentKey)
+                                   departmentKey: departmentKey,
+                                   customFields: customFields)
         }
     }
     

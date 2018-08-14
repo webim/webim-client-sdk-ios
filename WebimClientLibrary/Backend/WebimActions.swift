@@ -75,6 +75,8 @@ class WebimActions {
         case visitor = "visitor"
         case visitorExt = "visitor-ext"
         case visitorTyping = "typing"
+        case prechat = "prechat-key-independent-fields"
+        case customFields = "custom_fields"
     }
     enum Platform: String {
         case ios = "ios"
@@ -166,7 +168,8 @@ class WebimActions {
     
     func startChat(withClientSideID clientSideID: String,
                    firstQuestion: String? = nil,
-                   departmentKey: String? = nil) {
+                   departmentKey: String? = nil,
+                   customFields: String? = nil) {
         var dataToPost = [Parameter.actionn.rawValue: Action.startChat.rawValue,
                           Parameter.forceOnline.rawValue: "1", // true
                           Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
@@ -175,6 +178,9 @@ class WebimActions {
         }
         if let departmentKey = departmentKey {
             dataToPost[Parameter.departmentKey.rawValue] = departmentKey
+        }
+        if let custom_fields = customFields {
+            dataToPost[Parameter.customFields.rawValue] = custom_fields
         }
         
         let urlString = baseURL + ServerPathSuffix.doAction.rawValue

@@ -97,7 +97,8 @@ final class WebimSessionImpl {
                                 isLocalHistoryStoragingEnabled: Bool,
                                 isVisitorDataClearingEnabled: Bool,
                                 webimLogger: WebimLogger?,
-                                verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?) -> WebimSessionImpl {
+                                verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?,
+                                prechat: String?) -> WebimSessionImpl {
         WebimInternalLogger.setup(webimLogger: webimLogger,
                                   verbosityLevel: verbosityLevel)
         
@@ -153,6 +154,7 @@ final class WebimSessionImpl {
             .set(title: (pageTitle ?? DefaultSettings.pageTitle.rawValue))
             .set(deviceToken: deviceToken)
             .set(deviceID: getDeviceID())
+            .set(prechat: prechat)
             .build() as WebimClient
         
         var historyStorage: HistoryStorage

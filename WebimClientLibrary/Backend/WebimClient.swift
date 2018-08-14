@@ -36,6 +36,7 @@ final class WebimClientBuilder {
     
     // MARK: - Properties
     private var appVersion: String?
+    private var prechat: String?
     private var authorizationData: AuthorizationData?
     private var baseURL: String?
     private var completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?
@@ -146,9 +147,15 @@ final class WebimClientBuilder {
         return self
     }
     
+    func set(prechat:String?) -> WebimClientBuilder {
+        self.prechat = prechat
+        return self
+    }
+    
     func build() -> WebimClient {
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: completionHandlerExecutor!,
                                                   internalErrorListener: internalErrorListener!)
+        
         actionRequestLoop.set(authorizationData: authorizationData)
         
         let deltaRequestLoop = DeltaRequestLoop(deltaCallback: deltaCallback!,
@@ -167,7 +174,9 @@ final class WebimClientBuilder {
                                                 deviceToken: deviceToken,
                                                 visitorJSONString: visitorJSONString,
                                                 sessionID: sessionID,
-                                                authorizationData: authorizationData)
+                                                prechat: prechat,
+                                                authorizationData: authorizationData
+                                                )
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
