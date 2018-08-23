@@ -9,7 +9,7 @@ PODS:
   - SQLite.swift (0.11.5):
     - SQLite.swift/standard (= 0.11.5)
   - SQLite.swift/standard (0.11.5)
-  - WebimClientLibrary (3.19.0):
+  - WebimClientLibrary (3.20.0):
     - SQLite.swift
 
 DEPENDENCIES:

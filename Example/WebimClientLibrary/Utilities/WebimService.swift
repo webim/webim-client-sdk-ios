@@ -384,8 +384,7 @@ final class WebimService {
             }
             
             try messageStream?.startChat(departmentKey: departmentKey,
-                                         firstQuestion: message,
-                                         customFields: "{\"custom_fields\": {\"restaurant_id\": \"123abc\",\"chat_reason\": \"Заказ потерян\",\"app_version\": \"5.6\",\"active_orders\": [\"123\", \"124\", \"126\"]}}")
+                                         firstQuestion: message)
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:
@@ -398,9 +397,22 @@ final class WebimService {
                 print("Chat starting failed because it was called from a wrong thread.")
                 
                 break
+
             }
         } catch {
             print("Chat starting failed with unknown error: \(error.localizedDescription)")
+        }
+    }
+    
+    func setChatRead() {
+        do {
+            if messageStream == nil {
+                setMessageStream()
+            }
+            
+            try messageStream?.setChatRead()
+        } catch {
+            print("Read chat failed with unknown error: \(error.localizedDescription)")
         }
     }
     

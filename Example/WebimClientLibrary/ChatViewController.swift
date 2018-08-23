@@ -305,6 +305,7 @@ final class ChatViewController: SLKTextViewController {
             DispatchQueue.main.async() {
                 self?.tableView?.reloadData()
                 self?.scrollToBottom()
+                self?.webimService?.setChatRead()
             }
         }
     }
@@ -317,6 +318,7 @@ final class ChatViewController: SLKTextViewController {
             DispatchQueue.main.async() {
                 self?.tableView?.reloadData()
                 self?.refreshControl.endRefreshing()
+                self?.webimService?.setChatRead()
             }
         }
     }

@@ -460,6 +460,12 @@ extension MessageStreamImpl: MessageStream {
         return messageID
     }
     
+    func setChatRead() throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.setChatRead()
+    }
+    
     func newMessageTracker(messageListener: MessageListener) throws -> MessageTracker {
         try accessChecker.checkAccess()
         

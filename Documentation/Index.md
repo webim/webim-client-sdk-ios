@@ -72,6 +72,7 @@
     -   [send(message:data:completionHandler:) method](#send-message-data)
     -   [send(message:isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
+    -   [setChatRead() method](#set-chat-read)
     -   [newMessageTracker(messageListener:) method](#new-message-tracker-message-listener)
     -   [set(visitSessionStateListener:)](#set-visit-session-state-listener)
     -   [set(chatStateListener:) method](#set-chat-state-listener)
@@ -664,6 +665,11 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 `mimeType` parameter – MIME type of the file to send of `String` type.
 `completionHandler` parameter – optional [SendFileCompletionHandler](#send-file-completion-handler) object.
 Returns randomly generated `String`-typed ID of the message.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="set-chat-read">setChatRead() method</h3>
+
+Set chat has been read by visitor.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="new-message-tracker-message-listener">newMessageTracker(messageListener:) method</h3>

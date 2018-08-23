@@ -440,6 +440,18 @@ public protocol MessageStream: class {
               completionHandler: SendFileCompletionHandler?) throws -> String
     
     /**
+     Set chat has been read by visitor.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Aleksej Lapenok
+     - copyright:
+     2018 Webim
+     */
+    func setChatRead() throws
+    
+    /**
      `MessageTracker` (via `MessageTracker.getNextMessages(byLimit:completion:)`) allows to request the messages which are above in the history. Each next call `MessageTracker.getNextMessages(byLimit:completion:)` returns earlier messages in relation to the already requested ones.
      Changes of user-visible messages (e.g. ever requested from `MessageTracker`) are transmitted to `MessageListener`. That is why `MessageListener` is needed when creating `MessageTracker`.
      - important:

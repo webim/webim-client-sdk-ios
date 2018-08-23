@@ -96,6 +96,7 @@ class WebimActions {
         case setDeviceToken = "set_push_token"
         case setVisitorTyping = "chat.visitor_typing"
         case startChat = "chat.start"
+        case chatRead = "chat.read_by_visitor"
     }
     private enum ChatMode: String {
         case online = "online"
@@ -280,6 +281,17 @@ class WebimActions {
     func update(deviceToken: String) {
         let dataToPost = [Parameter.actionn.rawValue: Action.setDeviceToken.rawValue,
                           Parameter.deviceToken.rawValue: deviceToken] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString))
+    }
+    
+    func setChatRead() {
+        let dataToPost = [Parameter.actionn.rawValue: Action.chatRead.rawValue] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         

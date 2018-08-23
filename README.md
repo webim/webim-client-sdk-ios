@@ -16,7 +16,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'master', :tag => '3.19.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'master', :tag => '3.20.0'
 ```
 `use_frameworks!` must be specified.
 
@@ -24,7 +24,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.19.0
+github "webim/webim-client-sdk-ios" ~> 3.20.0
 ```
 
 ### Additional notes
@@ -38,8 +38,7 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
 ## Release notes
-* New method `set(prechat:)`
-* New method `startChat(customFields:)`
+* New method `setChatRead()`
 
 ## Example
 
