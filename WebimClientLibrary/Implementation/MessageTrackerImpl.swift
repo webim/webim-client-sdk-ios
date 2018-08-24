@@ -88,22 +88,24 @@ final class MessageTrackerImpl {
     
     func addedNew(messages: [MessageImpl],
                   of messageHolder: MessageHolder) {
-        if (headMessage != nil)
-            || allMessageSourcesEnded {
-            for message in messages {
-                addNewOrMerge(message: message,
-                              of: messageHolder)
-            }
-        } else {
-            var currentChatMessages = messageHolder.getCurrentChatMessages()
-            currentChatMessages.append(contentsOf: messages)
-            messageHolder.set(currentChatMessages: currentChatMessages)
-            
-            if let completionHandler = cachedCompletionHandler {
-                getNextUncheckedMessagesBy(limit: (cachedLimit ?? 0),
-                                           completion: completionHandler.getCompletionHandler())
+        if !messages.isEmpty {
+            if (headMessage != nil)
+                || allMessageSourcesEnded {
+                for message in messages {
+                    addNewOrMerge(message: message,
+                                  of: messageHolder)
+                }
+            } else {
+                var currentChatMessages = messageHolder.getCurrentChatMessages()
+                currentChatMessages.append(contentsOf: messages)
+                messageHolder.set(currentChatMessages: currentChatMessages)
                 
-                cachedCompletionHandler = nil
+                if let completionHandler = cachedCompletionHandler {
+                    getNextUncheckedMessagesBy(limit: (cachedLimit ?? 0),
+                                               completion: completionHandler.getCompletionHandler())
+                
+                    cachedCompletionHandler = nil
+                }
             }
         }
     }
