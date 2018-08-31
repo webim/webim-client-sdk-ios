@@ -175,6 +175,7 @@
     -   [getTime() method](#get-time)
     -   [getType() method](#get-type)
     -   [isEqual(to:) method](#is-equal-to-message)
+    -   [isReadByOperator() method](#is-read-by-operator)
 -   [MessageAttachment protocol](#message-attachment)
     -   [getContentType() method](#get-content-type)
     -   [getFileName() method](#get-file-name)
@@ -1212,6 +1213,10 @@ Example code:
 if messageOne.isEqual(to: messageTwo) { /* … */ }
 ````
 Where `messageOne` and `messageTwo` are any `Message` objects.
+
+<h3 id ="is-read-by-operator">isReadByOperator() method</h3>
+
+Returns true if visitor message read by operator or this message is not by visitor and false otherwise.
 
 [Go to table of contents](#table-of-contents)
 

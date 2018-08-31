@@ -123,7 +123,8 @@ class MessageMapper {
                            attachment: attachment,
                            historyMessage: historyMessage,
                            internalID: messageItem.getID(),
-                           rawText: rawText)
+                           rawText: rawText,
+                           read: messageItem.getRead() ?? true)
     }
     
     func set(webimClient: WebimClient) {

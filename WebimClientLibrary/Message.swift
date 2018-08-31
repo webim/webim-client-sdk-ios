@@ -162,6 +162,16 @@ public protocol Message {
      */
     func isEqual(to message: Message) -> Bool
     
+    /**
+     - returns:
+     True if visitor message read by operator or this message is not by visitor and false otherwise.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func isReadByOperator() -> Bool
+    
 }
 
 /**

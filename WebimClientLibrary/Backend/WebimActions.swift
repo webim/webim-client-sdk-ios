@@ -88,6 +88,12 @@ class WebimActions {
         case getHistory = "/l/v/m/history"
         case uploadFile = "/l/v/m/upload"
     }
+    enum MultipartBody: String {
+        case name = "webim_upload_file"
+    }
+    private enum ChatMode: String {
+        case online = "online"
+    }
     private enum Action: String {
         case closeChat = "chat.close"
         case rateOperator = "chat.operator_rate_select"
@@ -97,12 +103,6 @@ class WebimActions {
         case setVisitorTyping = "chat.visitor_typing"
         case startChat = "chat.start"
         case chatRead = "chat.read_by_visitor"
-    }
-    private enum ChatMode: String {
-        case online = "online"
-    }
-    private enum MultipartBody: String {
-        case name = "webim_upload_file"
     }
     
     // MARK: - Properties
@@ -151,17 +151,15 @@ class WebimActions {
         
         let urlString = baseURL + ServerPathSuffix.uploadFile.rawValue
         
-        let boundaryString = createBoundaryString()
-        
-        let httpBody = createHTTPBody(filename: filename,
-                                      mimeType: mimeType,
-                                      fileData: file,
-                                      boundaryString: boundaryString)
+        let boundaryString = NSUUID().uuidString
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
                                                         messageID: clientSideID,
-                                                        httpBody: httpBody,
+                                                        filename: filename,
+                                                        mimeType: mimeType,
+                                                        fileData: file,
+                                                        boundaryString: boundaryString,
                                                         contentType: (ContentType.multipartBody.rawValue + boundaryString),
                                                         baseURLString: urlString,
                                                         sendFileCompletionHandler: completionHandler))
@@ -299,32 +297,6 @@ class WebimActions {
                                                         primaryData: dataToPost,
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString))
-    }
-    
-    // MARK: Private methods
-    
-    private func createBoundaryString() -> String {
-        return NSUUID().uuidString
-    }
-    
-    private func createHTTPBody(filename: String,
-                                mimeType: String,
-                                fileData: Data,
-                                boundaryString: String) -> Data {
-        let boundaryStart = "--\(boundaryString)\r\n"
-        let contentDispositionString = "Content-Disposition: form-data; name=\"\(MultipartBody.name.rawValue)\"; filename=\"\(filename)\"\r\n"
-        let contentTypeString = "Content-Type: \(mimeType)\r\n\r\n"
-        let boundaryEnd = "--\(boundaryString)--\r\n"
-        
-        var requestBodyData = Data()
-        requestBodyData.append(boundaryStart.data(using: .utf8)!)
-        requestBodyData.append(contentDispositionString.data(using: .utf8)!)
-        requestBodyData.append(contentTypeString.data(using: .utf8)!)
-        requestBodyData.append(fileData)
-        requestBodyData.append("\r\n".data(using: .utf8)!)
-        requestBodyData.append(boundaryEnd.data(using: .utf8)!)
-        
-        return requestBodyData
     }
     
 }

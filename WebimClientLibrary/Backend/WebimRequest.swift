@@ -44,6 +44,10 @@ final class WebimRequest {
     private var historyRequestCompletionHandler: ((_ data: Data?) throws -> ())?
     private var httpBody: Data?
     private var messageID: String?
+    private var filename: String?
+    private var mimeType: String?
+    private var fileData: Data?
+    private var boundaryString: String?
     private weak var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
     private weak var sendFileCompletionHandler: SendFileCompletionHandler?
     
@@ -51,7 +55,10 @@ final class WebimRequest {
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
          primaryData: [String: Any],
          messageID: String? = nil,
-         httpBody: Data? = nil,
+         filename: String? = nil,
+         mimeType: String? = nil,
+         fileData: Data? = nil,
+         boundaryString: String? = nil,
          contentType: String? = nil,
          baseURLString: String,
          historyRequestCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
@@ -61,7 +68,10 @@ final class WebimRequest {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
-        self.httpBody = httpBody
+        self.filename = filename
+        self.mimeType = mimeType
+        self.fileData = fileData
+        self.boundaryString = boundaryString
         self.contentType = contentType
         self.baseURLString = baseURLString
         self.historyRequestCompletionHandler = historyRequestCompletionHandler
@@ -89,8 +99,20 @@ final class WebimRequest {
         return historyRequestCompletionHandler
     }
     
-    func getHTTPBody() -> Data? {
-        return httpBody
+    func getFileName() -> String? {
+        return filename
+    }
+    
+    func getMimeType() -> String? {
+        return mimeType
+    }
+    
+    func getFileData() -> Data? {
+        return fileData
+    }
+    
+    func getBoundaryString() -> String? {
+        return boundaryString
     }
     
     func getMessageID() -> String? {

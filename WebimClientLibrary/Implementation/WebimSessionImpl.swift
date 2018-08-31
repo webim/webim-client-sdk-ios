@@ -34,12 +34,14 @@ fileprivate enum UserDefaultsName: String {
 }
 fileprivate enum UserDefaultsMainPrefix: String {
     case authorizationToken = "auth_token"
+    case dbVersion = "db_version"
     case deviceToken = "push_token"
     case historyEnded = "history_ended"
     case historyDBname = "history_db_name"
     case historyMajorVersion = "history_major_version"
     case historyRevision = "history_revision"
     case pageID = "page_id"
+    case readBeforeTimestamp = "read_before_timestamp"
     case sessionID = "session_id"
     case visitor = "visitor"
     case visitorExt = "visitor_ext"
@@ -177,11 +179,13 @@ final class WebimSessionImpl {
             
             historyMetaInformationStoragePreferences = HistoryMetaInformationStoragePreferences(userDefaultsKey: userDefaultsKey)
             
-            historyStorage = SQLiteHistoryStorage(dbName: dbName!,
+            let sqlhistoryStorage = SQLiteHistoryStorage(dbName: dbName!,
                                                   serverURL: serverURLString,
                                                   webimClient: webimClient,
                                                   reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
-                                                  queue: queue)
+                                                  queue: queue,
+                                                  readBeforeTimestamp: Int64(UserDefaults.standard.integer(forKey: UserDefaultsMainPrefix.readBeforeTimestamp.rawValue)))
+            historyStorage = sqlhistoryStorage
             
             let historyMajorVersion = historyStorage.getMajorVersion()
             if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
@@ -193,8 +197,13 @@ final class WebimSessionImpl {
                                                    forKey: userDefaultsKey)
                 }
             }
+            
+            if (userDefaults?[UserDefaultsMainPrefix.dbVersion.rawValue] as? Int) != sqlhistoryStorage.getVersionDB() {
+                sqlhistoryStorage.updateDB()
+                UserDefaults.standard.set(sqlhistoryStorage.getVersionDB(), forKey: UserDefaultsMainPrefix.dbVersion.rawValue)
+            }
         } else {
-            historyStorage = MemoryHistoryStorage()
+            historyStorage = MemoryHistoryStorage(readBeforeTimestamp: Int64(UserDefaults.standard.integer(forKey: UserDefaultsMainPrefix.readBeforeTimestamp.rawValue)))
             historyMetaInformationStoragePreferences = MemoryHistoryMetaInformationStorage()
         }
         
@@ -220,15 +229,16 @@ final class WebimSessionImpl {
                                                                                                queue: queue),
                                               locationSettingsHolder: LocationSettingsHolder(userDefaultsKey: userDefaultsKey))
         
-        deltaCallback.set(messageStream: messageStream,
-                          messageHolder: messageHolder)
-        
         let historyPoller = HistoryPoller(withSessionDestroyer: sessionDestroyer,
                                           queue: queue,
                                           historyMessageMapper: historyMessageMapper,
                                           webimActions: webimActions,
                                           messageHolder: messageHolder,
                                           historyMetaInformationStorage: historyMetaInformationStoragePreferences)
+        
+        deltaCallback.set(messageStream: messageStream,
+                          messageHolder: messageHolder,
+                          historyPoller: historyPoller)
         
         sessionDestroyer.add() {
             webimClient.stop()
@@ -396,7 +406,7 @@ extension WebimSessionImpl: WebimSession {
  - copyright:
  2017 Webim
  */
-final private class HistoryPoller {
+final class HistoryPoller {
     
     // MARK: - Constants
     private enum TimeInterval: Int64 {
@@ -468,6 +478,10 @@ final private class HistoryPoller {
             queue.asyncAfter(deadline: dispatchTime,
                              execute: dispatchWorkItem!)
         }
+    }
+    
+    func updateReadBeforeTimestamp(timestamp: Int64) {
+        self.messageHolder.updateReadBeforeTimestamp(timestamp: timestamp)
     }
     
     // MARK: Private methods

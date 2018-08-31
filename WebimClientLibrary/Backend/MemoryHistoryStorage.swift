@@ -39,15 +39,22 @@ final class MemoryHistoryStorage: HistoryStorage {
     private let majorVersion = Int(InternalUtils.getCurrentTimeInMicrosecond() % Int64(Int.max))
     private lazy var historyMessages = [MessageImpl]()
     private var reachedHistoryEnd = false
+    private var readBeforeTimestamp: Int64
     
     // MARK: - Initialization
     
     init() {
         // Empty initializer introduced because of init(with:) existence.
+        self.readBeforeTimestamp = -1
+    }
+    
+    init(readBeforeTimestamp: Int64) {
+        self.readBeforeTimestamp = readBeforeTimestamp
     }
     
     // For testing purposes only.
     init(messagesToAdd: [MessageImpl]) {
+        self.readBeforeTimestamp = -1
         for message in messagesToAdd {
             historyMessages.append(message)
         }
@@ -118,6 +125,10 @@ final class MemoryHistoryStorage: HistoryStorage {
         completion(true, false, nil, false, nil, false, nil, nil)
     }
     
+    func updateReadBeforeTimestamp(timestamp: Int64) {
+        self.readBeforeTimestamp = timestamp
+    }
+    
     // MARK: Private methods
     
     private func respondTo(messages: [MessageImpl],
@@ -164,6 +175,9 @@ final class MemoryHistoryStorage: HistoryStorage {
         outerLoop: for historyMessage in historyMessages {
             while receivedMessages.count > 0 {
                 for message in receivedMessages {
+                    if (message.getTimeInMicrosecond() <= readBeforeTimestamp || readBeforeTimestamp == -1) {
+                        message.setRead(isRead: true)
+                    }
                     if message.getTimeInMicrosecond() < historyMessage.getTimeInMicrosecond() {
                         if !result.isEmpty {
                             result.append(message)

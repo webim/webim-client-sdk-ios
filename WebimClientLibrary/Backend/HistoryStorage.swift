@@ -57,4 +57,5 @@ protocol HistoryStorage {
                               idsToDelete: Set<String>,
                               completion: @escaping (_ endOfBatch: Bool, _ messageDeleted: Bool, _ deletedMesageID: String?, _ messageChanged: Bool, _ changedMessage: MessageImpl?, _ messageAdded: Bool, _ addedMessage: MessageImpl?, _ idBeforeAddedMessage: HistoryID?) -> ())
     
+    func updateReadBeforeTimestamp(timestamp: Int64)
 }

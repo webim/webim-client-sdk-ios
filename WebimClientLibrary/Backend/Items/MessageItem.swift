@@ -50,6 +50,7 @@ final class MessageItem {
         case text = "text"
         case timestampInMicrosecond = "ts_m"
         case timestampInSecond = "ts"
+        case read = "read"
     }
     
     // MARK: - Properties
@@ -65,6 +66,7 @@ final class MessageItem {
     private var text: String?
     private var timestampInMicrosecond: Int64 = -1
     private var timestampInSecond: Double?
+    private var read: Bool?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -115,6 +117,10 @@ final class MessageItem {
         if let timestampInSecond = jsonDictionary[JSONField.timestampInSecond.rawValue] as? Double {
             self.timestampInSecond = timestampInSecond
         }
+        
+        if let read = jsonDictionary[JSONField.read.rawValue] as? Bool {
+            self.read = read
+        }
     }
     
     // MARK: - Methods
@@ -161,6 +167,14 @@ final class MessageItem {
     
     func getTimeInMicrosecond() -> Int64? {
         return ((timestampInMicrosecond != -1) ? timestampInMicrosecond : Int64(timestampInSecond! * 1_000_000))
+    }
+    
+    func getRead() -> Bool? {
+        return read
+    }
+    
+    func setRead(read:Bool) {
+        self.read = read
     }
     
     // MARK: -

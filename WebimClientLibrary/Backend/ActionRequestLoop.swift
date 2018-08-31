@@ -103,11 +103,18 @@ class ActionRequestLoop: AbstractRequestLoop {
                 url = URL(string: (request.getBaseURLString() + "?" + parametersString))
                 urlRequest = URLRequest(url: url!)
             } else { // POST
-                if let httpBody = request.getHTTPBody() {
+                if let fileName = request.getFileName(),
+                    let mimeType = request.getMimeType(),
+                    let fileData = request.getFileData(),
+                    let boundaryString = request.getBoundaryString() {
                     // Assuming that ready HTTP body is passed only for multipart requests.
-                    url = URL(string: (request.getBaseURLString() + "?" + parametersString))
+                    url = URL(string: (request.getBaseURLString()))
                     urlRequest = URLRequest(url: url!)
-                    urlRequest!.httpBody = httpBody
+                    urlRequest!.httpBody = self.createHTTPBody(filename: fileName,
+                                                               mimeType: mimeType,
+                                                               fileData: fileData,
+                                                               boundaryString: boundaryString,
+                                                               primaryData: parameterDictionary)
                 } else {
                     // For URL encoded requests.
                     url = URL(string: request.getBaseURLString())
@@ -205,6 +212,33 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     // MARK: Private methods
+    
+    private func createHTTPBody(filename: String,
+                                mimeType: String,
+                                fileData: Data,
+                                boundaryString: String,
+                                primaryData: [String: Any]) -> Data {
+        
+        let boundaryStart = "--\(boundaryString)\r\n"
+        let contentDispositionString = "Content-Disposition: form-data; name=\"webim_upload_file\"; filename=\"\(filename)\"\r\n"
+        let contentTypeString = "Content-Type: \(mimeType)\r\n\r\n"
+        let boundaryEnd = "--\(boundaryString)--\r\n"
+        
+        var requestBodyData = Data()
+        for (key, value) in primaryData {
+            requestBodyData.append("--\(boundaryString)\r\n".data(using: .utf8)!)
+            requestBodyData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            requestBodyData.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        requestBodyData.append(boundaryStart.data(using: .utf8)!)
+        requestBodyData.append(contentDispositionString.data(using: .utf8)!)
+        requestBodyData.append(contentTypeString.data(using: .utf8)!)
+        requestBodyData.append(fileData)
+        requestBodyData.append("\r\n".data(using: .utf8)!)
+        requestBodyData.append(boundaryEnd.data(using: .utf8)!)
+        
+        return requestBodyData
+    }
     
     private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) throws -> AuthorizationData {
         while isRunning()

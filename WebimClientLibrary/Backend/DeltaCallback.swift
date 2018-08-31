@@ -40,8 +40,10 @@ final class DeltaCallback {
     // MARK: - Properties
     private let currentChatMessageMapper: MessageMapper
     private var currentChat: ChatItem?
+    private let readBeforeTimestampString = "read_before_timestamp"
     private weak var messageHolder: MessageHolder?
     private weak var messageStream: MessageStreamImpl?
+    private weak var historyPoller: HistoryPoller?
     
     // MARK: - Initialization
     init(currentChatMessageMapper: MessageMapper) {
@@ -51,9 +53,11 @@ final class DeltaCallback {
     // MARK: - Methods
     
     func set(messageStream: MessageStreamImpl,
-             messageHolder: MessageHolder) {
+             messageHolder: MessageHolder,
+             historyPoller: HistoryPoller) {
         self.messageStream = messageStream
         self.messageHolder = messageHolder
+        self.historyPoller = historyPoller
     }
     
     func process(deltaList: [DeltaItem]) {
@@ -107,6 +111,9 @@ final class DeltaCallback {
                 handleVisitSessionStateUpdateBy(delta: delta)
                 
                 break
+            case .chatMessageRead:
+                handleMessageRead(delta: delta)
+                break
             default:
                 // Not supported delta type.
                 
@@ -133,6 +140,23 @@ final class DeltaCallback {
             if let onlineStatus = OnlineStatusItem(rawValue: onlineStatusString) {
                 messageStream?.onOnlineStatusChanged(to: onlineStatus)
             }
+        }
+        
+        if currentChat != nil {
+            for messageItem in (currentChat?.getMessages())! {
+                let message = currentChatMessageMapper.map(message: messageItem)
+                if (message?.getType() == MessageType.FILE_FROM_VISITOR || message?.getType() != MessageType.VISITOR)
+                    && (message?.isReadByOperator())! {
+                    let time = message?.getTimeInMicrosecond()
+                    if time! > Int64(UserDefaults.standard.integer(forKey: readBeforeTimestampString)) {
+                        UserDefaults.standard.set(time, forKey: readBeforeTimestampString)
+                        historyPoller?.updateReadBeforeTimestamp(timestamp: time!)
+                    }
+                }
+                
+            }
+        } else {
+            UserDefaults.standard.set(-1, forKey: readBeforeTimestampString)
         }
     }
     
@@ -198,6 +222,34 @@ final class DeltaCallback {
                 
                 if message != nil {
                     messageHolder?.changed(message: message!)
+                }
+            }
+        }
+    }
+    
+    
+    private func handleMessageRead(delta: DeltaItem) {
+        let deltaEvent = delta.getEvent()
+        let deltaId = delta.getID()
+        
+        if let isRead = delta.getData() as? Bool, deltaEvent == .update {
+            if currentChat != nil {
+                var currentChatMessages = currentChat!.getMessages()
+                for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
+                    if currentChatMessage.getID() == deltaId {
+                        currentChatMessage.setRead(read: isRead)
+                        guard let message = currentChatMessageMapper.map(message: currentChatMessage) else {
+                            return
+                        }
+                        currentChatMessages[currentChatMessageIndex] = currentChatMessage
+                        messageHolder?.changed(message: message)
+                        let time = message.getTimeInMicrosecond()
+                        if time > UserDefaults.standard.integer(forKey: "readBeforeTimestampString") {
+                            UserDefaults.standard.set(time, forKey: "readBeforeTimestampString")
+                            historyPoller?.updateReadBeforeTimestamp(timestamp: time)
+                        }
+                        break
+                    }
                 }
             }
         }

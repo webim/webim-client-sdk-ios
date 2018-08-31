@@ -215,7 +215,7 @@ final class MessageHolder {
                                                           to: message,
                                                           at: messageIndex,
                                                           of: self)
-                
+            
                 return
             }
         }
@@ -475,6 +475,10 @@ final class MessageHolder {
         }
         
         return false
+    }
+    
+    func updateReadBeforeTimestamp(timestamp: Int64) {
+        historyStorage.updateReadBeforeTimestamp(timestamp: timestamp)
     }
     
 }

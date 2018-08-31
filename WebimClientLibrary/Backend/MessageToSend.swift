@@ -55,7 +55,8 @@ final class MessageToSend: MessageImpl {
                    attachment: nil,
                    historyMessage: false,
                    internalID: nil,
-                   rawText: nil)
+                   rawText: nil,
+                   read: false)
     }
     
 }
