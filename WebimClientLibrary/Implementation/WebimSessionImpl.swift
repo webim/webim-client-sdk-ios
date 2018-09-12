@@ -662,7 +662,7 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
 final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
     
     // MARK: - Parameters
-    private weak var fatalErrorHandler: FatalErrorHandler?
+    private var fatalErrorHandler: FatalErrorHandler?
     
     // MARK: - Initialization
     init(fatalErrorHandler: FatalErrorHandler?) {
