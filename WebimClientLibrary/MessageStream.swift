@@ -804,7 +804,7 @@ public protocol CurrentOperatorChangeListener: class {
      - copyright:
      2017 Webim
      */
-    func changed(operator previousOperator: Operator,
+    func changed(operator previousOperator: Operator?,
                  to newOperator: Operator?)
     
 }

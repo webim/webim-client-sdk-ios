@@ -162,7 +162,7 @@ final class MessageStreamImpl {
             let previousOperator = currentOperator
             currentOperator = newOperator
             
-            currentOperatorChangeListener?.changed(operator: previousOperator!,
+            currentOperatorChangeListener?.changed(operator: previousOperator,
                                                        to: newOperator)
         }
         

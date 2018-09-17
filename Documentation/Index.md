@@ -817,7 +817,7 @@ Protocol that is to be adopted to track if current [Operator](#operator-protocol
 
 <h3 id ="changed-operator-previous-operator-to-new-operator">changed(operator:to:) method</h3>
 
-Called when [Operator](#operator-protocol) object of the current chat changed. New one value can be `nil` (if an operator leaved the chat).
+Called when [Operator](#operator-protocol) object of the current chat changed. Values can be `nil` (if an operator leaved the chat or there was no operator before).
 
 [Go to table of contents](#table-of-contents)
 
