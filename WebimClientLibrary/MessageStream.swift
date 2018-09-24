@@ -346,6 +346,20 @@ public protocol MessageStream: class {
     func setVisitorTyping(draftMessage: String?) throws
     
     /**
+     Sends prechat fields to server.
+     - parameter prechatFields:
+     Custom fields.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func set(prechatFields: String) throws
+    
+    /**
      Sends a text message.
      When calling this method, if there is an active `MessageTracker` (see newMessageTracker(messageListener:)). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
      - important:

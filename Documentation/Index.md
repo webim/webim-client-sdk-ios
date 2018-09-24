@@ -4,7 +4,7 @@
 
 -   [Webim class](#webim)
     -   [Class method newSessionBuilder()](#new-session-builder)
-    -   [Class method parse(remoteNotification:)](#parse-remote-notification)
+    -   [Class method parse(remoteNotification:visitorId:)](#parse-remote-notification)
     -   [Class method isWebim(remoteNotification:)](#is-webim-remote-notification)
     -   [RemoteNotificationSystem enum](#remote-notification-system)
         -   [APNS case](#apns)
@@ -73,6 +73,7 @@
     -   [send(message:isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
     -   [setChatRead() method](#set-chat-read)
+    -   [set(prechatFields:) method](#set-prechat-fields)
     -   [newMessageTracker(messageListener:) method](#new-message-tracker-message-listener)
     -   [set(visitSessionStateListener:)](#set-visit-session-state-listener)
     -   [set(chatStateListener:) method](#set-chat-state-listener)
@@ -254,11 +255,11 @@ Set of static methods which are used for session object creating and working wit
 
 Returns [SessionBuilder class](#session-builder) instance that is necessary to create `WebimSession` class instance.
 
-<h3 id ="parse-remote-notification">Class method parse(remoteNotification:)</h3>
+<h3 id ="parse-remote-notification">Class method parse(remoteNotification:visitorId)</h3>
 
 Converts _iOS_ remote notification object into [WebimRemoteNotification](#webim-remote-notification) object.
 `remoteNotification` parameter takes `[AnyHashable: Any]` dictionary (which can be taken inside `application(_ application:,didReceiveRemoteNotification userInfo:)` `AppDelegate` class method from `userInfo` parameter).
-Method can return `nil` if `remoteNotification` parameter value doesn't fit to _Webim_ service remote notification format or if it doesn't contain any useful payload.
+Method can return `nil` if `remoteNotification` parameter value doesn't fit to _Webim_ service remote notification format or if it doesn't contain any useful payload or visitor ID from notification doesn't equals `visitorId `.
 Preliminarily you can call [method isWebim(remoteNotification:)](#is-webim-remote-notification) on this value to know if this notification is send by _Webim_ service.
 
 <h3 id ="is-webim-remote-notification">Class method isWebim(remoteNotification:)</h3>
@@ -671,6 +672,11 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id ="set-chat-read">setChatRead() method</h3>
 
 Set chat has been read by visitor.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="set-prechat-fields">set(prechatFields:) method</h3>
+
+Sends prechat fields to server.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="new-message-tracker-message-listener">newMessageTracker(messageListener:) method</h3>

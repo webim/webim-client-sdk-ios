@@ -466,6 +466,12 @@ extension MessageStreamImpl: MessageStream {
         webimActions.setChatRead()
     }
     
+    func set(prechatFields: String) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.set(prechatFields: prechatFields)
+    }
+    
     func newMessageTracker(messageListener: MessageListener) throws -> MessageTracker {
         try accessChecker.checkAccess()
         

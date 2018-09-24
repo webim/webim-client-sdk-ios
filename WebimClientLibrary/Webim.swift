@@ -64,8 +64,8 @@ public final class Webim {
      - copyright:
      2017 Webim
      */
-    static public func parse(remoteNotification: [AnyHashable : Any]) -> WebimRemoteNotification? {
-        return InternalUtils.parse(remoteNotification: remoteNotification)
+    static public func parse(remoteNotification: [AnyHashable : Any], visitorId: String? = nil) -> WebimRemoteNotification? {
+        return InternalUtils.parse(remoteNotification: remoteNotification, visitorId: visitorId)
     }
 
     /**

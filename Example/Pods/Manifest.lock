@@ -9,7 +9,7 @@ PODS:
   - SQLite.swift (0.11.5):
     - SQLite.swift/standard (= 0.11.5)
   - SQLite.swift/standard (0.11.5)
-  - WebimClientLibrary (3.21.2):
+  - WebimClientLibrary (3.22.0):
     - SQLite.swift
 
 DEPENDENCIES:
@@ -23,7 +23,7 @@ DEPENDENCIES:
   - WebimClientLibrary (from `../`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Cosmos
     - Crashlytics
     - Fabric
@@ -48,4 +48,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3ae813f4c3db6d1830eddfcf1600cb0f21e44002
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

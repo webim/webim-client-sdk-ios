@@ -100,6 +100,7 @@ class WebimActions {
         case respondSentryCall = "chat.action_request.call_sentry_action_request"
         case sendMessage = "chat.message"
         case setDeviceToken = "set_push_token"
+        case setPrechat = "chat.set_prechat_fields"
         case setVisitorTyping = "chat.visitor_typing"
         case startChat = "chat.start"
         case chatRead = "chat.read_by_visitor"
@@ -210,6 +211,18 @@ class WebimActions {
         if let draft = draft {
             dataToPost[Parameter.draft.rawValue] = draft
         }
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString))
+    }
+    
+    func set(prechatFields: String) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.setPrechat.rawValue,
+                          Parameter.prechat.rawValue: prechatFields] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         
