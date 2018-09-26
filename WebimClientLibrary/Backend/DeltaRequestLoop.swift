@@ -135,7 +135,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     
     func run() {
         while isRunning() {
-            if authorizationData != nil {
+            if authorizationData != nil && since != 0 {
                 requestDelta()
             } else {
                 requestInitialization()
