@@ -13,8 +13,6 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
-		7AC8771ADBD56B8F2687508D /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */; };
-		7EFD66A46B75AB0CACF8C5E8 /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */; };
 		CE07E9952049794C00E0A0D3 /* SessionBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */; };
 		CE0CD75A202338FD00719DBE /* HistoryIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD758202338EE00719DBE /* HistoryIDTests.swift */; };
 		CE0CD75D20234BD800719DBE /* SessionDestroyerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */; };
@@ -97,8 +95,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1C9EE3CC357A2601B6B46B48 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		4B9885678925C815E999C850 /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimClientLibrary_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,11 +105,7 @@
 		607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebimClientLibrary_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHolderTests.swift; sourceTree = "<group>"; };
-		64CA62797768201B3FC88CB2 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		9CC9BEBFE5B17489F997BAD5 /* Pods-WebimClientLibrary_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		AB52E1C1E0F009A386DC1C6C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4CD65CA48F80B5A4AD826B3 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimClientLibrary.podspec; path = ../WebimClientLibrary.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBuilderTests.swift; sourceTree = "<group>"; };
 		CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebimClientLibrary_Example.entitlements; sourceTree = "<group>"; };
@@ -208,7 +200,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EFD66A46B75AB0CACF8C5E8 /* Pods_WebimClientLibrary_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +207,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7AC8771ADBD56B8F2687508D /* Pods_WebimClientLibrary_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,8 +222,6 @@
 				607FACD21AFB9204008FA782 /* Example for WebimClientLibrary */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
-				8748DD32AC71DEE9A28E52A0 /* Pods */,
-				8DD470AC5F8E155D207105C6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -351,26 +339,6 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		8748DD32AC71DEE9A28E52A0 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				9CC9BEBFE5B17489F997BAD5 /* Pods-WebimClientLibrary_Example.debug.xcconfig */,
-				4B9885678925C815E999C850 /* Pods-WebimClientLibrary_Example.release.xcconfig */,
-				64CA62797768201B3FC88CB2 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
-				1C9EE3CC357A2601B6B46B48 /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		8DD470AC5F8E155D207105C6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BB383A7D1DCA2BCF5D9CC021 /* Pods_WebimClientLibrary_Example.framework */,
-				B1DEDBB9CEE032504FE2C625 /* Pods_WebimClientLibrary_Tests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		CE24A015203ADC2D009EE7E7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -475,7 +443,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Example" */;
 			buildPhases = (
-				BB203665164CEE6B1814FD79 /* [CP] Check Pods Manifest.lock */,
 				8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
@@ -495,7 +462,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Tests" */;
 			buildPhases = (
-				0E5075168E03BB89E6DD1E86 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
@@ -581,24 +547,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0E5075168E03BB89E6DD1E86 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WebimClientLibrary_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -612,24 +560,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
-		};
-		BB203665164CEE6B1814FD79 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WebimClientLibrary_Example-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 		CE86FAB4203C3E6700CB9C2D /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -885,7 +815,6 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9CC9BEBFE5B17489F997BAD5 /* Pods-WebimClientLibrary_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WebimClientLibrary_Example.entitlements;
@@ -909,7 +838,6 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B9885678925C815E999C850 /* Pods-WebimClientLibrary_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WebimClientLibrary_Example.entitlements;
@@ -932,7 +860,6 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64CA62797768201B3FC88CB2 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -954,7 +881,6 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1C9EE3CC357A2601B6B46B48 /* Pods-WebimClientLibrary_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = "";
