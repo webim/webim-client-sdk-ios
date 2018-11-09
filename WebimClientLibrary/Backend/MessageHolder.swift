@@ -333,11 +333,9 @@ final class MessageHolder {
                                 completion: @escaping ([Message]) -> ()) {
         remoteHistoryProvider.requestHistory(beforeTimestamp: id.getTimeInMicrosecond(),
                                              completion: { [weak self] (messages: [MessageImpl], hasMoreMessages: Bool) in
-                                                if !hasMoreMessages {
+                                                if messages.isEmpty {
                                                     self?.reachedEndOfRemoteHistory = true
-                                                }
-                                                
-                                                if !messages.isEmpty {
+                                                } else {
                                                     self?.historyStorage.receiveHistoryBefore(messages: messages,
                                                                                               hasMoreMessages: hasMoreMessages)
                                                 }

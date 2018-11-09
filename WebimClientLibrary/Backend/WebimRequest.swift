@@ -49,7 +49,7 @@ final class WebimRequest {
     private var fileData: Data?
     private var boundaryString: String?
     private weak var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
-    private weak var sendFileCompletionHandler: SendFileCompletionHandler?
+    private var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,

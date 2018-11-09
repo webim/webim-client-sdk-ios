@@ -72,6 +72,7 @@ class RemoteHistoryProvider {
                     }
                 } else {
                     completion([MessageImpl](), false)
+                    self.historyMetaInformationStorage.set(historyEnded: true)
                 }
             }
         }

@@ -8,7 +8,7 @@ target 'WebimClientLibrary_Example' do
     
     pod 'WebimClientLibrary', :path => '../'
     
-    pod 'Cosmos', :inhibit_warnings => true
+    pod 'Cosmos', '~> 16.0.0', :inhibit_warnings => true
     pod 'Crashlytics'
     pod 'Fabric'
     pod 'SlackTextViewController', :inhibit_warnings => true
