@@ -144,7 +144,10 @@ class ActionRequestLoop: AbstractRequestLoop {
                             
                             break
                         case WebimInternalError.fileSizeExceeded.rawValue,
-                             WebimInternalError.fileTypeNotAllowed.rawValue:
+                             WebimInternalError.fileTypeNotAllowed.rawValue,
+                             WebimInternalError.uploadedFileNotFound.rawValue,
+                             WebimInternalError.notAllowedMimeType.rawValue,
+                             WebimInternalError.notMatchingMagicNumbers.rawValue:
                             self.handleSendFile(error: error,
                                                 ofRequest: request)
                             
@@ -158,6 +161,12 @@ class ActionRequestLoop: AbstractRequestLoop {
                             self.handleRateOperator(error: error,
                                                     ofRequest: request)
                             
+                            break
+                        case WebimInternalError.messageNotFound.rawValue,
+                             WebimInternalError.notAllowed.rawValue,
+                             WebimInternalError.messageNotOwned.rawValue:
+                            self.handleDeleteMessage(error: error,
+                                                    ofRequest: request)
                             break
                         default:
                             self.running = false
@@ -280,6 +289,62 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleEditMessage(error errorString: String,
+                                   ofRequest webimRequest: WebimRequest) {
+        if let editMessageCompletionHandler = webimRequest.getEditMessageCompletionHandler() {
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                let editMessageError: EditMessageError
+                switch errorString {
+                case WebimInternalError.messageEmpty.rawValue:
+                    editMessageError = .MESSAGE_EMPTY
+                    break
+                case WebimInternalError.maxMessageLengthExceeded.rawValue:
+                    editMessageError = .MAX_LENGTH_EXCEEDED
+                    break
+                case WebimInternalError.notAllowed.rawValue:
+                    editMessageError = .NOT_ALLOWED
+                    break
+                case WebimInternalError.messageNotOwned.rawValue:
+                    editMessageError = .MESSAGE_NOT_OWNED
+                    break
+                case WebimInternalError.wrongMessageKind.rawValue:
+                    editMessageError = .WRONG_MESSAGE_KIND
+                    break
+                default:
+                    editMessageError = .UNKNOWN
+                }
+                
+                editMessageCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                                                       error: editMessageError)
+            })
+        }
+    }
+    
+    private func handleDeleteMessage(error errorString: String,
+                                    ofRequest webimRequest: WebimRequest) {
+        if let deleteMessageCompletionHandler = webimRequest.getDeleteMessageCompletionHandler() {
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                let deleteMessageError: DeleteMessageError
+                switch errorString {
+                case WebimInternalError.messageNotFound.rawValue:
+                    deleteMessageError = .MESSAGE_NOT_FOUND
+                    break
+                case WebimInternalError.notAllowed.rawValue:
+                    deleteMessageError = .NOT_ALLOWED
+                    break
+                case WebimInternalError.messageNotOwned.rawValue:
+                    deleteMessageError = .MESSAGE_NOT_OWNED
+                    break
+                default:
+                    deleteMessageError = .UNKNOWN
+                }
+                
+                deleteMessageCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                                                         error: deleteMessageError)
+            })
+        }
+    }
+    
     private func handleSendFile(error errorString: String,
                                 ofRequest webimRequest: WebimRequest) {
         if let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler() {
@@ -312,9 +377,11 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     private func handleClientCompletionHandlerOf(request: WebimRequest) {
         completionHandlerExecutor.execute(task: DispatchWorkItem {
-            request.getDataMessageCompletionHandler()?.onSussess(messageID: request.getMessageID()!)
+            request.getDataMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getSendFileCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getRateOperatorCompletionHandler()?.onSuccess()
+            request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            request.getEditMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
         })
     }
     

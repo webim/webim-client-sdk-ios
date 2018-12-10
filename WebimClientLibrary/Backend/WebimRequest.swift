@@ -50,6 +50,8 @@ final class WebimRequest {
     private var boundaryString: String?
     private weak var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
     private var sendFileCompletionHandler: SendFileCompletionHandler?
+    private var deleteMessageCompletionHandler: DeleteMessageCompletionHandler?
+    private var editMessageCompletionHandler: EditMessageCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
@@ -64,7 +66,9 @@ final class WebimRequest {
          historyRequestCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
          dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
          rateOperatorCompletionHandler: RateOperatorCompletionHandler? = nil,
-         sendFileCompletionHandler: SendFileCompletionHandler? = nil) {
+         sendFileCompletionHandler: SendFileCompletionHandler? = nil,
+         deleteMessageCompletionHandler: DeleteMessageCompletionHandler? = nil,
+         editMessageCompletionHandler: EditMessageCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -78,6 +82,8 @@ final class WebimRequest {
         self.dataMessageCompletionHandler = dataMessageCompletionHandler
         self.rateOperatorCompletionHandler = rateOperatorCompletionHandler
         self.sendFileCompletionHandler = sendFileCompletionHandler
+        self.deleteMessageCompletionHandler = deleteMessageCompletionHandler
+        self.editMessageCompletionHandler = editMessageCompletionHandler
     }
     
     
@@ -135,4 +141,11 @@ final class WebimRequest {
         return sendFileCompletionHandler
     }
     
+    func getDeleteMessageCompletionHandler() -> DeleteMessageCompletionHandler? {
+        return deleteMessageCompletionHandler
+    }
+    
+    func getEditMessageCompletionHandler() -> EditMessageCompletionHandler? {
+        return editMessageCompletionHandler
+    }
 }

@@ -65,6 +65,19 @@ enum WebimInternalError: String, Error {
     // Provided authonication token errors
     case providedAuthenticationTokenNotFound = "provided-auth-token-not-found"
     
+    // Send, edit and delete message errors.
+    // send or edit:
+    case messageEmpty = "message_empty";
+    case maxMessageLengthExceeded = "max-message-length-exceeded";
+    // delete:
+    case messageNotFound = "message_not_found";
+    // edit or delete
+    case notAllowed = "not_allowed";
+    case messageNotOwned = "message_not_owned";
+    // edit
+    case wrongMessageKind = "wrong_message_kind";
+
+    
     // Rate operator errors
     case noChat = "no-chat"
     case operatorNotInChat = "operator-not-in-chat"

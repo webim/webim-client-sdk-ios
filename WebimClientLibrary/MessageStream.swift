@@ -454,6 +454,51 @@ public protocol MessageStream: class {
               completionHandler: SendFileCompletionHandler?) throws -> String
     
     /**
+     Edits a text message.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.changed(oldVersion:newVersion:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     - important:
+     Maximum length of message is 32000 characters. Longer messages will be clipped.
+     - parameter message:
+     ID of the message to edit.
+     - parameter text:
+     Text of the message.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - returns:
+     True if the message can be edited.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func edit(message: Message,
+              text: String,
+              completionHandler: EditMessageCompletionHandler?) throws -> Bool
+    
+    /**
+     Deletes a message.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.removed(message:)`) with a message `MessageSendStatus.SENT` in the status is also called.
+     - parameter message:
+     The message to delete.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - returns:
+     True if the message can be deleted.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func delete(message: Message,
+                completionHandler: DeleteMessageCompletionHandler?) throws -> Bool
+    
+    /**
      Set chat has been read by visitor.
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
@@ -648,7 +693,7 @@ public protocol DataMessageCompletionHandler: class {
      - copyright:
      2018 Webim
      */
-    func onSussess(messageID: String)
+    func onSuccess(messageID: String)
     
     /**
      Executed when operation is failed.
@@ -666,6 +711,80 @@ public protocol DataMessageCompletionHandler: class {
     func onFailure(messageID: String,
                    error: DataMessageError)
     
+}
+
+/**
+ - seealso:
+ `MessageStream.edit(message:messageID:completionHandler:)`.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2018 Webim
+ */
+public protocol EditMessageCompletionHandler: class {
+    /**
+     Executed when operation is done successfully.
+     - parameter messageID:
+     ID of the message.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func onSuccess(messageID: String)
+    
+    /**
+     Executed when operation is failed.
+     - parameter messageID:
+     ID of the message.
+     - parameter error:
+     Error.
+     - seealso:
+     `EditMessageError`.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func onFailure(messageID: String,
+                   error: EditMessageError)
+}
+
+/**
+ - seealso:
+ `MessageStream.delete(messageID:completionHandler:)`.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2018 Webim
+ */
+public protocol DeleteMessageCompletionHandler: class {
+    /**
+     Executed when operation is done successfully.
+     - parameter messageID:
+     ID of the message.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func onSuccess(messageID: String)
+    
+    /**
+     Executed when operation is failed.
+     - parameter messageID:
+     ID of the message.
+     - parameter error:
+     Error.
+     - seealso:
+     `DeleteMessageError`.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func onFailure(messageID: String,
+                   error: DeleteMessageError)
 }
 
 /**
@@ -1313,6 +1432,111 @@ public enum DataMessageError: Error {
      */
     case QUOTED_MESSAGE_WRONG_ID
     
+}
+
+/**
+ - seealso:
+ `EditMessageCompletionHandler.onFailure(messageID:error:)`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2018 Webim
+ */
+public enum EditMessageError: Error {
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case UNKNOWN
+    /**
+     Editing messages by visitor is turned off on the server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case NOT_ALLOWED
+    /**
+     Editing message is empty.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case MESSAGE_EMPTY
+    /**
+     Visitor can edit only his messages.
+     The specified id belongs to someone else's message.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case MESSAGE_NOT_OWNED
+    /**
+     The server may deny a request if the message size exceeds a limit.
+     The maximum size of a message is configured on the server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case MAX_LENGTH_EXCEEDED
+    /**
+     Visitor can edit only text messages.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case WRONG_MESSAGE_KIND
+}
+
+/**
+ - seealso:
+ `DeleteMessageCompletionHandler.onFailure(messageID:error:)`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2018 Webim
+ */
+public enum DeleteMessageError: Error {
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case UNKNOWN
+    /**
+     Deleting messages by visitor is turned off on the server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case NOT_ALLOWED
+    /**
+     Visitor can delete only his messages.
+     The specified id belongs to someone else's message.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case MESSAGE_NOT_OWNED
+    /**
+     Message with the specified id is not found in history.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    case MESSAGE_NOT_FOUND
 }
 
 /**

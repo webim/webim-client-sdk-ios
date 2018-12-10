@@ -587,7 +587,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            historyMessage: true,
                            internalID: id,
                            rawText: rawText,
-                           read: row[SQLiteHistoryStorage.timestamp] <= readBeforeTimestamp || readBeforeTimestamp == -1)
+                           read: row[SQLiteHistoryStorage.timestamp] <= readBeforeTimestamp || readBeforeTimestamp == -1,
+                           messageCanBeEdited: false)
     }
     
     private func insert(message: MessageImpl) throws {

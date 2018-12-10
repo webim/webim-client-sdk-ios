@@ -52,6 +52,7 @@ class MessageImpl {
     private var historyID: HistoryID?
     private var historyMessage: Bool
     private var read: Bool
+    private var messageCanBeEdited: Bool
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -68,7 +69,8 @@ class MessageImpl {
          historyMessage: Bool,
          internalID: String?,
          rawText: String?,
-         read: Bool) {
+         read: Bool,
+         messageCanBeEdited: Bool) {
         self.attachment = attachment
         self.data = data
         self.id = id
@@ -82,6 +84,7 @@ class MessageImpl {
         self.timeInMicrosecond = timeInMicrosecond
         self.type = type
         self.read = read
+        self.messageCanBeEdited = messageCanBeEdited
         
         self.historyMessage = historyMessage
         if historyMessage {
@@ -130,6 +133,10 @@ class MessageImpl {
         }
         
         return currentChatID
+    }
+    
+    func getServerUrlString() -> String {
+        return serverURLString
     }
     
     func getSource() -> MessageSource {
@@ -206,6 +213,10 @@ class MessageImpl {
     
     func getRead() -> Bool {
         return read
+    }
+    
+    func setMessageCanBeEdited(messageCanBeEdited: Bool) {
+        self.messageCanBeEdited = messageCanBeEdited
     }
     
     func toString() -> String {
@@ -320,6 +331,10 @@ extension MessageImpl: Message {
         return getRead() //todo: maybe returns old value
     }
     
+    func canBeEdited() -> Bool {
+        return messageCanBeEdited
+    }
+    
 }
 
 // MARK: - Equatable
@@ -335,7 +350,8 @@ extension MessageImpl: Equatable {
             && (lhs.text == rhs.text))
             && (lhs.timeInMicrosecond == rhs.timeInMicrosecond))
             && (lhs.type == rhs.type))
-            && (lhs.isReadByOperator() == rhs.isReadByOperator())
+            && (lhs.isReadByOperator() == rhs.isReadByOperator()
+            && (lhs.canBeEdited() == rhs.canBeEdited()))
     }
     
 }

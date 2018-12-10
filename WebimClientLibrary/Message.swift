@@ -172,6 +172,16 @@ public protocol Message {
      */
     func isReadByOperator() -> Bool
     
+    /**
+     - returns:
+     True if this message can be edited or deleted.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2018 Webim
+     */
+    func canBeEdited() -> Bool
+    
 }
 
 /**

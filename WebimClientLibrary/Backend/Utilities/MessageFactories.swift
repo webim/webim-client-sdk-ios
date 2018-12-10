@@ -124,7 +124,8 @@ class MessageMapper {
                            historyMessage: historyMessage,
                            internalID: messageItem.getID(),
                            rawText: rawText,
-                           read: messageItem.getRead() ?? true)
+                           read: messageItem.getRead() ?? true,
+                           messageCanBeEdited: messageItem.getCanBeEdited())
     }
     
     func set(webimClient: WebimClient) {

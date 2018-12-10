@@ -257,6 +257,79 @@ final class MessageHolder {
         }
     }
     
+    func changing(messageID: String, message: String?) -> String? {
+        if messageTracker == nil {
+            return nil
+        }
+        var messageImpl: MessageImpl? = nil
+        
+        for curr in currentChatMessages {
+            if curr.getID() == messageID {
+                messageImpl = curr
+                break
+            }
+        }
+        
+        if messageImpl == nil {
+            return nil
+        }
+        
+        let newMessage = MessageImpl(serverURLString: (messageImpl?.getServerUrlString())!,
+                                     id: messageID,
+                                     operatorID: messageImpl?.getOperatorID(),
+                                     senderAvatarURLString: messageImpl?.getSenderAvatarURLString(),
+                                     senderName: (messageImpl?.getSenderName())!,
+                                     sendStatus: .SENDING,
+                                     type: (messageImpl?.getType())!,
+                                     data: messageImpl?.getData(),
+                                     text: (message == nil ? messageImpl?.getText() : message)!,
+                                     timeInMicrosecond: (messageImpl?.getTimeInMicrosecond())!,
+                                     attachment: messageImpl?.getAttachment(),
+                                     historyMessage: (messageImpl?.getSource().isHistoryMessage())!,
+                                     internalID: messageImpl?.getCurrentChatID(),
+                                     rawText: messageImpl?.getRawText(),
+                                     read: (messageImpl?.isReadByOperator())!,
+                                     messageCanBeEdited: (messageImpl?.canBeEdited())!)
+        messageTracker?.messageListener?.changed(message: messageImpl!, to: newMessage)
+        return messageImpl?.getText()
+    }
+    
+    func changingCancelledWith(messageID: String, message: String) {
+        if messageTracker == nil {
+            return
+        }
+        var messageImpl: MessageImpl? = nil
+        
+        for curr in currentChatMessages {
+            if curr.getID() == messageID {
+                messageImpl = curr
+                break
+            }
+        }
+        
+        if messageImpl == nil {
+            return
+        }
+        
+        let newMessage = MessageImpl(serverURLString: (messageImpl?.getServerUrlString())!,
+                                     id: messageID,
+                                     operatorID: messageImpl?.getOperatorID(),
+                                     senderAvatarURLString: messageImpl?.getSenderAvatarURLString(),
+                                     senderName: (messageImpl?.getSenderName())!,
+                                     sendStatus: .SENT,
+                                     type: (messageImpl?.getType())!,
+                                     data: messageImpl?.getData(),
+                                     text: message,
+                                     timeInMicrosecond: (messageImpl?.getTimeInMicrosecond())!,
+                                     attachment: messageImpl?.getAttachment(),
+                                     historyMessage: (messageImpl?.getSource().isHistoryMessage())!,
+                                     internalID: messageImpl?.getCurrentChatID(),
+                                     rawText: messageImpl?.getRawText(),
+                                     read: (messageImpl?.isReadByOperator())!,
+                                     messageCanBeEdited: (messageImpl?.canBeEdited())!)
+        messageTracker?.messageListener?.changed(message: messageImpl!, to: newMessage)
+    }
+    
     // MARK: For testing purposes.
     
     func getLastChatMessageIndex() -> Int {
@@ -310,6 +383,7 @@ final class MessageHolder {
                 
                 if let id = currentChatMessage.getHistoryID()?.getDBid() {
                     if let historyMessage = messageTracker?.idToHistoryMessageMap[id] {
+                        historyMessage.setMessageCanBeEdited(messageCanBeEdited: false)
                         if currentChatMessage != historyMessage {
                             messageTracker?.messageListener?.changed(message: currentChatMessage,
                                                                      to: historyMessage)
@@ -320,6 +394,10 @@ final class MessageHolder {
                 }
             } else {
                 newCurrentChatMessages.append(currentChatMessage)
+                if currentChatMessage.canBeEdited() {
+                    currentChatMessage.setMessageCanBeEdited(messageCanBeEdited: false)
+                    messageTracker?.messageListener?.changed(message: currentChatMessage, to: currentChatMessage)
+                }
             }
         }
         

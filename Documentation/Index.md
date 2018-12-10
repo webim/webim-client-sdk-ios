@@ -72,6 +72,8 @@
     -   [send(message:data:completionHandler:) method](#send-message-data)
     -   [send(message:isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
+    -   [edit(message:text:completionHandler:) method](#edit-message)
+    -   [delete(message:completionHandler:) method](#delete-message)
     -   [setChatRead() method](#set-chat-read)
     -   [set(prechatFields:) method](#set-prechat-fields)
     -   [newMessageTracker(messageListener:) method](#new-message-tracker-message-listener)
@@ -88,6 +90,12 @@
 -   [DataMessageCompletionHandler protocol](#data-message-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id-data-message-completion-handler)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error-data-message-completion-handler)
+-   [EditMessageCompletionHandler protocol](#edit-message-completion-handler)
+    -   [onSuccess(messageID:) method](#on-success-message-id-edit-message-completion-handler)
+    -   [onFailure(messageID:,error:) method](#on-failure-message-id-error-edit-message-completion-handler)
+-   [DeleteMessageCompletionHandler protocol](#delete-message-completion-handler)
+    -   [onSuccess(messageID:) method](#on-success-message-id-delete-message-completion-handler)
+    -   [onFailure(messageID:,error:) method](#on-failure-message-id-error-delete-message-completion-handler)
 -   [SendFileCompletionHandler protocol](#send-file-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error)
@@ -145,6 +153,18 @@
     -   [QUOTED_MESSAGE_MULTIPLE_IDS case](#quoted-message-multiple-ids)
     -   [QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case](#quoted-message-required-arguments-missing)
     -   [QUOTED_MESSAGE_WRONG_ID case](#quoted-message-wrong-id)
+-   [EditMessageError enum](#edit-message-error)
+    -   [UNKNOWN case](#unknown-edit-message-error)
+    -   [NOT_ALLOWED case](#not-allowed-edit-message-error)
+    -   [MESSAGE_EMPTY case](#message_empty-edit-message-error)
+    -   [MESSAGE_NOT_OWNED case](#message-not-owned-edit-message-error)
+    -   [MAX_LENGTH_EXCEEDED case](#max-length-exceeded-edit-message-error)
+    -   [WRONG_MESSAGE_KIND case](#wrong-message-kind-edit-message-error)
+-   [DeleteMessageError enum](#delete-message-error)
+    -   [UNKNOWN case](#unknown-delete-message-error)
+    -   [NOT_ALLOWED case](#not-allowed-delete-message-error)
+    -   [MESSAGE_NOT_OWNED case](#message-not-owned-delete-message-error)
+    -   [MESSAGE_NOT_FOUND](#message-not-found-delete-message-error)
 -   [SendFileError enum](#send-file-error)
     -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
     -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
@@ -177,6 +197,7 @@
     -   [getType() method](#get-type)
     -   [isEqual(to:) method](#is-equal-to-message)
     -   [isReadByOperator() method](#is-read-by-operator)
+    -   [canBeEdited() method](#can-be-edited)
 -   [MessageAttachment protocol](#message-attachment)
     -   [getContentType() method](#get-content-type)
     -   [getFileName() method](#get-file-name)
@@ -669,6 +690,27 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 Returns randomly generated `String`-typed ID of the message.
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="edit-message">edit(message:text:completionHandler:) method</h3>
+
+Edits a text message.
+Before calling this method recommended to find out the possibility of editing the message using [canBeEdited() method](#can-be-edited).
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [changed(message:,to:) method](changed-message-old-version-to-new-version) with a message [SENDING case](#sending) in the status is also called.
+`message` parameter – message in `Message` type.
+`text` parameter – new message text of `String` type.
+`completionHandler` parameter – optional [EditMessageCompletionHandler](#edit-message-completion-handler) object.
+Returns true if message can be edited.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="delete-message">edit(message:text:completionHandler:) method</h3>
+
+Deletes a text message.
+Before calling this method recommended to find out the possibility of editing the message using [canBeEdited() method](#can-be-edited).
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [removed(message:) method](#removed-message) with a message [SENT case](#sent) in the status is also called.
+`message` parameter – message in `Message` type.
+`completionHandler` parameter – optional [DeleteMessageCompletionHandler](#delete-message-completion-handler) object.
+Returns true if message can be deleted.
+Can throw errors of [AccessError](#access-error) type.
+
 <h3 id ="set-chat-read">setChatRead() method</h3>
 
 Set chat has been read by visitor.
@@ -742,6 +784,40 @@ Executed when operation is done successfully.
 Executed when operation is failed.
 `messageID` parameter – ID of the appropriate message of `String` type.
 `error` parameter – appropriate [DataMessageError](#data-message-error) value.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="edit-message-completion-handler">EditMessageCompletionHandler protocol</h2>
+
+Protocol which methods are called after [edit(message:text:completionHandler:)](#edit-message) method is finished. Must be adopted.
+
+<h3 id ="on-success-message-id-edit-message-completion-handler">onSuccess(messageID:) method</h3>
+
+Executed when operation is done successfully.
+`messageID` parameter – ID of the appropriate message of `String` type.
+
+<h3 id ="on-failure-message-id-error-edit-message-completion-handler">onFailure(messageID:error:) method</h3>
+
+Executed when operation is failed.
+`messageID` parameter – ID of the appropriate message of `String` type.
+`error` parameter – appropriate [EditMessageError](#edit-message-error) value.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="delete-message-completion-handler">DeleteMessageCompletionHandler protocol</h2>
+
+Protocol which methods are called after [delete(message:completionHandler:)](#delete-message) method is finished. Must be adopted.
+
+<h3 id ="on-success-message-id-delete-message-completion-handler">onSuccess(messageID:) method</h3>
+
+Executed when operation is done successfully.
+`messageID` parameter – ID of the appropriate message of `String` type.
+
+<h3 id ="on-failure-message-id-error-delete-message-completion-handler">onFailure(messageID:error:) method</h3>
+
+Executed when operation is failed.
+`messageID` parameter – ID of the appropriate message of `String` type.
+`error` parameter – appropriate [DeleteMessageError](#delete-message-error) value.
 
 [Go to table of contents](#table-of-contents)
 
@@ -1050,6 +1126,58 @@ To be raised when wrong quoted message ID is sent.
 
 [Go to table of contents](#table-of-contents)
 
+<h2 id ="data-message-error">EditMessageError enum</h2>
+
+Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-edit-message-completion-handler).
+
+<h3 id ="unknown-edit-message-error">UNKNOWN case</h3>
+
+Received error is not supported by current WebimClientLibrary version.
+
+<h3 id="not-allowed-edit-message-error">NOT_ALLOWED case</h3>
+
+Editing messages by visitor is turned off on the server.
+
+<h3 id=message-empty-edit-message-error">MESSAGE_EMPTY case</h3>
+
+Editing message is empty.
+
+<h3 id=message-not-owned-edit-message-error">MESSAGE_NOT_OWNED case</h3>
+
+Visitor can edit only his messages. The specified id belongs to someone else's message.
+
+<h3 id=max-length-exceeded-edit-message-error">MAX_LENGTH_EXCEEDED case</h3>
+
+The server may deny a request if the message size exceeds a limit. The maximum size of a message is configured on the server.
+
+<h3 id=wrong-message-kind-edit-message-error">WRONG_MESSAGE_KIND case</h3>
+
+Visitor can edit only text messages.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="delete-message-error">DeleteMessageError enum</h2>
+
+Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-delete-message-completion-handler).
+
+<h3 id ="unknown-delete-message-error">UNKNOWN case</h3>
+
+Received error is not supported by current WebimClientLibrary version.
+
+<h3 id="not-allowed-delete-message-error">NOT_ALLOWED case</h3>
+
+Editing messages by visitor is turned off on the server.
+
+<h3 id=message-not-owned-delete-message-error">MESSAGE_NOT_OWNED case</h3>
+
+Visitor can edit only his messages. The specified id belongs to someone else's message.
+
+<h3 id=max-length-exceeded-edit-message-error">MESSAGE_NOT_FOUND case</h3>
+
+Message with the specified id is not found in history.
+
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="send-file-error">SendFileError enum</h2>
 
 Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error).
@@ -1223,6 +1351,12 @@ Where `messageOne` and `messageTwo` are any `Message` objects.
 <h3 id ="is-read-by-operator">isReadByOperator() method</h3>
 
 Returns true if visitor message read by operator or this message is not by visitor and false otherwise.
+
+[Go to table of contents](#table-of-contents)
+
+<h3 id ="can-be-edited">canBeEdited() method</h3>
+
+Returns true if message can be edited and false otherwise.
 
 [Go to table of contents](#table-of-contents)
 

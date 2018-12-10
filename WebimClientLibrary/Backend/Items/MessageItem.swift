@@ -40,22 +40,24 @@ final class MessageItem {
     private enum JSONField: String {
         case authorID = "authorId"
         case avatarURLString = "avatar"
+        case canBeEdited = "canBeEdited"
         case chatID = "chatId"
         case clientSideID = "clientSideId"
         case data = "data"
         case deleted = "deleted"
         case id = "id"
         case kind = "kind"
+        case read = "read"
         case senderName = "name"
         case text = "text"
         case timestampInMicrosecond = "ts_m"
         case timestampInSecond = "ts"
-        case read = "read"
     }
     
     // MARK: - Properties
     private var authorID: String?
     private var avatarURLString: String?
+    private var canBeEdited: Bool?
     private var chatID: String?
     private var clientSideID: String?
     private var data: [String: Any?]?
@@ -82,6 +84,10 @@ final class MessageItem {
             self.avatarURLString = avatarURLString
         }
         
+        if let canBeEdited = jsonDictionary[JSONField.canBeEdited.rawValue] as? Bool {
+            self.canBeEdited = canBeEdited
+        }
+        
         if let chatID = jsonDictionary[JSONField.chatID.rawValue] as? String {
             self.chatID = chatID
         }
@@ -102,6 +108,10 @@ final class MessageItem {
             self.id = id
         }
         
+        if let read = jsonDictionary[JSONField.read.rawValue] as? Bool {
+            self.read = read
+        }
+        
         if let senderName = jsonDictionary[JSONField.senderName.rawValue] as? String {
             self.senderName = senderName
         }
@@ -116,10 +126,6 @@ final class MessageItem {
         
         if let timestampInSecond = jsonDictionary[JSONField.timestampInSecond.rawValue] as? Double {
             self.timestampInSecond = timestampInSecond
-        }
-        
-        if let read = jsonDictionary[JSONField.read.rawValue] as? Bool {
-            self.read = read
         }
     }
     
@@ -175,6 +181,10 @@ final class MessageItem {
     
     func setRead(read:Bool) {
         self.read = read
+    }
+    
+    func getCanBeEdited() -> Bool {
+        return canBeEdited ?? false
     }
     
     // MARK: -

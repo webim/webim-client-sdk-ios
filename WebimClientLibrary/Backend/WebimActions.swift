@@ -99,6 +99,7 @@ class WebimActions {
         case rateOperator = "chat.operator_rate_select"
         case respondSentryCall = "chat.action_request.call_sentry_action_request"
         case sendMessage = "chat.message"
+        case deleteMessage = "chat.delete_message"
         case setDeviceToken = "set_push_token"
         case setPrechat = "chat.set_prechat_fields"
         case setVisitorTyping = "chat.visitor_typing"
@@ -123,7 +124,8 @@ class WebimActions {
               clientSideID: String,
               dataJSONString: String?,
               isHintQuestion: Bool?,
-              dataMessageCompletionHandler: DataMessageCompletionHandler?) {
+              dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
+              editMessageCompletionHandler: EditMessageCompletionHandler? = nil) {
         var dataToPost = [Parameter.actionn.rawValue: Action.sendMessage.rawValue,
                           Parameter.clientSideID.rawValue: clientSideID,
                           Parameter.message.rawValue: message] as [String: Any]
@@ -138,8 +140,11 @@ class WebimActions {
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
+                                                        messageID: clientSideID,
                                                         contentType: ContentType.urlEncoded.rawValue,
-                                                        baseURLString: urlString))
+                                                        baseURLString: urlString,
+                                                        dataMessageCompletionHandler: dataMessageCompletionHandler,
+                                                        editMessageCompletionHandler: editMessageCompletionHandler))
     }
     
     func send(file: Data,
@@ -164,6 +169,21 @@ class WebimActions {
                                                         contentType: (ContentType.multipartBody.rawValue + boundaryString),
                                                         baseURLString: urlString,
                                                         sendFileCompletionHandler: completionHandler))
+    }
+    
+    func delete(clientSideID: String,
+                completionHandler: DeleteMessageCompletionHandler?) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.deleteMessage.rawValue,
+                          Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        messageID: clientSideID,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        deleteMessageCompletionHandler: completionHandler))
     }
     
     func startChat(withClientSideID clientSideID: String,

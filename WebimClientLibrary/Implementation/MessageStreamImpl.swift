@@ -422,7 +422,7 @@ extension MessageStreamImpl: MessageStream {
     func send(message: String,
               data: [String: Any]?,
               completionHandler: DataMessageCompletionHandler?) throws -> String {
-        if let jsonData = try? JSONSerialization.data(withJSONObject: data as Any,
+        if data != nil, let jsonData = try? JSONSerialization.data(withJSONObject: data as Any,
                                                       options: []) {
             let jsonString = String(data: jsonData,
                                     encoding: .utf8)
@@ -458,6 +458,46 @@ extension MessageStreamImpl: MessageStream {
                                                                               messageHolder: messageHolder))
         
         return messageID
+    }
+    
+    func edit(message: Message, text: String, completionHandler: EditMessageCompletionHandler?) throws -> Bool {
+        try accessChecker.checkAccess()
+        
+        if !message.canBeEdited() {
+            return false
+        }
+        let id = message.getID()
+        let oldMessage = messageHolder.changing(messageID: id, message: text)
+        if oldMessage != nil {
+            webimActions.send(message: text,
+                              clientSideID: id,
+                              dataJSONString: nil,
+                              isHintQuestion: false,
+                              editMessageCompletionHandler: EditMessageCompletionHandlerWrapper(editMessageCompletionHandler: completionHandler,
+                                                                                                messageHolder: messageHolder,
+                                                                                                message: oldMessage!))
+            return true
+        }
+        return false
+    }
+    
+    func delete(message: Message, completionHandler: DeleteMessageCompletionHandler?) throws -> Bool {
+        try accessChecker.checkAccess()
+        
+        if !message.canBeEdited() {
+            return false
+        }
+        let id = message.getID()
+        let oldMessage = messageHolder.changing(messageID: id, message: nil)
+        
+        if oldMessage != nil {
+            webimActions.delete(clientSideID: id,
+                                completionHandler: DeleteMessageCompletionHandlerWrapper(deleteMessageCompletionHandler: completionHandler,
+                                                                                         messageHolder: messageHolder,
+                                                                                         message: oldMessage!))
+            return true
+        }
+        return false
     }
     
     func setChatRead() throws {
@@ -526,13 +566,14 @@ extension MessageStreamImpl: MessageStream {
         try startChat()
         
         let messageID = ClientSideID.generateClientSideID()
+        messageHolder.sending(message: sendingMessageFactory.createTextMessageToSendWith(id: messageID,
+                                                                                         text: messageText))
         webimActions.send(message: messageText,
                           clientSideID: messageID,
                           dataJSONString: dataJSONString,
                           isHintQuestion: isHintQuestion,
-                          dataMessageCompletionHandler: dataMessageCompletionHandler)
-        messageHolder.sending(message: sendingMessageFactory.createTextMessageToSendWith(id: messageID,
-                                                                                         text: messageText))
+                          dataMessageCompletionHandler: DataMessageCompletionHandlerWrapper(dataMessageCompletionHandler: dataMessageCompletionHandler,
+                                                                                            messageHolder: messageHolder))
         
         return messageID
     }
@@ -564,6 +605,90 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
         messageHolder.sendingCancelledWith(messageID: messageID)
         sendFileCompletionHandler?.onFailure(messageID: messageID,
                                              error: error)
+    }
+    
+}
+
+fileprivate final class DataMessageCompletionHandlerWrapper: DataMessageCompletionHandler {
+    
+    // MARK: - Properties
+    private let messageHolder: MessageHolder
+    private weak var dataMessageCompletionHandler: DataMessageCompletionHandler?
+    
+    // MARK: - Initialization
+    init(dataMessageCompletionHandler: DataMessageCompletionHandler?,
+         messageHolder: MessageHolder) {
+        self.dataMessageCompletionHandler = dataMessageCompletionHandler
+        self.messageHolder = messageHolder
+    }
+    
+    // MARK: - Methods
+    
+    func onSuccess(messageID: String) {
+        dataMessageCompletionHandler?.onSuccess(messageID : messageID)
+    }
+    
+    func onFailure(messageID: String, error: DataMessageError) {
+        messageHolder.sendingCancelledWith(messageID: messageID)
+        dataMessageCompletionHandler?.onFailure(messageID: messageID, error: error)
+    }
+    
+}
+
+fileprivate final class EditMessageCompletionHandlerWrapper: EditMessageCompletionHandler {
+    
+    // MARK: - Properties
+    private let messageHolder: MessageHolder
+    private weak var editMessageCompletionHandler: EditMessageCompletionHandler?
+    private let message: String
+    
+    // MARK: - Initialization
+    init(editMessageCompletionHandler: EditMessageCompletionHandler?,
+         messageHolder: MessageHolder,
+         message: String) {
+        self.editMessageCompletionHandler = editMessageCompletionHandler
+        self.messageHolder = messageHolder
+        self.message = message
+    }
+    
+    // MARK: - Methods
+    
+    func onSuccess(messageID: String) {
+        editMessageCompletionHandler?.onSuccess(messageID : messageID)
+    }
+    
+    func onFailure(messageID: String, error: EditMessageError) {
+        messageHolder.changingCancelledWith(messageID: messageID, message: message)
+        editMessageCompletionHandler?.onFailure(messageID: messageID, error: error)
+    }
+    
+}
+
+fileprivate final class DeleteMessageCompletionHandlerWrapper: DeleteMessageCompletionHandler {
+    
+    // MARK: - Properties
+    private let messageHolder: MessageHolder
+    private weak var deleteMessageCompletionHandler: DeleteMessageCompletionHandler?
+    private let message: String
+    
+    // MARK: - Initialization
+    init(deleteMessageCompletionHandler: DeleteMessageCompletionHandler?,
+         messageHolder: MessageHolder,
+         message: String) {
+        self.deleteMessageCompletionHandler = deleteMessageCompletionHandler
+        self.messageHolder = messageHolder
+        self.message = message
+    }
+    
+    // MARK: - Methods
+    
+    func onSuccess(messageID: String) {
+        deleteMessageCompletionHandler?.onSuccess(messageID : messageID)
+    }
+    
+    func onFailure(messageID: String, error: DeleteMessageError) {
+        messageHolder.changingCancelledWith(messageID: messageID, message: message)
+        deleteMessageCompletionHandler?.onFailure(messageID: messageID, error: error)
     }
     
 }
