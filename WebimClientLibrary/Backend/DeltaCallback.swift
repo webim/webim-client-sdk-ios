@@ -144,16 +144,15 @@ final class DeltaCallback {
         
         if currentChat != nil {
             for messageItem in (currentChat?.getMessages())! {
-                let message = currentChatMessageMapper.map(message: messageItem)
-                if (message?.getType() == MessageType.FILE_FROM_VISITOR || message?.getType() != MessageType.VISITOR)
-                    && (message?.isReadByOperator())! {
-                    let time = message?.getTimeInMicrosecond()
-                    if time! > Int64(UserDefaults.standard.integer(forKey: readBeforeTimestampString)) {
-                        UserDefaults.standard.set(time, forKey: readBeforeTimestampString)
-                        historyPoller?.updateReadBeforeTimestamp(timestamp: time!)
+                if let message = currentChatMessageMapper.map(message: messageItem) {
+                    if (message.getType() == MessageType.FILE_FROM_VISITOR || message.getType() != MessageType.VISITOR) && message.isReadByOperator() {
+                        let time = message.getTimeInMicrosecond()
+                        if time > Int64(UserDefaults.standard.integer(forKey: readBeforeTimestampString)) {
+                            UserDefaults.standard.set(time, forKey: readBeforeTimestampString)
+                            historyPoller?.updateReadBeforeTimestamp(timestamp: time)
+                        }
                     }
                 }
-                
             }
         } else {
             UserDefaults.standard.set(-1, forKey: readBeforeTimestampString)
