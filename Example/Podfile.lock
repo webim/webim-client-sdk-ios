@@ -1,15 +1,15 @@
 PODS:
   - Cosmos (16.0.0)
-  - Crashlytics (3.11.1):
-    - Fabric (~> 1.8.1)
-  - Fabric (1.8.2)
+  - Crashlytics (3.12.0):
+    - Fabric (~> 1.9.0)
+  - Fabric (1.9.0)
   - PopupDialog (0.6.2)
   - SlackTextViewController (1.9.6)
   - SnapKit (4.2.0)
   - SQLite.swift (0.11.5):
     - SQLite.swift/standard (= 0.11.5)
   - SQLite.swift/standard (0.11.5)
-  - WebimClientLibrary (3.22.3):
+  - WebimClientLibrary (3.23.1):
     - SQLite.swift
 
 DEPENDENCIES:
@@ -38,14 +38,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Cosmos: 7bcee0fa858a9355a214f2a181be5dffcee42c81
-  Crashlytics: ca7ab4bc304aa216bdc2e4c1a96389ee77252203
-  Fabric: d2b22f443ba195d8a7cc204da230977c72733b40
+  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
+  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   PopupDialog: d4336d7274a6aa3af4cb26d8b6691510eba90cc3
   SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLite.swift: 6e5356850bb1791459f8c16d6ee9195b28714a2e
-  WebimClientLibrary: fea8b8652c292c4362137133df95807616497f5b
+  WebimClientLibrary: 0bc06b1928424c0ee4388414441cf03180571e8e
 
-PODFILE CHECKSUM: 661fcb6525b37a18dbd7de815ad201df338c5763
+PODFILE CHECKSUM: 53cd2fd4df74c39437e667df1d2e20164e35db77
 
 COCOAPODS: 1.5.3

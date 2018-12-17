@@ -175,7 +175,7 @@ final class ChatViewController: SLKTextViewController {
         tableView?.backgroundColor = backgroundTableViewColor.color()
         
         tableView?.estimatedRowHeight = 64.0
-        tableView?.rowHeight = UITableViewAutomaticDimension
+        tableView?.rowHeight = UITableView.automaticDimension
         tableView?.separatorStyle = .none
         tableView?.register(MessageTableViewCell.self,
                             forCellReuseIdentifier: "MessageCell")
@@ -427,11 +427,11 @@ extension ChatViewController: UIImagePickerControllerDelegate {
     // MARK: - Methods
     
     func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [String: Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            let imageData = UIImagePNGRepresentation(image)!
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            let imageData = image.pngData()!
             
-            if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
+            if let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
                 let imageName = imageURL.lastPathComponent
                 let mimeType = MimeType(url: imageURL as URL)
                 

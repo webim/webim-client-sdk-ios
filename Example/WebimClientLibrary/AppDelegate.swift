@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Methods
     
     func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics.self])
         
         // Remote notifications configuration

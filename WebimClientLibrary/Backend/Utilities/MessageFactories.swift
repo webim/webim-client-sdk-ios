@@ -133,7 +133,7 @@ class MessageMapper {
     }
     
     func mapAll(messages: [MessageItem]) -> [MessageImpl] {
-        return messages.map { map(message: $0) }.flatMap { $0 }
+        return messages.map { map(message: $0) }.compactMap { $0 }
     }
     
     func map(message: MessageItem) -> MessageImpl? {
