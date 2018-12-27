@@ -164,6 +164,7 @@ class AbstractRequestLoop {
             }
             
             if httpCode == 0 {
+                usleep(useconds_t(10_000_000.0))
                 continue
             }
             
