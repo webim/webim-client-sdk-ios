@@ -456,7 +456,7 @@ final class MessageAttachmentImpl {
             return nil
         }
         
-        let thumbURLString = (fileURLString == nil) ? nil : (fileURLString! + "?thumb=ios")
+        let thumbURLString = (fileURLString == nil) ? nil : (fileURLString! + "&thumb=ios")
         guard thumbURLString != nil else {
             return nil
         }
