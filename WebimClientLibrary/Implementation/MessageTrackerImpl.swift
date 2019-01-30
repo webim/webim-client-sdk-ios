@@ -201,6 +201,8 @@ final class MessageTrackerImpl {
                                        completion: completionHandler.getCompletionHandler())
             
             cachedCompletionHandler = nil
+        } else {
+            
         }
     }
     
@@ -505,7 +507,7 @@ extension MessageTrackerImpl: MessageTracker {
             
             messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
                 if let cachedCompletionHandler = self?.cachedCompletionHandler,
-                    !messages.isEmpty {
+                    !messages.isEmpty || self?.firstHistoryUpdateReceived == true {
                     self?.firstHistoryUpdateReceived = true
                     
                     let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
@@ -566,7 +568,7 @@ extension MessageTrackerImpl: MessageTracker {
             
             messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
                 if let cachedCompletionHandler = self?.cachedCompletionHandler,
-                    !messages.isEmpty {
+                    !messages.isEmpty || self?.firstHistoryUpdateReceived == true {
                     self?.firstHistoryUpdateReceived = true
                     
                     let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
