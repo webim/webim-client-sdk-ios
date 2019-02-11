@@ -92,6 +92,9 @@ class AbstractRequestLoop {
     }
     
     func perform(request: URLRequest) throws -> Data {
+        var requestWithUesrAngent = request
+        requestWithUesrAngent.setValue("iOS: Webim-Client (\(UIDevice.current.model); \(UIDevice.current.systemVersion))", forHTTPHeaderField: "User-Agent")
+        
         var errorCounter = 0
         var lastHTTPCode = -1
         
@@ -102,9 +105,9 @@ class AbstractRequestLoop {
             let semaphore = DispatchSemaphore(value: 0)
             var receivedData: Data? = nil
             
-            log(request: request)
+            log(request: requestWithUesrAngent)
             
-            let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            let dataTask = URLSession.shared.dataTask(with: requestWithUesrAngent) { [weak self] data, response, error in
                 guard let `self` = `self` else {
                     return
                 }
@@ -118,8 +121,8 @@ class AbstractRequestLoop {
                     
                     // Error log.
                     var webimLoggerEntry = "Webim response:\n"
-                        + "URL – " + request.url!.absoluteString
-                    if let httpBody = request.httpBody {
+                        + "URL – " + requestWithUesrAngent.url!.absoluteString
+                    if let httpBody = requestWithUesrAngent.httpBody {
                         if let dataString = String(data: httpBody,
                                                    encoding: .utf8) {
                             webimLoggerEntry += ("\nParameters – " + dataString)
@@ -138,8 +141,8 @@ class AbstractRequestLoop {
                     receivedData = data
                     
                     var webimLoggerEntry = "Webim response:\n"
-                        + "URL – " + request.url!.absoluteString
-                    if let httpBody = request.httpBody {
+                        + "URL – " + requestWithUesrAngent.url!.absoluteString
+                    if let httpBody = requestWithUesrAngent.httpBody {
                         if let dataString = String(data: httpBody,
                                                    encoding: .utf8) {
                             webimLoggerEntry += ("\nParameters – " + dataString)
@@ -154,7 +157,7 @@ class AbstractRequestLoop {
             }
             currentDataTask = dataTask
             dataTask.resume()
-           
+            
             _ = semaphore.wait(timeout: .distantFuture)
             currentDataTask = nil
             blockUntilPaused()
@@ -182,11 +185,11 @@ class AbstractRequestLoop {
             
             if httpCode == lastHTTPCode {
                 var parametersString: String?
-                if let httpBody = request.httpBody {
+                if let httpBody = requestWithUesrAngent.httpBody {
                     parametersString = String(data: httpBody,
                                               encoding: .utf8)
                 }
-                WebimInternalLogger.shared.log(entry: "Request \(request.url!.absoluteString)"
+                WebimInternalLogger.shared.log(entry: "Request \(requestWithUesrAngent.url!.absoluteString)"
                     + "\(parametersString ?? "") "
                     + "failed with HTTP code: \(httpCode).",
                     verbosityLevel: .WARNING)

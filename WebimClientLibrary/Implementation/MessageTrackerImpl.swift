@@ -201,8 +201,6 @@ final class MessageTrackerImpl {
                                        completion: completionHandler.getCompletionHandler())
             
             cachedCompletionHandler = nil
-        } else {
-            
         }
     }
     
