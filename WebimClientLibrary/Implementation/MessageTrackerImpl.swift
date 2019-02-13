@@ -335,8 +335,8 @@ final class MessageTrackerImpl {
             
             currentChatMessages.append(message)
             
-            if let messageToSend = getToSendMirrorOf(message: message,
-                                                     of: messageHolder) {
+            if let messageToSend = getToSendMirrorAndRemove(message: message,
+                                                            of: messageHolder) {
                 messageListener?.changed(message: messageToSend,
                                          to: message)
             } else {
@@ -349,11 +349,14 @@ final class MessageTrackerImpl {
         messageHolder.set(currentChatMessages: currentChatMessages)
     }
     
-    private func getToSendMirrorOf(message: MessageImpl,
-                                   of messageHolder: MessageHolder) -> MessageToSend? {
-        let messagesToSend = messageHolder.getMessagesToSend()
-        for messageToSend in messagesToSend {
-            if messageToSend.getID() == message.getID() {
+    private func getToSendMirrorAndRemove(message: MessageImpl,
+                                          of messageHolder: MessageHolder) -> MessageToSend? {
+        var messagesToSend = messageHolder.getMessagesToSend()
+        
+        for i in 0..<messagesToSend.count {
+            if messagesToSend[i].getID() == message.getID() {
+                let messageToSend = messagesToSend[i]
+                messageHolder.removeFromMessagesToSendAt(index: i)
                 return messageToSend
             }
         }

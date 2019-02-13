@@ -265,6 +265,10 @@ final class ChatItem {
         self.unreadByOperatorTimestamp = unreadByOperatorTimestamp
     }
     
+    func set(unreadByVisitorTimestamp: Double?) {
+        self.unreadByVisitorTimestamp = unreadByVisitorTimestamp
+    }
+    
     
     // MARK: Private methods
     private static func createCreationTimestamp() -> Double {

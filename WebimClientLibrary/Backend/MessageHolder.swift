@@ -74,6 +74,10 @@ final class MessageHolder {
         return messagesToSend
     }
     
+    func removeFromMessagesToSendAt(index: Int) {
+        messagesToSend.remove(at: index)
+    }
+    
     func set(messagesToSend: [MessageToSend]) {
         self.messagesToSend = messagesToSend
     }

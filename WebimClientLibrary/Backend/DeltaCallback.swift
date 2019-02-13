@@ -286,6 +286,8 @@ final class DeltaCallback {
         currentChat?.set(readByVisitor: readByVisitor)
         
         if readByVisitor {
+            currentChat?.set(unreadByVisitorTimestamp: nil)
+            currentChat?.set(unreadByVisitorMessageCount: 0)
             messageStream?.set(unreadByVisitorTimestamp: nil)
             messageStream?.set(unreadByVisitorMessageCount: 0)
         }
