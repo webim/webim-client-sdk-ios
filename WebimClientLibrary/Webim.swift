@@ -47,6 +47,19 @@ public final class Webim {
     static public func newSessionBuilder() -> SessionBuilder {
         return SessionBuilder()
     }
+    
+    /**
+     Returns new FAQBuilder object for creating FAQ object.
+     - returns:
+     The instance of FAQ builder.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    static public func newFAQBuilder() -> FAQBuilder {
+        return FAQBuilder()
+    }
 
     /**
      Deserializes received remote notification.
@@ -660,3 +673,87 @@ public final class SessionBuilder  {
     }
 
 }
+
+// MARK: -
+/**
+ `FAQ` builder.
+ - seealso:
+ `Webim.newFAQBuilder()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public final class FAQBuilder  {
+    
+    // MARK: - Properties
+    private var accountName: String?
+    // MARK: - Methods
+    
+    /**
+     Sets company account name in FAQ system.
+     - parameter accountName:
+     Webim account name.
+     - returns:
+     `FAQBuilder` object with account name set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    public func set(accountName: String) -> FAQBuilder {
+        self.accountName = accountName
+        
+        return self
+    }
+    
+    /**
+     Builds new `FAQ` object.
+     - important:
+     All the follow-up work with the FAQ must be implemented from the same thread this method was called in.
+     Notice that a FAQ is created as a paused. To start using it the first thing to do is to call `FAQ.resume()`.
+     - returns:
+     New `FAQ` object.
+     - throws:
+     `SessionBuilder.SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't set to a non-nil value.
+     - seealso:
+     `FAQBuilder.FAQBuilderError`
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    public func build() throws -> FAQ {
+        guard let accountName = accountName else {
+            throw FAQBuilderError.NIL_ACCOUNT_NAME
+        }
+        
+        return FAQImpl.newInstanceWith(accountName: accountName) as FAQ
+    }
+    
+    /**
+     Error types that can be thrown by `FAQBuilder` `build()` method.
+     - seealso:
+     `FAQBuilder.build()`
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    public enum FAQBuilderError: Error {
+        
+        /**
+         Error that is thrown when trying to create faq object with `nil` account name.
+         - seealso:
+         `set(accountName:)`
+         - author:
+         Nikita Kaberov
+         - copyright:
+         2019 Webim
+         */
+        case NIL_ACCOUNT_NAME
+        
+    }
+    
+}
+

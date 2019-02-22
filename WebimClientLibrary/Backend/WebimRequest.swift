@@ -42,6 +42,9 @@ final class WebimRequest {
     private var contentType: String?
     private weak var dataMessageCompletionHandler: DataMessageCompletionHandler?
     private var historyRequestCompletionHandler: ((_ data: Data?) throws -> ())?
+    private var faqItemRequestCompletionHandler: ((_ item: Data?) throws -> ())?
+    private var faqCategoryRequestCompletionHandler: ((_ item: Data?) throws -> ())?
+    private var faqStructureRequestCompletionHandler: ((_ item: Data?) throws -> ())?
     private var httpBody: Data?
     private var messageID: String?
     private var filename: String?
@@ -64,6 +67,9 @@ final class WebimRequest {
          contentType: String? = nil,
          baseURLString: String,
          historyRequestCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
+         faqItemRequestCompletionHandler: ((_ item: Data?) throws -> ())? = nil,
+         faqCategoryRequestCompletionHandler: ((_ item: Data?) throws -> ())? = nil,
+         faqStructureRequestCompletionHandler: ((_ item: Data?) throws -> ())? = nil,
          dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
          rateOperatorCompletionHandler: RateOperatorCompletionHandler? = nil,
          sendFileCompletionHandler: SendFileCompletionHandler? = nil,
@@ -84,6 +90,9 @@ final class WebimRequest {
         self.sendFileCompletionHandler = sendFileCompletionHandler
         self.deleteMessageCompletionHandler = deleteMessageCompletionHandler
         self.editMessageCompletionHandler = editMessageCompletionHandler
+        self.faqItemRequestCompletionHandler = faqItemRequestCompletionHandler
+        self.faqCategoryRequestCompletionHandler = faqCategoryRequestCompletionHandler
+        self.faqStructureRequestCompletionHandler = faqStructureRequestCompletionHandler
     }
     
     
@@ -103,6 +112,18 @@ final class WebimRequest {
     
     func getCompletionHandler() -> ((_ data: Data?) throws -> ())? {
         return historyRequestCompletionHandler
+    }
+    
+    func getFAQItemRequestCompletionHandler() -> ((_ data: Data?) throws -> ())? {
+        return faqItemRequestCompletionHandler
+    }
+    
+    func getFAQCategoryRequestCompletionHandler() -> ((_ data: Data?) throws -> ())? {
+        return faqCategoryRequestCompletionHandler
+    }
+    
+    func getFAQStructureRequestCompletionHandler() -> ((_ data: Data?) throws -> ())? {
+        return faqStructureRequestCompletionHandler
     }
     
     func getFileName() -> String? {

@@ -80,10 +80,26 @@
 		CE2E681320123DC9004E99EA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E681220123DC9004E99EA /* Collection.swift */; };
 		CE2E681520123DD0004E99EA /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E681420123DD0004E99EA /* Int.swift */; };
 		CE2E681720123DD4004E99EA /* UInt32.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E681620123DD4004E99EA /* UInt32.swift */; };
+		CE6A6978220C730F00B11E29 /* FAQItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A6977220C730F00B11E29 /* FAQItem.swift */; };
+		CE6A697A220C731600B11E29 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A6979220C731600B11E29 /* FAQ.swift */; };
+		CE6A697C220C799300B11E29 /* FAQActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A697B220C799300B11E29 /* FAQActions.swift */; };
+		CE6A697E220C7F3000B11E29 /* FAQClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A697D220C7F3000B11E29 /* FAQClient.swift */; };
+		CE6A6980220C83F900B11E29 /* FAQRequestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A697F220C83F900B11E29 /* FAQRequestLoop.swift */; };
+		CE6A6982220C968D00B11E29 /* FAQImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A6981220C968D00B11E29 /* FAQImpl.swift */; };
+		CE6A6984220C9BBB00B11E29 /* FAQDestroyer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A6983220C9BBB00B11E29 /* FAQDestroyer.swift */; };
+		CE6A6986220C9DE200B11E29 /* FAQAccessChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A6985220C9DE200B11E29 /* FAQAccessChecker.swift */; };
+		CE6A6988220CA70A00B11E29 /* FAQItemItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A6987220CA70A00B11E29 /* FAQItemItem.swift */; };
+		CE76D61F22108835006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76D61E22108834006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift */; };
+		CE76D6212210A6DC006A5BF0 /* FAQStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76D6202210A6DC006A5BF0 /* FAQStructure.swift */; };
+		CE76D6232210A6F3006A5BF0 /* FAQCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76D6222210A6F3006A5BF0 /* FAQCategory.swift */; };
 		CE86FA95203AF37F00CB9C2D /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FA94203AF37F00CB9C2D /* UIColor.swift */; };
 		CE86FAAB203B2A2600CB9C2D /* OperatorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FAAA203B2A2600CB9C2D /* OperatorFactory.swift */; };
 		CE86FAAD203B2A4500CB9C2D /* DepartmentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86FAAC203B2A4500CB9C2D /* DepartmentFactory.swift */; };
+		CEBF03962211D5EE001658D8 /* FAQStructureItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF03952211D5EE001658D8 /* FAQStructureItem.swift */; };
+		CEBF03982211D837001658D8 /* FAQCategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF03972211D837001658D8 /* FAQCategoryItem.swift */; };
+		CEBF039A2211F070001658D8 /* FAQCategoryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */; };
 		CED72593200E11D900CD1623 /* WebimInternalLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED72592200E11D900CD1623 /* WebimInternalLogger.swift */; };
+		CEF33876221C74C700A7EA27 /* FAQCategoryInfoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF33875221C74C700A7EA27 /* FAQCategoryInfoItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,10 +178,26 @@
 		CE2E681220123DC9004E99EA /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CE2E681420123DD0004E99EA /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		CE2E681620123DD4004E99EA /* UInt32.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt32.swift; sourceTree = "<group>"; };
+		CE6A6977220C730F00B11E29 /* FAQItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQItem.swift; sourceTree = "<group>"; };
+		CE6A6979220C731600B11E29 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
+		CE6A697B220C799300B11E29 /* FAQActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQActions.swift; sourceTree = "<group>"; };
+		CE6A697D220C7F3000B11E29 /* FAQClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQClient.swift; sourceTree = "<group>"; };
+		CE6A697F220C83F900B11E29 /* FAQRequestLoop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRequestLoop.swift; sourceTree = "<group>"; };
+		CE6A6981220C968D00B11E29 /* FAQImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQImpl.swift; sourceTree = "<group>"; };
+		CE6A6983220C9BBB00B11E29 /* FAQDestroyer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQDestroyer.swift; sourceTree = "<group>"; };
+		CE6A6985220C9DE200B11E29 /* FAQAccessChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQAccessChecker.swift; sourceTree = "<group>"; };
+		CE6A6987220CA70A00B11E29 /* FAQItemItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQItemItem.swift; sourceTree = "<group>"; };
+		CE76D61E22108834006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecIfNotDestroyedFAQHandlerExecutor.swift; sourceTree = "<group>"; };
+		CE76D6202210A6DC006A5BF0 /* FAQStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQStructure.swift; sourceTree = "<group>"; };
+		CE76D6222210A6F3006A5BF0 /* FAQCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategory.swift; sourceTree = "<group>"; };
 		CE86FA94203AF37F00CB9C2D /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		CE86FAAA203B2A2600CB9C2D /* OperatorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorFactory.swift; sourceTree = "<group>"; };
 		CE86FAAC203B2A4500CB9C2D /* DepartmentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepartmentFactory.swift; sourceTree = "<group>"; };
+		CEBF03952211D5EE001658D8 /* FAQStructureItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQStructureItem.swift; sourceTree = "<group>"; };
+		CEBF03972211D837001658D8 /* FAQCategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryItem.swift; sourceTree = "<group>"; };
+		CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryInfo.swift; sourceTree = "<group>"; };
 		CED72592200E11D900CD1623 /* WebimInternalLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebimInternalLogger.swift; path = Backend/WebimInternalLogger.swift; sourceTree = "<group>"; };
+		CEF33875221C74C700A7EA27 /* FAQCategoryInfoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryInfoItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +236,8 @@
 				8FD2449A200CE25B007EB9CB /* Implementation */,
 				8FD24461200CE259007EB9CB /* Department.swift */,
 				8FD244A4200CE25B007EB9CB /* FatalErrorHandler.swift */,
+				CE6A6979220C731600B11E29 /* FAQ.swift */,
+				CE6A6977220C730F00B11E29 /* FAQItem.swift */,
 				8FD24464200CE25A007EB9CB /* Message.swift */,
 				8FD2445D200CE258007EB9CB /* MessageListener.swift */,
 				8FD244A6200CE25B007EB9CB /* MessageStream.swift */,
@@ -217,6 +251,9 @@
 				8FD2445E200CE259007EB9CB /* WebimRemoteNotification.swift */,
 				8FD2445F200CE259007EB9CB /* WebimSession.swift */,
 				8FD244ED200CE3E4007EB9CB /* Info.plist */,
+				CE76D6202210A6DC006A5BF0 /* FAQStructure.swift */,
+				CE76D6222210A6F3006A5BF0 /* FAQCategory.swift */,
+				CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */,
 			);
 			path = WebimClientLibrary;
 			sourceTree = "<group>";
@@ -260,6 +297,12 @@
 				8FD24497200CE25A007EB9CB /* HistoryID.swift */,
 				8FD24498200CE25A007EB9CB /* HistoryStorage.swift */,
 				8FD24499200CE25A007EB9CB /* MessageHolder.swift */,
+				CE6A697B220C799300B11E29 /* FAQActions.swift */,
+				CE6A697D220C7F3000B11E29 /* FAQClient.swift */,
+				CE6A697F220C83F900B11E29 /* FAQRequestLoop.swift */,
+				CE6A6983220C9BBB00B11E29 /* FAQDestroyer.swift */,
+				CE6A6985220C9DE200B11E29 /* FAQAccessChecker.swift */,
+				CE76D61E22108834006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -305,6 +348,10 @@
 				8FD24490200CE25A007EB9CB /* ChatItem.swift */,
 				8FD24491200CE25A007EB9CB /* VisitorItem.swift */,
 				8FD24492200CE25A007EB9CB /* MessageItem.swift */,
+				CE6A6987220CA70A00B11E29 /* FAQItemItem.swift */,
+				CEBF03952211D5EE001658D8 /* FAQStructureItem.swift */,
+				CEBF03972211D837001658D8 /* FAQCategoryItem.swift */,
+				CEF33875221C74C700A7EA27 /* FAQCategoryInfoItem.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -340,6 +387,7 @@
 				8FD244A0200CE25B007EB9CB /* WebimErrorImpl.swift */,
 				8FD2449E200CE25B007EB9CB /* WebimRemoteNotificationImpl.swift */,
 				8FD244A2200CE25B007EB9CB /* WebimSessionImpl.swift */,
+				CE6A6981220C968D00B11E29 /* FAQImpl.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -426,6 +474,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE86FAAB203B2A2600CB9C2D /* OperatorFactory.swift in Sources */,
+				CE6A6988220CA70A00B11E29 /* FAQItemItem.swift in Sources */,
 				8FD244B5200CE25C007EB9CB /* ClientSideID.swift in Sources */,
 				8FD244B6200CE25C007EB9CB /* WebimActions.swift in Sources */,
 				CE86FAAD203B2A4500CB9C2D /* DepartmentFactory.swift in Sources */,
@@ -433,6 +482,7 @@
 				8FD244BC200CE25C007EB9CB /* WebimClient.swift in Sources */,
 				8FD244BD200CE25C007EB9CB /* RemoteHistoryProvider.swift in Sources */,
 				8FD244AF200CE25C007EB9CB /* MessageTracker.swift in Sources */,
+				CEF33876221C74C700A7EA27 /* FAQCategoryInfoItem.swift in Sources */,
 				8FD244E9200CE25C007EB9CB /* FatalErrorHandler.swift in Sources */,
 				8FD244C6200CE25C007EB9CB /* SessionDestroyer.swift in Sources */,
 				8FD244E2200CE25C007EB9CB /* MessageStreamImpl.swift in Sources */,
@@ -440,6 +490,8 @@
 				8FD244CD200CE25C007EB9CB /* RatingItem.swift in Sources */,
 				8FD244C1200CE25C007EB9CB /* InternalUtils.swift in Sources */,
 				8FD244C3200CE25C007EB9CB /* AbstractRequestLoop.swift in Sources */,
+				CE6A697C220C799300B11E29 /* FAQActions.swift in Sources */,
+				CE6A6978220C730F00B11E29 /* FAQItem.swift in Sources */,
 				8FD244C0200CE25C007EB9CB /* MessageFactories.swift in Sources */,
 				CE2E681720123DD4004E99EA /* UInt32.swift in Sources */,
 				8FD244C4200CE25C007EB9CB /* DeltaCallback.swift in Sources */,
@@ -448,14 +500,18 @@
 				8FD244DC200CE25C007EB9CB /* SQLiteHistoryStorage.swift in Sources */,
 				CE86FA95203AF37F00CB9C2D /* UIColor.swift in Sources */,
 				8FD244D4200CE25C007EB9CB /* DeltaItem.swift in Sources */,
+				CE76D6232210A6F3006A5BF0 /* FAQCategory.swift in Sources */,
 				8FD244D3200CE25C007EB9CB /* OnlineStatusItem.swift in Sources */,
 				8FD244BF200CE25C007EB9CB /* String.swift in Sources */,
 				8FD244CB200CE25C007EB9CB /* OperatorItem.swift in Sources */,
+				CE6A6986220C9DE200B11E29 /* FAQAccessChecker.swift in Sources */,
 				8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */,
 				8FD244B0200CE25C007EB9CB /* Message.swift in Sources */,
 				8FD244D6200CE25C007EB9CB /* ChatItem.swift in Sources */,
 				8FD244E3200CE25C007EB9CB /* WebimRemoteNotificationImpl.swift in Sources */,
 				8FD244CA200CE25C007EB9CB /* DeltaRequestLoop.swift in Sources */,
+				CE6A6984220C9BBB00B11E29 /* FAQDestroyer.swift in Sources */,
+				CE6A697E220C7F3000B11E29 /* FAQClient.swift in Sources */,
 				8FD244EB200CE25C007EB9CB /* MessageStream.swift in Sources */,
 				8FD244AB200CE25C007EB9CB /* WebimSession.swift in Sources */,
 				8FD244E7200CE25C007EB9CB /* WebimSessionImpl.swift in Sources */,
@@ -463,13 +519,18 @@
 				8FD244DF200CE25C007EB9CB /* MessageHolder.swift in Sources */,
 				8FD244AC200CE25C007EB9CB /* Operator.swift in Sources */,
 				8FD244E1200CE25C007EB9CB /* OperatorImpl.swift in Sources */,
+				CEBF03962211D5EE001658D8 /* FAQStructureItem.swift in Sources */,
 				8FD244B8200CE25C007EB9CB /* WebimInternalError.swift in Sources */,
 				8FD244DA200CE25C007EB9CB /* SessionParametersListener.swift in Sources */,
 				8FD244D0200CE25C007EB9CB /* HistorySinceResponse.swift in Sources */,
 				8FD244C5200CE25C007EB9CB /* ActionRequestLoop.swift in Sources */,
 				8FD244C9200CE25C007EB9CB /* AuthorizationData.swift in Sources */,
+				CE6A6982220C968D00B11E29 /* FAQImpl.swift in Sources */,
+				CE6A6980220C83F900B11E29 /* FAQRequestLoop.swift in Sources */,
 				8FD244BE200CE25C007EB9CB /* Dictionary.swift in Sources */,
 				8FD244C8200CE25C007EB9CB /* ExecIfNotDestroyedHandlerExecutor.swift in Sources */,
+				CEBF03982211D837001658D8 /* FAQCategoryItem.swift in Sources */,
+				CEBF039A2211F070001658D8 /* FAQCategoryInfo.swift in Sources */,
 				CE2E681120123DB7004E99EA /* Array.swift in Sources */,
 				8FD244D8200CE25C007EB9CB /* MessageItem.swift in Sources */,
 				8FD244AA200CE25C007EB9CB /* WebimRemoteNotification.swift in Sources */,
@@ -483,6 +544,7 @@
 				8FD244E4200CE25C007EB9CB /* MessageImpl.swift in Sources */,
 				CED72593200E11D900CD1623 /* WebimInternalLogger.swift in Sources */,
 				8FD244CC200CE25C007EB9CB /* DepartmentItem.swift in Sources */,
+				CE76D61F22108835006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift in Sources */,
 				8FD244D5200CE25C007EB9CB /* FullUpdate.swift in Sources */,
 				8FD244B4200CE25C007EB9CB /* MemoryHistoryMetaInformationStorage.swift in Sources */,
 				8FD244CE200CE25C007EB9CB /* VisitSessionStateItem.swift in Sources */,
@@ -490,6 +552,7 @@
 				8FD244CF200CE25C007EB9CB /* HistoryBeforeResponse.swift in Sources */,
 				8FD244DD200CE25C007EB9CB /* HistoryID.swift in Sources */,
 				8FD244C2200CE25C007EB9CB /* CompletionHandlerWrappers.swift in Sources */,
+				CE76D6212210A6DC006A5BF0 /* FAQStructure.swift in Sources */,
 				8FD244B1200CE25C007EB9CB /* HistoryMetaInformationStorage.swift in Sources */,
 				8FD244D7200CE25C007EB9CB /* VisitorItem.swift in Sources */,
 				CE2E681320123DC9004E99EA /* Collection.swift in Sources */,
@@ -498,6 +561,7 @@
 				8FD244AD200CE25C007EB9CB /* Department.swift in Sources */,
 				8FD244E5200CE25C007EB9CB /* WebimErrorImpl.swift in Sources */,
 				8FD244B3200CE25C007EB9CB /* InternalErrorListener.swift in Sources */,
+				CE6A697A220C731600B11E29 /* FAQ.swift in Sources */,
 				8FD244D9200CE25C007EB9CB /* MessageToSend.swift in Sources */,
 				8FD244D1200CE25C007EB9CB /* DeltaResponse.swift in Sources */,
 				CE2E681520123DD0004E99EA /* Int.swift in Sources */,
