@@ -99,6 +99,10 @@ final class DeltaCallback {
                 handleDepartmentListUpdateBy(delta: delta)
                 
                 break
+            case .historyRevision:
+                handleHistoryRevisionUpdateBy(delta: delta)
+                
+                break
             case .operatorRate:
                 handleOperatorRateUpdateBy(delta: delta)
                 
@@ -135,6 +139,11 @@ final class DeltaCallback {
         
         messageStream?.changingChatStateOf(chat: currentChat)
         messageStream?.saveLocationSettingsOn(fullUpdate: fullUpdate)
+        
+        if let revision = fullUpdate.getHistoryRevision() {
+            historyPoller?.set(hasHistoryRevision: true)
+            historyPoller?.requestHistory(since: revision)
+        }
         
         if let onlineStatusString = fullUpdate.getOnlineStatus() {
             if let onlineStatus = OnlineStatusItem(rawValue: onlineStatusString) {
@@ -332,6 +341,16 @@ final class DeltaCallback {
         }
         
         messageStream?.onReceiving(departmentItemList: departmentItems)
+    }
+    
+    private func handleHistoryRevisionUpdateBy(delta: DeltaItem) {
+        guard let deltaData = delta.getData() as? [String: Any] else {
+            return
+        }
+        
+        if let revisionItem = HistoryRevisionItem(jsonDictionary: deltaData) {
+            historyPoller?.requestHistory(since: revisionItem.getRevision())
+        }
     }
     
     private func handleOperatorRateUpdateBy(delta: DeltaItem) {

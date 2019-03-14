@@ -425,6 +425,7 @@ final class HistoryPoller {
     private var lastPollingTime = -TimeInterval.historyPolling.rawValue
     private var lastRevision: String?
     private var running: Bool?
+    private var hasHistoryRevision = false
     
     // MARK: - Initialization
     init(withSessionDestroyer sessionDestroyer: SessionDestroyer,
@@ -462,22 +463,28 @@ final class HistoryPoller {
             requestHistory(since: lastRevision,
                            completion: historySinceCompletionHandler!)
         } else {
-            // Setting next history polling in TimeInterval.HISTORY_POLL after lastPollingTime.
+            if !self.hasHistoryRevision {
+                // Setting next history polling in TimeInterval.HISTORY_POLL after lastPollingTime.
             
-            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime + TimeInterval.historyPolling.rawValue) * 1_000_000) - UInt64((uptime) * 1_000_000)))
+                let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime + TimeInterval.historyPolling.rawValue) * 1_000_000) - UInt64((uptime) * 1_000_000)))
             
-            dispatchWorkItem = DispatchWorkItem() { [weak self] in
-                guard let `self` = self else {
-                    return
-                }
+                dispatchWorkItem = DispatchWorkItem() { [weak self] in
+                    guard let `self` = self else {
+                        return
+                    }
                 
-                self.requestHistory(since: self.lastRevision,
-                                    completion: self.historySinceCompletionHandler!)
-            }
+                    self.requestHistory(since: self.lastRevision,
+                                        completion: self.historySinceCompletionHandler!)
+                }
             
-            queue.asyncAfter(deadline: dispatchTime,
-                             execute: dispatchWorkItem!)
+                queue.asyncAfter(deadline: dispatchTime,
+                                 execute: dispatchWorkItem!)
+            }
         }
+    }
+    
+    func set(hasHistoryRevision: Bool) {
+        self.hasHistoryRevision = hasHistoryRevision
     }
     
     func updateReadBeforeTimestamp(timestamp: Int64) {
@@ -519,24 +526,31 @@ final class HistoryPoller {
                 return
             }
             
-            if !isInitial
-                && hasMore {
+            if !isInitial && hasMore {
                 self.requestHistory(since: revision,
                                     completion: self.createHistorySinceCompletionHandler())
             } else {
-                self.dispatchWorkItem = DispatchWorkItem() { [weak self] in
-                    guard let `self` = self else {
-                        return
+                if !self.hasHistoryRevision {
+                    self.dispatchWorkItem = DispatchWorkItem() { [weak self] in
+                        guard let `self` = self, self.hasHistoryRevision == false else {
+                            return
+                        }
+                        self.requestHistory(since: revision,
+                                            completion: self.createHistorySinceCompletionHandler())
+                    
+                    
                     }
-                    self.requestHistory(since: revision,
-                                           completion: self.createHistorySinceCompletionHandler())
-                    
-                    
+                    let interval = Int(TimeInterval.historyPolling.rawValue)
+                    self.queue.asyncAfter(deadline: (.now() + .milliseconds(interval)),
+                                          execute: self.dispatchWorkItem!)
                 }
-                let interval = Int(TimeInterval.historyPolling.rawValue)
-                self.queue.asyncAfter(deadline: (.now() + .milliseconds(interval)),
-                                      execute: self.dispatchWorkItem!)
             }
+        }
+    }
+    
+    public func requestHistory(since: String) {
+        if self.lastRevision == nil || self.lastRevision != since {
+            requestHistory(since: lastRevision, completion: historySinceCompletionHandler!)
         }
     }
     

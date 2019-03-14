@@ -42,6 +42,7 @@ struct FullUpdate {
         case chat = "chat"
         case departments = "departments"
         case hintsEnabled = "hintsEnabled"
+        case historyRevision = "historyRevision"
         case onlineStatus = "onlineStatus"
         case pageID = "pageId"
         case sessionID = "visitSessionId"
@@ -54,6 +55,7 @@ struct FullUpdate {
     private var chat: ChatItem?
     private var departments: [DepartmentItem]?
     private var hintsEnabled: Bool
+    private var historyRevision: Int?
     private var onlineStatus: String?
     private var pageID: String?
     private var sessionID: String?
@@ -106,6 +108,10 @@ struct FullUpdate {
         }
         
         hintsEnabled = (jsonDictionary[JSONField.hintsEnabled.rawValue] as? Bool) ?? false
+        
+        if let historyRevision = jsonDictionary[JSONField.historyRevision.rawValue] as? Int {
+            self.historyRevision = historyRevision
+        }
     }
     
     // MARK: - Methods
@@ -124,6 +130,13 @@ struct FullUpdate {
     
     func getHintsEnabled() -> Bool {
         return hintsEnabled
+    }
+    
+    func getHistoryRevision() -> String? {
+        guard historyRevision != nil else {
+            return nil
+        }
+        return String(historyRevision!)
     }
     
     func getOnlineStatus() -> String? {
