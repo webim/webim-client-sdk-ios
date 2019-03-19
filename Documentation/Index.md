@@ -72,6 +72,7 @@
     -   [send(message:data:completionHandler:) method](#send-message-data)
     -   [send(message:isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
+    -   [udpateWidgetStatus(data:) method](#update-widget-status)
     -   [edit(message:text:completionHandler:) method](#edit-message)
     -   [delete(message:completionHandler:) method](#delete-message)
     -   [setChatRead() method](#set-chat-read)
@@ -688,6 +689,12 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 `mimeType` parameter – MIME type of the file to send of `String` type.
 `completionHandler` parameter – optional [SendFileCompletionHandler](#send-file-completion-handler) object.
 Returns randomly generated `String`-typed ID of the message.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="update-widget-status">updateWidgetStatus(data:) method</h3>
+
+Update widget status. The change is displayed by the operator..
+`data` parameter – JSON string with new widget status.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="edit-message">edit(message:text:completionHandler:) method</h3>

@@ -454,6 +454,20 @@ public protocol MessageStream: class {
               completionHandler: SendFileCompletionHandler?) throws -> String
     
     /**
+     Update widget status. The change is displayed by the operator.
+     - parameter data:
+     JSON string with new widget status.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func updateWidgetStatus(data: String) throws
+    
+    /**
      Edits a text message.
      When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.changed(oldVersion:newVersion:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
      - important:

@@ -105,6 +105,7 @@ class WebimActions {
         case setVisitorTyping = "chat.visitor_typing"
         case startChat = "chat.start"
         case chatRead = "chat.read_by_visitor"
+        case widgetUpdate = "widget.update"
     }
     
     // MARK: - Properties
@@ -323,6 +324,18 @@ class WebimActions {
     
     func setChatRead() {
         let dataToPost = [Parameter.actionn.rawValue: Action.chatRead.rawValue] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString))
+    }
+    
+    func updateWidgetStatusWith(data: String) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.widgetUpdate.rawValue,
+                          Parameter.data.rawValue: data] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.doAction.rawValue
         

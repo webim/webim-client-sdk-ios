@@ -460,6 +460,12 @@ extension MessageStreamImpl: MessageStream {
         return messageID
     }
     
+    func updateWidgetStatus(data: String) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.updateWidgetStatusWith(data: data)
+    }
+    
     func edit(message: Message, text: String, completionHandler: EditMessageCompletionHandler?) throws -> Bool {
         try accessChecker.checkAccess()
         
