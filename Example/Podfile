@@ -1,7 +1,5 @@
 platform :ios, '9.0'
 
-plugin 'cocoapods-amimono'
-
 use_frameworks!
 
 target 'WebimClientLibrary_Example' do
@@ -46,9 +44,6 @@ target 'WebimClientLibrary_Example' do
                 end
             end
         end
-        
-        require 'cocoapods-amimono/patcher'
-        Amimono::Patcher.patch!(installer)
     end
     
 end

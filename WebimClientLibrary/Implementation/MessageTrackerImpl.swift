@@ -72,10 +72,6 @@ final class MessageTrackerImpl {
         
         if (headMessage == nil)
             || allMessageSourcesEnded {
-            var currentChatMessages = messageHolder.getCurrentChatMessages()
-            currentChatMessages.append(message)
-            messageHolder.set(currentChatMessages: currentChatMessages)
-            
             // FIXME: Do it on endOfBatch only.
             if let completionHandler = cachedCompletionHandler {
                 getNextUncheckedMessagesBy(limit: (cachedLimit ?? 0),
