@@ -214,6 +214,7 @@ final class ChatViewController: SLKTextViewController {
         textInputbar.textView.textColor = textTextFieldColor.color()
         textInputbar.textView.tintColor = textTextFieldColor.color()
         textInputbar.textView.keyboardAppearance = ColorScheme.shared.keyboardAppearance()
+        textInputbar.textView.layer.cornerRadius = 15.0
     }
     
     private func setupNavigationItem() {
@@ -429,12 +430,17 @@ extension ChatViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            let imageData = image.pngData()!
-            
             if let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
+                let imageData: Data
+                let imageExtension = imageURL.pathExtension.lowercased()
+                if imageExtension == "jpg" || imageExtension == "jpeg" {
+                    imageData = image.jpegData(compressionQuality: 1.0)!
+                } else {
+                    imageData = image.pngData()!
+                }
                 let imageName = imageURL.lastPathComponent
                 let mimeType = MimeType(url: imageURL as URL)
-                
+
                 webimService!.send(file: imageData,
                                    fileName: imageName,
                                    mimeType: mimeType.value,

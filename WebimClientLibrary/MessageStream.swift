@@ -158,7 +158,7 @@ public protocol MessageStream: class {
      */
     func rateOperatorWith(id: String?,
                           byRating rating: Int,
-                          comletionHandler: RateOperatorCompletionHandler?) throws
+                          completionHandler: RateOperatorCompletionHandler?) throws
     
     /**
      Respond sentry call
@@ -842,7 +842,7 @@ public protocol SendFileCompletionHandler: class {
 
 /**
  - seealso:
- `MessageStream.rateOperatorWith(id:byRating:comletionHandler:)`.
+ `MessageStream.rateOperatorWith(id:byRating:completionHandler:)`.
  - author:
  Nikita Lazarev-Zubov
  - copyright:

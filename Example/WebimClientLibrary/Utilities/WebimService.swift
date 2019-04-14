@@ -286,7 +286,7 @@ final class WebimService {
             
             try messageStream?.rateOperatorWith(id: operatorID,
                                                 byRating: rating,
-                                                comletionHandler: completionHandler)
+                                                completionHandler: completionHandler)
         } catch let error as AccessError {
             switch error {
             case .INVALID_SESSION:

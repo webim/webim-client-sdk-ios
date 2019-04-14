@@ -26,14 +26,15 @@
 
 import UIKit
 
+//startChatButton
 enum Button: CGFloat {
-    case borderWidth = 0.5
-    case cornerRadius = 5.0
+    case borderWidth = 0
+    case cornerRadius = 8.0
 }
 
 enum TransparentButton: CGFloat {
-    case borderWidth = 2.0
-    case cornerRadius = 5.0
+    case borderWidth = 1.0
+    case cornerRadius = 8.0
 }
 
 // Scroll to bottom button.
