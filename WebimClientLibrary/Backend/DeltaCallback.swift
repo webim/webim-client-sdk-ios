@@ -348,9 +348,8 @@ final class DeltaCallback {
             return
         }
         
-        if let revisionItem = HistoryRevisionItem(jsonDictionary: deltaData) {
-            historyPoller?.requestHistory(since: revisionItem.getRevision())
-        }
+        let revisionItem = HistoryRevisionItem(jsonDictionary: deltaData)
+        historyPoller?.requestHistory(since: revisionItem.getRevision())
     }
     
     private func handleOperatorRateUpdateBy(delta: DeltaItem) {
