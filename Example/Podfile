@@ -11,7 +11,7 @@ target 'WebimClientLibrary_Example' do
     pod 'Fabric'
     pod 'SlackTextViewController', :inhibit_warnings => true
     pod 'SnapKit', :inhibit_warnings => true
-    pod 'SQLite.swift', :inhibit_warnings => true # WebimClientLibrary dependency – added to inhibit its warnings.
+    pod 'SQLite.swift', '0.11.5', :inhibit_warnings => true # WebimClientLibrary dependency – added to inhibit its warnings.
     pod 'PopupDialog', '~> 0.6.2', :inhibit_warnings => true
     
     
