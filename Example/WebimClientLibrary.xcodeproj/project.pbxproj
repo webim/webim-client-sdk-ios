@@ -231,7 +231,6 @@
 				998795E306696F247C099BA2 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
 				188E01CE8A86B2460C60C156 /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

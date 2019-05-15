@@ -458,7 +458,7 @@ final class HistoryPoller {
         
         historySinceCompletionHandler = createHistorySinceCompletionHandler()
         
-        let uptime = Int64(ProcessInfo.processInfo.systemUptime)
+        let uptime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
         if (uptime - lastPollingTime) > TimeInterval.historyPolling.rawValue {
             requestHistory(since: lastRevision,
                            completion: historySinceCompletionHandler!)
@@ -500,7 +500,7 @@ final class HistoryPoller {
                 return
             }
             
-            self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime)
+            self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
             self.lastRevision = revision
             
             if isInitial

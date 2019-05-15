@@ -24,7 +24,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.24.6
+github "webim/webim-client-sdk-ios" ~> 3.24.7
 ```
 
 ### Additional notes
@@ -38,7 +38,9 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
 ## Release notes
-* SQLite version 0.11.5.
+* SQLiteHistoryStorage methods bugs fixed.
+* Uptime in HistoryPoller bag fixed.
+* New parameters in User-Agent: Bundle ID and version.
 
 ## Example
 

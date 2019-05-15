@@ -272,7 +272,7 @@ final class ChatItem {
     
     // MARK: Private methods
     private static func createCreationTimestamp() -> Double {
-        return Double(InternalUtils.getCurrentTimeInMicrosecond()) / 1000.0
+        return Double(InternalUtils.getCurrentTimeInMicrosecond())
     }
     
     // MARK: -

@@ -207,7 +207,7 @@ final class SendingFactory {
                              senderName: "",
                              type: .VISITOR,
                              text: text,
-                             timeInMicrosecond: (InternalUtils.getCurrentTimeInMicrosecond() * 1000))
+                             timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond())
     }
     
     func createFileMessageToSendWith(id: String) -> MessageToSend {
@@ -216,7 +216,7 @@ final class SendingFactory {
                              senderName: "",
                              type: .FILE_FROM_VISITOR,
                              text: "",
-                             timeInMicrosecond: (InternalUtils.getCurrentTimeInMicrosecond() * 1000))
+                             timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond())
     }
     
 }

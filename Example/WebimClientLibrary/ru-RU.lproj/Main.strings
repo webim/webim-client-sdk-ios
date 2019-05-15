@@ -1,6 +1,6 @@
 
 /* Class = "UILabel"; text = "Account name *"; ObjectID = "7Wr-eX-iv8"; */
-"7Wr-eX-iv8.text" = "Размещение *";
+"7Wr-eX-iv8.text" = "Название аккаунта *";
 
 /* Class = "UITableViewSection"; footerTitle = "If you are registered in Webim service you can use your own account name and location."; ObjectID = "FX1-M6-A8v"; */
 "FX1-M6-A8v.footerTitle" = "Если вы зарегистрированы в сервисе \"Webim\", вы можете использовать свою учетную запись.";
@@ -64,7 +64,7 @@
 "qLZ-bH-B74.text" = "demo";
 
 /* Class = "UILabel"; text = "Location *"; ObjectID = "qQH-qh-OFD"; */
-"qQH-qh-OFD.text" = "Размещение (локация) *";
+"qQH-qh-OFD.text" = "Размещение *";
 
 /* Class = "UIButton"; accessibilityHint = "Shows settings."; ObjectID = "rMR-x2-dzu"; */
 "rMR-x2-dzu.accessibilityHint" = "Показывает настройки.";

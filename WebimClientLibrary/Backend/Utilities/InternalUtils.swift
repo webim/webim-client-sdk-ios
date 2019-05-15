@@ -52,7 +52,7 @@ final class InternalUtils {
     }
     
     static func getCurrentTimeInMicrosecond() -> Int64 {
-        return Int64(Date().timeIntervalSince1970 * 1000)
+        return Int64(Date().timeIntervalSince1970 * 1_000_000)
     }
     
     static func parse(remoteNotification: [AnyHashable : Any], visitorId: String?) -> WebimRemoteNotification? {
