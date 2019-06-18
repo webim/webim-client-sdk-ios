@@ -29,7 +29,7 @@ import XCTest
 @testable import WebimClientLibrary
 
 class MessageHolderTests: XCTestCase {
-    
+    /*
     // MARK: - Constants
     private enum MessageImplMockData: String {
         case serverURLString = "https://demo.webim.ru/"
@@ -1709,5 +1709,5 @@ extension MessageImpl {
     func getPrimaryID() -> String! {
         return (getSource().isHistoryMessage() ? getHistoryID()!.getDBid() : getCurrentChatID())
     }
-    
+    */
 }

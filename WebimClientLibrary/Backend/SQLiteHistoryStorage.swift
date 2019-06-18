@@ -491,6 +491,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             WebimInternalLogger.shared.log(entry: "\($0)",
                 verbosityLevel: .DEBUG)
         }
+        createIndex()
     }
     
     private func createIndex() {
@@ -512,8 +513,6 @@ final class SQLiteHistoryStorage: HistoryStorage {
             WebimInternalLogger.shared.log(entry: "\($0)",
                 verbosityLevel: .DEBUG)
         }
-        
-        createIndex()
     }
     
     private func prepare() {
@@ -574,8 +573,20 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                              text: rawText)
         }
         
+        var keyboard: Keyboard? = nil
+        if let data = data {
+            keyboard = KeyboardImpl.getKeyboard(jsonDictionary: data)
+        }
+        
+        var keyboardRequest: KeyboardRequest? = nil
+        if let data = data {
+            keyboardRequest = KeyboardRequestImpl.getKeyboardRequest(jsonDictionary: data)
+        }
+        
         return MessageImpl(serverURLString: serverURLString,
                            id: (clientSideID ?? id),
+                           keyboard: keyboard,
+                           keyboardRequest: keyboardRequest,
                            operatorID: row[SQLiteHistoryStorage.senderID],
                            senderAvatarURLString: row[SQLiteHistoryStorage.avatarURLString],
                            senderName: row[SQLiteHistoryStorage.senderName],

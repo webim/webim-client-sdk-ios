@@ -280,6 +280,8 @@ final class MessageHolder {
         
         let newMessage = MessageImpl(serverURLString: (messageImpl?.getServerUrlString())!,
                                      id: messageID,
+                                     keyboard: messageImpl?.getKeyboard(),
+                                     keyboardRequest: messageImpl?.getKeyboardRequest(),
                                      operatorID: messageImpl?.getOperatorID(),
                                      senderAvatarURLString: messageImpl?.getSenderAvatarURLString(),
                                      senderName: (messageImpl?.getSenderName())!,
@@ -317,6 +319,8 @@ final class MessageHolder {
         
         let newMessage = MessageImpl(serverURLString: (messageImpl?.getServerUrlString())!,
                                      id: messageID,
+                                     keyboard: messageImpl?.getKeyboard(),
+                                     keyboardRequest: messageImpl?.getKeyboardRequest(),
                                      operatorID: messageImpl?.getOperatorID(),
                                      senderAvatarURLString: messageImpl?.getSenderAvatarURLString(),
                                      senderName: (messageImpl?.getSenderName())!,
@@ -465,7 +469,7 @@ final class MessageHolder {
             return
         }
         
-        let messageIndex = currentChatMessages.index(of: message)!
+        let messageIndex = currentChatMessages.firstIndex(of: message)!
         
         guard messageIndex >= 1 else {
             WebimInternalLogger.shared.log(entry: "Message \(message.toString()) before which messages of current chat are requested can't have index less than 1. Current index: \(messageIndex).",

@@ -55,6 +55,7 @@ final class WebimRequest {
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     private var deleteMessageCompletionHandler: DeleteMessageCompletionHandler?
     private var editMessageCompletionHandler: EditMessageCompletionHandler?
+    private var sendKeyboardRequestCompletionHandler: SendKeyboardRequestCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
@@ -74,7 +75,8 @@ final class WebimRequest {
          rateOperatorCompletionHandler: RateOperatorCompletionHandler? = nil,
          sendFileCompletionHandler: SendFileCompletionHandler? = nil,
          deleteMessageCompletionHandler: DeleteMessageCompletionHandler? = nil,
-         editMessageCompletionHandler: EditMessageCompletionHandler? = nil) {
+         editMessageCompletionHandler: EditMessageCompletionHandler? = nil,
+         keyboardResponseCompletionHandler: SendKeyboardRequestCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -90,6 +92,7 @@ final class WebimRequest {
         self.sendFileCompletionHandler = sendFileCompletionHandler
         self.deleteMessageCompletionHandler = deleteMessageCompletionHandler
         self.editMessageCompletionHandler = editMessageCompletionHandler
+        self.sendKeyboardRequestCompletionHandler = keyboardResponseCompletionHandler
         self.faqItemRequestCompletionHandler = faqItemRequestCompletionHandler
         self.faqCategoryRequestCompletionHandler = faqCategoryRequestCompletionHandler
         self.faqStructureRequestCompletionHandler = faqStructureRequestCompletionHandler
@@ -168,5 +171,9 @@ final class WebimRequest {
     
     func getEditMessageCompletionHandler() -> EditMessageCompletionHandler? {
         return editMessageCompletionHandler
+    }
+    
+    func getKeyboardResponseCompletionHandler() -> SendKeyboardRequestCompletionHandler? {
+        return sendKeyboardRequestCompletionHandler
     }
 }

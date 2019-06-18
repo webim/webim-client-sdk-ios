@@ -29,7 +29,7 @@ import Foundation
 import XCTest
 
 class ActionRequestLoopTests: XCTestCase {
-    
+    /*
     // MARK: - Properties
     private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
                                                                                                                            queue: DispatchQueue.global()),
@@ -65,5 +65,5 @@ class ActionRequestLoopTests: XCTestCase {
         // Then: ActionRequestLoop OperationQueue should be nil.
         XCTAssertNil(actionRequestLoop.operationQueue)
     }
-    
+    */
 }

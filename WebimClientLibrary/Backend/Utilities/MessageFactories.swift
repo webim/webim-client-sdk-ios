@@ -64,6 +64,10 @@ class MessageMapper {
             return .FILE_FROM_VISITOR
         case .info:
             return .INFO
+        case .keyboard:
+            return .KEYBOARD
+        case .keyboard_response:
+            return .KEYBOARD_RESPONSE
         case .operatorMessage:
             return .OPERATOR
         case .operatorBusy:
@@ -92,6 +96,8 @@ class MessageMapper {
         }
         
         var attachment: MessageAttachment? = nil
+        var keyboard: Keyboard? = nil
+        var keyboardRequest: KeyboardRequest? = nil
         var text: String? = nil
         var rawText: String? = nil
         
@@ -111,8 +117,18 @@ class MessageMapper {
             text = messageItemText ?? ""
         }
         
+        if kind == .keyboard, let data = messageItem.getData() {
+            keyboard = KeyboardImpl.getKeyboard(jsonDictionary: data)
+        }
+        
+        if kind == .keyboard_response, let data = messageItem.getData() {
+            keyboardRequest = KeyboardRequestImpl.getKeyboardRequest(jsonDictionary: data)
+        }
+        
         return MessageImpl(serverURLString: serverURLString,
-                           id: messageItem.getClientSideID()!,
+                           id: messageItem.getID()!,
+                           keyboard: keyboard,
+                           keyboardRequest: keyboardRequest,
                            operatorID: messageItem.getSenderID(),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
                            senderName: messageItem.getSenderName()!,

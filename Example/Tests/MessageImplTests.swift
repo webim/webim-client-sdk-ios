@@ -29,7 +29,7 @@ import Foundation
 import XCTest
 
 class MessageImplTests: XCTestCase {
-    
+    /*
     // MARK: - Tests
     func testToString() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
@@ -346,5 +346,5 @@ class ImageInfoImplTests: XCTestCase {
         XCTAssertEqual(imageInfo.getHeight(),
                        200)
     }
-    
+    */
 }

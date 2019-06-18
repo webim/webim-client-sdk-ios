@@ -173,7 +173,7 @@ final class MessageTrackerImpl {
             return
         }
         
-        let headIndex = currentChatMessages.index(of: headMessage) ?? -1
+        let headIndex = currentChatMessages.firstIndex(of: headMessage) ?? -1
         
         if headMessage.getSource().isHistoryMessage()
             || (index > headIndex) {

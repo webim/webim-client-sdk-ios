@@ -150,7 +150,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         
         do {
             let data = try perform(request: request)
-            if let dataJSON = try? JSONSerialization.jsonObject(with: data) as! [String: Any] {
+            if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as! [String: Any]) {
                 if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
                     handleInitialization(error: error)
                 } else {
@@ -197,7 +197,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         
         do {
             let data = try perform(request: request)
-            if let dataJSON = try? JSONSerialization.jsonObject(with: data) as! [String: Any] {
+            if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as! [String: Any]) {
                 if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
                     handleDeltaRequest(error: error)
                 } else {

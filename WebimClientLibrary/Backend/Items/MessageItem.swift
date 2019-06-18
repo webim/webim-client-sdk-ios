@@ -197,6 +197,8 @@ final class MessageItem {
         case fileFromVisitor = "file_visitor"
         case forOperator = "for_operator"
         case info = "info"
+        case keyboard = "keyboard"
+        case keyboard_response = "keyboard_response"
         case operatorMessage = "operator"
         case operatorBusy = "operator_busy"
         case visitorMessage = "visitor"
@@ -222,6 +224,14 @@ final class MessageItem {
                 break
             case .INFO:
                 self = .info
+                
+                break
+            case .KEYBOARD:
+                self = .keyboard
+                
+                break
+            case .KEYBOARD_RESPONSE:
+                self = .keyboard_response
                 
                 break
             case .OPERATOR:

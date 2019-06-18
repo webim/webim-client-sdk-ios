@@ -118,6 +118,11 @@ final class MessageTableViewCell: UITableViewCell {
             layoutInfo(message: message)
             
             break
+        case .KEYBOARD,
+             .KEYBOARD_RESPONSE:
+            layoutInfo(message: message)
+            
+            break
         case .OPERATOR:
             layoutOperator(message: message)
             

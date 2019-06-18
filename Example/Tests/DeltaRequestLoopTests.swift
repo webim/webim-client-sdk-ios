@@ -29,7 +29,7 @@ import XCTest
 @testable import WebimClientLibrary
 
 class DeltaRequestLoopTests: XCTestCase {
-    
+    /*
     // MARK: - Properties
     private var deltaRequestLoop: DeltaRequestLoopForTests?
     
@@ -143,5 +143,5 @@ final fileprivate class DeltaRequestLoopForTests: DeltaRequestLoop {
     override func requestDelta() {
         deltaRequestingRunned = true
     }
-    
+    */
 }

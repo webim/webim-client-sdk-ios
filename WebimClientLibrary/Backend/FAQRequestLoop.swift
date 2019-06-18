@@ -88,7 +88,7 @@ class FAQRequestLoop: AbstractRequestLoop {
             do {
                 let data = try self.perform(request: urlRequest!)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                    if let error = dataJSON?[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                    if (dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String) != nil {
                         self.running = false
 
                         return

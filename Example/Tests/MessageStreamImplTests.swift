@@ -29,7 +29,7 @@ import Foundation
 import XCTest
 
 class MessageStreamImplTests: XCTestCase {
-    
+    /*
     // MARK: - Properties
     var messageStream: MessageStreamImpl?
     var webimActions: WebimActions?
@@ -198,5 +198,5 @@ fileprivate class OnlineStatusChangeListenerForTests: OnlineStatusChangeListener
         status = newOnlineStatus
     }
     
-    
+    */
 }

@@ -72,6 +72,7 @@
     -   [send(message:data:completionHandler:) method](#send-message-data)
     -   [send(message:isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
+    -   [sendKeyboardRequest(button:message:completionHandler:) method](#send-keyboard-request)
     -   [udpateWidgetStatus(data:) method](#update-widget-status)
     -   [edit(message:text:completionHandler:) method](#edit-message)
     -   [delete(message:completionHandler:) method](#delete-message)
@@ -100,6 +101,9 @@
 -   [SendFileCompletionHandler protocol](#send-file-completion-handler)
     -   [onSuccess(messageID:) method](#on-success-message-id)
     -   [onFailure(messageID:,error:) method](#on-failure-message-id-error)
+-   [SendKeyboardRequestCompletionHandler protocol](#send-keyboard-request-completion-handler)
+    -   [onSuccess(messageID:) method](#on-success-message-id-send-keyboard-request)
+    -   [onFailure(messageID:,error:) method](#on-failure-message-id-error-send-keyboard-request)
 -   [RateOperatorCompletionHandler protocol](#rate-operator-completion-handler)
     -   [onSuccess() method](#on-success)
     -   [onFailure(error:) method](#on-failure-error)
@@ -171,6 +175,12 @@
     -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
     -   [UPLOADED_FILE_NOT_FOUND case](#uploaded-file-not-found)
     -   [UNKNOWN case](#file-sending-unknown)
+-   [KeyboardResponseError enum](#keyboard-response-error)
+    -   [NO_CHAT case](#keyboard-response-error-no-chat)
+    -   [BUTTON_ID_NOT_SET case](#button-id-not-set)
+    -   [REQUEST_MESSAGE_ID_NOT_SET case](#request-message-id-not-set)
+    -   [CAN_NOT_CREATE_RESPONSE case](#can-not-create-response)
+    -   [UNKNOWN case](#keyboard-response-error-unknown)
 -   [RateOperatorError enum](#rate-operator-error)
     -   [NO_CHAT case](#no-chat)
     -   [WRONG_OPERATOR_ID case](#wrong-operator-id)
@@ -189,6 +199,8 @@
     -   [getAttachment() method](#get-attachment)
     -   [getData() method](#get-data)
     -   [getID() method](#get-id)
+    -   [getKeyboard() method](#get-keyboard)
+    -   [getKeyboardRequest()](#get-keyboard-request)
     -   [getOperatorID() method](#get-operator-id)
     -   [getSenderAvatarFullURL() method](#get-sender-avatar-full-url)
     -   [getSenderName() method](#get-sender-name)
@@ -209,9 +221,24 @@
     -   [getThumbURL() method](#get-thumb-url-string)
     -   [getHeight() method](#get-height)
     -   [getWidth() method](#get-width)
+-   [Keyboard protocol](#keyboard)
+    -   [getButtons() method](#get-buttons)
+    -   [getState() method](#get-state)
+    -   [getResponse() method](#get-response)
+-   [KeyboardResponse protocol](#keyboard-response)
+    -   [getButtonID() method](#get-button-id)
+    -   [getMessageID() method](#keyboard-response-get-message-id)
+-   [KeyboardButton protocol](#keyboard-button)
+    -   [getID() method](#button-get-id)
+    -   [getText() method](#button-get-text)
+-   [KeyboardRequest protocol](#keyboard-request)
+    -   [getButton() method](#get-button)
+    -   [getMessageID() method](#keyboard-request-get-message-id)
 -   [MessageType enum](#message-type)
     -   [ACTION_REQUEST case](#action-request)
     -   [CONTACTS_REQUEST case](#contacts-request)
+    -   [KEYBOARD case](#keyboard-type)
+    -   [KEYBOARD_RESPONSE case](#keyboard-response-type)
     -   [FILE_FROM_OPERATOR case](#file-from-operator)
     -   [FILE_FROM_VISITOR case](#file-from-visitor)
     -   [INFO case](#info)
@@ -221,6 +248,10 @@
 -   [MessageSendStatus enum](#message-send-status)
     -   [SENDING case](#sending)
     -   [SENT case](#sent)
+-   [KeyboardState enum](#keyboard-state)
+    -   [PENDING case](#pending)
+    -   [COMPLETED case](#completed)
+    -   [CANCELLED case](#cancelled)
 -   [Department protocol](#department)
     -   [getKey() method](#get-key)
     -   [getName() method](#get-name-department)
@@ -691,6 +722,14 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 Returns randomly generated `String`-typed ID of the message.
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="send-keyboard-request">sendKeyboardRequest(button:message:completionHandler:) method</h3>
+
+Sends a keyboard request.
+`button` parameter – selected button of [`KeyboardButton`](#keyboard-button) type.
+`message` parameter – keyboard message of [`Message`](#message) type.
+`completionHandler` parameter – optional [SendKeyboardRequestCompletionHandler](#send-keyboard-request-completion-handler) object.
+Can throw errors of [AccessError](#access-error) type.
+
 <h3 id ="update-widget-status">updateWidgetStatus(data:) method</h3>
 
 Update widget status. The change is displayed by the operator..
@@ -842,6 +881,23 @@ Executed when operation is done successfully.
 Executed when operation is failed.
 `messageID` parameter – ID of the appropriate message of `String` type.
 `error` parameter – appropriate [SendFileError](#send-file-error) value.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="send-keyboard-request-completion-handler">SendKeyboardRequestCompletionHandler protocol</h2>
+
+Protocol which methods are called after [sendKeyboardRequest(button:message:completionHandler:)](#send-keyboard-request) method is finished. Must be adopted.
+
+<h3 id ="on-success-message-id-send-keyboard-request">onSuccess(messageID:) method</h3>
+
+Executed when operation is done successfully.
+`messageID` parameter – ID of the appropriate message of `String` type.
+
+<h3 id ="on-failure-message-id-error-send-keyboard-request">onFailure(messageID:error:) method</h3>
+
+Executed when operation is failed.
+`messageID` parameter – ID of the appropriate message of `String` type.
+`error` parameter – appropriate [KeyboardResponseError](#keyboard-response-error) value.
 
 [Go to table of contents](#table-of-contents)
 
@@ -1209,6 +1265,32 @@ Received error is not supported by current WebimClientLibrary version.
 
 [Go to table of contents](#table-of-contents)
 
+<h2 id ="keyboard-response-error">KeyboardResponseError enum</h2>
+
+Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-send-keyboard-request).
+
+<h3 id ="keyboard-response-error-no-chat">NO_CHAT case</h3>
+
+Arised when trying to send keyboard request if no chat is exists.
+
+<h3 id ="button-id-not-set">BUTTON_ID_NOT_SET case</h3>
+
+Wrong button ID in request.
+
+<h3 id ="request-message-id-not-set">REQUEST_MESSAGE_ID_NOT_SET case</h3>
+
+Wrong message ID in request.
+
+<h3 id=can-not-create-response>CAN_NOT_CREATE_RESPONSE case</h3>
+
+Response can not be created for this request.
+
+<h3 id ="keyboard-response-error-unknown">UNKNOWN case</h3>
+
+Received error is not supported by current WebimClientLibrary version.
+
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="rate-operator-error">RateOperatorError enum</h2>
 
 Error types that could be passed in [onFailure(error:) method](#on-failure-error).
@@ -1315,6 +1397,16 @@ Returns dictionary which contains custom fields or `nil` if there's no such cust
 
 Every message can be uniquefied by its ID. Messages also can be lined up by its IDs. ID doesn’t change while changing the content of a message.
 Returns unique ID of the message of type `String`.
+
+<h3 id="get-keyboard">getKeyboard() method</h3>
+
+Messages of type [Keyboard](#keyboard-type) contain keyboard from script robot.
+Returns [Keyboard](#keyboard) which contains keyboard from script robot or `nil` if message isn't of type [Keyboard](#keyboard-type).
+
+<h3 id="get-keyboard-request">getKeyboardRequest() method</h3>
+
+Messages of type [KEYBOARD_RESPONSE](#keyboard-response-type) contain request with message of type [Keyboard](#keyboard-type).
+Returns [KeyboardRequest](#keyboard-request) which contains keyboard request or `nil` if message isn't of type [KEYBOARD_RESPONSE](#keyboard-response-type).
 
 <h3 id ="get-operator-id">getOperatorID() method</h3>
 
@@ -1427,6 +1519,66 @@ Returns width of an image in pixels of `Int` type or `nil`.
 
 [Go to table of contents](#table-of-contents)
 
+<h2 id ="keyboard">Keyboard protocol</h2>
+
+Provides information about a keyboard.
+
+<h3 id ="get-buttons">getButtons() method</h3>
+
+Returns an array of array of [buttons](#keyboard-button).
+
+<h3 id ="get-state">getState() method</h3>
+
+Returns keyboard state of type [KeyboardState](#keyboard-state)
+
+<h3 id ="get-response">getResponse() method</h3>
+
+Returns keyboard response of type [KeyboardResponse)(#keyboard-response) or `nil` if keyboard hasn't it.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="keyboard-response">KeyboardResponse protocol</h2>
+
+Provides information about a keyboard response.
+
+<h3 id ="get-button-id">getButtonID() method</h3>
+
+Returns a selected button ID of `String` type. 
+
+<h3 id ="keyboard-response-get-message-id">getMessageID() method</h3>
+
+Returns resposne message ID of `String` type. 
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="keyboard-button">KeyboardButton protocol</h2>
+
+Provides information about a keyboard button.
+
+<h3 id ="button-get-id">geID() method</h3>
+
+Returns a button ID of `String` type. 
+
+<h3 id ="button-get-text">getText() method</h3>
+
+Returns a button text of `String` type. 
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="keyboard-request">KeyboardRequest protocol</h2>
+
+Provides information about a keyboard request.
+
+<h3 id ="get-button">geButton() method</h3>
+
+Returns a button from request of [KeyboardButton](#keyboard-button) type. 
+
+<h3 id ="keyboard-request-get-message-id">getMessageID() method</h3>
+
+Returns a request message ID of `String` type. 
+
+[Go to table of contents](#table-of-contents)
+
 <h2 id ="message-type">MessageType enum</h2>
 
 Message type representation.
@@ -1437,8 +1589,17 @@ A message from operator which requests some actions from a visitor.
 E.g. choose an operator group by clicking on a button in this message.
 
 <h3 id ="contacts-request">CONTACTS_REQUEST case</h3>
+
 Message type that is received after operator clicked contacts request button.
 There's no this functionality automatic support yet. All payload is transfered inside standard text field.
+
+<h3 id ="keyboard-type">KEYBOARD case</h3>
+
+A message sent by a script bot which contains buttons.
+
+<h3 id ="keyboard-response-type">KEYBOARD_RESPONSE case</h3>
+
+Response to request with selected button.
 
 <h3 id ="file-from-operator">FILE_FROM_OPERATOR case</h3>
 
@@ -1478,6 +1639,22 @@ A message is being sent.
 <h3 id ="sent">SENT case</h3>
 
 A message had been sent to the server, received by the server and was spreaded among clients.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="keyboard-state">KeyboardState enum</h2>
+
+<h3 id ="pending">PENDING case</h3>
+
+A keyboard has unselected buttons.
+
+<h3 id ="completed">COMPLETED case</h3>
+
+A keyboard has one selected button.
+
+<h3 id ="completed">CANCELLED case</h3>
+
+A keyboard has unselected buttons but visitor can't selected someone.
 
 [Go to table of contents](#table-of-contents)
 

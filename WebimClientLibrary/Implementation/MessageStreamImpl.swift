@@ -460,6 +460,16 @@ extension MessageStreamImpl: MessageStream {
         return messageID
     }
     
+    func sendKeyboardRequest(button: KeyboardButton,
+                             message: Message,
+                             completionHandler: SendKeyboardRequestCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.sendKeyboardRequest(buttonId: button.getID(),
+                                         messageId: message.getID(),
+                                         completionHandler: completionHandler)
+    }
+    
     func updateWidgetStatus(data: String) throws {
         try accessChecker.checkAccess()
         

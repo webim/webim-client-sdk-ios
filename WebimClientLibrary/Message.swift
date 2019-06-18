@@ -78,6 +78,28 @@ public protocol Message {
     func getID() -> String
     
     /**
+     Messages of type `MessageType.KEYBOARD` contain keyboard from script bot.
+     - returns:
+     Keyboard with buttons.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getKeyboard() -> Keyboard?
+    
+    /**
+     Messages of type `MessageType.KEYBOARD_RESPONSE` contain keyboard request from script bot.
+     - returns:
+     Keyboard request.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getKeyboardRequest() -> KeyboardRequest?
+    
+    /**
      - returns:
      ID of a message sender, if the sender is an operator.
      - author:
@@ -310,6 +332,183 @@ public protocol ImageInfo {
     func getWidth() -> Int?
 }
 
+/**
+ Provides information about a keyboard from script board.
+ - seealso:
+ `Message.getKeyboard()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public protocol Keyboard {
+    
+    /**
+     - returns:
+     Keyboard buttons.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getButtons() -> [[KeyboardButton]]
+    
+    /**
+     - returns:
+     Kayboard state.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getState() -> KeyboardState
+    
+    /**
+     - returns:
+     Keyboard response.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getResponse() -> KeyboardResponse?
+}
+
+/**
+ Supported keyboard States.
+ - seealso:
+ `Keyboard.getState()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public enum KeyboardState {
+    
+    /**
+     A keyboard is waiting for answer.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case PENDING
+    
+    /**
+     A keyboard has response.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case COMPLETED
+    
+    /**
+     A keyboard cancelled without response.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case CANCELLED
+}
+
+/**
+ Provides information about a keyboard response to script board.
+ - seealso:
+ `Message.getKeyboard()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public protocol KeyboardResponse {
+    
+    /**
+     - returns:
+     ID of a button.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getButtonID() -> String
+    
+    /**
+     - returns:
+     ID of a message.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getMessageID() -> String
+}
+
+/**
+ Keyboard button.
+ - seealso:
+ `Keyboard.getButtons()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public protocol KeyboardButton {
+    
+    /**
+     - returns:
+     ID of a button.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getID() -> String
+    
+    /**
+     - returns:
+     Text of a button.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getText() -> String
+}
+
+/**
+ Keyboard request.
+ - seealso:
+ `Message.getRequest()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public protocol KeyboardRequest {
+    
+    /**
+     - returns:
+     Request button.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getButton() -> KeyboardButton
+    
+    /**
+     - returns:
+     Request message ID.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getMessageID() -> String
+}
+
 // MARK: -
 /**
  Supported message types.
@@ -382,6 +581,25 @@ public enum MessageType {
      2017 Webim
      */
     case INFO
+    
+    /**
+     Message with buttons for visitor choise.
+     Messages of this type are sent by script robot.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case KEYBOARD
+    
+    /**
+     Response to messages of KEYBOARD type.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case KEYBOARD_RESPONSE
     
     /**
      A text message sent by an operator.

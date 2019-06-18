@@ -30,7 +30,7 @@ import XCTest
 
 @available(iOS 10.0, *)
 class AccessCheckerTests: XCTestCase {
-    
+    /*
     func testCheckAccess() {
         let thread1 = Thread.current
         let sessionDestroyer = SessionDestroyer()
@@ -54,5 +54,5 @@ class AccessCheckerTests: XCTestCase {
         sessionDestroyer.destroy()
         XCTAssertThrowsError(try accessChecker.checkAccess())
     }
-    
+    */
 }

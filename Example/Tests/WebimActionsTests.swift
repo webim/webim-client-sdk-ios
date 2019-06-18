@@ -29,7 +29,7 @@ import XCTest
 @testable import WebimClientLibrary
 
 class WebimActionsTests: XCTestCase {
-    
+    /*
     // MARK: - Properties
     private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
                                                                                                                            queue: DispatchQueue.global()),
@@ -441,5 +441,5 @@ class WebimActionsTests: XCTestCase {
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
                        expectedBaseURLString)
     }
-    
+    */
 }

@@ -76,9 +76,13 @@ enum WebimInternalError: String, Error {
     case messageNotOwned = "message_not_owned";
     // edit
     case wrongMessageKind = "wrong_message_kind";
-
     
     // Rate operator errors
     case noChat = "no-chat"
     case operatorNotInChat = "operator-not-in-chat"
+    
+    // Keyboard response errors
+    case buttonIdNotSet = "button-id-not-set"
+    case requestMessageIdNotSet = "request-message-id-not-set"
+    case canNotCreateResponse = "can-not-create-response"
 }

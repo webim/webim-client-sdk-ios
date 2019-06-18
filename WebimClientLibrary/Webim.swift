@@ -494,7 +494,7 @@ public final class SessionBuilder  {
                     
                     index = nextIndex
                 }
-                let data = Data(bytes: byteArray)
+                let data = Data(_: byteArray)
                 prechat = String(data:data, encoding: .utf8)!
                 print("prechat parsed: \(prechat)")
             }

@@ -132,7 +132,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             do {
                 let data = try self.perform(request: urlRequest!)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                    if let error = dataJSON?[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                    if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
                         switch error {
                         case WebimInternalError.reinitializationRequired.rawValue:
                             do {
@@ -168,6 +168,12 @@ class ActionRequestLoop: AbstractRequestLoop {
                             self.handleDeleteMessage(error: error,
                                                     ofRequest: request)
                             break
+                        case WebimInternalError.buttonIdNotSet.rawValue,
+                             WebimInternalError.requestMessageIdNotSet.rawValue,
+                             WebimInternalError.canNotCreateResponse.rawValue:
+                            self.handleKeyboardResponse(error: error,
+                                                        ofRequest: request)
+                            break
                         default:
                             self.running = false
                             
@@ -182,7 +188,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                     }
                     
                     // Some internal errors can be received inside "error" field inside "data" field.
-                    if let dataDictionary = dataJSON?[AbstractRequestLoop.ResponseFields.data.rawValue] as? [String: Any],
+                    if let dataDictionary = dataJSON[AbstractRequestLoop.ResponseFields.data.rawValue] as? [String: Any],
                         let errorString = dataDictionary[AbstractRequestLoop.DataFields.error.rawValue] as? String {
                         self.handleDataMessage(error: errorString,
                                                ofRequest: request)
@@ -370,6 +376,30 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleKeyboardResponse(error errorString: String,
+                                        ofRequest webimRequest: WebimRequest) {
+        if let keyboardResponseCompletionHandler = webimRequest.getKeyboardResponseCompletionHandler() {
+            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                let keyboardResponseError: KeyboardResponseError
+                switch errorString {
+                case WebimInternalError.buttonIdNotSet.rawValue:
+                    keyboardResponseError = .BUTTON_ID_NOT_SET
+                    break
+                case WebimInternalError.requestMessageIdNotSet.rawValue:
+                    keyboardResponseError = .REQUEST_MESSAGE_ID_NOT_SET
+                    break
+                case WebimInternalError.canNotCreateResponse.rawValue:
+                    keyboardResponseError = .CAN_NOT_CREATE_RESPONSE
+                    break
+                default:
+                    keyboardResponseError = .UNKNOWN
+                }
+                
+                keyboardResponseCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!, error: keyboardResponseError)
+            })
+        }
+    }
+    
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
         WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
             verbosityLevel: .WARNING)
@@ -382,6 +412,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getRateOperatorCompletionHandler()?.onSuccess()
             request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getEditMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
         })
     }
     

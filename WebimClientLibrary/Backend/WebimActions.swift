@@ -48,6 +48,7 @@ class WebimActions {
         case applicationVersion = "app-version"
         case authorizationToken = "auth-token"
         case beforeTimestamp = "before-ts"
+        case buttonId = "button-id"
         case chatMode = "chat-mode"
         case clientSideID = "client-side-id"
         case data = "data"
@@ -68,6 +69,7 @@ class WebimActions {
         case providedAuthenticationToken = "provided_auth_token"
         case rating = "rate"
         case respondImmediately = "respond-immediately"
+        case requestMessageId = "request-message-id"
         case visitSessionID = "visit-session-id"
         case since = "since"
         case timestamp = "ts"
@@ -106,6 +108,7 @@ class WebimActions {
         case startChat = "chat.start"
         case chatRead = "chat.read_by_visitor"
         case widgetUpdate = "widget.update"
+        case keyboardResponse = "chat.keyboard_response"
     }
     
     // MARK: - Properties
@@ -343,6 +346,23 @@ class WebimActions {
                                                         primaryData: dataToPost,
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString))
+    }
+    
+    func sendKeyboardRequest(buttonId: String,
+                             messageId: String,
+                             completionHandler: SendKeyboardRequestCompletionHandler?) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.keyboardResponse.rawValue,
+                          Parameter.buttonId.rawValue: buttonId,
+                          Parameter.requestMessageId.rawValue: messageId] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        messageID: messageId,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        keyboardResponseCompletionHandler: completionHandler))
     }
     
 }

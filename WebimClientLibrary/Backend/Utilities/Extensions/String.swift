@@ -298,11 +298,10 @@ public final class SHA256 {
         // Break chunk into sixteen 32-bit words M[j], 0 ≤ j ≤ 15, big-endian.
         // Extend the sixteen 32-bit words into sixty-four 32-bit words:
         let M = UnsafeMutablePointer<UInt32>.allocate(capacity: SHA256.k.count)
-        M.initialize(to: 0, count:
-            SHA256.k.count)
+        M.initialize(repeating: 0, count: SHA256.k.count)
         defer {
             M.deinitialize(count: SHA256.k.count)
-            M.deallocate(capacity: SHA256.k.count)
+            M.deallocate()
         }
         
         for x in 0 ..< SHA256.k.count {

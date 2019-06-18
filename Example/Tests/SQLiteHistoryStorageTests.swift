@@ -29,7 +29,7 @@ import Foundation
 import XCTest
 
 class SQLiteHistoryStorageTests: XCTestCase {
-    
+    /*
     // MARK: - Constants
     private static let DB_NAME = "test"
     private static let SERVER_URL_STRING = "https://demo.webim.ru"
@@ -192,5 +192,5 @@ class SQLiteHistoryStorageTests: XCTestCase {
             XCTAssertTrue(timestamp < upperThresholdTimestamp)
         }
     }
-    
+    */
 }

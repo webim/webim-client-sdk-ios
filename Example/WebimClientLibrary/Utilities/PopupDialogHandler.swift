@@ -147,7 +147,7 @@ final class PopupDialogHandler {
                                 image: image,
                                 buttonAlignment: .horizontal,
                                 transitionStyle: .bounceUp,
-                                gestureDismissal: true,
+                                tapGestureDismissal: true,
                                 completion: nil)
         popup.view.backgroundColor = backgroundSecondaryColor.color()
         (popup.viewController as! PopupDialogDefaultViewController).titleColor = textMainColor.color()
@@ -165,7 +165,7 @@ final class PopupDialogHandler {
         let popup = PopupDialog(viewController: ratingViewController,
                                 buttonAlignment: .horizontal,
                                 transitionStyle: .bounceUp,
-                                gestureDismissal: true)
+                                tapGestureDismissal: true)
         
         let cancelButton = CancelButton(title: RatingDialog.cancelButtonTitle.rawValue.localized,
                                         height: PopupDialogHandler.BUTTON_HEIGHT,

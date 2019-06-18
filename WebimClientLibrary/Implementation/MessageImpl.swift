@@ -38,6 +38,8 @@ class MessageImpl {
     // MARK: - Properties
     private let attachment: MessageAttachment?
     private let id: String
+    private let keyboard: Keyboard?
+    private let keyboardRequest: KeyboardRequest?
     private let operatorID: String?
     private let rawText: String?
     private let senderAvatarURLString: String?
@@ -57,6 +59,8 @@ class MessageImpl {
     // MARK: - Initialization
     init(serverURLString: String,
          id: String,
+         keyboard: Keyboard?,
+         keyboardRequest: KeyboardRequest?,
          operatorID: String?,
          senderAvatarURLString: String?,
          senderName: String,
@@ -74,6 +78,8 @@ class MessageImpl {
         self.attachment = attachment
         self.data = data
         self.id = id
+        self.keyboard = keyboard
+        self.keyboardRequest = keyboardRequest
         self.operatorID = operatorID
         self.rawText = rawText
         self.senderAvatarURLString = senderAvatarURLString
@@ -291,6 +297,14 @@ extension MessageImpl: Message {
         return id
     }
     
+    func getKeyboard() -> Keyboard? {
+        return keyboard
+    }
+    
+    func getKeyboardRequest() -> KeyboardRequest? {
+        return keyboardRequest
+    }
+    
     func getOperatorID() -> String? {
         return operatorID
     }
@@ -398,8 +412,8 @@ final class MessageAttachmentImpl {
                               webimClient: WebimClient,
                               text: String) -> MessageAttachment? {
         let textData = text.data(using: .utf8)!
-        guard let textDictionary = try? JSONSerialization.jsonObject(with: textData,
-                                                                     options: []) as? [String: Any?] else {
+        guard let textDictionary = ((try? JSONSerialization.jsonObject(with: textData,
+                                                                     options: []) as? [String: Any?]) as [String : Any?]??) else {
                                                                         WebimInternalLogger.shared.log(entry: "Message attachment parameters parsing failed: \(text).",
                                                                             verbosityLevel: .WARNING)
                                                                         
@@ -534,4 +548,144 @@ final class ImageInfoImpl: ImageInfo {
         return width
     }
     
+}
+
+// MARK: -
+/**
+ - seealso:
+ `Keyboard`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+final class KeyboardImpl: Keyboard {
+    
+    private let keyboardItem: KeyboardItem
+    
+    init?(data: [String: Any?]) {
+        if let keyboard = KeyboardItem(jsonDictionary: data) {
+            self.keyboardItem = keyboard
+        } else {
+            return nil
+        }
+    }
+    
+    static func getKeyboard(jsonDictionary: [String : Any?]) -> Keyboard? {
+        return KeyboardImpl(data: jsonDictionary)
+    }
+    
+    func getButtons() -> [[KeyboardButton]] {
+        var buttonArrayArray = [[KeyboardButton]]()
+        for buttonArray in keyboardItem.getButtons() {
+            var newButtonArray = [KeyboardButton]()
+            for button in buttonArray {
+                newButtonArray.append(KeyboardButtonImpl(data: button)!)
+            }
+            buttonArrayArray.append(newButtonArray)
+        }
+        return buttonArrayArray
+    }
+    
+    func getState() -> KeyboardState {
+        return keyboardItem.getState()
+    }
+    
+    func getResponse() -> KeyboardResponse? {
+        return KeyboardResponseImpl(data: keyboardItem.getResponse())
+    }
+}
+
+// MARK: -
+/**
+ - seealso:
+ `KeyboardButton`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+final class KeyboardButtonImpl: KeyboardButton {
+    
+    private let buttonItem: KeyboardButtonItem
+    
+    init?(data: KeyboardButtonItem?) {
+        if let buttonItem = data {
+            self.buttonItem = buttonItem
+        } else {
+            return nil
+        }
+    }
+    
+    func getID() -> String {
+        return buttonItem.getId()
+    }
+    
+    func getText() -> String {
+        return buttonItem.getText()
+    }
+}
+
+// MARK: -
+/**
+ - seealso:
+ `KeyboardResponse`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+final class KeyboardResponseImpl: KeyboardResponse {
+    
+    private let keyboardResponseItem: KeyboardResponseItem
+    
+    init?(data: KeyboardResponseItem?) {
+        if let keyboardResponse = data {
+            self.keyboardResponseItem = keyboardResponse
+        } else {
+            return nil
+        }
+    }
+    
+    func getButtonID() -> String {
+        return keyboardResponseItem.getButtonId()
+    }
+    
+    func getMessageID() -> String {
+        return keyboardResponseItem.getMessageId()
+    }
+}
+
+// MARK: -
+/**
+ - seealso:
+ `KeyboardResponse`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+final class KeyboardRequestImpl: KeyboardRequest {
+    
+    private let keyboardRequestItem: KeyboardRequestItem
+    
+    init?(data: [String: Any?]) {
+        if let keyboardRequest = KeyboardRequestItem(jsonDictionary: data) {
+            self.keyboardRequestItem = keyboardRequest
+        } else {
+            return nil
+        }
+    }
+    
+    static func getKeyboardRequest(jsonDictionary: [String : Any?]) -> KeyboardRequest? {
+        return KeyboardRequestImpl(data: jsonDictionary)
+    }
+    
+    func getButton() -> KeyboardButton {
+        return KeyboardButtonImpl(data: keyboardRequestItem.getButton())!
+    }
+    
+    func getMessageID() -> String {
+        return keyboardRequestItem.getMessageId()
+    }
 }

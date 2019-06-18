@@ -44,6 +44,8 @@ final class MessageToSend: MessageImpl {
          timeInMicrosecond: Int64) {
         super.init(serverURLString: serverURLString,
                    id: id,
+                   keyboard: nil,
+                   keyboardRequest: nil,
                    operatorID: nil,
                    senderAvatarURLString: nil,
                    senderName: senderName,

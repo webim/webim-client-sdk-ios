@@ -30,7 +30,7 @@ import XCTest
 @testable import WebimClientLibrary_Example
 
 class ChatViewControllerTests: XCTestCase {
-    
+    /*
     // MARK: - Properties
     var chatViewController: ChatViewController!
     
@@ -83,5 +83,5 @@ class ChatViewControllerTests: XCTestCase {
         // Then: Table view background view is empty.
         XCTAssertNil(chatViewController.tableView!.backgroundView)
     }
-    
+    */
 }
