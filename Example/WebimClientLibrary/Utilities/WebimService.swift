@@ -46,8 +46,8 @@ final class WebimService {
     }
     
     // MARK: - Properties
-    private let fatalErrorHandlerDelegate: FatalErrorHandlerDelegate
-    private let departmentListHandlerDelegate: DepartmentListHandlerDelegate
+    private weak var fatalErrorHandlerDelegate: FatalErrorHandlerDelegate?
+    private weak var departmentListHandlerDelegate: DepartmentListHandlerDelegate?
     private var messageStream: MessageStream?
     private var messageTracker: MessageTracker?
     private var webimSession: WebimSession?
@@ -189,7 +189,7 @@ final class WebimService {
             
             if messageStream?.getVisitSessionState() == .DEPARTMENT_SELECTION,
                 let departments = messageStream?.getDepartmentList() {
-                departmentListHandlerDelegate.show(departmentList: departments) { [weak self] departmentKey in
+                departmentListHandlerDelegate?.show(departmentList: departments) { [weak self] departmentKey in
                     self?.startChat(departmentKey: departmentKey,
                                     message: message)
                     completion?()
@@ -226,7 +226,7 @@ final class WebimService {
         
         if messageStream?.getVisitSessionState() == .DEPARTMENT_SELECTION,
             let departments = messageStream?.getDepartmentList() {
-            departmentListHandlerDelegate.show(departmentList: departments) { [weak self] departmentKey in
+            departmentListHandlerDelegate?.show(departmentList: departments) { [weak self] departmentKey in
                 self?.startChat(departmentKey: departmentKey,
                                 message: nil)
                 self?.sendFile(data: data,
@@ -455,7 +455,7 @@ extension WebimService: FatalErrorHandler {
         case .ACCOUNT_BLOCKED:
             // Assuming to contact with Webim support.
             print("Account with used account name is blocked by Webim service.")
-            fatalErrorHandlerDelegate.showErrorDialog(withMessage: SessionCreationErrorDialog.accountBlocked.rawValue)
+            fatalErrorHandlerDelegate?.showErrorDialog(withMessage: SessionCreationErrorDialog.accountBlocked.rawValue)
             
             break
         case .PROVIDED_VISITOR_FIELDS_EXPIRED:
@@ -469,7 +469,7 @@ extension WebimService: FatalErrorHandler {
             break
         case .VISITOR_BANNED:
             print("Visitor with provided visitor fields is banned by an operator.")
-            fatalErrorHandlerDelegate.showErrorDialog(withMessage: SessionCreationErrorDialog.visitorBanned.rawValue)
+            fatalErrorHandlerDelegate?.showErrorDialog(withMessage: SessionCreationErrorDialog.visitorBanned.rawValue)
             
             break
         case .WRONG_PROVIDED_VISITOR_HASH:

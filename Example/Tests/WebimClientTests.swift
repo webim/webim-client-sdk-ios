@@ -30,10 +30,12 @@ import XCTest
 
 class WebimClientTests: XCTestCase {
     
+    // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
+    
     // MARK: - Tests
-    /*
     func testGetDeltaRequestLoop() {
-        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
+        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: WebimClientTests.userDefaultsKey),
                                                                                   queue: DispatchQueue.main)
         let internalErrorListener = InternalErrorListenerForTests()
         let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
@@ -54,6 +56,7 @@ class WebimClientTests: XCTestCase {
                                                 deviceToken: nil,
                                                 visitorJSONString: nil,
                                                 sessionID: nil,
+                                                prechat: nil,
                                                 authorizationData: nil)
         
         let webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
@@ -65,7 +68,7 @@ class WebimClientTests: XCTestCase {
     }
     
     func testGetActions() {
-        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
+        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: WebimClientTests.userDefaultsKey),
                                                                                   queue: DispatchQueue.main)
         let internalErrorListener = InternalErrorListenerForTests()
         let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
@@ -90,10 +93,10 @@ class WebimClientTests: XCTestCase {
                                                                          deviceToken: nil,
                                                                          visitorJSONString: nil,
                                                                          sessionID: nil,
+                                                                         prechat: nil,
                                                                          authorizationData: nil),
                                       webimActions: webimActions)
         
         XCTAssertTrue(webimActions === webimClient.getActions())
     }
-    */
 }

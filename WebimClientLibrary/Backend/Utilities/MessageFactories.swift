@@ -126,7 +126,7 @@ class MessageMapper {
         }
         
         return MessageImpl(serverURLString: serverURLString,
-                           id: messageItem.getID()!,
+                           id: messageItem.getClientSideID()!,
                            keyboard: keyboard,
                            keyboardRequest: keyboardRequest,
                            operatorID: messageItem.getSenderID(),

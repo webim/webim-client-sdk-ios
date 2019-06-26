@@ -29,9 +29,12 @@ import Foundation
 import XCTest
 
 class ActionRequestLoopTests: XCTestCase {
-    /*
+    
+    // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
+    
     // MARK: - Properties
-    private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
+    private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: ActionRequestLoopTests.userDefaultsKey),
                                                                                                                            queue: DispatchQueue.global()),
                                                               internalErrorListener: InternalErrorListenerForTests() as InternalErrorListener)
     
@@ -65,5 +68,4 @@ class ActionRequestLoopTests: XCTestCase {
         // Then: ActionRequestLoop OperationQueue should be nil.
         XCTAssertNil(actionRequestLoop.operationQueue)
     }
-    */
 }

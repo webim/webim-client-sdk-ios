@@ -30,7 +30,7 @@ import XCTest
 @testable import WebimClientLibrary_Example
 
 class ChatViewControllerTests: XCTestCase {
-    /*
+    
     // MARK: - Properties
     var chatViewController: ChatViewController!
     
@@ -40,7 +40,7 @@ class ChatViewControllerTests: XCTestCase {
         
         let storyboard = UIStoryboard(name: "Main",
                                       bundle: nil)
-        chatViewController = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
+        chatViewController = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController
     }
     
     // MARK: - Tests
@@ -62,6 +62,8 @@ class ChatViewControllerTests: XCTestCase {
         for index in 0 ... 2 {
             let message = MessageImpl(serverURLString: "http://demo.webim.ru/",
                                       id: String(index),
+                                      keyboard: nil,
+                                      keyboardRequest: nil,
                                       operatorID: nil,
                                       senderAvatarURLString: nil,
                                       senderName: "Sender name",
@@ -72,7 +74,9 @@ class ChatViewControllerTests: XCTestCase {
                                       attachment: nil,
                                       historyMessage: false,
                                       internalID: nil,
-                                      rawText: nil)
+                                      rawText: nil,
+                                      read: false,
+                                      messageCanBeEdited: false)
             messages.append(message as Message)
         }
         
@@ -83,5 +87,4 @@ class ChatViewControllerTests: XCTestCase {
         // Then: Table view background view is empty.
         XCTAssertNil(chatViewController.tableView!.backgroundView)
     }
-    */
 }

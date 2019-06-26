@@ -29,7 +29,10 @@ import Foundation
 import XCTest
 
 class MessageStreamImplTests: XCTestCase {
-    /*
+    
+    // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
+    
     // MARK: - Properties
     var messageStream: MessageStreamImpl?
     var webimActions: WebimActions?
@@ -39,7 +42,7 @@ class MessageStreamImplTests: XCTestCase {
         super.setUp()
         
         let serverURLString = "https://demo.webim.ru"
-        let sessionDestroyer = SessionDestroyer()
+        let sessionDestroyer = SessionDestroyer(userDefaultsKey: MessageStreamImplTests.userDefaultsKey)
         let accessChecker = AccessChecker(thread: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
         let queue = DispatchQueue.main
@@ -198,5 +201,5 @@ fileprivate class OnlineStatusChangeListenerForTests: OnlineStatusChangeListener
         status = newOnlineStatus
     }
     
-    */
+ 
 }

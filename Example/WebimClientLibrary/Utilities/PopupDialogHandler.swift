@@ -34,7 +34,7 @@ final class PopupDialogHandler {
     static let BUTTON_HEIGHT = 60
     
     // MARK: - Properties
-    private let delegate: UIViewController
+    private weak var delegate: UIViewController?
     
     // MARK - Initializer
     init(delegate: UIViewController) {
@@ -56,9 +56,9 @@ final class PopupDialogHandler {
         okButton.backgroundColor = backgroundSecondaryColor.color()
         popup.addButton(okButton)
         
-        delegate.present(popup,
-                         animated: true,
-                         completion: nil)
+        delegate?.present(popup,
+                          animated: true,
+                          completion: nil)
     }
     
     func showCreatingSessionFailureDialog(withMessage message: String) {
@@ -74,9 +74,9 @@ final class PopupDialogHandler {
         okButton.backgroundColor = backgroundSecondaryColor.color()
         popup.addButton(okButton)
         
-        delegate.present(popup,
-                         animated: true,
-                         completion: nil)
+        delegate?.present(popup,
+                          animated: true,
+                          completion: nil)
     }
     
     func showDepartmentListDialog(withDepartmentList departmentList: [Department],
@@ -108,9 +108,9 @@ final class PopupDialogHandler {
         cancelButton.backgroundColor = backgroundSecondaryColor.color()
         popup.addButton(cancelButton)
         
-        delegate.present(popup,
-                         animated: true,
-                         completion: nil)
+        delegate?.present(popup,
+                          animated: true,
+                          completion: nil)
     }
     
     func showFileSendFailureDialog(withMessage message: String,
@@ -128,9 +128,9 @@ final class PopupDialogHandler {
         okButton.titleColor = textMainColor.color()
         popupDialog.addButton(okButton)
         
-        delegate.present(popupDialog,
-                         animated: true,
-                         completion: nil)
+        delegate?.present(popupDialog,
+                          animated: true,
+                          completion: nil)
     }
     
     func showFileDialog(withMessage message: String?,
@@ -153,9 +153,9 @@ final class PopupDialogHandler {
         (popup.viewController as! PopupDialogDefaultViewController).titleColor = textMainColor.color()
         popup.addButton(button)
         
-        delegate.present(popup,
-                     animated: true,
-                     completion: nil)
+        delegate?.present(popup,
+                      animated: true,
+                      completion: nil)
     }
     
     func showRatingDialog(forOperator operatorID: String,
@@ -186,9 +186,9 @@ final class PopupDialogHandler {
         popup.addButtons([cancelButton,
                           rateButton])
         
-        delegate.present(popup,
-                         animated: true,
-                         completion: nil)
+        delegate?.present(popup,
+                          animated: true,
+                          completion: nil)
     }
     
     func showRatingFailureDialog() {
@@ -204,9 +204,9 @@ final class PopupDialogHandler {
         okButton.backgroundColor = backgroundSecondaryColor.color()
         popupDialog.addButton(okButton)
         
-        delegate.present(popupDialog,
-                         animated: true,
-                         completion: nil)
+        delegate?.present(popupDialog,
+                          animated: true,
+                          completion: nil)
     }
     
     func showChatClosedDialog() {
@@ -222,9 +222,9 @@ final class PopupDialogHandler {
         okButton.backgroundColor = backgroundSecondaryColor.color()
         popupDialog.addButton(okButton)
         
-        delegate.present(popupDialog,
-                         animated: true,
-                         completion: nil)
+        delegate?.present(popupDialog,
+                          animated: true,
+                          completion: nil)
     }
     
 }

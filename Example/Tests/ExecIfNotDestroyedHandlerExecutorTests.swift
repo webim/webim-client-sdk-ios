@@ -29,9 +29,12 @@ import XCTest
 @testable import WebimClientLibrary
 
 class ExecIfNotDestroyedHandlerExecutorTests: XCTestCase {
-    /*
+    
+    // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
+    
     // MARK: - Properties
-    let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
+    let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: ExecIfNotDestroyedHandlerExecutorTests.userDefaultsKey),
                                                                               queue: DispatchQueue.global())
     
     // MARK: - Tests
@@ -44,5 +47,4 @@ class ExecIfNotDestroyedHandlerExecutorTests: XCTestCase {
         wait(for: [expectationToBeCalled],
              timeout: 1.0)
     }
-   */
 }

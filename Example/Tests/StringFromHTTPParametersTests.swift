@@ -33,11 +33,12 @@ class StringFromHTTPParametersTests: XCTestCase {
     // MARK: - Tests
     func testStringFromHTTPParameters() {
         let dictionary = ["parameter1" : "value1",
-                          "parameter2" : "1"] as [String : Any]
-        let expectedString = "parameter1=value1&parameter2=1"
+                          "parameter2" : "1"] as [String : String]
+        let expectedString1 = "parameter1=value1&parameter2=1"
+        let expectedString2 = "parameter2=1&parameter1=value1"
+        let dictionaryString = dictionary.stringFromHTTPParameters()
         
-        XCTAssertEqual(dictionary.stringFromHTTPParameters(),
-                       expectedString)
+        XCTAssertTrue(dictionaryString == expectedString1 || dictionaryString == expectedString2)
     }
     
 }

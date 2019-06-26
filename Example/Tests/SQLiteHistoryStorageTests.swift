@@ -29,10 +29,11 @@ import Foundation
 import XCTest
 
 class SQLiteHistoryStorageTests: XCTestCase {
-    /*
+    
     // MARK: - Constants
     private static let DB_NAME = "test"
     private static let SERVER_URL_STRING = "https://demo.webim.ru"
+    private static let userDefaultsKey = "userDefaultsKey"
     
     // MARK: - Properties
     var sqLiteHistoryStorage: SQLiteHistoryStorage?
@@ -42,7 +43,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
         super.setUp()
         
         let queue = DispatchQueue.main
-        let exeIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
+        let exeIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: SQLiteHistoryStorageTests.userDefaultsKey),
                                                                                  queue: queue)
         let internalErrorListener = InternalErrorListenerForTests()
         let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: exeIfNotDestroyedHandlerExecutor,
@@ -65,11 +66,13 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                                                                                                 deviceToken: nil,
                                                                                                                 visitorJSONString: nil,
                                                                                                                 sessionID: nil,
+                                                                                                                prechat: nil,
                                                                                                                 authorizationData: nil),
                                                                              webimActions: WebimActions(baseURL: SQLiteHistoryStorageTests.SERVER_URL_STRING,
                                                                                                         actionRequestLoop: actionRequestLoop)),
                                                     reachedHistoryEnd: true,
-                                                    queue: queue)
+                                                    queue: queue,
+                                                    readBeforeTimestamp: -1)
     }
     
     override func tearDown() {
@@ -95,6 +98,8 @@ class SQLiteHistoryStorageTests: XCTestCase {
         for index in 1 ... numberOfMessages {
             messages.append(MessageImpl(serverURLString: SQLiteHistoryStorageTests.SERVER_URL_STRING,
                                         id: String(index),
+                                        keyboard: nil,
+                                        keyboardRequest: nil,
                                         operatorID: "1",
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
@@ -105,7 +110,9 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         attachment: nil,
                                         historyMessage: true,
                                         internalID: String(index),
-                                        rawText: nil))
+                                        rawText: nil,
+                                        read: true,
+                                        messageCanBeEdited: false))
         }
         
         return messages
@@ -192,5 +199,4 @@ class SQLiteHistoryStorageTests: XCTestCase {
             XCTAssertTrue(timestamp < upperThresholdTimestamp)
         }
     }
-    */
 }

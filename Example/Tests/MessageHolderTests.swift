@@ -29,8 +29,9 @@ import XCTest
 @testable import WebimClientLibrary
 
 class MessageHolderTests: XCTestCase {
-    /*
+    
     // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
     private enum MessageImplMockData: String {
         case serverURLString = "https://demo.webim.ru/"
         case operatorID = "operatorID"
@@ -56,6 +57,8 @@ class MessageHolderTests: XCTestCase {
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             history.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                        id: String(index),
+                                       keyboard: nil,
+                                       keyboardRequest: nil,
                                        operatorID: MessageImplMockData.operatorID.rawValue,
                                        senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                                        senderName: MessageImplMockData.senderName.rawValue,
@@ -66,7 +69,9 @@ class MessageHolderTests: XCTestCase {
                                        attachment: nil,
                                        historyMessage: true,
                                        internalID: String(index),
-                                       rawText: nil))
+                                       rawText: nil,
+                                       read: false,
+                                       messageCanBeEdited: false))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -80,6 +85,8 @@ class MessageHolderTests: XCTestCase {
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             currentChat.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                            id: String(index),
+                                           keyboard: nil,
+                                           keyboardRequest: nil,
                                            operatorID: MessageImplMockData.operatorID.rawValue,
                                            senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                                            senderName: MessageImplMockData.senderName.rawValue,
@@ -90,7 +97,9 @@ class MessageHolderTests: XCTestCase {
                                            attachment: nil,
                                            historyMessage: false,
                                            internalID: String(index),
-                                           rawText: nil))
+                                           rawText: nil,
+                                           read: false,
+                                           messageCanBeEdited: false))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -104,6 +113,8 @@ class MessageHolderTests: XCTestCase {
         for message in currentChat {
             let newMessage = MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                          id: message.getID(),
+                                         keyboard: message.getKeyboard(),
+                                         keyboardRequest: message.getKeyboardRequest(),
                                          operatorID: message.getOperatorID(),
                                          senderAvatarURLString: message.getSenderAvatarURLString(),
                                          senderName: message.getSenderName(),
@@ -114,7 +125,9 @@ class MessageHolderTests: XCTestCase {
                                          attachment: message.getAttachment(),
                                          historyMessage: true,
                                          internalID: String(message.getTimeInMicrosecond()),
-                                         rawText: message.getRawText())
+                                         rawText: message.getRawText(),
+                                         read: message.getRead(),
+                                         messageCanBeEdited: message.canBeEdited())
             result.append(newMessage)
         }
         
@@ -126,6 +139,8 @@ class MessageHolderTests: XCTestCase {
         
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: String(messagesCount),
+                           keyboard: nil,
+                           keyboardRequest: nil,
                            operatorID: MessageImplMockData.operatorID.rawValue,
                            senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                            senderName: MessageImplMockData.senderName.rawValue,
@@ -136,12 +151,16 @@ class MessageHolderTests: XCTestCase {
                            attachment: nil,
                            historyMessage: false,
                            internalID: String(messagesCount),
-                           rawText: nil)
+                           rawText: nil,
+                           read: false,
+                           messageCanBeEdited: false)
     }
     
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: currentChatMessage.getID(),
+                           keyboard: currentChatMessage.getKeyboard(),
+                           keyboardRequest: currentChatMessage.getKeyboardRequest(),
                            operatorID: currentChatMessage.getOperatorID(),
                            senderAvatarURLString: currentChatMessage.getSenderAvatarURLString(),
                            senderName: currentChatMessage.getSenderName(),
@@ -152,12 +171,16 @@ class MessageHolderTests: XCTestCase {
                            attachment: nil,
                            historyMessage: false,
                            internalID: currentChatMessage.getCurrentChatID(),
-                           rawText: nil)
+                           rawText: nil,
+                           read: false,
+                           messageCanBeEdited: false)
     }
     
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: historyMessage.getID(),
+                           keyboard: historyMessage.getKeyboard(),
+                           keyboardRequest: historyMessage.getKeyboardRequest(),
                            operatorID: historyMessage.getOperatorID(),
                            senderAvatarURLString: historyMessage.getSenderAvatarURLString(),
                            senderName: historyMessage.getSenderName(),
@@ -168,11 +191,13 @@ class MessageHolderTests: XCTestCase {
                            attachment: nil,
                            historyMessage: true,
                            internalID: historyMessage.getHistoryID()?.getDBid(),
-                           rawText: nil)
+                           rawText: nil,
+                           read: false,
+                           messageCanBeEdited: false)
     }
     
     private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {
-        let sessionDestroyer = SessionDestroyer()
+        let sessionDestroyer = SessionDestroyer(userDefaultsKey: MessageHolderTests.userDefaultsKey)
         let accessChecker = AccessChecker(thread: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
@@ -194,7 +219,7 @@ class MessageHolderTests: XCTestCase {
     
     private func newMessageHolder(withHistory history: [MessageImpl],
                                   localHistory: [MessageImpl]) -> MessageHolder {
-        let sessionDestroyer = SessionDestroyer()
+        let sessionDestroyer = SessionDestroyer(userDefaultsKey: MessageHolderTests.userDefaultsKey)
         let accessChecker = AccessChecker(thread: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
@@ -1709,5 +1734,5 @@ extension MessageImpl {
     func getPrimaryID() -> String! {
         return (getSource().isHistoryMessage() ? getHistoryID()!.getDBid() : getCurrentChatID())
     }
-    */
+ 
 }

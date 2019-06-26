@@ -29,7 +29,10 @@ import XCTest
 @testable import WebimClientLibrary
 
 class DeltaRequestLoopTests: XCTestCase {
-    /*
+    
+    // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
+    
     // MARK: - Properties
     private var deltaRequestLoop: DeltaRequestLoopForTests?
     
@@ -39,7 +42,7 @@ class DeltaRequestLoopTests: XCTestCase {
         super.setUp()
         
         deltaRequestLoop = DeltaRequestLoopForTests(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: "https://demo.webim.ru")),
-                                                    completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
+                                                    completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: DeltaRequestLoopTests.userDefaultsKey),
                                                                                                                  queue: DispatchQueue.global()),
                                                     sessionParametersListener: nil,
                                                     internalErrorListener: InternalErrorListenerForTests() as InternalErrorListener,
@@ -54,6 +57,7 @@ class DeltaRequestLoopTests: XCTestCase {
                                                     deviceToken: nil,
                                                     visitorJSONString: nil,
                                                     sessionID: nil,
+                                                    prechat: nil,
                                                     authorizationData: nil)
     }
     
@@ -143,5 +147,4 @@ final fileprivate class DeltaRequestLoopForTests: DeltaRequestLoop {
     override func requestDelta() {
         deltaRequestingRunned = true
     }
-    */
 }

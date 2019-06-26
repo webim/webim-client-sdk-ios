@@ -45,7 +45,6 @@ final class WebimRequest {
     private var faqItemRequestCompletionHandler: ((_ item: Data?) throws -> ())?
     private var faqCategoryRequestCompletionHandler: ((_ item: Data?) throws -> ())?
     private var faqStructureRequestCompletionHandler: ((_ item: Data?) throws -> ())?
-    private var httpBody: Data?
     private var messageID: String?
     private var filename: String?
     private var mimeType: String?

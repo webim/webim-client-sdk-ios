@@ -190,7 +190,7 @@ final class DeltaCallback {
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                     if currentChatMessage.getID() == deltaID { // Deleted message ID is passed as delta ID.
                         currentChatMessages.remove(at: currentChatMessageIndex)
-                        currentChat!.set(messages: currentChatMessages)
+                        currentChat?.set(messages: currentChatMessages)
                         
                         break
                     }
@@ -222,6 +222,7 @@ final class DeltaCallback {
                     for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                         if currentChatMessage.getID() == messageItem.getID() {
                             currentChatMessages[currentChatMessageIndex] = messageItem
+                            currentChat!.set(messages: currentChatMessages)
                             
                             break
                         }
@@ -250,6 +251,7 @@ final class DeltaCallback {
                             return
                         }
                         currentChatMessages[currentChatMessageIndex] = currentChatMessage
+                        currentChat?.set(messages: currentChatMessages)
                         messageHolder?.changed(message: message)
                         let time = message.getTimeInMicrosecond()
                         if time > UserDefaults.standard.integer(forKey: "readBeforeTimestampString") {

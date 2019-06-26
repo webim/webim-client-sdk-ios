@@ -29,12 +29,15 @@ import Foundation
 import XCTest
 
 class SessionDestroyerTests: XCTestCase {
-    /*
+    
+    // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
+    
     // MARK: - Tests
     func testDestroy() {
         // Setup.
         
-        let sessionDestroyer = SessionDestroyer()
+        let sessionDestroyer = SessionDestroyer(userDefaultsKey: SessionDestroyerTests.userDefaultsKey)
         
         let expectation1 = XCTestExpectation()
         let expectation2 = XCTestExpectation()
@@ -62,5 +65,5 @@ class SessionDestroyerTests: XCTestCase {
         wait(for: [expectation3],
              timeout: 1.0)
     }
-    */
+ 
 }

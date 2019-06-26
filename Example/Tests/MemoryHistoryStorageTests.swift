@@ -29,7 +29,7 @@ import Foundation
 import XCTest
 
 class MemoryHistoryStorageTests: XCTestCase {
-    /*
+    
     // MARK: - Constants
     private static let SERVER_URL_STRING = "http://demo.webim.ru"
     
@@ -41,6 +41,8 @@ class MemoryHistoryStorageTests: XCTestCase {
         for index in 1 ... numberOfMessages {
             messages.append(MessageImpl(serverURLString: MemoryHistoryStorageTests.SERVER_URL_STRING,
                                         id: String(index),
+                                        keyboard: nil,
+                                        keyboardRequest: nil,
                                         operatorID: "1",
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
@@ -51,7 +53,9 @@ class MemoryHistoryStorageTests: XCTestCase {
                                         attachment: nil,
                                         historyMessage: true,
                                         internalID: String(index),
-                                        rawText: nil))
+                                        rawText: nil,
+                                        read: false,
+                                        messageCanBeEdited: false))
         }
         
         return messages
@@ -77,5 +81,4 @@ class MemoryHistoryStorageTests: XCTestCase {
         XCTAssertEqual(gettedMessages.count,
                        messagesCount)
     }
-    */
 }

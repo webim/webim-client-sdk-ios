@@ -29,9 +29,12 @@ import XCTest
 @testable import WebimClientLibrary
 
 class WebimActionsTests: XCTestCase {
-    /*
+    
+    // MARK: - Constants
+    private static let userDefaultsKey = "userDefaultsKey"
+    
     // MARK: - Properties
-    private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(),
+    private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: WebimActionsTests.userDefaultsKey),
                                                                                                                            queue: DispatchQueue.global()),
                                                               internalErrorListener: InternalErrorListenerForTests() as InternalErrorListener)
     private var webimActions: WebimActions?
@@ -155,19 +158,6 @@ class WebimActionsTests: XCTestCase {
                            mimeType: mimeType,
                            clientSideID: clientSideID,
                            completionHandler: nil)
-        
-        // Then: Request parameters should be like this.
-        
-        let boundaryString = actionRequestLoop.webimRequest!.getContentType()!.replacingOccurrences(of: "multipart/form-data; boundary=",
-                                                                                                    with: "")
-        let expectedHTTPBody = "--\(boundaryString)\r\n"
-            + "Content-Disposition: form-data; name=\"webim_upload_file\"; filename=\"\(fileName)\"\r\n"
-            + "Content-Type: \(mimeType)\r\n\r\n"
-            + "1010\r\n"
-            + "--\(boundaryString)--\r\n"
-        XCTAssertEqual(String(data: actionRequestLoop.webimRequest!.getHTTPBody()!,
-                              encoding: .utf8),
-                       expectedHTTPBody)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getHTTPMethod(),
                        AbstractRequestLoop.HTTPMethods.post)
@@ -441,5 +431,4 @@ class WebimActionsTests: XCTestCase {
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
                        expectedBaseURLString)
     }
-    */
 }
