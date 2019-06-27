@@ -134,7 +134,7 @@ public final class SessionBuilder  {
     private var accountName: String?
     private var appVersion: String?
     private var deviceToken: String?
-    private var fatalErrorHandler: FatalErrorHandler?
+    private weak var fatalErrorHandler: FatalErrorHandler?
     private var localHistoryStoragingEnabled = true
     private var location: String?
     private var pageTitle: String?

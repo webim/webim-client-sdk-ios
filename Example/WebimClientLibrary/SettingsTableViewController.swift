@@ -30,7 +30,7 @@ final class SettingsTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var delegate: SettingsViewController?
+    weak var delegate: SettingsViewController?
     
     // MARK: Outlets
     
