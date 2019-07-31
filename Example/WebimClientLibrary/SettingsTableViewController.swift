@@ -56,6 +56,16 @@ final class SettingsTableViewController: UITableViewController {
     @IBOutlet var colorThemeCells: [UITableViewCell]!
     @IBOutlet weak var delimiter: UIView!
     
+    // Status bar style
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        switch ColorScheme.shared.schemeType {
+        case .light:
+            return .default
+        case .dark:
+            return .lightContent
+        }
+    }
+    
     // MARK: - Methods
     
     override func viewDidLoad() {
@@ -160,9 +170,6 @@ final class SettingsTableViewController: UITableViewController {
         }
         
         delimiter.backgroundColor = delimiterColor.color()
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.setStatusBarColor()
     }
     
     @objc

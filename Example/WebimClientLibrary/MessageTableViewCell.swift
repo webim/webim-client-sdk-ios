@@ -69,6 +69,13 @@ final class MessageTableViewCell: UITableViewCell {
         
         return label
     }()
+    lazy var quoteLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .headline)
+        label.numberOfLines = 0
+        
+        return label
+    }()
     
     
     // MARK: - Initialization
@@ -94,6 +101,7 @@ final class MessageTableViewCell: UITableViewCell {
         super.prepareForReuse()
         
         avatarImageView.image = nil
+        quoteLabel.text = nil
     }
     
     func setContent(withMessage message: Message) {
@@ -147,6 +155,7 @@ final class MessageTableViewCell: UITableViewCell {
         self.addSubview(nameLabel)
         self.addSubview(bodyLabel)
         self.addSubview(timeLabel)
+        self.addSubview(quoteLabel)
         
         avatarImageView.snp.makeConstraints { [weak self] constraintsMaker in
             guard let `self` = self else {
@@ -184,10 +193,20 @@ final class MessageTableViewCell: UITableViewCell {
                 return
             }
             
-            constraintsMaker.top.equalTo(bodyLabel.snp.bottom).offset(1)
+            constraintsMaker.top.equalTo(quoteLabel.snp.bottom).offset(1)
             constraintsMaker.left.equalTo(avatarImageView.snp.right).offset(10)
             constraintsMaker.right.equalTo(self).offset(-20)
             constraintsMaker.bottom.equalTo(self).offset(-10)
+        }
+        
+        quoteLabel.snp.makeConstraints { [weak self] constraintsMaker in
+            guard let `self` = self else {
+                return
+            }
+            
+            constraintsMaker.top.equalTo(bodyLabel.snp.bottom).offset(1)
+            constraintsMaker.left.equalTo(avatarImageView.snp.right).offset(10)
+            constraintsMaker.right.equalTo(self).offset(-20)
         }
     }
     
@@ -263,6 +282,10 @@ final class MessageTableViewCell: UITableViewCell {
                           message: message)
         avatarImageView.accessibilityLabel = Avatar.accessibilityLabel.rawValue.localized
         avatarImageView.accessibilityHint = Avatar.accessibilityHintOperator.rawValue.localized
+        
+        if let quote = message.getQuote() {
+            quoteLabel.text = "\(quote.getSenderName() ?? ""): \(quote.getMessageText() ?? "")"
+        }
     }
     
     private func layoutOperatorBusy(message: Message) {
@@ -293,6 +316,10 @@ final class MessageTableViewCell: UITableViewCell {
         avatarImageView.isHidden = false
         avatarImageView.isUserInteractionEnabled = false
         avatarImageView.accessibilityLabel = Avatar.accessibilityLabel.rawValue.localized
+        
+        if let quote = message.getQuote() {
+            quoteLabel.text = "\(quote.getSenderName() ?? ""): \(quote.getMessageText() ?? "")"
+        }
     }
     
     private func getOperatorAvatar(forImageView imageView: UIImageView,

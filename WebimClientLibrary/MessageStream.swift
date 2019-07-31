@@ -488,6 +488,28 @@ public protocol MessageStream: class {
     func updateWidgetStatus(data: String) throws
     
     /**
+     Reply a message.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     - important:
+     Maximum length of message is 32000 characters. Longer messages will be clipped.
+     - parameter message:
+     Text of the message.
+     - parameter repliedMessage:
+     Replied message.
+     - returns:
+     ID of the message or nil, if message can't be replied.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func reply(message: String,
+               repliedMessage: Message) throws -> String?
+    
+    /**
      Edits a text message.
      When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.changed(oldVersion:newVersion:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
      - important:

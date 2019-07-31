@@ -41,12 +41,14 @@ final class MessageToSend: MessageImpl {
          senderName: String,
          type: MessageType,
          text: String,
-         timeInMicrosecond: Int64) {
+         timeInMicrosecond: Int64,
+         quote: Quote? = nil) {
         super.init(serverURLString: serverURLString,
                    id: id,
                    keyboard: nil,
                    keyboardRequest: nil,
                    operatorID: nil,
+                   quote: quote,
                    senderAvatarURLString: nil,
                    senderName: senderName,
                    sendStatus: .SENDING,
@@ -59,7 +61,8 @@ final class MessageToSend: MessageImpl {
                    internalID: nil,
                    rawText: nil,
                    read: false,
-                   messageCanBeEdited: false)
+                   messageCanBeEdited: false,
+                   messageCanBeReplied: false)
     }
     
 }

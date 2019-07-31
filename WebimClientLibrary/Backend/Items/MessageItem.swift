@@ -41,12 +41,14 @@ final class MessageItem {
         case authorID = "authorId"
         case avatarURLString = "avatar"
         case canBeEdited = "canBeEdited"
+        case canBeReplied = "canBeReplied"
         case chatID = "chatId"
         case clientSideID = "clientSideId"
         case data = "data"
         case deleted = "deleted"
         case id = "id"
         case kind = "kind"
+        case quote = "quote"
         case read = "read"
         case senderName = "name"
         case text = "text"
@@ -58,17 +60,19 @@ final class MessageItem {
     private var authorID: String?
     private var avatarURLString: String?
     private var canBeEdited: Bool?
+    private var canBeReplied: Bool?
     private var chatID: String?
     private var clientSideID: String?
     private var data: [String: Any?]?
     private var deleted: Bool?
     private var id: String?
     private var kind: MessageKind?
+    private var quote: QuoteItem?
+    private var read: Bool?
     private var senderName: String?
     private var text: String?
     private var timestampInMicrosecond: Int64 = -1
     private var timestampInSecond: Double?
-    private var read: Bool?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -86,6 +90,10 @@ final class MessageItem {
         
         if let canBeEdited = jsonDictionary[JSONField.canBeEdited.rawValue] as? Bool {
             self.canBeEdited = canBeEdited
+        }
+        
+        if let canBeReplied = jsonDictionary[JSONField.canBeReplied.rawValue] as? Bool {
+            self.canBeReplied = canBeReplied
         }
         
         if let chatID = jsonDictionary[JSONField.chatID.rawValue] as? String {
@@ -106,6 +114,10 @@ final class MessageItem {
         
         if let id = jsonDictionary[JSONField.id.rawValue] as? String {
             self.id = id
+        }
+        
+        if let quote = jsonDictionary[JSONField.quote.rawValue] as? [String: Any?] {
+            self.quote = QuoteItem(jsonDictionary: quote)
         }
         
         if let read = jsonDictionary[JSONField.read.rawValue] as? Bool {
@@ -167,6 +179,10 @@ final class MessageItem {
         return kind
     }
     
+    func getQuote() -> QuoteItem? {
+        return quote
+    }
+    
     func getSenderName() -> String? {
         return senderName
     }
@@ -185,6 +201,10 @@ final class MessageItem {
     
     func getCanBeEdited() -> Bool {
         return canBeEdited ?? false
+    }
+    
+    func getCanBeReplied() -> Bool {
+        return canBeReplied ?? false
     }
     
     // MARK: -
@@ -269,4 +289,146 @@ extension MessageItem: Equatable {
         return false
     }
     
+}
+
+/**
+ Class that encapsulates message quote data, received from a server.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+final class QuoteItem {
+    // MARK: - Constants
+    // Raw values equal to field names received in responses from server.
+    private enum JSONField: String {
+        case state = "state"
+        case message = "message"
+        case authorId = "authorId"
+        case id = "id"
+        case kind = "kind"
+        case senderName = "name"
+        case text = "text"
+        case timestamp = "ts"
+    }
+    
+    // MARK: - Properties
+    private var state: QuoteStateItem?
+    private var authorId: String?
+    private var id: String?
+    private var kind: MessageItem.MessageKind?
+    private var senderName: String?
+    private var text: String?
+    private var timestamp: Int64 = -1
+    
+    // MARK: - Initialization
+    init(jsonDictionary: [String: Any?]) {
+        if let state = jsonDictionary[JSONField.state.rawValue] as? String {
+            self.state = QuoteStateItem(rawValue: state)
+        }
+        
+        guard let message = jsonDictionary[JSONField.message.rawValue] as? [String: Any?] else {
+            return
+        }
+        
+        if let messageKind = message[JSONField.kind.rawValue] as? String {
+            kind = MessageItem.MessageKind(rawValue: messageKind)
+        }
+        
+        if let authorId = message[JSONField.authorId.rawValue] as? Int {
+            self.authorId = String(authorId)
+        }
+        
+        if let id = message[JSONField.id.rawValue] as? String {
+            self.id = id
+        }
+        
+        if let senderName = message[JSONField.senderName.rawValue] as? String {
+            self.senderName = senderName
+        }
+        
+        if let text = message[JSONField.text.rawValue] as? String {
+            self.text = text
+        }
+        
+        if let timestamp = message[JSONField.timestamp.rawValue] as? Int64 {
+            self.timestamp = timestamp
+        }
+    }
+    
+    static func toDictionary(quote: Quote) -> [String: Any] {
+        var messageDictionary = [String : Any]()
+        if let authorId = quote.getAuthorID() {
+            messageDictionary[JSONField.authorId.rawValue] = authorId
+        }
+        if let timestamp = quote.getMessageTimestamp() {
+            messageDictionary[JSONField.timestamp.rawValue] = Int64(timestamp.timeIntervalSince1970)
+        }
+        if let id = quote.getMessageID() {
+            messageDictionary[JSONField.id.rawValue] = id
+        }
+        if let text = quote.getMessageText() {
+            messageDictionary[JSONField.text.rawValue] = text
+        }
+        if let messageType = quote.getMessageType() {
+            messageDictionary[JSONField.kind.rawValue] = MessageItem.MessageKind(messageType: messageType).rawValue
+        }
+        if let senderName = quote.getSenderName() {
+            messageDictionary[JSONField.senderName.rawValue] = senderName
+        }
+        return [JSONField.state.rawValue: QuoteStateItem(quoteState: quote.getState()).rawValue, JSONField.message.rawValue: messageDictionary]
+    }
+    
+    // MARK: - Methods
+    
+    func getID() -> String? {
+        return id
+    }
+    
+    func getText() -> String? {
+        return text
+    }
+    
+    func getAuthorID() -> String? {
+        return authorId
+    }
+    
+    func getMessageKind() -> MessageItem.MessageKind? {
+        return kind
+    }
+    
+    func getSenderName() -> String? {
+        return senderName
+    }
+    
+    func getTimeInMicrosecond() -> Int64? {
+        return Int64(timestamp * 1_000_000)
+    }
+    
+    func getState() -> QuoteStateItem? {
+        return state
+    }
+    
+    // MARK: -
+    enum QuoteStateItem: String {
+        // Raw values equal to field names received in responses from server.
+        case pending = "pending"
+        case filled = "filled"
+        case notFound = "not-found"
+        
+        init(quoteState: QuoteState) {
+            switch quoteState {
+            case .FILLED:
+                self = .filled
+                
+                break
+            case .PENDING:
+                self = .pending
+                
+                break
+            case .NOT_FOUND:
+                self = .notFound
+            }
+        }
+    }
 }

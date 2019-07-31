@@ -80,25 +80,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(userInfo)
         
         // WEBIM: Remote notification handling.
-        if Webim.isWebim(remoteNotification: userInfo) == true {
+        if Webim.isWebim(remoteNotification: userInfo) {
             _ = Webim.parse(remoteNotification: userInfo)
             // Handle Webim remote notification.
         } else {
             // Handle another type of remote notification.
         }
     }
-    
-    func setStatusBarColor() {
-        switch ColorScheme.shared.schemeType {
-        case .light:
-            UIApplication.shared.statusBarStyle = .default
-            
-            break
-        case .dark:
-            UIApplication.shared.statusBarStyle = .lightContent
-            
-            break
-        }
-    }
-
 }

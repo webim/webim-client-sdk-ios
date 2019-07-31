@@ -55,6 +55,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         case type = "type"
         case text = "text"
         case data = "data"
+        case quote = "quote"
     }
     
     // MARK: SQLite.swift abstractions
@@ -71,6 +72,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static let type = Expression<String>(ColumnName.type.rawValue)
     private static let text = Expression<String>(ColumnName.text.rawValue)
     private static let data = Expression<Blob?>(ColumnName.data.rawValue)
+    private static let quote = Expression<Blob?>(ColumnName.quote.rawValue)
     
     
     // MARK: - Properties
@@ -107,11 +109,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 1
+        return 2
     }
     
     func getVersionDB() -> Int {
-        return 1
+        return 2
     }
     
     func set(reachedHistoryEnd: Bool) {
@@ -265,7 +267,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      INTO history
                      (id, timestamp_in_microsecond, sender_id, sender_name, avatar_url_string, type, text, data)
                      VALUES
-                     (message.getID(), message.getHistoryID()!.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), MessageItem.MessageKind(messageType: message.getType()).rawValue, message.getRawText() ?? message.getText(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
+                     (message.getID(), message.getHistoryID()!.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), MessageItem.MessageKind(messageType: message.getType()).rawValue, message.getRawText() ?? message.getText(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()), SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()))
                      */
                     let statement = try self.db!.prepare("INSERT OR FAIL INTO history ("
                         + "\(SQLiteHistoryStorage.ColumnName.id.rawValue), "
@@ -275,7 +277,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.avatarURLString.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.type.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.text.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.data.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+                        + "\(SQLiteHistoryStorage.ColumnName.data.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
                     try statement.run(message.getID(),
                                       message.getHistoryID()!.getTimeInMicrosecond(),
                                       message.getOperatorID(),
@@ -283,7 +286,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                       message.getSenderAvatarURLString(),
                                       MessageItem.MessageKind(messageType: message.getType()).rawValue,
                                       message.getRawText() ?? message.getText(),
-                                      SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
+                                      SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()),
+                                      SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()))
                     // Raw SQLite statement constructed because there's no way to implement INSERT OR FAIL query with SQLite.swift methods. Appropriate INSERT query can look like this:
                     /*try self.db!.run(SQLiteHistoryStorage
                      .history
@@ -294,7 +298,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
                      SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
                      SQLiteHistoryStorage.text <- message.getText(),
-                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))*/
+                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()),
+                     SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))*/
                     
                     self.db?.trace {
                         WebimInternalLogger.shared.log(entry: "\($0)",
@@ -431,6 +436,17 @@ final class SQLiteHistoryStorage: HistoryStorage {
         return nil
     }
     
+    private static func convertToBlob(quote: Quote?) -> Blob? {
+        if let quote = quote {
+            let dictionary = QuoteItem.toDictionary(quote: quote)
+            let data = NSKeyedArchiver.archivedData(withRootObject: dictionary)
+            
+            return data.datatypeValue
+        }
+        
+        return nil
+    }
+    
     private func dropTables() {
         try! self.db?.run(SQLiteHistoryStorage.history.drop(ifExists: true))
     }
@@ -448,7 +464,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                      create: false)
             let dbPath = "\(documentsPath)/\(name)"
             self.db = try! Connection(dbPath)
-            self.db?.userVersion = 1
+            self.db?.userVersion = 2
             self.db?.busyTimeout = 1.0
             self.db?.busyHandler() { tries in
                 if tries >= 3 {
@@ -473,7 +489,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
          avatar_url_string TEXT,
          type TEXT NOT NULL,
          text TEXT NOT NULL,
-         data TEXT
+         data TEXT,
+         quote TEXT
          */
         try! self.db?.run(SQLiteHistoryStorage.history.create(ifNotExists: true) { t in
             t.column(SQLiteHistoryStorage.id,
@@ -486,6 +503,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             t.column(SQLiteHistoryStorage.type)
             t.column(SQLiteHistoryStorage.text)
             t.column(SQLiteHistoryStorage.data)
+            t.column(SQLiteHistoryStorage.quote)
         })
         self.db?.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",
@@ -583,11 +601,18 @@ final class SQLiteHistoryStorage: HistoryStorage {
             keyboardRequest = KeyboardRequestImpl.getKeyboardRequest(jsonDictionary: data)
         }
         
+        var quote: Quote?
+        if let quoteValue = row[SQLiteHistoryStorage.quote],
+            let data = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(quoteValue)) as? [String : Any?] {
+                quote = QuoteImpl.getQuote(quoteItem: QuoteItem(jsonDictionary: data), messageAttachment: nil)
+        }
+        
         return MessageImpl(serverURLString: serverURLString,
                            id: (clientSideID ?? id),
                            keyboard: keyboard,
                            keyboardRequest: keyboardRequest,
                            operatorID: row[SQLiteHistoryStorage.senderID],
+                           quote: quote,
                            senderAvatarURLString: row[SQLiteHistoryStorage.avatarURLString],
                            senderName: row[SQLiteHistoryStorage.senderName],
                            type: type!,
@@ -599,7 +624,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            internalID: id,
                            rawText: rawText,
                            read: row[SQLiteHistoryStorage.timestamp] <= readBeforeTimestamp || readBeforeTimestamp == -1,
-                           messageCanBeEdited: false)
+                           messageCanBeEdited: false,
+                           messageCanBeReplied: false)
     }
     
     private func insert(message: MessageImpl) throws {
@@ -634,7 +660,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
                     SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
                     SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
-                    SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
+                    SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()),
+                    SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))
         
         db?.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",

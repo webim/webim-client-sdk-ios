@@ -193,14 +193,11 @@ final class WebimSessionImpl {
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyRevision.rawValue)
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyEnded.rawValue)
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
+                    userDefaults.updateValue(historyMajorVersion, forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
+                    sqlhistoryStorage.updateDB()
                     UserDefaults.standard.setValue(userDefaults,
                                                    forKey: userDefaultsKey)
                 }
-            }
-            
-            if (userDefaults?[UserDefaultsMainPrefix.dbVersion.rawValue] as? Int) != sqlhistoryStorage.getVersionDB() {
-                sqlhistoryStorage.updateDB()
-                UserDefaults.standard.set(sqlhistoryStorage.getVersionDB(), forKey: UserDefaultsMainPrefix.dbVersion.rawValue)
             }
         } else {
             historyStorage = MemoryHistoryStorage(readBeforeTimestamp: Int64(UserDefaults.standard.integer(forKey: UserDefaultsMainPrefix.readBeforeTimestamp.rawValue)))
@@ -503,9 +500,8 @@ final class HistoryPoller {
             self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
             self.lastRevision = revision
             
-            if isInitial
-                && !hasMore {
-                self.messageHolder.set(reachedEndOfLocalHistory: true)
+            if isInitial && !hasMore {
+                self.messageHolder.set(endOfHistoryReached: true)
                 self.historyMetaInformationStorage.set(historyEnded: true)
             }
             

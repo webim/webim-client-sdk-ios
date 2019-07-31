@@ -74,6 +74,7 @@
     -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
     -   [sendKeyboardRequest(button:message:completionHandler:) method](#send-keyboard-request)
     -   [udpateWidgetStatus(data:) method](#update-widget-status)
+    -   [reply(message:repliedMessage:) method](#reply-message)
     -   [edit(message:text:completionHandler:) method](#edit-message)
     -   [delete(message:completionHandler:) method](#delete-message)
     -   [setChatRead() method](#set-chat-read)
@@ -199,9 +200,11 @@
     -   [getAttachment() method](#get-attachment)
     -   [getData() method](#get-data)
     -   [getID() method](#get-id)
+    -   [getCurrentChatID() method](#get-current-chat-id)
     -   [getKeyboard() method](#get-keyboard)
     -   [getKeyboardRequest()](#get-keyboard-request)
     -   [getOperatorID() method](#get-operator-id)
+    -   [getQuote() method](#get-quote)
     -   [getSenderAvatarFullURL() method](#get-sender-avatar-full-url)
     -   [getSenderName() method](#get-sender-name)
     -   [getSendStatus() method](#get-send-status)
@@ -211,6 +214,20 @@
     -   [isEqual(to:) method](#is-equal-to-message)
     -   [isReadByOperator() method](#is-read-by-operator)
     -   [canBeEdited() method](#can-be-edited)
+    -   [canBeReplied() method](#can-be-replied)
+-   [Quote protocol](#quote)
+    -   [getAuthorID method](#get-quote-author-id)
+    -   [getMessageAttachment() method](#get-quote-message-attachment)
+    -   [getMessageTimestamp() method](#get-quote-message-timestamp)
+    -   [getMessageID() method](#get-quote-message-id)
+    -   [getMessageText() method](#get-quote-message-text)
+    -   [getMessageType() method](#get-quote-message-type)
+    -   [getSenderName() method](#get-quote-sender-name)
+    -   [getState() method](#get-quote-state)
+-   [QuotState enum](#quote-state)
+    -   [PENDING case](#quote-pending)
+    -   [FILLED case](#quote-filled)
+    -   [NOT_FOUND case](#qoute-not-found)
 -   [MessageAttachment protocol](#message-attachment)
     -   [getContentType() method](#get-content-type)
     -   [getFileName() method](#get-file-name)
@@ -734,6 +751,15 @@ Can throw errors of [AccessError](#access-error) type.
 
 Update widget status. The change is displayed by the operator..
 `data` parameter – JSON string with new widget status.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id="reply-message">reply(message:repliedMessage:) method</h3>
+
+Reply a message.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
+`message` parameter – text of the message of `String` type.
+`replied message` – replied message of [`Message`](#message) type.
+Returns randomly generated `String`-typed ID of the message or `nil` if message can't be replied.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="edit-message">edit(message:text:completionHandler:) method</h3>
@@ -1398,6 +1424,10 @@ Returns dictionary which contains custom fields or `nil` if there's no such cust
 Every message can be uniquefied by its ID. Messages also can be lined up by its IDs. ID doesn’t change while changing the content of a message.
 Returns unique ID of the message of type `String`.
 
+<h3 id="get-current-chat-id">getCurrentChatID() method</h3>
+
+Returns unique current chat id of the message of type `String` or `nil`.
+
 <h3 id="get-keyboard">getKeyboard() method</h3>
 
 Messages of type [Keyboard](#keyboard-type) contain keyboard from script robot.
@@ -1411,6 +1441,10 @@ Returns [KeyboardRequest](#keyboard-request) which contains keyboard request or 
 <h3 id ="get-operator-id">getOperatorID() method</h3>
 
 Returns ID of a message sender, if the sender is an operator, of type `String`.
+
+<h3 id="get-quote">getQuote() method</h3>
+
+Returns quote message of type [`Quote`](#quote) or `nil`.
 
 <h3 id ="get-sender-avatar-full-url">getSenderAvatarFullURL() method</h3>
 
@@ -1456,6 +1490,66 @@ Returns true if visitor message read by operator or this message is not by visit
 <h3 id ="can-be-edited">canBeEdited() method</h3>
 
 Returns true if message can be edited and false otherwise.
+
+<h3 id="can-be-replied">canBeReplied() method</h3>
+
+Returns true if message can be replied and false otherwise.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id="qoute">Quote protocol</h2>
+
+Contains information about quote.
+
+<h3 id ="get-quote-author-id">getAuthorID() method</h3>
+
+Returns unique ID of message author of `String` type or `nil`.
+
+<h3 id ="get-quote-message-attachment">getMessageAttachment() method</h3>
+
+Returns message attachment of [`MessageAttachment`](#message-attachment) type or `nil`.
+
+<h3 id ="get-quote-message-timestamp">getMessageTimestamp() method</h3>
+
+Returns quote message timestamp of `Date` type or `nil`.
+
+<h3 id ="get-quote-message-id">getMessageID() method</h3>
+
+Returns quote message unique ID of `String` type or `nil`.
+
+<h3 id ="get-quote-message-text">getMessageText() method</h3>
+
+Returns quote message text of `String` type or `nil`.
+
+<h3 id ="get-quote-message-type">getMessageType() method</h3>
+
+Returns quote message type of [`MessageType`](#message-type) type or `nil`.
+
+<h3 id ="get-quote-sender-name">getSenderName() method</h3>
+
+Returns quote message sender name of `String` type or `nil`.
+
+<h3 id ="get-quote-state>getState() method</h3>
+
+Returns quote type of [`QuoteState`](#quote-State) type.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="quote-state">QuoteState enum</h2>
+
+Quote state representation.
+
+<h3 id ="quote-pending">PENDING case</h3>
+
+Quote is loading.
+
+<h3 id ="quote-filled">FILLED case</h3>
+
+Quote loaded.
+
+<h3 id ="quote-not-found">NOT_FOUND case</h3>
+
+Quote message is not found on server.
 
 [Go to table of contents](#table-of-contents)
 

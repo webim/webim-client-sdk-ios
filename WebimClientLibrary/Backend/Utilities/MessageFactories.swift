@@ -125,11 +125,20 @@ class MessageMapper {
             keyboardRequest = KeyboardRequestImpl.getKeyboardRequest(jsonDictionary: data)
         }
         
+        let quote = messageItem.getQuote()
+        var messageAttachmentFromQuote: MessageAttachment? = nil
+        if let kind = quote?.getMessageKind(), kind == .fileFromVisitor || kind == .fileFromOperator {
+            messageAttachmentFromQuote = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
+                                                                             webimClient: webimClient!,
+                                                                             text: (quote?.getText())!)
+        }
+        
         return MessageImpl(serverURLString: serverURLString,
                            id: messageItem.getClientSideID()!,
                            keyboard: keyboard,
                            keyboardRequest: keyboardRequest,
                            operatorID: messageItem.getSenderID(),
+                           quote: QuoteImpl.getQuote(quoteItem: quote, messageAttachment: messageAttachmentFromQuote),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
                            senderName: messageItem.getSenderName()!,
                            type: type!,
@@ -141,7 +150,8 @@ class MessageMapper {
                            internalID: messageItem.getID(),
                            rawText: rawText,
                            read: messageItem.getRead() ?? true,
-                           messageCanBeEdited: messageItem.getCanBeEdited())
+                           messageCanBeEdited: messageItem.getCanBeEdited(),
+                           messageCanBeReplied: messageItem.getCanBeReplied())
     }
     
     func set(webimClient: WebimClient) {
@@ -225,6 +235,26 @@ final class SendingFactory {
                              text: text,
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond())
     }
+    
+    func createTextMessageToSendWithQuoteWith(id: String,
+                                              text: String,
+                                              repliedMessage: Message) -> MessageToSend {
+        return MessageToSend(serverURLString: serverURLString,
+                             id: id,
+                             senderName: "",
+                             type: .VISITOR,
+                             text: text,
+                             timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
+                             quote: QuoteImpl(state: QuoteState.PENDING,
+                                              authorID: nil,
+                                              messageAttachment: nil,
+                                              messageID: nil,
+                                              messageType: nil,
+                                              senderName: repliedMessage.getSenderName(),
+                                              text: repliedMessage.getText(),
+                                              timestamp: nil))
+    }
+
     
     func createFileMessageToSendWith(id: String) -> MessageToSend {
         return MessageToSend(serverURLString: serverURLString,

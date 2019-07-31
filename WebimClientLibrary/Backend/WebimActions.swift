@@ -67,6 +67,7 @@ class WebimActions {
         case pageID = "page-id"
         case platform = "platform"
         case providedAuthenticationToken = "provided_auth_token"
+        case quote = "quote"
         case rating = "rate"
         case respondImmediately = "respond-immediately"
         case requestMessageId = "request-message-id"
@@ -173,6 +174,27 @@ class WebimActions {
                                                         contentType: (ContentType.multipartBody.rawValue + boundaryString),
                                                         baseURLString: urlString,
                                                         sendFileCompletionHandler: completionHandler))
+    }
+    
+    func replay(message: String,
+                clientSideID: String,
+                quotedMessageID: String) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.sendMessage.rawValue,
+                          Parameter.clientSideID.rawValue: clientSideID,
+                          Parameter.message.rawValue: message,
+                          Parameter.quote.rawValue: getQuotedMessage(repliedMessageId: quotedMessageID)] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        messageID: clientSideID,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString))
+    }
+    
+    private func getQuotedMessage(repliedMessageId: String) -> String {
+        return "{\"ref\":{\"msgId\":\"\(repliedMessageId)\",\"msgChannelSideId\":null,\"chatId\":null}}";
     }
     
     func delete(clientSideID: String,

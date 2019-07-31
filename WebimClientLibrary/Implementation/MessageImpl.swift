@@ -41,6 +41,7 @@ class MessageImpl {
     private let keyboard: Keyboard?
     private let keyboardRequest: KeyboardRequest?
     private let operatorID: String?
+    private let quote: Quote?
     private let rawText: String?
     private let senderAvatarURLString: String?
     private let senderName: String
@@ -55,6 +56,7 @@ class MessageImpl {
     private var historyMessage: Bool
     private var read: Bool
     private var messageCanBeEdited: Bool
+    private var messageCanBeReplied: Bool
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -62,6 +64,7 @@ class MessageImpl {
          keyboard: Keyboard?,
          keyboardRequest: KeyboardRequest?,
          operatorID: String?,
+         quote: Quote?,
          senderAvatarURLString: String?,
          senderName: String,
          sendStatus: MessageSendStatus = .SENT,
@@ -74,12 +77,14 @@ class MessageImpl {
          internalID: String?,
          rawText: String?,
          read: Bool,
-         messageCanBeEdited: Bool) {
+         messageCanBeEdited: Bool,
+         messageCanBeReplied: Bool) {
         self.attachment = attachment
         self.data = data
         self.id = id
         self.keyboard = keyboard
         self.keyboardRequest = keyboardRequest
+        self.quote = quote
         self.operatorID = operatorID
         self.rawText = rawText
         self.senderAvatarURLString = senderAvatarURLString
@@ -91,6 +96,7 @@ class MessageImpl {
         self.type = type
         self.read = read
         self.messageCanBeEdited = messageCanBeEdited
+        self.messageCanBeReplied = messageCanBeReplied
         
         self.historyMessage = historyMessage
         if historyMessage {
@@ -128,17 +134,6 @@ class MessageImpl {
         }
         
         return historyID
-    }
-    
-    func getCurrentChatID() -> String? {
-        guard currentChatID != nil else {
-            WebimInternalLogger.shared.log(entry: "Message \(self.toString()) do not have an ID in current chat or do not exist in current chat or chat exists itself not.",
-                verbosityLevel: .DEBUG)
-            
-            return nil
-        }
-        
-        return currentChatID
     }
     
     func getServerUrlString() -> String {
@@ -284,6 +279,10 @@ MessageImpl {
 
 // MARK: - Message
 extension MessageImpl: Message {
+    func getQuote() -> Quote? {
+        return quote
+    }
+    
     
     func getAttachment() -> MessageAttachment? {
         return attachment
@@ -295,6 +294,17 @@ extension MessageImpl: Message {
     
     func getID() -> String {
         return id
+    }
+    
+    func getCurrentChatID() -> String? {
+        guard currentChatID != nil else {
+            WebimInternalLogger.shared.log(entry: "Message \(self.toString()) do not have an ID in current chat or do not exist in current chat or chat exists itself not.",
+                verbosityLevel: .DEBUG)
+            
+            return nil
+        }
+        
+        return currentChatID
     }
     
     func getKeyboard() -> Keyboard? {
@@ -347,6 +357,10 @@ extension MessageImpl: Message {
     
     func canBeEdited() -> Bool {
         return messageCanBeEdited
+    }
+    
+    func canBeReplied() -> Bool {
+        return messageCanBeReplied
     }
     
 }
@@ -687,5 +701,114 @@ final class KeyboardRequestImpl: KeyboardRequest {
     
     func getMessageID() -> String {
         return keyboardRequestItem.getMessageId()
+    }
+}
+
+// MARK: -
+/**
+ - seealso:
+ `Message.getQuote()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+final class QuoteImpl: Quote {
+    
+    private let state: QuoteState
+    private let authorID: String?
+    private let messageAttachment: MessageAttachment?
+    private let messageID: String?
+    private let messageType: MessageType?
+    private let senderName: String?
+    private let text: String?
+    private let timestamp: Int64?
+    
+    init(state: QuoteState,
+         authorID: String?,
+         messageAttachment: MessageAttachment?,
+         messageID: String?,
+         messageType: MessageType?,
+         senderName: String?,
+         text: String?,
+         timestamp: Int64?) {
+        self.state = state
+        self.authorID = authorID
+        self.messageAttachment = messageAttachment
+        self.messageID = messageID
+        self.messageType = messageType
+        self.senderName = senderName
+        self.text = text
+        self.timestamp = timestamp
+    }
+    
+    // MARK: - Methods
+    static func getQuote(quoteItem: QuoteItem?, messageAttachment: MessageAttachment?) -> Quote? {
+        guard let quoteItem = quoteItem else {
+            return nil
+        }
+        var text = quoteItem.getText()
+        if let messageAttachment = messageAttachment {
+            text = messageAttachment.getFileName()
+        }
+        var messageType: MessageType? = nil
+        if let messageKind = quoteItem.getMessageKind() {
+            messageType = MessageMapper.convert(messageKind: messageKind)
+        }
+        return QuoteImpl(state: convert(quoteState: quoteItem.getState()!),
+                         authorID: quoteItem.getAuthorID(),
+                         messageAttachment: messageAttachment,
+                         messageID: quoteItem.getID(),
+                         messageType: messageType,
+                         senderName: quoteItem.getSenderName(),
+                         text: text,
+                         timestamp: quoteItem.getTimeInMicrosecond())
+    }
+    
+    func getAuthorID() -> String? {
+        return authorID
+    }
+    
+    func getMessageAttachment() -> MessageAttachment? {
+        return messageAttachment
+    }
+    
+    func getMessageTimestamp() -> Date? {
+        guard let timestamp = timestamp else {
+            return nil
+        }
+        return Date(timeIntervalSince1970: TimeInterval(timestamp / 1_000_000))
+        
+    }
+    
+    func getMessageID() -> String? {
+        return messageID
+    }
+    
+    func getMessageText() -> String? {
+        return text
+    }
+    
+    func getMessageType() -> MessageType? {
+        return messageType
+    }
+    
+    func getSenderName() -> String? {
+        return senderName
+    }
+    
+    func getState() -> QuoteState {
+        return state
+    }
+    
+    static private func convert(quoteState: QuoteItem.QuoteStateItem) -> QuoteState {
+        switch quoteState {
+        case .pending:
+            return .PENDING
+        case .filled:
+            return .FILLED
+        case .notFound:
+            return .NOT_FOUND
+        }
     }
 }
