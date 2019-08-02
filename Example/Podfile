@@ -11,7 +11,7 @@ target 'WebimClientLibrary_Example' do
     pod 'Fabric'
     pod 'SlackTextViewController', :inhibit_warnings => true
     pod 'SnapKit', :inhibit_warnings => true
-    pod 'SQLite.swift', '0.12.0', :inhibit_warnings => true # WebimClientLibrary dependency – added to inhibit its warnings.
+    pod 'SQLite.swift', :git => 'https://github.com/bdorfman/SQLite.swift.git', :branch => 'fix-swift-4'
     pod 'PopupDialog', '~> 1.0', :inhibit_warnings => true
     
     
@@ -21,7 +21,7 @@ target 'WebimClientLibrary_Example' do
     
     post_install do |installer|
         installer.pods_project.targets.each do |target|
-            if target.name == 'WebimClientLibrary' ||  target.name == 'SQLite.swift' || target.name == 'Cosmos'
+            if target.name == 'Cosmos'
                 target.build_configurations.each do |config|
                     config.build_settings['SWIFT_VERSION'] = '5.0'
                 end
