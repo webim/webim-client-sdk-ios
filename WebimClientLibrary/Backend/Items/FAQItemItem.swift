@@ -44,6 +44,7 @@ final class FAQItemItem {
         case content = "content"
         case likes = "likes"
         case dislikes = "dislikes"
+        case userRate = "userRate"
     }
     
     // MARK: - Properties
@@ -54,6 +55,7 @@ final class FAQItemItem {
     private var content: String?
     private var likes: Int?
     private var dislikes: Int?
+    private var userRate: UserRate = .NO_RATE
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -83,6 +85,19 @@ final class FAQItemItem {
         
         if let dislikes = jsonDictionary[JSONField.dislikes.rawValue] as? Int {
             self.dislikes = dislikes
+        }
+        
+        if let userRateItem = jsonDictionary[JSONField.userRate.rawValue] as? String {
+            switch userRateItem {
+            case "like":
+                userRate = .LIKE
+                break
+            case "dislike":
+                userRate = .DISLIKE
+                break
+            default:
+                userRate = .NO_RATE
+            }
         }
     }
     
@@ -118,7 +133,9 @@ extension FAQItemItem: FAQItem {
         return dislikes!
     }
     
-    
+    func getUserRate() -> UserRate {
+        return userRate
+    }
 }
 
 // MARK: - Equatable
@@ -127,6 +144,72 @@ extension FAQItemItem: Equatable {
     // MARK: - Methods
     static func == (lhs: FAQItemItem,
                     rhs: FAQItemItem) -> Bool {
+        if lhs.id == rhs.id {
+            return true
+        }
+        
+        return false
+    }
+    
+}
+
+/**
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+final class FAQSearchItemItem {
+    // MARK: - Constants
+    // Raw values equal to field names received in responses from server.
+    private enum JSONField: String {
+        case id = "id"
+        case title = "title"
+        case score = "score"
+    }
+    
+    // MARK: - Properties
+    private var id: String?
+    private var title: String?
+    private var score: Double?
+    
+    // MARK: - Initialization
+    init(jsonDictionary: [String: Any?]) {
+        if let id = jsonDictionary[JSONField.id.rawValue] as? String {
+            self.id = id
+        }
+        
+        if let title = jsonDictionary[JSONField.title.rawValue] as? String {
+            self.title = title
+        }
+        
+        if let score = jsonDictionary[JSONField.score.rawValue] as? Double {
+            self.score = score
+        }
+    }
+}
+
+extension FAQSearchItemItem: FAQSearchItem {
+    func getID() -> String {
+        return id!
+    }
+    
+    func getTitle() -> String {
+        return title!
+    }
+    
+    func getScore() -> Double {
+        return score!
+    }
+    
+}
+
+// MARK: - Equatable
+extension FAQSearchItemItem: Equatable {
+    
+    // MARK: - Methods
+    static func == (lhs: FAQSearchItemItem,
+                    rhs: FAQSearchItemItem) -> Bool {
         if lhs.id == rhs.id {
             return true
         }

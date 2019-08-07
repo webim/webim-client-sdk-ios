@@ -26,6 +26,14 @@
 
 import Foundation
 
+// MARK: - Constants
+fileprivate enum UserDefaultsName: String {
+    case main = "ru.webim.WebimClientSDKiOS.faq"
+}
+fileprivate enum UserDefaultsMainPrefix: String {
+    case historyMajorVersion = "history_major_version"
+}
+
 // MARK: -
 /**
  - author:
@@ -40,14 +48,17 @@ final class FAQImpl {
     private var clientStarted = false
     private var faqDestroyer: FAQDestroyer
     private var faqClient: FAQClient
+    private var cache: FAQSQLiteHistoryStorage
     
     // MARK: - Initialization
     private init(accessChecker: FAQAccessChecker,
                  faqDestroyer: FAQDestroyer,
-                 faqClient: FAQClient) {
+                 faqClient: FAQClient,
+                 cache: FAQSQLiteHistoryStorage) {
         self.accessChecker = accessChecker
         self.faqDestroyer = faqDestroyer
         self.faqClient = faqClient
+        self.cache = cache
     }
     
     // MARK: - Methods
@@ -73,9 +84,25 @@ final class FAQImpl {
             faqClient.stop()
         }
         
+        let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.main.rawValue)
+        
+        let cache = FAQSQLiteHistoryStorage(dbName: "faqcache.db", queue: DispatchQueue.global(qos: .userInteractive))
+        
+        let historyMajorVersion = cache.getMajorVersion()
+        if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
+            if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.main.rawValue) {
+                userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
+                userDefaults.updateValue(historyMajorVersion, forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
+                cache.updateDB()
+                UserDefaults.standard.setValue(userDefaults,
+                                               forKey: UserDefaultsName.main.rawValue)
+            }
+        }
+        
         return FAQImpl(accessChecker: accessChecker,
                        faqDestroyer: faqDestroyer,
-                       faqClient: faqClient)
+                       faqClient: faqClient,
+                       cache: cache)
     }
 }
 
@@ -85,13 +112,14 @@ extension FAQImpl: FAQ {
         try accessChecker.checkAccess()
         
         faqClient.getActions().getCategory(categoryId: id) { data in
-            if data != nil {
-                let json = try? JSONSerialization.jsonObject(with: data!,
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: [])
                 if let faqCategoryDictionary = json as? [String: Any?] {
                     let faqCategory = FAQCategoryItem(jsonDictionary: faqCategoryDictionary)
-                    
                     completion(faqCategory)
+                    
+                    self.cache.insert(categoryId: faqCategory.getID(), categoryDictionary: faqCategoryDictionary)
                 }
             } else {
                 completion(nil)
@@ -99,11 +127,24 @@ extension FAQImpl: FAQ {
         }
     }
     
+    func getCachedCategory(id: Int, completion: @escaping (FAQCategory?) -> ()) throws {
+        try accessChecker.checkAccess()
+        
+        self.cache.get(categoryId: id) { data in
+            if let data = data {
+                completion(FAQCategoryItem(jsonDictionary: data))
+            } else {
+                completion(nil)
+            }
+            
+        }
+    }
+    
     func getStructure(id: Int, completion: @escaping (FAQStructure?) -> ()) throws {
         try accessChecker.checkAccess()
         faqClient.getActions().getStructure(categoryId: id) { data in
-            if data != nil {
-                let json = try? JSONSerialization.jsonObject(with: data!,
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: [])
                 if let faqStructureDictionary = json as? [String: Any?] {
                     let faqStructure = FAQStructureItem(jsonDictionary: faqStructureDictionary)
@@ -121,8 +162,8 @@ extension FAQImpl: FAQ {
         try accessChecker.checkAccess()
         
         faqClient.getActions().getItem(itemId: id) { data in
-            if data != nil {
-                let json = try? JSONSerialization.jsonObject(with: data!,
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: [])
                 if let faqItemDictionary = json as? [String: Any?] {
                     let faqItem = FAQItemItem(jsonDictionary: faqItemDictionary)
@@ -131,6 +172,43 @@ extension FAQImpl: FAQ {
                 }
             } else {
                 completion(nil)
+            }
+        }
+    }
+    
+    func like(item: FAQItem) throws {
+        try accessChecker.checkAccess()
+        
+        faqClient.getActions().like(itemId: item.getID())
+    }
+    
+    func dislike(item: FAQItem) throws {
+        try accessChecker.checkAccess()
+        
+        faqClient.getActions().dislike(itemId: item.getID())
+    }
+    
+    func search(query: String,
+                category: Int,
+                limitOfItems: Int,
+                completion: @escaping (_ result: [FAQSearchItem]) -> ()) throws {
+        try accessChecker.checkAccess()
+        
+        faqClient.getActions().search(query: query, categoryId: category, limit: limitOfItems) { data in
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
+                                                             options: [])
+                if let faqItemsArray = json as? [[String: Any?]] {
+                    var items = [FAQSearchItem]()
+                    for item in faqItemsArray {
+                        items.append(FAQSearchItemItem(jsonDictionary: item))
+                    }
+                    completion(items)
+                } else {
+                    completion([FAQSearchItem]())
+                }
+            } else {
+                completion([FAQSearchItem]())
             }
         }
     }

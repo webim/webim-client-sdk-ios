@@ -38,16 +38,23 @@ class FAQActions {
     enum Parameter: String {
         case itemId = "itemid"
         case categoryId = "categoryid"
+        case query = "query"
+        case limit = "limit"
+        case userId = "userid"
     }
     enum ServerPathSuffix: String {
         case item = "/services/faq/v1/item"
         case category = "/services/faq/v1/category"
         case structure = "/services/faq/v1/structure"
+        case search = "/services/faq/v1/search"
+        case like = "/services/faq/v1/like"
+        case dislike = "/services/faq/v1/dislike"
     }
     
     // MARK: - Properties
     private let baseURL: String
     private let faqRequestLoop: FAQRequestLoop
+    private static let deviceID = UIDevice.current.identifierForVendor?.uuidString
     
     // MARK: - Initialization
     init(baseURL: String,
@@ -60,7 +67,10 @@ class FAQActions {
     
     func getItem(itemId: String,
                  completion: @escaping (_ faqItem: Data?) throws -> ()) {
-        let dataToPost = [Parameter.itemId.rawValue: itemId] as [String: Any]
+        var dataToPost = [Parameter.itemId.rawValue: itemId] as [String: Any]
+        if let deviceId = FAQActions.deviceID {
+            dataToPost[Parameter.userId.rawValue] = deviceId
+        }
         
         let urlString = baseURL + ServerPathSuffix.item.rawValue
         
@@ -72,7 +82,10 @@ class FAQActions {
     
     func getCategory(categoryId: Int,
                      completion: @escaping (_ faqCategory: Data?) throws -> ()) {
-        let dataToPost = [Parameter.categoryId.rawValue: String(categoryId)] as [String: Any]
+        var dataToPost = [Parameter.categoryId.rawValue: String(categoryId)] as [String: Any]
+        if let deviceId = FAQActions.deviceID {
+            dataToPost[Parameter.userId.rawValue] = deviceId
+        }
         
         let urlString = baseURL + ServerPathSuffix.category.rawValue
         
@@ -92,5 +105,47 @@ class FAQActions {
                                                      primaryData: dataToPost,
                                                      baseURLString: urlString,
                                                      faqStructureRequestCompletionHandler: completion))
+    }
+    
+    func search(query: String,
+                categoryId: Int,
+                limit: Int,
+                completion: @escaping (_ data: Data?) throws -> ()) {
+        let dataToPost = [Parameter.categoryId.rawValue: String(categoryId),
+                          Parameter.query.rawValue: query,
+                          Parameter.limit.rawValue: String(limit)] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.search.rawValue
+        
+        faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
+                                                     primaryData: dataToPost,
+                                                     baseURLString: urlString,
+                                                     faqSearchCompletionHandler: completion))
+    }
+    
+    func like(itemId: String) {
+        var dataToPost = [Parameter.itemId.rawValue: itemId] as [String: Any]
+        if let deviceId = FAQActions.deviceID {
+            dataToPost[Parameter.userId.rawValue] = deviceId
+        }
+        
+        let urlString = baseURL + ServerPathSuffix.like.rawValue
+        
+        faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                     primaryData: dataToPost,
+                                                     baseURLString: urlString))
+    }
+    
+    func dislike(itemId: String) {
+        var dataToPost = [Parameter.itemId.rawValue: itemId] as [String: Any]
+        if let deviceId = FAQActions.deviceID {
+            dataToPost[Parameter.userId.rawValue] = deviceId
+        }
+        
+        let urlString = baseURL + ServerPathSuffix.dislike.rawValue
+        
+        faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                     primaryData: dataToPost,
+                                                     baseURLString: urlString))
     }
 }

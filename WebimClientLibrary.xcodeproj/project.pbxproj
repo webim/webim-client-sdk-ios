@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		11638EEE22A448830085E4F4 /* KeyboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11638EED22A448830085E4F4 /* KeyboardItem.swift */; };
+		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
 		8FD2428B200CDB18007EB9CB /* WebimClientLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445C200CE258007EB9CB /* WebimLogger.swift */; };
 		8FD244A9200CE25C007EB9CB /* MessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445D200CE258007EB9CB /* MessageListener.swift */; };
@@ -106,6 +107,7 @@
 
 /* Begin PBXFileReference section */
 		11638EED22A448830085E4F4 /* KeyboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItem.swift; sourceTree = "<group>"; };
+		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
 		8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WebimClientLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebimClientLibrary.h; sourceTree = "<group>"; };
 		8FD2445C200CE258007EB9CB /* WebimLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimLogger.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 				CE6A6983220C9BBB00B11E29 /* FAQDestroyer.swift */,
 				CE6A6985220C9DE200B11E29 /* FAQAccessChecker.swift */,
 				CE76D61E22108834006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift */,
+				11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -511,6 +514,7 @@
 				11638EEE22A448830085E4F4 /* KeyboardItem.swift in Sources */,
 				8FD244D3200CE25C007EB9CB /* OnlineStatusItem.swift in Sources */,
 				8FD244BF200CE25C007EB9CB /* String.swift in Sources */,
+				11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */,
 				8FD244CB200CE25C007EB9CB /* OperatorItem.swift in Sources */,
 				CE6A6986220C9DE200B11E29 /* FAQAccessChecker.swift in Sources */,
 				8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */,

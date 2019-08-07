@@ -108,4 +108,94 @@ public protocol FAQItem {
      2019 Webim
      */
     func getDislikeCount() -> Int
+    
+    /**
+     - returns:
+     User rate.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getUserRate() -> UserRate
+}
+
+// MARK: -
+/**
+ Item can be liked or dislike.
+ - seealso:
+ `FAQStructure.getType()`
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public enum UserRate {
+    /**
+     Item is liked.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case LIKE
+    
+    /**
+     Item is disliked.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case DISLIKE
+    
+    /**
+     Item isn't rated.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case NO_RATE
+    
+}
+
+/**
+ FAQ page with some information from search.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public protocol FAQSearchItem {
+    /**
+     Every item can be uniquefied by its ID.
+     - returns:
+     Unique ID of the item.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getID() -> String
+    
+    /**
+     - returns:
+     Title of the item.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getTitle() -> String
+    
+    /**
+     - returns:
+     Search score. A larger score is better than a smaller score.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getScore() -> Double
 }

@@ -94,6 +94,27 @@ public protocol FAQ {
      */
     func getCategory(id: Int, completion: @escaping (_ result: FAQCategory?) -> ()) throws
     
+     /**
+     Requests category from cache. If nil is passed inside completion, there no category with this id in cache.
+     - seealso:
+     `destroy()` method.
+     `FAQCategory` protocol.
+     - parameter id:
+     Category ID.
+     - parameter completion:
+     Completion to be called on category if method call succeeded.
+     - parameter result:
+     Resulting category if method call succeeded.
+     - throws:
+     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getCachedCategory(id: Int, completion: @escaping (_ result: FAQCategory?) -> ()) throws
+    
     /**
      Requests item. If nil is passed inside completion, there no item with this id.
      - seealso:
@@ -135,6 +156,65 @@ public protocol FAQ {
      2019 Webim
      */
     func getStructure(id: Int, completion: @escaping (_ result: FAQStructure?) -> ()) throws
+    
+    /**
+     Like selected FAQ item.
+     - seealso:
+     `destroy()` method.
+     `FAQItem` protocol.
+     - parameter item:
+     FAQ item.
+     - throws:
+     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func like(item: FAQItem) throws
+    
+    /**
+     Dislike selected FAQ item.
+     - seealso:
+     `destroy()` method.
+     `FAQItem` protocol.
+     - parameter item:
+     FAQ item.
+     - throws:
+     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func dislike(item: FAQItem) throws
+    
+    /**
+     Search categories by query.
+     - seealso:
+     `destroy()` method.
+     `FAQCategory` protocol.
+     - parameter query:
+     Search word or phrase.
+     - parameter category:
+     Category for search.
+     - parameter limitOfItems:
+     A number of items will be returned (not more than this specified number).
+     - parameter completion:
+     Completion to be called if method call succeeded.
+     - parameter result:
+     Resulting items array if method call succeeded.
+     - throws:
+     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func search(query: String, category: Int, limitOfItems: Int, completion: @escaping (_ result: [FAQSearchItem]) -> ()) throws
 }
 
 // MARK: -

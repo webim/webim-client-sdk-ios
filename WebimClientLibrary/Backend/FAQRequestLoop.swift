@@ -80,13 +80,37 @@ class FAQRequestLoop: AbstractRequestLoop {
             var url: URL?
             var urlRequest: URLRequest?
             let httpMethod = request.getHTTPMethod()
-            url = URL(string: (request.getBaseURLString() + "?" + parametersString))
-            urlRequest = URLRequest(url: url!)
+            if httpMethod == .get {
+                url = URL(string: (request.getBaseURLString() + "?" + parametersString))
+                urlRequest = URLRequest(url: url!)
+            } else { // POST
+                
+                // For URL encoded requests.
+                url = URL(string: request.getBaseURLString())
+                urlRequest = URLRequest(url: url!)
+                urlRequest!.httpBody = parametersString.data(using: .utf8)
+                
+                
+                // Assuming that content type field is always exists when it is POST request, and does not when request is of GET type.
+                urlRequest!.setValue(request.getContentType(),
+                                     forHTTPHeaderField: "Content-Type")
+            }
             
             urlRequest!.httpMethod = httpMethod.rawValue
             
             do {
                 let data = try self.perform(request: urlRequest!)
+                if let _ = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
+                    if let completionHandler = request.getFAQSearchCompletionHandler() {
+                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                            do {
+                                try completionHandler(data)
+                            } catch {
+                            }
+                            self.handleClientCompletionHandlerOf(request: request)
+                        })
+                    }
+                }
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     if (dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String) != nil {
                         self.running = false
