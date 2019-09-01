@@ -521,7 +521,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
             _ = try db?.run(SQLiteHistoryStorage
                 .history
                 .createIndex(SQLiteHistoryStorage.timestamp,
-                             unique: true))
+                             unique: true,
+                             ifNotExists: true))
         } catch {
             WebimInternalLogger.shared.log(entry: error.localizedDescription,
                                            verbosityLevel: .VERBOSE)

@@ -40,7 +40,7 @@ final class InternalUtils {
     static func createServerURLStringBy(accountName: String) -> String {
         var serverURLstring = accountName
         
-        if serverURLstring.range(of: "://") != nil {
+        if let _ = serverURLstring.range(of: "://") {
             if serverURLstring.last! == "/" {
                 serverURLstring.removeLast()
             }

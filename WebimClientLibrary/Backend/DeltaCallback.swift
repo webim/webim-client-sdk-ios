@@ -40,14 +40,16 @@ final class DeltaCallback {
     // MARK: - Properties
     private let currentChatMessageMapper: MessageMapper
     private var currentChat: ChatItem?
-    private let readBeforeTimestampString = "read_before_timestamp"
+    private let userDefaultsKey: String
     private weak var messageHolder: MessageHolder?
     private weak var messageStream: MessageStreamImpl?
     private weak var historyPoller: HistoryPoller?
     
     // MARK: - Initialization
-    init(currentChatMessageMapper: MessageMapper) {
+    init(currentChatMessageMapper: MessageMapper,
+         userDefaultsKey: String) {
         self.currentChatMessageMapper = currentChatMessageMapper
+        self.userDefaultsKey = userDefaultsKey
     }
     
     // MARK: - Methods
@@ -156,15 +158,14 @@ final class DeltaCallback {
                 if let message = currentChatMessageMapper.map(message: messageItem) {
                     if (message.getType() == MessageType.FILE_FROM_VISITOR || message.getType() != MessageType.VISITOR) && message.isReadByOperator() {
                         let time = message.getTimeInMicrosecond()
-                        if time > Int64(UserDefaults.standard.integer(forKey: readBeforeTimestampString)) {
-                            UserDefaults.standard.set(time, forKey: readBeforeTimestampString)
-                            historyPoller?.updateReadBeforeTimestamp(timestamp: time)
+                        if time > historyPoller?.getReadBeforeTimestamp(byUserDefaultsKey: userDefaultsKey) ?? -1 {
+                            historyPoller?.updateReadBeforeTimestamp(timestamp: time, byUserDefaultsKey: userDefaultsKey)
                         }
                     }
                 }
             }
         } else {
-            UserDefaults.standard.set(-1, forKey: readBeforeTimestampString)
+            historyPoller?.updateReadBeforeTimestamp(timestamp: -1, byUserDefaultsKey: userDefaultsKey)
         }
     }
     
@@ -254,9 +255,8 @@ final class DeltaCallback {
                         currentChat?.set(messages: currentChatMessages)
                         messageHolder?.changed(message: message)
                         let time = message.getTimeInMicrosecond()
-                        if time > UserDefaults.standard.integer(forKey: "readBeforeTimestampString") {
-                            UserDefaults.standard.set(time, forKey: "readBeforeTimestampString")
-                            historyPoller?.updateReadBeforeTimestamp(timestamp: time)
+                        if time > historyPoller?.getReadBeforeTimestamp(byUserDefaultsKey: userDefaultsKey) ?? -1 {
+                            historyPoller?.updateReadBeforeTimestamp(timestamp: time, byUserDefaultsKey: userDefaultsKey)
                         }
                         break
                     }

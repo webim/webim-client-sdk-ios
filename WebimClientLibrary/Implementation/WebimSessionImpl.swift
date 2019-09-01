@@ -135,7 +135,8 @@ final class WebimSessionImpl {
         let authorizationData = AuthorizationData(pageID: pageID,
                                                   authorizationToken: authorizationToken)
         
-        let deltaCallback = DeltaCallback(currentChatMessageMapper: currentChatMessageMapper)
+        let deltaCallback = DeltaCallback(currentChatMessageMapper: currentChatMessageMapper,
+                                          userDefaultsKey: userDefaultsKey)
 
         let webimClient = WebimClientBuilder()
             .set(baseURL: serverURLString)
@@ -165,7 +166,7 @@ final class WebimSessionImpl {
             var dbName = userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String
             
             if dbName == nil {
-                dbName = "webim_" + ClientSideID.generateClientSideID() + ".db"
+                dbName = "webim_\(ClientSideID.generateClientSideID()).db"
                 if let userDefaults = userDefaults {
                     var renewedUserDefaults = userDefaults
                     renewedUserDefaults[UserDefaultsMainPrefix.historyDBname.rawValue] = dbName
@@ -184,7 +185,7 @@ final class WebimSessionImpl {
                                                   webimClient: webimClient,
                                                   reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
                                                   queue: queue,
-                                                  readBeforeTimestamp: Int64(UserDefaults.standard.integer(forKey: UserDefaultsMainPrefix.readBeforeTimestamp.rawValue)))
+                                                  readBeforeTimestamp: (userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] ?? Int64(-1)) as! Int64)
             historyStorage = sqlhistoryStorage
             
             let historyMajorVersion = historyStorage.getMajorVersion()
@@ -200,7 +201,7 @@ final class WebimSessionImpl {
                 }
             }
         } else {
-            historyStorage = MemoryHistoryStorage(readBeforeTimestamp: Int64(UserDefaults.standard.integer(forKey: UserDefaultsMainPrefix.readBeforeTimestamp.rawValue)))
+            historyStorage = MemoryHistoryStorage(readBeforeTimestamp: (userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] ?? Int64(-1)) as! Int64)
             historyMetaInformationStoragePreferences = MemoryHistoryMetaInformationStorage()
         }
         
@@ -484,8 +485,20 @@ final class HistoryPoller {
         self.hasHistoryRevision = hasHistoryRevision
     }
     
-    func updateReadBeforeTimestamp(timestamp: Int64) {
+    func updateReadBeforeTimestamp(timestamp: Int64, byUserDefaultsKey userDefaultsKey: String) {
         self.messageHolder.updateReadBeforeTimestamp(timestamp: timestamp)
+        if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
+            userDefaults[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] = timestamp
+            UserDefaults.standard.set(userDefaults, forKey: userDefaultsKey)
+        }
+    }
+    
+    func getReadBeforeTimestamp(byUserDefaultsKey userDefaultsKey: String) -> Int64 {
+        let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
+        if let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] {
+            return readBeforeTimestamp as! Int64
+        }
+        return Int64(-1)
     }
     
     // MARK: Private methods

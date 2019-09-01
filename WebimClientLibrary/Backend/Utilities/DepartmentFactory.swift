@@ -46,7 +46,7 @@ final class DepartmentFactory {
     // MARK: - Methods
     
     func convert(departmentItem: DepartmentItem) -> DepartmentImpl {
-        var fullLogoURL: URL? = nil
+        var fullLogoURL: URL?
         if let logoURLString = departmentItem.getLogoURLString() {
             fullLogoURL = URL(string: serverURLString + logoURLString)
         }

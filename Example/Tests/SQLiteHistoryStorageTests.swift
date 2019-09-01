@@ -101,6 +101,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         keyboard: nil,
                                         keyboardRequest: nil,
                                         operatorID: "1",
+                                        quote: nil,
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
                                         type: MessageType.OPERATOR,
@@ -112,7 +113,8 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         internalID: String(index),
                                         rawText: nil,
                                         read: true,
-                                        messageCanBeEdited: false))
+                                        messageCanBeEdited: false,
+                                        messageCanBeReplied: false))
         }
         
         return messages

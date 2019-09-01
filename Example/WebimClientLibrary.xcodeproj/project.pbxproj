@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */ = {isa = PBXBuildFile; fileRef = 11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */; };
 		3BD523E036E5E0145C40A893 /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75BFCD5FB1955EE77D987E3C /* Pods_WebimClientLibrary_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* StartViewController.swift */; };
@@ -97,6 +98,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "FAQ methods documentation.md"; sourceTree = "<group>"; };
 		188E01CE8A86B2460C60C156 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimClientLibrary_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 			children = (
 				CE24A015203ADC2D009EE7E7 /* Images */,
 				CE54B2511FC452B9009C05BD /* Index.md */,
+				11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */,
 			);
 			name = Documentation;
 			path = ../Documentation;
@@ -567,6 +570,7 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */,
 				CE324E631FDECBD2004BB116 /* RatingViewController.xib in Resources */,
+				11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
