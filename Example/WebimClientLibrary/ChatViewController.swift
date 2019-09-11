@@ -432,14 +432,23 @@ extension ChatViewController: UIImagePickerControllerDelegate {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             if let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
                 let imageData: Data
+                var mimeType = MimeType(url: imageURL as URL)
+                var imageName = imageURL.lastPathComponent
                 let imageExtension = imageURL.pathExtension.lowercased()
                 if imageExtension == "jpg" || imageExtension == "jpeg" {
                     imageData = image.jpegData(compressionQuality: 1.0)!
+                } else if imageExtension == "heic" || imageExtension == "heif" {
+                    imageData = image.jpegData(compressionQuality: 0.5)!
+                    mimeType = MimeType()
+                    var components = imageName.components(separatedBy: ".")
+                    if components.count > 1 {
+                        components.removeLast()
+                        imageName = components.joined(separator: ".")
+                    }
+                    imageName += ".jpeg"
                 } else {
                     imageData = image.pngData()!
                 }
-                let imageName = imageURL.lastPathComponent
-                let mimeType = MimeType(url: imageURL as URL)
 
                 webimService!.send(file: imageData,
                                    fileName: imageName,

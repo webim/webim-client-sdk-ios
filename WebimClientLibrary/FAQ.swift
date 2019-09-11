@@ -94,6 +94,31 @@ public protocol FAQ {
      */
     func getCategory(id: Int, completion: @escaping (_ result: FAQCategory?) -> ()) throws
     
+    /**
+     Requests categories for app. If nil is passed inside completion, there no category with this id.
+     - seealso:
+     `destroy()` method.
+     `FAQCategory` protocol.
+     - parameter application:
+     Application name.
+     - parameter language:
+     Language.
+     - parameter departmentKey:
+     Department key.
+     - parameter completion:
+     Completion to be called on category if method call succeeded.
+     - parameter result:
+     Resulting category if method call succeeded.
+     - throws:
+     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getCategoriesFor(application: String, language: String, departmentKey: String, completion: @escaping (_ result: [Int]) -> ()) throws
+    
      /**
      Requests category from cache. If nil is passed inside completion, there no category with this id in cache.
      - seealso:

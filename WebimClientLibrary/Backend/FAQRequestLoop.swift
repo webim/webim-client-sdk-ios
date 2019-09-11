@@ -111,6 +111,17 @@ class FAQRequestLoop: AbstractRequestLoop {
                         })
                     }
                 }
+                if let _ = try? JSONSerialization.jsonObject(with: data) as? [Int] {
+                    if let completionHandler = request.getFAQCategoryRequestCompletionHandler() {
+                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                            do {
+                                try completionHandler(data)
+                            } catch {
+                            }
+                            self.handleClientCompletionHandlerOf(request: request)
+                        })
+                    }
+                }
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     if (dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String) != nil {
                         self.running = false

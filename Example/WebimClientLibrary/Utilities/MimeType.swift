@@ -148,6 +148,10 @@ struct MimeType {
         `extension` = url.pathExtension
     }
     
+    public init() {
+        `extension` = "jpeg"
+    }
+    
 }
 
 // MARK: -

@@ -36,15 +36,20 @@ class FAQActions {
     
     // MARK: - Constants
     enum Parameter: String {
+        case application = "app"
+        case departmentKey = "department-key"
         case itemId = "itemid"
         case categoryId = "categoryid"
-        case query = "query"
+        case language = "lang"
         case limit = "limit"
+        case platform = "platform"
+        case query = "query"
         case userId = "userid"
     }
     enum ServerPathSuffix: String {
         case item = "/services/faq/v1/item"
         case category = "/services/faq/v1/category"
+        case categories = "/webim/api/v1/faq/category"
         case structure = "/services/faq/v1/structure"
         case search = "/services/faq/v1/search"
         case like = "/services/faq/v1/like"
@@ -88,6 +93,23 @@ class FAQActions {
         }
         
         let urlString = baseURL + ServerPathSuffix.category.rawValue
+        
+        faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
+                                                     primaryData: dataToPost,
+                                                     baseURLString: urlString,
+                                                     faqCategoryRequestCompletionHandler: completion))
+    }
+    
+    func getCategoriesFor(application: String,
+                          language: String,
+                          departmentKey: String,
+                          completion: @escaping (_ faqCategories: Data?) throws -> ()) {
+        let dataToPost = [Parameter.application.rawValue: application,
+                          Parameter.platform.rawValue: "ios",
+                          Parameter.language.rawValue: language,
+                          Parameter.departmentKey.rawValue: departmentKey] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.categories.rawValue
         
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                      primaryData: dataToPost,

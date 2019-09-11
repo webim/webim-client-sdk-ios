@@ -108,6 +108,7 @@ final class FAQImpl {
 
 // MARK: - FAQ
 extension FAQImpl: FAQ {
+    
     func getCategory(id: Int, completion: @escaping (FAQCategory?) -> ()) throws {
         try accessChecker.checkAccess()
         
@@ -123,6 +124,24 @@ extension FAQImpl: FAQ {
                 }
             } else {
                 completion(nil)
+            }
+        }
+    }
+    
+    func getCategoriesFor(application: String, language: String, departmentKey: String, completion: @escaping ([Int]) -> ()) throws {
+        try accessChecker.checkAccess()
+        
+        faqClient.getActions().getCategoriesFor(application: application, language: language, departmentKey: departmentKey) { data in
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
+                                                             options: [])
+                if let faqCategoriesIDArray = json as? [Int] {
+                    completion(faqCategoriesIDArray)
+                } else {
+                    completion([Int]())
+                }
+            } else {
+                completion([Int]())
             }
         }
     }
