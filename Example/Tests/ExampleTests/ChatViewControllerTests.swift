@@ -65,6 +65,7 @@ class ChatViewControllerTests: XCTestCase {
                                       keyboard: nil,
                                       keyboardRequest: nil,
                                       operatorID: nil,
+                                      quote: nil,
                                       senderAvatarURLString: nil,
                                       senderName: "Sender name",
                                       type: .VISITOR,
@@ -76,7 +77,8 @@ class ChatViewControllerTests: XCTestCase {
                                       internalID: nil,
                                       rawText: nil,
                                       read: false,
-                                      messageCanBeEdited: false)
+                                      messageCanBeEdited: false,
+                                      messageCanBeReplied: false)
             messages.append(message as Message)
         }
         

@@ -44,6 +44,7 @@ class MemoryHistoryStorageTests: XCTestCase {
                                         keyboard: nil,
                                         keyboardRequest: nil,
                                         operatorID: "1",
+                                        quote: nil,
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
                                         type: MessageType.OPERATOR,
@@ -55,7 +56,8 @@ class MemoryHistoryStorageTests: XCTestCase {
                                         internalID: String(index),
                                         rawText: nil,
                                         read: false,
-                                        messageCanBeEdited: false))
+                                        messageCanBeEdited: false,
+                                        messageCanBeReplied: false))
         }
         
         return messages

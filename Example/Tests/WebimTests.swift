@@ -63,6 +63,23 @@ class WebimTests: XCTestCase {
     "sound" : "default",
 }
 """
+    private static let REMOTE_NOTIFICATION_WITH_SPECIAL_FIELDS = """
+{
+  "aps": {
+    "alert": {
+      "loc-key": "P.OM",
+      "loc-args": [
+        "Имя Оператора",
+        "Сообщение"
+      ]
+    },
+    "sound": "default"
+  },
+  "webim": 1,
+  "unread_by_visitor_msg_cnt": 1,
+  "location": "mobile"
+}
+"""
     
     // MARK: - Properties
     let webimRemoteNotification = try! JSONSerialization.jsonObject(with: WebimTests.WEBIM_REMOTE_NOTIFICATION_JSON_STRING.data(using: .utf8)!,
@@ -71,6 +88,8 @@ class WebimTests: XCTestCase {
                                                                        options: []) as! [AnyHashable : Any]
     let incorrectRemoteNotification = try! JSONSerialization.jsonObject(with: WebimTests.INCORRECT_REMOTE_NOTIFICATION_JSON_STRING.data(using: .utf8)!,
                                                                         options: []) as! [AnyHashable : Any]
+    let webimRemoteNotificationWithSpecialFields = try! JSONSerialization.jsonObject(with: WebimTests.REMOTE_NOTIFICATION_WITH_SPECIAL_FIELDS.data(using: .utf8)!,
+                                                                                     options: []) as! [AnyHashable : Any]
     
     // MARK: - Tests
     
@@ -86,9 +105,15 @@ class WebimTests: XCTestCase {
         XCTAssertNil(Webim.parse(remoteNotification: self.incorrectRemoteNotification))
     }
     
-    func testIsWebimRemoteNotificatin() {
+    func testIsWebimRemoteNotification() {
         XCTAssertTrue(Webim.isWebim(remoteNotification: webimRemoteNotification))
         XCTAssertFalse(Webim.isWebim(remoteNotification: notWebimRemoteNotification))
+    }
+    
+    func testRemoteNotificationWithSpecialFields() {
+        let webimRemoteNotification = Webim.parse(remoteNotification: self.webimRemoteNotificationWithSpecialFields)
+        XCTAssertEqual(webimRemoteNotification?.getUnreadByVisitorMessagesCount(), 1)
+        XCTAssertEqual(webimRemoteNotification?.getLocation(), "mobile")
     }
     
 }

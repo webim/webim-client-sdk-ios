@@ -60,6 +60,7 @@ class MessageHolderTests: XCTestCase {
                                        keyboard: nil,
                                        keyboardRequest: nil,
                                        operatorID: MessageImplMockData.operatorID.rawValue,
+                                       quote: nil,
                                        senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                                        senderName: MessageImplMockData.senderName.rawValue,
                                        type: MessageType.OPERATOR,
@@ -71,7 +72,8 @@ class MessageHolderTests: XCTestCase {
                                        internalID: String(index),
                                        rawText: nil,
                                        read: false,
-                                       messageCanBeEdited: false))
+                                       messageCanBeEdited: false,
+                                       messageCanBeReplied: false))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -88,6 +90,7 @@ class MessageHolderTests: XCTestCase {
                                            keyboard: nil,
                                            keyboardRequest: nil,
                                            operatorID: MessageImplMockData.operatorID.rawValue,
+                                           quote: nil,
                                            senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                                            senderName: MessageImplMockData.senderName.rawValue,
                                            type: MessageType.OPERATOR,
@@ -99,7 +102,8 @@ class MessageHolderTests: XCTestCase {
                                            internalID: String(index),
                                            rawText: nil,
                                            read: false,
-                                           messageCanBeEdited: false))
+                                           messageCanBeEdited: false,
+                                           messageCanBeReplied: false))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -116,6 +120,7 @@ class MessageHolderTests: XCTestCase {
                                          keyboard: message.getKeyboard(),
                                          keyboardRequest: message.getKeyboardRequest(),
                                          operatorID: message.getOperatorID(),
+                                         quote: nil,
                                          senderAvatarURLString: message.getSenderAvatarURLString(),
                                          senderName: message.getSenderName(),
                                          type: message.getType(),
@@ -127,7 +132,8 @@ class MessageHolderTests: XCTestCase {
                                          internalID: String(message.getTimeInMicrosecond()),
                                          rawText: message.getRawText(),
                                          read: message.getRead(),
-                                         messageCanBeEdited: message.canBeEdited())
+                                         messageCanBeEdited: message.canBeEdited(),
+                                         messageCanBeReplied: false)
             result.append(newMessage)
         }
         
@@ -142,6 +148,7 @@ class MessageHolderTests: XCTestCase {
                            keyboard: nil,
                            keyboardRequest: nil,
                            operatorID: MessageImplMockData.operatorID.rawValue,
+                           quote: nil,
                            senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                            senderName: MessageImplMockData.senderName.rawValue,
                            type: MessageType.OPERATOR,
@@ -153,7 +160,8 @@ class MessageHolderTests: XCTestCase {
                            internalID: String(messagesCount),
                            rawText: nil,
                            read: false,
-                           messageCanBeEdited: false)
+                           messageCanBeEdited: false,
+                           messageCanBeReplied: false)
     }
     
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
@@ -162,6 +170,7 @@ class MessageHolderTests: XCTestCase {
                            keyboard: currentChatMessage.getKeyboard(),
                            keyboardRequest: currentChatMessage.getKeyboardRequest(),
                            operatorID: currentChatMessage.getOperatorID(),
+                           quote: nil,
                            senderAvatarURLString: currentChatMessage.getSenderAvatarURLString(),
                            senderName: currentChatMessage.getSenderName(),
                            type: currentChatMessage.getType(),
@@ -173,7 +182,8 @@ class MessageHolderTests: XCTestCase {
                            internalID: currentChatMessage.getCurrentChatID(),
                            rawText: nil,
                            read: false,
-                           messageCanBeEdited: false)
+                           messageCanBeEdited: false,
+                           messageCanBeReplied: false)
     }
     
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
@@ -182,6 +192,7 @@ class MessageHolderTests: XCTestCase {
                            keyboard: historyMessage.getKeyboard(),
                            keyboardRequest: historyMessage.getKeyboardRequest(),
                            operatorID: historyMessage.getOperatorID(),
+                           quote: nil,
                            senderAvatarURLString: historyMessage.getSenderAvatarURLString(),
                            senderName: historyMessage.getSenderName(),
                            type: historyMessage.getType(),
@@ -193,7 +204,8 @@ class MessageHolderTests: XCTestCase {
                            internalID: historyMessage.getHistoryID()?.getDBid(),
                            rawText: nil,
                            read: false,
-                           messageCanBeEdited: false)
+                           messageCanBeEdited: false,
+                           messageCanBeReplied: false)
     }
     
     private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {

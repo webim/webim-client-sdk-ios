@@ -23,6 +23,7 @@
     -   [Instance method set(deviceToken:)](#set-device-token)
     -   [Instance method set(isLocalHistoryStoragingEnabled:)](#set-is-local-history-storaging-enabled)
     -   [Instance method set(isVisitorDataClearingEnabled:)](#set-is-visitor-data-clearing-enabled)
+    -   [Instance method set(multivisitorSection:)](#set-multivisitor-section)
     -   [Instance method set(webimLogger:verbosityLevel:)](#set-webim-logger-verbosity-level)
     -   [Instance method build()](#build)
     -   [WebimLoggerVerbosityLevel enum](#webim-logger-verbosity-level)
@@ -290,6 +291,8 @@
     -   [getType() method](#get-type-webim-remote-notification)
     -   [getEvent() method](#get-event)
     -   [getParameters() method](#get-parameters)
+    -   [getLocation() method](#get-location)
+    -   [getUnreadByVisitorMessagesCount method](#get-unread-by-visitor-messages-count)
 -   [NotificationType enum](#notification-type)
     -   [CONTACT_INFORMATION_REQUEST](#contact-information-request)
     -   [OPERATOR_ACCEPTED case](#operator-accepted)
@@ -448,6 +451,13 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 
 Sets necesarity to clear all visitor data before session is created.
 With false `isVisitorDataClearingEnabled` parameter value passed it does nothing.
+Returns `self` with the functionality activation setting.
+Method is not mandatory to create [WebimSession](#webim-session) object.
+
+<h3 id ="set-multivisitor-section">Instance method set(multivisitorSection:)</h3>
+
+Sets necesarity to receive remote notifications by different visitors on one device. Without multivisitor section only last visitor can receive remote notifications.
+`multivisitorSection` parameter – suffix for device ID. Each visitor has device ID. This parameter can split one device to some virtual devices.
 Returns `self` with the functionality activation setting.
 Method is not mandatory to create [WebimSession](#webim-session) object.
 
@@ -1842,11 +1852,19 @@ Returns type of this remote notification of [NotificationType](#notification-typ
 
 <h3 id ="get-event">getEvent() method</h3>
 
-Returns event of this remote notification of [NotificationEvent](#notification-event) type or `nil`.
+Returns event of this remote notification of [NotificationEvent](#notification-event) type.
 
 <h3 id ="get-parameters">getParameters() method</h3>
 
-Returns parameters of this remote notification of array of type `String` type. Each [NotificationType](#notification-type) has specific list of parameters.
+Returns parameters of this remote notification of array of `String` type.
+
+<h3 id ="get-location">getLocation() method</h3>
+
+Returns location of this remote notification of array of type `String` type.
+
+<h3 id ="get-unread-by-visitor-messages-count">getUnreadByVisitorMessagesCount() method</h3>
+
+Returns unread by visitor messages count of this remote notification of array of `Int` type.
 
 [Go to table of contents](#table-of-contents)
 

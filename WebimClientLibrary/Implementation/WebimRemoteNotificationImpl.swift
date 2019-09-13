@@ -38,6 +38,8 @@ final class WebimRemoteNotificationImpl {
     enum APNSField: String {
         case aps = "aps"
         case webim = "webim"
+        case unreadByVisitorMessagesCount = "unread_by_visitor_msg_cnt"
+        case location = "location"
     }
     enum APSField: String {
         case alert = "alert"
@@ -62,10 +64,12 @@ final class WebimRemoteNotificationImpl {
     // MARK: - Properties
     private var event: InternalNotificationEvent? = nil
     private lazy var parameters = [String]()
-    private var type: InternalNotificationType
+    private var type: InternalNotificationType?
+    private var location: String?
+    private var unreadByVisitorMessagesCount = 0
     
     // MARK: - Initialization
-    init?(jsonDictionary: [String: Any?]) {
+    /*init?(jsonDictionary: [String: Any?]) {
         guard let typeString = jsonDictionary[AlertField.type.rawValue] as? String,
             let type = InternalNotificationType(rawValue: typeString) else {
             return nil
@@ -80,6 +84,36 @@ final class WebimRemoteNotificationImpl {
         if let parameters = jsonDictionary[AlertField.parameters.rawValue] as? [String] {
             self.parameters = parameters
         }
+    }*/
+    
+    init?(jsonDictionary: [String: Any?]) {
+        guard let apsFields = jsonDictionary[APNSField.aps.rawValue] as? [String: Any],
+            let alertFields = apsFields[APSField.alert.rawValue] as? [String: Any] else {
+                return nil
+        }
+        
+        if let typeString = alertFields[AlertField.type.rawValue] as? String,
+            let type = InternalNotificationType(rawValue: typeString) {
+                self.type = type
+        }
+                
+        if let eventString = alertFields[AlertField.event.rawValue] as? String,
+            let event = InternalNotificationEvent(rawValue: eventString) {
+                self.event = event
+        }
+        
+        if let parameters = alertFields[AlertField.parameters.rawValue] as? [String] {
+            self.parameters = parameters
+        }
+        
+        if let location = jsonDictionary[APNSField.location.rawValue] as? String {
+            self.location = location
+        }
+        
+        if let unreadByVisitorMessagesCount = jsonDictionary[APNSField.unreadByVisitorMessagesCount.rawValue] as? Int {
+            self.unreadByVisitorMessagesCount = unreadByVisitorMessagesCount
+        }
+        
     }
     
 }
@@ -90,7 +124,10 @@ extension WebimRemoteNotificationImpl: WebimRemoteNotification {
     // MARK: - Methods
     // MARK: WebimRemoteNotification protocol methods
     
-    func getType() -> NotificationType {
+    func getType() -> NotificationType? {
+        guard let type = self.type else {
+            return nil
+        }
         switch type {
         case .contactInformationRequest:
             return .CONTACT_INFORMATION_REQUEST
@@ -114,12 +151,19 @@ extension WebimRemoteNotificationImpl: WebimRemoteNotification {
                 return .DELETE
             }
         }
-        
         return nil
     }
     
     func getParameters() -> [String] {
         return parameters
+    }
+    
+    func getLocation() -> String? {
+        return location
+    }
+    
+    func getUnreadByVisitorMessagesCount() -> Int {
+        return unreadByVisitorMessagesCount
     }
     
 }

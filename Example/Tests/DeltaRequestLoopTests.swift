@@ -41,7 +41,7 @@ class DeltaRequestLoopTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        deltaRequestLoop = DeltaRequestLoopForTests(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: "https://demo.webim.ru")),
+        deltaRequestLoop = DeltaRequestLoopForTests(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: "https://demo.webim.ru"), userDefaultsKey: DeltaRequestLoopTests.userDefaultsKey),
                                                     completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: DeltaRequestLoopTests.userDefaultsKey),
                                                                                                                  queue: DispatchQueue.global()),
                                                     sessionParametersListener: nil,

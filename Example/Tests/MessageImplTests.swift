@@ -37,6 +37,7 @@ class MessageImplTests: XCTestCase {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -49,7 +50,8 @@ class MessageImplTests: XCTestCase {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         let expectedString = """
 MessageImpl {
     serverURLString = http://demo.webim.ru,
@@ -79,6 +81,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -91,7 +94,8 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         XCTAssertNil(message.getSenderAvatarFullURL())
     }
@@ -102,6 +106,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -114,7 +119,8 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         XCTAssertEqual(message.getSendStatus(),
                        MessageSendStatus.SENT)
@@ -126,6 +132,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -138,13 +145,15 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         let message1 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                   id: "id1",
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -157,12 +166,14 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         let message2 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
                                    keyboardRequest: nil,
                                    operatorID: nil,
+                                   quote: nil,
                                    senderAvatarURLString: nil,
                                    senderName: "Name1",
                                    sendStatus: .SENT,
@@ -175,12 +186,14 @@ MessageImpl {
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
-                                   messageCanBeEdited: false)
+                                   messageCanBeEdited: false,
+                                   messageCanBeReplied: false)
         let message3 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
                                    keyboardRequest: nil,
                                    operatorID: nil,
+                                   quote: nil,
                                    senderAvatarURLString: nil,
                                    senderName: "Name",
                                    sendStatus: .SENT,
@@ -193,12 +206,14 @@ MessageImpl {
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
-                                   messageCanBeEdited: false)
+                                   messageCanBeEdited: false,
+                                   messageCanBeReplied: false)
         let message4 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
                                    keyboardRequest: nil,
                                    operatorID: nil,
+                                   quote: nil,
                                    senderAvatarURLString: nil,
                                    senderName: "Name",
                                    sendStatus: .SENT,
@@ -211,12 +226,14 @@ MessageImpl {
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
-                                   messageCanBeEdited: false)
+                                   messageCanBeEdited: false,
+                                   messageCanBeReplied: false)
         let message5 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
                                    keyboardRequest: nil,
                                    operatorID: nil,
+                                   quote: nil,
                                    senderAvatarURLString: nil,
                                    senderName: "Name",
                                    sendStatus: .SENT,
@@ -229,7 +246,8 @@ MessageImpl {
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
-                                   messageCanBeEdited: false)
+                                   messageCanBeEdited: false,
+                                   messageCanBeReplied: false)
         
         XCTAssertFalse(message.isEqual(to: message1))
         XCTAssertFalse(message.isEqual(to: message2))
@@ -246,6 +264,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -258,7 +277,8 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         XCTAssertNoThrow(try message.getSource().assertIsCurrentChat())
     }
@@ -269,6 +289,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -281,7 +302,8 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         XCTAssertThrowsError(try message.getSource().assertIsHistory())
     }
@@ -292,6 +314,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -304,7 +327,8 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         XCTAssertNil(message.getHistoryID())
     }
@@ -316,6 +340,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -328,7 +353,8 @@ MessageImpl {
                                   internalID: currentChatID,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         XCTAssertEqual(currentChatID,
                        message.getCurrentChatID())
@@ -342,6 +368,7 @@ MessageImpl {
                                   keyboard: nil,
                                   keyboardRequest: nil,
                                   operatorID: nil,
+                                  quote: nil,
                                   senderAvatarURLString: avatarURLString,
                                   senderName: "Name",
                                   sendStatus: .SENT,
@@ -354,7 +381,8 @@ MessageImpl {
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
-                                  messageCanBeEdited: false)
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false)
         
         XCTAssertEqual(URL(string: (baseURLString + avatarURLString)),
                        message.getSenderAvatarFullURL())

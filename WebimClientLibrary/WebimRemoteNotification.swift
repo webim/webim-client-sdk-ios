@@ -47,7 +47,7 @@ public protocol WebimRemoteNotification {
      - copyright:
      2017 Webim
      */
-    func getType() -> NotificationType
+    func getType() -> NotificationType?
     
     /**
      - seealso:
@@ -72,6 +72,30 @@ public protocol WebimRemoteNotification {
      2017 Webim
      */
     func getParameters() -> [String]
+    
+    /**
+     - returns:
+     Chat location.
+     - seealso:
+     `NotificationType`
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getLocation() -> String?
+    
+    /**
+     - returns:
+     Unread by visitor messages count.
+     - seealso:
+     `NotificationType`
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getUnreadByVisitorMessagesCount() -> Int
 
 }
 

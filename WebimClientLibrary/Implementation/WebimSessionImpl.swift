@@ -100,7 +100,8 @@ final class WebimSessionImpl {
                                 isVisitorDataClearingEnabled: Bool,
                                 webimLogger: WebimLogger?,
                                 verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?,
-                                prechat: String?) -> WebimSessionImpl {
+                                prechat: String?,
+                                multivisitorSection: String) -> WebimSessionImpl {
         WebimInternalLogger.setup(webimLogger: webimLogger,
                                   verbosityLevel: verbosityLevel)
         
@@ -156,7 +157,7 @@ final class WebimSessionImpl {
                                                                               queue: queue))
             .set(title: (pageTitle ?? DefaultSettings.pageTitle.rawValue))
             .set(deviceToken: deviceToken)
-            .set(deviceID: getDeviceID())
+            .set(deviceID: getDeviceID(withSuffix: multivisitorSection))
             .set(prechat: prechat)
             .build() as WebimClient
         
@@ -305,18 +306,19 @@ final class WebimSessionImpl {
         }
     }
     
-    private static func getDeviceID() -> String {
+    private static func getDeviceID(withSuffix suffix: String) -> String {
         let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue)
-        var uuidString = (userDefaults?[UserDefaultsGUIDPrefix.uuid.rawValue] ?? nil)
+        let name = UserDefaultsGUIDPrefix.uuid.rawValue + (suffix.isEmpty ? suffix : "-" + suffix)
+        var uuidString = (userDefaults?[name] ?? nil)
         
         if uuidString == nil {
-            uuidString = UIDevice.current.identifierForVendor!.uuidString
+            uuidString = UIDevice.current.identifierForVendor!.uuidString + (suffix.isEmpty ? suffix : "-" + suffix)
             if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue) {
-                userDefaults[UserDefaultsGUIDPrefix.uuid.rawValue] = uuidString
+                userDefaults[name] = uuidString
                 UserDefaults.standard.set(userDefaults,
                                           forKey: UserDefaultsName.guid.rawValue)
             } else {
-                UserDefaults.standard.setValue([UserDefaultsGUIDPrefix.uuid.rawValue: uuidString],
+                UserDefaults.standard.setValue([name: uuidString],
                                                forKey: UserDefaultsName.guid.rawValue)
             }
         }

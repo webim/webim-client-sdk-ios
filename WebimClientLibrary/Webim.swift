@@ -137,6 +137,7 @@ public final class SessionBuilder  {
     private weak var fatalErrorHandler: FatalErrorHandler?
     private var localHistoryStoragingEnabled = true
     private var location: String?
+    private var multivisitorSection = ""
     private var pageTitle: String?
     private var providedAuthorizationToken: String?
     private weak var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
@@ -408,6 +409,23 @@ public final class SessionBuilder  {
 
         return self
     }
+    
+    /**
+     If set to true, different visitors can receive remote notifications on one device.
+     - parameter isMultivisitor:
+     Boolean parameter that indicated if an app should receive remote notifications for different visitors.
+     - returns:
+     `SessionBuilder` object with isVisitorDataClearingEnabled parameter set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    public func set(multivisitorSection: String) -> SessionBuilder {
+        self.multivisitorSection = multivisitorSection
+        
+        return self
+    }
 
     /**
      Method to pass WebimLogger object.
@@ -532,7 +550,8 @@ public final class SessionBuilder  {
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled,
                                                 webimLogger: webimLogger,
                                                 verbosityLevel: webimLoggerVerbosityLevel,
-                prechat: prechat) as WebimSession
+                                                prechat: prechat,
+                                                multivisitorSection: multivisitorSection) as WebimSession
     }
 
     // MARK: -

@@ -41,7 +41,7 @@ class WebimClientTests: XCTestCase {
         let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                           internalErrorListener: internalErrorListener)
         let urlString = "http://webim.ru"
-        let deltaRequestLoop = DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString)),
+        let deltaRequestLoop = DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString), userDefaultsKey: WebimClientTests.userDefaultsKey),
                                                 completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                 sessionParametersListener: nil,
                                                 internalErrorListener: internalErrorListener,
@@ -78,7 +78,7 @@ class WebimClientTests: XCTestCase {
                                         actionRequestLoop: actionRequestLoop)
         
         let webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
-                                      deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString)),
+                                      deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString), userDefaultsKey: WebimClientTests.userDefaultsKey),
                                                                          completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                                          sessionParametersListener: nil,
                                                                          internalErrorListener: internalErrorListener,

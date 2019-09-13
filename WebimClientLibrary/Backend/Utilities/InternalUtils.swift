@@ -56,39 +56,31 @@ final class InternalUtils {
     }
     
     static func parse(remoteNotification: [AnyHashable : Any], visitorId: String?) -> WebimRemoteNotification? {
-        if let apsFields = remoteNotification[WebimRemoteNotificationImpl.APNSField.aps.rawValue] as? [String: Any] {
-            if let alertFields = apsFields[WebimRemoteNotificationImpl.APSField.alert.rawValue] as? [String: Any] {
-                if visitorId != nil {
-                    return WebimRemoteNotificationImpl(jsonDictionary: alertFields) as WebimRemoteNotification?
-                } else {
-                    let notification = WebimRemoteNotificationImpl(jsonDictionary: alertFields) as WebimRemoteNotification?
-                    let params = notification?.getParameters()
-                    var indexOfId: Int
-                    switch notification?.getType() {
-                    case .OPERATOR_ACCEPTED?:
-                        indexOfId = 1
-                        break
-                    case .OPERATOR_FILE?,
-                         .OPERATOR_MESSAGE?:
-                        indexOfId = 2
-                        break
-                    default:
-                        indexOfId = 0
-                    }
-                    
-                    if params?.count ?? 0 <= indexOfId {
-                        return notification
-                    }
-                    return params?[indexOfId] == visitorId ? notification : nil
-                }
-            } else {
-                return nil
-            }
-        } else {
-            WebimInternalLogger.shared.log(entry: "Unknown remote notification format: \(remoteNotification).",
-                verbosityLevel: .DEBUG)
-            
+        guard let remoteNotification = remoteNotification as? [String : Any?] else {
             return nil
+        }
+        if visitorId != nil {
+            return WebimRemoteNotificationImpl(jsonDictionary: remoteNotification) as WebimRemoteNotification?
+        } else {
+            let notification = WebimRemoteNotificationImpl(jsonDictionary: remoteNotification) as WebimRemoteNotification?
+            let params = notification?.getParameters()
+            var indexOfId: Int
+            switch notification?.getType() {
+            case .OPERATOR_ACCEPTED?:
+                indexOfId = 1
+                break
+            case .OPERATOR_FILE?,
+                 .OPERATOR_MESSAGE?:
+                indexOfId = 2
+                break
+            default:
+                indexOfId = 0
+            }
+                    
+            if params?.count ?? 0 <= indexOfId {
+                return notification
+            }
+            return params?[indexOfId] == visitorId ? notification : nil
         }
     }
     
