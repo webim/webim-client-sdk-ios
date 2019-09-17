@@ -107,9 +107,9 @@ final class FAQImpl {
 }
 
 // MARK: - FAQ
-extension FAQImpl: FAQ {
+extension FAQImpl: FAQ {  
     
-    func getCategory(id: Int, completion: @escaping (FAQCategory?) -> ()) throws {
+    func getCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws {
         try accessChecker.checkAccess()
         
         faqClient.getActions().getCategory(categoryId: id) { data in
@@ -118,17 +118,20 @@ extension FAQImpl: FAQ {
                                                              options: [])
                 if let faqCategoryDictionary = json as? [String: Any?] {
                     let faqCategory = FAQCategoryItem(jsonDictionary: faqCategoryDictionary)
-                    completion(faqCategory)
+                    completionHandler(.success(faqCategory))
                     
                     self.cache.insert(categoryId: faqCategory.getID(), categoryDictionary: faqCategoryDictionary)
                 }
             } else {
-                completion(nil)
+                completionHandler(.failure(.ERROR))
             }
         }
     }
     
-    func getCategoriesFor(application: String, language: String, departmentKey: String, completion: @escaping ([Int]) -> ()) throws {
+    func getCategoriesFor(application: String,
+                          language: String,
+                          departmentKey: String,
+                          completionHandler: @escaping (Result<[Int], FAQGetCompletionHandlerError>) -> Void) throws {
         try accessChecker.checkAccess()
         
         faqClient.getActions().getCategoriesFor(application: application, language: language, departmentKey: departmentKey) { data in
@@ -136,30 +139,30 @@ extension FAQImpl: FAQ {
                 let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: [])
                 if let faqCategoriesIDArray = json as? [Int] {
-                    completion(faqCategoriesIDArray)
+                    completionHandler(.success(faqCategoriesIDArray))
                 } else {
-                    completion([Int]())
+                    completionHandler(.failure(.ERROR))
                 }
             } else {
-                completion([Int]())
+                completionHandler(.failure(.ERROR))
             }
         }
     }
     
-    func getCachedCategory(id: Int, completion: @escaping (FAQCategory?) -> ()) throws {
+    func getCachedCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws {
         try accessChecker.checkAccess()
         
         self.cache.get(categoryId: id) { data in
             if let data = data {
-                completion(FAQCategoryItem(jsonDictionary: data))
+                completionHandler(.success(FAQCategoryItem(jsonDictionary: data)))
             } else {
-                completion(nil)
+                completionHandler(.failure(.ERROR))
             }
             
         }
     }
     
-    func getStructure(id: Int, completion: @escaping (FAQStructure?) -> ()) throws {
+    func getStructure(id: Int, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) throws {
         try accessChecker.checkAccess()
         faqClient.getActions().getStructure(categoryId: id) { data in
             if let data = data {
@@ -168,16 +171,16 @@ extension FAQImpl: FAQ {
                 if let faqStructureDictionary = json as? [String: Any?] {
                     let faqStructure = FAQStructureItem(jsonDictionary: faqStructureDictionary)
                     
-                    completion(faqStructure)
+                    completionHandler(.success(faqStructure))
                 }
             } else {
-                completion(nil)
+                completionHandler(.failure(.ERROR))
             }
         }
         
     }
     
-    func getItem(id: String, completion: @escaping (FAQItem?) -> ()) throws {
+    func getItem(id: String, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) throws {
         try accessChecker.checkAccess()
         
         faqClient.getActions().getItem(itemId: id) { data in
@@ -187,10 +190,10 @@ extension FAQImpl: FAQ {
                 if let faqItemDictionary = json as? [String: Any?] {
                     let faqItem = FAQItemItem(jsonDictionary: faqItemDictionary)
                     
-                    completion(faqItem)
+                    completionHandler(.success(faqItem))
                 }
             } else {
-                completion(nil)
+                completionHandler(.failure(.ERROR))
             }
         }
     }
@@ -210,7 +213,7 @@ extension FAQImpl: FAQ {
     func search(query: String,
                 category: Int,
                 limitOfItems: Int,
-                completion: @escaping (_ result: [FAQSearchItem]) -> ()) throws {
+                completionHandler: @escaping (Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void) throws {
         try accessChecker.checkAccess()
         
         faqClient.getActions().search(query: query, categoryId: category, limit: limitOfItems) { data in
@@ -222,12 +225,12 @@ extension FAQImpl: FAQ {
                     for item in faqItemsArray {
                         items.append(FAQSearchItemItem(jsonDictionary: item))
                     }
-                    completion(items)
+                    completionHandler(.success(items))
                 } else {
-                    completion([FAQSearchItem]())
+                    completionHandler(.failure(.ERROR))
                 }
             } else {
-                completion([FAQSearchItem]())
+                completionHandler(.failure(.ERROR))
             }
         }
     }

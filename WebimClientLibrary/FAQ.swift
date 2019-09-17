@@ -80,7 +80,7 @@ public protocol FAQ {
      `FAQCategory` protocol.
      - parameter id:
      Category ID.
-     - parameter completion:
+     - parameter completionHandler:
      Completion to be called on category if method call succeeded.
      - parameter result:
      Resulting category if method call succeeded.
@@ -92,7 +92,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCategory(id: Int, completion: @escaping (_ result: FAQCategory?) -> ()) throws
+    func getCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws
     
     /**
      Requests categories for app. If nil is passed inside completion, there no category with this id.
@@ -105,7 +105,7 @@ public protocol FAQ {
      Language.
      - parameter departmentKey:
      Department key.
-     - parameter completion:
+     - parameter completionHandler:
      Completion to be called on category if method call succeeded.
      - parameter result:
      Resulting category if method call succeeded.
@@ -117,7 +117,10 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCategoriesFor(application: String, language: String, departmentKey: String, completion: @escaping (_ result: [Int]) -> ()) throws
+    func getCategoriesFor(application: String,
+                          language: String,
+                          departmentKey: String,
+                          completionHandler: @escaping (_ result: Result<[Int], FAQGetCompletionHandlerError>) -> Void) throws
     
      /**
      Requests category from cache. If nil is passed inside completion, there no category with this id in cache.
@@ -126,7 +129,7 @@ public protocol FAQ {
      `FAQCategory` protocol.
      - parameter id:
      Category ID.
-     - parameter completion:
+     - parameter completionHandler:
      Completion to be called on category if method call succeeded.
      - parameter result:
      Resulting category if method call succeeded.
@@ -138,7 +141,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCachedCategory(id: Int, completion: @escaping (_ result: FAQCategory?) -> ()) throws
+    func getCachedCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws
     
     /**
      Requests item. If nil is passed inside completion, there no item with this id.
@@ -147,7 +150,7 @@ public protocol FAQ {
      `FAQItem` protocol.
      - parameter id:
      Item ID.
-     - parameter completion:
+     - parameter completionHandler:
      Completion to be called on item if method call succeeded.
      - parameter result:
      Resulting item if method call succeeded.
@@ -159,7 +162,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getItem(id: String, completion: @escaping (_ result: FAQItem?) -> ()) throws
+    func getItem(id: String, completionHandler: @escaping (_ result: Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) throws
     
     /**
      Requests structure. If nil is passed inside completion, there no structure with this id.
@@ -168,7 +171,7 @@ public protocol FAQ {
      `FAQStructure` protocol.
      - parameter id:
      Structure ID.
-     - parameter completion:
+     - parameter completionHandler:
      Completion to be called on structure if method call succeeded.
      - parameter result:
      Resulting structure if method call succeeded.
@@ -180,7 +183,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getStructure(id: Int, completion: @escaping (_ result: FAQStructure?) -> ()) throws
+    func getStructure(id: Int, completionHandler: @escaping (_ result: Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) throws
     
     /**
      Like selected FAQ item.
@@ -227,7 +230,7 @@ public protocol FAQ {
      Category for search.
      - parameter limitOfItems:
      A number of items will be returned (not more than this specified number).
-     - parameter completion:
+     - parameter completionHandler:
      Completion to be called if method call succeeded.
      - parameter result:
      Resulting items array if method call succeeded.
@@ -239,7 +242,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func search(query: String, category: Int, limitOfItems: Int, completion: @escaping (_ result: [FAQSearchItem]) -> ()) throws
+    func search(query: String, category: Int, limitOfItems: Int, completionHandler: @escaping (_ result: Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void) throws
 }
 
 // MARK: -
@@ -271,4 +274,18 @@ public enum FAQAccessError: Error {
      2019 Webim
      */
     case INVALID_FAQ
+}
+
+// MARK: -
+/**
+ Error types that can be throwed by FAQ methods.
+ - seealso:
+ `FAQ` methods.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public enum FAQGetCompletionHandlerError: Error {
+    case ERROR
 }
