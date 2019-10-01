@@ -63,7 +63,10 @@ final class FAQImpl {
     
     // MARK: - Methods
     
-    static func newInstanceWith(accountName: String) -> FAQImpl {
+    static func newInstanceWith(accountName: String,
+                                application: String?,
+                                departmentKey: String?,
+                                language: String?) -> FAQImpl {
         
         let faqDestroyer = FAQDestroyer()
         
@@ -75,6 +78,9 @@ final class FAQImpl {
             .set(baseURL: serverURLString)
             .set(completionHandlerExecutor: ExecIfNotDestroyedFAQHandlerExecutor(faqDestroyer: faqDestroyer,
                                                                               queue: queue))
+            .set(application: application)
+            .set(departmentKey: departmentKey)
+            .set(language: language)
             .build() as FAQClient
         
         let accessChecker = FAQAccessChecker(thread: Thread.current,
@@ -109,8 +115,13 @@ final class FAQImpl {
 // MARK: - FAQ
 extension FAQImpl: FAQ {  
     
-    func getCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws {
-        try accessChecker.checkAccess()
+    func getCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         
         faqClient.getActions().getCategory(categoryId: id) { data in
             if let data = data {
@@ -128,29 +139,42 @@ extension FAQImpl: FAQ {
         }
     }
     
-    func getCategoriesFor(application: String,
-                          language: String,
-                          departmentKey: String,
-                          completionHandler: @escaping (Result<[Int], FAQGetCompletionHandlerError>) -> Void) throws {
-        try accessChecker.checkAccess()
+    func getCategoriesForApplication(completionHandler: @escaping (Result<[Int], FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         
+        if let application = faqClient.getApplication(),
+            let departmentKey = faqClient.getDepartmentKey(),
+            let language = faqClient.getLanguage() {
         faqClient.getActions().getCategoriesFor(application: application, language: language, departmentKey: departmentKey) { data in
-            if let data = data {
-                let json = try? JSONSerialization.jsonObject(with: data,
+                if let data = data {
+                    let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: [])
-                if let faqCategoriesIDArray = json as? [Int] {
-                    completionHandler(.success(faqCategoriesIDArray))
+                    if let faqCategoriesIDArray = json as? [Int] {
+                        completionHandler(.success(faqCategoriesIDArray))
+                    } else {
+                        completionHandler(.failure(.ERROR))
+                    }
                 } else {
                     completionHandler(.failure(.ERROR))
                 }
-            } else {
-                completionHandler(.failure(.ERROR))
             }
+        } else {
+            completionHandler(.failure(.ERROR))
         }
     }
     
-    func getCachedCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws {
-        try accessChecker.checkAccess()
+    func getCachedCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         
         self.cache.get(categoryId: id) { data in
             if let data = data {
@@ -162,8 +186,13 @@ extension FAQImpl: FAQ {
         }
     }
     
-    func getStructure(id: Int, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) throws {
-        try accessChecker.checkAccess()
+    func getStructure(id: Int, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         faqClient.getActions().getStructure(categoryId: id) { data in
             if let data = data {
                 let json = try? JSONSerialization.jsonObject(with: data,
@@ -180,8 +209,13 @@ extension FAQImpl: FAQ {
         
     }
     
-    func getItem(id: String, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) throws {
-        try accessChecker.checkAccess()
+    func getItem(id: String, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         
         faqClient.getActions().getItem(itemId: id) { data in
             if let data = data {
@@ -213,9 +247,13 @@ extension FAQImpl: FAQ {
     func search(query: String,
                 category: Int,
                 limitOfItems: Int,
-                completionHandler: @escaping (Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void) throws {
-        try accessChecker.checkAccess()
-        
+                completionHandler: @escaping (Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         faqClient.getActions().search(query: query, categoryId: category, limit: limitOfItems) { data in
             if let data = data {
                 let json = try? JSONSerialization.jsonObject(with: data,

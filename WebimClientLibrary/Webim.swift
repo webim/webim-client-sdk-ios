@@ -707,6 +707,9 @@ public final class FAQBuilder  {
     
     // MARK: - Properties
     private var accountName: String?
+    private var application: String?
+    private var departmentKey: String?
+    private var language: String?
     // MARK: - Methods
     
     /**
@@ -722,6 +725,24 @@ public final class FAQBuilder  {
      */
     public func set(accountName: String) -> FAQBuilder {
         self.accountName = accountName
+        
+        return self
+    }
+    
+    public func set(application: String) -> FAQBuilder {
+        self.application = application
+        
+        return self
+    }
+    
+    public func set(departmentKey: String) -> FAQBuilder {
+        self.departmentKey = departmentKey
+        
+        return self
+    }
+    
+    public func set(language: String) -> FAQBuilder {
+        self.language = language
         
         return self
     }
@@ -747,7 +768,10 @@ public final class FAQBuilder  {
             throw FAQBuilderError.NIL_ACCOUNT_NAME
         }
         
-        return FAQImpl.newInstanceWith(accountName: accountName) as FAQ
+        return FAQImpl.newInstanceWith(accountName: accountName,
+                                       application: application,
+                                       departmentKey: departmentKey,
+                                       language: language) as FAQ
     }
     
     /**

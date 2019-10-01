@@ -92,7 +92,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws
+    func getCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Requests categories for app. If nil is passed inside completion, there no category with this id.
@@ -117,10 +117,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCategoriesFor(application: String,
-                          language: String,
-                          departmentKey: String,
-                          completionHandler: @escaping (_ result: Result<[Int], FAQGetCompletionHandlerError>) -> Void) throws
+    func getCategoriesForApplication(completionHandler: @escaping (_ result: Result<[Int], FAQGetCompletionHandlerError>) -> Void)
     
      /**
      Requests category from cache. If nil is passed inside completion, there no category with this id in cache.
@@ -141,7 +138,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCachedCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) throws
+    func getCachedCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Requests item. If nil is passed inside completion, there no item with this id.
@@ -162,7 +159,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getItem(id: String, completionHandler: @escaping (_ result: Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) throws
+    func getItem(id: String, completionHandler: @escaping (_ result: Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Requests structure. If nil is passed inside completion, there no structure with this id.
@@ -183,7 +180,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getStructure(id: Int, completionHandler: @escaping (_ result: Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) throws
+    func getStructure(id: Int, completionHandler: @escaping (_ result: Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Like selected FAQ item.
@@ -242,7 +239,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func search(query: String, category: Int, limitOfItems: Int, completionHandler: @escaping (_ result: Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void) throws
+    func search(query: String, category: Int, limitOfItems: Int, completionHandler: @escaping (_ result: Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void)
 }
 
 // MARK: -
