@@ -90,23 +90,25 @@ class MessageMapper {
             || (kind == .forOperator) {
             return nil
         }
-        let type = MessageMapper.convert(messageKind: kind!)
-        if type == nil {
+        guard let type = MessageMapper.convert(messageKind: kind!) else {
             return nil
         }
         
-        var attachment: MessageAttachment? = nil
-        var keyboard: Keyboard? = nil
-        var keyboardRequest: KeyboardRequest? = nil
-        var text: String? = nil
-        var rawText: String? = nil
+        var attachment: MessageAttachment?
+        var keyboard: Keyboard?
+        var keyboardRequest: KeyboardRequest?
+        var text: String?
+        var rawText: String?
         
         let messageItemText = messageItem.getText()
         if (kind == .fileFromVisitor)
             || (kind == .fileFromOperator) {
-            attachment = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
-                                                             webimClient: webimClient!,
-                                                             text: messageItemText!)
+            
+            if let webimClient = webimClient {
+                attachment = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
+                                                                 webimClient: webimClient,
+                                                                 text: messageItemText!)
+            }
             if attachment == nil {
                 return nil
             }
@@ -128,9 +130,11 @@ class MessageMapper {
         let quote = messageItem.getQuote()
         var messageAttachmentFromQuote: MessageAttachment? = nil
         if let kind = quote?.getMessageKind(), kind == .fileFromVisitor || kind == .fileFromOperator {
-            messageAttachmentFromQuote = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
-                                                                             webimClient: webimClient!,
-                                                                             text: (quote?.getText())!)
+            if let webimClient = webimClient {
+                messageAttachmentFromQuote = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
+                                                                                 webimClient: webimClient,
+                                                                                 text: (quote?.getText())!)
+            }
         }
         
         return MessageImpl(serverURLString: serverURLString,
@@ -141,7 +145,7 @@ class MessageMapper {
                            quote: QuoteImpl.getQuote(quoteItem: quote, messageAttachment: messageAttachmentFromQuote),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
                            senderName: messageItem.getSenderName()!,
-                           type: type!,
+                           type: type,
                            data: messageItem.getData(),
                            text: text!,
                            timeInMicrosecond: messageItem.getTimeInMicrosecond()!,
