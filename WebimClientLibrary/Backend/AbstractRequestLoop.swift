@@ -58,6 +58,14 @@ class AbstractRequestLoop {
     var paused = true
     var running = true
     private var currentDataTask: URLSessionDataTask?
+    let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?
+    let internalErrorListener: InternalErrorListener?
+    
+    init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?,
+         internalErrorListener: InternalErrorListener?) {
+        self.completionHandlerExecutor = completionHandlerExecutor
+        self.internalErrorListener = internalErrorListener
+    }
     
     // MARK: - Methods
     
@@ -93,7 +101,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUesrAngent = request
-        requestWithUesrAngent.setValue("iOS: Webim-Client 3.28.3; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUesrAngent.setValue("iOS: Webim-Client 3.29.0; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
         var lastHTTPCode = -1
@@ -168,6 +176,9 @@ class AbstractRequestLoop {
             
             if httpCode == 0 {
                 usleep(useconds_t(10_000_000.0))
+                self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                    self.internalErrorListener?.onNotFaral(error: .NO_NETWORK_CONNECTION)
+                })
                 continue
             }
             
@@ -200,8 +211,11 @@ class AbstractRequestLoop {
             lastHTTPCode = httpCode
             
             // If request wasn't successful and error isn't fatal, wait some time and try again.
-            if (errorCounter >= 5) {
+            if (errorCounter > 4) {
                 // If there was more that five tries stop trying.
+                self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                    self.internalErrorListener?.onNotFaral(error: .SERVER_IS_NOT_AVAILABLE)
+                })
                 throw UnknownError.serverError
             }
             let sleepTime = Double(errorCounter) as TimeInterval

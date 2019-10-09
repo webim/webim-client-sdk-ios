@@ -19,6 +19,7 @@
     -   [Instance method set(providedAuthorizationTokenStateListener:providedAuthorizationToken:)](#set-provided-authorization-token-state-listener-provided-authorization-token)
     -   [Instance method set(pageTitle:)](#set-page-title)
     -   [Instance method set(fatalErrorHandler:)](#set-fatal-error-handler)
+    -   [Instance method set(notFatalErrorHandler:)](#set-not-fatal-error-handler)
     -   [Instance method set(remoteNotificationSystem:)](#set-remote-notification-system)
     -   [Instance method set(deviceToken:)](#set-device-token)
     -   [Instance method set(isLocalHistoryStoragingEnabled:)](#set-is-local-history-storaging-enabled)
@@ -314,6 +315,14 @@
 -   [WebimError protocol](#webim-error)
     -   [getErrorType() method](#get-error-type)
     -   [getErrorString() method](#get-error-string)
+-   [NotFatalErrorHandler protocol](#not-fatal-error-handler)
+    -   [on(error:) method](#on-not-fatal-error)
+-   [NotFatalErrorType enum](#not-fatal-error-type)
+    -   [NO_NETWORK_CONNECTION case](#no-network-connection)
+    -   [SERVER_IS_NOT_AVAILABLE case](#server-is-not-available)
+-   [WebimNotFatalError protocol](#webim-not-fatal-error)
+    -   [getErrorType() method](#get-not-fatal-error-type)
+    -   [getErrorString() method](#get-not-fatal-error-string)
 -   [AccessError enum](#access-error)
     -   [INVALID_THREAD case](#invalid-thread)
     -   [INVALID_SESSION case](#invalid-session)
@@ -421,6 +430,13 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 Sets [FatalErrorHandler](#fatal-error-handler) object for session.
 `fatalErrorHandler` parameter – any object of a class or struct that conforms to `FatalErrorHandler` protocol (or `nil`).
 Returns `self` with `FatalErrorHandler` set. When `nil` passed it does nothing.
+Method is not mandatory to create [WebimSession](#webim-session) object.
+
+<h3 id ="set-not-fatal-error-handler">Instance method set(notFatalErrorHandler:)</h3>
+
+Sets [NotFatalErrorHandler](#not-fatal-error-handler) object for session.
+`notFatalErrorHandler` parameter – any object of a class or struct that conforms to `NotFatalErrorHandler` protocol.
+Returns `self` with `NotFatalErrorHandler` set.
 Method is not mandatory to create [WebimSession](#webim-session) object.
 
 <h3 id ="set-remote-notification-system">Instance method set(remoteNotificationSystem:)</h3>
@@ -1997,6 +2013,47 @@ Returns parsed type of the error of [FatalErrorType](#fatal-error-type) type.
 <h3 id ="get-error-string">getErrorString() method</h3>
 
 Returns `String` representation of an error. Mostly useful if the error type is unknown.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="not-fatal-error-handler">NotFatalErrorHandler protocol</h2>
+
+Must be adopted to handle service not fatal errors that can occur.
+
+<h3 id ="on-not-fatal-error">on(error:) method</h3>
+
+This method is to be called when Webim service error is received.
+Notice that method called NOT FROM THE MAIN THREAD!
+
+`error` parameter is of [`WebimNotFatalError` type](#webim-not-fatal-error).
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="not-fatal-error-type">NotFatalErrorType enum</h2>
+
+Webim service not fatal error types.
+
+<h3 id ="no-network-connection">NO_NETWORK_CONNECTION case</h3>
+
+This error indicates no network connection.
+
+<h3 id ="server-is-not-available">SERVER_IS_NOT_AVAILABLE case</h3>
+
+This error occurs when server is not available.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="webim-not-fatal-error">WebimNotFatalError protocol</h2>
+
+Abstracts _Webim_ service possible not fatal error.
+
+<h3 id ="get-not-fatal-error-type">getErrorType() method</h3>
+
+Returns parsed type of the error of [NotFatalErrorType](#not-fatal-error-type) type.
+
+<h3 id ="get-not-fatal-error-string">getErrorString() method</h3>
+
+Returns `String` representation of an error.
 
 [Go to table of contents](#table-of-contents)
 

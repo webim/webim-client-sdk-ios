@@ -42,10 +42,8 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private static var providedAuthenticationTokenErrorCount = 0
     private let appVersion: String?
     private let baseURL: String
-    private let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor
     private let deltaCallback: DeltaCallback
     private let deviceID: String
-    private let internalErrorListener: InternalErrorListener
     private let sessionParametersListener: SessionParametersListener?
     private let title: String
     var authorizationData: AuthorizationData?
@@ -79,9 +77,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
          prechat:String?,
          authorizationData: AuthorizationData?) {
         self.deltaCallback = deltaCallback
-        self.completionHandlerExecutor = completionHandlerExecutor
         self.sessionParametersListener = sessionParametersListener
-        self.internalErrorListener = internalErrorListener
         self.baseURL = baseURL
         self.title = title
         self.location = location
@@ -95,6 +91,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
         self.prechat = prechat
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener)
     }
     
     // MARK: - Methods
@@ -210,12 +207,12 @@ class DeltaRequestLoop: AbstractRequestLoop {
                     since = revision
                     
                     if let fullUpdate = deltaResponse.getFullUpdate() {
-                        completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        completionHandlerExecutor?.execute(task: DispatchWorkItem {
                             self.process(fullUpdate: fullUpdate)
                         })
                     } else if let deltaList = deltaResponse.getDeltaList() {
                         if deltaList.count > 0 {
-                            completionHandlerExecutor.execute(task: DispatchWorkItem {
+                            completionHandlerExecutor?.execute(task: DispatchWorkItem {
                                 self.deltaCallback.process(deltaList: deltaList)
                             })
                         }
@@ -311,8 +308,8 @@ class DeltaRequestLoop: AbstractRequestLoop {
         default:
             running = false
             
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
-                self.internalErrorListener.on(error: error)
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.internalErrorListener?.on(error: error)
             })
             
             break
@@ -323,8 +320,8 @@ class DeltaRequestLoop: AbstractRequestLoop {
         if error == WebimInternalError.reinitializationRequired.rawValue {
             handleReinitializationRequiredError()
         } else {
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
-                self.internalErrorListener.on(error: error)
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.internalErrorListener?.on(error: error)
             })
         }
     }
@@ -380,7 +377,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
             }
         }
         
-        completionHandlerExecutor.execute(task: DispatchWorkItem {
+        completionHandlerExecutor?.execute(task: DispatchWorkItem {
             self.deltaCallback.process(fullUpdate: fullUpdate)
         })
     }

@@ -36,8 +36,6 @@ import Foundation
 class ActionRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
-    private let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor
-    private let internalErrorListener: InternalErrorListener
     var operationQueue: OperationQueue?
     private var authorizationData: AuthorizationData?
     
@@ -45,8 +43,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     // MARK: - Initialization
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
          internalErrorListener: InternalErrorListener) {
-        self.completionHandlerExecutor = completionHandlerExecutor
-        self.internalErrorListener = internalErrorListener
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener)
     }
     
     // MARK: - Methods
@@ -177,8 +174,8 @@ class ActionRequestLoop: AbstractRequestLoop {
                         default:
                             self.running = false
                             
-                            self.completionHandlerExecutor.execute(task: DispatchWorkItem {
-                                self.internalErrorListener.on(error: error)
+                            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                                self.internalErrorListener?.on(error: error)
                             })
                             
                             break
@@ -195,7 +192,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                     }
                     
                     if let completionHandler = request.getCompletionHandler() {
-                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
@@ -272,7 +269,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     private func handleDataMessage(error errorString: String,
                                    ofRequest webimRequest: WebimRequest) {
         if let dataMessageCompletionHandler = webimRequest.getDataMessageCompletionHandler() {
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 dataMessageCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
                                                        error: ActionRequestLoop.convertToPublic(dataMessageErrorString: errorString))
             })
@@ -282,7 +279,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     private func handleRateOperator(error errorString: String,
                                     ofRequest webimRequest: WebimRequest) {
         if let rateOperatorCompletionhandler = webimRequest.getRateOperatorCompletionHandler() {
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 let rateOperatorError: RateOperatorError
                 if errorString == WebimInternalError.noChat.rawValue {
                     rateOperatorError = .NO_CHAT
@@ -298,7 +295,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     private func handleEditMessage(error errorString: String,
                                    ofRequest webimRequest: WebimRequest) {
         if let editMessageCompletionHandler = webimRequest.getEditMessageCompletionHandler() {
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 let editMessageError: EditMessageError
                 switch errorString {
                 case WebimInternalError.messageEmpty.rawValue:
@@ -329,7 +326,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     private func handleDeleteMessage(error errorString: String,
                                     ofRequest webimRequest: WebimRequest) {
         if let deleteMessageCompletionHandler = webimRequest.getDeleteMessageCompletionHandler() {
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 let deleteMessageError: DeleteMessageError
                 switch errorString {
                 case WebimInternalError.messageNotFound.rawValue:
@@ -354,7 +351,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     private func handleSendFile(error errorString: String,
                                 ofRequest webimRequest: WebimRequest) {
         if let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler() {
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 let sendFileError: SendFileError
                 switch errorString {
                 case WebimInternalError.fileSizeExceeded.rawValue:
@@ -379,7 +376,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     private func handleKeyboardResponse(error errorString: String,
                                         ofRequest webimRequest: WebimRequest) {
         if let keyboardResponseCompletionHandler = webimRequest.getKeyboardResponseCompletionHandler() {
-            completionHandlerExecutor.execute(task: DispatchWorkItem {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 let keyboardResponseError: KeyboardResponseError
                 switch errorString {
                 case WebimInternalError.buttonIdNotSet.rawValue:
@@ -406,7 +403,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     private func handleClientCompletionHandlerOf(request: WebimRequest) {
-        completionHandlerExecutor.execute(task: DispatchWorkItem {
+        completionHandlerExecutor?.execute(task: DispatchWorkItem {
             request.getDataMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getSendFileCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getRateOperatorCompletionHandler()?.onSuccess()

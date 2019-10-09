@@ -1,9 +1,9 @@
 //
-//  InternalErrorListener.swift
+//  WebimNotFatalErrorImpl.swift
 //  WebimClientLibrary
 //
-//  Created by Nikita Lazarev-Zubov on 11.08.17.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by Nikita Kaberov on 06.10.19.
+//  Copyright © 2019 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,31 @@
 import Foundation
 
 /**
+ Public Webim service not fatal error representation.
  - author:
  Nikita Lazarev-Zubov
  - copyright:
  2017 Webim
  */
-protocol InternalErrorListener {
+final class WebimNotFatalErrorImpl: WebimNotFatalError {
     
-    func on(error: String)
+    // MARK: - Properties
+    private var errorType: NotFatalErrorType
     
-    func onNotFaral(error: NotFatalErrorType)
+    // MARK: - Initialization
+    init(errorType: NotFatalErrorType) {
+        self.errorType = errorType
+    }
+    
+    // MARK: - Methods
+    // MARK: WebimError protocol methods
+    
+    func getErrorType() -> NotFatalErrorType {
+        return errorType
+    }
+    
+    func getErrorString() -> String {
+        return String(describing: errorType)
+    }
     
 }

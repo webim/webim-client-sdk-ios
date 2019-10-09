@@ -1,9 +1,9 @@
 //
-//  InternalErrorListener.swift
+//  NotFatalErrorHandler.swift
 //  WebimClientLibrary
 //
-//  Created by Nikita Lazarev-Zubov on 11.08.17.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by Nikita Lazarev-Zubov on 06.10.19.
+//  Copyright © 2019 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,32 @@
 //  SOFTWARE.
 //
 
+
 import Foundation
 
+
 /**
+ Protocol that provides methods to handle not fatal errors are sent by Webim service.
+ - seealso:
+ `set(fatalErrorHandler:)` method of `SessionBuilder` class.
  - author:
- Nikita Lazarev-Zubov
+ Nikita Kaberov
  - copyright:
- 2017 Webim
+ 2019 Webim
  */
-protocol InternalErrorListener {
+public protocol NotFatalErrorHandler: class {
     
-    func on(error: String)
-    
-    func onNotFaral(error: NotFatalErrorType)
+    /**
+     This method is to be called when Webim service error is received.
+     - important:
+     Method called NOT FROM THE MAIN THREAD!
+     - parameter error:
+     Error type.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func on(error: WebimNotFatalError)
     
 }

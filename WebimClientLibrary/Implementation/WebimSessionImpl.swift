@@ -95,6 +95,7 @@ final class WebimSessionImpl {
                                 providedAuthorizationToken: String?,
                                 pageTitle: String?,
                                 fatalErrorHandler: FatalErrorHandler?,
+                                notFatalErrorHandler: NotFatalErrorHandler?,
                                 deviceToken: String?,
                                 isLocalHistoryStoragingEnabled: Bool,
                                 isVisitorDataClearingEnabled: Bool,
@@ -147,7 +148,7 @@ final class WebimSessionImpl {
             .set(deltaCallback: deltaCallback)
             .set(sessionParametersListener: SessionParametersListenerImpl(withUserDefaultsKey: userDefaultsKey))
             .set(internalErrorListener: DestroyOnFatalErrorListener(sessionDestroyer: sessionDestroyer,
-                                                                  internalErrorListener: ErrorHandlerToInternalAdapter(fatalErrorHandler: fatalErrorHandler)))
+                                                                    internalErrorListener: ErrorHandlerToInternalAdapter(fatalErrorHandler: fatalErrorHandler), notFatalErrorHandler: notFatalErrorHandler))
             .set(visitorJSONString: visitorJSON as! String?)
             .set(providedAuthenticationTokenStateListener: providedAuthorizationTokenStateListener,
                  providedAuthenticationToken: providedAuthorizationToken)
@@ -656,13 +657,16 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
     
     // MARK: - Properties
     private let internalErrorListener: InternalErrorListener?
+    private let notFatalErrorHandler: NotFatalErrorHandler?
     private var sessionDestroyer: SessionDestroyer
     
     // MARK: - Initialization
     init(sessionDestroyer: SessionDestroyer,
-         internalErrorListener: InternalErrorListener?) {
+         internalErrorListener: InternalErrorListener?,
+         notFatalErrorHandler: NotFatalErrorHandler?) {
         self.sessionDestroyer = sessionDestroyer
         self.internalErrorListener = internalErrorListener
+        self.notFatalErrorHandler = notFatalErrorHandler
     }
     
     // MARK: - Methods
@@ -672,6 +676,12 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
             sessionDestroyer.destroy()
             
             internalErrorListener?.on(error: error)
+        }
+    }
+    
+    func onNotFaral(error: NotFatalErrorType) {
+        if !sessionDestroyer.isDestroyed() {
+            notFatalErrorHandler?.on(error: WebimNotFatalErrorImpl(errorType: error))
         }
     }
     
@@ -685,6 +695,9 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
  2017 Webim
  */
 final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
+    func onNotFaral(error: NotFatalErrorType) {
+    }
+    
     
     // MARK: - Parameters
     private weak var fatalErrorHandler: FatalErrorHandler?

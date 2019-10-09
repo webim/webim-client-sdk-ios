@@ -138,6 +138,7 @@ public final class SessionBuilder  {
     private var localHistoryStoragingEnabled = true
     private var location: String?
     private var multivisitorSection = ""
+    private weak var notFatalErrorHandler: NotFatalErrorHandler?
     private var pageTitle: String?
     private var providedAuthorizationToken: String?
     private weak var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
@@ -327,6 +328,12 @@ public final class SessionBuilder  {
     public func set(fatalErrorHandler: FatalErrorHandler?) -> SessionBuilder {
         self.fatalErrorHandler = fatalErrorHandler
 
+        return self
+    }
+    
+    public func set(notFatalErrorHandler: NotFatalErrorHandler) -> SessionBuilder {
+        self.notFatalErrorHandler = notFatalErrorHandler
+        
         return self
     }
 
@@ -545,6 +552,7 @@ public final class SessionBuilder  {
                                                 providedAuthorizationToken: providedAuthorizationToken,
                                                 pageTitle: pageTitle,
                                                 fatalErrorHandler: fatalErrorHandler,
+                                                notFatalErrorHandler: notFatalErrorHandler,
                                                 deviceToken: deviceToken,
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled,

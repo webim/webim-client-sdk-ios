@@ -36,13 +36,14 @@ import Foundation
 class FAQRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
-    private let completionHandlerExecutor: ExecIfNotDestroyedFAQHandlerExecutor
+    private let completionFAQHandlerExecutor: ExecIfNotDestroyedFAQHandlerExecutor
     var operationQueue: OperationQueue?
     
     
     // MARK: - Initialization
     init(completionHandlerExecutor: ExecIfNotDestroyedFAQHandlerExecutor) {
-        self.completionHandlerExecutor = completionHandlerExecutor
+        self.completionFAQHandlerExecutor = completionHandlerExecutor
+        super.init(completionHandlerExecutor: nil, internalErrorListener: nil)
     }
     
     // MARK: - Methods
@@ -102,7 +103,7 @@ class FAQRequestLoop: AbstractRequestLoop {
                 let data = try self.perform(request: urlRequest!)
                 if let _ = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
                     if let completionHandler = request.getFAQSearchCompletionHandler() {
-                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
@@ -113,7 +114,7 @@ class FAQRequestLoop: AbstractRequestLoop {
                 }
                 if let _ = try? JSONSerialization.jsonObject(with: data) as? [Int] {
                     if let completionHandler = request.getFAQCategoryRequestCompletionHandler() {
-                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
@@ -130,7 +131,7 @@ class FAQRequestLoop: AbstractRequestLoop {
                     }
                     
                     if let completionHandler = request.getFAQItemRequestCompletionHandler() {
-                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
@@ -140,7 +141,7 @@ class FAQRequestLoop: AbstractRequestLoop {
                     }
                     
                     if let completionHandler = request.getFAQCategoryRequestCompletionHandler() {
-                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
@@ -150,7 +151,7 @@ class FAQRequestLoop: AbstractRequestLoop {
                     }
                     
                     if let completionHandler = request.getFAQStructureRequestCompletionHandler() {
-                        self.completionHandlerExecutor.execute(task: DispatchWorkItem {
+                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
@@ -171,7 +172,7 @@ class FAQRequestLoop: AbstractRequestLoop {
     // MARK: Private methode
     
     private func handleClientCompletionHandlerOf(request: WebimRequest) {
-        completionHandlerExecutor.execute(task: DispatchWorkItem {
+        completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
             request.getDataMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getSendFileCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getRateOperatorCompletionHandler()?.onSuccess()

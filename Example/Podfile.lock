@@ -11,7 +11,7 @@ PODS:
   - SQLite.swift (0.12.0):
     - SQLite.swift/standard (= 0.12.0)
   - SQLite.swift/standard (0.12.0)
-  - WebimClientLibrary (3.26.0):
+  - WebimClientLibrary (3.28.3):
     - SQLite.swift (= 0.12.0)
 
 DEPENDENCIES:
@@ -25,7 +25,7 @@ DEPENDENCIES:
   - WebimClientLibrary (from `../`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Cosmos
     - Crashlytics
     - DynamicBlurView
@@ -48,8 +48,8 @@ SPEC CHECKSUMS:
   SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLite.swift: 7cad9db150a03716336e69469ec9559c85aece5b
-  WebimClientLibrary: a0d8bfd050f0e29daa67c2b56d355361a2933afb
+  WebimClientLibrary: e82452889ab4937574612c95c758663a8c05323a
 
 PODFILE CHECKSUM: 7dce62f116a388a2ae58b61b225d84d7015447de
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.1

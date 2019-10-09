@@ -1,9 +1,9 @@
 //
-//  InternalErrorListener.swift
+//  WebimNotFatalError.swift
 //  WebimClientLibrary
 //
-//  Created by Nikita Lazarev-Zubov on 11.08.17.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by Nikita Kaberov on 06.10.19.
+//  Copyright © 2019 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,15 +27,66 @@
 import Foundation
 
 /**
+ Abstracts Webim service possible error responses.
+ - seealso:
+ `FatalErrorHandler` protocol.
  - author:
  Nikita Lazarev-Zubov
  - copyright:
  2017 Webim
  */
-protocol InternalErrorListener {
+public protocol WebimNotFatalError {
     
-    func on(error: String)
+    /**
+     - returns:
+     Parsed type of the error.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getErrorType() -> NotFatalErrorType
     
-    func onNotFaral(error: NotFatalErrorType)
+    /**
+     - returns:
+     String representation of an error.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    func getErrorString() -> String
+    
+}
+
+// MARK: -
+/**
+ Webim service error types.
+ - important:
+ Mind that most of this errors causes session to destroy.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public enum NotFatalErrorType {
+    
+    /**
+     This error indicates no network connection.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case NO_NETWORK_CONNECTION
+    
+    /**
+     This error occurs when server is not available.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
+    case SERVER_IS_NOT_AVAILABLE
     
 }

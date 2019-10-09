@@ -2,7 +2,6 @@
 //  WebimClientLibrary.h
 //  WebimClientLibrary
 //
-//  Created by Sergey Maslov on 15.01.2018.
 //  Copyright © 2017 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
