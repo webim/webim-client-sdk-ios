@@ -347,7 +347,7 @@ final class MessageTrackerImpl {
     
     private func getToSendMirrorAndRemove(message: MessageImpl,
                                           of messageHolder: MessageHolder) -> MessageToSend? {
-        var messagesToSend = messageHolder.getMessagesToSend()
+        let messagesToSend = messageHolder.getMessagesToSend()
         
         for i in 0..<messagesToSend.count {
             if messagesToSend[i].getID() == message.getID() {

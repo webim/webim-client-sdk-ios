@@ -92,7 +92,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)
+    func getCategory(id: String, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Requests categories for app. If nil is passed inside completion, there no category with this id.
@@ -117,7 +117,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCategoriesForApplication(completionHandler: @escaping (_ result: Result<[Int], FAQGetCompletionHandlerError>) -> Void)
+    func getCategoriesForApplication(completionHandler: @escaping (_ result: Result<[String], FAQGetCompletionHandlerError>) -> Void)
     
      /**
      Requests category from cache. If nil is passed inside completion, there no category with this id in cache.
@@ -138,7 +138,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getCachedCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)
+    func getCachedCategory(id: String, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Requests item. If nil is passed inside completion, there no item with this id.
@@ -180,7 +180,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getStructure(id: Int, completionHandler: @escaping (_ result: Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)
+    func getStructure(id: String, completionHandler: @escaping (_ result: Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Like selected FAQ item.
@@ -189,15 +189,12 @@ public protocol FAQ {
      `FAQItem` protocol.
      - parameter item:
      FAQ item.
-     - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
      2019 Webim
      */
-    func like(item: FAQItem) throws
+    func like(item: FAQItem, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Dislike selected FAQ item.
@@ -206,15 +203,12 @@ public protocol FAQ {
      `FAQItem` protocol.
      - parameter item:
      FAQ item.
-     - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
      2019 Webim
      */
-    func dislike(item: FAQItem) throws
+    func dislike(item: FAQItem, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Search categories by query.
@@ -239,7 +233,7 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func search(query: String, category: Int, limitOfItems: Int, completionHandler: @escaping (_ result: Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void)
+    func search(query: String, category: String, limitOfItems: Int, completionHandler: @escaping (_ result: Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void)
 }
 
 // MARK: -

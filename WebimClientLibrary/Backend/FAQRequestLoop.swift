@@ -101,11 +101,13 @@ class FAQRequestLoop: AbstractRequestLoop {
             
             do {
                 let data = try self.perform(request: urlRequest!)
+                var wasCompletionHandler = false
                 if let _ = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
-                    if let completionHandler = request.getFAQSearchCompletionHandler() {
+                    if let completionHandler = request.getFAQCompletionHandler() {
                         self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
+                                wasCompletionHandler = true
                             } catch {
                             }
                             self.handleClientCompletionHandlerOf(request: request)
@@ -113,10 +115,11 @@ class FAQRequestLoop: AbstractRequestLoop {
                     }
                 }
                 if let _ = try? JSONSerialization.jsonObject(with: data) as? [Int] {
-                    if let completionHandler = request.getFAQCategoryRequestCompletionHandler() {
+                    if let completionHandler = request.getFAQCompletionHandler() {
                         self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
+                                wasCompletionHandler = true
                             } catch {
                             }
                             self.handleClientCompletionHandlerOf(request: request)
@@ -130,41 +133,50 @@ class FAQRequestLoop: AbstractRequestLoop {
                         return
                     }
                     
-                    if let completionHandler = request.getFAQItemRequestCompletionHandler() {
+                    if let completionHandler = request.getFAQCompletionHandler() {
+                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
+                            do {
+                                try completionHandler(data)
+                                wasCompletionHandler = true
+                            } catch {
+                            }
+                            self.handleClientCompletionHandlerOf(request: request)
+                        })
+                    }
+                    
+                }
+                if !wasCompletionHandler {
+                    if let completionHandler = request.getFAQCompletionHandler() {
                         self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
                             do {
                                 try completionHandler(data)
                             } catch {
                             }
-                            
+                            self.handleClientCompletionHandlerOf(request: request)
                         })
                     }
-                    
-                    if let completionHandler = request.getFAQCategoryRequestCompletionHandler() {
-                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
-                            do {
-                                try completionHandler(data)
-                            } catch {
-                            }
-                            
-                        })
-                    }
-                    
-                    if let completionHandler = request.getFAQStructureRequestCompletionHandler() {
-                        self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
-                            do {
-                                try completionHandler(data)
-                            } catch {
-                            }
-                            
-                        })
-                    }
-                    
-                    self.handleClientCompletionHandlerOf(request: request)
                 }
             } catch let unknownError as UnknownError {
+                if let completionHandler = request.getFAQCompletionHandler() {
+                    self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
+                        do {
+                            try completionHandler(nil)
+                        } catch {
+                        }
+                        self.handleClientCompletionHandlerOf(request: request)
+                    })
+                }
                 self.handleRequestLoop(error: unknownError)
             } catch {
+                if let completionHandler = request.getFAQCompletionHandler() {
+                    self.completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
+                        do {
+                            try completionHandler(nil)
+                        } catch {
+                        }
+                        self.handleClientCompletionHandlerOf(request: request)
+                    })
+                }
             }
         }
     }

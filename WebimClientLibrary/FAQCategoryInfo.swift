@@ -45,7 +45,7 @@ public protocol FAQCategoryInfo {
      - copyright:
      2019 Webim
      */
-    func getID() -> Int
+    func getID() -> String
     
     /**
      - returns:

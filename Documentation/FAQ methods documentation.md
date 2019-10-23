@@ -128,7 +128,7 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 Может выбрасывать ошибки типа **FAQAccessError**.
 
 
-##  `func getCategory(id: Int, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)`
+##  `func getCategory(id: String, completionHandler: @escaping (_ result: Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)`
 
 Метод, который используется для получения объекта класса **FAQCategory** через **completionHandler**.
 
@@ -136,20 +136,20 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 ### Параметры
 
-`id` – **ID** категории блока часто задаваемых вопросов. Тип – **Int**.
+`id` – **ID** категории блока часто задаваемых вопросов. Тип – **String**.
 
 `completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQCategory**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
-## `func getCategoriesForApplication(completionHandler: @escaping (_ result: Result<[Int], FAQGetCompletionHandlerError>) -> Void)`
+## `func getCategoriesForApplication(completionHandler: @escaping (_ result: Result<[String], FAQGetCompletionHandlerError>) -> Void)`
 Метод, который используется для получения массива идентификаторов категорий, подходящих для заданных параметров, через **completionHandler**. Работает только тогда, когда заданы параметры приложения.
 
 **Важно:** для правильной работы метода требуется вызов метод **resume()**.
 
 ### Параметры
 
-`completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает массив идентификаторов категорий типа **Int**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
+`completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает массив идентификаторов категорий типа **String**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
-## `func getCachedCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)`
+## `func getCachedCategory(id: String, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)`
 
 Метод, который используется для получения объекта класса **FAQCategory** через **completionHandler** из сохранённого кэша.
 
@@ -157,7 +157,7 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 ### Параметры
 
-`id` – **ID** категории блока часто задаваемых вопросов. Тип – **Int**.
+`id` – **ID** категории блока часто задаваемых вопросов. Тип – **String**.
 
 `completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQCategory**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
@@ -172,18 +172,18 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 `completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQItem**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
-## `func getStructure(id: Int, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)`
+## `func getStructure(id: String, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)`
 Метод, который используется для получения объекта класса **FAQStructure** через **completionHandler**.
 
 **Важно:** для правильной работы метода требуется вызов метод **resume()**.
 
 ### Параметры
 
-`id` – **ID** вершины, которая будет корнем дерева (структуры) блока часто задаваемых вопросов. Тип – **Int**.
+`id` – **ID** вершины, которая будет корнем дерева (структуры) блока часто задаваемых вопросов. Тип – **String**.
 
 `completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQStructure**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
-## `func like(item: FAQItem) throws`
+## `func like(item: FAQItem, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)`
 Метод, который позволяет поставить отметку "нравится" для статьи.
 
 **Важно:** для правильной работы метода требуется вызов метод **resume()**.
@@ -192,11 +192,10 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 `item` – страница, которой необходимо поставить оценку. Тип – **FAQItem**.
 
-### Исключения
+`completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQItem**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
-Может выбрасывать ошибки типа **FAQAccessError**.
 
-## `func dislike(item: FAQItem) throws`
+## `func dislike(item: FAQItem, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)`
 
 Метод, который позволяет поставить отметку "не нравится" для статьи.
 
@@ -206,11 +205,9 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 `item` – страница, которой необходимо поставить оценку. Тип – **FAQItem**.
 
-### Исключения
+`completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQItem**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
-Может выбрасывать ошибки типа **FAQAccessError**.
-
-## `func search(query: String, category: Int, limitOfItems: Int, completionHandler: @escaping (Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void)`
+## `func search(query: String, category: String, limitOfItems: Int, completionHandler: @escaping (Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void)`
 
 Метод, который позволяет найти статьи по ключевому слову.
 
@@ -220,7 +217,7 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 `query` – запрос, по которому осуществляется поиск. Тип – **String**.
 
-`category` – **ID** категории, в которой осуществляется поиск. Тип – **Int**.
+`category` – **ID** категории, в которой осуществляется поиск. Тип – **String**.
 
 `limitOfItems` – число, не больше которого нужно вернуть статей.
 
@@ -239,9 +236,9 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 Объекты **FAQCategory** могут быть получены с помощью **completionHandler** в методах **getCategory(id: Int, completion: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)** и **getCachedCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void)**. 
 
-## `func getId() -> Int`
+## `func getId() -> String`
 
-Возвращает идентификатор категории. Тип – **Int**.
+Возвращает идентификатор категории. Тип – **String**.
 
 ## `func getTitle() -> String`
 
@@ -262,9 +259,9 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 Объекты **FAQCategoryInfo** могут быть получены с помощью метода **getSubcategories()**.
 
-## `func getId() -> Int`
+## `func getId() -> String`
 
-Возвращает идентификатор категории. Тип – **Int**.
+Возвращает идентификатор категории. Тип – **String**.
 
 ## `func getTitle() -> String`
 
@@ -283,10 +280,10 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 Возвращает заголовок страницы. Тип – **String**.
 
-## `func getCategories() -> [Int]`
+## `func getCategories() -> [String]`
 Страница может принадлежать нескольким категориям.
 
-Возвращает идентификаторы категорий, которым принадлежи страница. Тип – **[Int]**.
+Возвращает идентификаторы категорий, которым принадлежит страница. Тип – **[String]**.
 
 ## `func getTags() -> [String]`
 У страницы есть набор тэгов.

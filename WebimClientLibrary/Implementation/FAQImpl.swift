@@ -113,9 +113,9 @@ final class FAQImpl {
 }
 
 // MARK: - FAQ
-extension FAQImpl: FAQ {  
+extension FAQImpl: FAQ {
     
-    func getCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) {
+    func getCategory(id: String, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) {
         do {
             try accessChecker.checkAccess()
         } catch {
@@ -124,22 +124,21 @@ extension FAQImpl: FAQ {
         }
         
         faqClient.getActions().getCategory(categoryId: id) { data in
-            if let data = data {
+            if let data = data,
                 let json = try? JSONSerialization.jsonObject(with: data,
-                                                             options: [])
-                if let faqCategoryDictionary = json as? [String: Any?] {
-                    let faqCategory = FAQCategoryItem(jsonDictionary: faqCategoryDictionary)
-                    completionHandler(.success(faqCategory))
+                                                             options: []),
+                let faqCategoryDictionary = json as? [String: Any?] {
+                let faqCategory = FAQCategoryItem(jsonDictionary: faqCategoryDictionary)
+                completionHandler(.success(faqCategory))
                     
-                    self.cache.insert(categoryId: faqCategory.getID(), categoryDictionary: faqCategoryDictionary)
-                }
+                self.cache.insert(categoryId: faqCategory.getID(), categoryDictionary: faqCategoryDictionary)
             } else {
                 completionHandler(.failure(.ERROR))
             }
         }
     }
     
-    func getCategoriesForApplication(completionHandler: @escaping (Result<[Int], FAQGetCompletionHandlerError>) -> Void) {
+    func getCategoriesForApplication(completionHandler: @escaping (Result<[String], FAQGetCompletionHandlerError>) -> Void) {
         do {
             try accessChecker.checkAccess()
         } catch {
@@ -150,15 +149,13 @@ extension FAQImpl: FAQ {
         if let application = faqClient.getApplication(),
             let departmentKey = faqClient.getDepartmentKey(),
             let language = faqClient.getLanguage() {
-        faqClient.getActions().getCategoriesFor(application: application, language: language, departmentKey: departmentKey) { data in
-                if let data = data {
+            faqClient.getActions().getCategoriesFor(application: application, language: language, departmentKey: departmentKey) { data in
+                if let data = data,
                     let json = try? JSONSerialization.jsonObject(with: data,
-                                                             options: [])
-                    if let faqCategoriesIDArray = json as? [Int] {
-                        completionHandler(.success(faqCategoriesIDArray))
-                    } else {
-                        completionHandler(.failure(.ERROR))
-                    }
+                                                                 options: []),
+                    let faqCategoriesIDArray = json as? [Int] {
+                    let ids = faqCategoriesIDArray.map { i in String(i) }
+                    completionHandler(.success(ids))
                 } else {
                     completionHandler(.failure(.ERROR))
                 }
@@ -168,7 +165,7 @@ extension FAQImpl: FAQ {
         }
     }
     
-    func getCachedCategory(id: Int, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) {
+    func getCachedCategory(id: String, completionHandler: @escaping (Result<FAQCategory, FAQGetCompletionHandlerError>) -> Void) {
         do {
             try accessChecker.checkAccess()
         } catch {
@@ -186,7 +183,7 @@ extension FAQImpl: FAQ {
         }
     }
     
-    func getStructure(id: Int, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) {
+    func getStructure(id: String, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) {
         do {
             try accessChecker.checkAccess()
         } catch {
@@ -194,14 +191,13 @@ extension FAQImpl: FAQ {
             return
         }
         faqClient.getActions().getStructure(categoryId: id) { data in
-            if let data = data {
+            if let data = data,
                 let json = try? JSONSerialization.jsonObject(with: data,
-                                                             options: [])
-                if let faqStructureDictionary = json as? [String: Any?] {
-                    let faqStructure = FAQStructureItem(jsonDictionary: faqStructureDictionary)
+                                                             options: []),
+                let faqStructureDictionary = json as? [String: Any?] {
+                let faqStructure = FAQStructureItem(jsonDictionary: faqStructureDictionary)
                     
-                    completionHandler(.success(faqStructure))
-                }
+                completionHandler(.success(faqStructure))
             } else {
                 completionHandler(.failure(.ERROR))
             }
@@ -218,34 +214,61 @@ extension FAQImpl: FAQ {
         }
         
         faqClient.getActions().getItem(itemId: id) { data in
-            if let data = data {
+            if let data = data,
                 let json = try? JSONSerialization.jsonObject(with: data,
-                                                             options: [])
-                if let faqItemDictionary = json as? [String: Any?] {
-                    let faqItem = FAQItemItem(jsonDictionary: faqItemDictionary)
+                                                             options: []),
+                let faqItemDictionary = json as? [String: Any?] {
+                let faqItem = FAQItemItem(jsonDictionary: faqItemDictionary)
                     
-                    completionHandler(.success(faqItem))
-                }
+                completionHandler(.success(faqItem))
             } else {
                 completionHandler(.failure(.ERROR))
             }
         }
     }
     
-    func like(item: FAQItem) throws {
-        try accessChecker.checkAccess()
+    func like(item: FAQItem, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         
-        faqClient.getActions().like(itemId: item.getID())
+        faqClient.getActions().like(itemId: item.getID()) { data in
+            if let data = data,
+                let json = try? JSONSerialization.jsonObject(with: data,
+                                                             options: []) as? [String: Any?],
+                json["result"] as? String == "ok" {
+                completionHandler(.success(FAQItemItem(faqItem: item, userRate: .LIKE)))
+            } else {
+                completionHandler(.failure(.ERROR))
+            }
+        }
     }
     
-    func dislike(item: FAQItem) throws {
-        try accessChecker.checkAccess()
+    func dislike(item: FAQItem, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
         
-        faqClient.getActions().dislike(itemId: item.getID())
+        faqClient.getActions().dislike(itemId: item.getID()) { data in
+            if let data = data,
+                let json = try? JSONSerialization.jsonObject(with: data,
+                                                             options: []) as? [String: Any?],
+                json["result"] as? String == "ok" {
+                completionHandler(.success(FAQItemItem(faqItem: item, userRate: .DISLIKE)))
+            } else {
+                completionHandler(.failure(.ERROR))
+            }
+        }
     }
     
     func search(query: String,
-                category: Int,
+                category: String,
                 limitOfItems: Int,
                 completionHandler: @escaping (Result<[FAQSearchItem], FAQGetCompletionHandlerError>) -> Void) {
         do {
@@ -255,18 +278,15 @@ extension FAQImpl: FAQ {
             return
         }
         faqClient.getActions().search(query: query, categoryId: category, limit: limitOfItems) { data in
-            if let data = data {
+            if let data = data,
                 let json = try? JSONSerialization.jsonObject(with: data,
-                                                             options: [])
-                if let faqItemsArray = json as? [[String: Any?]] {
-                    var items = [FAQSearchItem]()
-                    for item in faqItemsArray {
-                        items.append(FAQSearchItemItem(jsonDictionary: item))
-                    }
-                    completionHandler(.success(items))
-                } else {
-                    completionHandler(.failure(.ERROR))
+                                                             options: []),
+                let faqItemsArray = json as? [[String: Any?]] {
+                var items = [FAQSearchItem]()
+                for item in faqItemsArray {
+                    items.append(FAQSearchItemItem(jsonDictionary: item))
                 }
+                completionHandler(.success(items))
             } else {
                 completionHandler(.failure(.ERROR))
             }

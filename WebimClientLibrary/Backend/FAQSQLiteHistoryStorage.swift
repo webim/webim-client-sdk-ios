@@ -55,7 +55,7 @@ final class FAQSQLiteHistoryStorage {
     private static let categories = Table(TableName.categories.rawValue)
     
     // In DB columns order.
-    private static let id = Expression<Int>(ColumnName.id.rawValue)
+    private static let id = Expression<String>(ColumnName.id.rawValue)
     private static let data = Expression<Blob?>(ColumnName.data.rawValue)
     
     
@@ -79,7 +79,7 @@ final class FAQSQLiteHistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 1
+        return 2
     }
     
     func updateDB() {
@@ -87,7 +87,7 @@ final class FAQSQLiteHistoryStorage {
         createTables()
     }
     
-    func insert(categoryId: Int, categoryDictionary: [String: Any?]) {
+    func insert(categoryId: String, categoryDictionary: [String: Any?]) {
         FAQSQLiteHistoryStorage.queryQueue.sync { [weak self] in
             guard self != nil else {
                 return
@@ -110,7 +110,7 @@ final class FAQSQLiteHistoryStorage {
         }
     }
     
-    func get(categoryId: Int,
+    func get(categoryId: String,
              completion: @escaping ([String: Any?]?) -> ()) {
         FAQSQLiteHistoryStorage.queryQueue.async { [weak self] in
             guard let self = self else {
@@ -165,7 +165,7 @@ final class FAQSQLiteHistoryStorage {
                                                      create: false)
             let dbPath = "\(documentsPath)/\(name)"
             self.db = try! Connection(dbPath)
-            self.db?.userVersion = 1
+            self.db?.userVersion = 2
             self.db?.busyTimeout = 1.0
             self.db?.busyHandler() { tries in
                 if tries >= 3 {
@@ -189,14 +189,6 @@ final class FAQSQLiteHistoryStorage {
             t.column(FAQSQLiteHistoryStorage.id, primaryKey: true)
             t.column(FAQSQLiteHistoryStorage.data)
         })
-    }
-    
-    private func update(categoryId: Int,
-                        category: [String: Any?]) throws {
-        try db!.run(FAQSQLiteHistoryStorage
-            .categories
-            .where(FAQSQLiteHistoryStorage.id == categoryId)
-            .update(FAQSQLiteHistoryStorage.data <- FAQSQLiteHistoryStorage.convertToBlob(dictionary: category)))
     }
     
 }

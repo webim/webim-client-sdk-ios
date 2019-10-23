@@ -82,12 +82,12 @@ class FAQActions {
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                      primaryData: dataToPost,
                                                      baseURLString: urlString,
-                                                     faqItemRequestCompletionHandler: completion))
+                                                     faqCompletionHandler: completion))
     }
     
-    func getCategory(categoryId: Int,
+    func getCategory(categoryId: String,
                      completion: @escaping (_ faqCategory: Data?) throws -> ()) {
-        var dataToPost = [Parameter.categoryId.rawValue: String(categoryId)] as [String: Any]
+        var dataToPost = [Parameter.categoryId.rawValue: categoryId] as [String: Any]
         if let deviceId = FAQActions.deviceID {
             dataToPost[Parameter.userId.rawValue] = deviceId
         }
@@ -97,7 +97,7 @@ class FAQActions {
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                      primaryData: dataToPost,
                                                      baseURLString: urlString,
-                                                     faqCategoryRequestCompletionHandler: completion))
+                                                     faqCompletionHandler: completion))
     }
     
     func getCategoriesFor(application: String,
@@ -114,26 +114,26 @@ class FAQActions {
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                      primaryData: dataToPost,
                                                      baseURLString: urlString,
-                                                     faqCategoryRequestCompletionHandler: completion))
+                                                     faqCompletionHandler: completion))
     }
     
-    func getStructure(categoryId: Int,
+    func getStructure(categoryId: String,
                       completion: @escaping (_ faqStructure: Data?) throws -> ()) {
-        let dataToPost = [Parameter.categoryId.rawValue: String(categoryId)] as [String: Any]
+        let dataToPost = [Parameter.categoryId.rawValue: categoryId] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.structure.rawValue
         
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                      primaryData: dataToPost,
                                                      baseURLString: urlString,
-                                                     faqStructureRequestCompletionHandler: completion))
+                                                     faqCompletionHandler: completion))
     }
     
     func search(query: String,
-                categoryId: Int,
+                categoryId: String,
                 limit: Int,
                 completion: @escaping (_ data: Data?) throws -> ()) {
-        let dataToPost = [Parameter.categoryId.rawValue: String(categoryId),
+        let dataToPost = [Parameter.categoryId.rawValue: categoryId,
                           Parameter.query.rawValue: query,
                           Parameter.limit.rawValue: String(limit)] as [String: Any]
         
@@ -142,10 +142,11 @@ class FAQActions {
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                      primaryData: dataToPost,
                                                      baseURLString: urlString,
-                                                     faqSearchCompletionHandler: completion))
+                                                     faqCompletionHandler: completion))
     }
     
-    func like(itemId: String) {
+    func like(itemId: String,
+              completion: @escaping (_ data: Data?) throws -> ()) {
         var dataToPost = [Parameter.itemId.rawValue: itemId] as [String: Any]
         if let deviceId = FAQActions.deviceID {
             dataToPost[Parameter.userId.rawValue] = deviceId
@@ -155,10 +156,12 @@ class FAQActions {
         
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                      primaryData: dataToPost,
-                                                     baseURLString: urlString))
+                                                     baseURLString: urlString,
+                                                     faqCompletionHandler: completion))
     }
     
-    func dislike(itemId: String) {
+    func dislike(itemId: String,
+                 completion: @escaping (_ data: Data?) throws -> ()) {
         var dataToPost = [Parameter.itemId.rawValue: itemId] as [String: Any]
         if let deviceId = FAQActions.deviceID {
             dataToPost[Parameter.userId.rawValue] = deviceId
@@ -168,6 +171,7 @@ class FAQActions {
         
         faqRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                      primaryData: dataToPost,
-                                                     baseURLString: urlString))
+                                                     baseURLString: urlString,
+                                                     faqCompletionHandler: completion))
     }
 }

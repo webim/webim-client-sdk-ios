@@ -43,14 +43,14 @@ final class FAQCategoryItem {
     }
     
     // MARK: - Properties
-    private var id: Int?
+    private var id: String?
     private var title: String?
     private var children = [Child]()
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
         if let id = jsonDictionary[JSONField.id.rawValue] as? Int {
-            self.id = id
+            self.id = String(id)
         }
         
         if let title = jsonDictionary[JSONField.title.rawValue] as? String {
@@ -70,7 +70,7 @@ final class FAQCategoryItem {
 }
 
 extension FAQCategoryItem: FAQCategory {
-    func getID() -> Int {
+    func getID() -> String {
         return id!
     }
     

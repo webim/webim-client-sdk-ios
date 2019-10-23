@@ -51,10 +51,6 @@ final class FAQStructureItem {
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
-        if let id = jsonDictionary[JSONField.id.rawValue] as? String {
-            self.id = id
-        }
-        
         if let title = jsonDictionary[JSONField.title.rawValue] as? String {
             self.title = title
         }

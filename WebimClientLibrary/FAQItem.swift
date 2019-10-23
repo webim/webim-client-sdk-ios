@@ -56,7 +56,7 @@ public protocol FAQItem {
      - copyright:
      2019 Webim
      */
-    func getCategories() -> [Int]
+    func getCategories() -> [String]
     
     /**
      - returns:

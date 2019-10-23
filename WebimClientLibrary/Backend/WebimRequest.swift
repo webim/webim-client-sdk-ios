@@ -42,10 +42,7 @@ final class WebimRequest {
     private var contentType: String?
     private weak var dataMessageCompletionHandler: DataMessageCompletionHandler?
     private var historyRequestCompletionHandler: ((_ data: Data?) throws -> ())?
-    private var faqItemRequestCompletionHandler: ((_ item: Data?) throws -> ())?
-    private var faqCategoryRequestCompletionHandler: ((_ item: Data?) throws -> ())?
-    private var faqStructureRequestCompletionHandler: ((_ item: Data?) throws -> ())?
-    private var faqSearchCompletionHandler: ((_ item: Data?) throws -> ())?
+    private var faqCompletionHandler: ((_ data: Data?) throws -> ())?
     private var messageID: String?
     private var filename: String?
     private var mimeType: String?
@@ -68,10 +65,7 @@ final class WebimRequest {
          contentType: String? = nil,
          baseURLString: String,
          historyRequestCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
-         faqItemRequestCompletionHandler: ((_ item: Data?) throws -> ())? = nil,
-         faqCategoryRequestCompletionHandler: ((_ item: Data?) throws -> ())? = nil,
-         faqStructureRequestCompletionHandler: ((_ item: Data?) throws -> ())? = nil,
-         faqSearchCompletionHandler: ((_ item: Data?) throws -> ())? = nil,
+         faqCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
          dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
          rateOperatorCompletionHandler: RateOperatorCompletionHandler? = nil,
          sendFileCompletionHandler: SendFileCompletionHandler? = nil,
@@ -94,10 +88,7 @@ final class WebimRequest {
         self.deleteMessageCompletionHandler = deleteMessageCompletionHandler
         self.editMessageCompletionHandler = editMessageCompletionHandler
         self.sendKeyboardRequestCompletionHandler = keyboardResponseCompletionHandler
-        self.faqItemRequestCompletionHandler = faqItemRequestCompletionHandler
-        self.faqCategoryRequestCompletionHandler = faqCategoryRequestCompletionHandler
-        self.faqStructureRequestCompletionHandler = faqStructureRequestCompletionHandler
-        self.faqSearchCompletionHandler = faqSearchCompletionHandler
+        self.faqCompletionHandler = faqCompletionHandler
     }
     
     
@@ -119,20 +110,8 @@ final class WebimRequest {
         return historyRequestCompletionHandler
     }
     
-    func getFAQItemRequestCompletionHandler() -> ((_ data: Data?) throws -> ())? {
-        return faqItemRequestCompletionHandler
-    }
-    
-    func getFAQCategoryRequestCompletionHandler() -> ((_ data: Data?) throws -> ())? {
-        return faqCategoryRequestCompletionHandler
-    }
-    
-    func getFAQStructureRequestCompletionHandler() -> ((_ data: Data?) throws -> ())? {
-        return faqStructureRequestCompletionHandler
-    }
-    
-    func getFAQSearchCompletionHandler() -> ((_ data: Data?) throws -> ())? {
-        return faqSearchCompletionHandler
+    func getFAQCompletionHandler() -> ((_ data: Data?) throws -> ())? {
+        return faqCompletionHandler
     }
     
     func getFileName() -> String? {

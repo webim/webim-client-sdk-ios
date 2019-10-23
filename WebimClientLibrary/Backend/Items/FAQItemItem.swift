@@ -49,7 +49,7 @@ final class FAQItemItem {
     
     // MARK: - Properties
     private var id: String?
-    private var categories: [Int]?
+    private var categories: [String]?
     private var title: String?
     private var tags: [String]?
     private var content: String?
@@ -64,7 +64,7 @@ final class FAQItemItem {
         }
         
         if let categories = jsonDictionary[JSONField.categories.rawValue] as? [Int] {
-            self.categories = categories
+            self.categories = categories.map { i in String(i) }
         }
         
         if let title = jsonDictionary[JSONField.title.rawValue] as? String {
@@ -101,6 +101,18 @@ final class FAQItemItem {
         }
     }
     
+    init(faqItem: FAQItem, userRate: UserRate) {
+        let previousUserRate = faqItem.getUserRate()
+        self.id = faqItem.getID()
+        self.categories = faqItem.getCategories()
+        self.title = faqItem.getTitle()
+        self.tags = faqItem.getTags()
+        self.content = faqItem.getContent()
+        self.likes = faqItem.getLikeCount() + (userRate == .LIKE ? 1 : 0) - (previousUserRate == .LIKE ? 1 : 0)
+        self.dislikes = faqItem.getDislikeCount()  + (userRate == .DISLIKE ? 1 : 0) - (previousUserRate == .DISLIKE ? 1 : 0)
+        self.userRate = userRate
+    }
+    
 }
 
 extension FAQItemItem: FAQItem {
@@ -109,7 +121,7 @@ extension FAQItemItem: FAQItem {
         return id!
     }
     
-    func getCategories() -> [Int] {
+    func getCategories() -> [String] {
         return categories!
     }
     
