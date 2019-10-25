@@ -101,7 +101,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUesrAngent = request
-        requestWithUesrAngent.setValue("iOS: Webim-Client 3.29.1; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUesrAngent.setValue("iOS: Webim-Client 3.29.2; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
         var lastHTTPCode = -1
@@ -175,10 +175,14 @@ class AbstractRequestLoop {
             }
             
             if httpCode == 0 {
-                usleep(useconds_t(10_000_000.0))
-                self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                    self.internalErrorListener?.onNotFaral(error: .NO_NETWORK_CONNECTION)
-                })
+                if self.completionHandlerExecutor != nil {
+                    self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                        self.internalErrorListener?.onNotFaral(error: .NO_NETWORK_CONNECTION)
+                    })
+                    usleep(useconds_t(10_000_000.0))
+                } else {
+                    throw UnknownError.serverError
+                }
                 continue
             }
             
