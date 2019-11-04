@@ -25,7 +25,6 @@
 //
 
 import Foundation
-import UIKit
 
 // MARK: - Constants
 fileprivate enum UserDefaultsName: String {
@@ -193,6 +192,10 @@ final class WebimSessionImpl {
             let historyMajorVersion = historyStorage.getMajorVersion()
             if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
                 if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
+                    if let version = userDefaults[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int,
+                        version < 3 {
+                        deleteDBFileFor(userDefaultsKey: userDefaultsKey, isDocumentDitectory: true)
+                    }
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyRevision.rawValue)
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyEnded.rawValue)
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
@@ -265,10 +268,10 @@ final class WebimSessionImpl {
         UserDefaults.standard.removeObject(forKey: userDefaultsKey)
     }
     
-    private static func deleteDBFileFor(userDefaultsKey: String) {
+    private static func deleteDBFileFor(userDefaultsKey: String, isDocumentDitectory: Bool = false) {
         if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String {
             let fileManager = FileManager.default
-            let documentsDirectory = try! fileManager.url(for: .documentDirectory,
+            let documentsDirectory = try! fileManager.url(for: isDocumentDitectory ? .documentDirectory : .applicationSupportDirectory,
                                                           in: .userDomainMask,
                                                           appropriateFor: nil,
                                                           create: false)

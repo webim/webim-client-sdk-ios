@@ -77,7 +77,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
     
     override func tearDown() {
         let fileManager = FileManager.default
-        let documentsPath = try! fileManager.url(for: .documentDirectory,
+        let documentsPath = try! fileManager.url(for: .applicationSupportDirectory,
                                                  in: .userDomainMask,
                                                  appropriateFor: nil,
                                                  create: false)

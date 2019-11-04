@@ -97,6 +97,10 @@ final class FAQImpl {
         let historyMajorVersion = cache.getMajorVersion()
         if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
             if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.main.rawValue) {
+                if let version = userDefaults[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int,
+                    version < 3 {
+                    deleteDBFileFor()
+                }
                 userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
                 userDefaults.updateValue(historyMajorVersion, forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
                 cache.updateDB()
@@ -109,6 +113,22 @@ final class FAQImpl {
                        faqDestroyer: faqDestroyer,
                        faqClient: faqClient,
                        cache: cache)
+    }
+    
+    private static func deleteDBFileFor() {
+        let fileManager = FileManager.default
+        let documentsDirectory = try! fileManager.url(for: .documentDirectory,
+                                                      in: .userDomainMask,
+                                                      appropriateFor: nil,
+                                                      create: false)
+        let dbURL = documentsDirectory.appendingPathComponent("faqcache.db")
+            
+        do {
+            try fileManager.removeItem(at: dbURL)
+        } catch {
+            WebimInternalLogger.shared.log(entry: "Error deleting DB file at \(dbURL) or file doesn't exist.",
+                verbosityLevel: .VERBOSE)
+        }
     }
 }
 

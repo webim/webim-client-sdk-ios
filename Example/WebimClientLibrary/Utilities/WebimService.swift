@@ -81,11 +81,6 @@ final class WebimService {
         
         do {
             webimSession = try sessionBuilder.build()
-            /*let faq = try Webim.newFAQBuilder().set(accountName: "wmdemo3").build()
-            try faq.resume()
-            faq.getStructure(id: "0") { result in
-                print(result)
-            }*/
         } catch let error as SessionBuilder.SessionBuilderError {
             // Assuming to check parameters values in Webim session builder methods.
             switch error {

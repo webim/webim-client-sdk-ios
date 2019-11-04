@@ -79,7 +79,7 @@ final class FAQSQLiteHistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 2
+        return 3
     }
     
     func updateDB() {
@@ -159,13 +159,13 @@ final class FAQSQLiteHistoryStorage {
             }
             
             let fileManager = FileManager.default
-            let documentsPath = try! fileManager.url(for: .documentDirectory,
+            let documentsPath = try! fileManager.url(for: .applicationSupportDirectory,
                                                      in: .userDomainMask,
                                                      appropriateFor: nil,
                                                      create: false)
             let dbPath = "\(documentsPath)/\(name)"
             self.db = try! Connection(dbPath)
-            self.db?.userVersion = 2
+            self.db?.userVersion = 3
             self.db?.busyTimeout = 1.0
             self.db?.busyHandler() { tries in
                 if tries >= 3 {
