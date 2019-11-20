@@ -552,7 +552,8 @@ extension MessageTrackerImpl: MessageTracker {
         }
         
         messagesLoading = true
-        
+        allMessageSourcesEnded = false
+        messageHolder.set(reachedEndOfLocalHistory: false)
         let currentChatMessages = messageHolder.getCurrentChatMessages()
         if (firstHistoryUpdateReceived == true)
             || (!currentChatMessages.isEmpty
