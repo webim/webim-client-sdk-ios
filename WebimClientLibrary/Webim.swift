@@ -492,12 +492,9 @@ public final class SessionBuilder  {
             && (providedAuthorizationTokenStateListener != nil) {
             throw SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS
         }
-
-        var providedAuthorizationToken = self.providedAuthorizationToken
-
-        if let listener = providedAuthorizationTokenStateListener {
-            providedAuthorizationToken = providedAuthorizationToken ?? ClientSideID.generateClientSideID()
-            listener.update(providedAuthorizationToken: providedAuthorizationToken!)
+        
+        if let listener = providedAuthorizationTokenStateListener, self.providedAuthorizationToken == nil {
+            listener.update(providedAuthorizationToken: ClientSideID.generateClientSideID())
         }
         
         if var prechat = self.prechat {

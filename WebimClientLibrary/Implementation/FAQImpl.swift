@@ -218,19 +218,40 @@ extension FAQImpl: FAQ {
                 let faqStructure = FAQStructureItem(jsonDictionary: faqStructureDictionary)
                     
                 completionHandler(.success(faqStructure))
+                
+                self.cache.insert(structureId: id, structureDictionary: faqStructureDictionary)
             } else {
                 completionHandler(.failure(.ERROR))
             }
         }
-        
     }
     
-    func getItem(id: String, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) {
+    func getCachedStructure(id: String, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void) {
         do {
             try accessChecker.checkAccess()
         } catch {
             completionHandler(.failure(.ERROR))
             return
+        }
+        
+        self.cache.get(structureId: id) { data in
+            if let data = data {
+                completionHandler(.success(FAQStructureItem(jsonDictionary: data)))
+            } else {
+                completionHandler(.failure(.ERROR))
+            }
+        }
+    }
+    
+    func getItem(id: String, openFrom: FAQItemSource? = nil, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
+        if let openFrom = openFrom {
+            faqClient.getActions().track(itemId: id, openFrom: openFrom)
         }
         
         faqClient.getActions().getItem(itemId: id) { data in
@@ -241,6 +262,25 @@ extension FAQImpl: FAQ {
                 let faqItem = FAQItemItem(jsonDictionary: faqItemDictionary)
                     
                 completionHandler(.success(faqItem))
+            } else {
+                completionHandler(.failure(.ERROR))
+            }
+        }
+    }
+    
+    func getCachedItem(id: String, openFrom: FAQItemSource? = nil, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void) {
+        do {
+            try accessChecker.checkAccess()
+        } catch {
+            completionHandler(.failure(.ERROR))
+            return
+        }
+        if let openFrom = openFrom {
+            faqClient.getActions().track(itemId: id, openFrom: openFrom)
+        }
+        self.cache.get(itemId: id) { data in
+            if let data = data {
+                completionHandler(.success(FAQItemItem(jsonDictionary: data)))
             } else {
                 completionHandler(.failure(.ERROR))
             }

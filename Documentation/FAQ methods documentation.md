@@ -161,7 +161,7 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 `completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQCategory**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
-## `func getItem(id: String, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)`
+## `func getItem(id: String, openFrom: FAQItemSource?, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)`
 Метод, который используется для получения объекта класса **FAQItem** через **completionHandler**.
 
 **Важно:** для правильной работы метода требуется вызов метод **resume()**.
@@ -170,10 +170,36 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 
 `id` – **ID** страницы блока часто задаваемых вопросов. Тип – **String**.
 
+`openFrom` – запрос статьи из определённого источника. Тип – **FAQItemSource**.
+
+`completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQItem**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
+
+## `func getCachedItem(id: String, openFrom: FAQItemSource?, completionHandler: @escaping (Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)`
+Метод, который используется для получения объекта класса **FAQItem** через **completionHandler** из кэша.
+
+**Важно:** для правильной работы метода требуется вызов метод **resume()**.
+
+### Параметры
+
+`id` – **ID** страницы блока часто задаваемых вопросов. Тип – **String**.
+
+`openFrom` – запрос статьи из определённого источника. Тип – **FAQItemSource**.
+
 `completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQItem**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
 
 ## `func getStructure(id: String, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)`
 Метод, который используется для получения объекта класса **FAQStructure** через **completionHandler**.
+
+**Важно:** для правильной работы метода требуется вызов метод **resume()**.
+
+### Параметры
+
+`id` – **ID** вершины, которая будет корнем дерева (структуры) блока часто задаваемых вопросов. Тип – **String**.
+
+`completionHandler` – замыкание, которое выполняется после завершения выполнения метода. При успешном завершении работы метода замыкание принимает один параметр типа **FAQStructure**, при неуспешном – параметр типа **FAQGetCompletionHandlerError**, и не имеет возвращаемого типа.
+
+## `func getCachedStructure(id: String, completionHandler: @escaping (Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)`
+Метод, который используется для получения объекта класса **FAQStructure** через **completionHandler** из кэша.
 
 **Важно:** для правильной работы метода требуется вызов метод **resume()**.
 
@@ -365,3 +391,11 @@ NIL_ACCOUNT_NAME | Возникает, когда при создании бло
 ITEM | Корень дерева является страницей
 CATEGORY | Корень дерева является категорией
 UNKNOWN | Корень дерева имеет неизвестный тип для данной версии SDK
+
+# перечисляемый тип FAQItemSource
+Возможный источник статьи. Статья может быть взята из поиска или из структуры или категории.
+
+Значение | Описание
+---------|---------
+SEARCH | Статью запрашивают из поиска
+TREE | Статью запрашивают из структуры или категории

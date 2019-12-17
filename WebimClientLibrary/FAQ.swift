@@ -147,6 +147,8 @@ public protocol FAQ {
      `FAQItem` protocol.
      - parameter id:
      Item ID.
+     - parameter openFrom:
+     Item open from this source.
      - parameter completionHandler:
      Completion to be called on item if method call succeeded.
      - parameter result:
@@ -159,7 +161,30 @@ public protocol FAQ {
      - copyright:
      2019 Webim
      */
-    func getItem(id: String, completionHandler: @escaping (_ result: Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)
+    func getItem(id: String, openFrom: FAQItemSource?, completionHandler: @escaping (_ result: Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)
+    
+    /**
+    Requests item from cache. If nil is passed inside completion, there no item with this id.
+    - seealso:
+    `destroy()` method.
+    `FAQItem` protocol.
+    - parameter id:
+    Item ID.
+    - parameter openFrom:
+    Item open from this source.
+    - parameter completionHandler:
+    Completion to be called on item if method call succeeded.
+    - parameter result:
+    Resulting item if method call succeeded.
+    - throws:
+    `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
+    `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+    - author:
+    Nikita Kaberov
+    - copyright:
+    2019 Webim
+    */
+    func getCachedItem(id: String, openFrom: FAQItemSource?, completionHandler: @escaping (_ result: Result<FAQItem, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Requests structure. If nil is passed inside completion, there no structure with this id.
@@ -181,6 +206,27 @@ public protocol FAQ {
      2019 Webim
      */
     func getStructure(id: String, completionHandler: @escaping (_ result: Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)
+    
+    /**
+    Requests structure from cache. If nil is passed inside completion, there no structure with this id.
+    - seealso:
+    `destroy()` method.
+    `FAQStructure` protocol.
+    - parameter id:
+    Structure ID.
+    - parameter completionHandler:
+    Completion to be called on structure if method call succeeded.
+    - parameter result:
+    Resulting structure if method call succeeded.
+    - throws:
+    `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
+    `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+    - author:
+    Nikita Kaberov
+    - copyright:
+    2019 Webim
+    */
+    func getCachedStructure(id: String, completionHandler: @escaping (_ result: Result<FAQStructure, FAQGetCompletionHandlerError>) -> Void)
     
     /**
      Like selected FAQ item.
@@ -279,4 +325,34 @@ public enum FAQAccessError: Error {
  */
 public enum FAQGetCompletionHandlerError: Error {
     case ERROR
+}
+
+// MARK: -
+/**
+ Item will be open from this source.
+ - seealso:
+ `FAQ` methods.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2019 Webim
+ */
+public enum FAQItemSource {
+    /**
+    Item is opened from search.
+    - author:
+    Nikita Kaberov
+    - copyright:
+    2019 Webim
+    */
+    case SEARCH
+    
+    /**
+    Item is opened from tree.
+    - author:
+    Nikita Kaberov
+    - copyright:
+    2019 Webim
+    */
+    case TREE
 }

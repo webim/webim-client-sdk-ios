@@ -43,6 +43,8 @@ final class FAQSQLiteHistoryStorage {
     // MARK: SQLite tables and columns names
     private enum TableName: String {
         case categories = "categories"
+        case structures = "structures"
+        case items = "items"
     }
     private enum ColumnName: String {
         // In DB columns order.
@@ -53,6 +55,8 @@ final class FAQSQLiteHistoryStorage {
     // MARK: SQLite.swift abstractions
     
     private static let categories = Table(TableName.categories.rawValue)
+    private static let structures = Table(TableName.structures.rawValue)
+    private static let items = Table(TableName.items.rawValue)
     
     // In DB columns order.
     private static let id = Expression<String>(ColumnName.id.rawValue)
@@ -79,7 +83,7 @@ final class FAQSQLiteHistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 3
+        return 4
     }
     
     func updateDB() {
@@ -88,21 +92,31 @@ final class FAQSQLiteHistoryStorage {
     }
     
     func insert(categoryId: String, categoryDictionary: [String: Any?]) {
+        insert(id: categoryId, dictionary: categoryDictionary, table: FAQSQLiteHistoryStorage.categories)
+    }
+    
+    func insert(structureId: String, structureDictionary: [String: Any?]) {
+        insert(id: structureId, dictionary: structureDictionary, table: FAQSQLiteHistoryStorage.structures)
+    }
+    
+    func insert(itemId: String, itemDictionary: [String: Any?]) {
+        insert(id: itemId, dictionary: itemDictionary, table: FAQSQLiteHistoryStorage.items)
+    }
+    
+    private func insert(id: String, dictionary: [String: Any?], table: Table) {
         FAQSQLiteHistoryStorage.queryQueue.sync { [weak self] in
             guard self != nil else {
                 return
             }
             do {
-                try db?.run(FAQSQLiteHistoryStorage
-                    .categories
-                    .insert(FAQSQLiteHistoryStorage.id <- categoryId,
-                            FAQSQLiteHistoryStorage.data <- FAQSQLiteHistoryStorage.convertToBlob(dictionary: categoryDictionary)))
+                try db?.run(table
+                    .insert(FAQSQLiteHistoryStorage.id <- id,
+                            FAQSQLiteHistoryStorage.data <- FAQSQLiteHistoryStorage.convertToBlob(dictionary: dictionary)))
             } catch {
                 do {
-                    try db!.run(FAQSQLiteHistoryStorage
-                        .categories
-                        .where(FAQSQLiteHistoryStorage.id == categoryId)
-                        .update(FAQSQLiteHistoryStorage.data <- FAQSQLiteHistoryStorage.convertToBlob(dictionary: categoryDictionary)))
+                    try db!.run(table
+                        .where(FAQSQLiteHistoryStorage.id == id)
+                        .update(FAQSQLiteHistoryStorage.data <- FAQSQLiteHistoryStorage.convertToBlob(dictionary: dictionary)))
                 } catch {
                     
                 }
@@ -112,16 +126,28 @@ final class FAQSQLiteHistoryStorage {
     
     func get(categoryId: String,
              completion: @escaping ([String: Any?]?) -> ()) {
+        get(id: categoryId, table: FAQSQLiteHistoryStorage.categories, completion: completion)
+    }
+    
+    func get(structureId: String,
+             completion: @escaping ([String: Any?]?) -> ()) {
+        get(id: structureId, table: FAQSQLiteHistoryStorage.structures, completion: completion)
+    }
+    
+    func get(itemId: String,
+             completion: @escaping ([String: Any?]?) -> ()) {
+        get(id: itemId, table: FAQSQLiteHistoryStorage.items, completion: completion)
+    }
+    
+    private func get(id: String, table: Table, completion: @escaping ([String: Any?]?) -> ()) {
         FAQSQLiteHistoryStorage.queryQueue.async { [weak self] in
             guard let self = self else {
                 return
             }
-            let query = FAQSQLiteHistoryStorage
-                .categories
-                .filter(FAQSQLiteHistoryStorage.id == categoryId)
+            let query = table
+                .filter(FAQSQLiteHistoryStorage.id == id)
                 .limit(1)
             do {
-                
                 for row in try self.db!.prepare(query) {
                     var data: [String: Any?]?
                     if let dataValue = row[FAQSQLiteHistoryStorage.data] {
@@ -159,13 +185,13 @@ final class FAQSQLiteHistoryStorage {
             }
             
             let fileManager = FileManager.default
-            let documentsPath = try! fileManager.url(for: .applicationSupportDirectory,
+            let documentsPath = try! fileManager.url(for: .documentDirectory,
                                                      in: .userDomainMask,
                                                      appropriateFor: nil,
                                                      create: false)
             let dbPath = "\(documentsPath)/\(name)"
             self.db = try! Connection(dbPath)
-            self.db?.userVersion = 3
+            self.db?.userVersion = 4
             self.db?.busyTimeout = 1.0
             self.db?.busyHandler() { tries in
                 if tries >= 3 {
@@ -180,15 +206,17 @@ final class FAQSQLiteHistoryStorage {
     }
     
     private func createTables() {
-        /*
-         CREATE TABLE categories
-         id TEXT PRIMARY KEY NOT NULL,
-         data TEXT
-         */
-        try! self.db?.run(FAQSQLiteHistoryStorage.categories.create(ifNotExists: true) { t in
-            t.column(FAQSQLiteHistoryStorage.id, primaryKey: true)
-            t.column(FAQSQLiteHistoryStorage.data)
-        })
+        for table in [FAQSQLiteHistoryStorage.categories, FAQSQLiteHistoryStorage.structures, FAQSQLiteHistoryStorage.items] {
+            /*
+            CREATE TABLE table
+            id TEXT PRIMARY KEY NOT NULL,
+            data TEXT
+            */
+            try! self.db?.run(table.create(ifNotExists: true) { t in
+                t.column(FAQSQLiteHistoryStorage.id, primaryKey: true)
+                t.column(FAQSQLiteHistoryStorage.data)
+            })
+        }
     }
     
 }

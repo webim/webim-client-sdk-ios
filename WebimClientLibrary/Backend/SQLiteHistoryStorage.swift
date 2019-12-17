@@ -109,11 +109,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 3
+        return 4
     }
     
     func getVersionDB() -> Int {
-        return 3
+        return 4
     }
     
     func set(reachedHistoryEnd: Bool) {
@@ -458,13 +458,13 @@ final class SQLiteHistoryStorage: HistoryStorage {
             }
             
             let fileManager = FileManager.default
-            let documentsPath = try! fileManager.url(for: .applicationSupportDirectory,
+            let documentsPath = try! fileManager.url(for: .documentDirectory,
                                                      in: .userDomainMask,
                                                      appropriateFor: nil,
                                                      create: false)
             let dbPath = "\(documentsPath)/\(name)"
             self.db = try! Connection(dbPath)
-            self.db?.userVersion = 3
+            self.db?.userVersion = 4
             self.db?.busyTimeout = 1.0
             self.db?.busyHandler() { tries in
                 if tries >= 3 {
