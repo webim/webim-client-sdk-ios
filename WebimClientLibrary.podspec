@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
   s.source = { :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => s.version.to_s }
   
-  s.dependency 'SQLite.swift', '0.12.0'
+  s.dependency 'SQLite.swift', '~> 0.12.0'
   s.frameworks = 'Foundation'
   s.source_files = 'WebimClientLibrary/**/*'
 
