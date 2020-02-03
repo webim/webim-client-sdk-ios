@@ -409,6 +409,18 @@ final class SQLiteHistoryStorage: HistoryStorage {
                 }
             } // End of `for message in messages`
             
+            for idToDelete in idsToDelete {
+                do {
+                    try delete(messageDBid: idToDelete)
+                    completionHandlerQueue.async {
+                        completion(false, true, idToDelete, false, nil, false, nil, nil)
+                    }
+                } catch {
+                    WebimInternalLogger.shared.log(entry: "Delete received message with id \"\(idToDelete)\" failed: \(error.localizedDescription)",
+                        verbosityLevel: .ERROR)
+                }
+            }
+            
             if (firstKnownTimestamp == -1)
                 && (newFirstKnownTimestamp != Int64.max) {
                 firstKnownTimestamp = newFirstKnownTimestamp
@@ -696,6 +708,18 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()),
                     SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))
+        
+        db?.trace {
+            WebimInternalLogger.shared.log(entry: "\($0)",
+                verbosityLevel: .DEBUG)
+        }
+    }
+    
+    private func delete(messageDBid: String) throws {
+        try db!.run(SQLiteHistoryStorage
+            .history
+            .where(SQLiteHistoryStorage.id == messageDBid)
+            .delete())
         
         db?.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",

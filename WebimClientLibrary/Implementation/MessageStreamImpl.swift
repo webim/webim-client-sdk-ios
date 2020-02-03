@@ -466,7 +466,7 @@ extension MessageStreamImpl: MessageStream {
         try accessChecker.checkAccess()
         
         webimActions.sendKeyboardRequest(buttonId: button.getID(),
-                                         messageId: message.getID(),
+                                         messageId: message.getCurrentChatID() ?? "",
                                          completionHandler: completionHandler)
     }
     

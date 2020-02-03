@@ -40,4 +40,6 @@ protocol HistoryMetaInformationStorage {
     
     func set(revision: String?)
     
+    func getRevision() -> String?
+    
 }

@@ -52,4 +52,9 @@ final class MemoryHistoryMetaInformationStorage: HistoryMetaInformationStorage {
         // No need to do anything in this implementation.
     }
     
+    func getRevision() -> String? {
+        // No need to do anything in this implementation.
+        return nil
+    }
+    
 }

@@ -102,9 +102,8 @@ class MessageImpl {
         if historyMessage {
             historyID = HistoryID(dbID: internalID!,
                                   timeInMicrosecond: timeInMicrosecond)
-        } else {
-            currentChatID = internalID
         }
+        currentChatID = internalID
     }
     
     // MARK: - Methods

@@ -440,6 +440,7 @@ final class HistoryPoller {
         self.webimActions = webimActions
         self.messageHolder = messageHolder
         self.historyMetaInformationStorage = historyMetaInformationStorage
+        self.lastRevision = historyMetaInformationStorage.getRevision()
     }
     
     // MARK: - Methods
@@ -782,6 +783,15 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
                 UserDefaults.standard.setValue([UserDefaultsMainPrefix.historyRevision.rawValue: revision],
                                                forKey: userDefaultsKey)
             }
+        }
+    }
+    
+    func getRevision() -> String? {
+        if let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey),
+            let revision = userDefaults[UserDefaultsMainPrefix.historyRevision.rawValue] as! String? {
+            return revision
+        } else {
+            return nil
         }
     }
     

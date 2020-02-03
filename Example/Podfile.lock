@@ -8,11 +8,11 @@ PODS:
     - DynamicBlurView (~> 3.0.1)
   - SlackTextViewController (1.9.6)
   - SnapKit (4.2.0)
-  - SQLite.swift (0.12.0):
-    - SQLite.swift/standard (= 0.12.0)
-  - SQLite.swift/standard (0.12.0)
-  - WebimClientLibrary (3.29.5):
-    - SQLite.swift (= 0.12.0)
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
+  - WebimClientLibrary (3.29.6):
+    - SQLite.swift (= 0.12.2)
 
 DEPENDENCIES:
   - Cosmos (~> 19.0.3)
@@ -21,7 +21,7 @@ DEPENDENCIES:
   - PopupDialog (~> 1.0)
   - SlackTextViewController
   - SnapKit
-  - SQLite.swift (= 0.12.0)
+  - SQLite.swift (= 0.12.2)
   - WebimClientLibrary (from `../`)
 
 SPEC REPOS:
@@ -47,9 +47,9 @@ SPEC CHECKSUMS:
   PopupDialog: 28f29a1ffe9e1fab32fb258b53d56ca31670e8a2
   SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  SQLite.swift: 7cad9db150a03716336e69469ec9559c85aece5b
-  WebimClientLibrary: a6d173508e4029dfda6a0eb493ceeaec249cdb02
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  WebimClientLibrary: fdaf6a1d8eff8c135c1788f0d5a4fb2c2a80dcff
 
-PODFILE CHECKSUM: 7dce62f116a388a2ae58b61b225d84d7015447de
+PODFILE CHECKSUM: 6e32648b7078df57752b6b95cd2aa7128e22c8b5
 
 COCOAPODS: 1.8.3
