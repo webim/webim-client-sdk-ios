@@ -80,6 +80,7 @@ enum WebimInternalError: String, Error {
     // Rate operator errors
     case noChat = "no-chat"
     case operatorNotInChat = "operator-not-in-chat"
+    case noteIsTooLong = "note-is-too-long"
     
     // Keyboard response errors
     case buttonIdNotSet = "button-id-not-set"

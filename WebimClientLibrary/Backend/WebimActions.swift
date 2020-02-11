@@ -71,6 +71,7 @@ class WebimActions {
         case rating = "rate"
         case respondImmediately = "respond-immediately"
         case requestMessageId = "request-message-id"
+        case visitorNote = "visitor_note"
         case visitSessionID = "visit-session-id"
         case since = "since"
         case timestamp = "ts"
@@ -307,11 +308,15 @@ class WebimActions {
     
     func rateOperatorWith(id: String?,
                           rating: Int,
+                          visitorNote: String?,
                           completionHandler: RateOperatorCompletionHandler?) {
         var dataToPost = [Parameter.actionn.rawValue: Action.rateOperator.rawValue,
                           Parameter.rating.rawValue: String(rating)] as [String: Any]
         if let id = id {
             dataToPost[Parameter.operatorID.rawValue] = id
+        }
+        if let visitorNote = visitorNote {
+            dataToPost[Parameter.visitorNote.rawValue] = visitorNote
         }
         
         let urlString = baseURL + ServerPathSuffix.doAction.rawValue

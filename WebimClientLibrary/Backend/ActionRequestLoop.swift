@@ -281,9 +281,12 @@ class ActionRequestLoop: AbstractRequestLoop {
         if let rateOperatorCompletionhandler = webimRequest.getRateOperatorCompletionHandler() {
             completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 let rateOperatorError: RateOperatorError
-                if errorString == WebimInternalError.noChat.rawValue {
+                switch errorString {
+                case WebimInternalError.noChat.rawValue:
                     rateOperatorError = .NO_CHAT
-                } else {
+                case WebimInternalError.noteIsTooLong.rawValue:
+                    rateOperatorError = .NOTE_IS_TOO_LONG
+                default:
                     rateOperatorError = .WRONG_OPERATOR_ID
                 }
                 

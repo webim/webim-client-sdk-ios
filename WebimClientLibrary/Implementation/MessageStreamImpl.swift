@@ -324,11 +324,15 @@ extension MessageStreamImpl: MessageStream {
     func getLastRatingOfOperatorWith(id: String) -> Int {
         let rating = chat?.getOperatorIDToRate()?[id]
         
-        return ((rating == nil) ? 0 : rating!.getRating())
+        return rating?.getRating() ?? 0
     }
     
+    func rateOperatorWith(id: String?, byRating rating: Int, completionHandler: RateOperatorCompletionHandler?) throws {
+        try rateOperatorWith(id: id, note: nil, byRating: rating, completionHandler: completionHandler)
+    }
     
     func rateOperatorWith(id: String?,
+                          note: String?,
                           byRating rating: Int,
                           completionHandler: RateOperatorCompletionHandler?) throws {
         guard rating >= 1,
@@ -343,6 +347,7 @@ extension MessageStreamImpl: MessageStream {
         
         webimActions.rateOperatorWith(id: id,
                                       rating: (rating - 3), // Accepted range: (-2, -1, 0, 1, 2).
+                                      visitorNote: note,
                                       completionHandler: completionHandler)
     }
     
@@ -467,6 +472,16 @@ extension MessageStreamImpl: MessageStream {
         
         webimActions.sendKeyboardRequest(buttonId: button.getID(),
                                          messageId: message.getCurrentChatID() ?? "",
+                                         completionHandler: completionHandler)
+    }
+    
+    func sendKeyboardRequest(buttonID: String,
+                             messageCurrentChatID: String,
+                             completionHandler: SendKeyboardRequestCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.sendKeyboardRequest(buttonId: buttonID,
+                                         messageId: messageCurrentChatID,
                                          completionHandler: completionHandler)
     }
     

@@ -161,6 +161,34 @@ public protocol MessageStream: class {
                           completionHandler: RateOperatorCompletionHandler?) throws
     
     /**
+     Rates an operator.
+     To get an ID of the current operator call `getCurrentOperator()`.
+     - important:
+     Requires existing chat.
+     - seealso:
+     `RateOperatorCompletionHandler` protocol.
+     - parameter id:
+     ID of the operator to be rated. If passed `nil` current chat operator will be rated.
+     - parameter note:
+     A comment for rating. Maximum length is 2000 characters.
+     - parameter rate:
+     A number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
+     - parameter comletionHandler:
+     `RateOperatorCompletionHandler` object.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func rateOperatorWith(id: String?,
+                          note: String?,
+                          byRating rating: Int,
+                          completionHandler: RateOperatorCompletionHandler?) throws
+    
+    /**
      Respond sentry call
      - important:
      Id of redirect to sentry message
@@ -470,7 +498,27 @@ public protocol MessageStream: class {
      2019 Webim
      */
     func sendKeyboardRequest(button: KeyboardButton,
-                             message:Message,
+                             message: Message,
+                             completionHandler: SendKeyboardRequestCompletionHandler?) throws
+    
+    /**
+     Send keyboard request with button.
+     - parameter buttonID:
+     ID of selected button.
+     - parameter messageID:
+     Current chat ID of message with keyboard.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func sendKeyboardRequest(buttonID: String,
+                             messageCurrentChatID: String,
                              completionHandler: SendKeyboardRequestCompletionHandler?) throws
     
     /**
@@ -1767,5 +1815,14 @@ public enum RateOperatorError: Error {
      2017 Webim
      */
     case WRONG_OPERATOR_ID
+    
+    /**
+     Note length is more than 2000 characters.
+    - author:
+    Nikita Kaberov
+    - copyright:
+    2020 Webim
+    */
+    case NOTE_IS_TOO_LONG
     
 }

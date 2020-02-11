@@ -59,6 +59,7 @@
     -   [getCurrentOperator() method](#get-current-operator)
     -   [getLastRatingOfOperatorWith(id:) method](#get-last-rating-of-operator-with-id)
     -   [rateOperatorWith(id:byRating:completionHandler:) method](#rate-operator-with-id-by-rating-rating)
+    -   [rateOperatorWith(id:note:byRating:completionHandler:) method](#rate-operator-with-id-note-by-rating-rating)
     -   [respondSentryCall(id:) method](#respond-sentry-call)
     -   [startChat() method](#start-chat)
     -   [startChat(firstQuestion:) method](#start-chat-first-question)
@@ -75,6 +76,7 @@
     -   [send(message:isHintQuestion:) method](#send-message-is-hint-question)
     -   [send(file:filename:mimeType:completionHandler:) method](#send-file-filename-mime-type-completion-handler)
     -   [sendKeyboardRequest(button:message:completionHandler:) method](#send-keyboard-request)
+    -   [sendKeyboardRequest(buttonID:messageCurrentChatID:completionHandler:) method](#send-keyboard-request-with-id)
     -   [udpateWidgetStatus(data:) method](#update-widget-status)
     -   [reply(message:repliedMessage:) method](#reply-message)
     -   [edit(message:text:completionHandler:) method](#edit-message)
@@ -660,6 +662,16 @@ To get an ID of the current operator call [getCurrentOperator()](#get-current-op
 `completionHandler` parameter – [RateOperatorCompletionHandler](#rate-operator-completion-handler) object.
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="rate-operator-with-id-note-by-rating-rating">rateOperatorWith(id:note:byRating:completionHandler:) method</h3>
+
+Rates an operator.
+To get an ID of the current operator call [getCurrentOperator()](#get-current-operator).
+`id` parameter – String-typed ID of the operator to be rated. Optional: if `nil` is passed, current chat operator will be rated.
+`note` parameter – String-typed comment for rating. Max length is 2000 characters. 
+`rating` parameter – a number in range (1...5) that represents an operator rating. If the number is out of range, rating will not be sent to a server.
+`completionHandler` parameter – [RateOperatorCompletionHandler](#rate-operator-completion-handler) object.
+Can throw errors of [AccessError](#access-error) type.
+
 <h3 id ="respond-sentry-call">respondSentryCall(id:) method</h3>
 
 Respond sentry call.
@@ -770,6 +782,14 @@ Can throw errors of [AccessError](#access-error) type.
 Sends a keyboard request.
 `button` parameter – selected button of [`KeyboardButton`](#keyboard-button) type.
 `message` parameter – keyboard message of [`Message`](#message) type.
+`completionHandler` parameter – optional [SendKeyboardRequestCompletionHandler](#send-keyboard-request-completion-handler) object.
+Can throw errors of [AccessError](#access-error) type.
+
+<h3 id ="send-keyboard-request-with-id">sendKeyboardRequest(buttonID:messageCurrentChatID:completionHandler:) method</h3>
+
+Sends a keyboard request.
+`buttonID` parameter – id of selected button of `String` type.
+`messageCurrentChatID` parameter – current chat if of keyboard message of `String` type.
 `completionHandler` parameter – optional [SendKeyboardRequestCompletionHandler](#send-keyboard-request-completion-handler) object.
 Can throw errors of [AccessError](#access-error) type.
 
@@ -938,7 +958,7 @@ Executed when operation is failed.
 
 <h2 id ="send-keyboard-request-completion-handler">SendKeyboardRequestCompletionHandler protocol</h2>
 
-Protocol which methods are called after [sendKeyboardRequest(button:message:completionHandler:)](#send-keyboard-request) method is finished. Must be adopted.
+Protocol which methods are called after [sendKeyboardRequest(button:message:completionHandler:)](#send-keyboard-request) or  [sendKeyboardRequest(buttonID:messageCurrentChatID:completionHandler:)](#send-keyboard-request-with-id) method is finished. Must be adopted.
 
 <h3 id ="on-success-message-id-send-keyboard-request">onSuccess(messageID:) method</h3>
 
@@ -955,7 +975,7 @@ Executed when operation is failed.
 
 <h2 id ="rate-operator-completion-handler">RateOperatorCompletionHandler protocol</h2>
 
-Protocol which methods are called after [rateOperatorWith(id:byRating:completionHandler:)](#rate-operator-with-id-by-rating-rating) method is finished. Must be adopted.
+Protocol which methods are called after [rateOperatorWith(id:byRating:completionHandler:)](#rate-operator-with-id-by-rating-rating) or [rateOperatorWith(id:note:byRating:completionHandler:)](#rate-operator-with-id-note-by-rating-rating) method is finished. Must be adopted.
 
 <h3 id ="on-success">onSuccess() method</h3>
 
@@ -1968,7 +1988,7 @@ Notice that the session will be destroyed if this error occured.
 <h3 id ="no-chat">NO_CHAT case</h3>
 
 Indicates that there was a try to perform action that requires existing chat, but there's no chat.
-E.g. see [rateOperatorWith(id:,byRating rating:) method](#rate-operator-with-id-by-rating-rating) of [MessageStream protocol](#message-stream).
+E.g. see [rateOperatorWith(id:byRating rating:) method](#rate-operator-with-id-by-rating-rating) or [rateOperatorWith(id:note:byRating rating:) method](#rate-operator-with-id-note-by-rating-rating)  of [MessageStream protocol](#message-stream).
 
 <h3 id ="provided-visitor-fields-expired">PROVIDED_VISITOR_FIELDS_EXPIRED case</h3>
 
