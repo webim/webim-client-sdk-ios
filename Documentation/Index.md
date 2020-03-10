@@ -82,6 +82,7 @@
     -   [edit(message:text:completionHandler:) method](#edit-message)
     -   [delete(message:completionHandler:) method](#delete-message)
     -   [setChatRead() method](#set-chat-read)
+    -   [sendDialogTo(emailAddress:completionHandler:) method](#send-dialog-to-email-address)
     -   [set(prechatFields:) method](#set-prechat-fields)
     -   [newMessageTracker(messageListener:) method](#new-message-tracker-message-listener)
     -   [set(visitSessionStateListener:)](#set-visit-session-state-listener)
@@ -112,6 +113,9 @@
 -   [RateOperatorCompletionHandler protocol](#rate-operator-completion-handler)
     -   [onSuccess() method](#on-success)
     -   [onFailure(error:) method](#on-failure-error)
+-   [SendDialogToEmailAddressCompletionHandler protocol](#send-dialog-to-email-address-completion-handler)
+    -   [onSuccess() method](#on-success-send-dialog)
+    -   [onFailure(error:) method](#on-failure-error-send-dialog)
 -   [VisitSessionStateListener protocol](#visit-session-state-listener)
     -   [changed(state:to:)](#changed-state-previous-state-to-new-state-visit-session-state-listener)
 -   [DepartmentListChangeListener protocol](#department-list-change-listener)
@@ -189,6 +193,10 @@
 -   [RateOperatorError enum](#rate-operator-error)
     -   [NO_CHAT case](#no-chat)
     -   [WRONG_OPERATOR_ID case](#wrong-operator-id)
+-   [SendDialogToEmailAddressError enum](#send-dialog-to-email-address-error)
+    -   [NO_CHAT case](#no-chat-send-dialog)
+    -   [SENT_TOO_MANY_TIMES case](#sent-too-many-times)
+    -   [UNKNOWN case](#unknown-send-dialog-error)
 -   [MessageTracker protocol](#message-tracker)
 -   [getLastMessages(byLimit:completion:) method](#get-last-messages-by-limit-limit-of-messages-completion)
 -   [getNextMessages(byLimit:completion:) method](#get-next-nessages-by-limit-limit-of-messages-completion)
@@ -834,6 +842,16 @@ Can throw errors of [AccessError](#access-error) type.
 Set chat has been read by visitor.
 Can throw errors of [AccessError](#access-error) type.
 
+<h3 id ="send-dialog-to-email-address">sendDialogTo(emailAddress: String, completionHandler: SendDialogToEmailAddressCompletionHandler?) throws method</h3>
+
+Sends current dialog to email address.
+
+`emailAddress` parameter – email address in `String` type.
+
+`completionHandler` parameter – optional [SendDialogToEmailAddressCompletionHandler](#send-dialog-to-email-address-completion-handler) object.
+
+Can throw errors of [AccessError](#access-error) type.
+
 <h3 id ="set-prechat-fields">set(prechatFields:) method</h3>
 
 Sends prechat fields to server.
@@ -985,6 +1003,21 @@ Executed when operation is done successfully.
 
 Executed when operation is failed.
 `error` parameter – appropriate [RateOperatorError](#rate-operator-error) value.
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="send-dialog-to-email-address-completion-handler">SendDialogToEmailAddressCompletionHandler protocol</h2>
+
+Protocol which methods are called after [sendDialogTo(emailAddress:completionHandler:)](#send-dialog-to-email-address). Must be adopted.
+
+<h3 id ="on-success-send-dialog">onSuccess() method</h3>
+
+Executed when operation is done successfully.
+
+<h3 id ="on-failure-error-send-dialog">onFailure(error:) method</h3>
+
+Executed when operation is failed.
+`error` parameter – appropriate [SendDialogToEmailAddressError](#send-dialog-to-email-address-error) value.
 
 [Go to table of contents](#table-of-contents)
 
@@ -1374,6 +1407,24 @@ Arised when trying to send operator rating request if no chat is exists.
 <h3 id ="wrong-operator-id">WRONG_OPERATOR_ID case</h3>
 
 Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator  (or, in the same place, chat doesn't have an operator at all).
+
+[Go to table of contents](#table-of-contents)
+
+<h2 id ="send-dialog-to-email-address-error">SendDialogToEmailAddressError enum</h2>
+
+Error types that could be passed in [onFailure(error:) method](#on-failure-error-send-dialog).
+
+<h3 id ="no-chat-send-dialog">NO_CHAT case</h3>
+
+Arised when trying to send dialog to email address request if no chat is exists.
+
+<h3 id ="sent-too-many-times">SENT_TOO_MANY_TIMES case</h3>
+
+Arised when trying to send dialog more than three times.
+
+<h3 id ="unknown-send-dialog-error">UNKNOWN case</h3>
+
+Unknow error.
 
 [Go to table of contents](#table-of-contents)
 

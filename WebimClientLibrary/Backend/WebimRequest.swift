@@ -53,6 +53,7 @@ final class WebimRequest {
     private var deleteMessageCompletionHandler: DeleteMessageCompletionHandler?
     private var editMessageCompletionHandler: EditMessageCompletionHandler?
     private var sendKeyboardRequestCompletionHandler: SendKeyboardRequestCompletionHandler?
+    private var sendDialogToEmailAddressCompletionHandler: SendDialogToEmailAddressCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
@@ -71,7 +72,8 @@ final class WebimRequest {
          sendFileCompletionHandler: SendFileCompletionHandler? = nil,
          deleteMessageCompletionHandler: DeleteMessageCompletionHandler? = nil,
          editMessageCompletionHandler: EditMessageCompletionHandler? = nil,
-         keyboardResponseCompletionHandler: SendKeyboardRequestCompletionHandler? = nil) {
+         keyboardResponseCompletionHandler: SendKeyboardRequestCompletionHandler? = nil,
+         sendDialogToEmailAddressCompletionHandler: SendDialogToEmailAddressCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -89,6 +91,7 @@ final class WebimRequest {
         self.editMessageCompletionHandler = editMessageCompletionHandler
         self.sendKeyboardRequestCompletionHandler = keyboardResponseCompletionHandler
         self.faqCompletionHandler = faqCompletionHandler
+        self.sendDialogToEmailAddressCompletionHandler = sendDialogToEmailAddressCompletionHandler
     }
     
     
@@ -160,5 +163,9 @@ final class WebimRequest {
     
     func getKeyboardResponseCompletionHandler() -> SendKeyboardRequestCompletionHandler? {
         return sendKeyboardRequestCompletionHandler
+    }
+    
+    func getSendDialogToEmailAddressCompletionHandler() -> SendDialogToEmailAddressCompletionHandler? {
+        return sendDialogToEmailAddressCompletionHandler
     }
 }

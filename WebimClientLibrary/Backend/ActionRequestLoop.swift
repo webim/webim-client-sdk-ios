@@ -171,6 +171,11 @@ class ActionRequestLoop: AbstractRequestLoop {
                             self.handleKeyboardResponse(error: error,
                                                         ofRequest: request)
                             break
+                        case WebimInternalError.sentTooManyTimes.rawValue:
+                            self.handleSendDialogResponse(error: error,
+                                                          ofRequest: request)
+                            
+                            break
                         default:
                             self.running = false
                             
@@ -400,6 +405,24 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleSendDialogResponse(error errorString: String,
+                                          ofRequest webimRequest: WebimRequest) {
+        if let sendDialogResponseCompletionHandler = webimRequest.getSendDialogToEmailAddressCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let sendDialogResponseError: SendDialogToEmailAddressError
+                switch errorString {
+                case WebimInternalError.sentTooManyTimes.rawValue:
+                    sendDialogResponseError = .SENT_TOO_MANY_TIMES
+                    break
+                default:
+                    sendDialogResponseError = .UNKNOWN
+                }
+                
+                sendDialogResponseCompletionHandler.onFailure(error: sendDialogResponseError)
+            })
+        }
+    }
+    
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
         WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
             verbosityLevel: .WARNING)
@@ -413,6 +436,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getEditMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
             request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            request.getSendDialogToEmailAddressCompletionHandler()?.onSuccess()
         })
     }
     

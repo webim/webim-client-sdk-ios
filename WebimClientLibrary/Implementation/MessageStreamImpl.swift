@@ -405,11 +405,7 @@ extension MessageStreamImpl: MessageStream {
     
     func closeChat() throws {
         try accessChecker.checkAccess()
-        
-        let chatIsOpen = ((lastChatState != .closedByVisitor)
-            && (lastChatState != .closed))
-            && (lastChatState != .unknown)
-        if chatIsOpen {
+        if !lastChatState.isClosed() {
             webimActions.closeChat()
         }
     }
@@ -553,6 +549,16 @@ extension MessageStreamImpl: MessageStream {
         try accessChecker.checkAccess()
         
         webimActions.setChatRead()
+    }
+    
+    func sendDialogTo(emailAddress: String,
+                      completionHandler: SendDialogToEmailAddressCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        if !lastChatState.isClosed() {
+            webimActions.sendDialogTo(emailAddress: emailAddress, completionHandler: completionHandler)
+        } else {
+            completionHandler?.onFailure(error: .NO_CHAT)
+        }
     }
     
     func set(prechatFields: String) throws {

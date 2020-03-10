@@ -57,6 +57,7 @@ class WebimActions {
         case deviceID = "device-id"
         case deviceToken = "push-token"
         case draft = "message-draft"
+        case email = "email"
         case event = "event"
         case firstQuestion = "first-question"
         case forceOnline = "force-online"
@@ -104,6 +105,7 @@ class WebimActions {
         case respondSentryCall = "chat.action_request.call_sentry_action_request"
         case sendMessage = "chat.message"
         case deleteMessage = "chat.delete_message"
+        case sendChatHistory = "chat.send_chat_history"
         case setDeviceToken = "set_push_token"
         case setPrechat = "chat.set_prechat_fields"
         case setVisitorTyping = "chat.visitor_typing"
@@ -390,6 +392,20 @@ class WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         keyboardResponseCompletionHandler: completionHandler))
+    }
+    
+    func sendDialogTo(emailAddress: String,
+                      completionHandler: SendDialogToEmailAddressCompletionHandler?) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.sendChatHistory.rawValue,
+                          Parameter.email.rawValue: emailAddress] as [String: Any]
+
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        sendDialogToEmailAddressCompletionHandler: completionHandler))
     }
     
 }
