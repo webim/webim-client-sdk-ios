@@ -40,7 +40,7 @@ final class WebimRequest {
     private let httpMethod: AbstractRequestLoop.HTTPMethods
     private let primaryData: [String: Any]
     private var contentType: String?
-    private weak var dataMessageCompletionHandler: DataMessageCompletionHandler?
+    private var dataMessageCompletionHandler: DataMessageCompletionHandler?
     private var historyRequestCompletionHandler: ((_ data: Data?) throws -> ())?
     private var faqCompletionHandler: ((_ data: Data?) throws -> ())?
     private var messageID: String?
@@ -48,7 +48,7 @@ final class WebimRequest {
     private var mimeType: String?
     private var fileData: Data?
     private var boundaryString: String?
-    private weak var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
+    private var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     private var deleteMessageCompletionHandler: DeleteMessageCompletionHandler?
     private var editMessageCompletionHandler: EditMessageCompletionHandler?
