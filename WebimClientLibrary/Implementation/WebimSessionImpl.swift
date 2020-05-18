@@ -371,6 +371,8 @@ extension WebimSessionImpl: WebimSession {
         
         try checkAccess()
         
+        webimClient.set(deviceToken: "none")
+        sleep(2)
         sessionDestroyer.destroy()
         WebimSessionImpl.clearVisitorDataFor(userDefaultsKey: sessionDestroyer.getUserDefaulstKey())
     }
