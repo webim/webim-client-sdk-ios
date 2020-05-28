@@ -79,33 +79,41 @@ final class WebimService {
             sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorFields.id.rawValue)\":\"\(VisitorFieldsValue.id.rawValue)\",\"\(VisitorFields.name.rawValue)\":\"\(VisitorFieldsValue.name.rawValue)\",\"\(VisitorFields.crc.rawValue)\":\"\(VisitorFieldsValue.crc.rawValue)\"}") // Hardcoded values that work with "demo" account only!
         }
         
-        do {
-            webimSession = try sessionBuilder.build()
-        } catch let error as SessionBuilder.SessionBuilderError {
-            // Assuming to check parameters values in Webim session builder methods.
-            switch error {
-            case .NIL_ACCOUNT_NAME:
-                print("Webim session object creating failed because of passing nil account name.")
-                
-                break
-            case .NIL_LOCATION:
-                print("Webim session object creating failed because of passing nil location name.")
-                
-                break
-            case .INVALID_REMOTE_NOTIFICATION_CONFIGURATION:
-                print("Webim session object creating failed because of invalid remote notifications configuration.")
-                
-                break
-            case .INVALID_AUTHENTICATION_PARAMETERS:
-                print("Webim session object creating failed because of invalid visitor authentication system configuration.")
-                
-                break
-            case .INVALIDE_HEX:
-                print("Webim can't parsed prechat fields")
+        sessionBuilder.build(
+            onSuccess: { [weak self] webimSession in
+                guard let self = self else {
+                    print("Webim session object creating failed because of WebimService is nil.")
+                    return
+                }
+                self.webimSession = webimSession
+            },
+            onError: { error in
+                switch error {
+                case .NIL_ACCOUNT_NAME:
+                    print("Webim session object creating failed because of passing nil account name.")
+                    
+                    break
+                case .NIL_LOCATION:
+                    print("Webim session object creating failed because of passing nil location name.")
+                    
+                    break
+                case .INVALID_REMOTE_NOTIFICATION_CONFIGURATION:
+                    print("Webim session object creating failed because of invalid remote notifications configuration.")
+                    
+                    break
+                case .INVALID_AUTHENTICATION_PARAMETERS:
+                    print("Webim session object creating failed because of invalid visitor authentication system configuration.")
+                    
+                    break
+                case .INVALIDE_HEX:
+                    print("Webim can't parsed prechat fields")
+                    
+                    break
+                case .UNKNOWN:
+                    print("Webim session object creating failed with unknown error")
+                }
             }
-        } catch {
-            print("Webim session object creating failed with unknown error: \(error.localizedDescription)")
-        }
+        )
     }
     
     func startSession() {

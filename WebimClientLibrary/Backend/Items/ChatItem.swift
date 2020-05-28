@@ -224,7 +224,7 @@ final class ChatItem {
         return `operator`
     }
     
-    func set(operator: OperatorItem) {
+    func set(operator: OperatorItem?) {
         self.`operator` = `operator`
     }
     

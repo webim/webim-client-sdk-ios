@@ -178,6 +178,17 @@ final class DeltaCallback {
         }
         
         currentChat = ChatItem(jsonDictionary: deltaData)
+        
+        switch currentChat?.getState() {
+        case .closed,
+             .unknown,
+             .none:
+            handleClosedChat()
+            break
+        default:
+            break
+        }
+        
         messageStream?.changingChatStateOf(chat: currentChat)
     }
     
@@ -312,6 +323,16 @@ final class DeltaCallback {
         
         currentChat?.set(state: ChatItem.ChatItemState(withType: chatState))
         
+        switch currentChat?.getState() {
+        case .closed,
+             .unknown,
+             .none:
+            handleClosedChat()
+            break
+        default:
+            break
+        }
+        
         messageStream?.changingChatStateOf(chat: currentChat)
     }
     
@@ -394,4 +415,8 @@ final class DeltaCallback {
         }
     }
     
+    private func handleClosedChat() {
+        currentChat?.set(operator: nil)
+        currentChat?.set(operatorTyping: false)
+    }
 }

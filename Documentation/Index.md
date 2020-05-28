@@ -27,6 +27,7 @@
     -   [Instance method set(multivisitorSection:)](#set-multivisitor-section)
     -   [Instance method set(webimLogger:verbosityLevel:)](#set-webim-logger-verbosity-level)
     -   [Instance method build()](#build)
+    -   [Instance method build(onSuccess:onError:)](#build-on-success-on-error)
     -   [WebimLoggerVerbosityLevel enum](#webim-logger-verbosity-level)
         -   [VERBOSE case](#verbose)
         -   [DEBUG case](#debug)
@@ -498,6 +499,12 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 
 Final method that returns [WebimSession](#webim-session) object.
 Can throw errors of [SessionBuilderError](#session-builder-error) type.
+The only two mandatory method to call preliminarily are [set(accountName:)](#set-account-name) and [set(location:)](#set-location).
+
+<h3 id ="build-on-success-on-error">Instance method build(onSuccess:onError)</h3>
+
+Final method that returns [WebimSession](#webim-session) object by `onSuccess` completion.
+Can throw errors of [SessionBuilderError](#session-builder-error) type by `onError` completion.
 The only two mandatory method to call preliminarily are [set(accountName:)](#set-account-name) and [set(location:)](#set-location).
 
 <h3 id ="webim-logger-verbosity-level">WebimLoggerVerbosityLevel enum</h3>
