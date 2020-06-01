@@ -251,12 +251,12 @@ final class SendingFactory {
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
                              quote: QuoteImpl(state: QuoteState.PENDING,
                                               authorID: nil,
-                                              messageAttachment: nil,
-                                              messageID: nil,
-                                              messageType: nil,
+                                              messageAttachment: repliedMessage.getAttachment(),
+                                              messageID: repliedMessage.getCurrentChatID(),
+                                              messageType: repliedMessage.getType(),
                                               senderName: repliedMessage.getSenderName(),
                                               text: repliedMessage.getText(),
-                                              timestamp: nil))
+                                              timestamp: Int64(repliedMessage.getTime().timeIntervalSince1970 * 1000)))
     }
 
     
