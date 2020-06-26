@@ -81,6 +81,9 @@ public enum FatalErrorType {
      - copyright:
      2017 Webim
      */
+    case accountBlocked
+    
+    @available(*, unavailable, renamed: "accountBlocked")
     case ACCOUNT_BLOCKED
     
     /**
@@ -96,6 +99,9 @@ public enum FatalErrorType {
      - copyright:
      2017 Webim
      */
+    case providedVisitorFieldsExpired
+    
+    @available(*, unavailable, renamed: "providedVisitorFieldsExpired")
     case PROVIDED_VISITOR_FIELDS_EXPIRED
     
     /**
@@ -110,6 +116,9 @@ public enum FatalErrorType {
      - copyright:
      2017 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
     /**
@@ -123,6 +132,9 @@ public enum FatalErrorType {
      - copyright:
      2017 Webim
      */
+    case visitorBanned
+    
+    @available(*, unavailable, renamed: "visitorBanned")
     case VISITOR_BANNED
     
     /**
@@ -139,6 +151,9 @@ public enum FatalErrorType {
      - copyright:
      2017 Webim
      */
+    case wrongProvidedVisitorHash
+    
+    @available(*, unavailable, renamed: "wrongProvidedVisitorHash")
     case WRONG_PROVIDED_VISITOR_HASH
     
 }

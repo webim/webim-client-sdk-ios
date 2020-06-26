@@ -40,8 +40,8 @@ public protocol FAQ {
      - important:
      FAQ is created as paused. To start using it firstly you should call this method.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `FAQAccessError.INVALID_FAQ` if FAQ was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `FAQAccessError.invalidFaq` if FAQ was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -52,8 +52,8 @@ public protocol FAQ {
     /**
      Pauses FAQ networking.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if FAQ was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if FAQ was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -64,8 +64,8 @@ public protocol FAQ {
     /**
      Destroys FAQ. After that any FAQ methods are not available.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if FAQ was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if FAQ was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -85,8 +85,8 @@ public protocol FAQ {
      - parameter result:
      Resulting category if method call succeeded.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -110,8 +110,8 @@ public protocol FAQ {
      - parameter result:
      Resulting category if method call succeeded.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -131,8 +131,8 @@ public protocol FAQ {
      - parameter result:
      Resulting category if method call succeeded.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -154,8 +154,8 @@ public protocol FAQ {
      - parameter result:
      Resulting item if method call succeeded.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -177,8 +177,8 @@ public protocol FAQ {
     - parameter result:
     Resulting item if method call succeeded.
     - throws:
-    `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-    `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+    `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+    `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
     - author:
     Nikita Kaberov
     - copyright:
@@ -198,8 +198,8 @@ public protocol FAQ {
      - parameter result:
      Resulting structure if method call succeeded.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -219,8 +219,8 @@ public protocol FAQ {
     - parameter result:
     Resulting structure if method call succeeded.
     - throws:
-    `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-    `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+    `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+    `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
     - author:
     Nikita Kaberov
     - copyright:
@@ -272,8 +272,8 @@ public protocol FAQ {
      - parameter result:
      Resulting items array if method call succeeded.
      - throws:
-     `FAQAccessError.INVALID_THREAD` if the method was called not from the thread the FAQ was created in.
-     `FAQAccessError.INVALID_FAQ` if the method was called after FAQ object was destroyed.
+     `FAQAccessError.invalidThread` if the method was called not from the thread the FAQ was created in.
+     `FAQAccessError.invalidFaq` if the method was called after FAQ object was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -301,6 +301,9 @@ public enum FAQAccessError: Error {
      - copyright:
      2019 Webim
      */
+    case invalidThread
+    
+    @available(*, unavailable, renamed: "invalidThread")
     case INVALID_THREAD
     
     /**
@@ -310,6 +313,9 @@ public enum FAQAccessError: Error {
      - copyright:
      2019 Webim
      */
+    case invalidFaq
+    
+    @available(*, unavailable, renamed: "invalidFaq")
     case INVALID_FAQ
 }
 
@@ -324,6 +330,9 @@ public enum FAQAccessError: Error {
  2019 Webim
  */
 public enum FAQGetCompletionHandlerError: Error {
+    case error
+    
+    @available(*, unavailable, renamed: "error")
     case ERROR
 }
 
@@ -345,6 +354,9 @@ public enum FAQItemSource {
     - copyright:
     2019 Webim
     */
+    case search
+    
+    @available(*, unavailable, renamed: "search")
     case SEARCH
     
     /**
@@ -354,5 +366,8 @@ public enum FAQItemSource {
     - copyright:
     2019 Webim
     */
+    case tree
+    
+    @available(*, unavailable, renamed: "tree")
     case TREE
 }

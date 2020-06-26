@@ -100,20 +100,27 @@ final class MessageHolder {
         if message.getSource().isCurrentChatMessage() {
             if currentChatMessages.isEmpty {
                 WebimInternalLogger.shared.log(entry: "Current chat is empty. Requesting history rejected.",
-                                               verbosityLevel: .VERBOSE)
+                                               verbosityLevel: .verbose)
                 
                 completion([Message]())
                 
                 return
             }
             
-            let firstMessage = currentChatMessages.first!
+            guard let firstMessage = currentChatMessages.first else {
+                WebimInternalLogger.shared.log(entry: "Current chat has not first message in MessageHolder.\(#function)")
+                return
+            }
             if message == firstMessage {
                 if !firstMessage.hasHistoryComponent() {
                     historyStorage.getLatestHistory(byLimit: limit,
                                                     completion: completion)
                 } else {
-                    getMessagesFromHistoryBefore(id: firstMessage.getHistoryID()!,
+                    guard let historyID = firstMessage.getHistoryID() else {
+                        WebimInternalLogger.shared.log(entry: "First mesage of current chat has not hitory ID in MessageHolder.\(#function)")
+                        return
+                    }
+                    getMessagesFromHistoryBefore(id: historyID,
                                                  limit: limit,
                                                  completion: completion)
                 }
@@ -123,7 +130,11 @@ final class MessageHolder {
                                                  completion: completion)
             }
         } else {
-            getMessagesFromHistoryBefore(id: message.getHistoryID()!,
+            guard let historyID = message.getHistoryID() else {
+                WebimInternalLogger.shared.log(entry: "Mesage of current chat has not hitory ID in MessageHolder.\(#function)")
+                return
+            }
+            getMessagesFromHistoryBefore(id: historyID,
                                          limit: limit,
                                          completion: completion)
         }
@@ -144,10 +155,12 @@ final class MessageHolder {
     func newMessageTracker(withMessageListener messageListener: MessageListener) throws -> MessageTrackerImpl {
         try messageTracker?.destroy()
         
-        set(messageTracker: MessageTrackerImpl(messageListener: messageListener,
-                                               messageHolder: self))
+        let messageTracker = MessageTrackerImpl(messageListener: messageListener,
+                                                messageHolder: self)
         
-        return messageTracker!
+        set(messageTracker: messageTracker)
+        
+        return messageTracker
     }
     
     func receiveHistoryUpdateWith(messages: [MessageImpl],
@@ -162,19 +175,28 @@ final class MessageHolder {
                                                 }
                                                 
                                                 if messageDeleted {
-                                                    // Assuming that when messageDeleted == true deletedMessageID cannot be nil.
-                                                    self?.messageTracker?.deletedHistoryMessage(withID: deletedMessageID!)
+                                                    guard let deletedMessageID = deletedMessageID else {
+                                                        WebimInternalLogger.shared.log(entry: "Deleted Message ID is nil in MessageHolder.\(#function)")
+                                                        return
+                                                    }
+                                                    self?.messageTracker?.deletedHistoryMessage(withID: deletedMessageID)
                                                 }
                                                 
                                                 if messageChanged {
-                                                    // Assuming that when messageChanged == true changedMessage cannot be nil.
-                                                    self?.messageTracker?.changedHistory(message: changedMessage!)
+                                                    guard let changedMessage = changedMessage else {
+                                                        WebimInternalLogger.shared.log(entry: "Changed Message is nil in MessageHolder.\(#function)")
+                                                        return
+                                                    }
+                                                    self?.messageTracker?.changedHistory(message: changedMessage)
                                                 }
                                                 
                                                 if messageAdded {
-                                                    // Assuming that when messageAdded == true addedMessage cannot be nil.
-                                                    if (self?.tryMergeWithLastChat(message: addedMessage!) != true) {
-                                                        self?.messageTracker?.addedHistory(message: addedMessage!,
+                                                    guard let addedMessage = addedMessage else {
+                                                        WebimInternalLogger.shared.log(entry: "Added Message is nil in MessageHolder.\(#function)")
+                                                        return
+                                                    }
+                                                    if (self?.tryMergeWithLastChat(message: addedMessage) != true) {
+                                                        self?.messageTracker?.addedHistory(message: addedMessage,
                                                                                            before: idBeforeAddedMessage)
                                                     }
                                                 }
@@ -201,9 +223,9 @@ final class MessageHolder {
     }
     
     func receive(newMessage: MessageImpl) {
-        if messageTracker != nil {
-            messageTracker!.addedNew(message: newMessage,
-                                     of: self)
+        if let messageTracker = messageTracker {
+            messageTracker.addedNew(message: newMessage,
+                                    of: self)
         } else {
             currentChatMessages.append(newMessage)
         }
@@ -265,81 +287,83 @@ final class MessageHolder {
         if messageTracker == nil {
             return nil
         }
-        var messageImpl: MessageImpl? = nil
+        var optionamMessageImpl: MessageImpl? = nil
         
         for curr in currentChatMessages {
             if curr.getID() == messageID {
-                messageImpl = curr
+                optionamMessageImpl = curr
                 break
             }
         }
         
-        if messageImpl == nil {
-            return nil
+        guard let messageImpl = optionamMessageImpl else {
+            WebimInternalLogger.shared.log(entry: "Current Message is nil in MessageHolder.\(#function)")
+            return String()
         }
         
-        let newMessage = MessageImpl(serverURLString: (messageImpl?.getServerUrlString())!,
+        let newMessage = MessageImpl(serverURLString: messageImpl.getServerUrlString(),
                                      id: messageID,
-                                     keyboard: messageImpl?.getKeyboard(),
-                                     keyboardRequest: messageImpl?.getKeyboardRequest(),
-                                     operatorID: messageImpl?.getOperatorID(),
-                                     quote: messageImpl?.getQuote(),
-                                     senderAvatarURLString: messageImpl?.getSenderAvatarURLString(),
-                                     senderName: (messageImpl?.getSenderName())!,
-                                     sendStatus: .SENDING,
-                                     type: (messageImpl?.getType())!,
-                                     data: messageImpl?.getData(),
-                                     text: (message == nil ? messageImpl?.getText() : message)!,
-                                     timeInMicrosecond: (messageImpl?.getTimeInMicrosecond())!,
-                                     attachment: messageImpl?.getAttachment(),
-                                     historyMessage: (messageImpl?.getSource().isHistoryMessage())!,
-                                     internalID: messageImpl?.getCurrentChatID(),
-                                     rawText: messageImpl?.getRawText(),
-                                     read: (messageImpl?.isReadByOperator())!,
-                                     messageCanBeEdited: (messageImpl?.canBeEdited())!,
-                                     messageCanBeReplied: (messageImpl?.canBeReplied())!)
-        messageTracker?.messageListener?.changed(message: messageImpl!, to: newMessage)
-        return messageImpl?.getText()
+                                     keyboard: messageImpl.getKeyboard(),
+                                     keyboardRequest: messageImpl.getKeyboardRequest(),
+                                     operatorID: messageImpl.getOperatorID(),
+                                     quote: messageImpl.getQuote(),
+                                     senderAvatarURLString: messageImpl.getSenderAvatarURLString(),
+                                     senderName: messageImpl.getSenderName(),
+                                     sendStatus: .sending,
+                                     type: messageImpl.getType(),
+                                     rawData: messageImpl.getRawData(),
+                                     data: messageImpl.getData(),
+                                     text: message ?? messageImpl.getText(),
+                                     timeInMicrosecond: messageImpl.getTimeInMicrosecond(),
+                                     historyMessage: messageImpl.getSource().isHistoryMessage(),
+                                     internalID: messageImpl.getCurrentChatID(),
+                                     rawText: messageImpl.getRawText(),
+                                     read: messageImpl.isReadByOperator(),
+                                     messageCanBeEdited: messageImpl.canBeEdited(),
+                                     messageCanBeReplied: messageImpl.canBeReplied())
+        messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
+        return messageImpl.getText()
     }
     
     func changingCancelledWith(messageID: String, message: String) {
         if messageTracker == nil {
             return
         }
-        var messageImpl: MessageImpl? = nil
+        var optionamMessageImpl: MessageImpl? = nil
         
         for curr in currentChatMessages {
             if curr.getID() == messageID {
-                messageImpl = curr
+                optionamMessageImpl = curr
                 break
             }
         }
         
-        if messageImpl == nil {
+        guard let messageImpl = optionamMessageImpl else {
+            WebimInternalLogger.shared.log(entry: "Current Message is nil in MessageHolder.\(#function)")
             return
         }
         
-        let newMessage = MessageImpl(serverURLString: (messageImpl?.getServerUrlString())!,
+        let newMessage = MessageImpl(serverURLString: messageImpl.getServerUrlString(),
                                      id: messageID,
-                                     keyboard: messageImpl?.getKeyboard(),
-                                     keyboardRequest: messageImpl?.getKeyboardRequest(),
-                                     operatorID: messageImpl?.getOperatorID(),
-                                     quote: messageImpl?.getQuote(),
-                                     senderAvatarURLString: messageImpl?.getSenderAvatarURLString(),
-                                     senderName: (messageImpl?.getSenderName())!,
-                                     sendStatus: .SENT,
-                                     type: (messageImpl?.getType())!,
-                                     data: messageImpl?.getData(),
+                                     keyboard: messageImpl.getKeyboard(),
+                                     keyboardRequest: messageImpl.getKeyboardRequest(),
+                                     operatorID: messageImpl.getOperatorID(),
+                                     quote: messageImpl.getQuote(),
+                                     senderAvatarURLString: messageImpl.getSenderAvatarURLString(),
+                                     senderName: messageImpl.getSenderName(),
+                                     sendStatus: .sent,
+                                     type: messageImpl.getType(),
+                                     rawData: messageImpl.getRawData(),
+                                     data: messageImpl.getData(),
                                      text: message,
-                                     timeInMicrosecond: (messageImpl?.getTimeInMicrosecond())!,
-                                     attachment: messageImpl?.getAttachment(),
-                                     historyMessage: (messageImpl?.getSource().isHistoryMessage())!,
-                                     internalID: messageImpl?.getCurrentChatID(),
-                                     rawText: messageImpl?.getRawText(),
-                                     read: (messageImpl?.isReadByOperator())!,
-                                     messageCanBeEdited: (messageImpl?.canBeEdited())!,
-                                     messageCanBeReplied: (messageImpl?.canBeReplied())!)
-        messageTracker?.messageListener?.changed(message: messageImpl!, to: newMessage)
+                                     timeInMicrosecond: messageImpl.getTimeInMicrosecond(),
+                                     historyMessage: messageImpl.getSource().isHistoryMessage(),
+                                     internalID: messageImpl.getCurrentChatID(),
+                                     rawText: messageImpl.getRawText(),
+                                     read: messageImpl.isReadByOperator(),
+                                     messageCanBeEdited: messageImpl.canBeEdited(),
+                                     messageCanBeReplied: messageImpl.canBeReplied())
+        messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
     }
     
     // MARK: For testing purposes.
@@ -360,9 +384,9 @@ final class MessageHolder {
     // MARK: Private methods
     
     private func receive(newMessages: [MessageImpl]) {
-        if messageTracker != nil {
-            messageTracker!.addedNew(messages: newMessages,
-                                     of: self)
+        if let messageTracker = messageTracker {
+            messageTracker.addedNew(messages: newMessages,
+                                    of: self)
         } else {
             for message in newMessages {
                 currentChatMessages.append(message)
@@ -469,16 +493,15 @@ final class MessageHolder {
             try message.getSource().assertIsCurrentChat()
         } catch {
             WebimInternalLogger.shared.log(entry: "Message before which messages are requested is not a part of current chat: \(message.toString()).",
-                verbosityLevel: .DEBUG)
+                verbosityLevel: .debug)
             
             return
         }
         
-        let messageIndex = currentChatMessages.firstIndex(of: message)!
-        
-        guard messageIndex >= 1 else {
-            WebimInternalLogger.shared.log(entry: "Message \(message.toString()) before which messages of current chat are requested can't have index less than 1. Current index: \(messageIndex).",
-                verbosityLevel: .DEBUG)
+        guard let messageIndex = currentChatMessages.firstIndex(of: message),
+            messageIndex >= 1 else {
+                WebimInternalLogger.shared.log(entry: "Message \(message.toString()) before which messages of current chat are requested can't have index less than 1. Current index: \(String(describing: currentChatMessages.firstIndex(of: message))).",
+                verbosityLevel: .debug)
             
             return
         }
@@ -539,13 +562,14 @@ final class MessageHolder {
     
     private func tryMergeWithLastChat(message: MessageImpl) -> Bool {
         for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
-            guard currentChatMessage.getID() == message.getID() else {
+            guard currentChatMessage.getID() == message.getID(),
+                let messageHistoryID = message.getHistoryID() else {
                 continue
             }
             
             if currentChatMessageIndex < lastChatMessageIndex {
                 let replacementMessage = currentChatMessage.transferToHistory(message: message)
-                messageTracker?.idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = replacementMessage
+                messageTracker?.idToHistoryMessageMap[messageHistoryID.getDBid()] = replacementMessage
                 
                 if replacementMessage != currentChatMessage {
                     messageTracker?.messageListener?.changed(message: currentChatMessage,
@@ -557,7 +581,7 @@ final class MessageHolder {
             } else {
                 currentChatMessage.setSecondaryHistory(historyEquivalentMessage: message)
                 
-                messageTracker?.idToHistoryMessageMap[message.getHistoryID()!.getDBid()] = message
+                messageTracker?.idToHistoryMessageMap[messageHistoryID.getDBid()] = message
             }
             
             return true

@@ -78,29 +78,38 @@ class FAQRequestLoop: AbstractRequestLoop {
             let parameterDictionary = request.getPrimaryData()
             let parametersString = parameterDictionary.stringFromHTTPParameters()
             
-            var url: URL?
             var urlRequest: URLRequest?
             let httpMethod = request.getHTTPMethod()
             if httpMethod == .get {
-                url = URL(string: (request.getBaseURLString() + "?" + parametersString))
-                urlRequest = URLRequest(url: url!)
+                guard let url = URL(string: (request.getBaseURLString() + "?" + parametersString)) else {
+                    WebimInternalLogger.shared.log(entry: "Invalid URL in FAQRequestLoop.\(#function)")
+                    return
+                }
+                urlRequest = URLRequest(url: url)
             } else { // POST
                 
                 // For URL encoded requests.
-                url = URL(string: request.getBaseURLString())
-                urlRequest = URLRequest(url: url!)
-                urlRequest!.httpBody = parametersString.data(using: .utf8)
+                guard let url = URL(string: request.getBaseURLString()) else {
+                    WebimInternalLogger.shared.log(entry: "Invalid URL in FAQRequestLoop.\(#function)")
+                    return
+                }
+                urlRequest = URLRequest(url: url)
+                urlRequest?.httpBody = parametersString.data(using: .utf8)
                 
                 
                 // Assuming that content type field is always exists when it is POST request, and does not when request is of GET type.
-                urlRequest!.setValue(request.getContentType(),
+                urlRequest?.setValue(request.getContentType(),
                                      forHTTPHeaderField: "Content-Type")
             }
             
-            urlRequest!.httpMethod = httpMethod.rawValue
+            urlRequest?.httpMethod = httpMethod.rawValue
             
             do {
-                let data = try self.perform(request: urlRequest!)
+                guard let urlRequest = urlRequest else {
+                    WebimInternalLogger.shared.log(entry: "URL Request is nil in FAQRequestLoop.\(#function)")
+                    return
+                }
+                let data = try self.perform(request: urlRequest)
                 var wasCompletionHandler = false
                 if let _ = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
                     if let completionHandler = request.getFAQCompletionHandler() {
@@ -185,11 +194,17 @@ class FAQRequestLoop: AbstractRequestLoop {
     
     private func handleClientCompletionHandlerOf(request: WebimRequest) {
         completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
-            request.getDataMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
-            request.getSendFileCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            
+            guard let messageID = request.getMessageID() else {
+                WebimInternalLogger.shared.log(entry: "Request has not message ID in FAQRequestLoop.\(#function)")
+                return
+            }
+            
+            request.getDataMessageCompletionHandler()?.onSuccess(messageID: messageID)
+            request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
             request.getRateOperatorCompletionHandler()?.onSuccess()
-            request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
-            request.getEditMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
+            request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
         })
     }
     

@@ -153,10 +153,10 @@ final class DeltaCallback {
             }
         }
         
-        if currentChat != nil {
-            for messageItem in (currentChat?.getMessages())! {
+        if let currentChat = currentChat {
+            for messageItem in (currentChat.getMessages()) {
                 if let message = currentChatMessageMapper.map(message: messageItem) {
-                    if (message.getType() == MessageType.FILE_FROM_VISITOR || message.getType() != MessageType.VISITOR) && message.isReadByOperator() {
+                    if (message.getType() == MessageType.fileFromVisitor || message.getType() != MessageType.visitorMessage) && message.isReadByOperator() {
                         let time = message.getTimeInMicrosecond()
                         if time > historyPoller?.getReadBeforeTimestamp(byUserDefaultsKey: userDefaultsKey) ?? -1 {
                             historyPoller?.updateReadBeforeTimestamp(timestamp: time, byUserDefaultsKey: userDefaultsKey)
@@ -197,12 +197,12 @@ final class DeltaCallback {
         let deltaID = delta.getID()
         
         if deltaEvent == .delete {
-            if currentChat != nil {
-                var currentChatMessages = currentChat!.getMessages()
+            if let currentChat = currentChat {
+                var currentChatMessages = currentChat.getMessages()
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                     if currentChatMessage.getID() == deltaID { // Deleted message ID is passed as delta ID.
                         currentChatMessages.remove(at: currentChatMessageIndex)
-                        currentChat?.set(messages: currentChatMessages)
+                        currentChat.set(messages: currentChatMessages)
                         
                         break
                     }
@@ -219,30 +219,32 @@ final class DeltaCallback {
             let message = currentChatMessageMapper.map(message: messageItem)
             if deltaEvent == .add {
                 var isNewMessage = false
-                if currentChat != nil && !currentChat!.getMessages().contains(messageItem) {
-                    currentChat?.add(message: messageItem)
+                if let currentChat = currentChat,
+                    !currentChat.getMessages().contains(messageItem) {
+                    currentChat.add(message: messageItem)
                     isNewMessage = true
                 }
                 
-                if isNewMessage && message != nil {
-                    messageHolder?.receive(newMessage: message!)
+                if isNewMessage,
+                    let message = message {
+                    messageHolder?.receive(newMessage: message)
                 }
                 
             } else if deltaEvent == .update {
-                if currentChat != nil {
-                    var currentChatMessages = currentChat!.getMessages()
+                if let currentChat = currentChat {
+                    var currentChatMessages = currentChat.getMessages()
                     for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                         if currentChatMessage.getID() == messageItem.getID() {
                             currentChatMessages[currentChatMessageIndex] = messageItem
-                            currentChat!.set(messages: currentChatMessages)
+                            currentChat.set(messages: currentChatMessages)
                             
                             break
                         }
                     }
                 }
                 
-                if message != nil {
-                    messageHolder?.changed(message: message!)
+                if let message = message {
+                    messageHolder?.changed(message: message)
                 }
             }
         }
@@ -254,8 +256,8 @@ final class DeltaCallback {
         let deltaId = delta.getID()
         
         if let isRead = delta.getData() as? Bool, deltaEvent == .update {
-            if currentChat != nil {
-                var currentChatMessages = currentChat!.getMessages()
+            if let currentChat = currentChat {
+                var currentChatMessages = currentChat.getMessages()
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                     if currentChatMessage.getID() == deltaId {
                         currentChatMessage.setRead(read: isRead)
@@ -263,7 +265,7 @@ final class DeltaCallback {
                             return
                         }
                         currentChatMessages[currentChatMessageIndex] = currentChatMessage
-                        currentChat?.set(messages: currentChatMessages)
+                        currentChat.set(messages: currentChatMessages)
                         messageHolder?.changed(message: message)
                         let time = message.getTimeInMicrosecond()
                         if time > historyPoller?.getReadBeforeTimestamp(byUserDefaultsKey: userDefaultsKey) ?? -1 {
@@ -342,11 +344,15 @@ final class DeltaCallback {
         }
         
         var unreadByOperatorTimestamp: Double?
-        if delta.getData() != nil {
-            unreadByOperatorTimestamp = delta.getData() as? Double
+        if let deltaData = delta.getData() as? Double {
+            unreadByOperatorTimestamp = deltaData
         }
         currentChat?.set(unreadByOperatorTimestamp: unreadByOperatorTimestamp)
-        messageStream?.set(unreadByOperatorTimestamp: (unreadByOperatorTimestamp != nil ? Date(timeIntervalSince1970: unreadByOperatorTimestamp!) : nil))
+        if let timestamp = unreadByOperatorTimestamp {
+            messageStream?.set(unreadByOperatorTimestamp: Date(timeIntervalSince1970:timestamp))
+        } else {
+            messageStream?.set(unreadByOperatorTimestamp: nil)
+        }
     }
     
     private func handleDepartmentListUpdateBy(delta: DeltaItem) {

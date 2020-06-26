@@ -47,7 +47,7 @@ class MemoryHistoryStorageTests: XCTestCase {
                                         quote: nil,
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
-                                        type: MessageType.OPERATOR,
+                                        type: MessageType.operatorMessage,
                                         data: nil,
                                         text: "Text",
                                         timeInMicrosecond: Int64(index),

@@ -41,7 +41,7 @@ final class InternalUtils {
         var serverURLstring = accountName
         
         if let _ = serverURLstring.range(of: "://") {
-            if serverURLstring.last! == "/" {
+            if (serverURLstring.last ?? Character(" ")) == "/" {
                 serverURLstring.removeLast()
             }
             
@@ -66,11 +66,11 @@ final class InternalUtils {
             let params = notification?.getParameters()
             var indexOfId: Int
             switch notification?.getType() {
-            case .OPERATOR_ACCEPTED?:
+            case .operatorAccepted:
                 indexOfId = 1
                 break
-            case .OPERATOR_FILE?,
-                 .OPERATOR_MESSAGE?:
+            case .operatorFile,
+                 .operatorMessage:
                 indexOfId = 2
                 break
             default:

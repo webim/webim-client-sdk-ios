@@ -88,7 +88,12 @@ final class MessageComposingHandler {
                                selector: #selector(resetTypingStatus),
                                userInfo: nil,
                                repeats: false)
-            RunLoop.main.add(resetTimer!,
+            
+            guard let resetTimer = resetTimer else {
+                WebimInternalLogger.shared.log(entry: "Reset Timer is nil in MessageComposingHandler.\(#function)")
+                return
+            }
+            RunLoop.main.add(resetTimer,
                              forMode: RunLoop.Mode.common)
         }
     }
@@ -105,11 +110,15 @@ final class MessageComposingHandler {
     }
     
     private func send(draft: String?) {
-        let visitorTyping = ((draft == nil) ? false : (draft!.isEmpty ? false : true))
-        let deleteDraft = ((draft == nil) ? true : (draft!.isEmpty ? true : false))
-        webimActions.set(visitorTyping: visitorTyping,
-                         draft: draft,
-                         deleteDraft: deleteDraft)
+        if let draft = draft {
+            webimActions.set(visitorTyping: draft.isEmpty ? false : true,
+                             draft: draft,
+                             deleteDraft: draft.isEmpty ? true : false)
+        } else {
+            webimActions.set(visitorTyping: false,
+                             draft: draft,
+                             deleteDraft: true)
+        }
     }
     
 }

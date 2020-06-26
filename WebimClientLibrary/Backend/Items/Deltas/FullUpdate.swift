@@ -89,7 +89,7 @@ struct FullUpdate {
         }
         
         if let visitorJSON = jsonDictionary[JSONField.visitor.rawValue] {
-            if let visitorJSONData = try? JSONSerialization.data(withJSONObject: visitorJSON!) {
+            if let visitorJSONData = try? JSONSerialization.data(withJSONObject: visitorJSON as Any) {
                 visitorJSONString = String(data: visitorJSONData,
                                            encoding: .utf8)
             }
@@ -133,10 +133,10 @@ struct FullUpdate {
     }
     
     func getHistoryRevision() -> String? {
-        guard historyRevision != nil else {
+        guard let historyRevision = historyRevision else {
             return nil
         }
-        return String(historyRevision!)
+        return String(historyRevision)
     }
     
     func getOnlineStatus() -> String? {

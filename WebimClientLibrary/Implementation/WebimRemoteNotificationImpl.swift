@@ -130,15 +130,15 @@ extension WebimRemoteNotificationImpl: WebimRemoteNotification {
         }
         switch type {
         case .contactInformationRequest:
-            return .CONTACT_INFORMATION_REQUEST
+            return .contactInformationRequest
         case .operatorAccepted:
-            return .OPERATOR_ACCEPTED
+            return .operatorAccepted
         case .operatorFile:
-            return .OPERATOR_FILE
+            return .operatorFile
         case .operatorMessage:
-            return .OPERATOR_MESSAGE
+            return .operatorMessage
         case .widget:
-            return .WIDGET
+            return .widget
         }
     }
     
@@ -146,9 +146,9 @@ extension WebimRemoteNotificationImpl: WebimRemoteNotification {
         if let event = event {
             switch event {
             case .add:
-                return .ADD
+                return .add
             case .delete:
-                return .DELETE
+                return .delete
             }
         }
         return nil

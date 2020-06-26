@@ -45,8 +45,20 @@ extension Dictionary {
      */
     func stringFromHTTPParameters() -> String {
         let parameterArray = map { (key, value) -> String in
-            let percentEscapedKey = (key as! String).addingPercentEncodingForURLQueryValue()!
-            let percentEscapedValue = (value as! String).addingPercentEncodingForURLQueryValue()!
+            guard let key = key as? String,
+                let value = value as? String else {
+                    WebimInternalLogger.shared.log(entry: "Key and Value has incorrect type or nil in extension Dictionary.\(#function)")
+                    return String()
+            }
+            
+            guard let percentEscapedKey = key.addingPercentEncodingForURLQueryValue() else {
+                WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Key failure in Extension Dictionary.\(#function)")
+                return "\(key)=\(value)"
+            }
+            guard let percentEscapedValue = value.addingPercentEncodingForURLQueryValue() else {
+                WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Value failure in Extension Dictionary.\(#function)")
+                return "\(key)=\(value)"
+            }
             return "\(percentEscapedKey)=\(percentEscapedValue)"
         }
         

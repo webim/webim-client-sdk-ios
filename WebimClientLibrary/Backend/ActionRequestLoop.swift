@@ -82,7 +82,11 @@ class ActionRequestLoop: AbstractRequestLoop {
                     return
                 }
             }
-            let usedAuthorizationData = self.authorizationData!
+            
+            guard let usedAuthorizationData = self.authorizationData else {
+                WebimInternalLogger.shared.log(entry: "Authorization Data is nil in ActionRequestLoop.\(#function)")
+                return
+            }
             
             if !self.isRunning() {
                 return
@@ -93,41 +97,55 @@ class ActionRequestLoop: AbstractRequestLoop {
             parameterDictionary[WebimActions.Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
             let parametersString = parameterDictionary.stringFromHTTPParameters()
             
-            var url: URL?
             var urlRequest: URLRequest?
             let httpMethod = request.getHTTPMethod()
             if httpMethod == .get {
-                url = URL(string: (request.getBaseURLString() + "?" + parametersString))
-                urlRequest = URLRequest(url: url!)
+                guard let url = URL(string: (request.getBaseURLString() + "?" + parametersString)) else {
+                    WebimInternalLogger.shared.log(entry: "Invalid URL in ActionRequestLoop.\(#function)")
+                    return
+                }
+                urlRequest = URLRequest(url: url)
             } else { // POST
                 if let fileName = request.getFileName(),
                     let mimeType = request.getMimeType(),
                     let fileData = request.getFileData(),
                     let boundaryString = request.getBoundaryString() {
                     // Assuming that ready HTTP body is passed only for multipart requests.
-                    url = URL(string: (request.getBaseURLString()))
-                    urlRequest = URLRequest(url: url!)
-                    urlRequest!.httpBody = self.createHTTPBody(filename: fileName,
-                                                               mimeType: mimeType,
-                                                               fileData: fileData,
-                                                               boundaryString: boundaryString,
-                                                               primaryData: parameterDictionary)
+                    guard let url = URL(string: (request.getBaseURLString())) else {
+                        WebimInternalLogger.shared.log(entry: "Invalid URL in ActionRequestLoop.\(#function)")
+                        return
+                    }
+                    urlRequest = URLRequest(url: url)
+                    urlRequest?.httpBody = self.createHTTPBody(
+                        filename: fileName,
+                        mimeType: mimeType,
+                        fileData: fileData,
+                        boundaryString: boundaryString,
+                        primaryData: parameterDictionary
+                    )
                 } else {
                     // For URL encoded requests.
-                    url = URL(string: request.getBaseURLString())
-                    urlRequest = URLRequest(url: url!)
-                    urlRequest!.httpBody = parametersString.data(using: .utf8)
+                    guard let url = URL(string: (request.getBaseURLString())) else {
+                        WebimInternalLogger.shared.log(entry: "Invalid URL in ActionRequestLoop.\(#function)")
+                        return
+                    }
+                    urlRequest = URLRequest(url: url)
+                    urlRequest?.httpBody = parametersString.data(using: .utf8)
                 }
                 
                 // Assuming that content type field is always exists when it is POST request, and does not when request is of GET type.
-                urlRequest!.setValue(request.getContentType(),
+                urlRequest?.setValue(request.getContentType(),
                                      forHTTPHeaderField: "Content-Type")
             }
             
-            urlRequest!.httpMethod = httpMethod.rawValue
+            urlRequest?.httpMethod = httpMethod.rawValue
             
             do {
-                let data = try self.perform(request: urlRequest!)
+                guard let urlRequest = urlRequest else {
+                    WebimInternalLogger.shared.log(entry: "Unwrapping url request failure in ActionRequestLoop.\(#function)")
+                    return
+                }
+                let data = try self.perform(request: urlRequest)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
                         switch error {
@@ -202,7 +220,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                                 try completionHandler(data)
                             } catch {
                                 WebimInternalLogger.shared.log(entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                                    verbosityLevel: .WARNING)
+                                    verbosityLevel: .warning)
                             }
                             
                         })
@@ -211,19 +229,23 @@ class ActionRequestLoop: AbstractRequestLoop {
                     self.handleClientCompletionHandlerOf(request: request)
                 } else {
                     WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
-                        verbosityLevel: .WARNING)
+                        verbosityLevel: .warning)
                 }
             } catch let sendFileError as SendFileError {
                 // SendFileErrors are generated from HTTP code.
                 if let sendFileCompletionHandler = request.getSendFileCompletionHandler() {
-                    sendFileCompletionHandler.onFailure(messageID: request.getMessageID()!,
+                    guard let messageID = request.getMessageID() else {
+                        WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
+                        return
+                    }
+                    sendFileCompletionHandler.onFailure(messageID: messageID,
                                                         error: sendFileError)
                 }
             } catch let unknownError as UnknownError {
                 self.handleRequestLoop(error: unknownError)
             } catch {
                 WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(request.getBaseURLString()).",
-                    verbosityLevel: .WARNING)
+                    verbosityLevel: .warning)
             }
         }
     }
@@ -243,16 +265,31 @@ class ActionRequestLoop: AbstractRequestLoop {
         
         var requestBodyData = Data()
         for (key, value) in primaryData {
-            requestBodyData.append("--\(boundaryString)\r\n".data(using: .utf8)!)
-            requestBodyData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            requestBodyData.append("\(value)\r\n".data(using: .utf8)!)
+            guard let boundaryData = "--\(boundaryString)\r\n".data(using: .utf8),
+            let keyData = "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8),
+            let valueData = "\(value)\r\n".data(using: .utf8) else {
+                WebimInternalLogger.shared.log(entry: "Data configuration failure in ActionRequestLoop.\(#function)")
+                return requestBodyData
+            }
+            requestBodyData.append(boundaryData)
+            requestBodyData.append(keyData)
+            requestBodyData.append(valueData)
         }
-        requestBodyData.append(boundaryStart.data(using: .utf8)!)
-        requestBodyData.append(contentDispositionString.data(using: .utf8)!)
-        requestBodyData.append(contentTypeString.data(using: .utf8)!)
+        guard let boundaryStartData = boundaryStart.data(using: .utf8),
+            let contentDispositionStringData = contentDispositionString.data(using: .utf8),
+            let contentTypeStringData = contentTypeString.data(using: .utf8),
+            let lineBreakData = "\r\n".data(using: .utf8),
+            let boundaryEndData = boundaryEnd.data(using: .utf8) else {
+            WebimInternalLogger.shared.log(entry: "Data configuration failure in ActionRequestLoop.\(#function)")
+            return requestBodyData
+            
+        }
+        requestBodyData.append(boundaryStartData)
+        requestBodyData.append(contentDispositionStringData)
+        requestBodyData.append(contentTypeStringData)
         requestBodyData.append(fileData)
-        requestBodyData.append("\r\n".data(using: .utf8)!)
-        requestBodyData.append(boundaryEnd.data(using: .utf8)!)
+        requestBodyData.append(lineBreakData)
+        requestBodyData.append(boundaryEndData)
         
         return requestBodyData
     }
@@ -263,19 +300,23 @@ class ActionRequestLoop: AbstractRequestLoop {
                 usleep(100_000) // 0.1 s.
         }
         
-        if authorizationData == nil {
+        guard let authorizationData = authorizationData else {
             // Interrupted request.
             throw AbstractRequestLoop.UnknownError.interrupted
         }
         
-        return authorizationData!
+        return authorizationData
     }
     
     private func handleDataMessage(error errorString: String,
                                    ofRequest webimRequest: WebimRequest) {
         if let dataMessageCompletionHandler = webimRequest.getDataMessageCompletionHandler() {
             completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                dataMessageCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                guard let messageID = webimRequest.getMessageID() else {
+                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    return
+                }
+                dataMessageCompletionHandler.onFailure(messageID: messageID,
                                                        error: ActionRequestLoop.convertToPublic(dataMessageErrorString: errorString))
             })
         }
@@ -288,11 +329,11 @@ class ActionRequestLoop: AbstractRequestLoop {
                 let rateOperatorError: RateOperatorError
                 switch errorString {
                 case WebimInternalError.noChat.rawValue:
-                    rateOperatorError = .NO_CHAT
+                    rateOperatorError = .noChat
                 case WebimInternalError.noteIsTooLong.rawValue:
-                    rateOperatorError = .NOTE_IS_TOO_LONG
+                    rateOperatorError = .noteIsTooLong
                 default:
-                    rateOperatorError = .WRONG_OPERATOR_ID
+                    rateOperatorError = .wrongOperatorId
                 }
                 
                 rateOperatorCompletionhandler.onFailure(error: rateOperatorError)
@@ -307,25 +348,29 @@ class ActionRequestLoop: AbstractRequestLoop {
                 let editMessageError: EditMessageError
                 switch errorString {
                 case WebimInternalError.messageEmpty.rawValue:
-                    editMessageError = .MESSAGE_EMPTY
+                    editMessageError = .messageEmpty
                     break
                 case WebimInternalError.maxMessageLengthExceeded.rawValue:
-                    editMessageError = .MAX_LENGTH_EXCEEDED
+                    editMessageError = .maxLengthExceeded
                     break
                 case WebimInternalError.notAllowed.rawValue:
-                    editMessageError = .NOT_ALLOWED
+                    editMessageError = .notAllowed
                     break
                 case WebimInternalError.messageNotOwned.rawValue:
-                    editMessageError = .MESSAGE_NOT_OWNED
+                    editMessageError = .messageNotOwned
                     break
                 case WebimInternalError.wrongMessageKind.rawValue:
-                    editMessageError = .WRONG_MESSAGE_KIND
+                    editMessageError = .wrongMesageKind
                     break
                 default:
-                    editMessageError = .UNKNOWN
+                    editMessageError = .unknown
                 }
                 
-                editMessageCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                guard let messageID = webimRequest.getMessageID() else {
+                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    return
+                }
+                editMessageCompletionHandler.onFailure(messageID: messageID,
                                                        error: editMessageError)
             })
         }
@@ -338,19 +383,23 @@ class ActionRequestLoop: AbstractRequestLoop {
                 let deleteMessageError: DeleteMessageError
                 switch errorString {
                 case WebimInternalError.messageNotFound.rawValue:
-                    deleteMessageError = .MESSAGE_NOT_FOUND
+                    deleteMessageError = .messageNotFound
                     break
                 case WebimInternalError.notAllowed.rawValue:
-                    deleteMessageError = .NOT_ALLOWED
+                    deleteMessageError = .notAllowed
                     break
                 case WebimInternalError.messageNotOwned.rawValue:
-                    deleteMessageError = .MESSAGE_NOT_OWNED
+                    deleteMessageError = .messageNotOwned
                     break
                 default:
-                    deleteMessageError = .UNKNOWN
+                    deleteMessageError = .unknown
                 }
                 
-                deleteMessageCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                guard let messageID = webimRequest.getMessageID() else {
+                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    return
+                }
+                deleteMessageCompletionHandler.onFailure(messageID: messageID,
                                                          error: deleteMessageError)
             })
         }
@@ -363,19 +412,23 @@ class ActionRequestLoop: AbstractRequestLoop {
                 let sendFileError: SendFileError
                 switch errorString {
                 case WebimInternalError.fileSizeExceeded.rawValue:
-                    sendFileError = .FILE_SIZE_EXCEEDED
+                    sendFileError = .fileSizeExceeded
                     break
                 case WebimInternalError.fileTypeNotAllowed.rawValue:
-                    sendFileError = .FILE_TYPE_NOT_ALLOWED
+                    sendFileError = .fileTypeNotAllowed
                     break
                 case WebimInternalError.uploadedFileNotFound.rawValue:
-                    sendFileError = .UPLOADED_FILE_NOT_FOUND
+                    sendFileError = .uploadedFileNotFound
                     break
                 default:
-                    sendFileError = .UNKNOWN
+                    sendFileError = .unknown
                 }
                 
-                sendFileCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!,
+                guard let messageID = webimRequest.getMessageID() else {
+                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    return
+                }
+                sendFileCompletionHandler.onFailure(messageID: messageID,
                                                     error: sendFileError)
             })
         }
@@ -388,19 +441,23 @@ class ActionRequestLoop: AbstractRequestLoop {
                 let keyboardResponseError: KeyboardResponseError
                 switch errorString {
                 case WebimInternalError.buttonIdNotSet.rawValue:
-                    keyboardResponseError = .BUTTON_ID_NOT_SET
+                    keyboardResponseError = .buttonIdNotSet
                     break
                 case WebimInternalError.requestMessageIdNotSet.rawValue:
-                    keyboardResponseError = .REQUEST_MESSAGE_ID_NOT_SET
+                    keyboardResponseError = .requestMessageIdNotSet
                     break
                 case WebimInternalError.canNotCreateResponse.rawValue:
-                    keyboardResponseError = .CAN_NOT_CREATE_RESPONSE
+                    keyboardResponseError = .canNotCreateResponse
                     break
                 default:
-                    keyboardResponseError = .UNKNOWN
+                    keyboardResponseError = .unknown
                 }
                 
-                keyboardResponseCompletionHandler.onFailure(messageID: webimRequest.getMessageID()!, error: keyboardResponseError)
+                guard let messageID = webimRequest.getMessageID() else {
+                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    return
+                }
+                keyboardResponseCompletionHandler.onFailure(messageID: messageID, error: keyboardResponseError)
             })
         }
     }
@@ -412,10 +469,10 @@ class ActionRequestLoop: AbstractRequestLoop {
                 let sendDialogResponseError: SendDialogToEmailAddressError
                 switch errorString {
                 case WebimInternalError.sentTooManyTimes.rawValue:
-                    sendDialogResponseError = .SENT_TOO_MANY_TIMES
+                    sendDialogResponseError = .sentTooManyTimes
                     break
                 default:
-                    sendDialogResponseError = .UNKNOWN
+                    sendDialogResponseError = .unknown
                 }
                 
                 sendDialogResponseCompletionHandler.onFailure(error: sendDialogResponseError)
@@ -425,17 +482,21 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
         WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
-            verbosityLevel: .WARNING)
+            verbosityLevel: .warning)
     }
     
     private func handleClientCompletionHandlerOf(request: WebimRequest) {
         completionHandlerExecutor?.execute(task: DispatchWorkItem {
-            request.getDataMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
-            request.getSendFileCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            guard let messageID = request.getMessageID() else {
+                WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
+                return
+            }
+            request.getDataMessageCompletionHandler()?.onSuccess(messageID: messageID)
+            request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
             request.getRateOperatorCompletionHandler()?.onSuccess()
-            request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
-            request.getEditMessageCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
-            request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: request.getMessageID()!)
+            request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
+            request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
+            request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: messageID)
             request.getSendDialogToEmailAddressCompletionHandler()?.onSuccess()
         })
     }
@@ -443,19 +504,19 @@ class ActionRequestLoop: AbstractRequestLoop {
     private static func convertToPublic(dataMessageErrorString: String) -> DataMessageError {
         switch dataMessageErrorString {
         case WebimInternalError.quotedMessageCannotBeReplied.rawValue:
-            return .QUOTED_MESSAGE_CANNOT_BE_REPLIED
+            return .quotedMessageCanNotBeReplied
         case WebimInternalError.quotedMessageCorruptedID.rawValue:
-            return .QUOTED_MESSAGE_WRONG_ID
+            return .quotedMessageWrongId
         case WebimInternalError.quotedMessageFromAnotherVisitor.rawValue:
-            return .QUOTED_MESSAGE_FROM_ANOTHER_VISITOR
+            return .quotedMessageFromAnotherVisitor
         case WebimInternalError.quotedMessageMultipleID.rawValue:
-            return .QUOTED_MESSAGE_MULTIPLE_IDS
+            return .quotedMessageMultipleIds
         case WebimInternalError.quotedMessageNotFound.rawValue:
-            return .QUOTED_MESSAGE_WRONG_ID
+            return .quotedMessageWrongId
         case WebimInternalError.quotedMessageRequiredArgumentsMissing.rawValue:
-            return .QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING
+            return .quotedMessageRequiredArgumentsMissing
         default:
-            return .UNKNOWN
+            return .unknown
         }
     }
     

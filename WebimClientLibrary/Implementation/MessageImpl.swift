@@ -36,7 +36,6 @@ import Foundation
 class MessageImpl {
     
     // MARK: - Properties
-    private let attachment: MessageAttachment?
     private let id: String
     private let keyboard: Keyboard?
     private let keyboardRequest: KeyboardRequest?
@@ -51,7 +50,8 @@ class MessageImpl {
     private let timeInMicrosecond: Int64
     private let type: MessageType
     private var currentChatID: String?
-    private var data: [String: Any?]?
+    private var rawData: [String: Any?]?
+    private var data: MessageData?
     private var historyID: HistoryID?
     private var historyMessage: Bool
     private var read: Bool
@@ -67,19 +67,18 @@ class MessageImpl {
          quote: Quote?,
          senderAvatarURLString: String?,
          senderName: String,
-         sendStatus: MessageSendStatus = .SENT,
+         sendStatus: MessageSendStatus = .sent,
          type: MessageType,
-         data: [String: Any?]?,
+         rawData: [String: Any?]?,
+         data: MessageData?,
          text: String,
          timeInMicrosecond: Int64,
-         attachment: MessageAttachment?,
          historyMessage: Bool,
          internalID: String?,
          rawText: String?,
          read: Bool,
          messageCanBeEdited: Bool,
          messageCanBeReplied: Bool) {
-        self.attachment = attachment
         self.data = data
         self.id = id
         self.keyboard = keyboard
@@ -100,14 +99,17 @@ class MessageImpl {
         
         self.historyMessage = historyMessage
         if historyMessage {
-            historyID = HistoryID(dbID: internalID!,
+            guard let internalID = internalID else {
+                WebimInternalLogger.shared.log(entry: "Message has not Internal ID in MessageImpl.\(#function)")
+                fatalError("Message has not Internal ID in MessageImpl.\(#function)")
+            }
+            historyID = HistoryID(dbID: internalID,
                                   timeInMicrosecond: timeInMicrosecond)
         }
         currentChatID = internalID
     }
     
     // MARK: - Methods
-    
     func getRawText() -> String? {
         return rawText
     }
@@ -125,9 +127,9 @@ class MessageImpl {
     }
     
     func getHistoryID() -> HistoryID? {
-        guard historyID != nil else {
+        guard let historyID = historyID else {
             WebimInternalLogger.shared.log(entry: "Message \(self.toString()) do not have history component.",
-                verbosityLevel: .DEBUG)
+                verbosityLevel: .debug)
             
             return nil
         }
@@ -175,7 +177,7 @@ class MessageImpl {
         guard historyID != nil,
             currentChatID != nil else {
                 WebimInternalLogger.shared.log(entry: "Message \(self.toString()) has not history component or does not belong to current chat.",
-                    verbosityLevel: .DEBUG)
+                    verbosityLevel: .debug)
                 
                 return
         }
@@ -187,7 +189,7 @@ class MessageImpl {
         guard !getSource().isHistoryMessage(),
             historyEquivalentMessage.getSource().isHistoryMessage() else {
                 WebimInternalLogger.shared.log(entry: "Message \(self.toString()) is already has history component.",
-                    verbosityLevel: .DEBUG)
+                    verbosityLevel: .debug)
                 
                 return
         }
@@ -199,7 +201,7 @@ class MessageImpl {
         guard getSource().isHistoryMessage(),
             !currentChatEquivalentMessage.getSource().isHistoryMessage() else {
                 WebimInternalLogger.shared.log(entry: "Current chat equivalent of the message \(self.toString()) is already has history component.",
-                    verbosityLevel: .DEBUG)
+                    verbosityLevel: .debug)
                 
                 return
         }
@@ -230,7 +232,7 @@ MessageImpl {
     type = \(type),
     text = \(text),
     timeInMicrosecond = \(timeInMicrosecond),
-    attachment = \(attachment?.getURL().absoluteString ?? "nil"),
+    attachment = \(data?.getAttachment()?.getFileInfo().getURL()?.absoluteString ?? "nil"),
     historyMessage = \(historyMessage),
     currentChatID = \(currentChatID ?? "nil"),
     historyID = \(historyID?.getDBid() ?? "nil"),
@@ -282,12 +284,11 @@ extension MessageImpl: Message {
         return quote
     }
     
-    
-    func getAttachment() -> MessageAttachment? {
-        return attachment
+    func getRawData() -> [String : Any?]? {
+        return rawData
     }
     
-    func getData() -> [String: Any?]? {
+    func getData() -> MessageData? {
         return data
     }
     
@@ -296,9 +297,9 @@ extension MessageImpl: Message {
     }
     
     func getCurrentChatID() -> String? {
-        guard currentChatID != nil else {
+        guard let currentChatID = currentChatID else {
             WebimInternalLogger.shared.log(entry: "Message \(self.toString()) do not have an ID in current chat or do not exist in current chat or chat exists itself not.",
-                verbosityLevel: .DEBUG)
+                verbosityLevel: .debug)
             
             return nil
         }
@@ -347,7 +348,10 @@ extension MessageImpl: Message {
     }
     
     func isEqual(to message: Message) -> Bool {
-        return (self == message as! MessageImpl)
+        guard let message = message as? MessageImpl else {
+            return false
+        }
+        return (self == message)
     }
     
     func isReadByOperator() -> Bool {
@@ -385,13 +389,91 @@ extension MessageImpl: Equatable {
 
 // MARK: -
 /**
+ Internal messages' data representation.
+ - author:
+ Yury Vozleev
+ - copyright:
+ 2020 Webim
+ */
+final class MessageDataImpl: MessageData {
+    
+    // MARK: - Properties
+    private let attachment: MessageAttachment?
+    
+    // MARK: - Initialization
+    init(attachment: MessageAttachment?) {
+        self.attachment = attachment
+    }
+    
+    // MARK: - Methods
+    func getAttachment() -> MessageAttachment? {
+        return attachment
+    }
+    
+}
+
+// MARK: -
+/**
  Internal messages' attachments representation.
+ - author:
+ Yury Vozleev
+ - copyright:
+ 2020 Webim
+ */
+final class MessageAttachmentImpl: MessageAttachment {
+    
+    // MARK: - Properties
+    private let fileInfo: FileInfo
+    private let state: AttachmentState
+    private var downloadProgress: Int64?
+    private var errorType: String?
+    private var errorMessage: String?
+    
+    // MARK: - Initialization
+    init(fileInfo: FileInfo,
+         state: AttachmentState,
+         downloadProgress: Int64? = nil,
+         errorType: String? = nil,
+         errorMessage: String? = nil) {
+        self.fileInfo = fileInfo
+        self.state = state
+        self.downloadProgress = downloadProgress
+        self.errorType = errorType
+        self.errorMessage = errorMessage
+    }
+    
+    // MARK: - Methods
+    func getFileInfo() -> FileInfo {
+        return fileInfo
+    }
+    
+    func getState() -> AttachmentState {
+        return state
+    }
+    
+    func getDownloadProgress() -> Int64? {
+        return downloadProgress
+    }
+    
+    func getErrorType() -> String? {
+        return errorType
+    }
+    
+    func getErrorMessage() -> String? {
+        return errorMessage
+    }
+    
+}
+
+// MARK: -
+/**
+ Internal fileinfo representation.
  - author:
  Nikita Lazarev-Zubov
  - copyright:
  2017 Webim
  */
-final class MessageAttachmentImpl {
+final class FileInfoImpl {
     
     // MARK: - Constants
     private enum Period: Int64 {
@@ -400,18 +482,18 @@ final class MessageAttachmentImpl {
     
     
     // MARK: - Properties
-    private let urlString: String
+    private let urlString: String?
     private let size: Int64?
     private let filename: String
-    private let contentType: String
+    private let contentType: String?
     private let imageInfo: ImageInfo?
     
     
     // MARK: - Initialization
-    init(urlString: String,
+    init(urlString: String?,
          size: Int64?,
          filename: String,
-         contentType: String,
+         contentType: String?,
          imageInfo: ImageInfo? = nil) {
         self.urlString = urlString
         self.size = size
@@ -423,17 +505,25 @@ final class MessageAttachmentImpl {
     // MARK: - Methods
     static func getAttachment(byServerURL serverURLString: String,
                               webimClient: WebimClient,
-                              text: String) -> MessageAttachment? {
-        let textData = text.data(using: .utf8)!
-        guard let textDictionary = ((try? JSONSerialization.jsonObject(with: textData,
-                                                                     options: []) as? [String: Any?]) as [String : Any?]??) else {
-                                                                        WebimInternalLogger.shared.log(entry: "Message attachment parameters parsing failed: \(text).",
-                                                                            verbosityLevel: .WARNING)
-                                                                        
-                                                                        return nil
+                              text: String) -> FileInfoImpl? {
+        guard let textData = text.data(using: .utf8) else {
+            WebimInternalLogger.shared.log(entry: "Convert Text to Data failure in MessageImpl.\(#function)")
+            return nil
         }
         
-        let fileParameters = FileParametersItem(jsonDictionary: textDictionary!)
+        guard let optionaltextDictionary = (
+            (try? JSONSerialization.jsonObject(with: textData, options: [])
+                as? [String: Any?])
+                as [String : Any?]??),
+            let textDictionary = optionaltextDictionary else {
+            WebimInternalLogger.shared.log(
+                entry: "Message attachment parameters parsing failed: \(text).",
+                verbosityLevel: .warning
+            )
+            return nil
+        }
+        
+        let fileParameters = FileParametersItem(jsonDictionary: textDictionary)
         guard let filename = fileParameters.getFilename(),
             let guid = fileParameters.getGUID(),
             let contentType = fileParameters.getContentType() else {
@@ -450,14 +540,21 @@ final class MessageAttachmentImpl {
         let expires = Int64(Date().timeIntervalSince1970) + Period.attachmentURLExpires.rawValue
         let data: String = guid + String(expires)
         if let hash = data.hmacSHA256(withKey: authorizationToken) {
+            var formatedFilename = filename
+            if let filenameWithAllowedCharacters = filename.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+                formatedFilename = filenameWithAllowedCharacters
+            } else {
+                WebimInternalLogger.shared.log(entry: "Adding Percent Encoding With Allowed Characters failure in MessageImpl.\(#function)",
+                                               verbosityLevel: .warning)
+            }
             let fileURLString = serverURLString + WebimActions.ServerPathSuffix.downloadFile.rawValue + "/"
                 + guid + "/"
-                + filename.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)! + "?"
+                + formatedFilename + "?"
                 + "page-id" + "=" + pageID + "&"
                 + "expires" + "=" + String(expires) + "&"
                 + "hash" + "=" + hash
             
-            return MessageAttachmentImpl(urlString: fileURLString,
+            return FileInfoImpl(urlString: fileURLString,
                                          size: fileParameters.getSize(),
                                          filename: filename,
                                          contentType: contentType,
@@ -473,32 +570,25 @@ final class MessageAttachmentImpl {
     // MARK: Private methods
     private static func extractImageInfoOf(fileParameters: FileParametersItem?,
                                            with fileURLString: String?) -> ImageInfo? {
-        guard fileParameters != nil,
-            fileURLString != nil else {
+        guard let fileParameters = fileParameters,
+            let fileURLString = fileURLString,
+            let imageSize = fileParameters.getImageParameters()?.getSize() else {
             return nil
         }
         
-        let imageSize = fileParameters?.getImageParameters()?.getSize()
-        guard imageSize != nil else {
-            return nil
-        }
+        let thumbURLString = fileURLString + "&thumb=ios"
         
-        let thumbURLString = (fileURLString == nil) ? nil : (fileURLString! + "&thumb=ios")
-        guard thumbURLString != nil else {
-            return nil
-        }
-        
-        return ImageInfoImpl(withThumbURLString: thumbURLString!,
-                             width: imageSize!.getWidth(),
-                             height: imageSize!.getHeight())
+        return ImageInfoImpl(withThumbURLString: thumbURLString,
+                             width: imageSize.getWidth(),
+                             height: imageSize.getHeight())
     }
     
 }
 
 // MARK: - MessageAttachment
-extension MessageAttachmentImpl: MessageAttachment {
+extension FileInfoImpl: FileInfo {
     
-    func getContentType() -> String {
+    func getContentType() -> String? {
         return contentType
     }
     
@@ -514,8 +604,12 @@ extension MessageAttachmentImpl: MessageAttachment {
         return size
     }
     
-    func getURL() -> URL {
-        return URL(string: urlString)!
+    func getURL() -> URL? {
+        guard let urlString = self.urlString else {
+            WebimInternalLogger.shared.log(entry: "Getting URL from String failure because URL String is nil in MessageImpl.\(#function)")
+            return nil
+        }
+        return URL(string: urlString)
     }
     
 }
@@ -550,7 +644,11 @@ final class ImageInfoImpl: ImageInfo {
     // MARK: ImageInfo protocol methods
     
     func getThumbURL() -> URL {
-        return URL(string: thumbURLString)!
+        guard let thumbURL = URL(string: thumbURLString) else {
+            WebimInternalLogger.shared.log(entry: "Getting Thumb URL from String failure in MessageImpl.\(#function)")
+            fatalError("Getting Thumb URL from String failure in MessageImpl.\(#function)")
+        }
+        return thumbURL
     }
     
     func getHeight() -> Int? {
@@ -593,7 +691,11 @@ final class KeyboardImpl: Keyboard {
         for buttonArray in keyboardItem.getButtons() {
             var newButtonArray = [KeyboardButton]()
             for button in buttonArray {
-                newButtonArray.append(KeyboardButtonImpl(data: button)!)
+                guard let buttonImpl = KeyboardButtonImpl(data: button) else {
+                    WebimInternalLogger.shared.log(entry: "Getting KeyboardButtonImpl from data failure in KeyboardImpl.\(#function)")
+                    return []
+                }
+                newButtonArray.append(buttonImpl)
             }
             buttonArrayArray.append(newButtonArray)
         }
@@ -695,7 +797,11 @@ final class KeyboardRequestImpl: KeyboardRequest {
     }
     
     func getButton() -> KeyboardButton {
-        return KeyboardButtonImpl(data: keyboardRequestItem.getButton())!
+        guard let buttonImpl = KeyboardButtonImpl(data: keyboardRequestItem.getButton()) else {
+            WebimInternalLogger.shared.log(entry: "Getting KeyboardButtonImpl from data failure in KeyboardRequestImpl.\(#function)")
+            fatalError("Getting KeyboardButtonImpl from data failure in KeyboardRequestImpl.\(#function)")
+        }
+        return buttonImpl
     }
     
     func getMessageID() -> String {
@@ -716,7 +822,7 @@ final class QuoteImpl: Quote {
     
     private let state: QuoteState
     private let authorID: String?
-    private let messageAttachment: MessageAttachment?
+    private let messageAttachment: FileInfo?
     private let messageID: String?
     private let messageType: MessageType?
     private let senderName: String?
@@ -725,7 +831,7 @@ final class QuoteImpl: Quote {
     
     init(state: QuoteState,
          authorID: String?,
-         messageAttachment: MessageAttachment?,
+         messageAttachment: FileInfo?,
          messageID: String?,
          messageType: MessageType?,
          senderName: String?,
@@ -742,7 +848,7 @@ final class QuoteImpl: Quote {
     }
     
     // MARK: - Methods
-    static func getQuote(quoteItem: QuoteItem?, messageAttachment: MessageAttachment?) -> Quote? {
+    static func getQuote(quoteItem: QuoteItem?, messageAttachment: FileInfo?) -> Quote? {
         guard let quoteItem = quoteItem else {
             return nil
         }
@@ -754,7 +860,12 @@ final class QuoteImpl: Quote {
         if let messageKind = quoteItem.getMessageKind() {
             messageType = MessageMapper.convert(messageKind: messageKind)
         }
-        return QuoteImpl(state: convert(quoteState: quoteItem.getState()!),
+        guard let quoteState = quoteItem.getState() else {
+            WebimInternalLogger.shared.log(entry: "Quote Item has not State in KeyboardRequestImpl.\(#function)")
+            return nil
+        }
+        
+        return QuoteImpl(state: convert(quoteState: quoteState),
                          authorID: quoteItem.getAuthorID(),
                          messageAttachment: messageAttachment,
                          messageID: quoteItem.getID(),
@@ -768,7 +879,7 @@ final class QuoteImpl: Quote {
         return authorID
     }
     
-    func getMessageAttachment() -> MessageAttachment? {
+    func getMessageAttachment() -> FileInfo? {
         return messageAttachment
     }
     
@@ -803,11 +914,11 @@ final class QuoteImpl: Quote {
     static private func convert(quoteState: QuoteItem.QuoteStateItem) -> QuoteState {
         switch quoteState {
         case .pending:
-            return .PENDING
+            return .pending
         case .filled:
-            return .FILLED
+            return .filled
         case .notFound:
-            return .NOT_FOUND
+            return .notFound
         }
     }
 }

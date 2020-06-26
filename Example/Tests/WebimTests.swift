@@ -100,7 +100,7 @@ class WebimTests: XCTestCase {
         XCTAssertEqual(webimRemoteNotification.getParameters(), ["Имя Оператора",
                                                                   "Сообщение"])
         XCTAssertEqual(webimRemoteNotification.getType(),
-                       NotificationType.OPERATOR_MESSAGE)
+                       NotificationType.operatorMessage)
         
         XCTAssertNil(Webim.parse(remoteNotification: self.incorrectRemoteNotification))
     }

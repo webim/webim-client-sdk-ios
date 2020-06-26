@@ -104,7 +104,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         quote: nil,
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
-                                        type: MessageType.OPERATOR,
+                                        type: MessageType.operatorMessage,
                                         data: nil,
                                         text: "Text",
                                         timeInMicrosecond: Int64(index * 1_000_000_000_000),

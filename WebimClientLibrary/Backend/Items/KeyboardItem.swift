@@ -54,7 +54,11 @@ struct KeyboardItem {
             for buttonArray in data {
                 var newButtonArray = [KeyboardButtonItem]()
                 for button in buttonArray {
-                    newButtonArray.append(KeyboardButtonItem(jsonDictionary: button)!)
+                    guard let buttonItem = KeyboardButtonItem(jsonDictionary: button) else {
+                        WebimInternalLogger.shared.log(entry: "Getting KeyboardButtonItem from json failure in KeyboardItem.\(#function)")
+                        return nil
+                    }
+                    newButtonArray.append(buttonItem)
                 }
                 buttonArrayArray.append(newButtonArray)
             }
@@ -66,11 +70,11 @@ struct KeyboardItem {
         if let state = jsonDictionary[JSONField.state.rawValue] as? String {
             switch state {
             case "pending":
-                self.state = .PENDING
+                self.state = .pending
             case "completed":
-                self.state = .COMPLETED
+                self.state = .completed
             default:
-                self.state = .CANCELLED
+                self.state = .canceled
             }
         } else {
             return nil
@@ -133,11 +137,19 @@ struct KeyboardButtonItem {
     // MARK: - Methods
     
     func getId() -> String {
-        return id!
+        guard let id = id else {
+            WebimInternalLogger.shared.log(entry: "ID is nil in KeyboardButtonItem.\(#function)")
+            return String()
+        }
+        return id
     }
     
     func getText() -> String {
-        return text!
+        guard let text = text else {
+            WebimInternalLogger.shared.log(entry: "Text is nil in KeyboardButtonItem.\(#function)")
+            return String()
+        }
+        return text
     }
 }
 
@@ -178,11 +190,19 @@ struct KeyboardResponseItem {
     // MARK: - Methods
     
     func getMessageId() -> String {
-        return messageId!
+        guard let messageId = messageId else {
+            WebimInternalLogger.shared.log(entry: "Message ID is nil in KeyboardResponseItem.\(#function)")
+            return String()
+        }
+        return messageId
     }
     
     func getButtonId() -> String {
-        return buttonId!
+        guard let buttonId = buttonId else {
+            WebimInternalLogger.shared.log(entry: "Button ID is nil in KeyboardResponseItem.\(#function)")
+            return String()
+        }
+        return buttonId
     }
 }
 
@@ -225,10 +245,18 @@ struct KeyboardRequestItem {
     // MARK: - Methods
     
     func getMessageId() -> String {
-        return messageId!
+        guard let messageId = messageId else {
+            WebimInternalLogger.shared.log(entry: "Message ID is nil in KeyboardRequestItem.\(#function)")
+            return String()
+        }
+        return messageId
     }
     
     func getButton() -> KeyboardButtonItem {
-        return button!
+        guard let button = button else {
+            WebimInternalLogger.shared.log(entry: "Button is nil in KeyboardRequestItem.\(#function)")
+            fatalError("Button is nil in KeyboardRequestItem.\(#function)")
+        }
+        return button
     }
 }

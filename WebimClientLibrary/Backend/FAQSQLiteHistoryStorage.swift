@@ -83,7 +83,7 @@ final class FAQSQLiteHistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 4
+        return 5
     }
     
     func updateDB() {
@@ -105,16 +105,17 @@ final class FAQSQLiteHistoryStorage {
     
     private func insert(id: String, dictionary: [String: Any?], table: Table) {
         FAQSQLiteHistoryStorage.queryQueue.sync { [weak self] in
-            guard self != nil else {
+            guard let self = self,
+                let db = self.db else {
                 return
             }
             do {
-                try db?.run(table
+                try db.run(table
                     .insert(FAQSQLiteHistoryStorage.id <- id,
                             FAQSQLiteHistoryStorage.data <- FAQSQLiteHistoryStorage.convertToBlob(dictionary: dictionary)))
             } catch {
                 do {
-                    try db!.run(table
+                    try db.run(table
                         .where(FAQSQLiteHistoryStorage.id == id)
                         .update(FAQSQLiteHistoryStorage.data <- FAQSQLiteHistoryStorage.convertToBlob(dictionary: dictionary)))
                 } catch {
@@ -141,14 +142,15 @@ final class FAQSQLiteHistoryStorage {
     
     private func get(id: String, table: Table, completion: @escaping ([String: Any?]?) -> ()) {
         FAQSQLiteHistoryStorage.queryQueue.async { [weak self] in
-            guard let self = self else {
+            guard let self = self,
+                let db = self.db else {
                 return
             }
             let query = table
                 .filter(FAQSQLiteHistoryStorage.id == id)
                 .limit(1)
             do {
-                for row in try self.db!.prepare(query) {
+                for row in try db.prepare(query) {
                     var data: [String: Any?]?
                     if let dataValue = row[FAQSQLiteHistoryStorage.data] {
                         data = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(dataValue)) as? [String: Any?]
@@ -175,7 +177,10 @@ final class FAQSQLiteHistoryStorage {
     }
     
     private func dropTables() {
-        try! self.db?.run(FAQSQLiteHistoryStorage.categories.drop(ifExists: true))
+        guard let db = db else {
+            return
+        }
+        _ = try? db.run(FAQSQLiteHistoryStorage.categories.drop(ifExists: true))
     }
     
     private func createTableWith(name: String) {
@@ -185,23 +190,35 @@ final class FAQSQLiteHistoryStorage {
             }
             
             let fileManager = FileManager.default
-            let documentsPath = try! fileManager.url(for: .documentDirectory,
-                                                     in: .userDomainMask,
-                                                     appropriateFor: nil,
-                                                     create: false)
-            let dbPath = "\(documentsPath)/\(name)"
-            self.db = try! Connection(dbPath)
-            self.db?.userVersion = 4
-            self.db?.busyTimeout = 1.0
-            self.db?.busyHandler() { tries in
-                if tries >= 3 {
-                    return false
-                }
-                
-                return true
+            let optionalLibraryDirectory = try? fileManager.url(for: .libraryDirectory,
+                                                                  in: .userDomainMask,
+                                                                  appropriateFor: nil,
+                                                                  create: false)
+            
+            guard let libraryPath = optionalLibraryDirectory else {
+                WebimInternalLogger.shared.log(entry: "Error getting access to Library directory.",
+                                               verbosityLevel: .verbose)
+                return
             }
             
-            createTables()
+            let dbPath = "\(libraryPath)/\(name)"
+            
+            do {
+                let db = try Connection(dbPath)
+                db.userVersion = 5
+                db.busyTimeout = 1.0
+                db.busyHandler() { tries in
+                    if tries >= 3 {
+                        return false
+                    }
+                    return true
+                }
+                self.db = db
+                createTables()
+            } catch {
+                WebimInternalLogger.shared.log(entry: "Creating Connection(\(dbPath) failure in FAQSQLiteHistoryStorage.\(#function)")
+                return
+            }
         }
     }
     
@@ -212,7 +229,7 @@ final class FAQSQLiteHistoryStorage {
             id TEXT PRIMARY KEY NOT NULL,
             data TEXT
             */
-            try! self.db?.run(table.create(ifNotExists: true) { t in
+            _ = try? self.db?.run(table.create(ifNotExists: true) { t in
                 t.column(FAQSQLiteHistoryStorage.id, primaryKey: true)
                 t.column(FAQSQLiteHistoryStorage.data)
             })

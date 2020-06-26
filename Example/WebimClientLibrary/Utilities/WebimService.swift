@@ -69,11 +69,11 @@ final class WebimService {
             .set(location: Settings.shared.location)
             .set(pageTitle: Settings.shared.pageTitle)
             .set(fatalErrorHandler: self)
-            .set(remoteNotificationSystem: ((deviceToken != nil) ? .APNS : .NONE))
+            .set(remoteNotificationSystem: ((deviceToken != nil) ? .apns : .none))
             .set(deviceToken: deviceToken)
             .set(isVisitorDataClearingEnabled: false)
             .set(webimLogger: self,
-                 verbosityLevel: .VERBOSE)
+                 verbosityLevel: .verbose)
         
         if (Settings.shared.accountName == Settings.DefaultSettings.accountName.rawValue) {
             sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorFields.id.rawValue)\":\"\(VisitorFieldsValue.id.rawValue)\",\"\(VisitorFields.name.rawValue)\":\"\(VisitorFieldsValue.name.rawValue)\",\"\(VisitorFields.crc.rawValue)\":\"\(VisitorFieldsValue.crc.rawValue)\"}") // Hardcoded values that work with "demo" account only!
@@ -89,27 +89,27 @@ final class WebimService {
             },
             onError: { error in
                 switch error {
-                case .NIL_ACCOUNT_NAME:
+                case .nilAccountName:
                     print("Webim session object creating failed because of passing nil account name.")
                     
                     break
-                case .NIL_LOCATION:
+                case .nilLocation:
                     print("Webim session object creating failed because of passing nil location name.")
                     
                     break
-                case .INVALID_REMOTE_NOTIFICATION_CONFIGURATION:
+                case .invalidRemoteNotificationConfiguration:
                     print("Webim session object creating failed because of invalid remote notifications configuration.")
                     
                     break
-                case .INVALID_AUTHENTICATION_PARAMETERS:
+                case .invalidAuthentificatorParameters:
                     print("Webim session object creating failed because of invalid visitor authentication system configuration.")
                     
                     break
-                case .INVALIDE_HEX:
+                case .invalidHex:
                     print("Webim can't parsed prechat fields")
                     
                     break
-                case .UNKNOWN:
+                case .unknown:
                     print("Webim session object creating failed with unknown error")
                 }
             }
@@ -121,12 +121,12 @@ final class WebimService {
             try webimSession?.resume()
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 
@@ -145,11 +145,11 @@ final class WebimService {
             try webimSession?.destroy()
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Ignored because if session is already destroyed, we don't care (it's the same thing that we try to achieve).
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Webim session or message tracker destroing failed because it was called from a wrong thread.")
                 
@@ -172,12 +172,12 @@ final class WebimService {
             try messageStream?.setVisitorTyping(draftMessage: draft)
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle.
                 print("Visitor status sending failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Visitor status sending failed because it was called from a wrong thread.")
                 
@@ -195,7 +195,7 @@ final class WebimService {
                 setMessageStream()
             }
             
-            if messageStream?.getVisitSessionState() == .DEPARTMENT_SELECTION,
+            if messageStream?.getVisitSessionState() == .departmentSelection,
                 let departments = messageStream?.getDepartmentList() {
                 departmentListHandlerDelegate?.show(departmentList: departments) { [weak self] departmentKey in
                     self?.startChat(departmentKey: departmentKey,
@@ -208,12 +208,12 @@ final class WebimService {
             }
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Message sending failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Message sending failed because it was called from a wrong thread.")
                 
@@ -232,7 +232,7 @@ final class WebimService {
             setMessageStream()
         }
         
-        if messageStream?.getVisitSessionState() == .DEPARTMENT_SELECTION,
+        if messageStream?.getVisitSessionState() == .departmentSelection,
             let departments = messageStream?.getDepartmentList() {
             departmentListHandlerDelegate?.show(departmentList: departments) { [weak self] departmentKey in
                 self?.startChat(departmentKey: departmentKey,
@@ -255,8 +255,8 @@ final class WebimService {
             return false
         }
         
-        return ((chatState == .CHATTING)
-            || (chatState == .CLOSED_BY_OPERATOR))
+        return ((chatState == .chatting)
+            || (chatState == .closedByVisitor))
     }
     
     func closeChat() {
@@ -268,12 +268,12 @@ final class WebimService {
             try messageStream?.closeChat()
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 
@@ -297,12 +297,12 @@ final class WebimService {
                                                 completionHandler: completionHandler)
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 
@@ -322,12 +322,12 @@ final class WebimService {
             try messageTracker = messageStream?.newMessageTracker(messageListener: messageListener)
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 
@@ -344,12 +344,12 @@ final class WebimService {
                                                 completion: completion)
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 
@@ -366,12 +366,12 @@ final class WebimService {
                                                 completion: completion)
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Webim session starting/resuming failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Webim session starting/resuming failed because it was called from a wrong thread.")
                 
@@ -395,12 +395,12 @@ final class WebimService {
                                          firstQuestion: message)
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Chat starting failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Chat starting failed because it was called from a wrong thread.")
                 
@@ -435,12 +435,12 @@ final class WebimService {
                                             completionHandler: completionHandler)  // Returned message ID ignored.
         } catch let error as AccessError {
             switch error {
-            case .INVALID_SESSION:
+            case .invalidSession:
                 // Assuming to check Webim session object lifecycle or re-creating Webim session object.
                 print("Message sending failed because it was called when session object is invalid.")
                 
                 break
-            case .INVALID_THREAD:
+            case .invalidThread:
                 // Assuming to check concurrent calls of WebimClientLibrary methods.
                 print("Message sending failed because it was called from a wrong thread.")
                 
@@ -460,27 +460,27 @@ extension WebimService: FatalErrorHandler {
     func on(error: WebimError) {
         let errorType = error.getErrorType()
         switch errorType {
-        case .ACCOUNT_BLOCKED:
+        case .accountBlocked:
             // Assuming to contact with Webim support.
             print("Account with used account name is blocked by Webim service.")
             fatalErrorHandlerDelegate?.showErrorDialog(withMessage: SessionCreationErrorDialog.accountBlocked.rawValue)
             
             break
-        case .PROVIDED_VISITOR_FIELDS_EXPIRED:
+        case .providedVisitorFieldsExpired:
             // Assuming to re-authorize it and re-create session object.
             print("Provided visitor fields expired. See \"expires\" key of this fields.")
             
             break
-        case .UNKNOWN:
+        case .unknown:
             print("An unknown error occured: \(error.getErrorString()).")
             
             break
-        case .VISITOR_BANNED:
+        case .visitorBanned:
             print("Visitor with provided visitor fields is banned by an operator.")
             fatalErrorHandlerDelegate?.showErrorDialog(withMessage: SessionCreationErrorDialog.visitorBanned.rawValue)
             
             break
-        case .WRONG_PROVIDED_VISITOR_HASH:
+        case .wrongProvidedVisitorHash:
             // Assuming to check visitor field generating.
             print("Wrong CRC passed with visitor fields.")
             

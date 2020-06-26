@@ -49,6 +49,7 @@ final class WebimRequest {
     private var fileData: Data?
     private var boundaryString: String?
     private var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
+    private var sendMessageComplitionHandler: SendMessageCompletionHandler?
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     private var deleteMessageCompletionHandler: DeleteMessageCompletionHandler?
     private var editMessageCompletionHandler: EditMessageCompletionHandler?
@@ -73,7 +74,8 @@ final class WebimRequest {
          deleteMessageCompletionHandler: DeleteMessageCompletionHandler? = nil,
          editMessageCompletionHandler: EditMessageCompletionHandler? = nil,
          keyboardResponseCompletionHandler: SendKeyboardRequestCompletionHandler? = nil,
-         sendDialogToEmailAddressCompletionHandler: SendDialogToEmailAddressCompletionHandler? = nil) {
+         sendDialogToEmailAddressCompletionHandler: SendDialogToEmailAddressCompletionHandler? = nil,
+        sendMessageComplitionHandler: SendMessageCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -86,6 +88,7 @@ final class WebimRequest {
         self.historyRequestCompletionHandler = historyRequestCompletionHandler
         self.dataMessageCompletionHandler = dataMessageCompletionHandler
         self.rateOperatorCompletionHandler = rateOperatorCompletionHandler
+        self.sendMessageComplitionHandler = sendMessageComplitionHandler
         self.sendFileCompletionHandler = sendFileCompletionHandler
         self.deleteMessageCompletionHandler = deleteMessageCompletionHandler
         self.editMessageCompletionHandler = editMessageCompletionHandler
@@ -147,6 +150,10 @@ final class WebimRequest {
     
     func getRateOperatorCompletionHandler() -> RateOperatorCompletionHandler? {
         return rateOperatorCompletionHandler
+    }
+    
+    func getSendMessageCompletionHandler() -> SendMessageCompletionHandler? {
+        return sendMessageComplitionHandler
     }
     
     func getSendFileCompletionHandler() -> SendFileCompletionHandler? {

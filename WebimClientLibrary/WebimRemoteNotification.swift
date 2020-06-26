@@ -119,6 +119,9 @@ public enum NotificationType {
      - copyright:
      2018 Webim
      */
+    case contactInformationRequest
+    
+    @available(*, unavailable, renamed: "contactInformationRequest")
     case CONTACT_INFORMATION_REQUEST
     
     /**
@@ -130,6 +133,9 @@ public enum NotificationType {
      - copyright:
      2017 Webim
      */
+    case operatorAccepted
+    
+    @available(*, unavailable, renamed: "operatorAccepted")
     case OPERATOR_ACCEPTED
     
     /**
@@ -142,6 +148,9 @@ public enum NotificationType {
      - copyright:
      2017 Webim
      */
+    case operatorFile
+    
+    @available(*, unavailable, renamed: "operatorFile")
     case OPERATOR_FILE
     
     /**
@@ -154,6 +163,9 @@ public enum NotificationType {
      - copyright:
      2017 Webim
      */
+    case operatorMessage
+    
+    @available(*, unavailable, renamed: "operatorMessage")
     case OPERATOR_MESSAGE
     
     /**
@@ -166,6 +178,9 @@ public enum NotificationType {
      - copyright:
      2018 Webim
      */
+    case widget
+    
+    @available(*, unavailable, renamed: "widget")
     case WIDGET
 }
 
@@ -186,6 +201,9 @@ public enum NotificationEvent {
      - copyright:
      2017 Webim
      */
+    case add
+    
+    @available(*, unavailable, renamed: "add")
     case ADD
     
     /**
@@ -195,6 +213,9 @@ public enum NotificationEvent {
      - copyright:
      2017 Webim
      */
+    case delete
+    
+    @available(*, unavailable, renamed: "delete")
     case DELETE
     
 }

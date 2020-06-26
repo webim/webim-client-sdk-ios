@@ -63,7 +63,7 @@ class MessageHolderTests: XCTestCase {
                                        quote: nil,
                                        senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                                        senderName: MessageImplMockData.senderName.rawValue,
-                                       type: MessageType.OPERATOR,
+                                       type: MessageType.operatorMessage,
                                        data: nil,
                                        text: MessageImplMockData.text.rawValue,
                                        timeInMicrosecond: Int64(index),
@@ -93,7 +93,7 @@ class MessageHolderTests: XCTestCase {
                                            quote: nil,
                                            senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                                            senderName: MessageImplMockData.senderName.rawValue,
-                                           type: MessageType.OPERATOR,
+                                           type: MessageType.operatorMessage,
                                            data: nil,
                                            text: MessageImplMockData.text.rawValue,
                                            timeInMicrosecond: Int64(index),
@@ -151,7 +151,7 @@ class MessageHolderTests: XCTestCase {
                            quote: nil,
                            senderAvatarURLString: MessageImplMockData.avatarURLString.rawValue,
                            senderName: MessageImplMockData.senderName.rawValue,
-                           type: MessageType.OPERATOR,
+                           type: MessageType.operatorMessage,
                            data: nil,
                            text: MessageImplMockData.text.rawValue,
                            timeInMicrosecond: Int64(messagesCount),
@@ -1632,7 +1632,7 @@ class MessageHolderTests: XCTestCase {
         let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
                                           id: "1",
                                           senderName: "Sender",
-                                          type: .OPERATOR,
+                                          type: .operatorMessage,
                                           text: "Text",
                                           timeInMicrosecond: 1)
         let messageHolder = newMessageHolder()
@@ -1646,7 +1646,7 @@ class MessageHolderTests: XCTestCase {
         let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
                                           id: "1",
                                           senderName: "Sender",
-                                          type: .OPERATOR,
+                                          type: .operatorMessage,
                                           text: "Text",
                                           timeInMicrosecond: 1)
         let messageHolder = newMessageHolder()
@@ -1661,7 +1661,7 @@ class MessageHolderTests: XCTestCase {
         let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
                                           id: messageID,
                                           senderName: "Sender",
-                                          type: .OPERATOR,
+                                          type: .operatorMessage,
                                           text: "Text",
                                           timeInMicrosecond: 1)
         let messageHolder = newMessageHolder()

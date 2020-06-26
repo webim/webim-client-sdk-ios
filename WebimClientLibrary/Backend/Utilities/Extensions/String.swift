@@ -66,8 +66,7 @@ extension String {
     func hmacSHA256(withKey key: String) -> String? {
         let stringBytes: [UInt8] = Array(self.utf8)
         let keyBytes: [UInt8] = Array(key.utf8)
-        let hmac = try! HMACsha256(key: keyBytes).authenticate(stringBytes).toHexString()
-        
+        guard let hmac = try? HMACsha256(key: keyBytes).authenticate(stringBytes).toHexString() else { return nil }
         return hmac
     }
     

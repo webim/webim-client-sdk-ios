@@ -97,9 +97,12 @@ final class FAQImpl {
         let historyMajorVersion = cache.getMajorVersion()
         if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
             if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.main.rawValue) {
-                if let version = userDefaults[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int,
-                    version < 3 {
-                    deleteDBFileFor()
+                if let version = userDefaults[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int {
+                    if version < 3 {
+                        deleteDBFileFor()
+                    } else if version < 5 {
+                        transferDBFiles()
+                    }
                 }
                 userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
                 userDefaults.updateValue(historyMajorVersion, forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
@@ -117,17 +120,42 @@ final class FAQImpl {
     
     private static func deleteDBFileFor() {
         let fileManager = FileManager.default
-        let documentsDirectory = try! fileManager.url(for: .documentDirectory,
-                                                      in: .userDomainMask,
-                                                      appropriateFor: nil,
-                                                      create: false)
+        let optionalDocumentsDirectory = try? fileManager.url(for: .documentDirectory,
+                                                              in: .userDomainMask,
+                                                              appropriateFor: nil,
+                                                              create: false)
+        guard let documentsDirectory = optionalDocumentsDirectory else {
+            WebimInternalLogger.shared.log(entry: "Error getting access to Documents directory.",
+            verbosityLevel: .verbose)
+            return
+        }
         let dbURL = documentsDirectory.appendingPathComponent("faqcache.db")
             
         do {
             try fileManager.removeItem(at: dbURL)
         } catch {
             WebimInternalLogger.shared.log(entry: "Error deleting DB file at \(dbURL) or file doesn't exist.",
-                verbosityLevel: .VERBOSE)
+                                           verbosityLevel: .verbose)
+        }
+    }
+    
+    private static func transferDBFiles() {
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                                in: .userDomainMask).first,
+            let libraryDirectory = FileManager.default.urls(for: .libraryDirectory,
+                                                            in: .userDomainMask).first
+            else { return }
+        do {
+            let fileURLs = try FileManager.default.contentsOfDirectory(at: documentsDirectory, includingPropertiesForKeys: nil)
+            let dbFilesURLs = fileURLs.filter{ $0.pathExtension == "db" }
+            for dbFileURL in dbFilesURLs {
+                let fileName = dbFileURL.lastPathComponent
+                let fileData = try Data(contentsOf: dbFileURL)
+                let destanationURL = libraryDirectory.appendingPathComponent(fileName)
+                try fileData.write(to: destanationURL)
+            }
+        } catch {
+            print("Error while enumerating files \(documentsDirectory.path): \(error.localizedDescription)")
         }
     }
 }
@@ -139,7 +167,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         
@@ -153,7 +181,7 @@ extension FAQImpl: FAQ {
                     
                 self.cache.insert(categoryId: faqCategory.getID(), categoryDictionary: faqCategoryDictionary)
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }
@@ -162,7 +190,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         
@@ -177,11 +205,11 @@ extension FAQImpl: FAQ {
                     let ids = faqCategoriesIDArray.map { i in String(i) }
                     completionHandler(.success(ids))
                 } else {
-                    completionHandler(.failure(.ERROR))
+                    completionHandler(.failure(.error))
                 }
             }
         } else {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
         }
     }
     
@@ -189,7 +217,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         
@@ -197,7 +225,7 @@ extension FAQImpl: FAQ {
             if let data = data {
                 completionHandler(.success(FAQCategoryItem(jsonDictionary: data)))
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
             
         }
@@ -207,7 +235,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         faqClient.getActions().getStructure(categoryId: id) { data in
@@ -221,7 +249,7 @@ extension FAQImpl: FAQ {
                 
                 self.cache.insert(structureId: id, structureDictionary: faqStructureDictionary)
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }
@@ -230,7 +258,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         
@@ -238,7 +266,7 @@ extension FAQImpl: FAQ {
             if let data = data {
                 completionHandler(.success(FAQStructureItem(jsonDictionary: data)))
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }
@@ -247,7 +275,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         if let openFrom = openFrom {
@@ -263,7 +291,7 @@ extension FAQImpl: FAQ {
                     
                 completionHandler(.success(faqItem))
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }
@@ -272,7 +300,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         if let openFrom = openFrom {
@@ -282,7 +310,7 @@ extension FAQImpl: FAQ {
             if let data = data {
                 completionHandler(.success(FAQItemItem(jsonDictionary: data)))
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }
@@ -291,7 +319,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         
@@ -300,9 +328,9 @@ extension FAQImpl: FAQ {
                 let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: []) as? [String: Any?],
                 json["result"] as? String == "ok" {
-                completionHandler(.success(FAQItemItem(faqItem: item, userRate: .LIKE)))
+                completionHandler(.success(FAQItemItem(faqItem: item, userRate: .like)))
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }
@@ -311,7 +339,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         
@@ -320,9 +348,9 @@ extension FAQImpl: FAQ {
                 let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: []) as? [String: Any?],
                 json["result"] as? String == "ok" {
-                completionHandler(.success(FAQItemItem(faqItem: item, userRate: .DISLIKE)))
+                completionHandler(.success(FAQItemItem(faqItem: item, userRate: .dislike)))
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }
@@ -334,7 +362,7 @@ extension FAQImpl: FAQ {
         do {
             try accessChecker.checkAccess()
         } catch {
-            completionHandler(.failure(.ERROR))
+            completionHandler(.failure(.error))
             return
         }
         faqClient.getActions().search(query: query, categoryId: category, limit: limitOfItems) { data in
@@ -348,7 +376,7 @@ extension FAQImpl: FAQ {
                 }
                 completionHandler(.success(items))
             } else {
-                completionHandler(.failure(.ERROR))
+                completionHandler(.failure(.error))
             }
         }
     }

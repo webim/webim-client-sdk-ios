@@ -49,11 +49,11 @@ class AccessChecker {
     // MARK: - Methods
     func checkAccess() throws {
         guard thread == Thread.current else {
-            throw AccessError.INVALID_THREAD
+            throw AccessError.invalidThread
         }
         
         guard !sessionDestroyer.isDestroyed() else {
-            throw AccessError.INVALID_SESSION
+            throw AccessError.invalidSession
         }
     }
     

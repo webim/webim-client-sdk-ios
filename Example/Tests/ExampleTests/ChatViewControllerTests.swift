@@ -68,7 +68,7 @@ class ChatViewControllerTests: XCTestCase {
                                       quote: nil,
                                       senderAvatarURLString: nil,
                                       senderName: "Sender name",
-                                      type: .VISITOR,
+                                      type: .visitorMessage,
                                       data: nil,
                                       text: "Text",
                                       timeInMicrosecond: Int64(index),

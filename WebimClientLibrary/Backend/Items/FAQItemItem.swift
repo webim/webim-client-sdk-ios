@@ -55,7 +55,7 @@ final class FAQItemItem {
     private var content: String?
     private var likes: Int?
     private var dislikes: Int?
-    private var userRate: UserRate = .NO_RATE
+    private var userRate: UserRate = .noRate
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -90,13 +90,13 @@ final class FAQItemItem {
         if let userRateItem = jsonDictionary[JSONField.userRate.rawValue] as? String {
             switch userRateItem {
             case "like":
-                userRate = .LIKE
+                userRate = .like
                 break
             case "dislike":
-                userRate = .DISLIKE
+                userRate = .dislike
                 break
             default:
-                userRate = .NO_RATE
+                userRate = .noRate
             }
         }
     }
@@ -108,8 +108,8 @@ final class FAQItemItem {
         self.title = faqItem.getTitle()
         self.tags = faqItem.getTags()
         self.content = faqItem.getContent()
-        self.likes = faqItem.getLikeCount() + (userRate == .LIKE ? 1 : 0) - (previousUserRate == .LIKE ? 1 : 0)
-        self.dislikes = faqItem.getDislikeCount()  + (userRate == .DISLIKE ? 1 : 0) - (previousUserRate == .DISLIKE ? 1 : 0)
+        self.likes = faqItem.getLikeCount() + (userRate == .like ? 1 : 0) - (previousUserRate == .like ? 1 : 0)
+        self.dislikes = faqItem.getDislikeCount()  + (userRate == .dislike ? 1 : 0) - (previousUserRate == .dislike ? 1 : 0)
         self.userRate = userRate
     }
     
@@ -118,31 +118,59 @@ final class FAQItemItem {
 extension FAQItemItem: FAQItem {
     
     func getID() -> String {
-        return id!
+        guard let id = id else {
+            WebimInternalLogger.shared.log(entry: "ID is nil in FAQItemItem.\(#function)")
+            return String()
+        }
+        return id
     }
     
     func getCategories() -> [String] {
-        return categories!
+        guard let categories = categories else {
+            WebimInternalLogger.shared.log(entry: "Categories is nil in FAQItemItem.\(#function)")
+            return []
+        }
+        return categories
     }
     
     func getTitle() -> String {
-        return title!
+        guard let title = title else {
+            WebimInternalLogger.shared.log(entry: "Title is nil in FAQItemItem.\(#function)")
+            return String()
+        }
+        return title
     }
     
     func getTags() -> [String] {
-        return tags!
+        guard let tags = tags else {
+            WebimInternalLogger.shared.log(entry: "Tags is nil in FAQItemItem.\(#function)")
+            return []
+        }
+        return tags
     }
     
     func getContent() -> String {
-        return content!
+        guard let content = content else {
+            WebimInternalLogger.shared.log(entry: "Content is nil in FAQItemItem.\(#function)")
+            return String()
+        }
+        return content
     }
     
     func getLikeCount() -> Int {
-        return likes!
+        guard let likes = likes else {
+            WebimInternalLogger.shared.log(entry: "Likes is nil in FAQItemItem.\(#function)")
+            return -1
+        }
+        return likes
     }
     
     func getDislikeCount() -> Int {
-        return dislikes!
+        guard let dislikes = dislikes else {
+            WebimInternalLogger.shared.log(entry: "Dislikes is nil in FAQItemItem.\(#function)")
+            return -1
+        }
+        return dislikes
     }
     
     func getUserRate() -> UserRate {
@@ -203,15 +231,27 @@ final class FAQSearchItemItem {
 
 extension FAQSearchItemItem: FAQSearchItem {
     func getID() -> String {
-        return id!
+        guard let id = id else {
+            WebimInternalLogger.shared.log(entry: "ID is nil in FAQSearchItemItem.\(#function)")
+            return String()
+        }
+        return id
     }
     
     func getTitle() -> String {
-        return title!
+        guard let title = title else {
+            WebimInternalLogger.shared.log(entry: "Title is nil in FAQSearchItemItem.\(#function)")
+            return String()
+        }
+        return title
     }
     
     func getScore() -> Double {
-        return score!
+        guard let score = score else {
+            WebimInternalLogger.shared.log(entry: "Score is nil in FAQSearchItemItem.\(#function)")
+            return -1.0
+        }
+        return score
     }
     
 }

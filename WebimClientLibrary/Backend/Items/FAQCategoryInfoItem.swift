@@ -60,12 +60,20 @@ final class FAQCategoryInfoItem {
 
 extension FAQCategoryInfoItem: FAQCategoryInfo {
     func getID() -> String {
-        return id!
+        guard let id = id else {
+            WebimInternalLogger.shared.log(entry: "ID is nil in FAQCategoryInfoItem.\(#function)")
+            return String()
+        }
+        return id
     }
     
     func getTitle() -> String {
-        return title!
-    }    
+        guard let title = title else {
+            WebimInternalLogger.shared.log(entry: "Title is nil in FAQCategoryInfoItem.\(#function)")
+            return String()
+        }
+        return title
+    }
     
 }
 

@@ -138,6 +138,9 @@ public enum UserRate {
      - copyright:
      2019 Webim
      */
+    case like
+    
+    @available(*, unavailable, renamed: "like")
     case LIKE
     
     /**
@@ -147,6 +150,9 @@ public enum UserRate {
      - copyright:
      2019 Webim
      */
+    case dislike
+    
+    @available(*, unavailable, renamed: "dislike")
     case DISLIKE
     
     /**
@@ -156,6 +162,9 @@ public enum UserRate {
      - copyright:
      2019 Webim
      */
+    case noRate
+    
+    @available(*, unavailable, renamed: "noRate")
     case NO_RATE
     
 }

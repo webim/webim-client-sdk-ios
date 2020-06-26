@@ -39,8 +39,8 @@ public protocol WebimSession: class {
      - important:
      Session is created as paused. To start using it firstly you should call this method.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -51,8 +51,8 @@ public protocol WebimSession: class {
     /**
      Pauses session networking.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -63,8 +63,8 @@ public protocol WebimSession: class {
     /**
      Destroys session. After that any session methods are not available.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -75,8 +75,8 @@ public protocol WebimSession: class {
     /**
      Destroys session, performing a cleanup.. After that any session methods are not available.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -99,8 +99,8 @@ public protocol WebimSession: class {
      - parameter location:
      New location name.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - seealso:
      `FatalErrorHandler`.
      - author:
@@ -117,8 +117,8 @@ public protocol WebimSession: class {
      - parameter deviceToken:
      Device token in hexadecimal format and without any spaces and service symbols.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -147,6 +147,9 @@ public enum AccessError: Error {
      - copyright:
      2017 Webim
      */
+    case invalidThread
+    
+    @available(*, unavailable, renamed: "invalidThread")
     case INVALID_THREAD
     
     /**
@@ -156,5 +159,8 @@ public enum AccessError: Error {
      - copyright:
      2017 Webim
      */
+    case invalidSession
+    
+    @available(*, unavailable, renamed: "invalidSession")
     case INVALID_SESSION
 }

@@ -32,19 +32,19 @@ class WebimErrorImplTests: XCTestCase {
     
     // MARK: - Tests
     func testInit() {
-        var webimError = WebimErrorImpl(errorType: .ACCOUNT_BLOCKED,
+        var webimError = WebimErrorImpl(errorType: .accountBlocked,
                                         errorString: nil)
         
         XCTAssertEqual(webimError.getErrorType(),
-                       FatalErrorType.ACCOUNT_BLOCKED)
+                       FatalErrorType.accountBlocked)
         XCTAssertEqual(webimError.getErrorString(),
                        "ACCOUNT_BLOCKED")
         
-        webimError = WebimErrorImpl(errorType: .UNKNOWN,
+        webimError = WebimErrorImpl(errorType: .unknown,
                                     errorString: "Error")
         
         XCTAssertEqual(webimError.getErrorType(),
-                       FatalErrorType.UNKNOWN)
+                       FatalErrorType.unknown)
         XCTAssertEqual(webimError.getErrorString(),
                        "Error")
     }

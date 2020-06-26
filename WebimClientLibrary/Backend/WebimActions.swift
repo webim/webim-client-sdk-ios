@@ -82,6 +82,7 @@ class WebimActions {
         case visitorTyping = "typing"
         case prechat = "prechat-key-independent-fields"
         case customFields = "custom_fields"
+        case webimSDKVersion = "x-webim-sdk-version"
     }
     enum Platform: String {
         case ios = "ios"
@@ -133,7 +134,8 @@ class WebimActions {
               dataJSONString: String?,
               isHintQuestion: Bool?,
               dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
-              editMessageCompletionHandler: EditMessageCompletionHandler? = nil) {
+              editMessageCompletionHandler: EditMessageCompletionHandler? = nil,
+              sendMessageCompletionHandler: SendMessageCompletionHandler? = nil) {
         var dataToPost = [Parameter.actionn.rawValue: Action.sendMessage.rawValue,
                           Parameter.clientSideID.rawValue: clientSideID,
                           Parameter.message.rawValue: message] as [String: Any]
@@ -152,7 +154,8 @@ class WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         dataMessageCompletionHandler: dataMessageCompletionHandler,
-                                                        editMessageCompletionHandler: editMessageCompletionHandler))
+                                                        editMessageCompletionHandler: editMessageCompletionHandler,
+                                                        sendMessageComplitionHandler: sendMessageCompletionHandler))
     }
     
     func send(file: Data,

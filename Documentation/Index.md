@@ -7,8 +7,8 @@
     -   [Class method parse(remoteNotification:visitorId:)](#parse-remote-notification)
     -   [Class method isWebim(remoteNotification:)](#is-webim-remote-notification)
     -   [RemoteNotificationSystem enum](#remote-notification-system)
-        -   [APNS case](#apns)
-        -   [NONE case](#none)
+        -   [apns case](#apns)
+        -   [none case](#none)
 -   [SessionBuilder class](#session-builder)
     -   [Instance method set(accountName:)](#set-account-name)
     -   [Instance method set(location:)](#set-location)
@@ -29,16 +29,16 @@
     -   [Instance method build()](#build)
     -   [Instance method build(onSuccess:onError:)](#build-on-success-on-error)
     -   [WebimLoggerVerbosityLevel enum](#webim-logger-verbosity-level)
-        -   [VERBOSE case](#verbose)
-        -   [DEBUG case](#debug)
-        -   [INFO](#info)
-        -   [WARNING case](#warning)
-        -   [ERROR case](#error)
+        -   [verbose case](#verbose)
+        -   [debug case](#debug)
+        -   [info](#info)
+        -   [warning case](#warning)
+        -   [error case](#error)
     -   [SessionBuilderError enum](#session-builder-error)
-        -   [NIL_ACCOUNT_NAME case](#nil-account-name)
-        -   [NIL_LOCATION case](#nil-location)
-        -   [INVALID_AUTHENTICATION_PARAMETERS](#invalid-authentication-parameters)
-        -   [INVALID_REMOTE_NOTIFICATION_CONFIGURATION case](#invalid-remote-notification-configuration)
+        -   [nilAccountName case](#nil-account-name)
+        -   [nilLocation case](#nil-location)
+        -   [invalidAuthentificatorParameters](#invalid-authentication-parameters)
+        -   [invalidRemoteNotificationConfiguration case](#invalid-remote-notification-configuration)
 -   [ProvidedAuthorizationTokenStateListener protocol](#provided-authorization-token-state-listener)
     -   [update(providedAuthorizationToken:) method](#update-provided-authorization-token)
 -   [WebimSession protocol](#webim-session)
@@ -140,64 +140,64 @@
 -   [UnreadByVisitorTimestampChangeListener protocol](#unread-by-visitor-timestamp-change-listener)
     -    [changedUnreadByVisitorTimestampTo(newValue:) method](#changed-unread-by-visitor-timestamp-to-new-value)
 -   [ChatState enum](#chat-state)
-    -   [CHATTING case](#chatting)
-    -   [CHATTING_WITH_ROBOT](#chatting-with-robot)
-    -   [CLOSED_BY_OPERATOR case](#closed-by-operator)
-    -   [CLOSED_BY_VISITOR case](#closed-by-visitor)
-    -   [INVITATION case](#invitation)
-    -   [NONE case](#none-chat-state)
-    -   [QUEUE case](#queue)
-    -   [UNKNOWN case](#unknown)
+    -   [chatting case](#chatting)
+    -   [chattingWithRobot](#chatting-with-robot)
+    -   [closedByOperator case](#closed-by-operator)
+    -   [closedByVisitor case](#closed-by-visitor)
+    -   [invitation case](#invitation)
+    -   [closed case](#closed)
+    -   [queue case](#queue)
+    -   [unknown case](#unknown)
 -   [OnlineStatus enum](#session-online-status)
-    -   [BUSY_OFFLINE case](#busy-offline)
-    -   [BUSY_ONLINE case](#busy-online)
-    -   [OFFLINE case](#offline)
-    -   [ONLINE case](#online)
-    -   [UNKNOWN case](#unknown-session-online-status)
+    -   [busyOffline case](#busy-offline)
+    -   [busyOnline case](#busy-online)
+    -   [offline case](#offline)
+    -   [online case](#online)
+    -   [unknown case](#unknown-session-online-status)
 -   [VisitSessionState enum](#visit-session-state)
-    -   [CHAT case](#chat-visit-session-state)
-    -   [DEPARTMENT_SELECTION case](#department-selection)
-    -   [IDLE case](#idle)
-    -   [IDLE_AFTER_CHAT case](#idle-after-chat)
-    -   [OFFLINE_MESSAGE case](#offline-message)
-    -   [UNKNOWN case](#unknown-visit-session-state)
+    -   [chat case](#chat-visit-session-state)
+    -   [departmentSelection case](#department-selection)
+    -   [idle case](#idle)
+    -   [idleAfterChat case](#idle-after-chat)
+    -   [offlineMessage case](#offline-message)
+    -   [unknown case](#unknown-visit-session-state)
 -   [DataMessageError enum](#data-message-error)
-    -   [UNKNOWN case](#unknown-data-message-error)
-    -   [QUOTED_MESSAGE_CANNOT_BE_REPLIED case](#quoted-message-cannot-be-replied)
-    -   [QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case](#quoted-message-from-another-visitor)
-    -   [QUOTED_MESSAGE_MULTIPLE_IDS case](#quoted-message-multiple-ids)
-    -   [QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case](#quoted-message-required-arguments-missing)
-    -   [QUOTED_MESSAGE_WRONG_ID case](#quoted-message-wrong-id)
+    -   [unknown case](#unknown-data-message-error)
+    -   [quotedMessageCanNotBeReplied case](#quoted-message-cannot-be-replied)
+    -   [quotedMessageFromAnotherVisitor case](#quoted-message-from-another-visitor)
+    -   [quotedMessageMultipleIds case](#quoted-message-multiple-ids)
+    -   [quotedMessageRequiredArgumentsMissing case](#quoted-message-required-arguments-missing)
+    -   [quotedMessageWrongId case](#quoted-message-wrong-id)
 -   [EditMessageError enum](#edit-message-error)
-    -   [UNKNOWN case](#unknown-edit-message-error)
-    -   [NOT_ALLOWED case](#not-allowed-edit-message-error)
-    -   [MESSAGE_EMPTY case](#message_empty-edit-message-error)
-    -   [MESSAGE_NOT_OWNED case](#message-not-owned-edit-message-error)
-    -   [MAX_LENGTH_EXCEEDED case](#max-length-exceeded-edit-message-error)
-    -   [WRONG_MESSAGE_KIND case](#wrong-message-kind-edit-message-error)
+    -   [unknown case](#unknown-edit-message-error)
+    -   [notAllowed case](#not-allowed-edit-message-error)
+    -   [messageEmpty case](#message_empty-edit-message-error)
+    -   [messageNotOwned case](#message-not-owned-edit-message-error)
+    -   [maxLengthExceeded case](#max-length-exceeded-edit-message-error)
+    -   [wrongMesageKind case](#wrong-message-kind-edit-message-error)
 -   [DeleteMessageError enum](#delete-message-error)
-    -   [UNKNOWN case](#unknown-delete-message-error)
-    -   [NOT_ALLOWED case](#not-allowed-delete-message-error)
-    -   [MESSAGE_NOT_OWNED case](#message-not-owned-delete-message-error)
-    -   [MESSAGE_NOT_FOUND](#message-not-found-delete-message-error)
+    -   [unknown case](#unknown-delete-message-error)
+    -   [notAllowed case](#not-allowed-delete-message-error)
+    -   [messageNotOwned case](#message-not-owned-delete-message-error)
+    -   [messageNotFound](#message-not-found-delete-message-error)
 -   [SendFileError enum](#send-file-error)
-    -   [FILE_SIZE_EXCEEDED case](#file-size-exceeded)
-    -   [FILE_TYPE_NOT_ALLOWED case](#file-type-not-allowed)
-    -   [UPLOADED_FILE_NOT_FOUND case](#uploaded-file-not-found)
-    -   [UNKNOWN case](#file-sending-unknown)
+    -   [fileSizeExceeded case](#file-size-exceeded)
+    -   [fileTypeNotAllowed case](#file-type-not-allowed)
+    -   [uploadedFileNotFound case](#uploaded-file-not-found)
+    -   [unknown case](#file-sending-unknown)
 -   [KeyboardResponseError enum](#keyboard-response-error)
-    -   [NO_CHAT case](#keyboard-response-error-no-chat)
-    -   [BUTTON_ID_NOT_SET case](#button-id-not-set)
-    -   [REQUEST_MESSAGE_ID_NOT_SET case](#request-message-id-not-set)
-    -   [CAN_NOT_CREATE_RESPONSE case](#can-not-create-response)
-    -   [UNKNOWN case](#keyboard-response-error-unknown)
+    -   [noChat case](#keyboard-response-error-no-chat)
+    -   [buttonIdNotSet case](#button-id-not-set)
+    -   [requestMessageIdNotSet case](#request-message-id-not-set)
+    -   [canNotCreateResponse case](#can-not-create-response)
+    -   [unknown case](#keyboard-response-error-unknown)
 -   [RateOperatorError enum](#rate-operator-error)
-    -   [NO_CHAT case](#no-chat)
-    -   [WRONG_OPERATOR_ID case](#wrong-operator-id)
+    -   [noChat case](#no-chat)
+    -   [wrongOperatorId case](#wrong-operator-id)
 -   [SendDialogToEmailAddressError enum](#send-dialog-to-email-address-error)
-    -   [NO_CHAT case](#no-chat-send-dialog)
-    -   [SENT_TOO_MANY_TIMES case](#sent-too-many-times)
-    -   [UNKNOWN case](#unknown-send-dialog-error)
+    -   [noChat case](#no-chat-send-dialog)
+    -   [sentTooManyTimes case](#sent-too-many-times)
+    -   [unknown case](#unknown-send-dialog-error)
 -   [MessageTracker protocol](#message-tracker)
 -   [getLastMessages(byLimit:completion:) method](#get-last-messages-by-limit-limit-of-messages-completion)
 -   [getNextMessages(byLimit:completion:) method](#get-next-nessages-by-limit-limit-of-messages-completion)
@@ -238,9 +238,9 @@
     -   [getSenderName() method](#get-quote-sender-name)
     -   [getState() method](#get-quote-state)
 -   [QuotState enum](#quote-state)
-    -   [PENDING case](#quote-pending)
-    -   [FILLED case](#quote-filled)
-    -   [NOT_FOUND case](#qoute-not-found)
+    -   [pending case](#quote-pending)
+    -   [filled case](#quote-filled)
+    -   [notFound case](#qoute-not-found)
 -   [MessageAttachment protocol](#message-attachment)
     -   [getContentType() method](#get-content-type)
     -   [getFileName() method](#get-file-name)
@@ -265,23 +265,23 @@
     -   [getButton() method](#get-button)
     -   [getMessageID() method](#keyboard-request-get-message-id)
 -   [MessageType enum](#message-type)
-    -   [ACTION_REQUEST case](#action-request)
-    -   [CONTACTS_REQUEST case](#contacts-request)
-    -   [KEYBOARD case](#keyboard-type)
-    -   [KEYBOARD_RESPONSE case](#keyboard-response-type)
-    -   [FILE_FROM_OPERATOR case](#file-from-operator)
-    -   [FILE_FROM_VISITOR case](#file-from-visitor)
-    -   [INFO case](#info)
-    -   [OPERATOR case](#operator)
-    -   [OPERATOR_BUSY case](#operator-busy)
-    -   [VISITOR case](#visitor)
+    -   [actionRequest case](#action-request)
+    -   [contactInformationRequest case](#contacts-request)
+    -   [keyboard case](#keyboard-type)
+    -   [keyboardResponse case](#keyboard-response-type)
+    -   [fileFromOperator case](#file-from-operator)
+    -   [fileFromVisitor case](#file-from-visitor)
+    -   [info case](#info)
+    -   [operatorMessage case](#operator)
+    -   [operatorBusy case](#operator-busy)
+    -   [visitorMessage case](#visitor)
 -   [MessageSendStatus enum](#message-send-status)
-    -   [SENDING case](#sending)
-    -   [SENT case](#sent)
+    -   [sending case](#sending)
+    -   [sent case](#sent)
 -   [KeyboardState enum](#keyboard-state)
-    -   [PENDING case](#pending)
-    -   [COMPLETED case](#completed)
-    -   [CANCELLED case](#cancelled)
+    -   [pending case](#pending)
+    -   [completed case](#completed)
+    -   [canceled case](#cancelled)
 -   [Department protocol](#department)
     -   [getKey() method](#get-key)
     -   [getName() method](#get-name-department)
@@ -290,11 +290,11 @@
     -   [getLocalizedNames() method](#get-localized-names)
     -   [getLogo() method](#get-logo)
 -   [DepartmentOnlineStatus enum](#department-online-status)
-    -   [BUSY_OFFLINE case](#busy-offline-department-online-status)
-    -   [BUSY_ONLINE case](#busy-online-department-online-status)
-    -   [OFFLINE case](#offline-department-online-status)
-    -   [ONLINE case](#online-department-online-status)
-    -   [UNKNOWN case](#unknown-department-online-status)
+    -   [busyOffline case](#busy-offline-department-online-status)
+    -   [busyOnline case](#busy-online-department-online-status)
+    -   [offline case](#offline-department-online-status)
+    -   [online case](#online-department-online-status)
+    -   [unknown case](#unknown-department-online-status)
 -   [Operator protocol](#operator-protocol)
     -   [getID() method](#get-id-operator)
     -   [getName() method](#get-name)
@@ -306,37 +306,37 @@
     -   [getLocation() method](#get-location)
     -   [getUnreadByVisitorMessagesCount method](#get-unread-by-visitor-messages-count)
 -   [NotificationType enum](#notification-type)
-    -   [CONTACT_INFORMATION_REQUEST](#contact-information-request)
-    -   [OPERATOR_ACCEPTED case](#operator-accepted)
-    -   [OPERATOR_FILE case](#operator-file)
-    -   [OPERATOR_MESSAGE case](#operator-message)
-    -   [WIDGET case](#widget)
+    -   [contactInformationRequest](#contact-information-request)
+    -   [operatorAccepted case](#operator-accepted)
+    -   [operatorFile case](#operator-file)
+    -   [operatorMessage case](#operator-message)
+    -   [widget case](#widget)
 -   [NotificationEvent enum](#notification-event)
-    -   [ADD case](#add)
-    -   [DELETE case](#delete)
+    -   [add case](#add)
+    -   [delete case](#delete)
 -   [FatalErrorHandler protocol](#fatal-error-handler)
     -   [on(error:) method](#on-error)
 -   [FatalErrorType enum](#fatal-error-type)
-    -   [ACCOUNT_BLOCKED case](#account-blocked)
-    -   [NO_CHAT case](#no-chat)
-    -   [PROVIDED_VISITOR_FIELDS_EXPIRED case](#provided-visitor-fields-expired)
-    -   [UNKNOWN case](#unknown-fatal-error-type)
-    -   [VISITOR_BANNED case](#visitor-banned)
-    -   [WRONG_PROVIDED_VISITOR_HASH case](#wrong-provided-visitor-hash)
+    -   [accountBlocked case](#account-blocked)
+    -   [noChat case](#no-chat)
+    -   [providedVisitorFieldsExpired case](#provided-visitor-fields-expired)
+    -   [unknown case](#unknown-fatal-error-type)
+    -   [visitorBanned case](#visitor-banned)
+    -   [wrongProvidedVisitorHash case](#wrong-provided-visitor-hash)
 -   [WebimError protocol](#webim-error)
     -   [getErrorType() method](#get-error-type)
     -   [getErrorString() method](#get-error-string)
 -   [NotFatalErrorHandler protocol](#not-fatal-error-handler)
     -   [on(error:) method](#on-not-fatal-error)
 -   [NotFatalErrorType enum](#not-fatal-error-type)
-    -   [NO_NETWORK_CONNECTION case](#no-network-connection)
-    -   [SERVER_IS_NOT_AVAILABLE case](#server-is-not-available)
+    -   [noNetworkConnection case](#no-network-connection)
+    -   [serverIsNotAvailable case](#server-is-not-available)
 -   [WebimNotFatalError protocol](#webim-not-fatal-error)
     -   [getErrorType() method](#get-not-fatal-error-type)
     -   [getErrorString() method](#get-not-fatal-error-string)
 -   [AccessError enum](#access-error)
-    -   [INVALID_THREAD case](#invalid-thread)
-    -   [INVALID_SESSION case](#invalid-session)
+    -   [invalidThread case](#invalid-thread)
+    -   [invalidSession case](#invalid-session)
 -   [WebimLogger protocol](#webim-logger)
     -   [log(entry:) method](#log-entry)
 
@@ -365,11 +365,11 @@ Returns `true` or `false`.
 
 Enumerates push notifications systems that can be used with _WebimClientLibrary_. Enum values are used to be passed to [method set(remoteNotificationSystem:)](#set-remote-notification-system) [SessionBuilder class](#session-builder) instance method.
 
-<h4 id ="apns">APNS case</h4>
+<h4 id ="apns">apns case</h4>
 
 _Apple Push Notification System_.
 
-<h4 id ="none">NONE case</h4>
+<h4 id ="none">none case</h4>
 
 App does not receive remote notification from _Webim_ service.
 
@@ -453,7 +453,7 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 <h3 id ="set-remote-notification-system">Instance method set(remoteNotificationSystem:)</h3>
 
 Sets remote notification system to use for receiving push notifications from _Webim_ service.
-`remoteNotificationSystem` parameter – [RemoteNotificationSystem](#remote-notification-system) enum value. If parameter value is not [NONE](#none), [set(deviceToken:)](#set-device-token) method is mandatory to be called too. With [NONE](#none) value passed it does nothing.
+`remoteNotificationSystem` parameter – [RemoteNotificationSystem](#remote-notification-system) enum value. If parameter value is not [none](#none), [set(deviceToken:)](#set-device-token) method is mandatory to be called too. With [none](#none) value passed it does nothing.
 Method is not mandatory to create [WebimSession](#webim-session) object.
 
 <h3 id ="set-device-token">Instance method set(deviceToken:)</h3>
@@ -511,7 +511,7 @@ The only two mandatory method to call preliminarily are [set(accountName:)](#set
 
 Verbosity level of [WebimLogger](#webim-logger).
 
-<h4 id ="verbose">VERBOSE case</h4>
+<h4 id ="verbose">verbose case</h4>
 
 All available information will be delivered to [WebimLogger](#webim-logger) instance with maximum verbosity level:
 * session network setup parameters;
@@ -520,7 +520,7 @@ All available information will be delivered to [WebimLogger](#webim-logger) inst
 * SQL queries and errors;
 * full debug information and additional notes.
 
-<h4 id ="debug">DEBUG case</h4>
+<h4 id ="debug">debug case</h4>
 
 All information which is useful when debugging will be delivered to [WebimLogger](#webim-logger) instance with necessary verbosity level:
 * session network setup parameters;
@@ -529,20 +529,20 @@ All information which is useful when debugging will be delivered to [WebimLogger
 * SQL queries and errors;
 * moderate debug information.
 
-<h4 id ="info">INFO case</h4>
+<h4 id ="info">info case</h4>
 
 Reference information and all warnings and errors will be delivered to [WebimLogger](#webim-logger) instance:
 * network requests' URLS, HTTP method and parameters;
 * HTTP codes and errors descriptions of failed requests.
 * SQL errors.
 
-<h4 id ="warning">WARNING case</h4>
+<h4 id ="warning">warning case</h4>
 
 Errors and warnings only will be delivered to [WebimLogger](#webim-logger) instance:
 * network requests' URLs, HTTP method, parameters, HTTP code and error description.
 * SQL errors.
 
-<h4 id ="error">ERROR case</h4>
+<h4 id ="error">error case</h4>
 
 Only errors will be delivered to [WebimLogger](#webim-logger) instance:
 * network requests' URLs, HTTP method, parameters, HTTP code and error description.
@@ -551,19 +551,19 @@ Only errors will be delivered to [WebimLogger](#webim-logger) instance:
 
 Error types that can be throwed by [SessionBuilder](#session-builder) [method build()](#build).
 
-<h4 id ="nil-account-name">NIL_ACCOUNT_NAME case</h4>
+<h4 id ="nil-account-name">nilAccountName case</h4>
 
 Error that is thrown when trying to create session object with `nil` account name.
 
-<h4 id ="nil-location">NIL_LOCATION case</h4>
+<h4 id ="nil-location">nilLocation case</h4>
 
 Error that is thrown when trying to create session object with `nil` location name.
 
-<h4 id ="invalid-authentication-parameters">INVALID_AUTHENTICATION_PARAMETERS case</h4>
+<h4 id ="invalid-authentication-parameters">invalidAuthentificatorParameters case</h4>
 
 Error that is thrown when trying to use standard and custom visitor fields authentication simultaneously.
 
-<h4 id ="invalid-remote-notification-configuration">INVALID_REMOTE_NOTIFICATION_CONFIGURATION case</h4>
+<h4 id ="invalid-remote-notification-configuration">invalidRemoteNotificationConfiguration case</h4>
 
 Error that is thrown when trying to create session object with invalid remote notifications configuration.
 
@@ -695,19 +695,19 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat">startChat() method</h3>
 
-Changes [ChatState](#chat-state) to [QUEUE](#queue).
+Changes [ChatState](#chat-state) to [queue](#queue).
 Method call is not mandatory, send message or send file methods start chat automatically. If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-first-question">startChat(firstQuestion:) method</h3>
 
-Changes [ChatState](#chat-state) to [QUEUE](#queue). Starts chat and sends first message simultaneously.
+Changes [ChatState](#chat-state) to [queue](#queue). Starts chat and sends first message simultaneously.
 Method call is not mandatory, send message or send file methods start chat automatically. If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-custom-fields">startChat(customFields:) method</h3>
 
-Changes [ChatState](#chat-state) to [QUEUE](#queue). Starts chat with custom fields.
+Changes [ChatState](#chat-state) to [queue](#queue). Starts chat with custom fields.
 Method call is not mandatory. Starts chat with custom fields.
 `customFields` paramater – String-typed custom fields in JSON format.
 Can throw errors of [AccessError](#access-error) type.
@@ -715,45 +715,45 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id ="start-chat-department-key">startChat(departmentKey:) method</h3>
 
 Starts chat with particular department. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
-Changes [ChatState](#chat-state) to [QUEUE](#queue).
-In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+Changes [ChatState](#chat-state) to [queue](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [departmentSelection state](#department-selection).
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-department-key-first-question">startChat(departmentKey:firstQuestion:) method</h3>
 
 Starts chat with particular department  and sends first message simultaneously. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
-Changes [ChatState](#chat-state) to [QUEUE](#queue).
-In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+Changes [ChatState](#chat-state) to [queue](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [departmentSelection state](#department-selection).
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-first-question-custom-fields">startChat(firstQuestion:customFields:) method</h3>
 
 Starts chat with custom fields and sends first message simultaneously.
-Changes [ChatState](#chat-state) to [QUEUE](#queue).
+Changes [ChatState](#chat-state) to [queue](#queue).
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-department-key-custom-fields">startChat(departmentKey:customFields:) method</h3>
 
 Starts chat with particular department and custom fields. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
-Changes [ChatState](#chat-state) to [QUEUE](#queue).
-In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+Changes [ChatState](#chat-state) to [queue](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [departmentSelection state](#department-selection).
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-department-key-first-question-custom-fields">startChat(departmentKey:firstQuestion:customFields:) method</h3>
 
 Starts chat with particular department and customFields  and sends first message simultaneously. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
-Changes [ChatState](#chat-state) to [QUEUE](#queue).
-In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [DEPARTMENT_SELECTION state](#department-selection).
+Changes [ChatState](#chat-state) to [queue](#queue).
+In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [departmentSelection state](#department-selection).
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="close-chat">closeChat() method</h3>
 
-Changes [ChatState](#chat-state) to [CLOSED_BY_VISITOR](#closed-by-visitor).
+Changes [ChatState](#chat-state) to [closedByVisitor](#closed-by-visitor).
 Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="set-visitor-typing-draft-message">setVisitorTyping(draftMessage:) method</h3>
@@ -765,7 +765,7 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id ="send-message-data">send(message:data:completionHandler:) method</h3>
 
 Sends a text message.
-When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [sending case](#sending) in the status is also called.
 `message` parameter – `String`-typed message text.
 `data` parameter is optional, custom message parameters dictionary. Note that this functionality does not work as is – server version must support it.
 `completionHandler` parameter – optional [DataMessageCompletionHandler](#data-message-completion-handler) object.
@@ -775,7 +775,7 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id ="send-message-is-hint-question">send(message:isHintQuestion:) method</h3>
 
 Sends a text message.
-When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [sending case](#sending) in the status is also called.
 `message` parameter – `String`-typed message text.
 `isHintQuestion` parameter shows to server if a visitor chose a hint (true value) or wrote his own text (`false`). Optional to use.
 Returns randomly generated `String`-typed ID of the message.
@@ -784,7 +784,7 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id ="send-file-filename-mime-type-completion-handler">send(file:filename:mimeType:completionHandler:) method</h3>
 
 Sends a file message.
-When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [sending case](#sending) in the status is also called.
 `file` parameter – file represented in `Data` type.
 `filename` parameter – file name of `String` type.
 `mimeType` parameter – MIME type of the file to send of `String` type.
@@ -817,7 +817,7 @@ Can throw errors of [AccessError](#access-error) type.
 <h3 id="reply-message">reply(message:repliedMessage:) method</h3>
 
 Reply a message.
-When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [SENDING case](#sending) in the status is also called.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [sending case](#sending) in the status is also called.
 `message` parameter – text of the message of `String` type.
 `replied message` – replied message of [`Message`](#message) type.
 Returns randomly generated `String`-typed ID of the message or `nil` if message can't be replied.
@@ -827,7 +827,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 Edits a text message.
 Before calling this method recommended to find out the possibility of editing the message using [canBeEdited() method](#can-be-edited).
-When calling this method, if there is an active [MessageTracker](#message-tracker) object. [changed(message:,to:) method](changed-message-old-version-to-new-version) with a message [SENDING case](#sending) in the status is also called.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [changed(message:,to:) method](changed-message-old-version-to-new-version) with a message [sending case](#sending) in the status is also called.
 `message` parameter – message in `Message` type.
 `text` parameter – new message text of `String` type.
 `completionHandler` parameter – optional [EditMessageCompletionHandler](#edit-message-completion-handler) object.
@@ -838,7 +838,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 Deletes a text message.
 Before calling this method recommended to find out the possibility of editing the message using [canBeEdited() method](#can-be-edited).
-When calling this method, if there is an active [MessageTracker](#message-tracker) object. [removed(message:) method](#removed-message) with a message [SENT case](#sent) in the status is also called.
+When calling this method, if there is an active [MessageTracker](#message-tracker) object. [removed(message:) method](#removed-message) with a message [sent case](#sent) in the status is also called.
 `message` parameter – message in `Message` type.
 `completionHandler` parameter – optional [DeleteMessageCompletionHandler](#delete-message-completion-handler) object.
 Returns true if message can be deleted.
@@ -1145,66 +1145,66 @@ Method to be called when parameter that is to be returned by [getUnreadByVisitor
 <h2 id ="chat-state">ChatState enum</h2>
 
 A chat is seen in different ways by an operator depending on ChatState.
-The initial state is [NONE](#none-chat-state).
-Then if a visitor sends a message ([send(message:isHintQuestion:)](#send-message-is-hint-question)), the chat changes it's state to [QUEUE](#queue). The chat can be turned into this state by calling [startChat() method](#start-chat).
-After that, if an operator takes the chat to process, the state changes to [CHATTING](#chatting). The chat is being in this state until the visitor or the operator closes it.
-When closing a chat by the visitor [closeChat() method](#close-chat) it turns into the state [CLOSED_BY_VISITOR](#closed-by-visitor), by the operator - [CLOSED_BY_OPERATOR](#closed-by-operator).
-When both the visitor and the operator close the chat, it's state changes to the initial – [NONE](#none-chat-state). A chat can also automatically turn into the initial state during long-term absence of activity in it.
-Furthermore, the first message can be sent not only by a visitor but also by an operator. In this case the state will change from the initial to [INVITATION](#invitation), and then, after the first message of the visitor, it changes to [CHATTING](#chatting).
+The initial state is [closed](#closed).
+Then if a visitor sends a message ([send(message:isHintQuestion:)](#send-message-is-hint-question)), the chat changes it's state to [queue](#queue). The chat can be turned into this state by calling [startChat() method](#start-chat).
+After that, if an operator takes the chat to process, the state changes to [chatting](#chatting). The chat is being in this state until the visitor or the operator closes it.
+When closing a chat by the visitor [closeChat() method](#close-chat) it turns into the state [closedByVisitor](#closed-by-visitor), by the operator - [closedByOperator](#closed-by-operator).
+When both the visitor and the operator close the chat, it's state changes to the initial – [closed](#closed). A chat can also automatically turn into the initial state during long-term absence of activity in it.
+Furthermore, the first message can be sent not only by a visitor but also by an operator. In this case the state will change from the initial to [invitation](#invitation), and then, after the first message of the visitor, it changes to [chatting](#chatting).
 
-<h3 id ="chatting">CHATTING case</h3>
+<h3 id ="chatting">chatting case</h3>
 
 Means that an operator has taken a chat for processing.
 From this state a chat can be turned into:
-* [CHATTING](#chatting), if an operator intercepted the chat;
-* [CLOSED_BY_VISITOR](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
-* [NONE](#none-chat-state), automatically during long-term absence of activity.
+* [chatting](#chatting), if an operator intercepted the chat;
+* [closedByVisitor](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
+* [closed](#closed), automatically during long-term absence of activity.
 
-<h3 id ="chatting-with-robot">CHATTING_WITH_ROBOT case</h3>
+<h3 id ="chatting-with-robot">chattingWithRobot case</h3>
 
 Means that chat is picked up by a bot.
 From this state a chat can be turned into:
-* [CLOSED_BY_OPERATOR](#closed-by-operator), if an operator closes the chat;
-* [CLOSED_BY_VISITOR](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
-* [NONE](#none-chat-state), automatically during long-term absence of activity.
+* [closedByOperator](#closed-by-operator), if an operator closes the chat;
+* [closedByVisitor](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
+* [closed](#closed), automatically during long-term absence of activity.
 
-<h3 id ="closed-by-operator">CLOSED_BY_OPERATOR case</h3>
+<h3 id ="closed-by-operator">closedByOperator case</h3>
 
 Means that an operator has closed the chat.
 From this state a chat can be turned into:
-* [NONE](#none-chat-state), if the chat is also closed by a visitor ([closeChat() method](#close-chat)), or automatically during long-term absence of activity;
-* [QUEUE](#queue), if a visitor sends a new message ([send(message:isHintQuestion:) method](#send-message-is-hint-question)).
+* [closed](#closed), if the chat is also closed by a visitor ([closeChat() method](#close-chat)), or automatically during long-term absence of activity;
+* [queue](#queue), if a visitor sends a new message ([send(message:isHintQuestion:) method](#send-message-is-hint-question)).
 
-<h3 id ="closed-by-visitor">CLOSED_BY_VISITOR case</h3>
+<h3 id ="closed-by-visitor">closedByVisitor case</h3>
 
 Means that a visitor has closed the chat.
 From this state a chat can be turned into:
-* [NONE](#none-chat-state), if the chat is also closed by an operator or automatically during long-term absence of activity;
-* [QUEUE](#queue), if a visitor sends a new message ([send(message:isHintQuestion:) method](#send-message-is-hint-question)).
+* [closed](#closed), if the chat is also closed by an operator or automatically during long-term absence of activity;
+* [queue](#queue), if a visitor sends a new message ([send(message:isHintQuestion:) method](#send-message-is-hint-question)).
 
-<h3 id ="invitation">INVITATION case</h3>
+<h3 id ="invitation">invitation case</h3>
 
 Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
 From this state a chat can be turned into:
-* [CHATTING](#chatting), if a visitor sends a message ([send(message:isHintQuestion:) method](#send-message-is-hint-question));
-* [NONE](#none-chat-state), if an operator or a visitor closes the chat ([closeChat() method](#close-chat)).
+* [chatting](#chatting), if a visitor sends a message ([send(message:isHintQuestion:) method](#send-message-is-hint-question));
+* [closed](#closed), if an operator or a visitor closes the chat ([closeChat() method](#close-chat)).
 
-<h3 id ="none-chat-state">NONE case</h3>
+<h3 id ="closed">closed case</h3>
 
 Means the absence of a chat as such, e.g. a chat has not been started by a visitor nor by an operator.
 From this state a chat can be turned into:
-* [QUEUE](#queue), if the chat is started by a visitor (by the first message or by calling [startChat() method](#start-chat));
-* [INVITATION](#invitation), if the chat is started by an operator.
+* [queue](#queue), if the chat is started by a visitor (by the first message or by calling [startChat() method](#start-chat));
+* [invitation](#invitation), if the chat is started by an operator.
 
-<h3 id ="queue">QUEUE case</h3>
+<h3 id ="queue">queue case</h3>
 
 Means that a chat has been started by a visitor and at this moment is being in the queue for processing by an operator.
 From this state a chat can be turned into:
-* [CHATTING](#chatting), if an operator takes the chat for processing;
-* [NONE](#none-chat-state), if a visitor closes the chat (by calling ([closeChat() method](#close-chat)) before it is taken for processing;
-* [CLOSED_BY_OPERATOR](#closed-by-operator), if an operator closes the chat without taking it for processing.
+* [chatting](#chatting), if an operator takes the chat for processing;
+* [closed](#closed), if a visitor closes the chat (by calling ([closeChat() method](#close-chat)) before it is taken for processing;
+* [closedByOperator](#closed-by-operator), if an operator closes the chat without taking it for processing.
 
-<h3 id ="unknown">UNKNOWN case</h3>
+<h3 id ="unknown">unknown case</h3>
 
 The state is undefined.
 This state is set as the initial when creating a new session, until the first response of the server containing the actual state is got. This state is also used as a fallback if _WebimClientLibrary_ can not identify the server state (e.g. if the server has been updated to a version that contains new states).
@@ -1215,25 +1215,25 @@ This state is set as the initial when creating a new session, until the first re
 
 Online state possible cases.
 
-<h3 id ="busy-offline">BUSY_OFFLINE case</h3>
+<h3 id ="busy-offline">busyOffline case</h3>
 
 Offline state with chats' count limit exceeded.
 Means that visitor is not able to send messages at all.
 
-<h3 id ="busy-online">BUSY_ONLINE case</h3>
+<h3 id ="busy-online">busyOnline case</h3>
 
 Online state with chats' count limit exceeded.
 Visitor is able send offline messages, but the server can reject it.
 
-<h3 id ="offline">OFFLINE case</h3>
+<h3 id ="offline">offline case</h3>
 
 Visitor is able send offline messages.
 
-<h3 id ="online">ONLINE case</h3>
+<h3 id ="online">online case</h3>
 
 Visitor is able to send both online and offline messages.
 
-<h3 id ="unknown-session-online-status">UNKNOWN case</h3>
+<h3 id ="unknown-session-online-status">unknown case</h3>
 
 Session has not received first session status yet or session status is not supported by this version of the library.
 
@@ -1243,27 +1243,27 @@ Session has not received first session status yet or session status is not suppo
 
 Session possible states.
 
-<h3 id ="chat-visit-session-state">CHAT case</h3>
+<h3 id ="chat-visit-session-state">chat case</h3>
 
 Chat in progress.
 
-<h3 id ="department-selection">DEPARTMENT_SELECTION case</h3>
+<h3 id ="department-selection">departmentSelection case</h3>
 
 Chat must be started with department selected (there was a try to start chat without department selected).
 
-<h3 id ="idle">IDLE case</h3>
+<h3 id ="idle">idle case</h3>
 
 Session is active but no chat is occuring (chat was not started yet).
 
-<h3 id ="idle-after-chat">IDLE_AFTER_CHAT case</h3>
+<h3 id ="idle-after-chat">idleAfterChat case</h3>
 
 Session is active but no chat is occuring (chat was closed recently).
 
-<h3 id ="offline-message">OFFLINE_MESSAGE case</h3>
+<h3 id ="offline-message">offlineMessage case</h3>
 
 Offline state.
 
-<h3 id ="unknown-visit-session-state">UNKNOWN case</h3>
+<h3 id ="unknown-visit-session-state">unknown case</h3>
 
 First status is not recieved yet or status is not supported by this version of the library.
 
@@ -1273,29 +1273,29 @@ First status is not recieved yet or status is not supported by this version of t
 
 Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-data-message-completion-handler).
 
-<h3 id ="unknown-data-message-error">UNKNOWN case</h3>
+<h3 id ="unknown-data-message-error">unknown case</h3>
 
 Received error is not supported by current WebimClientLibrary version.
 
 <h3>Quoted message errors.</h3>
 
-<h4 id ="quoted-message-cannot-be-replied">QUOTED_MESSAGE_CANNOT_BE_REPLIED case</h4>
+<h4 id ="quoted-message-cannot-be-replied">quotedMessageCanNotBeReplied case</h4>
 
 To be raised when quoted message ID belongs to a message without `canBeReplied` flag set to `true` (this flag is to be set on the server-side).
 
-<h4 id ="quoted-message-from-another-visitor">QUOTED_MESSAGE_FROM_ANOTHER_VISITOR case</h4>
+<h4 id ="quoted-message-from-another-visitor">quotedMessageFromAnotherVisitor case</h4>
 
 To be raised when quoted message ID belongs to another visitor chat.
 
-<h4 id ="quoted-message-multiple-ids">QUOTED_MESSAGE_MULTIPLE_IDS case</h4>
+<h4 id ="quoted-message-multiple-ids">quotedMessageMultipleIds case</h4>
 
 To be raised when quoted message ID belongs to multiple messages (server data base error).
 
-<h4 id ="quoted-message-required-arguments-missing">QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING case</h4>
+<h4 id ="quoted-message-required-arguments-missing">quotedMessageRequiredArgumentsMissing case</h4>
 
 To be raised when one or more required arguments of quoting mechanism are missing.
 
-<h4 id ="quoted-message-wrong-id">QUOTED_MESSAGE_WRONG_ID case</h4>
+<h4 id ="quoted-message-wrong-id">quotedMessageWrongId case</h4>
 
 To be raised when wrong quoted message ID is sent.
 
@@ -1305,27 +1305,27 @@ To be raised when wrong quoted message ID is sent.
 
 Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-edit-message-completion-handler).
 
-<h3 id ="unknown-edit-message-error">UNKNOWN case</h3>
+<h3 id ="unknown-edit-message-error">unknown case</h3>
 
 Received error is not supported by current WebimClientLibrary version.
 
-<h3 id="not-allowed-edit-message-error">NOT_ALLOWED case</h3>
+<h3 id="not-allowed-edit-message-error">notAllowed case</h3>
 
 Editing messages by visitor is turned off on the server.
 
-<h3 id=message-empty-edit-message-error">MESSAGE_EMPTY case</h3>
+<h3 id=message-empty-edit-message-error">messageEmpty case</h3>
 
 Editing message is empty.
 
-<h3 id=message-not-owned-edit-message-error">MESSAGE_NOT_OWNED case</h3>
+<h3 id=message-not-owned-edit-message-error">messageNotOwned case</h3>
 
 Visitor can edit only his messages. The specified id belongs to someone else's message.
 
-<h3 id=max-length-exceeded-edit-message-error">MAX_LENGTH_EXCEEDED case</h3>
+<h3 id=max-length-exceeded-edit-message-error">maxLengthExceeded case</h3>
 
 The server may deny a request if the message size exceeds a limit. The maximum size of a message is configured on the server.
 
-<h3 id=wrong-message-kind-edit-message-error">WRONG_MESSAGE_KIND case</h3>
+<h3 id=wrong-message-kind-edit-message-error">wrongMesageKind case</h3>
 
 Visitor can edit only text messages.
 
@@ -1335,19 +1335,19 @@ Visitor can edit only text messages.
 
 Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-delete-message-completion-handler).
 
-<h3 id ="unknown-delete-message-error">UNKNOWN case</h3>
+<h3 id ="unknown-delete-message-error">unknown case</h3>
 
 Received error is not supported by current WebimClientLibrary version.
 
-<h3 id="not-allowed-delete-message-error">NOT_ALLOWED case</h3>
+<h3 id="not-allowed-delete-message-error">notAllowed case</h3>
 
 Editing messages by visitor is turned off on the server.
 
-<h3 id=message-not-owned-delete-message-error">MESSAGE_NOT_OWNED case</h3>
+<h3 id=message-not-owned-delete-message-error">messageNotOwned case</h3>
 
 Visitor can edit only his messages. The specified id belongs to someone else's message.
 
-<h3 id=max-length-exceeded-edit-message-error">MESSAGE_NOT_FOUND case</h3>
+<h3 id=max-length-exceeded-edit-message-error">messageNotFound case</h3>
 
 Message with the specified id is not found in history.
 
@@ -1357,21 +1357,21 @@ Message with the specified id is not found in history.
 
 Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error).
 
-<h3 id ="file-size-exceeded">FILE_SIZE_EXCEEDED case</h3>
+<h3 id ="file-size-exceeded">fileSizeExceeded case</h3>
 
 The server may deny a request if the file size exceeds a limit.
 The maximum size of a file is configured on the server.
 
-<h3 id ="file-type-not-allowed">FILE_TYPE_NOT_ALLOWED case</h3>
+<h3 id ="file-type-not-allowed">fileTypeNotAllowed case</h3>
 
 The server may deny a request if the file type is not allowed.
 The list of allowed file types is configured on the server.
 
-<h3 id ="uploaded-file-not-found">UPLOADED_FILE_NOT_FOUND case</h3>
+<h3 id ="uploaded-file-not-found">uploadedFileNotFound case</h3>
 
 Sending files in body is not supported. Use multipart form only.
 
-<h3 id ="file-sending-unknown">UNKNOWN case</h3>
+<h3 id ="file-sending-unknown">unknown case</h3>
 
 Received error is not supported by current WebimClientLibrary version.
 
@@ -1381,23 +1381,23 @@ Received error is not supported by current WebimClientLibrary version.
 
 Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-send-keyboard-request).
 
-<h3 id ="keyboard-response-error-no-chat">NO_CHAT case</h3>
+<h3 id ="keyboard-response-error-no-chat">noChat case</h3>
 
 Arised when trying to send keyboard request if no chat is exists.
 
-<h3 id ="button-id-not-set">BUTTON_ID_NOT_SET case</h3>
+<h3 id ="button-id-not-set">buttonIdNotSet case</h3>
 
 Wrong button ID in request.
 
-<h3 id ="request-message-id-not-set">REQUEST_MESSAGE_ID_NOT_SET case</h3>
+<h3 id ="request-message-id-not-set">requestMessageIdNotSet case</h3>
 
 Wrong message ID in request.
 
-<h3 id=can-not-create-response>CAN_NOT_CREATE_RESPONSE case</h3>
+<h3 id=can-not-create-response>canNotCreateResponse case</h3>
 
 Response can not be created for this request.
 
-<h3 id ="keyboard-response-error-unknown">UNKNOWN case</h3>
+<h3 id ="keyboard-response-error-unknown">unknown case</h3>
 
 Received error is not supported by current WebimClientLibrary version.
 
@@ -1407,11 +1407,11 @@ Received error is not supported by current WebimClientLibrary version.
 
 Error types that could be passed in [onFailure(error:) method](#on-failure-error).
 
-<h3 id ="no-chat">NO_CHAT case</h3>
+<h3 id ="no-chat">noChat case</h3>
 
 Arised when trying to send operator rating request if no chat is exists.
 
-<h3 id ="wrong-operator-id">WRONG_OPERATOR_ID case</h3>
+<h3 id ="wrong-operator-id">wrongOperatorId case</h3>
 
 Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator  (or, in the same place, chat doesn't have an operator at all).
 
@@ -1421,15 +1421,15 @@ Arised when trying to send operator rating request if passed operator ID doesn't
 
 Error types that could be passed in [onFailure(error:) method](#on-failure-error-send-dialog).
 
-<h3 id ="no-chat-send-dialog">NO_CHAT case</h3>
+<h3 id ="no-chat-send-dialog">noChat case</h3>
 
 Arised when trying to send dialog to email address request if no chat is exists.
 
-<h3 id ="sent-too-many-times">SENT_TOO_MANY_TIMES case</h3>
+<h3 id ="sent-too-many-times">sentTooManyTimes case</h3>
 
 Arised when trying to send dialog more than three times.
 
-<h3 id ="unknown-send-dialog-error">UNKNOWN case</h3>
+<h3 id ="unknown-send-dialog-error">unknown case</h3>
 
 Unknow error.
 
@@ -1515,12 +1515,12 @@ A message is an immutable object. It means that changing some of the message fie
 
 <h3 id ="get-attachment">getAttachment() method</h3>
 
-Messages of the types [FILE_FROM_OPERATOR](#file-from-operator) and [FILE_FROM_VISITOR](#file-from-visitor) can contain attachments.
+Messages of the types [fileFromOperator](#file-from-operator) and [fileFromVisitor](#file-from-visitor) can contain attachments.
 Returns [MessageAttachment](#message-attachment) object. Notice that this method may return nil even in the case of previously listed types of messages. E.g. if a file is being sent.
 
 <h3 id ="get-data">getData() method</h3>
 
-Messages of type [ACTION_REQUEST](#action-request) contain custom dictionary.
+Messages of type [actionRequest](#action-request) contain custom dictionary.
 Returns dictionary which contains custom fields or `nil` if there's no such custom fields.
 
 <h3 id ="get-id">getID() method</h3>
@@ -1539,8 +1539,8 @@ Returns [Keyboard](#keyboard) which contains keyboard from script robot or `nil`
 
 <h3 id="get-keyboard-request">getKeyboardRequest() method</h3>
 
-Messages of type [KEYBOARD_RESPONSE](#keyboard-response-type) contain request with message of type [Keyboard](#keyboard-type).
-Returns [KeyboardRequest](#keyboard-request) which contains keyboard request or `nil` if message isn't of type [KEYBOARD_RESPONSE](#keyboard-response-type).
+Messages of type [keyboardResponse](#keyboard-response-type) contain request with message of type [Keyboard](#keyboard-type).
+Returns [KeyboardRequest](#keyboard-request) which contains keyboard request or `nil` if message isn't of type [keyboardResponse](#keyboard-response-type).
 
 <h3 id ="get-operator-id">getOperatorID() method</h3>
 
@@ -1560,7 +1560,7 @@ Returns name of a message sender of type `String`.
 
 <h3 id ="get-send-status">getSendStatus() method</h3>
 
-Returns [SENT](#sent) if a message had been sent to the server, was received by the server and was delivered to all the clients; [SENDING](#sending) if not.
+Returns [sent](#sent) if a message had been sent to the server, was received by the server and was delivered to all the clients; [sending](#sending) if not.
 
 <h3 id ="get-text">getText() method</h3>
 
@@ -1643,15 +1643,15 @@ Returns quote type of [`QuoteState`](#quote-State) type.
 
 Quote state representation.
 
-<h3 id ="quote-pending">PENDING case</h3>
+<h3 id ="quote-pending">pending case</h3>
 
 Quote is loading.
 
-<h3 id ="quote-filled">FILLED case</h3>
+<h3 id ="quote-filled">filled case</h3>
 
 Quote loaded.
 
-<h3 id ="quote-not-found">NOT_FOUND case</h3>
+<h3 id ="quote-not-found">notFound case</h3>
 
 Quote message is not found on server.
 
@@ -1781,46 +1781,46 @@ Returns a request message ID of `String` type.
 
 Message type representation.
 
-<h3 id ="action-request">ACTION_REQUEST case</h3>
+<h3 id ="action-request">actionRequest case</h3>
 
 A message from operator which requests some actions from a visitor.
 E.g. choose an operator group by clicking on a button in this message.
 
-<h3 id ="contacts-request">CONTACTS_REQUEST case</h3>
+<h3 id ="contacts-request">contactInformationRequest case</h3>
 
 Message type that is received after operator clicked contacts request button.
 There's no this functionality automatic support yet. All payload is transfered inside standard text field.
 
-<h3 id ="keyboard-type">KEYBOARD case</h3>
+<h3 id ="keyboard-type">keyboard case</h3>
 
 A message sent by a script bot which contains buttons.
 
-<h3 id ="keyboard-response-type">KEYBOARD_RESPONSE case</h3>
+<h3 id ="keyboard-response-type">keyboardResponse case</h3>
 
 Response to request with selected button.
 
-<h3 id ="file-from-operator">FILE_FROM_OPERATOR case</h3>
+<h3 id ="file-from-operator">fileFromOperator case</h3>
 
 A message sent by an operator which contains an attachment.
 
-<h3 id ="file-from-visitor">FILE_FROM_VISITOR case</h3>
+<h3 id ="file-from-visitor">fileFromVisitor case</h3>
 
 A message sent by a visitor which contains an attachment.
 
-<h3 id ="info">INFO case</h3>
+<h3 id ="info">info case</h3>
 
 A system information message.
 Messages of this type are automatically sent at specific events. E.g. when starting a chat, closing a chat or when an operator joins a chat.
 
-<h3 id ="operator">OPERATOR case</h3>
+<h3 id ="operator">operatorMessage case</h3>
 
 A text message sent by an operator.
 
-<h3 id ="operator-busy">OPERATOR_BUSY case</h3>
+<h3 id ="operator-busy">operatorBusy case</h3>
 
 A system information message which indicates that an operator is busy and can't reply to a visitor at the moment.
 
-<h3 id ="visitor">VISITOR case</h3>
+<h3 id ="visitor">visitorMessage case</h3>
 
 A text message sent by a visitor.
 
@@ -1828,13 +1828,13 @@ A text message sent by a visitor.
 
 <h2 id ="message-send-status">MessageSendStatus enum</h2>
 
-Until a message is sent to the server, is received by the server and is spreaded among clients, message can be seen as "being send"; at the same time `Message.getSendStatus()` will return [SENDING](#sending). In other cases - [SENT](#sent).
+Until a message is sent to the server, is received by the server and is spreaded among clients, message can be seen as "being send"; at the same time `Message.getSendStatus()` will return [sending](#sending). In other cases - [sent](#sent).
 
-<h3 id ="sending">SENDING case</h3>
+<h3 id ="sending">sending case</h3>
 
 A message is being sent.
 
-<h3 id ="sent">SENT case</h3>
+<h3 id ="sent">sent case</h3>
 
 A message had been sent to the server, received by the server and was spreaded among clients.
 
@@ -1842,15 +1842,15 @@ A message had been sent to the server, received by the server and was spreaded a
 
 <h2 id ="keyboard-state">KeyboardState enum</h2>
 
-<h3 id ="pending">PENDING case</h3>
+<h3 id ="pending">pending case</h3>
 
 A keyboard has unselected buttons.
 
-<h3 id ="completed">COMPLETED case</h3>
+<h3 id ="completed">completed case</h3>
 
 A keyboard has one selected button.
 
-<h3 id ="completed">CANCELLED case</h3>
+<h3 id ="completed">canceled case</h3>
 
 A keyboard has unselected buttons but visitor can't selected someone.
 
@@ -1896,23 +1896,23 @@ Presented by `URL` object.
 Possible department online statuses.
 Can be retreived by [getDepartmentOnlineStatus() method](#get-department-online-status) of [Department protocol](#department).
 
-<h3 id ="busy-offline-department-online-status">BUSY_OFFLINE case</h3>
+<h3 id ="busy-offline-department-online-status">busyOffline case</h3>
 
 Offline state with chats' count limit exceeded.
 
-<h3 id ="busy-online-department-online-status">BUSY_ONLINE case</h3>
+<h3 id ="busy-online-department-online-status">busyOnline case</h3>
 
 Online state with chats' count limit exceeded.
 
-<h3 id ="offline-department-online-status">OFFLINE case</h3>
+<h3 id ="offline-department-online-status">offline case</h3>
 
 Visitor is able to send offline messages.
 
-<h3 id ="online-department-online-status">ONLINE case</h3>
+<h3 id ="online-department-online-status">online case</h3>
 
 Visitor is able to send both online and offline messages.
 
-<h3 id ="unknown-department-online-status">UNKNOWN case</h3>
+<h3 id ="unknown-department-online-status">unknown case</h3>
 
 Any status that is not supported by this version of the library.
 
@@ -1966,20 +1966,20 @@ Returns unread by visitor messages count of this remote notification of array of
 
 Represents payload type of remote notification.
 
-<h3 id ="contact-information-request">CONTACT_INFORMATION_REQUEST case</h3>
+<h3 id ="contact-information-request">contactInformationRequest case</h3>
 
 This notification type indicated that contact information request is sent to a visitor.
 
 Parameters: empty.
 
-<h3 id ="operator-accepted">OPERATOR_ACCEPTED case</h3>
+<h3 id ="operator-accepted">operatorAccepted case</h3>
 
 This notification type indicated that an operator has connected to a dialogue.
 
 Parameters:
 * Operator's name.
 
-<h3 id ="operator-file">OPERATOR_FILE case</h3>
+<h3 id ="operator-file">operatorFile case</h3>
 
 This notification type indicated that an operator has sent a file.
 
@@ -1987,7 +1987,7 @@ Parameters:
 * Operator's name;
 * File name.
 
-<h3 id ="operator-message">OPERATOR_MESSAGE case</h3>
+<h3 id ="operator-message">operatorMessage case</h3>
 
 This notification type indicated that an operator has sent a text message.
 
@@ -1995,7 +1995,7 @@ Parameters:
 * Operator's name;
 * Message text.
 
-<h3 id ="widget">WIDGET case</h3>
+<h3 id ="widget">widget case</h3>
 
 This notification type indicated that an operator has sent a widget message.
 This type can be received only if server supports this functionality.
@@ -2008,11 +2008,11 @@ Parameters: empty.
 
 Represents meaned type of action when remote notification is received.
 
-<h3 id ="add">ADD case</h3>
+<h3 id ="add">add case</h3>
 
 Means that a notification should be added by current remote notification.
 
-<h3 id ="delete">DELETE case</h3>
+<h3 id ="delete">delete case</h3>
 
 Means that a notification should be deleted by current remote notification.
 
@@ -2036,33 +2036,33 @@ Notice that method called NOT FROM THE MAIN THREAD!
 Webim service error types.
 Mind that most of this errors causes session to destroy.
 
-<h3 id ="account-blocked">ACCOUNT_BLOCKED case</h3>
+<h3 id ="account-blocked">accountBlocked case</h3>
 
 Indicates that the account in Webim service has been disabled (e.g. for non-payment). The error is unrelated to the user’s actions.
 Recommended response is to show the user an error message with a recommendation to try using the chat later.
 
 Notice that the session will be destroyed if this error occured.
 
-<h3 id ="no-chat">NO_CHAT case</h3>
+<h3 id ="no-chat">noChat case</h3>
 
 Indicates that there was a try to perform action that requires existing chat, but there's no chat.
 E.g. see [rateOperatorWith(id:byRating rating:) method](#rate-operator-with-id-by-rating-rating) or [rateOperatorWith(id:note:byRating rating:) method](#rate-operator-with-id-note-by-rating-rating)  of [MessageStream protocol](#message-stream).
 
-<h3 id ="provided-visitor-fields-expired">PROVIDED_VISITOR_FIELDS_EXPIRED case</h3>
+<h3 id ="provided-visitor-fields-expired">providedVisitorFieldsExpired case</h3>
 
 Indicates an expired authorization of a visitor.
 The recommended response is to re-authorize it and to re-create session object.
 
 Notice that the session will be destroyed if this error occured.
 
-<h3 id ="unknown-fatal-error-type">UNKNOWN case</h3>
+<h3 id ="unknown-fatal-error-type">unknown case</h3>
 
 Indicates the occurrence of an unknown error.
 Recommended response is to send an automatic bug report and show to a user an error message with the recommendation to try using the chat later.
 
 Notice that the session will be destroyed if this error occured.
 
-<h3 id ="visitor-banned">VISITOR_BANNED case</h3>
+<h3 id ="visitor-banned">visitorBanned case</h3>
 
 Indicates that a visitor was banned by an operator and can't send messages to a chat anymore.
 Occurs when a user tries to open the chat or write a message after that.
@@ -2070,7 +2070,7 @@ Recommended response is to show the user an error message with the recommendatio
 
 Notice that the session will be destroyed if this error occured.
 
-<h3 id ="wrong-provided-visitor-hash">WRONG_PROVIDED_VISITOR_HASH case</h3>
+<h3 id ="wrong-provided-visitor-hash">wrongProvidedVisitorHash case</h3>
 
 Indicates a problem of your application authorization mechanism and is unrelated to the user’s actions.
 Occurs when trying to authorize a visitor with a non-valid signature.
@@ -2111,11 +2111,11 @@ Notice that method called NOT FROM THE MAIN THREAD!
 
 Webim service not fatal error types.
 
-<h3 id ="no-network-connection">NO_NETWORK_CONNECTION case</h3>
+<h3 id ="no-network-connection">noNetworkConnection case</h3>
 
 This error indicates no network connection.
 
-<h3 id ="server-is-not-available">SERVER_IS_NOT_AVAILABLE case</h3>
+<h3 id ="server-is-not-available">serverIsNotAvailable case</h3>
 
 This error occurs when server is not available.
 
@@ -2139,11 +2139,11 @@ Returns `String` representation of an error.
 
 Error types that can be throwed by [MessageStream](#message-stream) methods.
 
-<h3 id ="invalid-thread">INVALID_THREAD case</h3>
+<h3 id ="invalid-thread">invalidThread case</h3>
 
 Error that is thrown if the method was called not from the thread the [WebimSession](#webim-session) object was created in.
 
-<h3 id ="invalid-session">INVALID_SESSION case</h3>
+<h3 id ="invalid-session">invalidSession case</h3>
 
 Error that is thrown if [WebimSession](#webim-session) object was destroyed.
 

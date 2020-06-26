@@ -56,34 +56,34 @@ final class WebimInternalLogger {
     }
     
     func log(entry: String,
-             verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel = .ERROR) {
+             verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel = .error) {
         let logEntry = "WEBIM LOG. " + Date().debugDescription + " " + entry
         switch verbosityLevel {
-        case .VERBOSE:
+        case .verbose:
             if isVerbose() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
             
             break
-        case .DEBUG:
+        case .debug:
             if isDebug() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
             
             break
-        case .INFO:
+        case .info:
             if isInfo() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
             
             break
-        case .WARNING:
+        case .warning:
             if isWarning() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
             
             break
-        case .ERROR:
+        case .error:
             WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             
             break
@@ -93,25 +93,25 @@ final class WebimInternalLogger {
     // MARK: Private methods
     
     private func isVerbose() -> Bool {
-        return (WebimInternalLogger.setup.verbosityLevel == .VERBOSE)
+        return (WebimInternalLogger.setup.verbosityLevel == .verbose)
     }
     
     private func isDebug() -> Bool {
-        return ((WebimInternalLogger.setup.verbosityLevel == .DEBUG)
-            || (WebimInternalLogger.setup.verbosityLevel == .VERBOSE))
+        return ((WebimInternalLogger.setup.verbosityLevel == .debug)
+            || (WebimInternalLogger.setup.verbosityLevel == .verbose))
     }
     
     private func isInfo() -> Bool {
-        return ((WebimInternalLogger.setup.verbosityLevel == .VERBOSE)
-            || (WebimInternalLogger.setup.verbosityLevel == .DEBUG)
-            || (WebimInternalLogger.setup.verbosityLevel == .INFO))
+        return ((WebimInternalLogger.setup.verbosityLevel == .verbose)
+            || (WebimInternalLogger.setup.verbosityLevel == .debug)
+            || (WebimInternalLogger.setup.verbosityLevel == .info))
     }
     
     private func isWarning() -> Bool {
-        return ((WebimInternalLogger.setup.verbosityLevel == .VERBOSE)
-            || (WebimInternalLogger.setup.verbosityLevel == .DEBUG)
-            || (WebimInternalLogger.setup.verbosityLevel == .INFO)
-            || (WebimInternalLogger.setup.verbosityLevel == .WARNING))
+        return ((WebimInternalLogger.setup.verbosityLevel == .verbose)
+            || (WebimInternalLogger.setup.verbosityLevel == .debug)
+            || (WebimInternalLogger.setup.verbosityLevel == .info)
+            || (WebimInternalLogger.setup.verbosityLevel == .warning))
     }
     
 }

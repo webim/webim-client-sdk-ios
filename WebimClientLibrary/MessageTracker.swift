@@ -55,8 +55,8 @@ public protocol MessageTracker: class {
      - parameter result:
      Resulting array of messages if method call succeeded.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
-     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.invalidSession` if the method was called after `WebimSession` object was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -81,8 +81,8 @@ public protocol MessageTracker: class {
      - parameter result:
      Resulting array of messages if method call succeeded.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
-     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.invalidSession` if the method was called after `WebimSession` object was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -105,8 +105,8 @@ public protocol MessageTracker: class {
      - parameter result:
      Resulting array of messages if method call succeeded.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
-     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.invalidSession` if the method was called after `WebimSession` object was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -124,8 +124,8 @@ public protocol MessageTracker: class {
      - parameter message:
      A message reset to.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
-     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.invalidSession` if the method was called after `WebimSession` object was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -139,8 +139,8 @@ public protocol MessageTracker: class {
      - seealso:
      `Message` protocol.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the `WebimSession` was created in.
-     `AccessError.INVALID_SESSION` if the method was called after `WebimSession` object was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the `WebimSession` was created in.
+     `AccessError.invalidSession` if the method was called after `WebimSession` object was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:

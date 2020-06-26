@@ -44,7 +44,7 @@ class DepartmentFactoryTests: XCTestCase {
         let department = departmentFactory.convert(departmentItem: departmentItem)
         
         XCTAssertEqual(department.getDepartmentOnlineStatus(),
-                       DepartmentOnlineStatus.OFFLINE)
+                       DepartmentOnlineStatus.offline)
         XCTAssertEqual(department.getKey(),
                        "mobile_test_1")
         XCTAssertEqual(department.getLocalizedNames()!.count,

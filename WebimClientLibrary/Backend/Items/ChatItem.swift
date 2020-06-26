@@ -173,13 +173,10 @@ final class ChatItem {
     
     // For testing purpoeses.
     init(id: String? = nil) {
-        creationTimestamp = ChatItem.createCreationTimestamp()
-
-        if id == nil {
-            self.id = String(Int(-creationTimestamp))
-        } else {
-            self.id = id! 
-        }
+        let creationTimestamp = ChatItem.createCreationTimestamp()
+        
+        self.creationTimestamp = creationTimestamp
+        self.id = id ?? String(Int(-creationTimestamp))
         
         unreadByVisitorMessageCount = 0
     }
@@ -196,11 +193,10 @@ final class ChatItem {
     
     func add(message: MessageItem,
              atPosition position: Int? = nil) {
-        if position == nil {
-            messages.append(message)
+        if let position = position {
+            messages.insert(message, at: position)
         } else {
-            messages.insert(message,
-                            at: position!)
+            messages.append(message)
         }
     }
     
@@ -213,7 +209,10 @@ final class ChatItem {
     }
     
     func getState() -> ChatItemState? {
-        return ChatItemState(withType: state!)
+        guard let state = state else {
+            return nil
+        }
+        return ChatItemState(withType: state)
     }
     
     func set(state: ChatItemState) {

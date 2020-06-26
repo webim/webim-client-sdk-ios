@@ -119,20 +119,34 @@ final class WebimSessionImpl {
         
         let sessionDestroyer = SessionDestroyer(userDefaultsKey: userDefaultsKey)
         
-        let visitorJSON = (userDefaults?[UserDefaultsMainPrefix.visitor.rawValue] ?? nil)
+        guard let visitorJSON = userDefaults?[UserDefaultsMainPrefix.visitor.rawValue] as? String? else {
+            WebimInternalLogger.shared.log(entry: "Wrong visitorJSON type in WebimSessionImpl.\(#function)")
+            fatalError("Wrong visitorJSON type in WebimSessionImpl.\(#function)")
+        }
         
         let visitorFieldsJSONString = visitorFields?.getJSONString()
         
         let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
         WebimInternalLogger.shared.log(entry: "Specified Webim server – \(serverURLString).",
-            verbosityLevel: .DEBUG)
+            verbosityLevel: .debug)
         
         let currentChatMessageMapper: MessageMapper = CurrentChatMessageMapper(withServerURLString: serverURLString)
         
-        let sessionID = userDefaults?[UserDefaultsMainPrefix.sessionID.rawValue] ?? nil
+        guard let sessionID = userDefaults?[UserDefaultsMainPrefix.sessionID.rawValue] as? String? else {
+            WebimInternalLogger.shared.log(entry: "Wrong sessionID type in WebimSessionImpl.\(#function)")
+            fatalError("Wrong sessionID type in WebimSessionImpl.\(#function)")
+        }
         
-        let pageID = userDefaults?[UserDefaultsMainPrefix.pageID.rawValue] as! String?
-        let authorizationToken = userDefaults?[UserDefaultsMainPrefix.authorizationToken.rawValue] as! String?
+        guard let pageID = userDefaults?[UserDefaultsMainPrefix.pageID.rawValue] as? String? else {
+            WebimInternalLogger.shared.log(entry: "Wrong pageID type in WebimSessionImpl.\(#function)")
+            fatalError("Wrong pageID type in WebimSessionImpl.\(#function)")
+        }
+        
+        guard let authorizationToken = userDefaults?[UserDefaultsMainPrefix.authorizationToken.rawValue] as? String? else {
+            WebimInternalLogger.shared.log(entry: "Wrong authorizationToken type in WebimSessionImpl.\(#function)")
+            fatalError("Wrong authorizationToken type in WebimSessionImpl.\(#function)")
+        }
+        
         let authorizationData = AuthorizationData(pageID: pageID,
                                                   authorizationToken: authorizationToken)
         
@@ -148,10 +162,10 @@ final class WebimSessionImpl {
             .set(sessionParametersListener: SessionParametersListenerImpl(withUserDefaultsKey: userDefaultsKey))
             .set(internalErrorListener: DestroyOnFatalErrorListener(sessionDestroyer: sessionDestroyer,
                                                                     internalErrorListener: ErrorHandlerToInternalAdapter(fatalErrorHandler: fatalErrorHandler), notFatalErrorHandler: notFatalErrorHandler))
-            .set(visitorJSONString: visitorJSON as! String?)
+            .set(visitorJSONString: visitorJSON)
             .set(providedAuthenticationTokenStateListener: providedAuthorizationTokenStateListener,
                  providedAuthenticationToken: providedAuthorizationToken)
-            .set(sessionID: sessionID as! String?)
+            .set(sessionID: sessionID)
             .set(authorizationData: authorizationData)
             .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                               queue: queue))
@@ -164,10 +178,8 @@ final class WebimSessionImpl {
         var historyStorage: HistoryStorage
         var historyMetaInformationStoragePreferences: HistoryMetaInformationStorage
         if isLocalHistoryStoragingEnabled {
-            var dbName = userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String
-            
-            if dbName == nil {
-                dbName = "webim_\(ClientSideID.generateClientSideID()).db"
+            if userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String == nil {
+                let dbName = "webim_\(ClientSideID.generateClientSideID()).db"
                 if let userDefaults = userDefaults {
                     var renewedUserDefaults = userDefaults
                     renewedUserDefaults[UserDefaultsMainPrefix.historyDBname.rawValue] = dbName
@@ -179,19 +191,33 @@ final class WebimSessionImpl {
                 }
             }
             
+            guard let dbName = userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String else {
+                WebimInternalLogger.shared.log(entry: "Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")
+                fatalError("Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")
+            }
+            
             historyMetaInformationStoragePreferences = HistoryMetaInformationStoragePreferences(userDefaultsKey: userDefaultsKey)
             
-            let sqlhistoryStorage = SQLiteHistoryStorage(dbName: dbName!,
+            guard let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
+                WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+                fatalError("Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+            }
+            let sqlhistoryStorage = SQLiteHistoryStorage(dbName: dbName,
                                                   serverURL: serverURLString,
                                                   webimClient: webimClient,
                                                   reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
                                                   queue: queue,
-                                                  readBeforeTimestamp: (userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] ?? Int64(-1)) as! Int64)
+                                                  readBeforeTimestamp: readBeforeTimestamp ?? Int64(-1))
             historyStorage = sqlhistoryStorage
             
             let historyMajorVersion = historyStorage.getMajorVersion()
             if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
                 if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
+                    if let version = userDefaults[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int,
+                        version < 5 {
+                        transferDBFiles(for: userDefaultsKey)
+                    }
+                    
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyRevision.rawValue)
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyEnded.rawValue)
                     userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
@@ -202,7 +228,11 @@ final class WebimSessionImpl {
                 }
             }
         } else {
-            historyStorage = MemoryHistoryStorage(readBeforeTimestamp: (userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] ?? Int64(-1)) as! Int64)
+            guard let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
+                WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+                fatalError("Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+            }
+            historyStorage = MemoryHistoryStorage(readBeforeTimestamp: readBeforeTimestamp ?? Int64(-1))
             historyMetaInformationStoragePreferences = MemoryHistoryMetaInformationStorage()
         }
         
@@ -267,18 +297,44 @@ final class WebimSessionImpl {
     private static func deleteDBFileFor(userDefaultsKey: String) {
         if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String {
             let fileManager = FileManager.default
-            let documentsDirectory = try! fileManager.url(for: .documentDirectory,
+            let optionalDocumentsDirectory = try? fileManager.url(for: .documentDirectory,
                                                           in: .userDomainMask,
                                                           appropriateFor: nil,
                                                           create: false)
+            guard let documentsDirectory = optionalDocumentsDirectory else {
+                WebimInternalLogger.shared.log(entry: "Error getting access to Documents directory.",
+                                               verbosityLevel: .verbose)
+                return
+            }
+            
             let dbURL = documentsDirectory.appendingPathComponent(dbName)
             
             do {
                 try fileManager.removeItem(at: dbURL)
             } catch {
                 WebimInternalLogger.shared.log(entry: "Error deleting DB file at \(dbURL) or file doesn't exist.",
-                    verbosityLevel: .VERBOSE)
+                                               verbosityLevel: .verbose)
             }
+        }
+    }
+    
+    private static func transferDBFiles(for userDefaultsKey: String) {
+        guard let dbName = UserDefaults.standard.dictionary(
+                forKey: userDefaultsKey
+            )?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String,
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                              in: .userDomainMask).first,
+            let libraryDirectory = FileManager.default.urls(for: .libraryDirectory,
+                                                            in: .userDomainMask).first
+            else { return }
+        
+        do {
+            let dbFileURL = documentsDirectory.appendingPathComponent(dbName)
+            let destanationURL = libraryDirectory.appendingPathComponent(dbName)
+            let fileData = try Data(contentsOf: dbFileURL)
+            try fileData.write(to: destanationURL)
+        } catch {
+            print("Error reading DB file \(documentsDirectory.path): \(error.localizedDescription)")
         }
     }
     
@@ -288,8 +344,8 @@ final class WebimSessionImpl {
         let previousVisitorFieldsJSONString = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.visitorExt.rawValue] as? String
         
         var previousProvidedVisitorFields: ProvidedVisitorFields? = nil
-        if previousVisitorFieldsJSONString != nil {
-            previousProvidedVisitorFields = ProvidedVisitorFields(withJSONString: previousVisitorFieldsJSONString!)
+        if let fields = previousVisitorFieldsJSONString {
+            previousProvidedVisitorFields = ProvidedVisitorFields(withJSONString: fields)
         
             if (newProvidedVisitorFields == nil)
                 || (previousProvidedVisitorFields?.getID() != newProvidedVisitorFields?.getID()) {
@@ -309,10 +365,14 @@ final class WebimSessionImpl {
     private static func getDeviceID(withSuffix suffix: String) -> String {
         let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue)
         let name = UserDefaultsGUIDPrefix.uuid.rawValue + (suffix.isEmpty ? suffix : "-" + suffix)
-        var uuidString = (userDefaults?[name] ?? nil)
+        var uuidString: String? = userDefaults?[name] as? String
         
-        if uuidString == nil {
-            uuidString = UIDevice.current.identifierForVendor!.uuidString + (suffix.isEmpty ? suffix : "-" + suffix)
+        if uuidString == String() {
+            guard let currentIdentifierForVendor = UIDevice.current.identifierForVendor else {
+                WebimInternalLogger.shared.log(entry: "Incorrect DeviceID in WebimSessionImpl.\(#function)")
+                return String()
+            }
+            uuidString = currentIdentifierForVendor.uuidString + (suffix.isEmpty ? suffix : "-" + suffix)
             if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue) {
                 userDefaults[name] = uuidString
                 UserDefaults.standard.set(userDefaults,
@@ -322,8 +382,11 @@ final class WebimSessionImpl {
                                                forKey: UserDefaultsName.guid.rawValue)
             }
         }
-        
-        return uuidString as! String
+        guard let deviceID = uuidString else {
+            WebimInternalLogger.shared.log(entry: "DeviceID is nil in WebimSessionImpl.\(#function)")
+            return String()
+        }
+        return deviceID
     }   
     
 }
@@ -460,11 +523,15 @@ final class HistoryPoller {
         running = true
         
         historySinceCompletionHandler = createHistorySinceCompletionHandler()
+        guard let historySinceCompletionHandler = historySinceCompletionHandler else {
+            WebimInternalLogger.shared.log(entry: "Creating History Since Completion Handler failure in WebimSessionImpl.\(#function)")
+            return
+        }
         
         let uptime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
         if (uptime - lastPollingTime) > TimeInterval.historyPolling.rawValue {
             requestHistory(since: lastRevision,
-                           completion: historySinceCompletionHandler!)
+                           completion: historySinceCompletionHandler)
         } else {
             if !self.hasHistoryRevision {
                 // Setting next history polling in TimeInterval.HISTORY_POLL after lastPollingTime.
@@ -477,11 +544,16 @@ final class HistoryPoller {
                     }
                 
                     self.requestHistory(since: self.lastRevision,
-                                        completion: self.historySinceCompletionHandler!)
+                                        completion: historySinceCompletionHandler)
+                }
+                
+                guard let dispatchWorkItem = dispatchWorkItem else {
+                    WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                    return
                 }
             
                 queue.asyncAfter(deadline: dispatchTime,
-                                 execute: dispatchWorkItem!)
+                                 execute: dispatchWorkItem)
             }
         }
     }
@@ -500,10 +572,11 @@ final class HistoryPoller {
     
     func getReadBeforeTimestamp(byUserDefaultsKey userDefaultsKey: String) -> Int64 {
         let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
-        if let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] {
-            return readBeforeTimestamp as! Int64
+        guard let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] as? Int64 else {
+            WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+            return Int64(-1)
         }
-        return Int64(-1)
+        return readBeforeTimestamp
     }
     
     // MARK: Private methods
@@ -554,9 +627,14 @@ final class HistoryPoller {
                     
                     
                     }
+                    guard let dispatchWorkItem = self.dispatchWorkItem else {
+                        WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                        return
+                    }
+                    
                     let interval = Int(TimeInterval.historyPolling.rawValue)
                     self.queue.asyncAfter(deadline: (.now() + .milliseconds(interval)),
-                                          execute: self.dispatchWorkItem!)
+                                          execute: dispatchWorkItem)
                 }
             }
         }
@@ -564,15 +642,19 @@ final class HistoryPoller {
     
     public func requestHistory(since: String) {
         if self.lastRevision == nil || self.lastRevision != since {
-            requestHistory(since: lastRevision, completion: historySinceCompletionHandler!)
+            guard let historySinceCompletionHandler = historySinceCompletionHandler else {
+                WebimInternalLogger.shared.log(entry: "History Since Completion Handler is nil in WebimSessionImpl.\(#function)")
+                return
+            }
+            requestHistory(since: lastRevision, completion: historySinceCompletionHandler)
         }
     }
     
     private func requestHistory(since: String?,
                                 completion: @escaping (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> ()) {
         webimActions.requestHistory(since: since) { data in
-            if data != nil {
-                let json = try? JSONSerialization.jsonObject(with: data!,
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: [])
                 if let historySinceResponseDictionary = json as? [String: Any?] {
                     let historySinceResponse = HistorySinceResponse(jsonDictionary: historySinceResponseDictionary)
@@ -722,15 +804,15 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
     private func toPublicErrorType(string: String) -> FatalErrorType {
         switch string {
         case WebimInternalError.accountBlocked.rawValue:
-            return .ACCOUNT_BLOCKED
+            return .accountBlocked
         case WebimInternalError.visitorBanned.rawValue:
-            return .VISITOR_BANNED
+            return .visitorBanned
         case WebimInternalError.wrongProvidedVisitorFieldsHashValue.rawValue:
-            return .WRONG_PROVIDED_VISITOR_HASH
+            return .wrongProvidedVisitorHash
         case WebimInternalError.providedVisitorFieldsExpired.rawValue:
-            return .PROVIDED_VISITOR_FIELDS_EXPIRED
+            return .providedVisitorFieldsExpired
         default:
-            return .UNKNOWN
+            return .unknown
         }
     }
     
@@ -789,12 +871,11 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     }
     
     func getRevision() -> String? {
-        if let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey),
-            let revision = userDefaults[UserDefaultsMainPrefix.historyRevision.rawValue] as! String? {
-            return revision
-        } else {
-            return nil
+        guard let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey),
+            let revision = userDefaults[UserDefaultsMainPrefix.historyRevision.rawValue] as? String? else {
+                return nil
         }
+        return revision
     }
     
 }

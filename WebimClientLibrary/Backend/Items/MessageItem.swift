@@ -63,7 +63,8 @@ final class MessageItem {
     private var canBeReplied: Bool?
     private var chatID: String?
     private var clientSideID: String?
-    private var data: [String: Any?]?
+    private var rawData: [String: Any?]?
+    private var data: MessageData?
     private var deleted: Bool?
     private var id: String?
     private var kind: MessageKind?
@@ -105,6 +106,10 @@ final class MessageItem {
         }
         
         if let data = jsonDictionary[JSONField.data.rawValue] as? [String: Any?] {
+            self.rawData = data
+        }
+            
+        if let data = jsonDictionary[JSONField.data.rawValue] as? MessageData {
             self.data = data
         }
         
@@ -167,7 +172,11 @@ final class MessageItem {
         return avatarURLString
     }
     
-    func getData() -> [String: Any?]? {
+    func getRawData() -> [String: Any?]? {
+        return rawData
+    }
+    
+    func getData() -> MessageData? {
         return data
     }
     
@@ -188,7 +197,13 @@ final class MessageItem {
     }
     
     func getTimeInMicrosecond() -> Int64? {
-        return ((timestampInMicrosecond != -1) ? timestampInMicrosecond : Int64(timestampInSecond! * 1_000_000))
+        if timestampInMicrosecond != -1 {
+            return timestampInMicrosecond
+        }
+        if let timestampInSecond = timestampInSecond {
+            return Int64(timestampInSecond * 1_000_000)
+        }
+        return nil
     }
     
     func getRead() -> Bool? {
@@ -218,7 +233,9 @@ final class MessageItem {
         case forOperator = "for_operator"
         case info = "info"
         case keyboard = "keyboard"
-        case keyboard_response = "keyboard_response"
+        case keyboardResponse = "keyboard_response"
+        @available(*, unavailable, renamed: "keyboardResponse")
+        case keyboard_response = ""
         case operatorMessage = "operator"
         case operatorBusy = "operator_busy"
         case visitorMessage = "visitor"
@@ -226,43 +243,43 @@ final class MessageItem {
         // MARK: - Initialization
         init(messageType: MessageType) {
             switch messageType {
-            case .ACTION_REQUEST:
+            case .actionRequest:
                 self = .actionRequest
                 
                 break
-            case .CONTACTS_REQUEST:
+            case .contactInformationRequest:
                 self = .contactInformationRequest
                 
                 break
-            case .FILE_FROM_OPERATOR:
+            case .fileFromOperator:
                 self = .fileFromOperator
                 
                 break
-            case .FILE_FROM_VISITOR:
+            case .fileFromVisitor:
                 self = .fileFromVisitor
                 
                 break
-            case .INFO:
+            case .info:
                 self = .info
                 
                 break
-            case .KEYBOARD:
+            case .keyboard:
                 self = .keyboard
                 
                 break
-            case .KEYBOARD_RESPONSE:
-                self = .keyboard_response
+            case .keyboardResponse:
+                self = .keyboardResponse
                 
                 break
-            case .OPERATOR:
+            case .operatorMessage:
                 self = .operatorMessage
                 
                 break
-            case .OPERATOR_BUSY:
+            case .operatorBusy:
                 self = .operatorBusy
                 
                 break
-            case .VISITOR:
+            case .visitorMessage:
                 self = .visitorMessage
                 
                 break
@@ -418,16 +435,108 @@ final class QuoteItem {
         
         init(quoteState: QuoteState) {
             switch quoteState {
-            case .FILLED:
+            case .filled:
                 self = .filled
                 
                 break
-            case .PENDING:
+            case .pending:
                 self = .pending
                 
                 break
-            case .NOT_FOUND:
+            case .notFound:
                 self = .notFound
+            }
+        }
+    }
+}
+
+final public class MessageDataItem {
+    private enum JSONField: String {
+        case file = "data"
+    }
+    
+    private var file: FileItem?
+    
+    init(jsonDictionary: [String: Any?]) {
+        if let dataDictonary = jsonDictionary[JSONField.file.rawValue] as? [String: Any?]  {
+            self.file = FileItem(jsonDictionary: dataDictonary)
+        }
+    }
+    
+    func getFile() -> FileItem? {
+        return file
+    }
+}
+
+
+final class FileItem {
+    private enum JSONField: String {
+        case downloadProgress = "progress"
+        case state = "state"
+        case properties = "desc"
+        case errorType = "error"
+        case errorMessage = "error_message"
+    }
+    
+    private var downloadProgress: Int64?
+    private var state: String?
+    private var properties: FileParametersItem?
+    private var errorType: String?
+    private var errorMessage: String?
+    
+    
+    init(jsonDictionary: [String: Any?]) {
+        if let progress = jsonDictionary[JSONField.downloadProgress.rawValue] as? Int64 {
+            self.downloadProgress = progress
+        }
+        
+        if let state = jsonDictionary[JSONField.state.rawValue] as? String {
+            self.state = state
+        }
+        
+        if let fileParametersDictonary = jsonDictionary[JSONField.properties.rawValue] as? [String: Any?]  {
+            self.properties = FileParametersItem(jsonDictionary: fileParametersDictonary)
+        }
+    }
+    
+    func getDownloadProgress() -> Int64? {
+        return downloadProgress
+    }
+    
+    func getState() -> String? {
+        return state
+    }
+    
+    func getProperties() -> FileParametersItem? {
+        return properties
+    }
+    
+    func getErrorType() -> String? {
+        return errorType
+    }
+    
+    func getErrorMessage() -> String? {
+        return errorMessage
+    }
+    
+    enum FileStateItem: String {
+        // Raw values equal to field names received in responses from server.
+        case error = "error"
+        case ready = "ready"
+        case upload = "upload"
+        
+        init(fileState: FileState) {
+            switch fileState {
+            case .error:
+                self = .error
+                
+                break
+            case .ready:
+                self = .ready
+                
+                break
+            case .upload:
+                self = .upload
             }
         }
     }

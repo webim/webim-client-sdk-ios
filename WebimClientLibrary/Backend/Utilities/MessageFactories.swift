@@ -55,28 +55,28 @@ class MessageMapper {
     static func convert(messageKind: MessageItem.MessageKind) -> MessageType? {
         switch messageKind {
         case .actionRequest:
-            return .ACTION_REQUEST
+            return .actionRequest
         case .contactInformationRequest:
-            return .CONTACTS_REQUEST
+            return .contactInformationRequest
         case .fileFromOperator:
-            return .FILE_FROM_OPERATOR
+            return .fileFromOperator
         case .fileFromVisitor:
-            return .FILE_FROM_VISITOR
+            return .fileFromVisitor
         case .info:
-            return .INFO
+            return .info
         case .keyboard:
-            return .KEYBOARD
+            return .keyboard
         case .keyboard_response:
-            return .KEYBOARD_RESPONSE
+            return .keyboardResponse
         case .operatorMessage:
-            return .OPERATOR
+            return .operatorMessage
         case .operatorBusy:
-            return .OPERATOR_BUSY
+            return .operatorBusy
         case .visitorMessage:
-            return .VISITOR
+            return .visitorMessage
         default:
             WebimInternalLogger.shared.log(entry: "Invalid message type received: \(messageKind.rawValue)",
-                verbosityLevel: .WARNING)
+                verbosityLevel: .warning)
             
             return nil
         }
@@ -84,72 +84,103 @@ class MessageMapper {
     
     func convert(messageItem: MessageItem,
                  historyMessage: Bool) -> MessageImpl? {
-        let kind = messageItem.getKind()
-        if (kind == nil)
-            || (kind == .contactInformation)
-            || (kind == .forOperator) {
+        guard let kind = messageItem.getKind() else {
             return nil
         }
-        guard let type = MessageMapper.convert(messageKind: kind!) else {
+        if kind == .contactInformation || kind == .forOperator {
+            return nil
+        }
+        guard let type = MessageMapper.convert(messageKind: kind) else {
             return nil
         }
         
-        var attachment: MessageAttachment?
+        var attachment: FileInfoImpl?
         var keyboard: Keyboard?
         var keyboardRequest: KeyboardRequest?
         var text: String?
         var rawText: String?
+        var data: MessageData?
         
-        let messageItemText = messageItem.getText()
+        guard let messageItemText = messageItem.getText() else {
+            WebimInternalLogger.shared.log(entry: "Message Item Text is nil in MessageFactories.\(#function)")
+            return nil
+        }
         if (kind == .fileFromVisitor)
             || (kind == .fileFromOperator) {
             
             if let webimClient = webimClient {
-                attachment = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
-                                                                 webimClient: webimClient,
-                                                                 text: messageItemText!)
+                attachment = FileInfoImpl.getAttachment(byServerURL: serverURLString,
+                                                        webimClient: webimClient,
+                                                        text: messageItemText)
+                if let attachment = attachment {
+                    data = MessageDataImpl(
+                        attachment: MessageAttachmentImpl(fileInfo: attachment, state: .ready)
+                    )
+                }
             }
-            if attachment == nil {
+            guard let attachment = attachment else {
                 return nil
             }
             
-            text = attachment?.getFileName()
-            rawText = messageItemText!
+            text = attachment.getFileName()
+            rawText = messageItemText
         } else {
-            text = messageItemText ?? ""
+            text = messageItemText
         }
         
-        if kind == .keyboard, let data = messageItem.getData() {
+        if kind == .keyboard, let data = messageItem.getRawData() {
             keyboard = KeyboardImpl.getKeyboard(jsonDictionary: data)
         }
         
-        if kind == .keyboard_response, let data = messageItem.getData() {
+        if kind == .keyboardResponse, let data = messageItem.getRawData() {
             keyboardRequest = KeyboardRequestImpl.getKeyboardRequest(jsonDictionary: data)
         }
         
         let quote = messageItem.getQuote()
-        var messageAttachmentFromQuote: MessageAttachment? = nil
+        var messageAttachmentFromQuote: FileInfo? = nil
         if let kind = quote?.getMessageKind(), kind == .fileFromVisitor || kind == .fileFromOperator {
             if let webimClient = webimClient {
-                messageAttachmentFromQuote = MessageAttachmentImpl.getAttachment(byServerURL: serverURLString,
+                guard let quoteText = quote?.getText() else {
+                    WebimInternalLogger.shared.log(entry: "Quote Text is nil in MessageFactories.\(#function)")
+                    return nil
+                }
+                messageAttachmentFromQuote = FileInfoImpl.getAttachment(byServerURL: serverURLString,
                                                                                  webimClient: webimClient,
-                                                                                 text: (quote?.getText())!)
+                                                                                 text: quoteText)
             }
         }
         
+        
+        guard let clientSideID = messageItem.getClientSideID() else {
+            WebimInternalLogger.shared.log(entry: "Message Item has not Client Side ID in MessageFactories.\(#function)")
+            return nil
+        }
+        guard let senderName = messageItem.getSenderName() else {
+            WebimInternalLogger.shared.log(entry: "Message Item has not Sender Name in MessageFactories.\(#function)")
+            return nil
+        }
+        guard let messageText = text else {
+            WebimInternalLogger.shared.log(entry: "Message has not Text in MessageFactories.\(#function)")
+            return nil
+        }
+        guard let timeInMicrosecond = messageItem.getTimeInMicrosecond() else {
+            WebimInternalLogger.shared.log(entry: "Message Item has not Time In Microsecond in MessageFactories.\(#function)")
+            return nil
+        }
+        
         return MessageImpl(serverURLString: serverURLString,
-                           id: messageItem.getClientSideID()!,
+                           id: clientSideID,
                            keyboard: keyboard,
                            keyboardRequest: keyboardRequest,
                            operatorID: messageItem.getSenderID(),
                            quote: QuoteImpl.getQuote(quoteItem: quote, messageAttachment: messageAttachmentFromQuote),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
-                           senderName: messageItem.getSenderName()!,
+                           senderName: senderName,
                            type: type,
-                           data: messageItem.getData(),
-                           text: text!,
-                           timeInMicrosecond: messageItem.getTimeInMicrosecond()!,
-                           attachment: attachment,
+                           rawData: messageItem.getRawData(),
+                           data: data,
+                           text: messageText,
+                           timeInMicrosecond: timeInMicrosecond,
                            historyMessage: historyMessage,
                            internalID: messageItem.getID(),
                            rawText: rawText,
@@ -235,7 +266,7 @@ final class SendingFactory {
         return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
-                             type: .VISITOR,
+                             type: .visitorMessage,
                              text: text,
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond())
     }
@@ -246,12 +277,12 @@ final class SendingFactory {
         return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
-                             type: .VISITOR,
+                             type: .visitorMessage,
                              text: text,
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
-                             quote: QuoteImpl(state: QuoteState.PENDING,
+                             quote: QuoteImpl(state: QuoteState.pending,
                                               authorID: nil,
-                                              messageAttachment: repliedMessage.getAttachment(),
+                                              messageAttachment: repliedMessage.getData()?.getAttachment()?.getFileInfo(),
                                               messageID: repliedMessage.getCurrentChatID(),
                                               messageType: repliedMessage.getType(),
                                               senderName: repliedMessage.getSenderName(),
@@ -264,7 +295,7 @@ final class SendingFactory {
         return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
-                             type: .FILE_FROM_VISITOR,
+                             type: .fileFromVisitor,
                              text: "",
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond())
     }

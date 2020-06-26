@@ -85,7 +85,7 @@ struct HistorySinceResponse {
             self.messages = messages
             
             hasMore = ((jsonDictionary[JSONField.hasMore.rawValue] as? Bool) ?? false)
-            revision = jsonDictionary[JSONField.revision.rawValue] as! String?
+            revision = jsonDictionary[JSONField.revision.rawValue] as? String
         }
         
         // MARK: - Methods

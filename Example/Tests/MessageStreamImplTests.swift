@@ -73,7 +73,7 @@ class MessageStreamImplTests: XCTestCase {
         messageStream!.set(visitSessionState: .chat)
         
         XCTAssertEqual(messageStream!.getVisitSessionState(),
-                       VisitSessionState.CHAT)
+                       VisitSessionState.chat)
     }
     
     func testSetUnreadByOperatorTimestamp() {
@@ -103,7 +103,7 @@ class MessageStreamImplTests: XCTestCase {
         XCTAssertEqual(messageStream!.getDepartmentList()![0].getName(),
                        "Mobile Test 1")
         XCTAssertEqual(messageStream!.getDepartmentList()![0].getDepartmentOnlineStatus(),
-                       DepartmentOnlineStatus.OFFLINE)
+                       DepartmentOnlineStatus.offline)
         XCTAssertEqual(messageStream!.getDepartmentList()![0].getOrder(),
                        100)
         XCTAssertEqual(messageStream!.getDepartmentList()![0].getLocalizedNames()!,
@@ -114,7 +114,7 @@ class MessageStreamImplTests: XCTestCase {
     
     func testGetChatState() {
         XCTAssertEqual(messageStream!.getChatState(),
-                       ChatState.UNKNOWN)
+                       ChatState.unknown)
     }
     
     func testGetLocationSettings() {
@@ -133,7 +133,7 @@ class MessageStreamImplTests: XCTestCase {
         
         XCTAssertTrue(visitSessionStateListener.called)
         XCTAssertEqual(visitSessionStateListener.state!,
-                       VisitSessionState.CHAT)
+                       VisitSessionState.chat)
     }
     
     func testSetOnlineStatusChangeListener() {
@@ -147,7 +147,7 @@ class MessageStreamImplTests: XCTestCase {
         
         XCTAssertTrue(onlineStatusChangeListener.called)
         XCTAssertEqual(onlineStatusChangeListener.status!,
-                       OnlineStatus.BUSY_OFFLINE)
+                       OnlineStatus.busyOffline)
     }
     
     func testChangingChatState() {
@@ -157,7 +157,7 @@ class MessageStreamImplTests: XCTestCase {
         messageStream!.changingChatStateOf(chat: chatItem)
         
         XCTAssertEqual(messageStream!.getChatState(),
-                       ChatState.CHATTING)
+                       ChatState.chatting)
         XCTAssertNil(messageStream!.getUnreadByOperatorTimestamp())
         XCTAssertNil(messageStream!.getUnreadByVisitorTimestamp())
         XCTAssertEqual(messageStream!.getCurrentOperator()!.getID(), "33201")

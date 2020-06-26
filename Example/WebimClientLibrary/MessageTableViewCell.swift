@@ -106,40 +106,40 @@ final class MessageTableViewCell: UITableViewCell {
     
     func setContent(withMessage message: Message) {
         switch message.getType() {
-        case .ACTION_REQUEST:
+        case .actionRequest:
             layoutActionRequest(message: message)
             
             break
-        case .CONTACTS_REQUEST:
+        case .contactInformationRequest:
             layoutOperator(message: message)
             
             break
-        case .FILE_FROM_OPERATOR:
+        case .fileFromOperator:
             layoutFileFromOperator(message: message)
             
             break
-        case .FILE_FROM_VISITOR:
+        case .fileFromVisitor:
             layoutFileFromVisitor(message: message)
             
             break
-        case .INFO:
+        case .info:
             layoutInfo(message: message)
             
             break
-        case .KEYBOARD,
-             .KEYBOARD_RESPONSE:
+        case .keyboard,
+             .keyboardResponse:
             layoutInfo(message: message)
             
             break
-        case .OPERATOR:
+        case .operatorMessage:
             layoutOperator(message: message)
             
             break
-        case .OPERATOR_BUSY:
+        case .operatorBusy:
             layoutOperatorBusy(message: message)
             
             break
-        case .VISITOR:
+        case .visitorMessage:
             layoutVisitor(message: message)
             
             break
@@ -215,7 +215,7 @@ final class MessageTableViewCell: UITableViewCell {
     }
     
     private func layoutFileFromOperator(message: Message) {
-        if let fileName = message.getAttachment()?.getFileName() {
+        if let fileName = message.getData()?.getAttachment()?.getFileInfo().getFileName() {
             bodyLabel.text = fileName
         } else {
             bodyLabel.text = FileMessage.fileUnavailable.rawValue.localized
@@ -235,7 +235,7 @@ final class MessageTableViewCell: UITableViewCell {
     }
     
     private func layoutFileFromVisitor(message: Message) {
-        if let fileName = message.getAttachment()?.getFileName() {
+        if let fileName = message.getData()?.getAttachment()?.getFileInfo().getFileName() {
             bodyLabel.text = fileName
         } else {
             bodyLabel.text = FileMessage.fileUnavailable.rawValue.localized

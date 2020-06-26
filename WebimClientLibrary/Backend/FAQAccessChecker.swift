@@ -49,11 +49,11 @@ class FAQAccessChecker {
     // MARK: - Methods
     func checkAccess() throws {
         guard thread == Thread.current else {
-            throw FAQAccessError.INVALID_THREAD
+            throw FAQAccessError.invalidThread
         }
         
         guard !faqDestroyer.isDestroyed() else {
-            throw FAQAccessError.INVALID_FAQ
+            throw FAQAccessError.invalidFaq
         }
     }
     

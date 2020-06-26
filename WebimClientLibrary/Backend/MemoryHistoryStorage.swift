@@ -85,11 +85,23 @@ final class MemoryHistoryStorage: HistoryStorage {
     func getHistoryBefore(id: HistoryID,
                           limitOfMessages: Int,
                           completion: @escaping ([Message]) -> ()) {
-        let sortedMessages = historyMessages.sorted { $0.getHistoryID()!.getTimeInMicrosecond() < $1.getHistoryID()!.getTimeInMicrosecond() }
+        let sortedMessages = historyMessages.sorted {
+            if let first = $0.getHistoryID() {
+                if let second = $1.getHistoryID() {
+                    return first.getTimeInMicrosecond() < second.getTimeInMicrosecond()
+                }
+                return true
+            }
+            return false
+        }
         
-        if sortedMessages[0].getHistoryID()!.getTimeInMicrosecond() > id.getTimeInMicrosecond() {
+        guard let firstHistoryID = sortedMessages[0].getHistoryID() else {
+            completion([])
+            return
+        }
+        
+        guard firstHistoryID.getTimeInMicrosecond() <= id.getTimeInMicrosecond() else {
             completion([MessageImpl]())
-            
             return
         }
         

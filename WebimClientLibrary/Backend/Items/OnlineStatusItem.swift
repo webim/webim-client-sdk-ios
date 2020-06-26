@@ -28,11 +28,11 @@ import Foundation
 
 /**
  Raw values equal to field names received in responses from server (except `unknown` case which is custom).
- * `BUSY_OFFLINE` - user can't send messages at all;
- * `BUSY_ONLINE` - user send offline messages, but server can return an error;
- * `OFFLINE` - user can send offline messages;
- * `ONLINE` - user can send online and offline messages;
- * `UNKNOWN` - session has not received data from server.
+ * `busyOffline` - user can't send messages at all;
+ * `busyOnline` - user send offline messages, but server can return an error;
+ * `offline` - user can send offline messages;
+ * `online` - user can send online and offline messages;
+ * `unknown` - session has not received data from server.
  - author:
  Nikita Lazarev-Zubov
  - copyright:

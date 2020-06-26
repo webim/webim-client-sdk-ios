@@ -71,18 +71,27 @@ final class FAQCategoryItem {
 
 extension FAQCategoryItem: FAQCategory {
     func getID() -> String {
-        return id!
+        guard let id = id else {
+            WebimInternalLogger.shared.log(entry: "ID is nil in FAQCategoryItem.\(#function)")
+            return String()
+        }
+        return id
     }
     
     func getTitle() -> String {
-        return title!
+        guard let title = title else {
+            WebimInternalLogger.shared.log(entry: "Title is nil in FAQCategoryItem.\(#function)")
+            return String()
+        }
+        return title
     }
     
     func getItems() -> [FAQItem] {
         var items = [FAQItem]()
         for child in children {
-            if child.type == .ITEM {
-                items.append(child.data as! FAQItemItem)
+            if child.type == .item,
+                let data = child.data as? FAQItemItem {
+                items.append(data)
             }
         }
         return items
@@ -91,8 +100,9 @@ extension FAQCategoryItem: FAQCategory {
     func getSubcategories() -> [FAQCategoryInfo] {
         var subCategories = [FAQCategoryInfo]()
         for child in children {
-            if child.type == .CATEGORY {
-                subCategories.append(child.data as! FAQCategoryInfoItem)
+            if child.type == .category,
+                let data = child.data as? FAQCategoryInfoItem {
+                subCategories.append(data)
             }
         }
         return subCategories
@@ -133,19 +143,19 @@ final class Child {
         if let type = jsonDictionary[JSONField.type.rawValue] as? String {
             switch type {
             case "item":
-                self.type = .ITEM
+                self.type = .item
                 if let data = jsonDictionary[JSONField.data.rawValue] as? [String: Any?] {
                     self.data = FAQItemItem(jsonDictionary: data)
                 }
                 break
             case "category":
-                self.type = .CATEGORY
+                self.type = .category
                 if let data = jsonDictionary[JSONField.data.rawValue] as? [String: Any?]  {
                     self.data = FAQCategoryInfoItem(jsonDictionary: data)
                 }
                 break
             default:
-                self.type = .UNKNOWN
+                self.type = .unknown
             }
         }
     }

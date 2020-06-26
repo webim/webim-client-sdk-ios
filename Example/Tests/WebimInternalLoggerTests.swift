@@ -45,9 +45,9 @@ class WebimInternalLoggerTests: XCTestCase {
     func testSetup() {
         // When: Low verbosity level installed and high verbosity level log message is send.
         WebimInternalLogger.setup(webimLogger: self,
-                                  verbosityLevel: .ERROR)
+                                  verbosityLevel: .error)
         webimInternalLogger.log(entry: "Test",
-                                verbosityLevel: .VERBOSE)
+                                verbosityLevel: .verbose)
         
         // Then: WebimLogger method should not be called.
         XCTAssertNil(logEntry)
@@ -55,7 +55,7 @@ class WebimInternalLoggerTests: XCTestCase {
     
     func testLogWithSameVerbosityLevelIsPassed() {
         // Setup.
-        let verbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.DEBUG
+        let verbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.debug
         let logString = "Test"
         
         // When: Logger installed and log entry passed with the same verbosity level.
@@ -70,8 +70,8 @@ class WebimInternalLoggerTests: XCTestCase {
     
     func testLogWithLowerVerbosityLevelIsPassed() {
         // Setup.
-        let verbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.DEBUG
-        let higherVerbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.VERBOSE
+        let verbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.debug
+        let higherVerbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.verbose
         let logString = "Test"
         
         // When: Logger installed and log entry passed with lower verbosity level.
@@ -86,8 +86,8 @@ class WebimInternalLoggerTests: XCTestCase {
     
     func testLogWithHigherVerbosityLevelIsNotPassed() {
         // Setup.
-        let verbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.DEBUG
-        let lowerVerbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.INFO
+        let verbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.debug
+        let lowerVerbosityLevel = SessionBuilder.WebimLoggerVerbosityLevel.info
         let logString = "Test"
         
         // When: Logger installed and log entry passed with higher verbosity level.

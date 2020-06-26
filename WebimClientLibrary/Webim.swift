@@ -112,7 +112,14 @@ public final class Webim {
      2017 Webim
      */
     public enum RemoteNotificationSystem {
+        case apns
+        
+        @available(*, unavailable, renamed: "apns")
         case APNS
+        
+        case none
+        
+        @available(*, unavailable, renamed: "none")
         case NONE
     }
 
@@ -142,7 +149,7 @@ public final class SessionBuilder  {
     private var pageTitle: String?
     private var providedAuthorizationToken: String?
     private weak var providedAuthorizationTokenStateListener: ProvidedAuthorizationTokenStateListener?
-    private var remoteNotificationSystem: Webim.RemoteNotificationSystem = .NONE
+    private var remoteNotificationSystem: Webim.RemoteNotificationSystem = .none
     private var visitorDataClearingEnabled = false
     private var visitorFields: ProvidedVisitorFields?
     private weak var webimLogger: WebimLogger?
@@ -344,7 +351,7 @@ public final class SessionBuilder  {
      - important:
      If remote notification system is set you must set device token.
      - parameter remoteNotificationSystem:
-     Enum that indicates which system of remote notification is used. By default – `NONE` (remote notifications are not to be sent).
+     Enum that indicates which system of remote notification is used. By default – `none` (remote notifications are not to be sent).
      - returns:
      `SessionBuilder` object with remote notification system set.
      - author:
@@ -448,7 +455,7 @@ public final class SessionBuilder  {
      2017 Webim
      */
     public func set(webimLogger: WebimLogger?,
-                    verbosityLevel: WebimLoggerVerbosityLevel = .WARNING) -> SessionBuilder {
+                    verbosityLevel: WebimLoggerVerbosityLevel = .warning) -> SessionBuilder {
         self.webimLogger = webimLogger
         webimLoggerVerbosityLevel = verbosityLevel
 
@@ -463,10 +470,10 @@ public final class SessionBuilder  {
      - returns:
      New `WebimSession` object.
      - throws:
-     `SessionBuilder.SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't set to a non-nil value.
-     `SessionBuilder.SessionBuilderError.NIL_LOCATION` if location wasn't set to a non-nil value.
-     `SessionBuilder.SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION` if there is a try to pass device token with `RemoteNotificationSystem` not set (or set to `.NONE`).
-     `SessionBuilder.SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS` if methods `set(visitorFieldsJSONString:)` or `set(visitorFieldsJSONData:)` are called with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)` simultaneously.
+     `SessionBuilder.SessionBuilderError.nilAccountName` if account name wasn't set to a non-nil value.
+     `SessionBuilder.SessionBuilderError.nilLocation` if location wasn't set to a non-nil value.
+     `SessionBuilder.SessionBuilderError.invalidRemoteNotificationConfiguration` if there is a try to pass device token with `RemoteNotificationSystem` not set (or set to `.none`).
+     `SessionBuilder.SessionBuilderError.invalidAuthentificatorParameters` if methods `set(visitorFieldsJSONString:)` or `set(visitorFieldsJSONData:)` are called with `set(providedAuthorizationTokenStateListener:,providedAuthorizationToken:)` simultaneously.
      - seealso:
      `SessionBuilder.SessionBuilderError`
      - author:
@@ -476,21 +483,21 @@ public final class SessionBuilder  {
      */
     public func build() throws -> WebimSession {
         guard let accountName = accountName else {
-            throw SessionBuilderError.NIL_ACCOUNT_NAME
+            throw SessionBuilderError.nilAccountName
         }
         guard let location = location else {
-            throw SessionBuilderError.NIL_LOCATION
+            throw SessionBuilderError.nilLocation
         }
 
-        let remoteNotificationsEnabled = (self.remoteNotificationSystem != Webim.RemoteNotificationSystem.NONE)
+        let remoteNotificationsEnabled = (self.remoteNotificationSystem != Webim.RemoteNotificationSystem.none)
         if (deviceToken != nil)
             && !remoteNotificationsEnabled {
-            throw SessionBuilderError.INVALID_REMOTE_NOTIFICATION_CONFIGURATION
+            throw SessionBuilderError.invalidRemoteNotificationConfiguration
         }
 
         if (visitorFields != nil)
             && (providedAuthorizationTokenStateListener != nil) {
-            throw SessionBuilderError.INVALID_AUTHENTICATION_PARAMETERS
+            throw SessionBuilderError.invalidAuthentificatorParameters
         }
         
         if let listener = providedAuthorizationTokenStateListener, self.providedAuthorizationToken == nil {
@@ -501,7 +508,7 @@ public final class SessionBuilder  {
             if !prechat.contains(":") {
                 //not json or string data
                 if prechat.count % 2 != 0 {
-                    throw SessionBuilderError.INVALIDE_HEX
+                    throw SessionBuilderError.invalidHex
                 }
                 var byteArray = [UInt8]()
                 var index = prechat.startIndex
@@ -511,7 +518,7 @@ public final class SessionBuilder  {
                     if let b = UInt8(prechat[index..<nextIndex], radix: 16) {
                         byteArray.append(b)
                     } else {
-                        throw SessionBuilderError.INVALIDE_HEX
+                        throw SessionBuilderError.invalidHex
                     }
                     
                     index = nextIndex
@@ -530,7 +537,7 @@ public final class SessionBuilder  {
                     pair.count != 2
                 }
                 if hasError {
-                    throw SessionBuilderError.INVALIDE_HEX
+                    throw SessionBuilderError.invalidHex
                 }
                 let result = pairs.map { pair in
                     "\"\(pair[0])\": \"\(pair[1])\""
@@ -586,7 +593,7 @@ public final class SessionBuilder  {
         } catch let error as SessionBuilder.SessionBuilderError {
             onError(error)
         } catch {
-            onError(.UNKNOWN)
+            onError(.unknown)
         }
     }
 
@@ -614,6 +621,9 @@ public final class SessionBuilder  {
          - copyright:
          2018 Webim
          */
+        case verbose
+        
+        @available(*, unavailable, renamed: "verbose")
         case VERBOSE
 
         /**
@@ -628,6 +638,9 @@ public final class SessionBuilder  {
          - copyright:
          2018 Webim
          */
+        case debug
+        
+        @available(*, unavailable, renamed: "debug")
         case DEBUG
 
         /**
@@ -640,6 +653,9 @@ public final class SessionBuilder  {
          - copyright:
          2018 Webim
          */
+        case info
+        
+        @available(*, unavailable, renamed: "info")
         case INFO
 
         /**
@@ -651,6 +667,9 @@ public final class SessionBuilder  {
          - copyright:
          2018 Webim
          */
+        case warning
+        
+        @available(*, unavailable, renamed: "warning")
         case WARNING
 
         /**
@@ -661,6 +680,9 @@ public final class SessionBuilder  {
          - copyright:
          2018 Webim
          */
+        case error
+        
+        @available(*, unavailable, renamed: "error")
         case ERROR
 
     }
@@ -687,6 +709,9 @@ public final class SessionBuilder  {
          - copyright:
          2017 Webim
          */
+        case invalidAuthentificatorParameters
+        
+        @available(*, unavailable, renamed: "invalidAuthentificatorParameters")
         case INVALID_AUTHENTICATION_PARAMETERS
 
         /**
@@ -699,6 +724,9 @@ public final class SessionBuilder  {
          - copyright:
          2017 Webim
          */
+        case invalidRemoteNotificationConfiguration
+        
+        @available(*, unavailable, renamed: "invalidRemoteNotificationConfiguration")
         case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
 
         /**
@@ -710,6 +738,9 @@ public final class SessionBuilder  {
          - copyright:
          2017 Webim
          */
+        case nilAccountName
+        
+        @available(*, unavailable, renamed: "nilAccountName")
         case NIL_ACCOUNT_NAME
 
         /**
@@ -721,10 +752,19 @@ public final class SessionBuilder  {
          - copyright:
          2017 Webim
          */
+        case nilLocation
+        
+        @available(*, unavailable, renamed: "nilLocation")
         case NIL_LOCATION
         
+        case invalidHex
+        
+        @available(*, unavailable, renamed: "invalidHex")
         case INVALIDE_HEX
         
+        case unknown
+        
+        @available(*, unavailable, renamed: "unknown")
         case UNKNOWN
 
     }
@@ -793,7 +833,7 @@ public final class FAQBuilder  {
      - returns:
      New `FAQ` object.
      - throws:
-     `SessionBuilder.SessionBuilderError.NIL_ACCOUNT_NAME` if account name wasn't set to a non-nil value.
+     `SessionBuilder.SessionBuilderError.nilAccountName` if account name wasn't set to a non-nil value.
      - seealso:
      `FAQBuilder.FAQBuilderError`
      - author:
@@ -803,7 +843,7 @@ public final class FAQBuilder  {
      */
     public func build() throws -> FAQ {
         guard let accountName = accountName else {
-            throw FAQBuilderError.NIL_ACCOUNT_NAME
+            throw FAQBuilderError.nilAccountName
         }
         
         return FAQImpl.newInstanceWith(accountName: accountName,
@@ -832,6 +872,9 @@ public final class FAQBuilder  {
          - copyright:
          2019 Webim
          */
+        case nilAccountName
+        
+        @available(*, unavailable, renamed: "nilAccountName")
         case NIL_ACCOUNT_NAME
         
     }

@@ -54,7 +54,7 @@ class SessionBuilderTests: XCTestCase {
             .set(accountName: "account")
             .set(location: "location")
             .set(deviceToken: "token")
-            .set(remoteNotificationSystem: .APNS)
+            .set(remoteNotificationSystem: .apns)
             .build())
         
         XCTAssertThrowsError(try Webim
@@ -85,7 +85,7 @@ class SessionBuilderTests: XCTestCase {
             .set(visitorFieldsJSONData: visitorFieldsJSONString.data(using: .utf8)!)
             .set(pageTitle: "title")
             .set(fatalErrorHandler: self)
-            .set(remoteNotificationSystem: .APNS)
+            .set(remoteNotificationSystem: .apns)
             .set(deviceToken: "token")
             .set(isLocalHistoryStoragingEnabled: true)
             .set(isVisitorDataClearingEnabled: false)

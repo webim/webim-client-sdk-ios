@@ -138,8 +138,8 @@ final class ChatViewController: SLKTextViewController {
             cell.avatarImageView.addGestureRecognizer(gestureRecognizer)
         }
         
-        if (message.getType() == .FILE_FROM_OPERATOR)
-            || (message.getType() == .FILE_FROM_VISITOR) {
+        if (message.getType() == .fileFromOperator)
+            || (message.getType() == .fileFromVisitor) {
             let gestureRecognizer = UITapGestureRecognizer(target: self,
                                                            action: #selector(ChatViewController.showFile(_:)))
             cell.bodyLabel.addGestureRecognizer(gestureRecognizer)
@@ -367,16 +367,21 @@ final class ChatViewController: SLKTextViewController {
         }
         
         let message = messages[tapIndexPath.row]
-        guard let attachment = message.getAttachment() else {
+        guard let data = message.getData(),
+            let fileData = data.getAttachment() else {
             return
         }
+        let attachment = fileData.getFileInfo()
         
-        let attachmentURL = attachment.getURL()
+        guard let contentType = attachment.getContentType(),
+        let attachmentURL = attachment.getURL() else {
+            return
+        }
         
         var popupMessage: String?
         var image: UIImage?
         
-        if isImage(contentType: attachment.getContentType()) {
+        if isImage(contentType: contentType) {
             let semaphore = DispatchSemaphore(value: 0)
             let request = URLRequest(url: attachmentURL)
             
@@ -432,20 +437,11 @@ extension ChatViewController: UIImagePickerControllerDelegate {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             if let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
                 let imageData: Data
-                var mimeType = MimeType(url: imageURL as URL)
-                var imageName = imageURL.lastPathComponent
+                let mimeType = MimeType(url: imageURL as URL)
+                let imageName = imageURL.lastPathComponent
                 let imageExtension = imageURL.pathExtension.lowercased()
                 if imageExtension == "jpg" || imageExtension == "jpeg" {
                     imageData = image.jpegData(compressionQuality: 1.0)!
-                } else if imageExtension == "heic" || imageExtension == "heif" {
-                    imageData = image.jpegData(compressionQuality: 0.5)!
-                    mimeType = MimeType()
-                    var components = imageName.components(separatedBy: ".")
-                    if components.count > 1 {
-                        components.removeLast()
-                        imageName = components.joined(separator: ".")
-                    }
-                    imageName += ".jpeg"
                 } else {
                     imageData = image.pngData()!
                 }
@@ -569,19 +565,19 @@ extension ChatViewController: SendFileCompletionHandler {
         DispatchQueue.main.sync {
             var message: String?
             switch error {
-            case .FILE_SIZE_EXCEEDED:
+            case .fileSizeExceeded:
                 message = SendFileErrorMessage.fileSizeExceeded.rawValue.localized
                 
                 break
-            case .FILE_TYPE_NOT_ALLOWED:
+            case .fileTypeNotAllowed:
                 message = SendFileErrorMessage.fileTypeNotAllowed.rawValue.localized
                 
                 break
-            case .UNKNOWN:
+            case .unknown:
                 message = SendFileErrorMessage.unknownError.rawValue.localized
                 
                 break
-            case .UPLOADED_FILE_NOT_FOUND:
+            case .uploadedFileNotFound:
                 message = SendFileErrorMessage.fileNotFound.rawValue.localized
                 
                 break

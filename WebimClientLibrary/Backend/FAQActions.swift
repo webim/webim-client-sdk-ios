@@ -173,9 +173,9 @@ class FAQActions {
                openFrom: FAQItemSource) {
         let source: String
         switch openFrom {
-            case .SEARCH:
+            case .search:
                 source = "search"
-            case .TREE:
+            case .tree:
                 source = "tree"
         }
         let dataToPost = [Parameter.itemId.rawValue: itemId,

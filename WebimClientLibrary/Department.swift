@@ -121,6 +121,9 @@ public enum DepartmentOnlineStatus {
      - copyright:
      2017 Webim
      */
+    case busyOffline
+    
+    @available(*, unavailable, renamed: "busyOffline")
     case BUSY_OFFLINE
     
     /**
@@ -130,6 +133,9 @@ public enum DepartmentOnlineStatus {
      - copyright:
      2017 Webim
      */
+    case busyOnline
+    
+    @available(*, unavailable, renamed: "busyOnline")
     case BUSY_ONLINE
     
     /**
@@ -139,6 +145,9 @@ public enum DepartmentOnlineStatus {
      - copyright:
      2017 Webim
      */
+    case offline
+    
+    @available(*, unavailable, renamed: "offline")
     case OFFLINE
     
     /**
@@ -148,6 +157,9 @@ public enum DepartmentOnlineStatus {
      - copyright:
      2017 Webim
      */
+    case online
+    
+    @available(*, unavailable, renamed: "online")
     case ONLINE
     
     /**
@@ -157,6 +169,9 @@ public enum DepartmentOnlineStatus {
      - copyright:
      2017 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
 }

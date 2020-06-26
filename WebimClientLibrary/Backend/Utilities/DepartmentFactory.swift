@@ -63,15 +63,15 @@ final class DepartmentFactory {
     private func publicState(ofDepartmentOnlineStatus departmentOnlineStatus: DepartmentItem.InternalDepartmentOnlineStatus) -> DepartmentOnlineStatus {
         switch departmentOnlineStatus {
         case .busyOffline:
-            return .BUSY_OFFLINE
+            return .busyOffline
         case .busyOnline:
-            return .BUSY_ONLINE
+            return .busyOnline
         case .offline:
-            return .OFFLINE
+            return .offline
         case .online:
-            return .ONLINE
+            return .online
         case .unknown:
-            return .UNKNOWN
+            return .unknown
         }
     }
     

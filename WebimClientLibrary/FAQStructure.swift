@@ -95,6 +95,9 @@ public enum RootType {
      - copyright:
      2019 Webim
      */
+    case category
+    
+    @available(*, unavailable, renamed: "category")
     case CATEGORY
     
     /**
@@ -104,6 +107,9 @@ public enum RootType {
      - copyright:
      2019 Webim
      */
+    case item
+    
+    @available(*, unavailable, renamed: "item")
     case ITEM
     
     /**
@@ -113,6 +119,9 @@ public enum RootType {
      - copyright:
      2019 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
 }

@@ -43,7 +43,7 @@ class WebimRemoteNotificationImplTests: XCTestCase {
         XCTAssertNil(webimRemoteNotification?.getEvent())
         XCTAssertTrue(webimRemoteNotification!.getParameters().isEmpty)
         XCTAssertEqual(webimRemoteNotification?.getType(),
-                       NotificationType.CONTACT_INFORMATION_REQUEST)
+                       NotificationType.contactInformationRequest)
     }
     
     func testOperatorAcceptedNotification() {
@@ -58,7 +58,7 @@ class WebimRemoteNotificationImplTests: XCTestCase {
         XCTAssertNil(webimRemoteNotification?.getEvent())
         XCTAssertTrue(webimRemoteNotification?.getParameters().count == 1)
         XCTAssertEqual(webimRemoteNotification?.getType(),
-                       NotificationType.OPERATOR_ACCEPTED)
+                       NotificationType.operatorAccepted)
     }
     
     func testOperatorFileNotification() {
@@ -72,10 +72,10 @@ class WebimRemoteNotificationImplTests: XCTestCase {
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
         
         // Then: Parameters should be ruturned like this.
-        XCTAssertEqual(webimRemoteNotification?.getEvent(), NotificationEvent.ADD)
+        XCTAssertEqual(webimRemoteNotification?.getEvent(), NotificationEvent.add)
         XCTAssertTrue(webimRemoteNotification?.getParameters().count == 2)
         XCTAssertEqual(webimRemoteNotification?.getType(),
-                       NotificationType.OPERATOR_FILE)
+                       NotificationType.operatorFile)
     }
     
     func testOperatorMessageNotification() {
@@ -89,10 +89,10 @@ class WebimRemoteNotificationImplTests: XCTestCase {
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
         
         // Then: Parameters should be ruturned like this.
-        XCTAssertEqual(webimRemoteNotification?.getEvent(), NotificationEvent.DELETE)
+        XCTAssertEqual(webimRemoteNotification?.getEvent(), NotificationEvent.delete)
         XCTAssertTrue(webimRemoteNotification?.getParameters().count == 2)
         XCTAssertEqual(webimRemoteNotification?.getType(),
-                       NotificationType.OPERATOR_MESSAGE)
+                       NotificationType.operatorMessage)
     }
     
     func testWidgetNotification() {
@@ -106,7 +106,7 @@ class WebimRemoteNotificationImplTests: XCTestCase {
         XCTAssertNil(webimRemoteNotification?.getEvent())
         XCTAssertTrue(webimRemoteNotification!.getParameters().isEmpty)
         XCTAssertEqual(webimRemoteNotification?.getType(),
-                       NotificationType.WIDGET)
+                       NotificationType.widget)
     }
     
     func testUnsupportedType() {

@@ -51,10 +51,12 @@ final class ProvidedVisitorFields {
     }
     
     convenience init?(withJSONObject jsonData: Data) {
-        let jsonString = String(data: jsonData,
-                                encoding: .utf8)
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+            WebimInternalLogger.shared.log(entry: "Getting String from json failure in ProvidedVisitorFields.\(#function)")
+            return nil
+        }
         
-        self.init(jsonString: jsonString!,
+        self.init(jsonString: jsonString,
                   JSONObject: jsonData)
         
     }
@@ -81,7 +83,7 @@ final class ProvidedVisitorFields {
             self.jsonString = jsonString
         } catch {
             WebimInternalLogger.shared.log(entry: "Error serializing provided visitor fields: \(String(data: JSONObject, encoding: .utf8) ?? "unreadable data").",
-                verbosityLevel: .DEBUG)
+                verbosityLevel: .debug)
             
             return nil
         }

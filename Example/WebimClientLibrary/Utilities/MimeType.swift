@@ -37,6 +37,8 @@ fileprivate let mimeTypes = [
     "gif" : "image/gif",
     "jpeg" : "image/jpeg",
     "jpg" : "image/jpeg",
+    "heic" : "image/heic",
+    "heif" : "image/heif",
     "js" : "application/javascript",
     "atom" : "application/atom+xml",
     "rss" : "application/rss+xml",

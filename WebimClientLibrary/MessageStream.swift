@@ -149,8 +149,8 @@ public protocol MessageStream: class {
      - parameter comletionHandler:
      `RateOperatorCompletionHandler` object.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -176,8 +176,8 @@ public protocol MessageStream: class {
      - parameter comletionHandler:
      `RateOperatorCompletionHandler` object.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -195,8 +195,8 @@ public protocol MessageStream: class {
      - parameter id:
      ID of the operator to be rated. If passed `nil` current chat operator will be rated.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -205,11 +205,11 @@ public protocol MessageStream: class {
     func respondSentryCall(id: String) throws
     
     /**
-     Changes `ChatState` to `ChatState.QUEUE`.
-     Can cause `VisitSessionState.DEPARTMENT_SELECTION` session state. It means that chat must be started by `startChat(departmentKey:)` method.
+     Changes `ChatState` to `ChatState.queue`.
+     Can cause `VisitSessionState.departmentSelection` session state. It means that chat must be started by `startChat(departmentKey:)` method.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -219,12 +219,12 @@ public protocol MessageStream: class {
     
     /**
      Starts chat and sends first message simultaneously.
-     Changes `ChatState` to `ChatState.QUEUE`.
+     Changes `ChatState` to `ChatState.queue`.
      - parameter firstQuestion:
      First message to send.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -234,14 +234,14 @@ public protocol MessageStream: class {
     
     /**
      Starts chat with particular department.
-     Changes `ChatState` to `ChatState.QUEUE`.
+     Changes `ChatState` to `ChatState.queue`.
      - seealso:
      `Department` protocol.
      - parameter departmentKey:
      Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -252,12 +252,12 @@ public protocol MessageStream: class {
     
     /**
      Starts chat with custom fields.
-     Changes `ChatState` to `ChatState.QUEUE`.
+     Changes `ChatState` to `ChatState.queue`.
      - parameter customFields:
      Custom fields in JSON format.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -267,7 +267,7 @@ public protocol MessageStream: class {
     
     /**
      Starts chat with particular department and sends first message simultaneously.
-     Changes `ChatState` to `ChatState.QUEUE`.
+     Changes `ChatState` to `ChatState.queue`.
      - seealso:
      `Department` protocol.
      - parameter departmentKey:
@@ -275,8 +275,8 @@ public protocol MessageStream: class {
      - parameter firstQuestion:
      First message to send.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev
      - copyright:
@@ -287,14 +287,14 @@ public protocol MessageStream: class {
     
     /**
      Starts chat with custom fields and sends first message simultaneously.
-     Changes `ChatState` to `ChatState.QUEUE`.
+     Changes `ChatState` to `ChatState.queue`.
      - parameter firstQuestion:
      First message to send.
      - parameter customFields:
      Custom fields in JSON format.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -305,7 +305,7 @@ public protocol MessageStream: class {
     
     /**
      Starts chat with particular department and custom fields.
-     Changes `ChatState` to `ChatState.QUEUE`.
+     Changes `ChatState` to `ChatState.queue`.
      - seealso:
      `Department` protocol.
      - parameter departmentKey:
@@ -313,8 +313,8 @@ public protocol MessageStream: class {
      - parameter customFields:
      Custom fields in JSON format.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -325,7 +325,7 @@ public protocol MessageStream: class {
     
     /**
      Starts chat with particular department and custom fields and sends first message simultaneously.
-     Changes `ChatState` to `ChatState.QUEUE`.
+     Changes `ChatState` to `ChatState.queue`.
      - seealso:
      `Department` protocol.
      - parameter departmentKey:
@@ -335,8 +335,8 @@ public protocol MessageStream: class {
      - parameter customFields:
      Custom fields in JSON format.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -348,10 +348,10 @@ public protocol MessageStream: class {
     
     
     /**
-     Changes `ChatState` to `ChatState.CLOSED_BY_VISITOR`.
+     Changes `ChatState` to `ChatState.closedByVisitor`.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -364,8 +364,8 @@ public protocol MessageStream: class {
      - parameter draftMessage:
      Current message content.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -378,8 +378,8 @@ public protocol MessageStream: class {
      - parameter prechatFields:
      Custom fields.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -389,7 +389,7 @@ public protocol MessageStream: class {
     
     /**
      Sends a text message.
-     When calling this method, if there is an active `MessageTracker` (see newMessageTracker(messageListener:)). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` (see newMessageTracker(messageListener:)). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.sending` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -397,8 +397,8 @@ public protocol MessageStream: class {
      - returns:
      ID of the message.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -407,8 +407,29 @@ public protocol MessageStream: class {
     func send(message: String) throws -> String
     
     /**
+    Sends a text message.
+    When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+    - important:
+    Maximum length of message is 32000 characters. Longer messages will be clipped.
+    - parameter message:
+    Text of the message.
+    - parameter completionHandler:
+    Completion handler that executes when operation is done.
+    - returns:
+    ID of the message.
+    - throws:
+    `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+    `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+    - author:
+    Yury Vozleev
+    - copyright:
+    2020 Webim
+    */
+    func send(message: String, completionHandler: SendMessageCompletionHandler?) throws -> String
+    
+    /**
      Sends a text message.
-     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.sending` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -420,8 +441,8 @@ public protocol MessageStream: class {
      - returns:
      ID of the message.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -433,7 +454,7 @@ public protocol MessageStream: class {
     
     /**
      Sends a text message.
-     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.sending` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -443,8 +464,8 @@ public protocol MessageStream: class {
      - returns:
      ID of the message.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -455,7 +476,7 @@ public protocol MessageStream: class {
     
     /**
      Sends a file message.
-     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method), `MessageListener.added(message:after:)` with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method), `MessageListener.added(message:after:)` with a message `MessageSendStatus.sending` in the status is also called.
      - seealso:
      Method could fail. See `SendFileError`.
      - parameter file:
@@ -469,8 +490,8 @@ public protocol MessageStream: class {
      - returns:
      ID of the message.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -490,8 +511,8 @@ public protocol MessageStream: class {
      - parameter completionHandler:
      Completion handler that executes when operation is done.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -510,8 +531,8 @@ public protocol MessageStream: class {
      - parameter completionHandler:
      Completion handler that executes when operation is done.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -526,8 +547,8 @@ public protocol MessageStream: class {
      - parameter data:
      JSON string with new widget status.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -537,7 +558,7 @@ public protocol MessageStream: class {
     
     /**
      Reply a message.
-     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.sending` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -547,8 +568,8 @@ public protocol MessageStream: class {
      - returns:
      ID of the message or nil, if message can't be replied.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -559,7 +580,7 @@ public protocol MessageStream: class {
     
     /**
      Edits a text message.
-     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.changed(oldVersion:newVersion:)`) with a message `MessageSendStatus.SENDING` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.changed(oldVersion:newVersion:)`) with a message `MessageSendStatus.sending` in the status is also called.
      - important:
      Maximum length of message is 32000 characters. Longer messages will be clipped.
      - parameter message:
@@ -571,8 +592,8 @@ public protocol MessageStream: class {
      - returns:
      True if the message can be edited.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -584,7 +605,7 @@ public protocol MessageStream: class {
     
     /**
      Deletes a message.
-     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.removed(message:)`) with a message `MessageSendStatus.SENT` in the status is also called.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.removed(message:)`) with a message `MessageSendStatus.sent` in the status is also called.
      - parameter message:
      The message to delete.
      - parameter completionHandler:
@@ -592,8 +613,8 @@ public protocol MessageStream: class {
      - returns:
      True if the message can be deleted.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -605,8 +626,8 @@ public protocol MessageStream: class {
     /**
      Set chat has been read by visitor.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Aleksej Lapenok
      - copyright:
@@ -621,8 +642,8 @@ public protocol MessageStream: class {
      - parameter completionHandler:
      Completion handler that executes when operation is done.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Kaberov
      - copyright:
@@ -641,8 +662,8 @@ public protocol MessageStream: class {
      - returns:
      A new `MessageTracker` for this stream.
      - throws:
-     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -906,6 +927,18 @@ public protocol DeleteMessageCompletionHandler: class {
      */
     func onFailure(messageID: String,
                    error: DeleteMessageError)
+}
+
+/**
+- seealso:
+`MessageStream.send(message:completionHandler:)`
+- author:
+Yury Vozleev
+- copyright:
+2020 Webim
+*/
+public protocol SendMessageCompletionHandler: class {
+    func onSuccess(messageID: String)
 }
 
 /**
@@ -1317,12 +1350,12 @@ public protocol UnreadByVisitorTimestampChangeListener: class {
 
 /**
  A chat is seen in different ways by an operator depending on ChatState.
- The initial state is `NONE`.
- Then if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`), the chat changes it's state to `QUEUE`. The chat can be turned into this state by calling `MessageStream.startChat()`.
- After that, if an operator takes the chat to process, the state changes to `CHATTING`. The chat is being in this state until the visitor or the operator closes it.
- When closing a chat by the visitor `MessageStream.closeChat()`, it turns into the state `CLOSED_BY_VISITOR`, by the operator - `CLOSED_BY_OPERATOR`.
- When both the visitor and the operator close the chat, it's state changes to the initial – `NONE`. A chat can also automatically turn into the initial state during long-term absence of activity in it.
- Furthermore, the first message can be sent not only by a visitor but also by an operator. In this case the state will change from the initial to `INVITATION`, and then, after the first message of the visitor, it changes to `CHATTING`.
+ The initial state is `closed`.
+ Then if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`), the chat changes it's state to `queue`. The chat can be turned into this state by calling `MessageStream.startChat()`.
+ After that, if an operator takes the chat to process, the state changes to `chatting`. The chat is being in this state until the visitor or the operator closes it.
+ When closing a chat by the visitor `MessageStream.closeChat()`, it turns into the state `closedByVisitor`, by the operator - `closedByOperator`.
+ When both the visitor and the operator close the chat, it's state changes to the initial – `closed`. A chat can also automatically turn into the initial state during long-term absence of activity in it.
+ Furthermore, the first message can be sent not only by a visitor but also by an operator. In this case the state will change from the initial to `invitation`, and then, after the first message of the visitor, it changes to `chatting`.
  - author:
  Nikita Lazarev-Zubov
  - copyright:
@@ -1333,88 +1366,109 @@ public enum ChatState {
     /**
      Means that an operator has taken a chat for processing.
      From this state a chat can be turned into:
-     * `CLOSED_BY_OPERATOR`, if an operator closes the chat;
-     * `CLOSED_BY_VISITOR`, if a visitor closes the chat (`MessageStream.closeChat()`);
-     * `NONE`, automatically during long-term absence of activity.
+     * `closedByOperator`, if an operator closes the chat;
+     * `closedByVisitor`, if a visitor closes the chat (`MessageStream.closeChat()`);
+     * `closed`, automatically during long-term absence of activity.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
+    case chatting
+    
+    @available(*, unavailable, renamed: "chatting")
     case CHATTING
     
     /**
      Means that chat is picked up by a bot.
      From this state a chat can be turned into:
-     * `CHATTING`, if an operator intercepted the chat;
-     * `CLOSED_BY_VISITOR`, if a visitor closes the chat (`MessageStream.closeChat()`);
-     * `NONE`, automatically during long-term absence of activity.
+     * `chatting`, if an operator intercepted the chat;
+     * `closedByVisitor`, if a visitor closes the chat (`MessageStream.closeChat()`);
+     * `closed`, automatically during long-term absence of activity.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2018 Webim
      */
+    case chattingWithRobot
+    
+    @available(*, unavailable, renamed: "chattingWithRobot")
     case CHATTING_WITH_ROBOT
     
     /**
      Means that an operator has closed the chat.
      From this state a chat can be turned into:
-     * `NONE`, if the chat is also closed by a visitor (`MessageStream.closeChat()`), or automatically during long-term absence of activity;
-     * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
+     * `closed`, if the chat is also closed by a visitor (`MessageStream.closeChat()`), or automatically during long-term absence of activity;
+     * `queue`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
+    case closedByOperator
+    
+    @available(*, unavailable, renamed: "closedByVisitor")
     case CLOSED_BY_OPERATOR
     
     /**
      Means that a visitor has closed the chat.
      From this state a chat can be turned into:
-     * `NONE`, if the chat is also closed by an operator or automatically during long-term absence of activity;
-     * `QUEUE`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
+     * `closed`, if the chat is also closed by an operator or automatically during long-term absence of activity;
+     * `queue`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
+    case closedByVisitor
+    
+    @available(*, unavailable, renamed: "closedByVisitor")
     case CLOSED_BY_VISITOR
     
     /**
      Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
      From this state a chat can be turned into:
-     * `CHATTING`, if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`);
-     * `NONE`, if an operator or a visitor closes the chat (`MessageStream.closeChat()`).
+     * `chatting`, if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`);
+     * `closed`, if an operator or a visitor closes the chat (`MessageStream.closeChat()`).
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
+    case invitation
+    
+    @available(*, unavailable, renamed: "invitation")
     case INVITATION
     
     /**
      Means the absence of a chat as such, e.g. a chat has not been started by a visitor nor by an operator.
      From this state a chat can be turned into:
-     * `QUEUE`, if the chat is started by a visitor (by the first message or by calling `MessageStream.startChat()`;
-     * `INVITATION`, if the chat is started by an operator.
+     * `queue`, if the chat is started by a visitor (by the first message or by calling `MessageStream.startChat()`;
+     * `invitation`, if the chat is started by an operator.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
+    case closed
+    
+    @available(*, unavailable, renamed: "closed")
     case NONE
     
     /**
      Means that a chat has been started by a visitor and at this moment is being in the queue for processing by an operator.
      From this state a chat can be turned into:
-     * `CHATTING`, if an operator takes the chat for processing;
-     * `NONE`, if a visitor closes the chat (by calling (`MessageStream.closeChat()`) before it is taken for processing;
-     * `CLOSED_BY_OPERATOR`, if an operator closes the chat without taking it for processing.
+     * `chatting`, if an operator takes the chat for processing;
+     * `closed`, if a visitor closes the chat (by calling (`MessageStream.closeChat()`) before it is taken for processing;
+     * `closedByOperator`, if an operator closes the chat without taking it for processing.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
+    case queue
+    
+    @available(*, unavailable, renamed: "queue")
     case QUEUE
     
     /**
@@ -1425,6 +1479,9 @@ public enum ChatState {
      - copyright:
      2017 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
 }
@@ -1448,6 +1505,9 @@ public enum OnlineStatus {
      - copyright:
      2017 Webim
      */
+    case busyOffline
+    
+    @available(*, unavailable, renamed: "busyOffline")
     case BUSY_OFFLINE
     
     /**
@@ -1458,6 +1518,9 @@ public enum OnlineStatus {
      - copyright:
      2017 Webim
      */
+    case busyOnline
+    
+    @available(*, unavailable, renamed: "busyOnline")
     case BUSY_ONLINE
     
     /**
@@ -1467,6 +1530,9 @@ public enum OnlineStatus {
      - copyright:
      2017 Webim
      */
+    case offline
+    
+    @available(*, unavailable, renamed: "offline")
     case OFFLINE
     
     /**
@@ -1476,6 +1542,9 @@ public enum OnlineStatus {
      - copyright:
      2017 Webim
      */
+    case online
+    
+    @available(*, unavailable, renamed: "online")
     case ONLINE
     
     /**
@@ -1485,6 +1554,9 @@ public enum OnlineStatus {
      - copyright:
      2017 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
 }
@@ -1508,6 +1580,9 @@ public enum VisitSessionState {
      - copyright:
      2017 Webim
      */
+    case chat
+    
+    @available(*, unavailable, renamed: "chat")
     case CHAT
     
     /**
@@ -1519,6 +1594,9 @@ public enum VisitSessionState {
      - copyright:
      2017 Webim
      */
+    case departmentSelection
+    
+    @available(*, unavailable, renamed: "departmentSelection")
     case DEPARTMENT_SELECTION
     
     /**
@@ -1528,6 +1606,9 @@ public enum VisitSessionState {
      - copyright:
      2017 Webim
      */
+    case idle
+    
+    @available(*, unavailable, renamed: "idle")
     case IDLE
     
     /**
@@ -1537,6 +1618,9 @@ public enum VisitSessionState {
      - copyright:
      2017 Webim
      */
+    case idleAfterChat
+    
+    @available(*, unavailable, renamed: "idleAfterChat")
     case IDLE_AFTER_CHAT
     
     /**
@@ -1546,6 +1630,9 @@ public enum VisitSessionState {
      - copyright:
      2017 Webim
      */
+    case offlineMessage
+    
+    @available(*, unavailable, renamed: "offlineMessage")
     case OFFLINE_MESSAGE
     
     /**
@@ -1555,6 +1642,9 @@ public enum VisitSessionState {
      - copyright:
      2017 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
 }
@@ -1576,6 +1666,9 @@ public enum DataMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
     // MARK: Quoted message errors
@@ -1588,6 +1681,9 @@ public enum DataMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case quotedMessageCanNotBeReplied
+    
+    @available(*, unavailable, renamed: "quotedMessageCanNotBeReplied")
     case QUOTED_MESSAGE_CANNOT_BE_REPLIED
     
     /**
@@ -1597,6 +1693,9 @@ public enum DataMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case quotedMessageFromAnotherVisitor
+    
+    @available(*, unavailable, renamed: "quotedMessageFromAnotherVisitor")
     case QUOTED_MESSAGE_FROM_ANOTHER_VISITOR
     
     /**
@@ -1606,6 +1705,9 @@ public enum DataMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case quotedMessageMultipleIds
+    
+    @available(*, unavailable, renamed: "quotedMessageMultipleIds")
     case QUOTED_MESSAGE_MULTIPLE_IDS
     
     /**
@@ -1615,6 +1717,9 @@ public enum DataMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case quotedMessageRequiredArgumentsMissing
+    
+    @available(*, unavailable, renamed: "quotedMessageRequiredArgumentsMissing")
     case QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING
     
     /**
@@ -1624,6 +1729,9 @@ public enum DataMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case quotedMessageWrongId
+    
+    @available(*, unavailable, renamed: "quotedMessageWrongId")
     case QUOTED_MESSAGE_WRONG_ID
     
 }
@@ -1644,6 +1752,9 @@ public enum EditMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     /**
      Editing messages by visitor is turned off on the server.
@@ -1652,6 +1763,9 @@ public enum EditMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case notAllowed
+    
+    @available(*, unavailable, renamed: "notAllowed")
     case NOT_ALLOWED
     /**
      Editing message is empty.
@@ -1660,6 +1774,9 @@ public enum EditMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case messageEmpty
+    
+    @available(*, unavailable, renamed: "messageEmpty")
     case MESSAGE_EMPTY
     /**
      Visitor can edit only his messages.
@@ -1669,6 +1786,9 @@ public enum EditMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case messageNotOwned
+    
+    @available(*, unavailable, renamed: "messageNotOwned")
     case MESSAGE_NOT_OWNED
     /**
      The server may deny a request if the message size exceeds a limit.
@@ -1678,6 +1798,9 @@ public enum EditMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case maxLengthExceeded
+    
+    @available(*, unavailable, renamed: "maxLengthExceeded")
     case MAX_LENGTH_EXCEEDED
     /**
      Visitor can edit only text messages.
@@ -1686,6 +1809,9 @@ public enum EditMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case wrongMesageKind
+    
+    @available(*, unavailable, renamed: "wrongMesageKind")
     case WRONG_MESSAGE_KIND
 }
 
@@ -1705,6 +1831,9 @@ public enum DeleteMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     /**
      Deleting messages by visitor is turned off on the server.
@@ -1713,6 +1842,9 @@ public enum DeleteMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case notAllowed
+    
+    @available(*, unavailable, renamed: "notAllowed")
     case NOT_ALLOWED
     /**
      Visitor can delete only his messages.
@@ -1722,6 +1854,9 @@ public enum DeleteMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case messageNotOwned
+    
+    @available(*, unavailable, renamed: "messageNotOwned")
     case MESSAGE_NOT_OWNED
     /**
      Message with the specified id is not found in history.
@@ -1730,6 +1865,9 @@ public enum DeleteMessageError: Error {
      - copyright:
      2018 Webim
      */
+    case messageNotFound
+    
+    @available(*, unavailable, renamed: "messageNotFound")
     case MESSAGE_NOT_FOUND
 }
 
@@ -1751,6 +1889,9 @@ public enum SendFileError: Error {
      - copyright:
      2017 Webim
      */
+    case fileSizeExceeded
+    
+    @available(*, unavailable, renamed: "fileSizeExceeded")
     case FILE_SIZE_EXCEEDED
     
     /**
@@ -1761,6 +1902,9 @@ public enum SendFileError: Error {
      - copyright:
      2017 Webim
      */
+    case fileTypeNotAllowed
+    
+    @available(*, unavailable, renamed: "fileTypeNotAllowed")
     case FILE_TYPE_NOT_ALLOWED
     
     /**
@@ -1770,6 +1914,9 @@ public enum SendFileError: Error {
      - copyright:
      2018 Webim
      */
+    case uploadedFileNotFound
+    
+    @available(*, unavailable, renamed: "uploadedFileNotFound")
     case UPLOADED_FILE_NOT_FOUND
     /**
      Received error is not supported by current WebimClientLibrary version.
@@ -1778,6 +1925,9 @@ public enum SendFileError: Error {
      - copyright:
      2018 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
 }
@@ -1799,6 +1949,9 @@ public enum KeyboardResponseError: Error {
      - copyright:
      2019 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
     /**
@@ -1808,6 +1961,9 @@ public enum KeyboardResponseError: Error {
      - copyright:
      2019 Webim
      */
+    case noChat
+    
+    @available(*, unavailable, renamed: "noChat")
     case NO_CHAT
     
     /**
@@ -1817,6 +1973,9 @@ public enum KeyboardResponseError: Error {
      - copyright:
      2019 Webim
      */
+    case buttonIdNotSet
+    
+    @available(*, unavailable, renamed: "buttonIdNotSet")
     case BUTTON_ID_NOT_SET
     
     /**
@@ -1826,6 +1985,9 @@ public enum KeyboardResponseError: Error {
      - copyright:
      2019 Webim
      */
+    case requestMessageIdNotSet
+    
+    @available(*, unavailable, renamed: "requestMessageIdNotSet")
     case REQUEST_MESSAGE_ID_NOT_SET
     
     /**
@@ -1835,6 +1997,9 @@ public enum KeyboardResponseError: Error {
      - copyright:
      2019 Webim
      */
+    case canNotCreateResponse
+    
+    @available(*, unavailable, renamed: "canNotCreateResponse")
     case CAN_NOT_CREATE_RESPONSE
     
 }
@@ -1856,6 +2021,9 @@ public enum RateOperatorError: Error {
      - copyright:
      2017 Webim
      */
+    case noChat
+    
+    @available(*, unavailable, renamed: "noChat")
     case NO_CHAT
     
     /**
@@ -1865,6 +2033,9 @@ public enum RateOperatorError: Error {
      - copyright:
      2017 Webim
      */
+    case wrongOperatorId
+    
+    @available(*, unavailable, renamed: "wrongOperatorId")
     case WRONG_OPERATOR_ID
     
     /**
@@ -1874,6 +2045,9 @@ public enum RateOperatorError: Error {
     - copyright:
     2020 Webim
     */
+    case noteIsTooLong
+    
+    @available(*, unavailable, renamed: "noteIsTooLong")
     case NOTE_IS_TOO_LONG
 
 }
@@ -1894,6 +2068,9 @@ public enum SendDialogToEmailAddressError: Error {
      - copyright:
      2020 Webim
      */
+    case noChat
+    
+    @available(*, unavailable, renamed: "noChat")
     case NO_CHAT
     
     /**
@@ -1903,6 +2080,9 @@ public enum SendDialogToEmailAddressError: Error {
      - copyright:
      2020 Webim
      */
+    case sentTooManyTimes
+    
+    @available(*, unavailable, renamed: "sentTooManyTimes")
     case SENT_TOO_MANY_TIMES
 
     /**
@@ -1912,5 +2092,8 @@ public enum SendDialogToEmailAddressError: Error {
      - copyright:
      2020 Webim
      */
+    case unknown
+    
+    @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
 }
