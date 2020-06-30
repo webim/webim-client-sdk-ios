@@ -108,7 +108,7 @@ final class WebimSessionImpl {
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.main.rawValue + (visitorFields?.getID() ?? "anonymous")
-        let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
+        var userDefaults: [String: Any]? = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
         if isVisitorDataClearingEnabled {
             clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
@@ -180,17 +180,15 @@ final class WebimSessionImpl {
         if isLocalHistoryStoragingEnabled {
             if userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String == nil {
                 let dbName = "webim_\(ClientSideID.generateClientSideID()).db"
-                if let userDefaults = userDefaults {
-                    var renewedUserDefaults = userDefaults
-                    renewedUserDefaults[UserDefaultsMainPrefix.historyDBname.rawValue] = dbName
-                    UserDefaults.standard.set(renewedUserDefaults,
-                                              forKey: userDefaultsKey)
+                if userDefaults == nil {
+                    userDefaults = [UserDefaultsMainPrefix.historyDBname.rawValue: dbName]
                 } else {
-                    UserDefaults.standard.setValue([UserDefaultsMainPrefix.historyDBname.rawValue: dbName],
-                                                   forKey: userDefaultsKey)
+                    userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] = dbName
                 }
+                UserDefaults.standard.set(userDefaults,
+                                          forKey: userDefaultsKey)
             }
-            
+                        
             guard let dbName = userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String else {
                 WebimInternalLogger.shared.log(entry: "Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")
                 fatalError("Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")
