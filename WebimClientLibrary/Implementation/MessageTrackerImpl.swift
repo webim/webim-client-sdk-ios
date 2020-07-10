@@ -231,8 +231,8 @@ final class MessageTrackerImpl {
         }
         
         let previousMessage: MessageImpl? = idToHistoryMessageMap[messageHistoryID.getDBid()]
-        idToHistoryMessageMap[messageHistoryID.getDBid()] = message
         if let previousMessage = previousMessage {
+            idToHistoryMessageMap[messageHistoryID.getDBid()] = message
             messageListener?.changed(message: previousMessage,
                                      to: message)
         } else {

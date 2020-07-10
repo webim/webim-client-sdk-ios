@@ -256,7 +256,7 @@ final class WebimService {
         }
         
         return ((chatState == .chatting)
-            || (chatState == .closedByVisitor))
+            || (chatState == .closedByOperator))
     }
     
     func closeChat() {

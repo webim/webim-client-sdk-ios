@@ -243,7 +243,7 @@ final class MessageStreamImpl {
         case .closedByVisitor:
             return .closedByVisitor
         case .closedByOperator:
-            return .closedByVisitor
+            return .closedByOperator
         case .invitation:
             return .invitation
         default:
