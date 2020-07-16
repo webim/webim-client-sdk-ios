@@ -105,8 +105,8 @@ final class MessageItem {
             self.clientSideID = clientSideID
         }
         
-        if let data = jsonDictionary[JSONField.data.rawValue] as? [String: Any?] {
-            self.rawData = data
+        if let rawData = jsonDictionary[JSONField.data.rawValue] as? [String: Any?] {
+            self.rawData = rawData
         }
             
         if let data = jsonDictionary[JSONField.data.rawValue] as? MessageData {

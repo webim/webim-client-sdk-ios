@@ -2,20 +2,24 @@ PODS:
   - Cosmos (19.0.3)
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
+  - DynamicBlurView (3.0.1)
   - Fabric (1.10.2)
-  - Nuke (8.4.0)
+  - PopupDialog (1.0.0):
+    - DynamicBlurView (~> 3.0.1)
+  - SlackTextViewController (1.9.6)
   - SnapKit (4.2.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
-  - WebimClientLibrary (3.31.6):
+  - WebimClientLibrary (3.31.8):
     - SQLite.swift (= 0.12.2)
 
 DEPENDENCIES:
   - Cosmos (~> 19.0.3)
   - Crashlytics
   - Fabric
-  - Nuke (~> 8.0)
+  - PopupDialog (~> 1.0)
+  - SlackTextViewController
   - SnapKit
   - SQLite.swift (= 0.12.2)
   - WebimClientLibrary (from `../`)
@@ -24,8 +28,10 @@ SPEC REPOS:
   trunk:
     - Cosmos
     - Crashlytics
+    - DynamicBlurView
     - Fabric
-    - Nuke
+    - PopupDialog
+    - SlackTextViewController
     - SnapKit
     - SQLite.swift
 
@@ -36,12 +42,14 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Cosmos: a6fb17284281fa12cf4c85c2efecd440a215ec44
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  DynamicBlurView: b1df5415f9bd31897549e5d7077e5ec120a4d636
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
-  Nuke: fa6f784c4f7e1c0f9313668510186c68b7af2509
+  PopupDialog: 28f29a1ffe9e1fab32fb258b53d56ca31670e8a2
+  SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
-  WebimClientLibrary: 73a15e308005ef1c5b935640a9cb68bfc9b8962a
+  WebimClientLibrary: 92eee96a56be508530713eb4985a7c15124101ad
 
-PODFILE CHECKSUM: e4bb38410a4561f613957985fac939cc3e30347c
+PODFILE CHECKSUM: 6e32648b7078df57752b6b95cd2aa7128e22c8b5
 
 COCOAPODS: 1.8.3

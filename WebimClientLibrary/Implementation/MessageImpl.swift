@@ -86,6 +86,7 @@ class MessageImpl {
         self.quote = quote
         self.operatorID = operatorID
         self.rawText = rawText
+        self.rawData = rawData
         self.senderAvatarURLString = senderAvatarURLString
         self.senderName = senderName
         self.sendStatus = sendStatus
