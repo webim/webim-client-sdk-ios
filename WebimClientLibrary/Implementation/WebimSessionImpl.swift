@@ -249,6 +249,7 @@ final class WebimSessionImpl {
                                               currentChatMessageFactoriesMapper: currentChatMessageMapper,
                                               sendingMessageFactory: SendingFactory(withServerURLString: serverURLString),
                                               operatorFactory: OperatorFactory(withServerURLString: serverURLString),
+                                              surveyFactory: SurveyFactory(),
                                               accessChecker: accessChecker,
                                               webimActions: webimActions,
                                               messageHolder: messageHolder,

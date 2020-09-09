@@ -109,6 +109,10 @@ final class DeltaCallback {
                 handleOperatorRateUpdateBy(delta: delta)
                 
                 break
+            case .survey:
+                handleSurveyBy(delta: delta)
+                
+                break
             case .unreadByVisitor:
                 handleUnreadByVisitorUpdateBy(delta: delta)
                 
@@ -137,10 +141,24 @@ final class DeltaCallback {
             messageStream?.onReceiving(departmentItemList: departments)
         }
         
+        if let survey = fullUpdate.getSurvey() {
+            messageStream?.onReceived(surveyItem: survey)
+        }
+        
         currentChat = fullUpdate.getChat()
+        
+        var isCurrentChatEmpty = true
+        if let currentChat = currentChat,
+           !currentChat.getMessages().isEmpty {
+            isCurrentChatEmpty = false
+        }
         
         messageStream?.changingChatStateOf(chat: currentChat)
         messageStream?.saveLocationSettingsOn(fullUpdate: fullUpdate)
+        messageStream?.handleHelloMessage(showHelloMessage: fullUpdate.getShowHelloMessage(),
+                                          chatStartAfterMessage: fullUpdate.getChatStartAfterMessage(),
+                                          currentChatEmpty: isCurrentChatEmpty,
+                                          helloMessageDescr: fullUpdate.getHelloMessageDescr())
         
         if let revision = fullUpdate.getHistoryRevision() {
             historyPoller?.set(hasHistoryRevision: true)
@@ -391,6 +409,14 @@ final class DeltaCallback {
                 currentChat?.set(rating: rating,
                                  toOperatorWithId: rating.getOperatorID())
             }
+        }
+    }
+    
+    private func handleSurveyBy(delta: DeltaItem) {
+        if let deltaData = delta.getData() as? [String: Any] {
+            messageStream?.onReceived(surveyItem: SurveyItem(jsonDictionary: deltaData))
+        } else {
+            messageStream?.onSurveyCancelled()
         }
     }
     

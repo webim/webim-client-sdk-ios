@@ -89,6 +89,7 @@
 "FileTypeNotSupported" = "Данный тип файла не поддерживается.";
 "FileNotFound" = "Отправляемый файл не был получен.";
 "FileSendingUnknownError" = "Неизвестная ошибка при отправке файла";
+"FileSengingUnauthorized" = "Не удалось загрузить файл: посетитель не авторизован";
 
 // SessionCreationErrorDialog
 "ClosesSessionError" = "Закрывает окно.";

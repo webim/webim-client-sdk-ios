@@ -300,6 +300,7 @@ final class ChatViewController: SLKTextViewController {
         
         webimService!.setMessageStream()
         webimService!.setMessageTracker(withMessageListener: self)
+        webimService!.setHelloMessageListener(with: self)
         webimService!.getLastMessages() { [weak self] messages in
             self?.messages.insert(contentsOf: messages,
                                   at: 0)
@@ -469,6 +470,13 @@ extension ChatViewController: UINavigationControllerDelegate {
     // For image picker.
 }
 
+// MARK: - WEBIM: HelloMessageListener
+extension ChatViewController: HelloMessageListener {
+    func helloMessage(message: String) {
+        print("Received Hello message: \"\(message)\"")
+    }
+}
+
 // MARK: - WEBIM: MessageListener
 extension ChatViewController: MessageListener {
     
@@ -579,6 +587,10 @@ extension ChatViewController: SendFileCompletionHandler {
                 break
             case .uploadedFileNotFound:
                 message = SendFileErrorMessage.fileNotFound.rawValue.localized
+                
+                break
+            case .unauthorized:
+                message = SendFileErrorMessage.unauthorized.rawValue.localized
                 
                 break
             }

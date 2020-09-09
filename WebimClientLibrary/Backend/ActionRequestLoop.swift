@@ -162,7 +162,8 @@ class ActionRequestLoop: AbstractRequestLoop {
                              WebimInternalError.fileTypeNotAllowed.rawValue,
                              WebimInternalError.uploadedFileNotFound.rawValue,
                              WebimInternalError.notAllowedMimeType.rawValue,
-                             WebimInternalError.notMatchingMagicNumbers.rawValue:
+                             WebimInternalError.notMatchingMagicNumbers.rawValue,
+                             WebimInternalError.unauthorized.rawValue:
                             self.handleSendFile(error: error,
                                                 ofRequest: request)
                             
@@ -192,6 +193,18 @@ class ActionRequestLoop: AbstractRequestLoop {
                         case WebimInternalError.sentTooManyTimes.rawValue:
                             self.handleSendDialogResponse(error: error,
                                                           ofRequest: request)
+                            
+                            break
+                        case WebimInternalError.surveyDisabled.rawValue,
+                             WebimInternalError.noCurrentSurvey.rawValue,
+                             WebimInternalError.incorrectSurveyID.rawValue,
+                             WebimInternalError.incorrectStarsValue.rawValue,
+                             WebimInternalError.maxCommentLenghtExceeded.rawValue,
+                             WebimInternalError.questionNotFound.rawValue:
+                            self.handleSendSurveyAnswer(error: error,
+                                                        ofRequest: request)
+                            self.handleSurveyClose(error: error,
+                                                   ofRequest: request)
                             
                             break
                         default:
@@ -420,6 +433,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                 case WebimInternalError.uploadedFileNotFound.rawValue:
                     sendFileError = .uploadedFileNotFound
                     break
+                case WebimInternalError.unauthorized.rawValue:
+                    sendFileError = .unauthorized
+                    break
                 default:
                     sendFileError = .unknown
                 }
@@ -480,6 +496,63 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleSendSurveyAnswer(error errorString: String,
+                                        ofRequest webimRequest: WebimRequest) {
+        if let sendSurveyAnswerCompletionHandler = webimRequest.getSendSurveyAnswerCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let sendSurveyAnswerError: SendSurveyAnswerError
+                switch errorString {
+                case WebimInternalError.surveyDisabled.rawValue:
+                    sendSurveyAnswerError = .surveyDisabled
+                    break
+                case WebimInternalError.noCurrentSurvey.rawValue:
+                    sendSurveyAnswerError = .noCurrentSurvey
+                    break
+                case WebimInternalError.incorrectSurveyID.rawValue:
+                    sendSurveyAnswerError = .incorrectSurveyID
+                    break
+                case WebimInternalError.incorrectStarsValue.rawValue:
+                    sendSurveyAnswerError = .incorrectStarsValue
+                    break
+                case WebimInternalError.maxCommentLenghtExceeded.rawValue:
+                    sendSurveyAnswerError = .maxCommentLength_exceeded
+                    break
+                case WebimInternalError.questionNotFound.rawValue:
+                    sendSurveyAnswerError = .questionNotFound
+                    break
+                default:
+                    sendSurveyAnswerError = .unknown
+                }
+                
+                sendSurveyAnswerCompletionHandler.onFailure(error: sendSurveyAnswerError)
+            })
+        }
+    }
+    
+    private func handleSurveyClose(error errorString: String,
+                                    ofRequest webimRequest: WebimRequest) {
+        if let surveyCloseCompletionHandler = webimRequest.getSurveyCloseCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let surveyCloseError: SurveyCloseError
+                switch errorString {
+                case WebimInternalError.surveyDisabled.rawValue:
+                    surveyCloseError = .surveyDisabled
+                    break
+                case WebimInternalError.noCurrentSurvey.rawValue:
+                    surveyCloseError = .noCurrentSurvey
+                    break
+                case WebimInternalError.incorrectSurveyID.rawValue:
+                    surveyCloseError = .incorrectSurveyID
+                    break
+                default:
+                    surveyCloseError = .unknown
+                }
+                
+                surveyCloseCompletionHandler.onFailure(error: surveyCloseError)
+            })
+        }
+    }
+    
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
         WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
             verbosityLevel: .warning)
@@ -487,6 +560,9 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     private func handleClientCompletionHandlerOf(request: WebimRequest) {
         completionHandlerExecutor?.execute(task: DispatchWorkItem {
+            request.getSendDialogToEmailAddressCompletionHandler()?.onSuccess()
+            request.getSendSurveyAnswerCompletionHandler()?.onSuccess()
+            request.getSurveyCloseCompletionHandler()?.onSuccess()
             guard let messageID = request.getMessageID() else {
                 WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
                 return
@@ -497,7 +573,6 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getSendDialogToEmailAddressCompletionHandler()?.onSuccess()
         })
     }
     

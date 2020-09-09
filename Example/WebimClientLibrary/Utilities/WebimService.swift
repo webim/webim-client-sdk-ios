@@ -313,6 +313,13 @@ final class WebimService {
         }
     }
     
+    func setHelloMessageListener(with helloMessageListener: HelloMessageListener) {
+        if messageStream == nil {
+            setMessageStream()
+        }
+        messageStream?.set(helloMessageListener: helloMessageListener)
+    }
+    
     func setMessageTracker(withMessageListener messageListener: MessageListener) {
         do {
             if messageStream == nil {

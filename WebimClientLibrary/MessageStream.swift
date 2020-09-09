@@ -653,6 +653,50 @@ public protocol MessageStream: class {
                       completionHandler: SendDialogToEmailAddressCompletionHandler?) throws
     
     /**
+     Send survey answer.
+     - parameter surveyAnswer
+     Answer to survey. If question type is 'stars', answer is var 1-5 that corresponds the rating. If question type is 'radio', answer is index of element in options array beginning with 1. If question type is 'comment', answer is a string.
+     - parameter completionHandler
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func send(surveyAnswer: String,
+              completionHandler: SendSurveyAnswerCompletionHandler?) throws
+
+    /**
+     Method closes current survey.
+     - parameter completionHandler
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func closeSurvey(completionHandler: SurveyCloseCompletionHandler?) throws
+
+    /**
+     Sets `SurveyListener` object.
+     - seealso:
+     `SurveyListener` protocol.
+     - parameter surveyListener:
+     `SurveyListener` object.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func set(surveyListener: SurveyListener)
+    
+    /**
      `MessageTracker` (via `MessageTracker.getNextMessages(byLimit:completion:)`) allows to request the messages which are above in the history. Each next call `MessageTracker.getNextMessages(byLimit:completion:)` returns earlier messages in relation to the already requested ones.
      Changes of user-visible messages (e.g. ever requested from `MessageTracker`) are transmitted to `MessageListener`. That is why `MessageListener` is needed when creating `MessageTracker`.
      - important:
@@ -788,6 +832,17 @@ public protocol MessageStream: class {
      2018 Webim
      */
     func set(unreadByVisitorTimestampChangeListener: UnreadByVisitorTimestampChangeListener)
+    
+    /**
+     Sets listener for hello message.
+     - parameter helloMessageListener:
+     `HelloMessageListener` object.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    func set(helloMessageListener: HelloMessageListener)
     
 }
 
@@ -1088,6 +1143,68 @@ public protocol SendDialogToEmailAddressCompletionHandler: class {
 }
 
 /**
+- seealso:
+`MessageStream.send(surveyAnswer:completionHandler:)`.
+- author:
+Nikita Kaberov
+- copyright:
+2020 Webim
+*/
+public protocol SendSurveyAnswerCompletionHandler {
+    
+    /**
+     Executed when operation is done successfully.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onSuccess()
+    
+    /**
+     Executed when operation is failed.
+     - parameter error:
+     Error.
+     - seealso:
+     `SurveyAnswerError`.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onFailure(error: SendSurveyAnswerError)
+}
+
+/**
+- seealso:
+`MessageStream.closeSurvey(completionHandler:)`.
+- author:
+Nikita Kaberov
+- copyright:
+2020 Webim
+*/
+public protocol SurveyCloseCompletionHandler {
+    
+    /**
+     Invoked when survey was successfully closed on server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onSuccess()
+
+    /**
+     Invoked when an error occurred while closing a survey on server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onFailure(error: SurveyCloseError)
+}
+
+/**
  Provides methods to track changes of `VisitSessionState` status.
  - seealso:
  `VisitSessionState` protocol.
@@ -1275,6 +1392,49 @@ public protocol OnlineStatusChangeListener: class {
 }
 
 /**
+Interface that provides methods for handling changes of survey.
+- seealso:
+`MessageStream.set(surveyListener:)`
+- author:
+Nikita Kaberov
+- copyright:
+2020 Webim
+*/
+public protocol SurveyListener: class {
+    
+    /**
+    Method to be called one time when new survey was sent by server.
+    - parameter survey:
+    Survey that was sent.
+    - author:
+    Nikita Kaberov
+    - copyright:
+    2020 Webim
+    */
+    func on(survey: Survey)
+
+    /**
+     Method provide next question in the survey. It is called in one of two ways: survey first received or answer for previous question was successfully sent to server.
+     - parameter nextQuestion:
+     Next question in the survey.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func on(nextQuestion: SurveyQuestion)
+
+    /**
+     Method is called when survey timeout expires on server. It means that survey deletes and you can no longer send an answer to the question.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onSurveyCancelled()
+}
+
+/**
  Interface that provides methods for handling changes of parameter that is to be returned by `MessageStream.getUnreadByOperatorTimestamp()` method.
  - seealso:
  `MessageStream.set(unreadByOperatorTimestampChangeListener:)`.
@@ -1343,6 +1503,30 @@ public protocol UnreadByVisitorTimestampChangeListener: class {
      2018 Webim
      */
     func changedUnreadByVisitorTimestampTo(newValue: Date?)
+    
+}
+
+/**
+ Interface that provides methods for handling Hello messages.
+ - seealso:
+ `MessageStream.set(helloMessageListener:)`
+ - author:
+ Yury Vozleev
+ - copyright:
+ 2020 Webim
+ */
+public protocol HelloMessageListener: class {
+    
+    /**
+     Calls at the begining of chat when hello message is available and no messages has been sent yet.
+     - parameter message:
+     Text of the Hello message.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    func helloMessage(message: String)
     
 }
 
@@ -1930,6 +2114,15 @@ public enum SendFileError: Error {
     @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
     
+    /**
+    Visitor authorization error on the server.
+    - author:
+    Nikita Kaberov
+    - copyright:
+    2020 Webim
+    */
+    case unauthorized
+    
 }
 
 /**
@@ -2096,4 +2289,132 @@ public enum SendDialogToEmailAddressError: Error {
     
     @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
+}
+
+/**
+- seealso:
+`SendSurveyAnswerCompletionHandler.onFailure(error:)`
+- author:
+Nikita Kaberov
+- copyright:
+2020 Webim
+*/
+public enum SendSurveyAnswerError {
+    /**
+     Incorrect value for question type 'radio'.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case incorrectRadioValue
+
+    /**
+     Incorrect value for question type 'stars'.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case incorrectStarsValue
+
+    /**
+     Incorrect survey ID.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case incorrectSurveyID
+
+    /**
+     Max comment length was exceeded for question type 'comment'.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case maxCommentLength_exceeded
+
+    /**
+     No current survey on server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case noCurrentSurvey
+
+    /**
+     Question was not found.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case questionNotFound
+
+    /**
+     Survey is disabled on server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case surveyDisabled
+
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case unknown
+}
+
+/**
+- seealso:
+`SurveyCloseCompletionHandler.onFailure(error:)`
+- author:
+Nikita Kaberov
+- copyright:
+2020 Webim
+*/
+public enum SurveyCloseError {
+    /**
+     Incorrect survey ID.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case incorrectSurveyID
+
+    /**
+     No current survey on server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case noCurrentSurvey
+
+    /**
+     Survey is disabled on server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case surveyDisabled
+
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    case unknown
 }

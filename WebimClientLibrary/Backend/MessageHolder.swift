@@ -594,4 +594,12 @@ final class MessageHolder {
         historyStorage.updateReadBeforeTimestamp(timestamp: timestamp)
     }
     
+    func historyMessagesEmpty() -> Bool {
+        var isHistoryMessagesEmpty = true
+        if let messageTracker = messageTracker,
+           !messageTracker.idToHistoryMessageMap.isEmpty {
+            isHistoryMessagesEmpty = false
+        }
+        return isHistoryMessagesEmpty
+    }
 }

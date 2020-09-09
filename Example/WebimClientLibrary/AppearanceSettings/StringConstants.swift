@@ -94,6 +94,7 @@ enum SendFileErrorMessage: String {
     case fileTypeNotAllowed = "FileTypeNotSupported"
     case fileNotFound = "FileNotFound"
     case unknownError = "FileSendingUnknownError"
+    case unauthorized = "FileSengingUnauthorized"
 }
 
 enum SessionCreationErrorDialog: String {

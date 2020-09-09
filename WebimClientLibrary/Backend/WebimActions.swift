@@ -75,6 +75,10 @@ class WebimActions {
         case visitorNote = "visitor_note"
         case visitSessionID = "visit-session-id"
         case since = "since"
+        case surveyAnswer = "answer"
+        case surveyFormID = "form-id"
+        case surveyID = "survey-id"
+        case surveyQuestionID = "question-id"
         case timestamp = "ts"
         case title = "title"
         case visitor = "visitor"
@@ -111,6 +115,8 @@ class WebimActions {
         case setPrechat = "chat.set_prechat_fields"
         case setVisitorTyping = "chat.visitor_typing"
         case startChat = "chat.start"
+        case surveyAnswer = "survey.answer"
+        case surveyCancel = "survey.cancel"
         case chatRead = "chat.read_by_visitor"
         case widgetUpdate = "widget.update"
         case keyboardResponse = "chat.keyboard_response"
@@ -409,6 +415,40 @@ class WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         sendDialogToEmailAddressCompletionHandler: completionHandler))
+    }
+    
+    func sendQuestionAnswer(surveyID: String,
+                            formID: Int,
+                            questionID: Int,
+                            surveyAnswer: String,
+                            sendSurveyAnswerCompletionHandler: SendSurveyAnswerCompletionHandlerWrapper?) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.surveyAnswer.rawValue,
+                          Parameter.surveyID.rawValue: surveyID,
+                          Parameter.surveyFormID.rawValue: String(formID),
+                          Parameter.surveyQuestionID.rawValue: String(questionID),
+                          Parameter.surveyAnswer.rawValue: surveyAnswer] as [String: Any]
+
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        sendSurveyAnswerCompletionHandler: sendSurveyAnswerCompletionHandler))
+    }
+    
+    func closeSurvey(surveyID: String,
+                     surveyCloseCompletionHandler: SurveyCloseCompletionHandler?) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.surveyAnswer.rawValue,
+                          Parameter.surveyID.rawValue: surveyID] as [String: Any]
+
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        surveyCloseCompletionHandler: surveyCloseCompletionHandler))
     }
     
 }

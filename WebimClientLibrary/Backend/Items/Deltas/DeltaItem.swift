@@ -49,6 +49,7 @@ final class DeltaItem {
         case historyRevision = "HISTORY_REVISION"
         case offlineChatMessage = "OFFLINE_CHAT_MESSAGE"
         case operatorRate = "OPERATOR_RATE"
+        case survey = "SURVEY"
         case unreadByVisitor = "UNREAD_BY_VISITOR"
         case visitSession = "VISIT_SESSION"
         case visitSessionState = "VISIT_SESSION_STATE"

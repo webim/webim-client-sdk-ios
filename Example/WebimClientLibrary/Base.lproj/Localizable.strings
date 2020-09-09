@@ -89,6 +89,7 @@
 "FileTypeNotSupported" = "File type is not supported.";
 "FileNotFound" = "Sending files in body is not supported.";
 "FileSendingUnknownError" = "Find sending unknown error.";
+"FileSengingUnauthorized" = "Failed to upload file: visitor is not logged in";
 
 // SessionCreationErrorDialog
 "ClosesSessionError" = "Closes dialog.";

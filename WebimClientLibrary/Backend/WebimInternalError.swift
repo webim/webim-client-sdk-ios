@@ -48,6 +48,7 @@ enum WebimInternalError: String, Error {
     case settingDisabled = "setting_disabled";
     case serverNotReady = "server-not-ready"
     case sessionNotFound = "session_not_found";
+    case unauthorized = "unauthorized";
     case uploadedFileNotFound = "uploaded-file-not-found";
     case visitorBanned = "visitor_banned"
     case wrongArgumentValue = "wrong-argument-value"
@@ -89,4 +90,13 @@ enum WebimInternalError: String, Error {
     
     // Send Dialog errors
     case sentTooManyTimes = "chat-history-sent-too-many-times"
+    
+    //Survey errors
+    case surveyDisabled = "survey_disabled"
+    case noCurrentSurvey = "no-current-survey"
+    case incorrectSurveyID = "incorrect-survey-id";
+    case incorrectStarsValue = "incorrect-stars-value"
+    case incorrectRadioValue = "incorrect-radio-value"
+    case maxCommentLenghtExceeded = "max-comment-length-exceeded"
+    case questionNotFound = "question-not-found"
 }
