@@ -66,7 +66,7 @@ class MessageMapper {
             return .info
         case .keyboard:
             return .keyboard
-        case .keyboard_response:
+        case .keyboardResponse:
             return .keyboardResponse
         case .operatorMessage:
             return .operatorMessage

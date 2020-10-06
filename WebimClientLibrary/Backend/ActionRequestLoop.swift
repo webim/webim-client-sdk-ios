@@ -563,13 +563,13 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSendDialogToEmailAddressCompletionHandler()?.onSuccess()
             request.getSendSurveyAnswerCompletionHandler()?.onSuccess()
             request.getSurveyCloseCompletionHandler()?.onSuccess()
+            request.getRateOperatorCompletionHandler()?.onSuccess()
             guard let messageID = request.getMessageID() else {
                 WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
                 return
             }
             request.getDataMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getRateOperatorCompletionHandler()?.onSuccess()
             request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: messageID)

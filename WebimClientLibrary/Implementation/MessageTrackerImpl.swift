@@ -410,13 +410,18 @@ final class MessageTrackerImpl {
                     var filteredMessages = [MessageImpl]()
                     
                     for message in messages {
+                        var addToFilteredMessages = true
+                        
                         if message.getSource().isHistoryMessage() {
                             let messageTime = message.getTime()
+                            let headMessageTime = headMessage?.getTime() ?? messageTime
                             if (messageTime >= first.getTime())
-                                && (messageTime <= last.getTime()) {
+                                && (messageTime <= last.getTime())
+                                && (messageTime > headMessageTime) {
                                 for currentChatMessage in currentChatMessages {
                                     if currentChatMessage.getID() == message.getID() {
                                         
+                                        addToFilteredMessages = false
                                         currentChatMessage.setSecondaryHistory(historyEquivalentMessage: message)
                                         break
                                     }
@@ -424,7 +429,9 @@ final class MessageTrackerImpl {
                             }
                         }
                         
-                        filteredMessages.append(message)
+                        if addToFilteredMessages {
+                            filteredMessages.append(message)
+                        }
                     }
                     
                     if filteredMessages.isEmpty {

@@ -489,8 +489,7 @@ extension ChatViewController: MessageListener {
         if let previousMessage = previousMessage {
             for (index, message) in messages.enumerated() {
                 if previousMessage.isEqual(to: message) {
-                    messages.insert(newMessage,
-                                    at: (index == 0) ? index : (index - 1))
+                    messages.insert(newMessage, at: index)
                     inserted = true
                     
                     break
