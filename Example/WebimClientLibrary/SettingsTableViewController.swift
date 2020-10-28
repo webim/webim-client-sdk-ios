@@ -1,9 +1,9 @@
 //
-//  SettingsTableViewController.swift
+//  SettingsTableView.swift
 //  WebimClientLibrary_Example
 //
-//  Created by Nikita Lazarev-Zubov on 07.02.18.
-//  Copyright © 2018 Webim. All rights reserved.
+//  Created by Eugene Ilyin on 16/09/2019.
+//  Copyright © 2019 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,14 +26,12 @@
 
 import UIKit
 
-final class SettingsTableViewController: UITableViewController {
-    
+class SettingsTableViewController: UITableViewController {
+
     // MARK: - Properties
-    
     weak var delegate: SettingsViewController?
     
-    // MARK: Outlets
-    
+    // MARK: - Outlets
     // Text fields
     @IBOutlet weak var accountNameTextField: UITextField!
     @IBOutlet weak var locationTextField: UITextField!
@@ -43,31 +41,15 @@ final class SettingsTableViewController: UITableViewController {
     @IBOutlet weak var accountNameHintLabel: UILabel!
     @IBOutlet weak var locationHintLabel: UILabel!
     
-    // Text
-    @IBOutlet var textFieldLabels: [UILabel]!
+    // Editing/error views
+    @IBOutlet weak var accountNameView: UIView!
+    @IBOutlet weak var locationView: UIView!
+    @IBOutlet weak var pageTitleView: UIView!
+  
+    // Labels
+    @IBOutlet weak var accountTitlelabel: UILabel!
     
-    // Color scheme
-    @IBOutlet weak var classicCheckboxImageView: UIImageView! // Row 0
-    @IBOutlet weak var darkCheckboxImageView: UIImageView! // Row 2
-    @IBOutlet var colorSchemeNames: [UILabel]!
-    
-    // Table cells
-    @IBOutlet weak var accountSettingsCell: UITableViewCell!
-    @IBOutlet var colorThemeCells: [UITableViewCell]!
-    @IBOutlet weak var delimiter: UIView!
-    
-    // Status bar style
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        switch ColorScheme.shared.schemeType {
-        case .light:
-            return .default
-        case .dark:
-            return .lightContent
-        }
-    }
-    
-    // MARK: - Methods
-    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,131 +57,115 @@ final class SettingsTableViewController: UITableViewController {
         locationTextField.text = Settings.shared.location
         pageTitleTextField.text = Settings.shared.pageTitle
         
-        setupColorSchemeCheckboxes()
-        setupColorScheme()
+        accountNameTextField.placeholder = Settings.shared.accountName
+        locationTextField.placeholder = Settings.shared.location
         
-        for hintLabel in [accountNameHintLabel, locationHintLabel] {
-            hintLabel!.alpha = 0.0
-            hintLabel!.textColor =  textTextFieldErrorColor.color()
-        }
-        for textField in [accountNameTextField,
-                          locationTextField] {
-            textField!.addTarget(self,
-                                 action: #selector(textDidChange),
-                                 for: .editingChanged)
-            textField!.layer.cornerRadius = 5.0
-            textField!.layer.borderColor = textTextFieldErrorColor.color().cgColor
-            textField!.delegate = self
-        }
-        pageTitleTextField.delegate = self
-    }
-    
-    // MARK: UITableViewDelegate protocol methods
-    
-    override func tableView(_ tableView: UITableView,
-                            willDisplayHeaderView view: UIView,
-                            forSection section: Int) {
-        view.tintColor = backgroundMainColor.color()
-    }
-    
-    override func tableView(_ tableView: UITableView,
-                            didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == 1 else { // Color theme section
-            return
+        for hintLabel in [
+            accountNameHintLabel,
+            locationHintLabel
+        ] {
+            guard let hintLabel = hintLabel else { continue }
+            hintLabel.alpha = 0.0
         }
         
-        var selectedColorScheme: ColorScheme.SchemeType?
-        switch indexPath.row {
-        case 0:
-            selectedColorScheme = .light
+        for textField in [
+            accountNameTextField,
+            locationTextField,
+            pageTitleTextField
+        ] {
+            guard let textField = textField else { continue }
             
-            break
-        case 2:
-            selectedColorScheme = .dark
-            
-            break
-        default:
-            return
-        }
-        
-        if ColorScheme.shared.schemeType != selectedColorScheme {
-            ColorScheme.shared.schemeType = selectedColorScheme!
-            UIView.animate(withDuration: 0.2) {
-                self.setupColorSchemeCheckboxes()
-                self.setupColorScheme()
-            }
+            textField.addTarget(
+                self,
+                action: #selector(startedTyping),
+                for: .editingDidBegin
+            )
+            textField.addTarget(
+                self,
+                action: #selector(stoppedTyping),
+                for: .editingDidEnd
+            )
+            textField.delegate = self
         }
     }
     
-    // MARK: Private mwethods
-    
-    private func setupColorSchemeCheckboxes() {
-        switch ColorScheme.shared.schemeType {
-        case .light:
-            classicCheckboxImageView.alpha = 1.0
-            darkCheckboxImageView.alpha = 0.0
-        case .dark:
-            classicCheckboxImageView.alpha = 0.0
-            darkCheckboxImageView.alpha = 1.0
-        }
-    }
-    
-    private func setupColorScheme() {
-        delegate?.setupColorScheme()
-        
-        tableView.backgroundColor = backgroundMainColor.color()
-        accountSettingsCell.backgroundColor = backgroundMainColor.color()
-        for cell in colorThemeCells {
-            cell.backgroundColor = backgroundCellLightColor.color()
-        }
-        
-        for label in textFieldLabels {
-            label.textColor = textMainColor.color()
-        }
-        for label in colorSchemeNames {
-            label.textColor = textCellLightColor.color()
-        }
-        
-        for textField in [accountNameTextField,
-                          locationTextField,
-                          pageTitleTextField] {
-            textField!.backgroundColor = backgroundTextFieldColor.color()
-            textField!.textColor = textTextFieldColor.color()
-            textField!.tintColor = textTextFieldColor.color()
-            textField!.keyboardAppearance = ColorScheme.shared.keyboardAppearance()
-        }
-        
-        delimiter.backgroundColor = delimiterColor.color()
+    // MARK: - Methods
+    @objc
+    func scrollToBottom(animated: Bool) {
+        let row = (tableView.numberOfRows(inSection: 0)) - 1
+        let bottomMessageIndex = IndexPath(row: row, section: 0)
+        tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: animated)
     }
     
     @objc
-    private func textDidChange(textField: UITextField) {
-        var hintLabel: UILabel?
-        if textField == accountNameTextField {
-            hintLabel = accountNameHintLabel
-        } else {
-            hintLabel = locationHintLabel
-        }
-        
-        UIView.animate(withDuration: 0.2) {
-            if (textField.text == nil)
-                || textField.text!.isEmpty {
-                textField.layer.borderWidth = 1.0
-                hintLabel!.alpha = 1.0
-            } else {
-                textField.layer.borderWidth = 0.0
-                hintLabel!.alpha = 0.0
-            }
-        }
+    func scrollToTop(animated: Bool) {
+        let indexPath = IndexPath(row: 0, section: 0)
+        self.tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
     }
     
+    // MARK: - Private Methods
+    @objc
+    private func startedTyping(textField: UITextField) {
+        var hintLabel: UILabel?
+        var editView: UIView?
+        
+        if textField == accountNameTextField {
+            editView = accountNameView
+            hintLabel = accountNameHintLabel
+        } else if textField == locationTextField {
+            editView = locationView
+            hintLabel = locationHintLabel
+        } else {
+            editView = pageTitleView
+        }
+        
+        UIView.animate(
+            withDuration: 0.2,
+            animations: {
+                hintLabel?.alpha = 0.0
+                editView!.backgroundColor = editViewBackgroundColourEditing
+            }
+        )
+    }
+
+    @objc
+    private func stoppedTyping(textField: UITextField) {
+        var hintLabel: UILabel?
+        var editView: UIView?
+        
+        if textField == accountNameTextField {
+            editView = accountNameView
+            hintLabel = accountNameHintLabel
+        } else if textField == locationTextField {
+            editView = locationView
+            hintLabel = locationHintLabel
+        } else {
+            editView = pageTitleView
+            if let text = textField.text?.trimWhitespacesIn(), text.isEmpty {
+                textField.text = "iOS demo app"
+            }
+        }
+        
+        UIView.animate(
+            withDuration: 0.2,
+            animations: {
+                if let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+                    text.isEmpty {
+                    hintLabel?.alpha = 1.0
+                    editView!.backgroundColor = editViewBackgroundColourError
+                } else {
+                    hintLabel?.alpha = 0.0
+                    editView!.backgroundColor = editViewBackgroundColourDefault
+                }
+            }
+        )
+    }
 }
 
 extension SettingsTableViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         return true
     }
     

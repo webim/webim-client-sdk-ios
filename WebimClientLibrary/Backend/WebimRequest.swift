@@ -55,6 +55,7 @@ final class WebimRequest {
     private var editMessageCompletionHandler: EditMessageCompletionHandler?
     private var sendKeyboardRequestCompletionHandler: SendKeyboardRequestCompletionHandler?
     private var sendDialogToEmailAddressCompletionHandler: SendDialogToEmailAddressCompletionHandler?
+    private var sendStickerCompletionHandler: SendStickerCompletionHandler?
     private var sendSurveyAnswerCompletionHandler: SendSurveyAnswerCompletionHandlerWrapper?
     private var surveyCloseCompletionHandler: SurveyCloseCompletionHandler?
     
@@ -77,6 +78,7 @@ final class WebimRequest {
          editMessageCompletionHandler: EditMessageCompletionHandler? = nil,
          keyboardResponseCompletionHandler: SendKeyboardRequestCompletionHandler? = nil,
          sendDialogToEmailAddressCompletionHandler: SendDialogToEmailAddressCompletionHandler? = nil,
+         sendStickerCompletionHandler: SendStickerCompletionHandler? = nil,
          sendMessageComplitionHandler: SendMessageCompletionHandler? = nil,
          sendSurveyAnswerCompletionHandler: SendSurveyAnswerCompletionHandlerWrapper? = nil,
          surveyCloseCompletionHandler: SurveyCloseCompletionHandler? = nil) {
@@ -99,6 +101,7 @@ final class WebimRequest {
         self.sendKeyboardRequestCompletionHandler = keyboardResponseCompletionHandler
         self.faqCompletionHandler = faqCompletionHandler
         self.sendDialogToEmailAddressCompletionHandler = sendDialogToEmailAddressCompletionHandler
+        self.sendStickerCompletionHandler = sendStickerCompletionHandler
         self.sendSurveyAnswerCompletionHandler = sendSurveyAnswerCompletionHandler
         self.surveyCloseCompletionHandler = surveyCloseCompletionHandler
     }
@@ -180,6 +183,10 @@ final class WebimRequest {
     
     func getSendDialogToEmailAddressCompletionHandler() -> SendDialogToEmailAddressCompletionHandler? {
         return sendDialogToEmailAddressCompletionHandler
+    }
+    
+    func getSendStickerCompletionHandler() -> SendStickerCompletionHandler? {
+        return sendStickerCompletionHandler
     }
     
     func getSendSurveyAnswerCompletionHandler() -> SendSurveyAnswerCompletionHandlerWrapper? {

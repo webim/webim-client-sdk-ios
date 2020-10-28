@@ -503,6 +503,24 @@ public protocol MessageStream: class {
               completionHandler: SendFileCompletionHandler?) throws -> String
     
     /**
+     Send sticker to chat.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method), `MessageListener.added(message:after:)` with a message `MessageSendStatus.sending` in the status is also called.
+     - parameter withId:
+     Contains the id of the sticker to send
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    func sendSticker(withId: Int,
+                     completionHandler: SendStickerCompletionHandler?) throws
+    
+    /**
      Send keyboard request with button.
      - parameter button:
      Selected button.
@@ -1139,6 +1157,40 @@ public protocol SendDialogToEmailAddressCompletionHandler: class {
      2020 Webim
      */
     func onFailure(error: SendDialogToEmailAddressError)
+    
+}
+
+/**
+ - seealso:
+ `MessageStream.sendSticker(withId:completionHandler:)`.
+ - author:
+ Yury Vozleev
+ - copyright:
+ 2020 Webim
+ */
+public protocol SendStickerCompletionHandler: class {
+    
+    /**
+     Executed when operation is done successfully.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    func onSuccess()
+    
+    /**
+     Executed when operation is failed.
+     - parameter error:
+     Error.
+     - seealso:
+     `SendStickerError`.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    func onFailure(error: SendStickerError)
     
 }
 
@@ -2289,6 +2341,34 @@ public enum SendDialogToEmailAddressError: Error {
     
     @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
+}
+
+/**
+- seealso:
+`SendStickerCompletionHandler.onFailure(error:)`
+- author:
+Yury Vozleev
+- copyright:
+2020 Webim
+*/
+public enum SendStickerError: Error {
+    /**
+     There is no chat to send it to the sticker.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    case noChat
+    
+    /**
+     Not set sticker id
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    case noStickerId
 }
 
 /**

@@ -104,6 +104,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         quote: nil,
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
+                                        sticker: nil,
                                         type: MessageType.operatorMessage,
                                         data: nil,
                                         text: "Text",
@@ -114,7 +115,8 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         rawText: nil,
                                         read: true,
                                         messageCanBeEdited: false,
-                                        messageCanBeReplied: false))
+                                        messageCanBeReplied: false,
+                                        messageIsEdited: false))
         }
         
         return messages
@@ -124,7 +126,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
     
     func testGetMajorVersion() {
         XCTAssertEqual(sqLiteHistoryStorage!.getMajorVersion(),
-                       1)
+                       4)
     }
     
     func testGetFullHistory() {

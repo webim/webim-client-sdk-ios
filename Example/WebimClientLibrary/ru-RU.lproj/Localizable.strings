@@ -34,12 +34,6 @@
 
 // MARK: - StringConstants.swift
 
-// EMPTY_TABLE_VIEW_TEXT
-"EmptyChat" = "Отправьте первое сообщение, чтобы начать чат.";
-
-// REFRESH_CONTROL_TEXT
-"LoadingMessages" = "Сообщения загружаются...";
-
 // Avatar
 "SenderAvatarImage" = "Изображение аватара отправителя сообщения";
 "ShowsRatingDialog" = "Показывает окно оценки оператора.";
@@ -64,32 +58,66 @@
 "ClosesDialog" = "Закрывает окно.";
 
 // FileMessage
-"FileUnavailable" = "Файл недоступен.";
+"FileUnavailable" = "Файл недоступен";
 
 // LeftButton
 "ChooseFile" = "Выбрать файл для отправки";
 "ShowsImagePicker" = "Показывает окно выбора изображения для отправки.";
 
-// RateOperatorErrorMessage
-"OperatorRatingFailed" = "Неудачная попытка оценить оператора";
+// NoCurrentOperatorErrorMessage
+"NoCurrentOperator" = "Нет доступных операторов";
+"OK" = "OК";
+"NoAvailableOperator" = "Нет оператора для выставления оценки";
+
+// AlertDialog
+"RateSuccessTitle" = "Спасибо!";
+"RateSuccessMessage" = "Вы помогаете нам становиться лучше";
 "OK" = "OK";
 "ClosesRateOperatorError" = "Закрывает окно.";
-"RateOperatorErrorMessage" = "Произошла неизвестная ошибка.";
 
-// RatingDialog
-"Rate" = "Оценить";
-"Cancel" = "Отмена";
-"RatesOperator" = "Оценивает оператора.";
-"ClosesRatingDialog" = "Закрывает диалог.";
+// RateOperatorErrorMessage
+"OperatorRatingFailed" = "Неудачная попытка оценить оператора";
+"RateOperatorNoChat" = "Этот чат не существует";
+"RateOperatorWrongID" = "Этот оператор не находится в данном чате";
+"RateOperatorLongNote" = "Комментарий к оценке слишком длинный";
 
 // SendFileErrorMessage
 "FileSendingFailed" = "Неудачная попытка отправки файла";
 "ClosesSendFileError" = "Закрывает окно.";
-"FileTooLarge" = "Размер файла превышен.";
-"FileTypeNotSupported" = "Данный тип файла не поддерживается.";
-"FileNotFound" = "Отправляемый файл не был получен.";
+"FileTooLarge" = "Размер файла превышен";
+"FileTypeNotSupported" = "Данный тип файла не поддерживается";
+"FileNotFound" = "Отправляемый файл не был получен";
 "FileSendingUnknownError" = "Неизвестная ошибка при отправке файла";
 "FileSengingUnauthorized" = "Не удалось загрузить файл: посетитель не авторизован";
+
+// SendMessageErrorMessage
+"SendMessageFailed" = "Неудачная попытка отправки сообщения";
+"MessageIsEmpty" = "Отправляемое сообщение является пустым";
+"MaxMessageLengthExceeded" = "Превышена максимальная длина сообщения";
+
+// EditMessageErrorMessage
+"EditMessageFailed" = "Неудачная попытка редактирования сообщения";
+"EditMessageUnknownError" = "Неизвестная ошибка при редактировании сообщения";
+"EditingMessagesIsTurnedOffOnTheServer" = "Редактирование сообщений отключено на сервере";
+"EditingMessageIsEmpty" = "Редактируемое сообщение является пустым";
+"MessageNotOwnedByVisitor" = "Сообщение не принадлежит посетителю";
+"MaxMessageLengthExceeded" = "Превышена максимальная длина сообщения";
+"WrongMessageKind" = "Неправильный тип сообщения (не текст)";
+
+// DeleteMessageErrorMessage
+"DeleteMessageFailed" = "Неудачная попытка удаления сообщения";
+"DeleteMessageUnknownError" = "Неизвестная ошибка при удалении сообщения";
+"DeletingMessagesIsTurnedOffOnTheServer" = "Удаление сообщений отключено на сервере";
+"MessageNotOwnedByVisitor" = "Сообщение не принадлежит посетителю";
+"MessageNotFound" = "Сообщение не найдено";
+
+// SendKeyboardRequestErrorMessage
+"SendKeyboardRequestFailed" = "Неудачная попытка отправки запроса клавиатуры";
+"SendKeyboardRequestUnknownError" = "Неизвестная ошибка при отправке запроса клавиатуры";
+"ChatDoesNotExist" = "Чат не существует";
+"WrongButtonID" = "Неправильный ID кнопки в запросе";
+"WrongMessageID" = "Неправильный ID сообщения в запросе";
+"ResponseCannotBeCreated" = "Ответ не может быть создан для данного запроса";
 
 // SessionCreationErrorDialog
 "ClosesSessionError" = "Закрывает окно.";
@@ -100,11 +128,86 @@
 // SettingsErrorDialog
 "ClosesSettingsError" = "Закрывает окно.";
 "InvalidSettings" = "Неверные данные учетной записи";
-"AccountNameEmpty" = "Название учетной записи не может быть пустым.";
-"LocationEmpty" = "Значение размещения не может быть пустым.";
+"AccountNameEmpty" = "Название учетной записи не может быть пустым";
+"LocationEmpty" = "Значение размещения не может быть пустым";
 
 // ShowFileDialog
-"ImageFormatInvalid" = "Неверный формат изображения.";
-"ImageLinkInvalid" = "Ссылка недействительна.";
-"PreviewUnavailable" = "Просмотр недоступен.";
+"ImageFormatInvalid" = "Неверный формат изображения";
+"ImageLinkInvalid" = "Ссылка недействительна";
+"PreviewUnavailable" = "Просмотр недоступен";
 "ClosesFilePreview" = "Закрывает окно.";
+
+// StartView
+"WelcomeTitle" = "Добро пожаловать в демо приложение WebimClientLibrary!";
+"WelcomeText" = "Чтобы начать чат, нажмите кнопку ниже.\n\nОператор может ответить в Ваш чат по ссылке:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код этого приложения может быть найден по ссылке:\nhttps://github.com/webim/webim-client-sdk-ios";
+"StartChat" = "Начать чат";
+"Settings" = "Настройки";
+
+// TableView
+"EmptyChat" = "Отправьте первое сообщение, чтобы начать чат.";
+
+// ChatTableView
+"LoadMessages" = "Сообщения загружаются...";
+
+// ChatView
+"HardcodedVisitorMessageName" = "Вы";
+"EditMessage" = "Редактирование";
+"InputPlaceholderText" = "Сообщение";
+"AccessibilityTextWebimLogo" = "Логотип Вебим";
+
+// FileView
+"LoadingFile" = "Загружаем файл...";
+
+// PopupActions
+"Reply" = "Ответить";
+"Copy" = "Копировать";
+"Edit" = "Изменить";
+"Delete" = "Удалить";
+
+// RatingDialogView
+"RateOperator" = "Пожалуйста, оцените работу оператора";
+
+// SavingImageDialog
+"OK" = "ОК";
+"SaveError" = "Ошибка сохранения";
+"Saved" = "Сохранено!";
+"ImageSaved" = "Изображение было сохранено в Вашу фотогалерею";
+
+// SavingFileDialog
+"OK" = "ОК";
+"SaveError" = "Ошибка сохранения";
+"Saved" = "Сохранено!";
+"FileSaved" = "Файл было сохранено на устройстве в приложении Файлы";
+
+// LoadingFileDialog
+"OK" = "ОК";
+"LoadError" = "Ошибка загрузки";
+
+// OperatorStatus
+"NoOperator" = "Webim демо-чат";
+"OperatorsOffline" = "Нет оператора";
+"Online" = "В сети";
+"IsTyping" = "печатает";
+
+// FilePicker
+"Camera" = "Камера";
+"PhotoLibrary" = "Фотогалерея";
+"Cancel" = "Отменить";
+"File" = "Документ";
+"CameraIsNotAvailable" = "Камера недоступна";
+"OK" = "ОК";
+"CameraAccessTitle" = "Необходим доступ к камере";
+"CameraAccessMessage" = "Требуется доступ к камере для полноценного использования приложения";
+"CameraAccessOpenSettings" = "Открыть настройки приложения";
+"CameraAccessCancel" = "Отменить";
+
+// MessageStatus
+"EditedMessage" = "изменено";
+
+// FlexibleCellDate
+"DateToday" = "Сегодня";
+"DateYesterday" = "Вчера";
+
+// UploadingFileDescription
+"UploadingFile" = "Отправка файла";
+"Counting" = "Подсчет";

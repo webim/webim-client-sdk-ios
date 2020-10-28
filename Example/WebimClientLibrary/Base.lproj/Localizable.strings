@@ -34,12 +34,6 @@
 
 // MARK: - StringConstants.swift
 
-// EMPTY_TABLE_VIEW_TEXT
-"EmptyChat" = "Send first message to start chat.";
-
-// REFRESH_CONTROL_TEXT
-"LoadingMessages" = "Loading messages...";
-
 // Avatar
 "SenderAvatarImage" = "Sender avatar image";
 "ShowsRatingDialog" = "Shows rating dialog.";
@@ -64,32 +58,66 @@
 "ClosesDialog" = "Closes dialog.";
 
 // FileMessage
-"FileUnavailable" = "File is unavailable.";
+"FileUnavailable" = "File is unavailable";
 
 // LeftButton
 "ChooseFile" = "Choose file";
 "ShowsImagePicker" = "Shows image picker to choose an image to send.";
 
-// RateOperatorErrorMessage
-"OperatorRatingFailed" = "Operator rating failed";
+// NoCurrentOperatorErrorMessage
+"NoCurrentOperator" = "No agents available";
+"OK" = "OK";
+"NoAvailableOperator" = "There is no current agent to rate";
+
+// AlertDialog
+"RateSuccessTitle" = "Thank you!";
+"RateSuccessMessage" = "You are helping us to become better";
 "OK" = "OK";
 "ClosesRateOperatorError" = "Closes dialog.";
-"RateOperatorErrorMessage" = "Unknown error occured.";
 
-// RatingDialog
-"Rate" = "Rate";
-"Cancel" = "Cancel";
-"RatesOperator" = "Rates operator with chosen rating.";
-"ClosesRatingDialog" = "Closes rating dialog.";
+// RateOperatorErrorMessage
+"OperatorRatingFailed" = "Operator rating failed";
+"RateOperatorNoChat" = "This chat does not exist";
+"RateOperatorWrongID" = "This agent not in the current chat";
+"RateOperatorLongNote" = "Note for rate is too long";
 
 // SendFileErrorMessage
 "FileSendingFailed" = "File sending failed";
 "ClosesSendFileError" = "Closes dialog.";
 "FileTooLarge" = "File is too large.";
-"FileTypeNotSupported" = "File type is not supported.";
-"FileNotFound" = "Sending files in body is not supported.";
-"FileSendingUnknownError" = "Find sending unknown error.";
+"FileTypeNotSupported" = "File type is not supported";
+"FileNotFound" = "Sending files in body is not supported";
+"FileSendingUnknownError" = "Find sending unknown error";
 "FileSengingUnauthorized" = "Failed to upload file: visitor is not logged in";
+
+// SendMessageErrorMessage
+"SendMessageFailed" = "Message sending failed";
+"MessageIsEmpty" = "Message is empty";
+"MaxMessageLengthExceeded" = "Max message length exceeded";
+
+// EditMessageErrorMessage
+"EditMessageFailed" = "Message editing failed";
+"EditMessageUnknownError" = "Edit message unknown error";
+"EditingMessagesIsTurnedOffOnTheServer" = "Editing messages is turned off on the server";
+"EditingMessageIsEmpty" = "Editing message is empty";
+"MessageNotOwnedByVisitor" = "Message not owned by visitor";
+"MaxMessageLengthExceeded" = "Max message lenght exceeded";
+"WrongMessageKind" = "Wrong message kind (not text)";
+
+// DeleteMessageErrorMessage
+"DeleteMessageFailed" = "Message deleting failed";
+"DeleteMessageUnknownError" = "Delete message unknown error";
+"DeletingMessagesIsTurnedOffOnTheServer" = "Deleting messages is turned off on the server";
+"MessageNotOwnedByVisitor" = "Message not owned by visitor";
+"MessageNotFound" = "Message not found";
+
+// SendKeyboardRequestErrorMessage
+"SendKeyboardRequestFailed" = "Send keyboard request failed";
+"SendKeyboardRequestUnknownError" = "Send keyboard request unknown error";
+"ChatDoesNotExist" = "Chat does not exist";
+"WrongButtonID" = "Wrong button ID in request";
+"WrongMessageID" = "Wrong message ID in request";
+"ResponseCannotBeCreated" = "Response cannot be created for this request";
 
 // SessionCreationErrorDialog
 "ClosesSessionError" = "Closes dialog.";
@@ -100,11 +128,86 @@
 // SettingsErrorDialog
 "ClosesSettingsError" = "Closes dialog.";
 "InvalidSettings" = "Invalid account settings";
-"AccountNameEmpty" = "Account name can't be empty.";
-"LocationEmpty" = "Location can't be empty.";
+"AccountNameEmpty" = "Account name can't be empty";
+"LocationEmpty" = "Location can't be empty";
 
 // ShowFileDialog
-"ImageFormatInvalid" = "Image format is not valid.";
-"ImageLinkInvalid" = "Image link is not valid.";
-"PreviewUnavailable" = "Preview is not available.";
+"ImageFormatInvalid" = "Image format is not valid";
+"ImageLinkInvalid" = "Image link is not valid";
+"PreviewUnavailable" = "Preview is not available";
 "ClosesFilePreview" = "Closes file preview.";
+
+// StartView
+"WelcomeTitle" = "Welcome to the WebimClientLibrary demo app!";
+"WelcomeText" = "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios";
+"StartChat" = "Start Chat";
+"Settings" = "Settings";
+
+// TableView
+"EmptyChat" = "Send first message to start chat.";
+
+// ChatTableView
+"LoadMessages" = "Fetching more messages...";
+
+// ChatView
+"HardcodedVisitorMessageName" = "You";
+"EditMessage" = "Edit Message";
+"InputPlaceholderText" = "Message";
+"AccessibilityTextWebimLogo" = "Webim logo";
+
+// FileView
+"LoadingFile" = "Loading the file...";
+
+// PopupActions
+"Reply" = "Reply";
+"Copy" = "Copy";
+"Edit" = "Edit";
+"Delete" = "Delete";
+
+// RatingDialogView
+"RateOperator" = "Please rate the agent";
+
+// SavingImageDialog
+"OK" = "ОК";
+"SaveError" = "Save error";
+"Saved" = "Saved!";
+"ImageSaved" = "The image has been saved to your photos";
+
+// SavingFileDialog
+"OK" = "ОК";
+"SaveError" = "Save error";
+"Saved" = "Saved!";
+"FileSaved" = "The file has been saved to your device in Files App";
+
+// LoadingFileDialog
+"OK" = "ОК";
+"LoadError" = "Load error";
+
+// OperatorStatus
+"NoOperator" = "Webim demo-chat";
+"OperatorsOffline" = "No agent";
+"Online" = "Online";
+"IsTyping" = "typing";
+
+// FilePicker
+"Camera" = "Camera";
+"PhotoLibrary" = "Photo Library";
+"Cancel" = "Cancel";
+"File" = "File";
+"CameraIsNotAvailable" = "Camera is not available";
+"OK" = "OK";
+"CameraAccessTitle" = "Need camera access";
+"CameraAccessMessage" = "Camera access is required to make full use of this app";
+"CameraAccessOpenSettings" = "Open app settings";
+"CameraAccessCancel" = "Cancel";
+
+// MessageStatus
+"EditedMessage" = "edited";
+
+// FlexibleCellDate
+"DateToday" = "Today";
+"DateYesterday" = "Yesterday";
+
+// UploadingFileDescription
+"UploadingFile" = "Uploading file";
+"Counting" = "Counting";

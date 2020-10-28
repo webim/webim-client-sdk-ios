@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Launch Screen Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" customClass="LaunchScreenController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="© 2020 Webim.ru Inc. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JCT-JR-N8E">
+                                <rect key="frame" x="49" y="833" width="316" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="JCT-JR-N8E" secondAttribute="height" multiplier="314:21" id="O5Z-Yu-Lb0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="highlightedColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressImage="Gradient" translatesAutoresizingMaskIntoConstraints="NO" id="cZr-LY-Wwz">
+                                <rect key="frame" x="103.5" y="513.5" width="207" height="2"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="mUd-X9-07H"/>
+                                </constraints>
+                                <color key="trackTintColor" red="0.12283656746149063" green="0.1345495879650116" blue="0.24707061052322388" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </progressView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoWebimNavigationBar_dark" translatesAutoresizingMaskIntoConstraints="NO" id="ZU5-u5-7TG">
+                                <rect key="frame" x="103.5" y="402.5" width="207" height="101"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ZU5-u5-7TG" secondAttribute="height" multiplier="309:151" id="nIs-VA-0H7"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.15450590848922729" green="0.16108739376068115" blue="0.30589711666107178" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="cZr-LY-Wwz" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="ItJ-my-naU"/>
+                            <constraint firstItem="ZU5-u5-7TG" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.5" id="aqL-WY-mAT"/>
+                            <constraint firstItem="ZU5-u5-7TG" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="fHL-sj-XSd"/>
+                            <constraint firstItem="JCT-JR-N8E" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="8" id="g2q-Xn-nPr"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="JCT-JR-N8E" secondAttribute="bottom" constant="8" id="hoS-6x-idM"/>
+                            <constraint firstItem="JCT-JR-N8E" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cZr-LY-Wwz" secondAttribute="bottom" constant="5" id="rmg-eC-4wo"/>
+                            <constraint firstItem="JCT-JR-N8E" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="rz4-6a-fDV"/>
+                            <constraint firstItem="ZU5-u5-7TG" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="tSy-Q9-UhX"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JCT-JR-N8E" secondAttribute="trailing" constant="8" id="wxg-uR-0tC"/>
+                            <constraint firstItem="cZr-LY-Wwz" firstAttribute="width" secondItem="ZU5-u5-7TG" secondAttribute="width" id="yyp-KU-ekL"/>
+                            <constraint firstItem="cZr-LY-Wwz" firstAttribute="top" secondItem="ZU5-u5-7TG" secondAttribute="bottom" constant="10" id="zTA-7Y-COH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                    </view>
+                    <connections>
+                        <outlet property="bottomTextLabel" destination="JCT-JR-N8E" id="5ib-r5-BF7"/>
+                        <outlet property="progressBarView" destination="cZr-LY-Wwz" id="9Sw-Dh-VFY"/>
+                        <outlet property="webimLogoImageView" destination="ZU5-u5-7TG" id="Ufr-g4-mEx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Gradient" width="1280" height="640"/>
+        <image name="LogoWebimNavigationBar_dark" width="1024" height="500"/>
+    </resources>
+</document>

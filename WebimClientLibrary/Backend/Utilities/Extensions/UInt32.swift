@@ -36,7 +36,7 @@ extension UInt32 {
      - copyright:
      2018 Webim
      */
-    @_specialize(exported: true, where T == ArraySlice<UInt8>)
+    @_specialize(where T == ArraySlice<UInt8>)
     init<T: Collection>(bytes: T,
                         fromIndex index: T.Index) where T.Element == UInt8, T.Index == Int {
         if bytes.isEmpty {

@@ -1,15 +1,15 @@
 
-/* Class = "UILabel"; text = "Account name *"; ObjectID = "7Wr-eX-iv8"; */
-"7Wr-eX-iv8.text" = "Название аккаунта *";
+/* Class = "UILabel"; text = "If you are registered in Webim service you can use your own account name and location."; ObjectID = "4zV-yL-SPS"; */
+"4zV-yL-SPS.text" = "Если Вы зарегистрированы в сервисе Webim, тогда можете использовать собственное название аккаунта и размещение.";
 
-/* Class = "UITableViewSection"; footerTitle = "If you are registered in Webim service you can use your own account name and location."; ObjectID = "FX1-M6-A8v"; */
-"FX1-M6-A8v.footerTitle" = "Если вы зарегистрированы в сервисе \"Webim\", вы можете использовать свою учетную запись.";
+/* Class = "UITextField"; accessibilityLabel = "Page title text field"; ObjectID = "6Zu-48-Ouw"; */
+"6Zu-48-Ouw.accessibilityLabel" = "Текстовое поле названия экрана чата";
 
-/* Class = "UITableViewSection"; headerTitle = "ACCOUNT"; ObjectID = "FX1-M6-A8v"; */
-"FX1-M6-A8v.headerTitle" = "УЧЕТНАЯ ЗАПИСЬ";
+/* Class = "UITextField"; text = "iOS demo app"; ObjectID = "6Zu-48-Ouw"; */
+"6Zu-48-Ouw.text" = "iOS demo app";
 
 /* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "QrB-ab-D1k"; */
-"QrB-ab-D1k.accessibilityHint" = "Сохраняет текущие настройки и возвращается к начальной странице.";
+"QrB-ab-D1k.accessibilityHint" = "Сохраняет текущие настройки и возвращает к начальной странице.";
 
 /* Class = "UIButton"; accessibilityLabel = "Save"; ObjectID = "QrB-ab-D1k"; */
 "QrB-ab-D1k.accessibilityLabel" = "Сохранить";
@@ -17,30 +17,41 @@
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "QrB-ab-D1k"; */
 "QrB-ab-D1k.normalTitle" = "Сохранить";
 
-/* Class = "UILabel"; accessibilityLabel = "Classic color theme"; ObjectID = "Xp5-8q-gOf"; */
-"Xp5-8q-gOf.accessibilityLabel" = "Стандартная цветовая схема";
+/* Class = "UILabel"; text = "Location*"; ObjectID = "Urf-Fq-NZO"; */
+"Urf-Fq-NZO.text" = "Размещение*";
 
-/* Class = "UILabel"; text = "Classic"; ObjectID = "Xp5-8q-gOf"; */
-"Xp5-8q-gOf.text" = "Стандартная";
+/* Class = "UITextField"; accessibilityLabel = "Location text field"; ObjectID = "ViG-wh-bJl"; */
+"ViG-wh-bJl.accessibilityLabel" = "Текстовое поле размещения";
 
-/* Class = "UITextField"; accessibilityLabel = "Page title field"; ObjectID = "YbA-Bc-Fio"; */
-"YbA-Bc-Fio.accessibilityLabel" = "Поле названия страницы чата";
+/* Class = "UITextField"; placeholder = "mobile"; ObjectID = "ViG-wh-bJl"; */
+"ViG-wh-bJl.placeholder" = "mobile";
 
-/* Class = "UITextField"; text = "iOS Demo App"; ObjectID = "YbA-Bc-Fio"; */
-"YbA-Bc-Fio.text" = "iOS Demo App";
+/* Class = "UITextField"; text = "mobile"; ObjectID = "ViG-wh-bJl"; */
+"ViG-wh-bJl.text" = "mobile";
 
-/* Class = "UITextField"; accessibilityLabel = "Location name field"; ObjectID = "ZbE-AG-UMG"; */
-"ZbE-AG-UMG.accessibilityLabel" = "Поле названия размещения (локации)";
+/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "Wgr-pM-cdE"; */
+"Wgr-pM-cdE.text" = "* Это поле не может быть пустым";
 
-/* Class = "UITextField"; text = "mobile"; ObjectID = "ZbE-AG-UMG"; */
-"ZbE-AG-UMG.text" = "mobile";
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "akL-LD-AeE"; */
+"akL-LD-AeE.title" = "Назад";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name text field"; ObjectID = "bC4-gI-YBa"; */
+"bC4-gI-YBa.accessibilityLabel" = "Текстовое поле названия учетной записи";
+
+/* Class = "UITextField"; placeholder = "wmtest"; ObjectID = "bC4-gI-YBa"; */
+"bC4-gI-YBa.placeholder" = "wmtest";
+
+/* Class = "UITextField"; text = "wmtest"; ObjectID = "bC4-gI-YBa"; */
+"bC4-gI-YBa.text" = "wmtest";
 
 /* Class = "UITextView"; accessibilityLabel = "Greeting words"; ObjectID = "bPt-yP-yHN"; */
 "bPt-yP-yHN.accessibilityLabel" = "Приветственные слова";
 
-// Xcode does not localize UITextView text automatically.
-/* Class = "UITextView"; text = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"; ObjectID = "bPt-yP-yHN"; */
-"Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "Добро пожаловать в демо-приложение WebimClientLibrary!\n\nЧтобы начать чат, нажмите кнопку внизу.\n\nОператор может ответить на обращение здесь:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код данного приложения может быть найден здесь:\nhttps://github.com/webim/webim-client-sdk-ios";
+/* Class = "UITextView"; text = "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"; ObjectID = "bPt-yP-yHN"; */
+"bPt-yP-yHN.text" = "Чтобы начать чат, нажмите кнопку внизу.\n\nОператор может ответить на обращение здесь:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код данного приложения может быть найден здесь:\nhttps://github.com/webim/webim-client-sdk-ios";
+
+/* Class = "UILabel"; text = "99"; ObjectID = "d8r-qX-LmS"; */
+"d8r-qX-LmS.text" = "99";
 
 /* Class = "UIButton"; accessibilityHint = "Starts chat."; ObjectID = "edo-SU-HN8"; */
 "edo-SU-HN8.accessibilityHint" = "Начинает чат.";
@@ -51,20 +62,23 @@
 /* Class = "UIButton"; normalTitle = "Start chat"; ObjectID = "edo-SU-HN8"; */
 "edo-SU-HN8.normalTitle" = "Начать чат";
 
-/* Class = "UITableViewSection"; headerTitle = "COLOR THEME"; ObjectID = "fJX-AG-mdU"; */
-"fJX-AG-mdU.headerTitle" = "ЦВЕТОВАЯ СХЕМА";
+/* Class = "UILabel"; accessibilityLabel = "Greeting title"; ObjectID = "f2l-5B-zsO"; */
+"f2l-5B-zsO.accessibilityLabel" = "Приветственное заглавие";
 
-/* Class = "UILabel"; text = "Page title"; ObjectID = "kTz-jD-ziQ"; */
-"kTz-jD-ziQ.text" = "Название экрана чата";
+/* Class = "UILabel"; text = "Welcome to the WebimClientLibrary demo app!"; ObjectID = "f2l-5B-zsO"; */
+"f2l-5B-zsO.text" = "Добро пожаловать в демо-приложение WebimClientLibrary!";
 
-/* Class = "UITextField"; accessibilityLabel = "Account name field"; ObjectID = "qLZ-bH-B74"; */
-"qLZ-bH-B74.accessibilityLabel" = "Поле названия учетной записи";
+/* Class = "UIImageView"; accessibilityLabel = "Webim logo"; ObjectID = "fbO-33-eR3"; */
+"fbO-33-eR3.accessibilityLabel" = "Лого Вебим";
 
-/* Class = "UITextField"; text = "demo"; ObjectID = "qLZ-bH-B74"; */
-"qLZ-bH-B74.text" = "demo";
+/* Class = "UILabel"; accessibilityLabel = "Account section title"; ObjectID = "iei-A8-OZ9"; */
+"iei-A8-OZ9.accessibilityLabel" = "Заглавие секции учетной записи";
 
-/* Class = "UILabel"; text = "Location *"; ObjectID = "qQH-qh-OFD"; */
-"qQH-qh-OFD.text" = "Размещение *";
+/* Class = "UILabel"; text = "Account"; ObjectID = "iei-A8-OZ9"; */
+"iei-A8-OZ9.text" = "Учетная запись";
+
+/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "kOW-ZJ-ash"; */
+"kOW-ZJ-ash.text" = "* Это поле не может быть пустым";
 
 /* Class = "UIButton"; accessibilityHint = "Shows settings."; ObjectID = "rMR-x2-dzu"; */
 "rMR-x2-dzu.accessibilityHint" = "Показывает настройки.";
@@ -75,14 +89,8 @@
 /* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "rMR-x2-dzu"; */
 "rMR-x2-dzu.normalTitle" = "Настройки";
 
-/* Class = "UILabel"; accessibilityLabel = "Dark color theme"; ObjectID = "slT-Ti-eBV"; */
-"slT-Ti-eBV.accessibilityLabel" = "Темная цветовая СХЕМА";
+/* Class = "UILabel"; text = "Account name*"; ObjectID = "rPK-KX-bO9"; */
+"rPK-KX-bO9.text" = "Название аккаунта*";
 
-/* Class = "UILabel"; text = "Dark"; ObjectID = "slT-Ti-eBV"; */
-"slT-Ti-eBV.text" = "Темная";
-
-/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "5Lf-Fb-XN7"; */
-"5Lf-Fb-XN7.text" = "* Название учетной записи не может быть пустым.";
-
-/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "6r5-5x-xIB"; */
-"6r5-5x-xIB.text" = "* Размещение (локация) не может быть пустым.";
+/* Class = "UILabel"; text = "Page title"; ObjectID = "uW6-TG-iNP"; */
+"uW6-TG-iNP.text" = "Название экрана чата";

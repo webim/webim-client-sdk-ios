@@ -47,6 +47,7 @@ final class MessageItem {
         case data = "data"
         case deleted = "deleted"
         case id = "id"
+        case isEdited = "edited"
         case kind = "kind"
         case quote = "quote"
         case read = "read"
@@ -67,6 +68,7 @@ final class MessageItem {
     private var data: MessageData?
     private var deleted: Bool?
     private var id: String?
+    private var isEdited: Bool?
     private var kind: MessageKind?
     private var quote: QuoteItem?
     private var read: Bool?
@@ -143,6 +145,10 @@ final class MessageItem {
         
         if let timestampInSecond = jsonDictionary[JSONField.timestampInSecond.rawValue] as? Double {
             self.timestampInSecond = timestampInSecond
+        }
+        
+        if let isEdited = jsonDictionary[JSONField.isEdited.rawValue] as? Bool {
+            self.isEdited = isEdited
         }
     }
     
@@ -222,6 +228,10 @@ final class MessageItem {
         return canBeReplied ?? false
     }
     
+    func getIsEdited() -> Bool {
+        return isEdited ?? false
+    }
+    
     // MARK: -
     enum MessageKind: String {
         // Raw values equal to field names received in responses from server.
@@ -238,6 +248,7 @@ final class MessageItem {
         case keyboard_response = ""
         case operatorMessage = "operator"
         case operatorBusy = "operator_busy"
+        case stickerVisitor = "sticker_visitor"
         case visitorMessage = "visitor"
         
         // MARK: - Initialization
@@ -281,6 +292,10 @@ final class MessageItem {
                 break
             case .visitorMessage:
                 self = .visitorMessage
+                
+                break
+            case .stickerVisitor:
+                self = .stickerVisitor
                 
                 break
             }

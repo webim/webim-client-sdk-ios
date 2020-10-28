@@ -30,7 +30,6 @@ import Foundation
 let USER_DEFAULTS_NAME = "settings"
 enum UserDefaultsKey: String {
     case accountName = "account_name"
-    case colorScheme = "color_scheme"
     case location = "location"
     case pageTitle = "page_title"
 }
@@ -53,10 +52,14 @@ final class Settings {
     
     // MARK: - Initialization
     private init() {
-        if let settings = UserDefaults.standard.object(forKey: USER_DEFAULTS_NAME) as? [String : String] {
-            self.accountName = settings[UserDefaultsKey.accountName.rawValue] ?? DefaultSettings.accountName.rawValue
-            self.location = settings[UserDefaultsKey.location.rawValue] ?? DefaultSettings.location.rawValue
-            self.pageTitle = settings[UserDefaultsKey.pageTitle.rawValue] ?? DefaultSettings.pageTitle.rawValue
+        if let settings = UserDefaults.standard.object(forKey: USER_DEFAULTS_NAME)
+            as? [String : String] {
+            self.accountName = settings[UserDefaultsKey.accountName.rawValue] ??
+                DefaultSettings.accountName.rawValue
+            self.location = settings[UserDefaultsKey.location.rawValue] ??
+                DefaultSettings.location.rawValue
+            self.pageTitle = settings[UserDefaultsKey.pageTitle.rawValue] ??
+                DefaultSettings.pageTitle.rawValue
         } else {
             self.accountName = DefaultSettings.accountName.rawValue
             self.location = DefaultSettings.location.rawValue
@@ -66,10 +69,12 @@ final class Settings {
     
     // MARK: - Methods
     func save() {
-        let settings = [UserDefaultsKey.accountName.rawValue : accountName,
-                        UserDefaultsKey.location.rawValue : location,
-                        UserDefaultsKey.pageTitle.rawValue : pageTitle,
-                        UserDefaultsKey.colorScheme.rawValue : ColorScheme.shared.schemeType.rawValue]
+        let settings = [
+            UserDefaultsKey.accountName.rawValue : accountName,
+            UserDefaultsKey.location.rawValue : location,
+            UserDefaultsKey.pageTitle.rawValue : pageTitle
+        ]
+        
         UserDefaults.standard.set(settings,
                                   forKey: USER_DEFAULTS_NAME)
     }

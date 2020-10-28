@@ -46,6 +46,7 @@ class MessageImpl {
     private let senderName: String
     private let sendStatus: MessageSendStatus
     private let serverURLString: String
+    private let sticker: Sticker?
     private let text: String
     private let timeInMicrosecond: Int64
     private let type: MessageType
@@ -57,6 +58,7 @@ class MessageImpl {
     private var read: Bool
     private var messageCanBeEdited: Bool
     private var messageCanBeReplied: Bool
+    private var messageIsEdited: Bool
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -68,6 +70,7 @@ class MessageImpl {
          senderAvatarURLString: String?,
          senderName: String,
          sendStatus: MessageSendStatus = .sent,
+         sticker: Sticker?,
          type: MessageType,
          rawData: [String: Any?]?,
          data: MessageData?,
@@ -78,7 +81,8 @@ class MessageImpl {
          rawText: String?,
          read: Bool,
          messageCanBeEdited: Bool,
-         messageCanBeReplied: Bool) {
+         messageCanBeReplied: Bool,
+         messageIsEdited: Bool) {
         self.data = data
         self.id = id
         self.keyboard = keyboard
@@ -90,6 +94,7 @@ class MessageImpl {
         self.senderAvatarURLString = senderAvatarURLString
         self.senderName = senderName
         self.sendStatus = sendStatus
+        self.sticker = sticker
         self.serverURLString = serverURLString
         self.text = text
         self.timeInMicrosecond = timeInMicrosecond
@@ -97,6 +102,7 @@ class MessageImpl {
         self.read = read
         self.messageCanBeEdited = messageCanBeEdited
         self.messageCanBeReplied = messageCanBeReplied
+        self.messageIsEdited = messageIsEdited
         
         self.historyMessage = historyMessage
         if historyMessage {
@@ -336,6 +342,10 @@ extension MessageImpl: Message {
         return senderName
     }
     
+    func getSticker() -> Sticker? {
+        return sticker
+    }
+    
     func getText() -> String {
         return text
     }
@@ -367,6 +377,10 @@ extension MessageImpl: Message {
         return messageCanBeReplied
     }
     
+    func isEdited() -> Bool {
+        return messageIsEdited
+    }
+    
 }
 
 // MARK: - Equatable
@@ -383,7 +397,8 @@ extension MessageImpl: Equatable {
             && (lhs.timeInMicrosecond == rhs.timeInMicrosecond))
             && (lhs.type == rhs.type))
             && (lhs.isReadByOperator() == rhs.isReadByOperator()
-            && (lhs.canBeEdited() == rhs.canBeEdited()))
+            && (lhs.canBeEdited() == rhs.canBeEdited()
+            && (lhs.isEdited() == rhs.isEdited())))
     }
     
 }
@@ -709,6 +724,38 @@ final class KeyboardImpl: Keyboard {
     
     func getResponse() -> KeyboardResponse? {
         return KeyboardResponseImpl(data: keyboardItem.getResponse())
+    }
+}
+
+/**
+ - seealso:
+ `Sticker`
+ - author:
+ Yury Vozleev
+ - copyright:
+ 2020 Webim
+ */
+final class StickerImpl: Sticker {
+    private let stickerItem: StickerItem
+    
+    init?(data: [String: Any?]) {
+        if let sticker = StickerItem(jsonDictionary: data) {
+            self.stickerItem = sticker
+        } else {
+            return nil
+        }
+    }
+    
+    init(stickerId: Int) {
+        self.stickerItem = StickerItem(stickerId: stickerId)
+    }
+    
+    static func getSticker(jsonDictionary: [String : Any?]) -> Sticker? {
+        return StickerImpl(data: jsonDictionary)
+    }
+    
+    func getStickerId() -> Int {
+        return stickerItem.getStickerId()
     }
 }
 

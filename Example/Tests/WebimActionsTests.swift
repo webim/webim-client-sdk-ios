@@ -374,10 +374,12 @@ class WebimActionsTests: XCTestCase {
         // Setup.
         let operatorID = "1"
         let rating = "2"
+        let visitorNote = "RateNote"
         
         // When: Rating an operator.
         webimActions?.rateOperatorWith(id: operatorID,
                                        rating: Int(rating)!,
+                                       visitorNote: visitorNote,
                                        completionHandler: nil)
         
         // Then: Request parameters should be like this.
@@ -387,11 +389,14 @@ class WebimActionsTests: XCTestCase {
         
         let expectedParametersDictionary = ["action" : "chat.operator_rate_select",
                                             "rate" : rating,
+                                            "visitor_note" : visitorNote,
                                             "operator_id" : operatorID] as [String : Any]
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["action"] as! String,
                        expectedParametersDictionary["action"] as! String)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["rate"] as! String,
                        expectedParametersDictionary["rate"] as! String)
+        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["visitor_note"] as! String,
+                       expectedParametersDictionary["visitor_note"] as! String)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["operator_id"] as! String,
                        expectedParametersDictionary["operator_id"] as! String)
         

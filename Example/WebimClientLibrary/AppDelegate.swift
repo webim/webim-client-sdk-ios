@@ -28,6 +28,7 @@ import Crashlytics
 import Fabric
 import UIKit
 import WebimClientLibrary
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -47,16 +48,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         
         // Remote notifications configuration
-        let notificationTypes: UIUserNotificationType = [.alert,
+        let notificationTypes: UNAuthorizationOptions = [.alert,
                                                          .badge,
                                                          .sound]
-        let remoteNotificationSettings = UIUserNotificationSettings(types: notificationTypes,
-                                                                    categories: nil)
-        application.registerUserNotificationSettings(remoteNotificationSettings)
-        application.registerForRemoteNotifications()
-        application.applicationIconBadgeNumber = 0
-        
-        
+        UNUserNotificationCenter.current().requestAuthorization(options: notificationTypes) { (granted, error) in
+            if granted {
+                //application.registerUserNotificationSettings(remoteNotificationSettings)
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                    application.applicationIconBadgeNumber = 0
+                }
+            } else {
+                print(error ?? "Error with remote notification")
+            }
+        }
         
         return true
     }

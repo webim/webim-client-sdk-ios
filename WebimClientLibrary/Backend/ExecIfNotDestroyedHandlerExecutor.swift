@@ -49,7 +49,7 @@ final class ExecIfNotDestroyedHandlerExecutor {
     // MARK: - Methods
     func execute(task: DispatchWorkItem) {
         if !sessionDestroyer.isDestroyed() {
-            queue.async {
+            DispatchQueue.main.async {
                 if !self.sessionDestroyer.isDestroyed() {
                     task.perform()
                 }

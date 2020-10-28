@@ -46,6 +46,7 @@ final class MessageTrackerImpl {
     private var headMessage: MessageImpl?
     private var firstHistoryUpdateReceived: Bool?
     private var messagesLoading: Bool?
+    private var currentChatMessagesWereReceived = false
     
     // MARK: - Initialization
     init(messageListener: MessageListener,
@@ -417,7 +418,7 @@ final class MessageTrackerImpl {
                             let headMessageTime = headMessage?.getTime() ?? messageTime
                             if (messageTime >= first.getTime())
                                 && (messageTime <= last.getTime())
-                                && (messageTime > headMessageTime) {
+                                && messageHolder.getCurrentChatMessagesWereReceived() {
                                 for currentChatMessage in currentChatMessages {
                                     if currentChatMessage.getID() == message.getID() {
                                         
@@ -530,6 +531,7 @@ extension MessageTrackerImpl: MessageTracker {
         
         allMessageSourcesEnded = false
         messageHolder.set(reachedEndOfLocalHistory: false)
+        messageHolder.set(currentChatMessagesWereReceived: false)
         let currentChatMessages = messageHolder.getCurrentChatMessages()
         if currentChatMessages.isEmpty {
             messagesLoading = true

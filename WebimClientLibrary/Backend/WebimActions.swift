@@ -75,6 +75,7 @@ class WebimActions {
         case visitorNote = "visitor_note"
         case visitSessionID = "visit-session-id"
         case since = "since"
+        case stickerId = "sticker-id"
         case surveyAnswer = "answer"
         case surveyFormID = "form-id"
         case surveyID = "survey-id"
@@ -120,6 +121,7 @@ class WebimActions {
         case chatRead = "chat.read_by_visitor"
         case widgetUpdate = "widget.update"
         case keyboardResponse = "chat.keyboard_response"
+        case sendSticker = "sticker"
     }
     
     // MARK: - Properties
@@ -415,6 +417,26 @@ class WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         sendDialogToEmailAddressCompletionHandler: completionHandler))
+    }
+    
+    func sendSticker(stickerId:Int,
+                     clientSideId: String,
+                     completionHandler: SendStickerCompletionHandler? = nil) {
+        let dataToPost = [
+            Parameter.actionn.rawValue: Action.sendSticker.rawValue,
+            Parameter.stickerId.rawValue: String(stickerId),
+            Parameter.clientSideID.rawValue: clientSideId
+        ] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(
+            httpMethod: .post,
+            primaryData: dataToPost,
+            contentType: ContentType.urlEncoded.rawValue,
+            baseURLString: urlString,
+            sendStickerCompletionHandler: completionHandler
+        ))
     }
     
     func sendQuestionAnswer(surveyID: String,

@@ -42,6 +42,7 @@ enum WebimInternalError: String, Error {
     case fileTypeNotAllowed = "not_allowed_file_type"
     case notAllowedMimeType = "not_allowed_mime_type";
     case noPreviousChats = "no_previous_chats";
+    case noStickerId = "no-sticker-id"
     case notMatchingMagicNumbers = "not_matching_magic_numbers";
     case providedVisitorFieldsExpired = "provided-visitor-expired"
     case reinitializationRequired = "reinit-required"

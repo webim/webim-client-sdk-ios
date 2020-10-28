@@ -41,17 +41,19 @@ class MessageImplTests: XCTestCase {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         let expectedString = """
 MessageImpl {
     serverURLString = http://demo.webim.ru,
@@ -85,17 +87,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         XCTAssertNil(message.getSenderAvatarFullURL())
     }
@@ -110,17 +114,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         XCTAssertEqual(message.getSendStatus(),
                        MessageSendStatus.sent)
@@ -136,17 +142,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         let message1 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                   id: "id1",
@@ -157,17 +165,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         let message2 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
@@ -177,17 +187,19 @@ MessageImpl {
                                    senderAvatarURLString: nil,
                                    senderName: "Name1",
                                    sendStatus: .sent,
+                                   sticker: nil,
                                    type: .visitorMessage,
+                                   rawData: nil,
                                    data: nil,
                                    text: "Text",
                                    timeInMicrosecond: 0,
-                                   attachment: nil,
                                    historyMessage: false,
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
                                    messageCanBeEdited: false,
-                                   messageCanBeReplied: false)
+                                   messageCanBeReplied: false,
+                                   messageIsEdited: false)
         let message3 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
@@ -197,17 +209,19 @@ MessageImpl {
                                    senderAvatarURLString: nil,
                                    senderName: "Name",
                                    sendStatus: .sent,
+                                   sticker: nil,
                                    type: .visitorMessage,
+                                   rawData: nil,
                                    data: nil,
                                    text: "Text1",
                                    timeInMicrosecond: 0,
-                                   attachment: nil,
                                    historyMessage: false,
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
                                    messageCanBeEdited: false,
-                                   messageCanBeReplied: false)
+                                   messageCanBeReplied: false,
+                                   messageIsEdited: false)
         let message4 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
@@ -217,17 +231,19 @@ MessageImpl {
                                    senderAvatarURLString: nil,
                                    senderName: "Name",
                                    sendStatus: .sent,
+                                   sticker: nil,
                                    type: .operatorMessage,
+                                   rawData: nil,
                                    data: nil,
                                    text: "Text",
                                    timeInMicrosecond: 0,
-                                   attachment: nil,
                                    historyMessage: false,
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
                                    messageCanBeEdited: false,
-                                   messageCanBeReplied: false)
+                                   messageCanBeReplied: false,
+                                   messageIsEdited: false)
         let message5 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    id: "id",
                                    keyboard: nil,
@@ -237,23 +253,47 @@ MessageImpl {
                                    senderAvatarURLString: nil,
                                    senderName: "Name",
                                    sendStatus: .sent,
+                                   sticker: nil,
                                    type: .visitorMessage,
+                                   rawData: nil,
                                    data: nil,
                                    text: "Text",
                                    timeInMicrosecond: 0,
-                                   attachment: nil,
                                    historyMessage: false,
                                    internalID: nil,
                                    rawText: nil,
                                    read: false,
                                    messageCanBeEdited: false,
-                                   messageCanBeReplied: false)
+                                   messageCanBeReplied: false,
+                                   messageIsEdited: false)
+        let message6 = MessageImpl(serverURLString: "http://demo.webim.ru",
+                                  id: "id",
+                                  keyboard: nil,
+                                  keyboardRequest: nil,
+                                  operatorID: nil,
+                                  quote: nil,
+                                  senderAvatarURLString: nil,
+                                  senderName: "Name",
+                                  sendStatus: .SENT,
+                                  type: .VISITOR,
+                                  data: nil,
+                                  text: "Text",
+                                  timeInMicrosecond: 0,
+                                  attachment: nil,
+                                  historyMessage: false,
+                                  internalID: nil,
+                                  rawText: nil,
+                                  read: false,
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: true)
         
         XCTAssertFalse(message.isEqual(to: message1))
         XCTAssertFalse(message.isEqual(to: message2))
         XCTAssertFalse(message.isEqual(to: message3))
         XCTAssertFalse(message.isEqual(to: message4))
         XCTAssertTrue(message.isEqual(to: message5))
+        XCTAssertFalse(message.isEqual(to: message6))
     }
     
     // MARK: MessageSource tests
@@ -268,17 +308,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         XCTAssertNoThrow(try message.getSource().assertIsCurrentChat())
     }
@@ -293,17 +335,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         XCTAssertThrowsError(try message.getSource().assertIsHistory())
     }
@@ -318,17 +362,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         XCTAssertNil(message.getHistoryID())
     }
@@ -344,17 +390,19 @@ MessageImpl {
                                   senderAvatarURLString: nil,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: currentChatID,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         XCTAssertEqual(currentChatID,
                        message.getCurrentChatID())
@@ -372,17 +420,19 @@ MessageImpl {
                                   senderAvatarURLString: avatarURLString,
                                   senderName: "Name",
                                   sendStatus: .sent,
+                                  sticker: nil,
                                   type: .visitorMessage,
+                                  rawData: nil,
                                   data: nil,
                                   text: "Text",
                                   timeInMicrosecond: 0,
-                                  attachment: nil,
                                   historyMessage: false,
                                   internalID: nil,
                                   rawText: nil,
                                   read: false,
                                   messageCanBeEdited: false,
-                                  messageCanBeReplied: false)
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false)
         
         XCTAssertEqual(URL(string: (baseURLString + avatarURLString)),
                        message.getSenderAvatarFullURL())
@@ -395,17 +445,15 @@ class MessageAttachmentTests: XCTestCase {
     
     // MARK: - Tests
     func testInit() {
-        let messageAttachment = MessageAttachmentImpl(urlString: "/image.jpg",
-                                                      size: 1,
-                                                      filename: "image",
-                                                      contentType: "image/jpeg",
-                                                      imageInfo: nil)
+        let messageAttachment = FileInfoImpl(urlString: "/image.jpg",
+                                             size: 1,
+                                             filename: "image",
+                                             contentType: "image/jpeg")
         
         XCTAssertEqual(messageAttachment.getContentType(),
                        "image/jpeg")
         XCTAssertEqual(messageAttachment.getFileName(),
                        "image")
-        XCTAssertNil(messageAttachment.getImageInfo())
         XCTAssertEqual(messageAttachment.getSize(),
                        1)
         XCTAssertEqual(messageAttachment.getURL(),

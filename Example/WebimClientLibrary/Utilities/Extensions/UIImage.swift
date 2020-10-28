@@ -2,8 +2,8 @@
 //  UIImage.swift
 //  WebimClientLibrary_Example
 //
-//  Created by Nikita Lazarev-Zubov on 14.10.17.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by Eugene Ilyin on 27.11.2019.
+//  Copyright © 2019 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,39 +27,47 @@
 import UIKit
 
 extension UIImage {
-    
-    // MARK: - Methods
-    func roundImage() -> UIImage {
-        let minEdge = min(self.size.height,
-                          self.size.width)
-        let size = CGSize(width: minEdge,
-                          height: minEdge)
-        
-        UIGraphicsBeginImageContextWithOptions(size,
-                                               false,
-                                               0.0)
-        let context = UIGraphicsGetCurrentContext()!
-        
-        self.draw(in: CGRect(origin: CGPoint.zero,
-                             size: size),
-                  blendMode: .copy,
-                  alpha: 1.0)
-        
-        context.setBlendMode(.copy)
-        context.setFillColor(UIColor.clear.cgColor)
-        
-        let rectPath = UIBezierPath(rect: CGRect(origin: CGPoint.zero,
-                                                 size: size))
-        let circlePath = UIBezierPath(ovalIn: CGRect(origin: CGPoint.zero,
-                                                     size: size))
-        rectPath.append(circlePath)
-        rectPath.usesEvenOddFillRule = true
-        rectPath.fill()
-        
-        let result = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        return result
+    public enum FlipOrientation {
+        case vertically, horizontally
     }
     
+    public func flipImage(_ orientation: FlipOrientation) -> UIImage {
+        defer { UIGraphicsEndImageContext() }
+        
+        UIGraphicsBeginImageContextWithOptions(self.size, false, UIScreen.main.scale)
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return self }
+        context.translateBy(x: size.width / 2, y: size.height / 2)
+        
+        switch orientation {
+        case .horizontally:
+            context.scaleBy(x: -1.0, y: -1.0)
+        case .vertically:
+            context.scaleBy(x: -1.0, y: 1.0)
+        }
+        
+        context.translateBy(x: -size.width / 2, y: -size.height / 2)
+        context.draw(self.cgImage!, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        
+        return UIGraphicsGetImageFromCurrentImageContext() ?? self
+    }
+    
+    public func colour(_ colour: UIColor) -> UIImage {
+        defer { UIGraphicsEndImageContext() }
+        
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return self }
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.translateBy(x: 0.0, y: -size.height)
+        
+        context.setBlendMode(.multiply)
+        
+        let rectangle = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        context.clip(to: rectangle, mask: cgImage!)
+        colour.setFill()
+        context.fill(rectangle)
+        
+        return UIGraphicsGetImageFromCurrentImageContext() ?? self
+    }
 }

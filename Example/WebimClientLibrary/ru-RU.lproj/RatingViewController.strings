@@ -1,9 +1,0 @@
-
-/* Class = "UIView"; accessibilityHint = "Устанавливает оценку оператора числом от одного до пяти."; ObjectID = "TCC-HX-zVh"; */
-"TCC-HX-zVh.accessibilityHint" = "Устанавливает оценку оператора числом от одного до пяти.";
-
-/* Class = "UIView"; accessibilityLabel = "Оценка"; ObjectID = "TCC-HX-zVh"; */
-"TCC-HX-zVh.accessibilityLabel" = "Оценка";
-
-/* Class = "UILabel"; text = "Оценить оператора"; ObjectID = "XLW-Lu-VBj"; */
-"XLW-Lu-VBj.text" = "Оценить оператора";

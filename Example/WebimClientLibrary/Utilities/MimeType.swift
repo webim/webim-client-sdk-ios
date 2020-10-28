@@ -133,7 +133,10 @@ fileprivate let mimeTypes = [
     "asx" : "video/x-ms-asf",
     "asf" : "video/x-ms-asf",
     "wmv" : "video/x-ms-wmv",
-    "avi" : "video/x-msvideo"
+    "avi" : "video/x-msvideo",
+    "key" : "application/x-iwork-keynote-sffkey",
+    "pages" : "application/x-iwork-pages-sffpages",
+    "numbers" : "application/x-iwork-numbers-sffnumbers"
 ]
 
 // MARK: -
@@ -162,4 +165,23 @@ func isImage(contentType: String) -> Bool {
         || (contentType == "image/jpeg")
         || (contentType == "image/png")
         || (contentType == "image/tiff"))
+}
+
+// Check if file is acceptable to show in WKWebView
+func isAcceptableFile(contentType: String) -> Bool {
+    return ((contentType == mimeTypes["txt"])
+    || (contentType == mimeTypes["rtf"])
+    || (contentType == mimeTypes["pdf"])
+    || (contentType == mimeTypes["doc"])
+    || (contentType == mimeTypes["docx"])
+    || (contentType == mimeTypes["xls"])
+    || (contentType == mimeTypes["xlsx"])
+    || (contentType == mimeTypes["ppt"])
+    || (contentType == mimeTypes["pptx"])
+    || (contentType == mimeTypes["mp4"])
+    || (contentType == mimeTypes["key"])
+    || (contentType == mimeTypes["pages"])
+    || (contentType == mimeTypes["numbers"])
+        
+    || (contentType == "text/rtf"))
 }

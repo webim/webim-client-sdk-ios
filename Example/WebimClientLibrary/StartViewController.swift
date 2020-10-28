@@ -25,78 +25,164 @@
 //
 
 import UIKit
+import WebimClientLibrary
 
 final class StartViewController: UIViewController {
     
-    // MARK: - Properties
-    // MARK: Outlets
+    // MARK: - Private Properties
+    private var unreadMessageCounter: Int = 0
+    
+    private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
+    private lazy var webimService = WebimService(
+        fatalErrorHandlerDelegate: self,
+        departmentListHandlerDelegate: self
+    )
+    
+    // MARK: - Outlets
     @IBOutlet weak var startChatButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var welcomeTextView: UITextView!
+    @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var logoImageView: UIImageView!
+    @IBOutlet weak var unreadMessageCounterLabel: UILabel!
+    @IBOutlet weak var unreadMessageCounterActivity: UIActivityIndicatorView!
     
-    // MARK: - Methods
+    // MARK: - View Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Workaround for displaying correctly the position of the text inside weclomeTextView
+        DispatchQueue.main.async {
+            // Workaround for localization
+            self.welcomeTextView.text = StartView.welcomeText.rawValue.localized
+            self.welcomeTextView.scrollRangeToVisible(NSRange(location: 0,length: 0))
+        }
+        
+        setupColorScheme()
+        
+        startWebimSession()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupStartChatButton()
         setupSettingsButton()
-        
-        // Xcode does not localize UITextView text automatically.
-        welcomeTextView.text = NSLocalizedString(StartView.welcomeText.rawValue,
-                                                 tableName: "Main",
-                                                 bundle: .main,
-                                                 value: "",
-                                                 comment: "")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        setupColorScheme()
-        setupNavigationItem()
+    override func viewWillDisappear(_ animated: Bool) {
+        stopWebimSession()
     }
     
     @IBAction func unwindFromSettings(_: UIStoryboardSegue) {
         // No need to do anything.
     }
     
-    // MARK: Private methods
-    
+    // MARK: - Private methods
     private func setupStartChatButton() {
-        startChatButton.layer.cornerRadius = Button.cornerRadius.rawValue
-        startChatButton.layer.borderWidth = Button.borderWidth.rawValue
-        startChatButton.layer.borderColor = buttonBorderColor.color().cgColor
+        startChatButton.layer.cornerRadius = 8.0
+        startChatButton.layer.borderWidth = 1.0
+        startChatButton.layer.borderColor = startChatButtonBorderColour
     }
     
     private func setupSettingsButton() {
-        settingsButton.layer.cornerRadius = TransparentButton.cornerRadius.rawValue
-        settingsButton.layer.borderWidth = TransparentButton.borderWidth.rawValue
+        settingsButton.layer.cornerRadius = 8.0
+        settingsButton.layer.borderWidth = 1.0
     }
     
     private func setupColorScheme() {
-        view.backgroundColor = backgroundMainColor.color()
-        navigationController?.navigationBar.barTintColor = backgroundSecondaryColor.color()
+        view.backgroundColor = startViewBackgroundColour
+
+        // Fixing 'shadow' on top of the main colour
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.barTintColor = navigationBarBarTintColour
         
-        welcomeTextView.backgroundColor = backgroundMainColor.color()
-        welcomeTextView.textColor = textMainColor.color()
-        welcomeTextView.tintColor = textTintColor.color()
+        navigationController?.navigationBar.tintColor = navigationBarTintColour
+
+        logoImageView.image = logoImageViewImage
+
+        welcomeLabel.textColor = welcomeLabelTextColour
+
+        welcomeTextView.textColor = welcomeTextViewTextColour
+        welcomeTextView.linkTextAttributes = [
+            NSAttributedString.Key.foregroundColor: welcomeTextViewForegroundColour
+        ]
+
+        startChatButton.backgroundColor = startChatButtonBackgroundColour
+        startChatButton.setTitleColor(startChatTitleColour, for: .normal)
         
-        startChatButton.backgroundColor = buttonColor.color()
-        startChatButton.setTitleColor(textButtonColor.color(),
-                                      for: .normal)
+        settingsButton.setTitleColor(settingsButtonTitleColour, for: .normal)
         
-        settingsButton.setTitleColor(textButtonTransparentColor.color(),
-                                     for: .normal)
-        settingsButton.setTitleColor(textButtonTransparentHighlightedColor.color(),
-                                     for: .highlighted)
-        settingsButton.layer.borderColor = textButtonTransparentColor.color().cgColor
+        settingsButton.layer.borderColor = settingButtonBorderColour
     }
     
-    private func setupNavigationItem() {
-        let navigationItemImageView = UIImageView(image: ColorScheme.shared.navigationItemImage())
-        navigationItemImageView.contentMode = .scaleAspectFit
-        navigationItem.titleView = navigationItemImageView
+    private func updateMessageCounter() {
+        DispatchQueue.main.async {
+            self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
+            self.unreadMessageCounterActivity.stopAnimating()
+            self.unreadMessageCounterLabel.fadeTransition(0.2)
+            self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
+        }
+    }
+    
+    private func startWebimSession() {
+        webimService.createSession()
+        webimService.startSession()
+        webimService.setMessageStream()
+        webimService.set(unreadByVisitorMessageCountChangeListener: self)
+        
+        unreadMessageCounter = webimService.getUnreadMessagesByVisitor()
+        updateMessageCounter()
+    }
+
+    private func stopWebimSession() {
+        webimService.stopSession()
+        
+        unreadMessageCounter = 0
+        unreadMessageCounterLabel.text = nil
+        unreadMessageCounterActivity.startAnimating()
+    }
+}
+
+// MARK: - WEBIM: MessageListener
+extension StartViewController: UnreadByVisitorMessageCountChangeListener {
+    
+    // MARK: - Methods
+    func changedUnreadByVisitorMessageCountTo(newValue: Int) {
+        if unreadMessageCounter == 0 {
+            DispatchQueue.main.async {
+                self.unreadMessageCounterActivity.stopAnimating()
+            }
+        }
+        unreadMessageCounter = newValue
+        updateMessageCounter()
+    }
+    
+}
+
+// MARK: - FatalErrorHandler
+extension StartViewController: FatalErrorHandlerDelegate {
+    
+    // MARK: - Methods
+    func showErrorDialog(withMessage message: String) {
+        alertDialogHandler.showCreatingSessionFailureDialog(withMessage: message)
+    }
+    
+}
+
+// MARK: - DepartmentListHandlerDelegate
+extension StartViewController: DepartmentListHandlerDelegate {
+    
+    // MARK: - Methods
+    func show(departmentList: [Department], action: @escaping (String) -> ()) {
+        
+        // Due to the fact that it is the start screen, there is no need in diplaying departmentlist
+//        alertDialogHandler.showDepartmentListDialog(
+//            withDepartmentList: departmentList,
+//            action: action
+//        )
     }
     
 }

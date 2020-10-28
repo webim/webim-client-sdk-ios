@@ -109,11 +109,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 5
+        return 6
     }
     
     func getVersionDB() -> Int {
-        return 5
+        return 6
     }
     
     func set(reachedHistoryEnd: Bool) {
@@ -646,13 +646,12 @@ final class SQLiteHistoryStorage: HistoryStorage {
         }
         
         var keyboard: Keyboard? = nil
+        var keyboardRequest: KeyboardRequest? = nil
+        var sticker: Sticker?
         if let data = rawData {
             keyboard = KeyboardImpl.getKeyboard(jsonDictionary: data)
-        }
-        
-        var keyboardRequest: KeyboardRequest? = nil
-        if let data = rawData {
             keyboardRequest = KeyboardRequestImpl.getKeyboardRequest(jsonDictionary: data)
+            sticker = StickerImpl.getSticker(jsonDictionary: data)
         }
         
         var quote: Quote?
@@ -669,6 +668,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            quote: quote,
                            senderAvatarURLString: row[SQLiteHistoryStorage.avatarURLString],
                            senderName: row[SQLiteHistoryStorage.senderName],
+                           sticker: sticker,
                            type: type,
                            rawData: rawData,
                            data: data,
@@ -679,7 +679,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            rawText: rawText,
                            read: row[SQLiteHistoryStorage.timestamp] <= readBeforeTimestamp || readBeforeTimestamp == -1,
                            messageCanBeEdited: false,
-                           messageCanBeReplied: false)
+                           messageCanBeReplied: false,
+                           messageIsEdited: false)
     }
     
     private func insert(message: MessageImpl) throws {

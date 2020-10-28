@@ -35,7 +35,7 @@ extension UITableView {
                                                  width: self.bounds.size.width,
                                                  height: self.bounds.size.height))
         messageLabel.attributedText = NSAttributedString(string: message)
-        messageLabel.textColor = textMainColor.color()
+        messageLabel.textColor = textMainColour
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.sizeToFit()

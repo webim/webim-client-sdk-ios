@@ -131,6 +131,16 @@ public protocol Message {
     
     /**
      - returns:
+     The sticker item that was sent to the server.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    func getSticker() -> Sticker?
+    
+    /**
+     - returns:
      URL of a sender's avatar or `nil` if one does not exist.
      - author:
      Nikita Lazarev-Zubov
@@ -234,6 +244,15 @@ public protocol Message {
      */
     func canBeReplied() -> Bool
     
+    /**
+     - returns:
+     True if this message is edited.
+     - author:
+     Eugene Ilyin
+     - copyright:
+     2019 Webim
+     */
+    func isEdited() -> Bool
 }
 
 /**
@@ -768,6 +787,28 @@ public protocol Quote {
     func getState() -> QuoteState
 }
 
+/**
+ Contains information about sticker.
+ - seealso:
+ `Message.getSticker()`
+ - author:
+ Yury Vozleev
+ - copyright:
+ 2020 Webim
+ */
+public protocol Sticker {
+    
+    /**
+     - returns:
+     Sticker ID.
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    func getStickerId() -> Int
+}
+
 // MARK: -
 /**
  Supported quote states.
@@ -1009,7 +1050,17 @@ public enum MessageType {
     
     @available(*, unavailable, renamed: "visitorMessage")
     case VISITOR
-
+    
+    /**
+     A sticker message sent by a visitor.
+     - seealso:
+     `Message.getText()`
+     - author:
+     Yury Vozleev
+     - copyright:
+     2020 Webim
+     */
+    case stickerVisitor
 }
 
 /**

@@ -160,6 +160,7 @@ final class FAQSQLiteHistoryStorage {
                     }
                 }
             } catch {
+                completion(nil)
             }
         }
     }

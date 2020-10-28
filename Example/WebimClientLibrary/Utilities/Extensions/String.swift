@@ -90,4 +90,9 @@ extension String {
         return convertedString
     }
     
+    public func trimWhitespacesIn() -> String {
+        let components = self.components(separatedBy: .whitespaces)
+        return components.filter { !$0.isEmpty }.joined(separator: " ")
+    }
+    
 }

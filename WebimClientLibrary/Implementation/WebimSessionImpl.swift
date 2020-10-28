@@ -188,7 +188,7 @@ final class WebimSessionImpl {
                 UserDefaults.standard.set(userDefaults,
                                           forKey: userDefaultsKey)
             }
-            
+                        
             guard let dbName = userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String else {
                 WebimInternalLogger.shared.log(entry: "Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")
                 fatalError("Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")

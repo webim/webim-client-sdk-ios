@@ -100,6 +100,7 @@ class MessageMapper {
         var text: String?
         var rawText: String?
         var data: MessageData?
+        var sticker: Sticker?
         
         guard let messageItemText = messageItem.getText() else {
             WebimInternalLogger.shared.log(entry: "Message Item Text is nil in MessageFactories.\(#function)")
@@ -134,6 +135,10 @@ class MessageMapper {
         
         if kind == .keyboardResponse, let data = messageItem.getRawData() {
             keyboardRequest = KeyboardRequestImpl.getKeyboardRequest(jsonDictionary: data)
+        }
+        
+        if kind == .stickerVisitor, let data = messageItem.getRawData() {
+            sticker = StickerImpl.getSticker(jsonDictionary: data)
         }
         
         let quote = messageItem.getQuote()
@@ -176,6 +181,7 @@ class MessageMapper {
                            quote: QuoteImpl.getQuote(quoteItem: quote, messageAttachment: messageAttachmentFromQuote),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
                            senderName: senderName,
+                           sticker: sticker,
                            type: type,
                            rawData: messageItem.getRawData(),
                            data: data,
@@ -186,7 +192,8 @@ class MessageMapper {
                            rawText: rawText,
                            read: messageItem.getRead() ?? true,
                            messageCanBeEdited: messageItem.getCanBeEdited(),
-                           messageCanBeReplied: messageItem.getCanBeReplied())
+                           messageCanBeReplied: messageItem.getCanBeReplied(),
+                           messageIsEdited: messageItem.getIsEdited())
     }
     
     func set(webimClient: WebimClient) {
@@ -298,6 +305,16 @@ final class SendingFactory {
                              type: .fileFromVisitor,
                              text: "",
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond())
+    }
+    
+    func createStickerMessageToSendWith(id: String, stickerId: Int) -> MessageToSend {
+        return MessageToSend(serverURLString: serverURLString,
+                             id: id,
+                             senderName: "",
+                             type: .stickerVisitor,
+                             text: "",
+                             timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
+                             sticker: StickerImpl(stickerId: stickerId))
     }
     
 }

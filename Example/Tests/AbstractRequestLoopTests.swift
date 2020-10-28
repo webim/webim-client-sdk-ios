@@ -31,7 +31,8 @@ import XCTest
 class AbstractRequestLoopTests: XCTestCase {
     
     // MARK: - Properties
-    private let abstractRequestLoop = AbstractRequestLoopForTests()
+    private let abstractRequestLoop = AbstractRequestLoopForTests(completionHandlerExecutor: nil,
+                                                                  internalErrorListener: nil)
     
     // MARK: - Tests
     

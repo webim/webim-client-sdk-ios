@@ -207,6 +207,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                                                    ofRequest: request)
                             
                             break
+                        case WebimInternalError.noStickerId.rawValue:
+                            self.handleSendStickerError(error: error,
+                                                        ofRequest: request)
                         default:
                             self.running = false
                             
@@ -450,6 +453,22 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleSendStickerError(error errorString: String,
+                                        ofRequest webimRequest: WebimRequest) {
+        if let sendStickerCompletionHandler = webimRequest.getSendStickerCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let sendStickerError: SendStickerError
+                switch errorString {
+                case WebimInternalError.noStickerId.rawValue:
+                    sendStickerError = .noStickerId
+                default:
+                    sendStickerError = .noChat
+                }
+                sendStickerCompletionHandler.onFailure(error: sendStickerError)
+            })
+        }
+    }
+    
     private func handleKeyboardResponse(error errorString: String,
                                         ofRequest webimRequest: WebimRequest) {
         if let keyboardResponseCompletionHandler = webimRequest.getKeyboardResponseCompletionHandler() {
@@ -564,6 +583,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSendSurveyAnswerCompletionHandler()?.onSuccess()
             request.getSurveyCloseCompletionHandler()?.onSuccess()
             request.getRateOperatorCompletionHandler()?.onSuccess()
+            request.getSendStickerCompletionHandler()?.onSuccess()
             guard let messageID = request.getMessageID() else {
                 WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
                 return

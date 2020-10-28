@@ -34,11 +34,17 @@ class WebimRemoteNotificationImplTests: XCTestCase {
     
     func testContactRequestNotification() {
         // Setup.
-        let notificationDictionary = ["loc-key" : "P.CR"] as [String : Any]
-        
+        let notificationDictionary = [
+            "aps" : [
+                "alert" : [
+                    "loc-key" : "P.CR"
+                ] as [String : Any]
+            ]
+        ]
+
         // When: Receiving contact request notification.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
-        
+
         // Then: Parameters should be ruturned like this.
         XCTAssertNil(webimRemoteNotification?.getEvent())
         XCTAssertTrue(webimRemoteNotification!.getParameters().isEmpty)
@@ -48,8 +54,14 @@ class WebimRemoteNotificationImplTests: XCTestCase {
     
     func testOperatorAcceptedNotification() {
         // Setup.
-        let notificationDictionary = ["loc-key" : "P.OA",
-                                      "loc-args" : ["Operator"]] as [String : Any]
+        let notificationDictionary = [
+            "aps" : [
+                "alert" : [
+                    "loc-key" : "P.OA",
+                    "loc-args" : ["Operator"]
+                ] as [String : Any]
+            ]
+        ]
         
         // When: Receiving operator accepted notification.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
@@ -63,10 +75,15 @@ class WebimRemoteNotificationImplTests: XCTestCase {
     
     func testOperatorFileNotification() {
         // Setup.
-        let notificationDictionary = ["loc-key" : "P.OF",
-                                      "loc-args" : ["Operator",
-                                                    "File"],
-                                      "event" : "add"] as [String : Any]
+        let notificationDictionary = [
+            "aps" : [
+                "alert" : [
+                    "loc-key" : "P.OF",
+                    "loc-args" : ["Operator", "File"],
+                    "event" : "add"
+                ] as [String : Any]
+            ]
+        ]
         
         // When: Receiving operator file adding notification.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
@@ -80,14 +97,19 @@ class WebimRemoteNotificationImplTests: XCTestCase {
     
     func testOperatorMessageNotification() {
         // Setup.
-        let notificationDictionary = ["loc-key" : "P.OM",
-                                      "loc-args" : ["Operator",
-                                                    "Message"],
-                                      "event" : "del"] as [String : Any]
-        
+        let notificationDictionary = [
+            "aps" : [
+                "alert" : [
+                    "loc-key" : "P.OM",
+                    "loc-args" : ["Operator", "Message"],
+                    "event" : "del"
+                ] as [String : Any]
+            ]
+        ]
+
         // When: Receiving operator message deleting notification.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
-        
+
         // Then: Parameters should be ruturned like this.
         XCTAssertEqual(webimRemoteNotification?.getEvent(), NotificationEvent.delete)
         XCTAssertTrue(webimRemoteNotification?.getParameters().count == 2)
@@ -97,11 +119,17 @@ class WebimRemoteNotificationImplTests: XCTestCase {
     
     func testWidgetNotification() {
         // Setup.
-        let notificationDictionary = ["loc-key" : "P.WM"] as [String : Any]
-        
+        let notificationDictionary = [
+            "aps" : [
+                "alert" : [
+                    "loc-key" : "P.WM"
+                ] as [String : Any]
+            ]
+        ]
+
         // When: Receiving contact request notification.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
-        
+
         // Then: Parameters should be ruturned like this.
         XCTAssertNil(webimRemoteNotification?.getEvent())
         XCTAssertTrue(webimRemoteNotification!.getParameters().isEmpty)
@@ -109,9 +137,15 @@ class WebimRemoteNotificationImplTests: XCTestCase {
                        NotificationType.widget)
     }
     
-    func testUnsupportedType() {
+    func testUnsupportedAps() {
         // Setup.
-        let notificationDictionary = ["loc-key" : "NewType"] as [String : Any]
+        let notificationDictionary = [
+            "aps" : [
+                "non-alert" : [
+                    "loc-key" : "P.WM"
+                ] as [String : Any]
+            ]
+        ]
         
         // When: Receiving notification of unsupported type.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
@@ -122,10 +156,15 @@ class WebimRemoteNotificationImplTests: XCTestCase {
     
     func testUnsupportedEvent() {
         // Setup.
-        let notificationDictionary = ["loc-key" : "P.OM",
-                                      "loc-args" : ["Operator",
-                                                    "Message"],
-                                      "event" : "NewEvent"] as [String : Any]
+        let notificationDictionary = [
+            "aps" : [
+                "alert" : [
+                    "loc-key" : "P.OM",
+                    "loc-args" : ["Operator", "Message"],
+                    "event" : "NewEvent"
+                ] as [String : Any]
+            ]
+        ]
         
         // When: Receiving notification of unsupported type.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)
@@ -134,11 +173,13 @@ class WebimRemoteNotificationImplTests: XCTestCase {
         XCTAssertNil(webimRemoteNotification?.getEvent())
     }
     
-    func testEmptyTypeNotification() {
+    func testEmptyAlertNotification() {
         // Setup.
-        let notificationDictionary = ["loc-args" : ["Operator",
-                                                    "Message"],
-                                      "event" : "del"] as [String : Any]
+        let notificationDictionary =  [
+            "aps" : [
+                "alert" : []
+            ]
+        ]
         
         // When: Receiving notification without type.
         let webimRemoteNotification = WebimRemoteNotificationImpl(jsonDictionary: notificationDictionary)

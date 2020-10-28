@@ -24,25 +24,38 @@
 //  SOFTWARE.
 //
 
-import PopupDialog
 import UIKit
 
 final class SettingsViewController: UIViewController {
     
-    // MARK: - Properties
-    private var popupDialogHandler: PopupDialogHandler?
+    // MARK: - Private Properties
     private var settingsTableViewController: SettingsTableViewController?
+    private var rotationDuration: TimeInterval = 0.0
     
-    // MARK: Outlets
+    private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
+    
+    // MARK: - Outlets
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    // MARK: - View Life Cycle
+    override func prepare(for segue: UIStoryboardSegue,
+                          sender: Any?) {
+        if let viewController = segue.destination as? SettingsTableViewController,
+            segue.identifier == "EmbedSettingsTable" {
+            settingsTableViewController = viewController
+            
+            viewController.delegate = self
+        }
+    }
     
-    // MARK: - Methods
+    override func shouldPerformSegue(
+        withIdentifier identifier: String,
+        sender: Any?
+    ) -> Bool { identifier == "EmbedSettingsTable" || settingsValidated() }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        popupDialogHandler = PopupDialogHandler(delegate: self)
         
         setupNavigationItem()
         setupSaveButton()
@@ -56,70 +69,59 @@ final class SettingsViewController: UIViewController {
         setupColorScheme()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillChange),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+           NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+    }
+    
+    override func viewWillTransition(
+        to size: CGSize,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
+        view.endEditing(true)
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(
+            alongsideTransition: { context in
+                self.rotationDuration = context.transitionDuration
+            }
+        )
+    }
+    
+    // MARK: - Methods
     func setupColorScheme() {
-        view.backgroundColor = backgroundMainColor.color()
+        view.backgroundColor = backgroundViewColour
         
-        navigationController?.navigationBar.barTintColor = backgroundSecondaryColor.color()
-        setupVisibleNavigationItemsElements()
-        
-        saveButton.backgroundColor = buttonColor.color()
-        saveButton.setTitleColor(textButtonColor.color(),
-                                 for: .normal)
+        saveButton.backgroundColor = saveButtonBackgroundColour
+        saveButton.setTitleColor(saveButtonTitleColour, for: .normal)
     }
     
-    // MARK: Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue,
-                          sender: Any?) {
-        if let viewController = segue.destination as? SettingsTableViewController,
-            segue.identifier == "EmbedSettingsTable" {
-            settingsTableViewController = viewController
-            
-            viewController.delegate = self
-        }
-    }
-    
-    override func shouldPerformSegue(withIdentifier identifier: String,
-                                     sender: Any?) -> Bool {
-        if identifier != "EmbedSettingsTable",
-            !settingsValidated() {
-            return false
-        }
-        
-        return true
-    }
-    
-    // MARK: Private methods
-    
+    // MARK: - Private methods
     private func setupNavigationItem() {
-        setupVisibleNavigationItemsElements()
+        navigationItem.setHidesBackButton(true, animated: false)
         
-        // Need for title view to be centered.
-        let emptyBarButton = UIButton(type: .custom)
-        emptyBarButton.setImage(#imageLiteral(resourceName: "Empty"),
-                                for: .normal)
-        emptyBarButton.isUserInteractionEnabled = false
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: emptyBarButton)
-    }
-    
-    private func setupVisibleNavigationItemsElements() {
-        let backButton = UIButton(type: .custom)
-        backButton.setImage(ColorScheme.shared.backButtonImage(),
-                            for: .normal)
-        backButton.imageView?.contentMode = .scaleAspectFit
-        backButton.accessibilityLabel = BackButton.accessibilityLabel.rawValue.localized
-        backButton.accessibilityHint = BackButton.accessibilityHint.rawValue.localized
-        backButton.addTarget(self,
-                             action: #selector(onBackButtonClick(sender:)),
-                             for: .touchUpInside)
-        let leftBarButtonItem = UIBarButtonItem(customView: backButton)
-        self.navigationItem.leftBarButtonItem = leftBarButtonItem
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = navigationBarTitleImageViewImage
+        imageView.accessibilityLabel = ChatView.navigationBarAccessibilityLabelText.rawValue.localized
+        imageView.accessibilityTraits = .header
         
-        let navigationItemImageView = UIImageView(image: ColorScheme.shared.navigationItemImage())
-        navigationItemImageView.contentMode = .scaleAspectFit
-        navigationItem.titleView = navigationItemImageView
+        navigationItem.titleView = imageView
     }
-    
+
     @objc
     private func onBackButtonClick(sender: UIButton) {
         if settingsValidated() {
@@ -127,17 +129,59 @@ final class SettingsViewController: UIViewController {
         }
     }
     
-    private func settingsValidated() -> Bool {
-        guard let accountName = settingsTableViewController?.accountNameTextField.text,
-            !accountName.isEmpty else {
-                popupDialogHandler?.showSettingsAlertDialog(withMessage: SettingsErrorDialog.wrongAccountName.rawValue.localized)
+    @objc
+    private func keyboardWillChange(_ notification: Notification) {
+        guard let keyboardDurationEmergenceAnimation = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
+                as? TimeInterval,
+            let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
+                    as? NSValue
+            else { return }
+
+        var animationDuration: TimeInterval = keyboardDurationEmergenceAnimation
+        var keyboardHeight: CGFloat = view.frame.maxY - keyboardFrame.cgRectValue.minY
+        
+        if animationDuration == 0 {
+            if keyboardHeight == 0 {
+                return
+            }
+            keyboardHeight = 0
+            animationDuration = rotationDuration
+        }
+        
+        UIView.animate(
+            withDuration: animationDuration,
+            animations: {
+                if keyboardHeight > 0 {
+                    // Keyboard is visible
+                    self.bottomConstraint.constant = 8.0 + keyboardHeight
+                } else {
+                    // Keyboard is hidden
+                    self.bottomConstraint.constant = 8.0
+                }
                 
+                self.view.layoutIfNeeded()
+                if keyboardHeight > 0 {
+                    self.settingsTableViewController?.scrollToBottom(animated: false)
+                }
+            }
+        )
+    }
+    
+    private func settingsValidated() -> Bool {
+        guard let accountName = settingsTableViewController?.accountNameTextField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+            !accountName.isEmpty else {
+                alertDialogHandler.showSettingsAlertDialog(
+                    withMessage: SettingsErrorDialog.wrongAccountName.rawValue.localized
+                )
                 return false
         }
-        guard let location = settingsTableViewController?.locationTextField.text,
+        guard let location = settingsTableViewController?.locationTextField.text?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
             !location.isEmpty else {
-                popupDialogHandler?.showSettingsAlertDialog(withMessage: SettingsErrorDialog.wrongLocation.rawValue.localized)
-                
+                alertDialogHandler.showSettingsAlertDialog(
+                    withMessage: SettingsErrorDialog.wrongLocation.rawValue.localized
+                )
                 return false
         }
         
@@ -148,23 +192,23 @@ final class SettingsViewController: UIViewController {
         return true
     }
     
-    private func set(accountName: String,
-                     location: String,
-                     pageTitle: String?) {
+    private func set(
+        accountName: String,
+        location: String,
+        pageTitle: String?
+    ) {
         Settings.shared.accountName = accountName
         Settings.shared.location = location
         if let pageTitle = pageTitle,
             !pageTitle.isEmpty {
             Settings.shared.pageTitle = pageTitle
         }
-        
         Settings.shared.save()
     }
     
     private func setupSaveButton() {
-        saveButton.layer.borderWidth = Button.borderWidth.rawValue
-        saveButton.layer.borderColor = buttonBorderColor.color().cgColor
-        saveButton.layer.cornerRadius = Button.cornerRadius.rawValue
+        saveButton.layer.borderWidth = 0
+        saveButton.layer.borderColor = saveButtonBorderColour
+        saveButton.layer.cornerRadius = 8.0
     }
-    
 }

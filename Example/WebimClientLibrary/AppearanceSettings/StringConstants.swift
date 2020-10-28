@@ -66,28 +66,36 @@ enum LeftButton: String {
     case accessibilityHint = "ShowsImagePicker"
 }
 
-enum RateOperatorErrorMessage: String {
-    case title = "OperatorRatingFailed"
+enum NoCurrentOperatorErrorMessage: String {
+    case title = "NoCurrentOperator"
+    case buttonTitle = "OK"
+    case message = "NoAvailableOperator"
+}
+
+enum AlertDialog: String {
+    case rateSuccessTitle = "RateSuccessTitle"
+    case rateSuccessMessage = "RateSuccessMessage"
     
     case buttonTitle = "OK"
     case buttonAccessibilityHint = "ClosesRateOperatorError"
-
-    case message = "RateOperatorErrorMessage"
 }
 
-enum RatingDialog: String {
-    case actionButtonAccessibilityHint = "RatesOperator"
-    case actionButtonTitle = "Rate"
-    
-    case cancelButtonAccessibilityHint = "ClosesRatingDialog"
-    case cancelButtonTitle = "Cancel"
+enum RateOperatorErrorMessage: String {
+    case title = "OperatorRatingFailed"
+
+    // ErrorMessage text
+    case rateOperatorNoChat = "RateOperatorNoChat"
+    case rateOperatorWrongID = "RateOperatorWrongID"
+    case rateOperatorLongNote = "RateOperatorLongNote"
+}
+
+enum SendErrorMessage: String {
+    case buttonTitle = "OK"
+    case buttonAccessibilityHint = "ClosesFileError"
 }
 
 enum SendFileErrorMessage: String {
     case title = "FileSendingFailed"
-    
-    case buttonTitle = "OK"
-    case buttonAccessibilityHint = "ClosesSendFileError"
     
     // Error messages
     case fileSizeExceeded = "FileTooLarge"
@@ -95,6 +103,44 @@ enum SendFileErrorMessage: String {
     case fileNotFound = "FileNotFound"
     case unknownError = "FileSendingUnknownError"
     case unauthorized = "FileSengingUnauthorized"
+}
+
+enum SendMessageErrorMessage: String {
+    case messageEmpty = "MessageIsEmpty"
+    case maxMessageLengthExceede = "MaxMessageLengthExceeded"
+}
+
+enum EditMessageErrorMessage: String {
+    case title = "EditMessageFailed"
+    
+    // Error messages
+    case unknownError = "EditMessageUnknownError"
+    case notAllowed = "EditingMessagesIsTurnedOffOnTheServer"
+    case messageEmpty = "EditingMessageIsEmpty"
+    case messageNotOwned = "MessageNotOwnedByVisitor"
+    case maxMessageLengthExceede = "MaxMessageLengthExceeded"
+    case wrongMessageKind = "WrongMessageKind"
+}
+
+enum DeleteMessageErrorMessage: String {
+    case title = "DeleteMessageFailed"
+    
+    // Error messages
+    case unknownError = "DeleteMessageUnknownError"
+    case notAllowed = "DeletingMessagesIsTurnedOffOnTheServer"
+    case messageNotOwned = "MessageNotOwnedByVisitor"
+    case messageNotFound = "MessageNotFound"
+}
+
+enum SendKeyboardRequestErrorMessage: String {
+    case title = "SendKeyboardRequestFailed"
+    
+    // Error messages
+    case unknownError = "SendKeyboardRequestUnknownError"
+    case noChat = "ChatDoesNotExist"
+    case buttonIDNotSet = "WrongButtonID"
+    case requestMessageIDNotSet = "WrongMessageID"
+    case cannotCreateResponse = "ResponseCannotBeCreated"
 }
 
 enum SessionCreationErrorDialog: String {
@@ -131,10 +177,101 @@ enum ShowFileDialog: String {
 }
 
 enum StartView: String {
-    case welcomeText = "Welcome to the WebimClientLibrary demo app!\n\nTo start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"
+    case welcomeTitle = "WelcomeTitle"
+    case welcomeText = "WelcomeText"
+    
+    case startButtonTitle = "StartChat"
+    case settingsButtonTitle = "Settings"
 }
 
 enum TableView: String {
-    case refreshControlText = "LoadingMessages"
     case emptyTableViewText = "EmptyChat"
+}
+
+enum ChatTableView: String {
+    case refreshControlText = "LoadMessages"
+}
+
+enum FileView: String {
+    case loadingFileText = "LoadingFile"
+}
+
+enum ChatView: String {
+    case hardcodedVisitorMessageName = "HardcodedVisitorMessageName"
+    case editMessageText = "EditMessage"
+    case textInputPlaceholderText = "InputPlaceholderText"
+    case navigationBarAccessibilityLabelText = "AccessibilityTextWebimLogo"
+}
+
+enum PopupAction: String {
+    case reply = "Reply"
+    case copy = "Copy"
+    case edit = "Edit"
+    case delete = "Delete"
+}
+
+enum RatingDialogView: String {
+    case rateTitleText = "RateOperator"
+}
+
+enum SavingImageDialog: String {
+    case buttonTitle = "OK"
+    case saveErrorTitle = "SaveError"
+    
+    case saveSuccessTitle = "Saved"
+    case saveSuccessMessage = "ImageSaved"
+}
+
+enum SavingFileDialog: String {
+    case buttonTitle = "OK"
+    case saveErrorTitle = "SaveError"
+    
+    case saveSuccessTitle = "Saved"
+    case saveSuccessMessage = "FileSaved"
+}
+
+enum LoadingFileDialog: String {
+    case buttonTitle = "OK"
+    case loadErrorTitle = "LoadError"
+}
+
+enum OperatorStatus: String {
+    case noOperator = "NoOperator"
+    case allOperatorsOffline = "OperatorsOffline"
+    case online = "Online"
+    case isTyping = "IsTyping"
+}
+
+enum OperatorAvatar: String {
+    case placeholder = "NoAvatarURL"
+    case empty = "GhostImage"
+}
+
+enum FilePickerObject: String {
+    case actionCamera = "Camera"
+    case actionPhotoLibrary = "PhotoLibrary"
+    case actionFile = "File"
+    case actionCancel = "Cancel"
+    
+    case cameraNotAvailable = "CameraIsNotAvailable"
+    case ok = "OK"
+    
+    case cameraAccessTitle = "CameraAccessTitle"
+    case cameraAccessMessage = "CameraAccessMessage"
+    case cameraAccessOpenSetting = "CameraAccessOpenSettings"
+    case cameraAccessCancel = "CameraAccessCancel"
+}
+
+enum MessageStatus: String {
+    case editedMessage = "EditedMessage"
+}
+
+enum FlexibleCellDate: String {
+    case dateToday = "DateToday"
+    case dateYesterday = "DateYesterday"
+}
+
+enum UploadingFileDescription: String {
+    case uploadingFile = "UploadingFile"
+    case counting = "Counting"
 }

@@ -42,7 +42,8 @@ final class MessageToSend: MessageImpl {
          type: MessageType,
          text: String,
          timeInMicrosecond: Int64,
-         quote: Quote? = nil) {
+         quote: Quote? = nil,
+         sticker: Sticker? = nil) {
         super.init(serverURLString: serverURLString,
                    id: id,
                    keyboard: nil,
@@ -52,6 +53,7 @@ final class MessageToSend: MessageImpl {
                    senderAvatarURLString: nil,
                    senderName: senderName,
                    sendStatus: .sending,
+                   sticker: sticker,
                    type: type,
                    rawData: nil,
                    data: nil,
@@ -62,7 +64,8 @@ final class MessageToSend: MessageImpl {
                    rawText: nil,
                    read: false,
                    messageCanBeEdited: false,
-                   messageCanBeReplied: false)
+                   messageCanBeReplied: false,
+                   messageIsEdited: false)
     }
     
 }

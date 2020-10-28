@@ -547,6 +547,15 @@ extension MessageStreamImpl: MessageStream {
                                          completionHandler: completionHandler)
     }
     
+    func sendSticker(withId stickerId: Int, completionHandler: SendStickerCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        
+        let messageID = ClientSideID.generateClientSideID()
+        messageHolder.sending(message: sendingMessageFactory.createStickerMessageToSendWith(id: messageID, stickerId: stickerId))
+        webimActions.sendSticker(stickerId: stickerId, clientSideId: messageID, completionHandler: completionHandler)
+    }
+    
+    
     func updateWidgetStatus(data: String) throws {
         try accessChecker.checkAccess()
         

@@ -47,17 +47,19 @@ class MemoryHistoryStorageTests: XCTestCase {
                                         quote: nil,
                                         senderAvatarURLString: nil,
                                         senderName: "Name",
-                                        type: MessageType.operatorMessage,
+                                        sticker: nil,
+                                        type: .operatorMessage,
+                                        rawData: nil,
                                         data: nil,
                                         text: "Text",
                                         timeInMicrosecond: Int64(index),
-                                        attachment: nil,
                                         historyMessage: true,
                                         internalID: String(index),
                                         rawText: nil,
                                         read: false,
                                         messageCanBeEdited: false,
-                                        messageCanBeReplied: false))
+                                        messageCanBeReplied: false,
+                                        messageIsEdited: false))
         }
         
         return messages
