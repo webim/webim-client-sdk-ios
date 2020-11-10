@@ -87,6 +87,7 @@
 		8FD244EA200CE25C007EB9CB /* WebimError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD244A5200CE25B007EB9CB /* WebimError.swift */; };
 		8FD244EB200CE25C007EB9CB /* MessageStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD244A6200CE25B007EB9CB /* MessageStream.swift */; };
 		8FD244EC200CE25C007EB9CB /* Webim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD244A7200CE25B007EB9CB /* Webim.swift */; };
+		C0235CD6255B23A9004F4018 /* StickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0235CD5255B23A9004F4018 /* StickerItem.swift */; };
 		CE2E681120123DB7004E99EA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E681020123DB6004E99EA /* Array.swift */; };
 		CE2E681320123DC9004E99EA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E681220123DC9004E99EA /* Collection.swift */; };
 		CE2E681520123DD0004E99EA /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E681420123DD0004E99EA /* Int.swift */; };
@@ -197,6 +198,7 @@
 		8FD244A6200CE25B007EB9CB /* MessageStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageStream.swift; sourceTree = "<group>"; };
 		8FD244A7200CE25B007EB9CB /* Webim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Webim.swift; sourceTree = "<group>"; };
 		8FD244ED200CE3E4007EB9CB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		C0235CD5255B23A9004F4018 /* StickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerItem.swift; sourceTree = "<group>"; };
 		CE2E681020123DB6004E99EA /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		CE2E681220123DC9004E99EA /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		CE2E681420123DD0004E99EA /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 		8FD24482200CE25A007EB9CB /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				C0235CD5255B23A9004F4018 /* StickerItem.swift */,
 				8FD24483200CE25A007EB9CB /* OperatorItem.swift */,
 				8FD24484200CE25A007EB9CB /* DepartmentItem.swift */,
 				8FD24485200CE25A007EB9CB /* RatingItem.swift */,
@@ -552,6 +555,7 @@
 				8FD244D6200CE25C007EB9CB /* ChatItem.swift in Sources */,
 				8FD244E3200CE25C007EB9CB /* WebimRemoteNotificationImpl.swift in Sources */,
 				1134DD5C234A4BC8008FA6F0 /* WebimNotFatalError.swift in Sources */,
+				C0235CD6255B23A9004F4018 /* StickerItem.swift in Sources */,
 				8FD244CA200CE25C007EB9CB /* DeltaRequestLoop.swift in Sources */,
 				CE6A6984220C9BBB00B11E29 /* FAQDestroyer.swift in Sources */,
 				CE6A697E220C7F3000B11E29 /* FAQClient.swift in Sources */,
