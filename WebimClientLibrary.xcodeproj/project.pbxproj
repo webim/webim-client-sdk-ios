@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		113057D6256E8088004BB13E /* StickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057D5256E8088004BB13E /* StickerItem.swift */; };
 		1134DD5A234A3FF5008FA6F0 /* NotFatalErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */; };
 		1134DD5C234A4BC8008FA6F0 /* WebimNotFatalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD5B234A4BC8008FA6F0 /* WebimNotFatalError.swift */; };
 		1134DD5E234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD5D234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift */; };
@@ -115,6 +116,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		113057D5256E8088004BB13E /* StickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerItem.swift; sourceTree = "<group>"; };
 		1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFatalErrorHandler.swift; sourceTree = "<group>"; };
 		1134DD5B234A4BC8008FA6F0 /* WebimNotFatalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalError.swift; sourceTree = "<group>"; };
 		1134DD5D234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalErrorImpl.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 		8FD24482200CE25A007EB9CB /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				113057D5256E8088004BB13E /* StickerItem.swift */,
 				8FD24483200CE25A007EB9CB /* OperatorItem.swift */,
 				8FD24484200CE25A007EB9CB /* DepartmentItem.swift */,
 				8FD24485200CE25A007EB9CB /* RatingItem.swift */,
@@ -552,6 +555,7 @@
 				8FD244D6200CE25C007EB9CB /* ChatItem.swift in Sources */,
 				8FD244E3200CE25C007EB9CB /* WebimRemoteNotificationImpl.swift in Sources */,
 				1134DD5C234A4BC8008FA6F0 /* WebimNotFatalError.swift in Sources */,
+				113057D6256E8088004BB13E /* StickerItem.swift in Sources */,
 				8FD244CA200CE25C007EB9CB /* DeltaRequestLoop.swift in Sources */,
 				CE6A6984220C9BBB00B11E29 /* FAQDestroyer.swift in Sources */,
 				CE6A697E220C7F3000B11E29 /* FAQClient.swift in Sources */,

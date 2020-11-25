@@ -895,6 +895,8 @@ class ChatViewController: UIViewController {
             
             self.view.layoutIfNeeded()
         }
+        // bottomBarQuoteBackgroundView
+        bottomBarBackgroundView.addSubview(bottomBarQuoteBackgroundView)
         
         containerChatTableViewController?.scrollToBottom(animated: true)
         textInputTextView.becomeFirstResponder()
@@ -916,7 +918,6 @@ class ChatViewController: UIViewController {
             if !textInputTextView.text.isEmpty {
                 
                 let newText: String = textInputTextViewBufferString ?? ""
-                
                 if textInputTextViewBufferString != nil {
                     textInputTextViewBufferString = nil
                     alreadyPutTextFromBufferString = true

@@ -654,7 +654,7 @@ extension MessageStreamImpl: MessageStream {
         guard let surveyController = surveyController,
             let survey = surveyController.getSurvey() else { return }
 
-        let formID = surveyController.getCurrentFormPointer()
+        let formID = surveyController.getCurrentFormID()
         let questionID = surveyController.getCurrentQuestionPointer()
         let surveyID = survey.getID()
         webimActions.sendQuestionAnswer(surveyID: surveyID,
