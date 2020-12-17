@@ -103,6 +103,8 @@ enum SendFileErrorMessage: String {
     case fileNotFound = "FileNotFound"
     case unknownError = "FileSendingUnknownError"
     case unauthorized = "FileSengingUnauthorized"
+    case maxFilesCountPerChatExceeded = "MaxFilesCountExceeded"
+    case fileSizeTooSmall = "FileTooSmall"
 }
 
 enum SendMessageErrorMessage: String {

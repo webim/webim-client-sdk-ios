@@ -440,6 +440,7 @@ final class MessageAttachmentImpl: MessageAttachment {
     
     // MARK: - Properties
     private let fileInfo: FileInfo
+    private let filesInfo: [FileInfo]
     private let state: AttachmentState
     private var downloadProgress: Int64?
     private var errorType: String?
@@ -447,11 +448,13 @@ final class MessageAttachmentImpl: MessageAttachment {
     
     // MARK: - Initialization
     init(fileInfo: FileInfo,
+         filesInfo: [FileInfo],
          state: AttachmentState,
          downloadProgress: Int64? = nil,
          errorType: String? = nil,
          errorMessage: String? = nil) {
         self.fileInfo = fileInfo
+        self.filesInfo = filesInfo
         self.state = state
         self.downloadProgress = downloadProgress
         self.errorType = errorType
@@ -461,6 +464,11 @@ final class MessageAttachmentImpl: MessageAttachment {
     // MARK: - Methods
     func getFileInfo() -> FileInfo {
         return fileInfo
+    }
+    
+    
+    func getFilesInfo() -> [FileInfo] {
+        return filesInfo
     }
     
     func getState() -> AttachmentState {
@@ -539,6 +547,41 @@ final class FileInfoImpl {
             return nil
         }
         
+        return getAttachment(byServerURL: serverURLString,
+                            webimClient: webimClient,
+                            textDictionary: textDictionary)
+    }
+    
+    static func getAttachments(byServerURL serverURLString: String,
+                               webimClient: WebimClient,
+                               text: String) -> [FileInfoImpl] {
+        var attachments = [FileInfoImpl]()
+        guard let textData = text.data(using: .utf8) else {
+            WebimInternalLogger.shared.log(entry: "Convert Text to Data failure in MessageImpl.\(#function)")
+            return []
+        }
+        guard let optionaltextDictionaryArray = (
+            (try? JSONSerialization.jsonObject(with: textData, options: [])
+                as? [Any])
+                as [Any]??),
+            let textDictionaryArray = optionaltextDictionaryArray else {
+            return []
+        }
+        for textDictionary in textDictionaryArray {
+            if let textDictionary = textDictionary as? [String: Any?],
+               let fileInfoImpl = getAttachment(byServerURL: serverURLString,
+                                               webimClient: webimClient,
+                                               textDictionary: textDictionary) {
+                attachments.append(fileInfoImpl)
+            }
+        }
+        return attachments
+    }
+    
+    // MARK: Private methods
+    private static func getAttachment(byServerURL serverURLString: String,
+                                     webimClient: WebimClient,
+                                     textDictionary: [String: Any?]) -> FileInfoImpl? {
         let fileParameters = FileParametersItem(jsonDictionary: textDictionary)
         guard let filename = fileParameters.getFilename(),
             let guid = fileParameters.getGUID(),
@@ -583,7 +626,6 @@ final class FileInfoImpl {
         }
     }
     
-    // MARK: Private methods
     private static func extractImageInfoOf(fileParameters: FileParametersItem?,
                                            with fileURLString: String?) -> ImageInfo? {
         guard let fileParameters = fileParameters,

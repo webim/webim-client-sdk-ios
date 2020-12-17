@@ -874,6 +874,7 @@ class ChatViewController: UIViewController {
                     make.trailing.equalToSuperview()
                         .inset(20)
                 }
+                make.trailing.equalTo(self.bottomBarQuoteUsernameLabel.snp.trailing)
             }
             
             // textInputBackgroundView

@@ -89,6 +89,8 @@
 "FileNotFound" = "Отправляемый файл не был получен";
 "FileSendingUnknownError" = "Неизвестная ошибка при отправке файла";
 "FileSengingUnauthorized" = "Не удалось загрузить файл: посетитель не авторизован";
+"MaxFilesCountExceeded" = "Превышено максимальное число отправляемых файлов для сообщения";
+"FileTooSmall" = "Размер файла слишком мал";
 
 // SendMessageErrorMessage
 "SendMessageFailed" = "Неудачная попытка отправки сообщения";

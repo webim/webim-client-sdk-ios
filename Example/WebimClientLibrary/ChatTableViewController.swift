@@ -1173,6 +1173,12 @@ extension ChatTableViewController: SendFileCompletionHandler,
                 break
             case .unauthorized:
                 message = SendFileErrorMessage.unauthorized.rawValue.localized
+                break
+            case .maxFilesCountPerChatExceeded:
+                message = SendFileErrorMessage.maxFilesCountPerChatExceeded.rawValue.localized
+                break
+            case .fileSizeTooSmall:
+                message = SendFileErrorMessage.fileSizeTooSmall.rawValue.localized
             }
             
             self.alertOnFailure(

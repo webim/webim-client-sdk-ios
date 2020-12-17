@@ -634,15 +634,28 @@ final class SQLiteHistoryStorage: HistoryStorage {
         }
         
         var attachment: FileInfo? = nil
+        var attachments = [FileInfo]()
         if let rawText = rawText {
-            attachment = FileInfoImpl.getAttachment(byServerURL: serverURLString,
-                                                    webimClient: webimClient,
-                                                    text: rawText)
+            attachments = FileInfoImpl.getAttachments(byServerURL: serverURLString,
+                                                      webimClient: webimClient,
+                                                      text: rawText)
+            if attachments.isEmpty {
+                attachment = FileInfoImpl.getAttachment(byServerURL: serverURLString,
+                                                        webimClient: webimClient,
+                                                        text: rawText)
+                if let attachment = attachment {
+                    attachments.append(attachment)
+                }
+            } else {
+                attachment = attachments.first
+            }
         }
         
         var data: MessageData?
         if let attachment = attachment {
-            data = MessageDataImpl(attachment: MessageAttachmentImpl(fileInfo: attachment, state: .ready))
+            data = MessageDataImpl(attachment: MessageAttachmentImpl(fileInfo: attachment,
+                                                                     filesInfo: attachments,
+                                                                     state: .ready))
         }
         
         var keyboard: Keyboard? = nil

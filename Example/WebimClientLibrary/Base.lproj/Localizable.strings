@@ -89,6 +89,8 @@
 "FileNotFound" = "Sending files in body is not supported";
 "FileSendingUnknownError" = "Find sending unknown error";
 "FileSengingUnauthorized" = "Failed to upload file: visitor is not logged in";
+"MaxFilesCountExceeded" = "Files count per message limit exceeded";
+"FileTooSmall" = "File is too small";
 
 // SendMessageErrorMessage
 "SendMessageFailed" = "Message sending failed";

@@ -475,6 +475,30 @@ public protocol MessageStream: class {
               isHintQuestion: Bool?) throws -> String
     
     /**
+     Sends a message with uploaded files.
+     When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.sending` in the status is also called.
+     - seealso:
+     Method could fail. See `SendFilesError`.
+     - important:
+     Maximum count of files is 10.
+     - parameter uploadedFiles:
+     Uploaded files for sending.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - returns:
+     ID of the message.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func send(uploadedFiles: [UploadedFile],
+              completionHandler: SendFilesCompletionHandler?) throws -> String
+    
+    /**
      Sends a file message.
      When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method), `MessageListener.added(message:after:)` with a message `MessageSendStatus.sending` in the status is also called.
      - seealso:
@@ -501,6 +525,54 @@ public protocol MessageStream: class {
               filename: String,
               mimeType: String,
               completionHandler: SendFileCompletionHandler?) throws -> String
+    
+    /**
+     Uploads a file to server.
+     - seealso:
+     Method could fail. See `SendFileError`.
+     - parameter file:
+     File data to send
+     - parameter filename:
+     File name with file extension.
+     - parameter mimeType:
+     MIME type of the file to send.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - returns:
+     ID of the message.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func uploadFilesToServer(file: Data,
+                             filename: String,
+                             mimeType: String,
+                             completionHandler: UploadFileToServerCompletionHandler?) throws -> String
+
+    /**
+     Deletes uploaded file from server.
+     - seealso:
+     Method could fail. See `DeleteUploadedFileError`.
+     - parameter fileGuid:
+     GUID of file.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - returns:
+     ID of the message.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func deleteUploadedFiles(fileGuid: String,
+                             completionHandler: DeleteUploadedFileCompletionHandler?) throws
     
     /**
      Send sticker to chat.
@@ -1053,6 +1125,94 @@ public protocol SendFileCompletionHandler: class {
     
 }
 
+public protocol SendFilesCompletionHandler: class {
+    
+    /**
+     Executed when operation is done successfully.
+     - parameter messageID:
+     ID of the message.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onSuccess(messageID: String)
+    
+    /**
+     Executed when operation is failed.
+     - parameter messageID:
+     ID of the message.
+     - parameter error:
+     Error.
+     - seealso:
+     `SendFileError`.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onFailure(messageID: String,
+                   error: SendFilesError)
+    
+}
+
+public protocol UploadFileToServerCompletionHandler: class {
+    /**
+     Executed when operation is done successfully.
+     - parameter id:
+     ID of the message.
+     - parameter uploadedFile:
+     Uploaded file from server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onSuccess(id: String, uploadedFile: UploadedFile)
+
+    /**
+     Executed when operation is failed.
+     - parameter messageID:
+     ID of the message.
+     - parameter error:
+     Error.
+     - seealso:
+     `SendFileError`.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onFailure(messageID: String, error: SendFileError)
+}
+
+public protocol DeleteUploadedFileCompletionHandler: class {
+    /**
+     Executed when operation is done successfully.
+     - parameter id:
+     ID of the message.
+     - parameter uploadedFile:
+     Uploaded file from server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onSuccess()
+    
+    /**
+     Executed when operation is failed.
+     - parameter error:
+     Error.
+     - seealso:
+     `SendFileError`.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func onFailure(error: DeleteUploadedFileError)
+}
 /**
  - seealso:
  `MessageStream.sendKeyboardRequest(button:message:completionHandler:)`
@@ -2130,6 +2290,8 @@ public enum SendFileError: Error {
     @available(*, unavailable, renamed: "fileSizeExceeded")
     case FILE_SIZE_EXCEEDED
     
+    case fileSizeTooSmall
+    
     /**
      The server may deny a request if the file type is not allowed.
      The list of allowed file types is configured on the server.
@@ -2142,6 +2304,8 @@ public enum SendFileError: Error {
     
     @available(*, unavailable, renamed: "fileTypeNotAllowed")
     case FILE_TYPE_NOT_ALLOWED
+    
+    case maxFilesCountPerChatExceeded
     
     /**
      Sending files in body is not supported. Use multipart form only.
@@ -2175,6 +2339,18 @@ public enum SendFileError: Error {
     */
     case unauthorized
     
+}
+
+public enum SendFilesError: Error {
+    case fileNotFound
+    case maxFilesCountPerMessage
+    case unknown
+}
+
+public enum DeleteUploadedFileError: Error {
+    case fileNotFound
+    case fileHasBeenSent
+    case unknown
 }
 
 /**

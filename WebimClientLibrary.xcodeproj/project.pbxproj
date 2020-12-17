@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		113057D6256E8088004BB13E /* StickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057D5256E8088004BB13E /* StickerItem.swift */; };
+		113057A9256D209D004BB13E /* UploadedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057A8256D209D004BB13E /* UploadedFile.swift */; };
+		113057AC256D22DE004BB13E /* UploadedFileImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057AB256D22DE004BB13E /* UploadedFileImpl.swift */; };
 		1134DD5A234A3FF5008FA6F0 /* NotFatalErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */; };
 		1134DD5C234A4BC8008FA6F0 /* WebimNotFatalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD5B234A4BC8008FA6F0 /* WebimNotFatalError.swift */; };
 		1134DD5E234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD5D234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift */; };
@@ -117,6 +119,8 @@
 
 /* Begin PBXFileReference section */
 		113057D5256E8088004BB13E /* StickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerItem.swift; sourceTree = "<group>"; };
+		113057A8256D209D004BB13E /* UploadedFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFile.swift; sourceTree = "<group>"; };
+		113057AB256D22DE004BB13E /* UploadedFileImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFileImpl.swift; sourceTree = "<group>"; };
 		1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFatalErrorHandler.swift; sourceTree = "<group>"; };
 		1134DD5B234A4BC8008FA6F0 /* WebimNotFatalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalError.swift; sourceTree = "<group>"; };
 		1134DD5D234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalErrorImpl.swift; sourceTree = "<group>"; };
@@ -283,6 +287,7 @@
 				CE76D6222210A6F3006A5BF0 /* FAQCategory.swift */,
 				CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */,
 				113C581B24EDE32F006A08C2 /* Survey.swift */,
+				113057A8256D209D004BB13E /* UploadedFile.swift */,
 			);
 			path = WebimClientLibrary;
 			sourceTree = "<group>";
@@ -427,6 +432,7 @@
 				8FD244A2200CE25B007EB9CB /* WebimSessionImpl.swift */,
 				CE6A6981220C968D00B11E29 /* FAQImpl.swift */,
 				113C581D24EE5892006A08C2 /* SurveyImpl.swift */,
+				113057AB256D22DE004BB13E /* UploadedFileImpl.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -517,6 +523,7 @@
 				8FD244B5200CE25C007EB9CB /* ClientSideID.swift in Sources */,
 				8FD244B6200CE25C007EB9CB /* WebimActions.swift in Sources */,
 				CE86FAAD203B2A4500CB9C2D /* DepartmentFactory.swift in Sources */,
+				113057A9256D209D004BB13E /* UploadedFile.swift in Sources */,
 				8FD244D2200CE25C007EB9CB /* FileParametersItem.swift in Sources */,
 				8FD244BC200CE25C007EB9CB /* WebimClient.swift in Sources */,
 				CE529807222EA38C00033278 /* HistoryRevisionItem.swift in Sources */,
@@ -599,6 +606,7 @@
 				CE76D61F22108835006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift in Sources */,
 				8FD244D5200CE25C007EB9CB /* FullUpdate.swift in Sources */,
 				8FD244B4200CE25C007EB9CB /* MemoryHistoryMetaInformationStorage.swift in Sources */,
+				113057AC256D22DE004BB13E /* UploadedFileImpl.swift in Sources */,
 				8FD244CE200CE25C007EB9CB /* VisitSessionStateItem.swift in Sources */,
 				8FD244C7200CE25C007EB9CB /* ProvidedVisitorFields.swift in Sources */,
 				8FD244CF200CE25C007EB9CB /* HistoryBeforeResponse.swift in Sources */,

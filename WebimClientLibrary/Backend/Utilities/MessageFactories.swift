@@ -95,6 +95,7 @@ class MessageMapper {
         }
         
         var attachment: FileInfoImpl?
+        var attachments: [FileInfoImpl]
         var keyboard: Keyboard?
         var keyboardRequest: KeyboardRequest?
         var text: String?
@@ -110,12 +111,24 @@ class MessageMapper {
             || (kind == .fileFromOperator) {
             
             if let webimClient = webimClient {
-                attachment = FileInfoImpl.getAttachment(byServerURL: serverURLString,
-                                                        webimClient: webimClient,
-                                                        text: messageItemText)
+                attachments = FileInfoImpl.getAttachments(byServerURL: serverURLString,
+                                                          webimClient: webimClient,
+                                                          text: messageItemText)
+                if attachments.isEmpty {
+                    attachment = FileInfoImpl.getAttachment(byServerURL: serverURLString,
+                                                            webimClient: webimClient,
+                                                            text: messageItemText)
+                    if let attachment = attachment {
+                        attachments.append(attachment)
+                    }
+                } else {
+                    attachment = attachments.first
+                }
                 if let attachment = attachment {
                     data = MessageDataImpl(
-                        attachment: MessageAttachmentImpl(fileInfo: attachment, state: .ready)
+                        attachment: MessageAttachmentImpl(fileInfo: attachment,
+                                                          filesInfo: attachments,
+                                                          state: .ready)
                     )
                 }
             }
@@ -150,8 +163,16 @@ class MessageMapper {
                     return nil
                 }
                 messageAttachmentFromQuote = FileInfoImpl.getAttachment(byServerURL: serverURLString,
-                                                                                 webimClient: webimClient,
-                                                                                 text: quoteText)
+                                                                        webimClient: webimClient,
+                                                                        text: quoteText)
+                if messageAttachmentFromQuote == nil {
+                    let attachments = FileInfoImpl.getAttachments(byServerURL: serverURLString,
+                                                    webimClient: webimClient,
+                                                    text: quoteText)
+                    if !attachments.isEmpty {
+                        messageAttachmentFromQuote = attachments[0]
+                    }
+                }
             }
         }
         

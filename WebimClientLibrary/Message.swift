@@ -295,13 +295,23 @@ public protocol MessageData {
 public protocol MessageAttachment {
     /**
      - returns:
-     The fileinfo of the attachment.
+     The file info of the attachment.
      - author:
      Vozleev Yury
      - copyright:
      2020 Webim
      */
     func getFileInfo() -> FileInfo
+    
+    /**
+     - returns:
+     The files info of the attachment.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2020 Webim
+     */
+    func getFilesInfo() -> [FileInfo]
     
     /**
      - returns:

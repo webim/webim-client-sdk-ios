@@ -163,9 +163,17 @@ class ActionRequestLoop: AbstractRequestLoop {
                              WebimInternalError.uploadedFileNotFound.rawValue,
                              WebimInternalError.notAllowedMimeType.rawValue,
                              WebimInternalError.notMatchingMagicNumbers.rawValue,
-                             WebimInternalError.unauthorized.rawValue:
+                             WebimInternalError.unauthorized.rawValue,
+                             WebimInternalError.maxFilesCountPerChatExceeded.rawValue,
+                             WebimInternalError.fileSizeTooSmall.rawValue:
                             self.handleSendFile(error: error,
                                                 ofRequest: request)
+                            
+                            break
+                        case WebimInternalError.fileNotFound.rawValue,
+                             WebimInternalError.fileHasBeenSent.rawValue:
+                            self.handleDeleteUploadedFileFile(error: error,
+                                                  ofRequest: request)
                             
                             break
                         case WebimInternalError.wrongArgumentValue.rawValue:
@@ -242,7 +250,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                         })
                     }
                     
-                    self.handleClientCompletionHandlerOf(request: request)
+                    self.handleClientCompletionHandlerOf(request: request, dataJSON: dataJSON[AbstractRequestLoop.ResponseFields.data.rawValue] as? [String : Any?])
                 } else {
                     WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
                         verbosityLevel: .warning)
@@ -423,32 +431,53 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     private func handleSendFile(error errorString: String,
                                 ofRequest webimRequest: WebimRequest) {
-        if let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler() {
+        let sendFileCompletionHandler = webimRequest.getSendFileCompletionHandler()
+        let uploadFileToServerCompletionHandler = webimRequest.getUploadFileToServerCompletionHandler()
+        completionHandlerExecutor?.execute(task: DispatchWorkItem {
+            let sendFileError: SendFileError
+            switch errorString {
+            case WebimInternalError.fileSizeExceeded.rawValue:
+                sendFileError = .fileSizeExceeded
+                break
+            case WebimInternalError.fileTypeNotAllowed.rawValue:
+                sendFileError = .fileTypeNotAllowed
+                break
+            case WebimInternalError.uploadedFileNotFound.rawValue:
+                sendFileError = .uploadedFileNotFound
+                break
+            case WebimInternalError.unauthorized.rawValue:
+                sendFileError = .unauthorized
+                break
+            default:
+                sendFileError = .unknown
+            }
+                
+            guard let messageID = webimRequest.getMessageID() else {
+                WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                return
+            }
+            sendFileCompletionHandler?.onFailure(messageID: messageID,
+                                                 error: sendFileError)
+            uploadFileToServerCompletionHandler?.onFailure(messageID: messageID, error: sendFileError)
+        })
+    }
+    
+    private func handleDeleteUploadedFileFile(error errorString: String,
+                                  ofRequest webimRequest: WebimRequest) {
+        if let deleteUploadedFileCompletionHandler = webimRequest.getDeleteUploadedFileCompletionHandler() {
             completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                let sendFileError: SendFileError
+                let deleteUploadedFileError: DeleteUploadedFileError
                 switch errorString {
-                case WebimInternalError.fileSizeExceeded.rawValue:
-                    sendFileError = .fileSizeExceeded
+                case WebimInternalError.fileNotFound.rawValue:
+                    deleteUploadedFileError = .fileNotFound
                     break
-                case WebimInternalError.fileTypeNotAllowed.rawValue:
-                    sendFileError = .fileTypeNotAllowed
-                    break
-                case WebimInternalError.uploadedFileNotFound.rawValue:
-                    sendFileError = .uploadedFileNotFound
-                    break
-                case WebimInternalError.unauthorized.rawValue:
-                    sendFileError = .unauthorized
+                case WebimInternalError.fileHasBeenSent.rawValue:
+                    deleteUploadedFileError = .fileHasBeenSent
                     break
                 default:
-                    sendFileError = .unknown
+                    deleteUploadedFileError = .unknown
                 }
-                
-                guard let messageID = webimRequest.getMessageID() else {
-                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
-                    return
-                }
-                sendFileCompletionHandler.onFailure(messageID: messageID,
-                                                    error: sendFileError)
+                deleteUploadedFileCompletionHandler.onFailure(error: deleteUploadedFileError)
             })
         }
     }
@@ -577,7 +606,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             verbosityLevel: .warning)
     }
     
-    private func handleClientCompletionHandlerOf(request: WebimRequest) {
+    private func handleClientCompletionHandlerOf(request: WebimRequest, dataJSON: [String: Any?]?) {
         completionHandlerExecutor?.execute(task: DispatchWorkItem {
             request.getSendDialogToEmailAddressCompletionHandler()?.onSuccess()
             request.getSendSurveyAnswerCompletionHandler()?.onSuccess()
@@ -593,7 +622,23 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: messageID)
+            request.getSendFilesCompletionHandler()?.onSuccess(messageID: messageID)
+            if let dataJSON = dataJSON {
+                request.getUploadFileToServerCompletionHandler()?.onSuccess(id: messageID, uploadedFile: self.getUploadedFileFrom(dataJSON: dataJSON))
+            }
+            request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
         })
+    }
+    
+    private func getUploadedFileFrom(dataJSON: [String: Any?]) -> UploadedFile {
+        let fileParameters = FileParametersItem(jsonDictionary: dataJSON)
+        return UploadedFileImpl(size: fileParameters.getSize() ?? 0,
+                                guid: fileParameters.getGUID() ?? "",
+                                contentType: fileParameters.getContentType(),
+                                filename: fileParameters.getFilename() ?? "",
+                                visitorID: fileParameters.getVisitorID() ?? "",
+                                clientContentType: fileParameters.getClientContentType() ?? "",
+                                imageParameters: fileParameters.getImageParameters())
     }
     
     private static func convertToPublic(dataMessageErrorString: String) -> DataMessageError {
