@@ -250,6 +250,18 @@ class ActionRequestLoop: AbstractRequestLoop {
                         })
                     }
                     
+                    if let completionHandler = request.getLocationStatusCompletionHandler() {
+                        self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                            do {
+                                try completionHandler(data)
+                            } catch {
+                                WebimInternalLogger.shared.log(entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                                    verbosityLevel: .warning)
+                            }
+                            
+                        })
+                    }
+                    
                     self.handleClientCompletionHandlerOf(request: request, dataJSON: dataJSON[AbstractRequestLoop.ResponseFields.data.rawValue] as? [String : Any?])
                 } else {
                     WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",

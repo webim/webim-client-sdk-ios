@@ -147,6 +147,18 @@ final class MessageStreamImpl {
     
     func changingChatStateOf(chat: ChatItem?) {
         guard let chat = chat else {
+            messageHolder.receiving(newChat: self.chat,
+                                    previousChat: nil,
+                                    newMessages: [MessageImpl]())
+            chatStateListener?.changed(state: publicState(ofChatState: lastChatState),
+                                       to: publicState(ofChatState: ChatItem.ChatItemState.closed))
+            lastChatState = ChatItem.ChatItemState.closed
+            let newOperator = operatorFactory.createOperatorFrom(operatorItem: nil)
+            let previousOperator = currentOperator
+            currentOperatorChangeListener?.changed(operator: previousOperator,
+                                                   to: newOperator)
+            currentOperator = newOperator
+            operatorTypingListener?.onOperatorTypingStateChanged(isTyping: false)
             return
         }
         let previousChat = self.chat
@@ -154,7 +166,7 @@ final class MessageStreamImpl {
         
         messageHolder.receiving(newChat: self.chat,
                                 previousChat: previousChat,
-                                newMessages: (self.chat == nil) ? [MessageImpl]() : currentChatMessageFactoriesMapper.mapAll(messages: chat.getMessages()))
+                                newMessages: currentChatMessageFactoriesMapper.mapAll(messages: chat.getMessages()))
         
         let newChatState = chat.getState()
         if let newChatState = newChatState {

@@ -98,6 +98,7 @@ class WebimActions {
         case doAction = "/l/v/m/action"
         case fileDelete = "/l/v/file-delete"
         case getDelta = "/l/v/m/delta"
+        case getOnlineStatus = "/l/v/get-online-status"
         case downloadFile = "/l/v/m/download"
         case getHistory = "/l/v/m/history"
         case uploadFile = "/l/v/m/upload"
@@ -512,6 +513,19 @@ class WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         surveyCloseCompletionHandler: surveyCloseCompletionHandler))
+    }
+    
+    func getOnlineStatus(location: String,
+                         completion: @escaping (_ data: Data?) throws -> ()) {
+        let dataToPost = [Parameter.location.rawValue: location] as [String: Any]
+
+        let urlString = baseURL + ServerPathSuffix.getOnlineStatus.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        locationStatusRequestCompletionHandler: completion))
     }
     
 }

@@ -181,10 +181,10 @@ class FlexibleTableViewCell: UITableViewCell {
         return createUIImageView()
     }()
     
-    lazy var messageStatusIndicator: SpinningIndicator = {
-        let indicator = SpinningIndicator()
-        indicator.strokeColor = messageStatusIndicatorColour
-        indicator.animating = false
+    lazy var messageStatusIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+//        indicator.strokeColor = messageStatusIndicatorColour
+        indicator.stopAnimating()
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
@@ -1031,7 +1031,7 @@ class FlexibleTableViewCell: UITableViewCell {
             }
         } else {
             if message.getSendStatus() == .sending {
-                messageStatusIndicator.animating = true
+                messageStatusIndicator.startAnimating()
                 messageStatusImageView.image = nil
                 if hasSendingFile {
                     documentFileNameLabel.text = UploadingFileDescription.uploadingFile.rawValue.localized
@@ -1044,7 +1044,7 @@ class FlexibleTableViewCell: UITableViewCell {
                     )
                 }
             } else {
-                messageStatusIndicator.animating = false
+                messageStatusIndicator.stopAnimating()
                 if message.isReadByOperator() {
                     self.messageStatusImageView.image = messageStatusImageViewImageRead
                 } else {

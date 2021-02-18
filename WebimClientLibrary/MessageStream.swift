@@ -1803,7 +1803,7 @@ public enum ChatState {
      */
     case closedByOperator
     
-    @available(*, unavailable, renamed: "closedByVisitor")
+    @available(*, unavailable, renamed: "closedByOperator")
     case CLOSED_BY_OPERATOR
     
     /**

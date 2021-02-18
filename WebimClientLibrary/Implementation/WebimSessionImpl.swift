@@ -40,6 +40,7 @@ fileprivate enum UserDefaultsMainPrefix: String {
     case historyMajorVersion = "history_major_version"
     case historyRevision = "history_revision"
     case pageID = "page_id"
+    case previousAccount = "previous_account"
     case readBeforeTimestamp = "read_before_timestamp"
     case sessionID = "session_id"
     case visitor = "visitor"
@@ -67,6 +68,7 @@ final class WebimSessionImpl {
     private var accessChecker: AccessChecker
     private var clientStarted = false
     private var historyPoller: HistoryPoller
+    private var locationStatusPoller: LocationStatusPoller?
     private var messageStream: MessageStreamImpl
     private var sessionDestroyer: SessionDestroyer
     private var webimClient: WebimClient
@@ -76,11 +78,13 @@ final class WebimSessionImpl {
                  sessionDestroyer: SessionDestroyer,
                  webimClient: WebimClient,
                  historyPoller: HistoryPoller,
+                 locationStatusPoller: LocationStatusPoller?,
                  messageStream: MessageStreamImpl) {
         self.accessChecker = accessChecker
         self.sessionDestroyer = sessionDestroyer
         self.webimClient = webimClient
         self.historyPoller = historyPoller
+        self.locationStatusPoller = locationStatusPoller
         self.messageStream = messageStream
     }
     
@@ -101,18 +105,24 @@ final class WebimSessionImpl {
                                 webimLogger: WebimLogger?,
                                 verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?,
                                 prechat: String?,
-                                multivisitorSection: String) -> WebimSessionImpl {
+                                multivisitorSection: String,
+                                onlineStatusRequestFrequencyInMillis: Int64?) -> WebimSessionImpl {
         WebimInternalLogger.setup(webimLogger: webimLogger,
                                   verbosityLevel: verbosityLevel)
         
         let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = UserDefaultsName.main.rawValue + (visitorFields?.getID() ?? "anonymous")
+        
         var userDefaults: [String: Any]? = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
         
-        if isVisitorDataClearingEnabled {
+        let previousAccount = UserDefaults.standard.string(forKey: UserDefaultsMainPrefix.previousAccount.rawValue)
+
+        if (previousAccount != nil && previousAccount != accountName) ||  isVisitorDataClearingEnabled {
             clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
         }
+        
+        UserDefaults.standard.set(accountName, forKey: UserDefaultsMainPrefix.previousAccount.rawValue)
         
         checkSavedSessionFor(userDefaultsKey: userDefaultsKey,
                              newProvidedVisitorFields: visitorFields)
@@ -264,6 +274,16 @@ final class WebimSessionImpl {
                                           messageHolder: messageHolder,
                                           historyMetaInformationStorage: historyMetaInformationStoragePreferences)
         
+        var locationStatusPoller: LocationStatusPoller?
+        if let onlineStatusRequestFrequencyInMillis = onlineStatusRequestFrequencyInMillis {
+            locationStatusPoller = LocationStatusPoller(withSessionDestroyer: sessionDestroyer,
+                                                        queue: queue,
+                                                        webimActions: webimActions,
+                                                        messageStream: messageStream,
+                                                        location: location,
+                                                        onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis)
+        }
+        
         deltaCallback.set(messageStream: messageStream,
                           messageHolder: messageHolder,
                           historyPoller: historyPoller)
@@ -275,6 +295,10 @@ final class WebimSessionImpl {
             historyPoller.pause()
         }
         
+        sessionDestroyer.add() {
+            locationStatusPoller?.pause()
+        }
+        
         // Needed for message attachment secure download link generation.
         currentChatMessageMapper.set(webimClient: webimClient)
         historyMessageMapper.set(webimClient: webimClient)
@@ -283,6 +307,7 @@ final class WebimSessionImpl {
                                 sessionDestroyer: sessionDestroyer,
                                 webimClient: webimClient,
                                 historyPoller: historyPoller,
+                                locationStatusPoller: locationStatusPoller,
                                 messageStream: messageStream)
     }
     
@@ -361,15 +386,15 @@ final class WebimSessionImpl {
         }
     }
     
-    private static func getDeviceID(withSuffix suffix: String) -> String {
+    private static func getDeviceID(withSuffix suffix: String) -> String? {
         let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue)
         let name = UserDefaultsGUIDPrefix.uuid.rawValue + (suffix.isEmpty ? suffix : "-" + suffix)
         var uuidString: String? = userDefaults?[name] as? String
         
-        if uuidString == String() {
+        if uuidString == String() || uuidString == nil {
             guard let currentIdentifierForVendor = UIDevice.current.identifierForVendor else {
                 WebimInternalLogger.shared.log(entry: "Incorrect DeviceID in WebimSessionImpl.\(#function)")
-                return String()
+                return nil
             }
             uuidString = currentIdentifierForVendor.uuidString + (suffix.isEmpty ? suffix : "-" + suffix)
             if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue) {
@@ -383,7 +408,7 @@ final class WebimSessionImpl {
         }
         guard let deviceID = uuidString else {
             WebimInternalLogger.shared.log(entry: "DeviceID is nil in WebimSessionImpl.\(#function)")
-            return String()
+            return nil
         }
         return deviceID
     }   
@@ -403,6 +428,7 @@ extension WebimSessionImpl: WebimSession {
         
         webimClient.resume()
         historyPoller.resume()
+        locationStatusPoller?.resume()
     }
     
     func pause() throws {
@@ -414,6 +440,7 @@ extension WebimSessionImpl: WebimSession {
         
         webimClient.pause()
         historyPoller.pause()
+        locationStatusPoller?.pause()
     }
     
     func destroy() throws {
@@ -681,6 +708,147 @@ final class HistoryPoller {
         }
     }
     
+}
+
+// MARK: -
+/**
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2021 Webim
+ */
+final class LocationStatusPoller {
+    // MARK: - Properties
+    private let queue: DispatchQueue
+    private let sessionDestroyer: SessionDestroyer
+    private let webimActions: WebimActions
+    private let messageStream: MessageStreamImpl
+    private var dispatchWorkItem: DispatchWorkItem?
+    private var locationStatusCompletionHandler: ((_ locationStatusResponse: LocationStatusResponse?) -> ())?
+    private let location: String
+    private var lastPollingTime: Int64
+    private let onlineStatusRequestFrequencyInMillis: Int64
+    private var running: Bool?
+    
+    // MARK: - Initialization
+    init(withSessionDestroyer sessionDestroyer: SessionDestroyer,
+         queue: DispatchQueue,
+         webimActions: WebimActions,
+         messageStream: MessageStreamImpl,
+         location: String,
+         onlineStatusRequestFrequencyInMillis: Int64) {
+        self.sessionDestroyer = sessionDestroyer
+        self.queue = queue
+        self.webimActions = webimActions
+        self.messageStream = messageStream
+        self.location = location
+        self.onlineStatusRequestFrequencyInMillis = onlineStatusRequestFrequencyInMillis
+        self.lastPollingTime = -onlineStatusRequestFrequencyInMillis
+    }
+    
+    // MARK: - Methods
+    
+    func pause() {
+        dispatchWorkItem?.cancel()
+        dispatchWorkItem = nil
+        
+        running = false
+    }
+    
+    func resume() {
+        pause()
+        
+        running = true
+        
+        locationStatusCompletionHandler = createLocationStatusCompletionHandler()
+        guard locationStatusCompletionHandler != nil else {
+            WebimInternalLogger.shared.log(entry: "Creating Location Status Completion Handler failure in WebimSessionImpl.\(#function)")
+            return
+        }
+        
+        let uptime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
+        if uptime - lastPollingTime > onlineStatusRequestFrequencyInMillis {
+            requestLocationStatus(location: location)
+        } else {
+            let dispatchTime = DispatchTime(uptimeNanoseconds: (UInt64((lastPollingTime + onlineStatusRequestFrequencyInMillis) * 1_000_000) - UInt64((uptime) * 1_000_000)))
+            
+            dispatchWorkItem = DispatchWorkItem() { [weak self] in
+                guard let `self` = self else {
+                    return
+                }
+                self.requestLocationStatus(location: self.location)
+            }
+                
+            guard let dispatchWorkItem = dispatchWorkItem else {
+                WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                return
+            }
+            
+            queue.asyncAfter(deadline: dispatchTime,
+                             execute: dispatchWorkItem)
+        }
+    }
+    
+    // MARK: Private methods
+    
+    private func createLocationStatusCompletionHandler() -> (_ locationStatusResponse: LocationStatusResponse?) -> () {
+        return { [weak self] (locationStatusResponse: LocationStatusResponse?) in
+            guard let `self` = self,
+                !self.sessionDestroyer.isDestroyed() else {
+                return
+            }
+            
+            self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
+            
+            if self.running != true {
+                self.lastPollingTime = -self.onlineStatusRequestFrequencyInMillis
+                return
+            }
+            self.dispatchWorkItem = DispatchWorkItem() { [weak self] in
+                guard let `self` = self else {
+                    return
+                }
+                self.requestLocationStatus(location: self.location)
+            }
+            guard let dispatchWorkItem = self.dispatchWorkItem else {
+                WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                return
+            }
+                    
+            let interval = Int(self.onlineStatusRequestFrequencyInMillis)
+            self.queue.asyncAfter(deadline: (.now() + .milliseconds(interval)),
+                                  execute: dispatchWorkItem)
+        }
+    }
+
+    public func requestLocationStatus(location: String) {
+        guard let locationStatusCompletionHandler = self.locationStatusCompletionHandler else {
+            WebimInternalLogger.shared.log(entry: "Location Status Completion Handler is nil in WebimSessionImpl.\(#function)")
+            return
+        }
+        requestLocationStatus(location: location,
+                              completion: locationStatusCompletionHandler)
+    }
+    
+    private func requestLocationStatus(location: String,
+                                       completion: @escaping (_ locationStatusResponse: LocationStatusResponse?) -> ()) {
+        webimActions.getOnlineStatus(location: location) { data in
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
+                                                             options: [])
+                if let locationStatusResponseDictionary = json as? [String: Any?] {
+                    let locationStatusResponse = LocationStatusResponse(jsonDictionary: locationStatusResponseDictionary)
+                    completion(locationStatusResponse)
+                    if let onlineStatusString = locationStatusResponse.getOnlineStatus(),
+                       let onlineStatus = OnlineStatusItem(rawValue: onlineStatusString) {
+                        self.messageStream.onOnlineStatusChanged(to: onlineStatus)
+                    }
+                }
+            } else {
+                completion(nil)
+            }
+        }
+    }
 }
 
 // MARK: -

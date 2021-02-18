@@ -46,10 +46,9 @@ class PopupActionsViewController: UIViewController {
     var cellImageViewHeight = CGFloat()
     var cellImageViewCenterYPosition = CGFloat()
     var actions = [PopupAction]()
-    var originalCellAlignment: OriginalCellAlignment = .center
+    var originalCellAlignment = OriginalCellAlignment.center
     
     // MARK: - Private properties
-    private var actionsStates = [PopupAction: Bool]()
     private var actionsTableViewCenterYPosition = CGFloat()
     private var actionsTableViewContentHeight = CGFloat()
     
@@ -82,10 +81,6 @@ class PopupActionsViewController: UIViewController {
         )
         
         view.backgroundColor = popupBackgroundColour
-        
-        for action in actions {
-            actionsStates[action] = false
-        }
         
         setupSubviews()
     }

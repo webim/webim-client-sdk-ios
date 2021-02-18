@@ -141,7 +141,7 @@ final class WebimClientBuilder {
         return self
     }
     
-    func set(deviceID: String) -> WebimClientBuilder {
+    func set(deviceID: String?) -> WebimClientBuilder {
         self.deviceID = deviceID
         
         return self

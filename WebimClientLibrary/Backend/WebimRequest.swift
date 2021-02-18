@@ -42,6 +42,7 @@ final class WebimRequest {
     private var contentType: String?
     private var dataMessageCompletionHandler: DataMessageCompletionHandler?
     private var historyRequestCompletionHandler: ((_ data: Data?) throws -> ())?
+    private var locationStatusRequestCompletionHandler: ((_ data: Data?) throws -> ())?
     private var faqCompletionHandler: ((_ data: Data?) throws -> ())?
     private var messageID: String?
     private var filename: String?
@@ -73,6 +74,7 @@ final class WebimRequest {
          contentType: String? = nil,
          baseURLString: String,
          historyRequestCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
+         locationStatusRequestCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
          faqCompletionHandler: ((_ data: Data?) throws -> ())? = nil,
          dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
          rateOperatorCompletionHandler: RateOperatorCompletionHandler? = nil,
@@ -98,6 +100,7 @@ final class WebimRequest {
         self.contentType = contentType
         self.baseURLString = baseURLString
         self.historyRequestCompletionHandler = historyRequestCompletionHandler
+        self.locationStatusRequestCompletionHandler = locationStatusRequestCompletionHandler
         self.dataMessageCompletionHandler = dataMessageCompletionHandler
         self.rateOperatorCompletionHandler = rateOperatorCompletionHandler
         self.sendMessageComplitionHandler = sendMessageCompletionHandler
@@ -132,6 +135,10 @@ final class WebimRequest {
     
     func getCompletionHandler() -> ((_ data: Data?) throws -> ())? {
         return historyRequestCompletionHandler
+    }
+    
+    func getLocationStatusCompletionHandler() -> ((_ data: Data?) throws -> ())? {
+        return locationStatusRequestCompletionHandler
     }
     
     func getFAQCompletionHandler() -> ((_ data: Data?) throws -> ())? {

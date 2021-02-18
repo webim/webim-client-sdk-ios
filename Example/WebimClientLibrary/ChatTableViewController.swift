@@ -303,9 +303,9 @@ class ChatTableViewController: UITableViewController {
         doubleTapPopupGestureRecognizer.numberOfTapsRequired = 2
         doubleTapPopupGestureRecognizer.cancelsTouchesInView = false
         
-        cell.messageBackgroundView.isUserInteractionEnabled = true
-        cell.messageBackgroundView.addGestureRecognizer(longPressPopupGestureRecognizer)
-        cell.messageBackgroundView.addGestureRecognizer(doubleTapPopupGestureRecognizer)
+        cell.isUserInteractionEnabled = true
+        cell.addGestureRecognizer(longPressPopupGestureRecognizer)
+        cell.addGestureRecognizer(doubleTapPopupGestureRecognizer)
         
         if selectedCellRow != nil {
             cell.alpha = 0

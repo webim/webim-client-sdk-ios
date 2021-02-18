@@ -55,6 +55,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         case type = "type"
         case text = "text"
         case data = "data"
+        case canBeReplied = "can_be_replied"
         case quote = "quote"
     }
     
@@ -72,6 +73,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static let type = Expression<String>(ColumnName.type.rawValue)
     private static let text = Expression<String>(ColumnName.text.rawValue)
     private static let data = Expression<Blob?>(ColumnName.data.rawValue)
+    private static let canBeReplied = Expression<Bool?>(ColumnName.canBeReplied.rawValue)
     private static let quote = Expression<Blob?>(ColumnName.quote.rawValue)
     
     
@@ -109,11 +111,11 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 6
+        return 7
     }
     
     func getVersionDB() -> Int {
-        return 6
+        return 7
     }
     
     func set(reachedHistoryEnd: Bool) {
@@ -285,7 +287,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.type.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.text.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.data.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+                        + "\(SQLiteHistoryStorage.ColumnName.canBeReplied.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
                     try statement.run(message.getID(),
                                       messageHistorID.getTimeInMicrosecond(),
                                       message.getOperatorID(),
@@ -294,6 +297,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                       MessageItem.MessageKind(messageType: message.getType()).rawValue,
                                       message.getRawText() ?? message.getText(),
                                       SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
+                                      message.canBeReplied(),
                                       SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()))
                     // Raw SQLite statement constructed because there's no way to implement INSERT OR FAIL query with SQLite.swift methods. Appropriate INSERT query can look like this:
                     /*try db.run(SQLiteHistoryStorage
@@ -542,6 +546,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             t.column(SQLiteHistoryStorage.type)
             t.column(SQLiteHistoryStorage.text)
             t.column(SQLiteHistoryStorage.data)
+            t.column(SQLiteHistoryStorage.canBeReplied)
             t.column(SQLiteHistoryStorage.quote)
         })
         db.trace {
@@ -667,6 +672,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
             sticker = StickerImpl.getSticker(jsonDictionary: data)
         }
         
+        let canBeReplied = row[SQLiteHistoryStorage.canBeReplied] ?? false
+        
         var quote: Quote?
         if let quoteValue = row[SQLiteHistoryStorage.quote],
             let data = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(quoteValue)) as? [String : Any?] {
@@ -692,7 +699,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            rawText: rawText,
                            read: row[SQLiteHistoryStorage.timestamp] <= readBeforeTimestamp || readBeforeTimestamp == -1,
                            messageCanBeEdited: false,
-                           messageCanBeReplied: false,
+                           messageCanBeReplied: canBeReplied,
                            messageIsEdited: false)
     }
     
@@ -734,6 +741,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
                     SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
+                    SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
                     SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))
         
         db.trace {
@@ -772,6 +780,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
                     SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
+                    SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
                     SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))
         
         db.trace {

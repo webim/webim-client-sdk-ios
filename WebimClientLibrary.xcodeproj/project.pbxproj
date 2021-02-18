@@ -20,6 +20,7 @@
 		113C582524F5A11C006A08C2 /* SurveyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C582424F5A11C006A08C2 /* SurveyFactory.swift */; };
 		113E5BC524F72434008AB716 /* SendSurveyAnswerCompletionHandlerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113E5BC424F72434008AB716 /* SendSurveyAnswerCompletionHandlerWrapper.swift */; };
 		11638EEE22A448830085E4F4 /* KeyboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11638EED22A448830085E4F4 /* KeyboardItem.swift */; };
+		1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
 		8FD2428B200CDB18007EB9CB /* WebimClientLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445C200CE258007EB9CB /* WebimLogger.swift */; };
@@ -131,6 +132,7 @@
 		113C582424F5A11C006A08C2 /* SurveyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyFactory.swift; sourceTree = "<group>"; };
 		113E5BC424F72434008AB716 /* SendSurveyAnswerCompletionHandlerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendSurveyAnswerCompletionHandlerWrapper.swift; sourceTree = "<group>"; };
 		11638EED22A448830085E4F4 /* KeyboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItem.swift; sourceTree = "<group>"; };
+		1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStatusResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
 		8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WebimClientLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebimClientLibrary.h; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				8FD24488200CE25A007EB9CB /* HistoryBeforeResponse.swift */,
 				8FD24489200CE25A007EB9CB /* HistorySinceResponse.swift */,
 				8FD2448A200CE25A007EB9CB /* DeltaResponse.swift */,
+				1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				8FD244AD200CE25C007EB9CB /* Department.swift in Sources */,
 				8FD244E5200CE25C007EB9CB /* WebimErrorImpl.swift in Sources */,
 				8FD244B3200CE25C007EB9CB /* InternalErrorListener.swift in Sources */,
+				1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */,
 				CE6A697A220C731600B11E29 /* FAQ.swift in Sources */,
 				8FD244D9200CE25C007EB9CB /* MessageToSend.swift in Sources */,
 				8FD244D1200CE25C007EB9CB /* DeltaResponse.swift in Sources */,

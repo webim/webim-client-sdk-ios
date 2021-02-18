@@ -155,6 +155,7 @@ public final class SessionBuilder  {
     private weak var webimLogger: WebimLogger?
     private var webimLoggerVerbosityLevel: WebimLoggerVerbosityLevel?
     private var prechat: String?
+    private var onlineStatusRequestFrequencyInMillis: Int64?
 
     // MARK: - Methods
 
@@ -440,6 +441,23 @@ public final class SessionBuilder  {
         
         return self
     }
+    
+    /**
+     If is set, SDK will request online status every and fire listener.
+     - parameter onlineStatusRequestFrequencyInMillis:
+     Request location frequency to server in millis.
+     - returns:
+     `SessionBuilder` object with requestLocationFrequencyInMs parameter set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2021 Webim
+     */
+    public func set(onlineStatusRequestFrequencyInMillis: Int64) -> SessionBuilder {
+        self.onlineStatusRequestFrequencyInMillis = onlineStatusRequestFrequencyInMillis
+        
+        return self
+    }
 
     /**
      Method to pass WebimLogger object.
@@ -563,7 +581,8 @@ public final class SessionBuilder  {
                                                 webimLogger: webimLogger,
                                                 verbosityLevel: webimLoggerVerbosityLevel,
                                                 prechat: prechat,
-                                                multivisitorSection: multivisitorSection) as WebimSession
+                                                multivisitorSection: multivisitorSection,
+                                                onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis) as WebimSession
     }
     
     /**
