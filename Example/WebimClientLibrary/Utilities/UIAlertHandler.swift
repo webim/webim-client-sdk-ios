@@ -60,6 +60,13 @@ final class UIAlertHandler {
         
         alertController.addAction(alertAction)
         
+        if buttonStyle != .cancel {
+            let alertActionOther = UIAlertAction(
+                title: CancelButton.cancel.rawValue.localized,
+                style: .cancel)
+            alertController.addAction(alertActionOther)
+        }
+        
         delegate?.present(alertController, animated: true)
     }
     
@@ -132,10 +139,13 @@ final class UIAlertHandler {
     }
     
     func showFileSavingFailureDialog(withError error: Error) {
+        let action = getGoToSettingsAction()
         showDialog(
-            withMessage: error.localizedDescription,
+            withMessage: SavingFileDialog.saveErrorMessage.rawValue.localized,
             title: SavingFileDialog.saveErrorTitle.rawValue.localized,
-            buttonTitle: SavingFileDialog.buttonTitle.rawValue.localized
+            buttonTitle: SavingFileDialog.errorButtonTitle.rawValue.localized,
+            buttonStyle: .default,
+            action: action
         )
     }
     
@@ -148,10 +158,14 @@ final class UIAlertHandler {
     }
     
     func showImageSavingFailureDialog(withError error: NSError) {
+        let action = getGoToSettingsAction()
+
         showDialog(
-            withMessage: error.localizedDescription,
+            withMessage: SavingImageDialog.saveErrorMessage.rawValue.localized,
             title: SavingImageDialog.saveErrorTitle.rawValue.localized,
-            buttonTitle: SavingImageDialog.buttonTitle.rawValue.localized
+            buttonTitle: SavingImageDialog.errorButtonTitle.rawValue.localized,
+            buttonStyle: .default,
+            action: action
         )
     }
     
@@ -177,5 +191,19 @@ final class UIAlertHandler {
             title: SettingsErrorDialog.title.rawValue.localized,
             buttonTitle: SettingsErrorDialog.buttonTitle.rawValue.localized
         )
+    }
+    
+    // MARK: - Private methods
+    private func getGoToSettingsAction() -> (() ->()) {
+        return {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                })
+            }
+        }
     }
 }

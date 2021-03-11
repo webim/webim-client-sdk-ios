@@ -43,7 +43,7 @@ class MessageMapper {
     
     // MARK: - Properties
     private let serverURLString: String
-    private weak var webimClient: WebimClient?
+    private weak var fileUrlCreator: FileUrlCreator?
     
     // MARK: - Initialization
     init(withServerURLString serverURLString: String) {
@@ -110,13 +110,11 @@ class MessageMapper {
         if (kind == .fileFromVisitor)
             || (kind == .fileFromOperator) {
             
-            if let webimClient = webimClient {
-                attachments = FileInfoImpl.getAttachments(byServerURL: serverURLString,
-                                                          webimClient: webimClient,
+            if let fileUrlCreator = fileUrlCreator {
+                attachments = FileInfoImpl.getAttachments(byFileUrlCreator: fileUrlCreator,
                                                           text: messageItemText)
                 if attachments.isEmpty {
-                    attachment = FileInfoImpl.getAttachment(byServerURL: serverURLString,
-                                                            webimClient: webimClient,
+                    attachment = FileInfoImpl.getAttachment(byFileUrlCreator: fileUrlCreator,
                                                             text: messageItemText)
                     if let attachment = attachment {
                         attachments.append(attachment)
@@ -130,6 +128,22 @@ class MessageMapper {
                                                           filesInfo: attachments,
                                                           state: .ready)
                     )
+                } else {
+                    if let rawData = messageItem.getRawData(),
+                       let file = MessageDataItem(jsonDictionary: rawData).getFile() {
+                        let fileInfoImpl = FileInfoImpl(urlString: nil,
+                                                        size: file.getProperties()?.getSize() ?? 0,
+                                                        filename: file.getProperties()?.getFilename() ?? "",
+                                                        contentType: file.getProperties()?.getContentType() ?? "",
+                                                        guid: file.getProperties()?.getGUID() ?? "",
+                                                        fileUrlCreator: nil)
+                        attachment = fileInfoImpl
+                        attachments.append(fileInfoImpl)
+                        data = MessageDataImpl(
+                            attachment: MessageAttachmentImpl(fileInfo: fileInfoImpl,
+                                                              filesInfo: attachments,
+                                                              state: .upload))
+                    }
                 }
             }
             guard let attachment = attachment else {
@@ -157,18 +171,16 @@ class MessageMapper {
         let quote = messageItem.getQuote()
         var messageAttachmentFromQuote: FileInfo? = nil
         if let kind = quote?.getMessageKind(), kind == .fileFromVisitor || kind == .fileFromOperator {
-            if let webimClient = webimClient {
+            if let fileUrlCreator = fileUrlCreator {
                 guard let quoteText = quote?.getText() else {
                     WebimInternalLogger.shared.log(entry: "Quote Text is nil in MessageFactories.\(#function)")
                     return nil
                 }
-                messageAttachmentFromQuote = FileInfoImpl.getAttachment(byServerURL: serverURLString,
-                                                                        webimClient: webimClient,
+                messageAttachmentFromQuote = FileInfoImpl.getAttachment(byFileUrlCreator: fileUrlCreator,
                                                                         text: quoteText)
                 if messageAttachmentFromQuote == nil {
-                    let attachments = FileInfoImpl.getAttachments(byServerURL: serverURLString,
-                                                    webimClient: webimClient,
-                                                    text: quoteText)
+                    let attachments = FileInfoImpl.getAttachments(byFileUrlCreator: fileUrlCreator,
+                                                                  text: quoteText)
                     if !attachments.isEmpty {
                         messageAttachmentFromQuote = attachments[0]
                     }
@@ -217,8 +229,8 @@ class MessageMapper {
                            messageIsEdited: messageItem.getIsEdited())
     }
     
-    func set(webimClient: WebimClient) {
-        self.webimClient = webimClient
+    func set(fileUrlCreator: FileUrlCreator) {
+        self.fileUrlCreator = fileUrlCreator
     }
     
     func mapAll(messages: [MessageItem]) -> [MessageImpl] {

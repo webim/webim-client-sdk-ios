@@ -42,6 +42,9 @@
 "Back" = "Close screen";
 "ClosesScreen" = "Closes screen for returning to previous screen.";
 
+// CancelButton
+"Cancel" = "Cancel";
+
 // ChatClosedDialog
 "ChatClosed" = "Chat finished.";
 "OK" = "OK";
@@ -172,12 +175,16 @@
 // SavingImageDialog
 "OK" = "ОК";
 "SaveError" = "Save error";
+"SaveErrorMessage" = "No access to save images on the device. Grant access in the application settings.";
+"ErrorButtonTitle" = "Go to Settings";
 "Saved" = "Saved!";
 "ImageSaved" = "The image has been saved to your photos";
 
 // SavingFileDialog
 "OK" = "ОК";
 "SaveError" = "Save error";
+"ErrorButtonTitle" = "Go to Settings";
+"SaveFileErrorMessage" = "No access to save files on the device. Grant access in the application settings.";
 "Saved" = "Saved!";
 "FileSaved" = "The file has been saved to your device in Files App";
 

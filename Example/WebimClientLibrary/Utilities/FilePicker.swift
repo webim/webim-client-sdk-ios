@@ -49,8 +49,18 @@ open class FilePicker: NSObject {
                 delegate: FilePickerDelegate) {
         self.imagePickerController = UIImagePickerController()
         self.documentPickerController = UIDocumentPickerViewController(
-            documentTypes: [String(kUTTypePDF)],
-            in: .open
+            documentTypes: [
+                String(kUTTypeJPEG),
+                String(kUTTypeRTF),
+                String(kUTTypeGIF),
+                String(kUTTypePlainText),
+                String(kUTTypePDF),
+                String(kUTTypeMP3),
+                String(kUTTypeMPEG4),
+                String(kUTTypeData),
+                String(kUTTypeArchive)
+            ],
+            in: .import
         )
         self.alertDialogHandler = UIAlertHandler(delegate: presentationController)
         

@@ -81,7 +81,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static let queryQueue = DispatchQueue(label: "SQLiteHistoryStorageQueryQueue", qos: .background)
     private let completionHandlerQueue: DispatchQueue
     private let serverURLString: String
-    private let webimClient: WebimClient
+    private let fileUrlCreator: FileUrlCreator
     private var db: Connection?
     private var firstKnownTimestamp: Int64 = -1
     private var readBeforeTimestamp: Int64
@@ -92,12 +92,12 @@ final class SQLiteHistoryStorage: HistoryStorage {
     // MARK: - Initialization
     init(dbName: String,
          serverURL serverURLString: String,
-         webimClient: WebimClient,
+         fileUrlCreator: FileUrlCreator,
          reachedHistoryEnd: Bool,
          queue: DispatchQueue,
          readBeforeTimestamp: Int64) {
         self.serverURLString = serverURLString
-        self.webimClient = webimClient
+        self.fileUrlCreator = fileUrlCreator
         self.reachedHistoryEnd = reachedHistoryEnd
         self.completionHandlerQueue = queue
         self.readBeforeTimestamp = readBeforeTimestamp
@@ -641,12 +641,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
         var attachment: FileInfo? = nil
         var attachments = [FileInfo]()
         if let rawText = rawText {
-            attachments = FileInfoImpl.getAttachments(byServerURL: serverURLString,
-                                                      webimClient: webimClient,
+            attachments = FileInfoImpl.getAttachments(byFileUrlCreator: fileUrlCreator,
                                                       text: rawText)
             if attachments.isEmpty {
-                attachment = FileInfoImpl.getAttachment(byServerURL: serverURLString,
-                                                        webimClient: webimClient,
+                attachment = FileInfoImpl.getAttachment(byFileUrlCreator: fileUrlCreator,
                                                         text: rawText)
                 if let attachment = attachment {
                     attachments.append(attachment)

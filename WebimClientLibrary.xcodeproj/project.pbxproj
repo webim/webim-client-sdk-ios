@@ -19,6 +19,7 @@
 		113C582324EF24D9006A08C2 /* SurveyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C582224EF24D9006A08C2 /* SurveyController.swift */; };
 		113C582524F5A11C006A08C2 /* SurveyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C582424F5A11C006A08C2 /* SurveyFactory.swift */; };
 		113E5BC524F72434008AB716 /* SendSurveyAnswerCompletionHandlerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113E5BC424F72434008AB716 /* SendSurveyAnswerCompletionHandlerWrapper.swift */; };
+		11474E6225F2A5AD00D560FB /* FileUrlCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11474E6125F2A5AD00D560FB /* FileUrlCreator.swift */; };
 		11638EEE22A448830085E4F4 /* KeyboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11638EED22A448830085E4F4 /* KeyboardItem.swift */; };
 		1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
@@ -131,6 +132,7 @@
 		113C582224EF24D9006A08C2 /* SurveyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyController.swift; sourceTree = "<group>"; };
 		113C582424F5A11C006A08C2 /* SurveyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyFactory.swift; sourceTree = "<group>"; };
 		113E5BC424F72434008AB716 /* SendSurveyAnswerCompletionHandlerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendSurveyAnswerCompletionHandlerWrapper.swift; sourceTree = "<group>"; };
+		11474E6125F2A5AD00D560FB /* FileUrlCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUrlCreator.swift; sourceTree = "<group>"; };
 		11638EED22A448830085E4F4 /* KeyboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItem.swift; sourceTree = "<group>"; };
 		1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStatusResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
@@ -341,6 +343,7 @@
 				CE76D61E22108834006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift */,
 				11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */,
 				113C582224EF24D9006A08C2 /* SurveyController.swift */,
+				11474E6125F2A5AD00D560FB /* FileUrlCreator.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -480,7 +483,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
-				ORGANIZATIONNAME = "Sergey Maslov";
+				ORGANIZATIONNAME = Webim;
 				TargetAttributes = {
 					8FD24279200CDB18007EB9CB = {
 						CreatedOnToolsVersion = 9.2;
@@ -608,6 +611,7 @@
 				8FD244CC200CE25C007EB9CB /* DepartmentItem.swift in Sources */,
 				CE76D61F22108835006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift in Sources */,
 				8FD244D5200CE25C007EB9CB /* FullUpdate.swift in Sources */,
+				11474E6225F2A5AD00D560FB /* FileUrlCreator.swift in Sources */,
 				8FD244B4200CE25C007EB9CB /* MemoryHistoryMetaInformationStorage.swift in Sources */,
 				113057AC256D22DE004BB13E /* UploadedFileImpl.swift in Sources */,
 				8FD244CE200CE25C007EB9CB /* VisitSessionStateItem.swift in Sources */,

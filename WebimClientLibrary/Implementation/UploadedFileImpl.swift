@@ -100,6 +100,9 @@ extension UploadedFileImpl: UploadedFile {
     
     func getImageInfo() -> ImageInfo? {
         return ImageInfoImpl(withThumbURLString: "",
+                             fileUrlCreator: nil,
+                             filename: filename,
+                             guid: guid,
                              width: imageParameters?.getSize()?.getWidth(),
                              height: imageParameters?.getSize()?.getHeight())
     }

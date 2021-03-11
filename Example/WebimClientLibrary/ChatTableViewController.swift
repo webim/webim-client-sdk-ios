@@ -81,6 +81,7 @@ class ChatTableViewController: UITableViewController {
             object: nil
         )
         
+        setupWebimSession()
         self.tableView.reloadData()
     }
     
@@ -115,8 +116,6 @@ class ChatTableViewController: UITableViewController {
             name: .shouldSendKeyboardRequest,
             object: nil
         )
-        
-        setupWebimSession()
         
         registerCells()
         
@@ -692,7 +691,9 @@ class ChatTableViewController: UITableViewController {
     
     @objc
     private func showPopoverMenu(_ gestureRecognizer: UIGestureRecognizer) {
-        self.view.endEditing(true)
+        DispatchQueue.main.async {
+            self.view.endEditing(true)
+        }
         var stateToCheck = UIGestureRecognizer.State.ended
         
         if gestureRecognizer is UILongPressGestureRecognizer {
@@ -750,18 +751,7 @@ class ChatTableViewController: UITableViewController {
                 }
                 
                 if viewController.actions.count != 0 {
-                    // Workaround to keep keyboard shown.
-                    /// TODO: Probably there is a better solution to check if the keyboard is shown.
-                    /// Now it is NOT accurate, since this check could fail if something goes wrong (i.e. some windows haven't been hidden)
-                    if UIApplication.shared.windows.count > 2 {
-                        /// More details at: https://github.com/robbajorek/ModalOverlayIOS
-                        guard let overlayFrame = view?.window?.frame else { return }
-                        overlayWindow = UIWindow(frame: overlayFrame)
-                        overlayWindow?.windowLevel = .alert
-                        overlayWindow?.rootViewController = viewController
-                        
-                        showOverlayWindow()
-                    } else {
+                    DispatchQueue.main.async {
                         self.present(viewController, animated: false)
                     }
                 }

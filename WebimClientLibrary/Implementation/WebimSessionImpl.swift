@@ -187,6 +187,7 @@ final class WebimSessionImpl {
         
         var historyStorage: HistoryStorage
         var historyMetaInformationStoragePreferences: HistoryMetaInformationStorage
+        let fileUrlCreator = FileUrlCreator(webimClient: webimClient, serverURL: serverURLString)
         if isLocalHistoryStoragingEnabled {
             if userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String == nil {
                 let dbName = "webim_\(ClientSideID.generateClientSideID()).db"
@@ -212,7 +213,7 @@ final class WebimSessionImpl {
             }
             let sqlhistoryStorage = SQLiteHistoryStorage(dbName: dbName,
                                                   serverURL: serverURLString,
-                                                  webimClient: webimClient,
+                                                  fileUrlCreator: fileUrlCreator,
                                                   reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
                                                   queue: queue,
                                                   readBeforeTimestamp: readBeforeTimestamp ?? Int64(-1))
@@ -300,8 +301,8 @@ final class WebimSessionImpl {
         }
         
         // Needed for message attachment secure download link generation.
-        currentChatMessageMapper.set(webimClient: webimClient)
-        historyMessageMapper.set(webimClient: webimClient)
+        currentChatMessageMapper.set(fileUrlCreator: fileUrlCreator)
+        historyMessageMapper.set(fileUrlCreator: fileUrlCreator)
         
         return WebimSessionImpl(accessChecker: accessChecker,
                                 sessionDestroyer: sessionDestroyer,

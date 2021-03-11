@@ -36,6 +36,10 @@ enum BackButton: String {
     case accessibilityHint = "ClosesScreen"
 }
 
+enum CancelButton: String {
+    case cancel = "Cancel"
+}
+
 enum ChatClosedDialog: String {
     case message = "ChatClosed"
     
@@ -217,17 +221,21 @@ enum RatingDialogView: String {
 }
 
 enum SavingImageDialog: String {
-    case buttonTitle = "OK"
+    case errorButtonTitle = "ErrorButtonTitle"
     case saveErrorTitle = "SaveError"
+    case saveErrorMessage = "SaveErrorMessage"
     
+    case buttonTitle = "OK"
     case saveSuccessTitle = "Saved"
     case saveSuccessMessage = "ImageSaved"
 }
 
 enum SavingFileDialog: String {
-    case buttonTitle = "OK"
+    case errorButtonTitle = "ErrorButtonTitle"
     case saveErrorTitle = "SaveError"
+    case saveErrorMessage = "SaveFileErrorMessage"
     
+    case buttonTitle = "OK"
     case saveSuccessTitle = "Saved"
     case saveSuccessMessage = "FileSaved"
 }

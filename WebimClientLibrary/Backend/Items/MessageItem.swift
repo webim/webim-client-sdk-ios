@@ -467,7 +467,7 @@ final class QuoteItem {
 
 final public class MessageDataItem {
     private enum JSONField: String {
-        case file = "data"
+        case file = "file"
     }
     
     private var file: FileItem?
