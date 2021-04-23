@@ -162,6 +162,10 @@ final class MessageHolder {
         self.reachedEndOfLocalHistory = reachedEndOfLocalHistory
     }
     
+    func getReachedEndOfRemoteHistory() -> Bool {
+        return reachedEndOfRemoteHistory
+    }
+    
     func newMessageTracker(withMessageListener messageListener: MessageListener) throws -> MessageTrackerImpl {
         try messageTracker?.destroy()
         
@@ -180,6 +184,7 @@ final class MessageHolder {
                                             idsToDelete: deleted) { [weak self] (endOfBatch: Bool, messageDeleted: Bool, deletedMessageID: String?, messageChanged: Bool, changedMessage: MessageImpl?, messageAdded: Bool, addedMessage: MessageImpl?, idBeforeAddedMessage: HistoryID?) -> () in
                                                 if endOfBatch {
                                                     self?.messageTracker?.endedHistoryBatch()
+                                                    self?.reachedEndOfRemoteHistory = true
                                                     
                                                     completion()
                                                 }

@@ -9,7 +9,7 @@ PODS:
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
   - SQLite.swift/standard (0.12.2)
-  - WebimClientLibrary (3.33.1):
+  - WebimClientLibrary (3.34.2):
     - SQLite.swift (= 0.12.2)
 
 DEPENDENCIES:
@@ -44,7 +44,7 @@ SPEC CHECKSUMS:
   SlackTextViewController: b854e62c1c156336bc4fd409c6ca79b5773e8f9d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
-  WebimClientLibrary: 2abdc50bba15581d6bedac3fbcac155bfc49b811
+  WebimClientLibrary: 022873cd49ed24e12fc81adecea1b84e47d00f08
 
 PODFILE CHECKSUM: 855d312996046cd3434fca3a4cba56d96623a531
 

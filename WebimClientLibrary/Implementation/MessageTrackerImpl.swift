@@ -541,7 +541,7 @@ extension MessageTrackerImpl: MessageTracker {
             
             messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
                 if let cachedCompletionHandler = self?.cachedCompletionHandler,
-                    !messages.isEmpty || self?.firstHistoryUpdateReceived == true {
+                   !messages.isEmpty || self?.messageHolder.getReachedEndOfRemoteHistory() == true {
                     self?.firstHistoryUpdateReceived = true
                     
                     let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
@@ -605,7 +605,7 @@ extension MessageTrackerImpl: MessageTracker {
             
             messageHolder.getHistoryStorage().getLatestHistory(byLimit: limitOfMessages) { [weak self] messages in
                 if let cachedCompletionHandler = self?.cachedCompletionHandler,
-                    !messages.isEmpty || self?.firstHistoryUpdateReceived == true {
+                   !messages.isEmpty || self?.messageHolder.getReachedEndOfRemoteHistory() == true {
                     self?.firstHistoryUpdateReceived = true
                     
                     let completionHandlerToPass = cachedCompletionHandler.getCompletionHandler()
