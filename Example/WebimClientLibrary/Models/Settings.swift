@@ -53,7 +53,7 @@ final class Settings {
     // MARK: - Initialization
     private init() {
         if let settings = UserDefaults.standard.object(forKey: USER_DEFAULTS_NAME)
-            as? [String : String] {
+            as? [String: String] {
             self.accountName = settings[UserDefaultsKey.accountName.rawValue] ??
                 DefaultSettings.accountName.rawValue
             self.location = settings[UserDefaultsKey.location.rawValue] ??
@@ -70,9 +70,9 @@ final class Settings {
     // MARK: - Methods
     func save() {
         let settings = [
-            UserDefaultsKey.accountName.rawValue : accountName,
-            UserDefaultsKey.location.rawValue : location,
-            UserDefaultsKey.pageTitle.rawValue : pageTitle
+            UserDefaultsKey.accountName.rawValue: accountName,
+            UserDefaultsKey.location.rawValue: location,
+            UserDefaultsKey.pageTitle.rawValue: pageTitle
         ]
         
         UserDefaults.standard.set(settings,

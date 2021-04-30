@@ -134,6 +134,7 @@ class RatingDialogViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(
             self,
             name: .shouldHideRatingDialogViewController,
@@ -275,7 +276,7 @@ class RatingDialogViewController: UIViewController {
     }
     
     private func setupTitleLabel() {
-        titleLabel.text = RatingDialogView.rateTitleText.rawValue.localized
+        titleLabel.text = "Please rate the agent".localized
         
         whiteBackground.addSubview(titleLabel)
         titleLabel.snp.remakeConstraints { (make) -> Void in

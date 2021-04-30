@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pKO-IW-95b">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pKO-IW-95b">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,11 +14,11 @@
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="StartViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XcY-0e-RvG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-x2-dzu">
-                                <rect key="frame" x="16" y="628" width="343" height="46"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-x2-dzu">
+                                <rect key="frame" x="16" y="716" width="343" height="46"/>
                                 <accessibility key="accessibilityConfiguration" hint="Shows settings." label="Settings"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="r3D-vO-PmT"/>
@@ -30,11 +31,11 @@
                                     <segue destination="B1F-ds-pmK" kind="show" id="QIq-Pf-07s"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="edo-SU-HN8">
-                                <rect key="frame" x="16" y="566" width="343" height="46"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="edo-SU-HN8">
+                                <rect key="frame" x="16" y="654" width="343" height="46"/>
                                 <color key="backgroundColor" red="0.31284677979999997" green="0.66377866269999997" blue="0.80786448720000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <accessibility key="accessibilityConfiguration" hint="Starts chat." label="Start chat"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="26"/>
                                 <state key="normal" title="Start chat">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -43,7 +44,7 @@
                                 </connections>
                             </button>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HX7-8Y-dnp" userLabel="Unread Message Counter Background">
-                                <rect key="frame" x="325" y="541" width="50" height="50"/>
+                                <rect key="frame" x="325" y="629" width="50" height="50"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8r-qX-LmS">
                                         <rect key="frame" x="5" y="5" width="40" height="40"/>
@@ -74,24 +75,15 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="25"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" image="LogoWebimNavigationBar_dark" translatesAutoresizingMaskIntoConstraints="NO" id="fbO-33-eR3">
-                                <rect key="frame" x="16" y="0.0" width="187.66666666666666" height="93.666666666666671"/>
-                                <accessibility key="accessibilityConfiguration" label="Webim logo">
-                                    <bool key="isElement" value="YES"/>
-                                </accessibility>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="fbO-33-eR3" secondAttribute="height" multiplier="2:1" id="4J5-VB-01U"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to the WebimClientLibrary demo app!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f2l-5B-zsO">
-                                <rect key="frame" x="16" y="93.666666666666657" width="343" height="45.666666666666657"/>
+                                <rect key="frame" x="16" y="124.00000000000001" width="343" height="45.666666666666671"/>
                                 <accessibility key="accessibilityConfiguration" label="Greeting title"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="19"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="scrollableAxes" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bPt-yP-yHN">
-                                <rect key="frame" x="16" y="155.33333333333334" width="343" height="394.66666666666663"/>
+                                <rect key="frame" x="13" y="185.66666666666666" width="346" height="452.33333333333337"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration" label="Greeting words">
                                     <accessibilityTraits key="traits" link="YES" staticText="YES"/>
@@ -108,26 +100,31 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_webim.png" translatesAutoresizingMaskIntoConstraints="NO" id="Lh5-0j-fup">
+                                <rect key="frame" x="16" y="39" width="190" height="95"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="95" id="10l-Mv-tM1"/>
+                                    <constraint firstAttribute="width" constant="190" id="vmh-Wt-Dlg"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="FG1-OH-9g7"/>
                         <color key="backgroundColor" red="0.15450590850000001" green="0.16108739380000001" blue="0.30589711670000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="edo-SU-HN8" firstAttribute="top" secondItem="HX7-8Y-dnp" secondAttribute="top" constant="25" id="09b-zl-Zp4"/>
+                            <constraint firstItem="f2l-5B-zsO" firstAttribute="top" secondItem="FG1-OH-9g7" secondAttribute="top" constant="80" id="0Mz-Bj-7Bv"/>
                             <constraint firstItem="edo-SU-HN8" firstAttribute="top" secondItem="bPt-yP-yHN" secondAttribute="bottom" constant="16" id="0wA-DW-J26"/>
                             <constraint firstItem="rMR-x2-dzu" firstAttribute="top" secondItem="edo-SU-HN8" secondAttribute="bottom" constant="16" id="BUS-6C-QaP"/>
-                            <constraint firstItem="fbO-33-eR3" firstAttribute="width" secondItem="FG1-OH-9g7" secondAttribute="width" multiplier="0.1" id="FhQ-fv-E5y"/>
-                            <constraint firstItem="fbO-33-eR3" firstAttribute="width" secondItem="FG1-OH-9g7" secondAttribute="width" multiplier="0.5" id="K0O-wa-FsD"/>
                             <constraint firstItem="rMR-x2-dzu" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="16" id="Tfa-XD-SOh"/>
-                            <constraint firstItem="bPt-yP-yHN" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="16" id="U8H-Vw-sE6"/>
-                            <constraint firstItem="f2l-5B-zsO" firstAttribute="top" secondItem="fbO-33-eR3" secondAttribute="bottom" id="Wi9-9k-7dS"/>
+                            <constraint firstItem="bPt-yP-yHN" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="13" id="U8H-Vw-sE6"/>
+                            <constraint firstItem="Lh5-0j-fup" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="16" id="Wvs-DP-dFc"/>
+                            <constraint firstItem="f2l-5B-zsO" firstAttribute="top" secondItem="Lh5-0j-fup" secondAttribute="bottom" constant="-10" id="XXD-rK-hIF"/>
                             <constraint firstItem="FG1-OH-9g7" firstAttribute="bottom" secondItem="rMR-x2-dzu" secondAttribute="bottom" constant="16" id="ZUV-M2-jGk"/>
                             <constraint firstItem="bPt-yP-yHN" firstAttribute="top" secondItem="f2l-5B-zsO" secondAttribute="bottom" constant="16" id="c5a-Sf-zRa"/>
                             <constraint firstAttribute="trailing" secondItem="f2l-5B-zsO" secondAttribute="trailing" constant="16" id="ce5-vV-3PQ"/>
                             <constraint firstItem="edo-SU-HN8" firstAttribute="height" secondItem="rMR-x2-dzu" secondAttribute="height" id="dDM-sR-zbC"/>
-                            <constraint firstItem="fbO-33-eR3" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="16" id="eNj-So-BBD"/>
                             <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="edo-SU-HN8" secondAttribute="trailing" constant="16" id="eRg-Vn-VfQ"/>
-                            <constraint firstItem="fbO-33-eR3" firstAttribute="top" secondItem="FG1-OH-9g7" secondAttribute="top" id="gNh-bl-pzP"/>
                             <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="HX7-8Y-dnp" secondAttribute="trailing" id="nAz-nb-upF"/>
                             <constraint firstItem="edo-SU-HN8" firstAttribute="leading" secondItem="FG1-OH-9g7" secondAttribute="leading" constant="16" id="s3L-co-KNg"/>
                             <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="rMR-x2-dzu" secondAttribute="trailing" constant="16" id="t9d-fJ-Uzw"/>
@@ -135,31 +132,16 @@ https://github.com/webim/webim-client-sdk-ios</string>
                             <constraint firstItem="FG1-OH-9g7" firstAttribute="trailing" secondItem="bPt-yP-yHN" secondAttribute="trailing" constant="16" id="v6c-hA-Iap"/>
                             <constraint firstItem="edo-SU-HN8" firstAttribute="width" secondItem="rMR-x2-dzu" secondAttribute="width" id="yeM-Oi-fCh"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="FG1-OH-9g7"/>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="FhQ-fv-E5y"/>
-                                <exclude reference="K0O-wa-FsD"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=compact">
-                            <mask key="constraints">
-                                <include reference="FhQ-fv-E5y"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular">
-                            <mask key="constraints">
-                                <include reference="K0O-wa-FsD"/>
-                            </mask>
-                        </variation>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="Qdj-sN-uYq"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="logoImageView" destination="fbO-33-eR3" id="8KA-UT-8cb"/>
                         <outlet property="settingsButton" destination="rMR-x2-dzu" id="tAn-H8-XdI"/>
                         <outlet property="startChatButton" destination="edo-SU-HN8" id="hNP-0g-pxQ"/>
                         <outlet property="unreadMessageCounterActivity" destination="kX4-mk-d9g" id="zun-Rh-cGv"/>
                         <outlet property="unreadMessageCounterLabel" destination="d8r-qX-LmS" id="0T9-1K-j2j"/>
+                        <outlet property="unreadMessageCounterView" destination="HX7-8Y-dnp" id="I1D-OO-QGC"/>
                         <outlet property="welcomeLabel" destination="f2l-5B-zsO" id="oUp-10-Em7"/>
                         <outlet property="welcomeTextView" destination="bPt-yP-yHN" id="Nnr-N5-c9K"/>
                     </connections>
@@ -173,11 +155,11 @@ https://github.com/webim/webim-client-sdk-ios</string>
             <objects>
                 <viewController id="B1F-ds-pmK" customClass="SettingsViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YT6-Qd-hAH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QrB-ab-D1k">
-                                <rect key="frame" x="16" y="628" width="343" height="46"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QrB-ab-D1k">
+                                <rect key="frame" x="16" y="716" width="343" height="46"/>
                                 <color key="backgroundColor" red="0.90065738419999997" green="0.84704128229999998" blue="0.089915955759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration" hint="Saves current settings and shows start screen." label="Save"/>
                                 <constraints>
@@ -192,13 +174,14 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kez-hX-Hcb">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="612"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="656"/>
                                 <color key="backgroundColor" red="0.89773446320000005" green="0.92855554819999997" blue="0.96161824460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <segue destination="2UY-gW-KaK" kind="embed" identifier="EmbedSettingsTable" id="cyG-wl-n4R"/>
                                 </connections>
                             </containerView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="3dm-n7-NsY"/>
                         <color key="backgroundColor" red="0.8999422789" green="0.92909246680000002" blue="0.95872980360000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Kez-hX-Hcb" firstAttribute="top" secondItem="3dm-n7-NsY" secondAttribute="top" id="4bJ-Ho-7jh"/>
@@ -209,7 +192,6 @@ https://github.com/webim/webim-client-sdk-ios</string>
                             <constraint firstItem="QrB-ab-D1k" firstAttribute="top" secondItem="Kez-hX-Hcb" secondAttribute="bottom" constant="16" id="f85-bd-hfD"/>
                             <constraint firstItem="3dm-n7-NsY" firstAttribute="trailing" secondItem="QrB-ab-D1k" secondAttribute="trailing" constant="16" id="kJr-Re-6pR"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="3dm-n7-NsY"/>
                     </view>
                     <connections>
                         <outlet property="bottomConstraint" destination="SLF-9Y-4Ba" id="sGy-lu-g0C"/>
@@ -226,9 +208,9 @@ https://github.com/webim/webim-client-sdk-ios</string>
             <objects>
                 <tableViewController interfaceStyle="light" id="2UY-gW-KaK" customClass="SettingsTableViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="gg8-Zk-F8S">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="612"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="656"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
                             <tableViewSection footerTitle="" id="odB-E2-5Hb" userLabel="ACCOUNT">
                                 <cells>
@@ -427,11 +409,11 @@ https://github.com/webim/webim-client-sdk-ios</string>
             <objects>
                 <viewController id="ZxX-73-26R" customClass="ChatViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RyN-GB-1UP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ff-GW-dpx">
-                                <rect key="frame" x="67" y="196" width="240" height="128"/>
+                                <rect key="frame" x="67" y="284" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="XS3-CD-OOa" kind="embed" identifier="" id="d0H-h5-yJz"/>
@@ -440,11 +422,11 @@ https://github.com/webim/webim-client-sdk-ios</string>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Y4-Ue-vap">
                                 <rect key="frame" x="67" y="475" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemTealColor"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="zmO-4g-5X5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="Hxl-4J-FsV"/>
                     <connections>
@@ -509,6 +491,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                 <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="In8-3R-oAN"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="IlK-wC-M8c" firstAttribute="top" secondItem="In8-3R-oAN" secondAttribute="top" id="5fA-gZ-ggd"/>
@@ -516,7 +499,6 @@ https://github.com/webim/webim-client-sdk-ios</string>
                             <constraint firstItem="In8-3R-oAN" firstAttribute="bottom" secondItem="IlK-wC-M8c" secondAttribute="bottom" id="Uhj-ax-lO1"/>
                             <constraint firstItem="IlK-wC-M8c" firstAttribute="trailing" secondItem="In8-3R-oAN" secondAttribute="trailing" id="m3L-F0-7Sy"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="In8-3R-oAN"/>
                     </view>
                     <navigationItem key="navigationItem" id="aWD-vH-hum">
                         <barButtonItem key="backBarButtonItem" title="Back" id="akL-LD-AeE"/>
@@ -541,10 +523,10 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                 <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="kag-bF-Mc2">
-                                        <rect key="frame" x="250.66666666666663" y="357" width="20" height="20"/>
+                                        <rect key="frame" x="250" y="357" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading File..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WP9-KH-Pcx">
-                                        <rect key="frame" x="134.66666666666666" y="356.66666666666669" width="106" height="21"/>
+                                        <rect key="frame" x="135" y="356.66666666666669" width="105" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -559,6 +541,7 @@ https://github.com/webim/webim-client-sdk-ios</string>
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="vWf-jB-ISy"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="vWf-jB-ISy" firstAttribute="trailing" secondItem="e0b-le-NUN" secondAttribute="trailing" id="1Hf-oV-Zmh"/>
@@ -566,7 +549,6 @@ https://github.com/webim/webim-client-sdk-ios</string>
                             <constraint firstItem="e0b-le-NUN" firstAttribute="top" secondItem="vWf-jB-ISy" secondAttribute="top" id="aTO-eX-Jkc"/>
                             <constraint firstItem="e0b-le-NUN" firstAttribute="leading" secondItem="vWf-jB-ISy" secondAttribute="leading" id="w9j-5X-qbL"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="vWf-jB-ISy"/>
                     </view>
                     <connections>
                         <outlet property="contentWebViewContainer" destination="e0b-le-NUN" id="A1Y-sG-sft"/>
@@ -580,6 +562,12 @@ https://github.com/webim/webim-client-sdk-ios</string>
         </scene>
     </scenes>
     <resources>
-        <image name="LogoWebimNavigationBar_dark" width="1024" height="500"/>
+        <image name="logo_webim.png" width="1024" height="500"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

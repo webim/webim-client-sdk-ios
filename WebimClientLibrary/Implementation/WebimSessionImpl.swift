@@ -931,12 +931,17 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
         }
     }
     
-    func onNotFaral(error: NotFatalErrorType) {
+    func onNotFatal(error: NotFatalErrorType) {
         if !sessionDestroyer.isDestroyed() {
             notFatalErrorHandler?.on(error: WebimNotFatalErrorImpl(errorType: error))
         }
     }
     
+    func connectionStateChanged(connected: Bool) {
+        if !sessionDestroyer.isDestroyed() {
+            notFatalErrorHandler?.connectionStateChanged(connected: connected)
+        }
+    }
 }
 
 // MARK: -
@@ -947,9 +952,12 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
  2017 Webim
  */
 final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
-    func onNotFaral(error: NotFatalErrorType) {
+    
+    func onNotFatal(error: NotFatalErrorType) {
     }
     
+    func connectionStateChanged(connected: Bool) {
+    }
     
     // MARK: - Parameters
     private weak var fatalErrorHandler: FatalErrorHandler?

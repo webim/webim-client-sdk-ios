@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */ = {isa = PBXBuildFile; fileRef = 11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */; };
+		125D1B37260CC8B000111CA4 /* ConnectionImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A3D3CA25EFBB7200E00E06 /* ConnectionImage.png */; };
+		12620C70260C0DE000F6E397 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12620C6F260C0DBF00F6E397 /* GoogleService-Info.plist */; };
+		1278071E261400380080B46B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278071D261400380080B46B /* main.swift */; };
+		127807372614013A0080B46B /* ShellWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127807332614013A0080B46B /* ShellWrapper.swift */; };
+		127807382614013A0080B46B /* StringsFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127807342614013A0080B46B /* StringsFileParser.swift */; };
+		127807392614013A0080B46B /* ProjectParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127807352614013A0080B46B /* ProjectParser.swift */; };
+		1278073A2614013A0080B46B /* String+LocalizationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127807362614013A0080B46B /* String+LocalizationExtension.swift */; };
+		129360672614C20C008F8EF1 /* AdditionalKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129360662614C20C008F8EF1 /* AdditionalKeys.swift */; };
+		1295C6772602A2C600F7BE80 /* ConnectionErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */; };
+		1295C6AF2602BB5200F7BE80 /* WebimServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */; };
+		12A0D8D625FF467B003AF10E /* logo_webim.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A0D8D525FF467B003AF10E /* logo_webim.png */; };
+		12A45C3826023D19004B077F /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A45C3726023D19004B077F /* UITextView.swift */; };
 		38683A7524A4FDCB007DED63 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38683A7424A4FDCB007DED63 /* UIButton.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* StartViewController.swift */; };
@@ -114,8 +126,37 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		12780719261400380080B46B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "FAQ methods documentation.md"; sourceTree = "<group>"; };
+		1252F7A725E5F2BD00F16DBB /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
+		12620C6F260C0DBF00F6E397 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1268F4F325E917BB00AA6F5D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		1278071B261400380080B46B /* Localizer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Localizer; sourceTree = BUILT_PRODUCTS_DIR; };
+		1278071D261400380080B46B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		127807332614013A0080B46B /* ShellWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellWrapper.swift; sourceTree = "<group>"; };
+		127807342614013A0080B46B /* StringsFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringsFileParser.swift; sourceTree = "<group>"; };
+		127807352614013A0080B46B /* ProjectParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectParser.swift; sourceTree = "<group>"; };
+		127807362614013A0080B46B /* String+LocalizationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+LocalizationExtension.swift"; sourceTree = "<group>"; };
+		129360662614C20C008F8EF1 /* AdditionalKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalKeys.swift; sourceTree = "<group>"; };
+		1295C6762602A2C600F7BE80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConnectionErrorView.xib; sourceTree = "<group>"; };
+		1295C67A2602A2D000F7BE80 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ConnectionErrorView.strings; sourceTree = "<group>"; };
+		1295C67B2602A2D200F7BE80 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/ConnectionErrorView.strings"; sourceTree = "<group>"; };
+		1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimServiceController.swift; sourceTree = "<group>"; };
+		12A0D8D525FF467B003AF10E /* logo_webim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_webim.png; sourceTree = "<group>"; };
+		12A3D3CA25EFBB7200E00E06 /* ConnectionImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ConnectionImage.png; sourceTree = "<group>"; };
+		12A45C3726023D19004B077F /* UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		1480012CD38CEC0494B440FD /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
 		38683A7424A4FDCB007DED63 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimClientLibrary_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,7 +188,6 @@
 		CE24A00F20372629009EE7E7 /* FileParametersItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParametersItemTests.swift; sourceTree = "<group>"; };
 		CE24A011203730D5009EE7E7 /* MessageItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageItemTests.swift; sourceTree = "<group>"; };
 		CE24A013203735C8009EE7E7 /* OperatorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorItemTests.swift; sourceTree = "<group>"; };
-		CE24A016203ADC88009EE7E7 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		CE24A018203ADF40009EE7E7 /* RatingItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingItemTests.swift; sourceTree = "<group>"; };
 		CE2845B62020A88D007B1C25 /* AbstractRequestLoopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractRequestLoopTests.swift; sourceTree = "<group>"; };
 		CE2845B92020B687007B1C25 /* ActionRequestLoopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionRequestLoopTests.swift; sourceTree = "<group>"; };
@@ -240,6 +280,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		12780718261400380080B46B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCD1AFB9204008FA782 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,6 +306,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1278071C261400380080B46B /* Localizer */ = {
+			isa = PBXGroup;
+			children = (
+				127807352614013A0080B46B /* ProjectParser.swift */,
+				127807332614013A0080B46B /* ShellWrapper.swift */,
+				127807362614013A0080B46B /* String+LocalizationExtension.swift */,
+				127807342614013A0080B46B /* StringsFileParser.swift */,
+				1278071D261400380080B46B /* main.swift */,
+				129360662614C20C008F8EF1 /* AdditionalKeys.swift */,
+			);
+			path = Localizer;
+			sourceTree = "<group>";
+		};
+		12A45C2626023BBD004B077F /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				1252F7A725E5F2BD00F16DBB /* UITextView.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,14 +341,17 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				1268F4F325E917BB00AA6F5D /* .swiftlint.yml */,
 				CE54B2501FC45274009C05BD /* Documentation */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */,
 				607FACD21AFB9204008FA782 /* Example for WebimClientLibrary */,
 				607FACE81AFB9204008FA782 /* Tests */,
+				1278071C261400380080B46B /* Localizer */,
 				607FACD11AFB9204008FA782 /* Products */,
 				3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */,
 				D62C6F4259C77B8B65C26706 /* Frameworks */,
+				12A45C2626023BBD004B077F /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -289,6 +360,7 @@
 			children = (
 				607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */,
 				607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */,
+				1278071B261400380080B46B /* Localizer */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -302,6 +374,7 @@
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				DD0B8693234330DA00CB5712 /* ChatViewController.swift */,
 				DD2F158423336A7600532934 /* ChatTableViewController.swift */,
+				1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */,
 				DD38105A2341EACA00F44FC6 /* FileViewController.swift */,
 				DD2F15862333FB2100532934 /* ImageViewController.swift */,
 				DDC7924823573CFF00AF424F /* LaunchScreen.storyboard */,
@@ -313,6 +386,7 @@
 				CE88BCD01FCD7F9A00A4FA2E /* SettingsViewController.swift */,
 				DD8A8D30232F6CF10011D275 /* SettingsTableViewController.swift */,
 				607FACD71AFB9204008FA782 /* StartViewController.swift */,
+				1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -325,6 +399,7 @@
 		607FACD31AFB9204008FA782 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				12620C6F260C0DBF00F6E397 /* GoogleService-Info.plist */,
 				607FACD41AFB9204008FA782 /* Info.plist */,
 				DD976EC523700D1C00412518 /* InfoPlist.strings */,
 			);
@@ -407,7 +482,8 @@
 		CE24A015203ADC2D009EE7E7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				CE24A016203ADC88009EE7E7 /* Logo.png */,
+				12A0D8D525FF467B003AF10E /* logo_webim.png */,
+				12A3D3CA25EFBB7200E00E06 /* ConnectionImage.png */,
 				CE88BCD61FCF05CF00A4FA2E /* Screenshots */,
 			);
 			path = Images;
@@ -426,6 +502,7 @@
 		CE45EDDB1F9108E200F56319 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				12A45C3726023D19004B077F /* UITextView.swift */,
 				CEBFB67E2018CB0F00D9E5F6 /* String.swift */,
 				DDC478B22366E13C005E6057 /* Message.swift */,
 				DD8A8D34232FE5D30011D275 /* Notification.Name.swift */,
@@ -525,6 +602,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1278071A261400380080B46B /* Localizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1278071F261400380080B46B /* Build configuration list for PBXNativeTarget "Localizer" */;
+			buildPhases = (
+				12780717261400380080B46B /* Sources */,
+				12780718261400380080B46B /* Frameworks */,
+				12780719261400380080B46B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Localizer;
+			productName = Localizer;
+			productReference = 1278071B261400380080B46B /* Localizer */;
+			productType = "com.apple.product-type.tool";
+		};
 		607FACCF1AFB9204008FA782 /* WebimClientLibrary_Example */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Example" */;
@@ -536,6 +630,7 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				CE86FAB4203C3E6700CB9C2D /* ShellScript */,
 				CD51D5F18E3358E8AC393A4A /* [CP] Embed Pods Frameworks */,
+				129C626425E83D60009D4328 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -571,10 +666,15 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Webim;
 				TargetAttributes = {
+					1278071A261400380080B46B = {
+						CreatedOnToolsVersion = 12.3;
+						DevelopmentTeam = 574GE9X9L7;
+						ProvisioningStyle = Automatic;
+					};
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 574GE9X9L7;
@@ -609,6 +709,7 @@
 			targets = (
 				607FACCF1AFB9204008FA782 /* WebimClientLibrary_Example */,
 				607FACE41AFB9204008FA782 /* WebimClientLibrary_Tests */,
+				1278071A261400380080B46B /* Localizer */,
 			);
 		};
 /* End PBXProject section */
@@ -618,13 +719,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				125D1B37260CC8B000111CA4 /* ConnectionImage.png in Resources */,
+				12620C70260C0DE000F6E397 /* GoogleService-Info.plist in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				DD976EC323700D1C00412518 /* InfoPlist.strings in Resources */,
 				CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */,
+				12A0D8D625FF467B003AF10E /* logo_webim.png in Resources */,
 				11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */,
 				DDC7924623573CFF00AF424F /* LaunchScreen.storyboard in Resources */,
 				DDC7924123573CB500AF424F /* LaunchScreenController.storyboard in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				1295C6772602A2C600F7BE80 /* ConnectionErrorView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,6 +764,23 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		129C626425E83D60009D4328 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\n#else\n  #echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -704,20 +826,36 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Nuke/Nuke.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SlackTextViewController/SlackTextViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/WebimClientLibrary/WebimClientLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nuke.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SlackTextViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebimClientLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -730,16 +868,31 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 80055b71f053ff36cce8743fbac5eecae7df7f28 7b5c5723b733cc6cd3e884c6babc2c58039b5f0100489ed510513c1f04df4945\n";
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\" \n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		12780717261400380080B46B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				127807382614013A0080B46B /* StringsFileParser.swift in Sources */,
+				127807372614013A0080B46B /* ShellWrapper.swift in Sources */,
+				1278073A2614013A0080B46B /* String+LocalizationExtension.swift in Sources */,
+				127807392614013A0080B46B /* ProjectParser.swift in Sources */,
+				1278071E261400380080B46B /* main.swift in Sources */,
+				129360672614C20C008F8EF1 /* AdditionalKeys.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		607FACCC1AFB9204008FA782 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -762,6 +915,7 @@
 				DD2B08B7233A24D900BF0283 /* FlexibleTableViewCell.swift in Sources */,
 				DD94E0B02345148A009133B4 /* PopupActionsTableViewCell.swift in Sources */,
 				CEBFB6812018E50500D9E5F6 /* UIViewController.swift in Sources */,
+				12A45C3826023D19004B077F /* UITextView.swift in Sources */,
 				DD2F15872333FB2100532934 /* ImageViewController.swift in Sources */,
 				DD70B9FA235E296100F457A1 /* CircleProgressIndicator.swift in Sources */,
 				DD8A8D2D232A3E200011D275 /* LaunchScreenController.swift in Sources */,
@@ -769,6 +923,7 @@
 				DD0B8694234330DA00CB5712 /* ChatViewController.swift in Sources */,
 				DD8A8D37233001510011D275 /* UIView.swift in Sources */,
 				DD7743FF2369F1E8000FAF9A /* RatingDialogViewController.swift in Sources */,
+				1295C6AF2602BB5200F7BE80 /* WebimServiceController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				DD5AA7A5236089AF009680D6 /* CustomUIButton.swift in Sources */,
 				DDCC525A2356360F00D39F8A /* ColourConstants.swift in Sources */,
@@ -851,6 +1006,16 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1295C6762602A2C600F7BE80 /* Base */,
+				1295C67A2602A2D000F7BE80 /* en */,
+				1295C67B2602A2D200F7BE80 /* ru-RU */,
+			);
+			name = ConnectionErrorView.xib;
+			sourceTree = "<group>";
+		};
 		607FACD91AFB9204008FA782 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -897,6 +1062,53 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		12780720261400380080B46B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		12780721261400380080B46B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		607FACED1AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1101,6 +1313,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1278071F261400380080B46B /* Build configuration list for PBXNativeTarget "Localizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12780720261400380080B46B /* Debug */,
+				12780721261400380080B46B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "WebimClientLibrary" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -41,9 +41,9 @@ final class UIAlertHandler {
     func showDialog(
         withMessage message: String,
         title: String?,
-        buttonTitle: String = AlertDialog.buttonTitle.rawValue.localized,
+        buttonTitle: String = "OK".localized,
         buttonStyle: UIAlertAction.Style = .cancel,
-        action: (() -> ())? = nil
+        action: (() -> Void)? = nil
     ) {
         let alertController = UIAlertController(
             title: title,
@@ -62,7 +62,7 @@ final class UIAlertHandler {
         
         if buttonStyle != .cancel {
             let alertActionOther = UIAlertAction(
-                title: CancelButton.cancel.rawValue.localized,
+                title: "Cancel".localized,
                 style: .cancel)
             alertController.addAction(alertActionOther)
         }
@@ -72,10 +72,12 @@ final class UIAlertHandler {
     
     func showDepartmentListDialog(
         withDepartmentList departmentList: [Department],
-        action: @escaping (String) -> ()
+        action: @escaping (String) -> Void,
+        senderButton: UIView?,
+        cancelAction: (() -> Void)?
     ) {
         let alertController = UIAlertController(
-            title: DepartmentListDialog.title.rawValue.localized,
+            title: "Contact topic".localized,
             message: nil,
             preferredStyle: .actionSheet
         )
@@ -93,10 +95,19 @@ final class UIAlertHandler {
         }
         
         let alertAction = UIAlertAction(
-            title: DepartmentListDialog.cancelButtonTitle.rawValue.localized,
-            style: .cancel)
+            title: "Cancel".localized,
+            style: .cancel,
+            handler: { _ in cancelAction?() })
         
         alertController.addAction(alertAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            
+            if senderButton == nil {
+                fatalError("No source view for presenting alert popover")
+            }
+            popoverController.sourceView = senderButton
+        }
         
         delegate?.present(alertController, animated: true)
     }
@@ -104,46 +115,46 @@ final class UIAlertHandler {
     func showSendFailureDialog(
         withMessage message: String,
         title: String,
-        action: (() -> ())? = nil
+        action: (() -> Void)? = nil
     ) {
         showDialog(
             withMessage: message,
             title: title,
-            buttonTitle: SendErrorMessage.buttonTitle.rawValue.localized,
+            buttonTitle: "OK".localized,
             action: action
         )
     }
     
     func showChatClosedDialog() {
         showDialog(
-            withMessage: ChatClosedDialog.message.rawValue.localized,
+            withMessage: "Chat finished.".localized,
             title: nil,
-            buttonTitle: ChatClosedDialog.buttonTitle.rawValue.localized
+            buttonTitle: "OK".localized
         )
     }
     
     func showCreatingSessionFailureDialog(withMessage message: String) {
         showDialog(
             withMessage: message,
-            title: SessionCreationErrorDialog.title.rawValue.localized,
-            buttonTitle: SessionCreationErrorDialog.buttonTitle.rawValue.localized
+            title: "Session creation failed".localized,
+            buttonTitle: "OK".localized
         )
     }
     
     func showFileLoadingFailureDialog(withError error: Error) {
         showDialog(
             withMessage: error.localizedDescription,
-            title: LoadingFileDialog.loadErrorTitle.rawValue.localized,
-            buttonTitle: LoadingFileDialog.buttonTitle.rawValue.localized
+            title: "LoadError".localized,
+            buttonTitle: "OK".localized
         )
     }
     
     func showFileSavingFailureDialog(withError error: Error) {
         let action = getGoToSettingsAction()
         showDialog(
-            withMessage: SavingFileDialog.saveErrorMessage.rawValue.localized,
-            title: SavingFileDialog.saveErrorTitle.rawValue.localized,
-            buttonTitle: SavingFileDialog.errorButtonTitle.rawValue.localized,
+            withMessage: "SaveFileErrorMessage".localized,
+            title: "Save error".localized,
+            buttonTitle: "Go to Settings".localized,
             buttonStyle: .default,
             action: action
         )
@@ -151,9 +162,9 @@ final class UIAlertHandler {
     
     func showFileSavingSuccessDialog() {
         showDialog(
-            withMessage: SavingFileDialog.saveSuccessMessage.rawValue.localized,
-            title: SavingFileDialog.saveSuccessTitle.rawValue.localized,
-            buttonTitle: SavingFileDialog.buttonTitle.rawValue.localized
+            withMessage: "The file has been saved to your device in Files App".localized,
+            title: "Saved!".localized,
+            buttonTitle: "OK".localized
         )
     }
     
@@ -161,9 +172,9 @@ final class UIAlertHandler {
         let action = getGoToSettingsAction()
 
         showDialog(
-            withMessage: SavingImageDialog.saveErrorMessage.rawValue.localized,
-            title: SavingImageDialog.saveErrorTitle.rawValue.localized,
-            buttonTitle: SavingImageDialog.errorButtonTitle.rawValue.localized,
+            withMessage: "SaveErrorMessage".localized,
+            title: "SaveError".localized,
+            buttonTitle: "Go to Settings".localized,
             buttonStyle: .default,
             action: action
         )
@@ -171,37 +182,37 @@ final class UIAlertHandler {
     
     func showImageSavingSuccessDialog() {
         showDialog(
-            withMessage: SavingImageDialog.saveSuccessMessage.rawValue.localized,
-            title: SavingImageDialog.saveSuccessTitle.rawValue.localized,
-            buttonTitle: SavingImageDialog.buttonTitle.rawValue.localized
+            withMessage: "The image has been saved to your photos".localized,
+            title: "Saved!".localized,
+            buttonTitle: "OK".localized
         )
     }
     
     func showNoCurrentOperatorDialog() {
         showDialog(
-            withMessage: NoCurrentOperatorErrorMessage.message.rawValue.localized,
-            title: NoCurrentOperatorErrorMessage.title.rawValue.localized,
-            buttonTitle: NoCurrentOperatorErrorMessage.buttonTitle.rawValue.localized
+            withMessage: "There is no current agent to rate".localized,
+            title: "No agents available".localized,
+            buttonTitle: "OK".localized
         )
     }
     
     func showSettingsAlertDialog(withMessage message: String) {
         showDialog(
             withMessage: message,
-            title: SettingsErrorDialog.title.rawValue.localized,
-            buttonTitle: SettingsErrorDialog.buttonTitle.rawValue.localized
+            title: "InvalidSettings".localized,
+            buttonTitle: "OK".localized
         )
     }
     
     // MARK: - Private methods
-    private func getGoToSettingsAction() -> (() ->()) {
+    private func getGoToSettingsAction() -> (() -> Void) {
         return {
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
 
             if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                UIApplication.shared.open(settingsUrl, completionHandler: { (_) in
                 })
             }
         }

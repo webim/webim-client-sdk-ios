@@ -30,7 +30,7 @@ import WebimClientLibrary
 import SnapKit
 import Nuke
 
-class ChatTableViewController: UITableViewController {
+class ChatTableViewController: UITableViewController, DepartmentListHandlerDelegate {
 
     // MARK: - Properties
     var selectedCellRow: Int?
@@ -48,25 +48,14 @@ class ChatTableViewController: UITableViewController {
         return UIApplication.shared.windows.last
     }
     
-    private weak var containerNewChatViewController: ChatViewController?
+    weak var chatViewController: ChatViewController?
     
     private lazy var messages = [Message]()
     private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
-    private lazy var webimService = WebimService(
-        fatalErrorHandlerDelegate: self,
-        departmentListHandlerDelegate: self
-    )
 
     // MARK: - View Life Cycle
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        if let vc = segue.destination as? ChatViewController {
-            containerNewChatViewController = vc
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(addRatedOperator),
@@ -81,12 +70,12 @@ class ChatTableViewController: UITableViewController {
             object: nil
         )
         
-        setupWebimSession()
         self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupWebimSession()
         
         NotificationCenter.default.addObserver(
             self,
@@ -124,49 +113,14 @@ class ChatTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateCurrentOperatorInfo(to: webimService.getCurrentOperator())
+        WebimServiceController.shared.notFatalErrorHandler = self
+        WebimServiceController.shared.departmentListHandlerDelegate = self
+        WebimServiceController.shared.fatalErrorHandlerDelegate = self
+        updateCurrentOperatorInfo(to: WebimServiceController.currentSession.getCurrentOperator())
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        if containerNewChatViewController == nil {
-            stopWebimSession()
-            
-            NotificationCenter.default.removeObserver(
-                self,
-                name: .shouldRateOperator,
-                object: nil
-            )
-            
-            NotificationCenter.default.removeObserver(
-                self,
-                name: .shouldShowFile,
-                object: nil
-            )
-            
-            NotificationCenter.default.removeObserver(
-                self,
-                name: .shouldShowRatingDialog,
-                object: nil
-            )
-            
-            NotificationCenter.default.removeObserver(
-                self,
-                name: .shouldSetVisitorTypingDraft,
-                object: nil
-            )
-            
-            NotificationCenter.default.removeObserver(
-                self,
-                name: .shouldHideOverlayWindow,
-                object: nil
-            )
-            
-            NotificationCenter.default.removeObserver(
-                self,
-                name: .shouldSendKeyboardRequest,
-                object: nil
-            )
-        }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillTransition(
@@ -189,7 +143,6 @@ class ChatTableViewController: UITableViewController {
             object: nil
         )
         
-        
         coordinator.animate(
             alongsideTransition: { context in
                 // Save visible rows position
@@ -201,7 +154,7 @@ class ChatTableViewController: UITableViewController {
             completion: { _ in
                 // Scroll to the saved position prior to screen rotate
                 if let lastVisibleRow = self.visibleRows.last {
-                    self.tableView.scrollToRow(
+                    self.tableView.scrollToRowSafe(
                         at: lastVisibleRow,
                         at: .bottom,
                         animated: true
@@ -213,12 +166,12 @@ class ChatTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if messages.count > 0 {
+        if !messages.isEmpty {
             tableView.backgroundView = nil
             return 1
         } else {
             tableView.emptyTableView(
-                message: TableView.emptyTableViewText.rawValue.localized
+                message: "Send first message to start chat.".localized
             )
             return 0
         }
@@ -294,7 +247,6 @@ class ChatTableViewController: UITableViewController {
         longPressPopupGestureRecognizer.minimumPressDuration = 0.5
         longPressPopupGestureRecognizer.cancelsTouchesInView = false
         
-        
         let doubleTapPopupGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(showPopoverMenu)
@@ -328,7 +280,7 @@ class ChatTableViewController: UITableViewController {
         let replyAction = UIContextualAction(
             style: .normal,
             title: nil,
-            handler: { (context, view, completionHandler) in
+            handler: { (_, _, completionHandler) in
                 self.selectedCellRow = indexPath.row
                 let actionsDictionary = ["Action": PopupAction.reply]
                 NotificationCenter.default.post(
@@ -368,7 +320,7 @@ class ChatTableViewController: UITableViewController {
         let replyAction = UIContextualAction(
             style: .normal,
             title: nil,
-            handler: { (context, view, completionHandler)  in
+            handler: { (_, _, completionHandler) in
                 self.selectedCellRow = indexPath.row
                 let actionsDictionary = ["Action": PopupAction.reply]
                 NotificationCenter.default.post(
@@ -414,6 +366,8 @@ class ChatTableViewController: UITableViewController {
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
+        if tableView.numberOfSections <= 0 { return }
+            
         let lastCellIndexPath = IndexPath(
             row: tableView.numberOfRows(inSection: 0) - 1,
             section: 0
@@ -458,7 +412,7 @@ class ChatTableViewController: UITableViewController {
             // TODO: Send request
             print("Sending keyboard request...")
             
-            webimService.sendKeyboardRequest(
+            WebimServiceController.currentSession.sendKeyboardRequest(
                 button: button,
                 message: message,
                 completionHandler: self
@@ -494,14 +448,14 @@ class ChatTableViewController: UITableViewController {
     ///
     
     func sendMessage(_ message: String) {
-        webimService.send(message: message) { [weak self] in
+        WebimServiceController.currentSession.send(message: message) {
             // Delete visitor typing draft after message is sent.
-            self?.webimService.setVisitorTyping(draft: nil)
+            WebimServiceController.currentSession.setVisitorTyping(draft: nil)
         }
     }
     
     func sendImage(image: UIImage, imageURL: URL?) {
-        containerNewChatViewController?.dismissKeyboardNow()
+        chatViewController?.dismissKeyboardNow()
         
         var imageData = Data()
         var imageName = String()
@@ -543,7 +497,7 @@ class ChatTableViewController: UITableViewController {
             imageName = "photo.jpeg"
         }
         
-        webimService.send(
+        WebimServiceController.currentSession.send(
             file: imageData,
             fileName: imageName,
             mimeType: mimeType.value,
@@ -553,7 +507,7 @@ class ChatTableViewController: UITableViewController {
     
     func sendFile(file: Data, fileURL: URL?) {
         if let fileURL = fileURL {
-            webimService.send(
+            WebimServiceController.currentSession.send(
                 file: file,
                 fileName: fileURL.lastPathComponent,
                 mimeType: MimeType(url: fileURL as URL).value,
@@ -561,7 +515,7 @@ class ChatTableViewController: UITableViewController {
             )
         } else {
             let url = URL(fileURLWithPath: "document.pdf")
-            webimService.send(
+            WebimServiceController.currentSession.send(
                 file: file,
                 fileName: url.lastPathComponent,
                 mimeType: MimeType(url: url).value,
@@ -579,12 +533,12 @@ class ChatTableViewController: UITableViewController {
     
     func replyToMessage(_ message: String) {
         guard let messageToReply = getSelectedMessage() else { return }
-        webimService.reply(
+        WebimServiceController.currentSession.reply(
             message: message,
             repliedMessage: messageToReply,
-            completion: { [weak self] in
+            completion: {
                 // Delete visitor typing draft after message is sent.
-                self?.webimService.setVisitorTyping(draft: nil)
+                WebimServiceController.currentSession.setVisitorTyping(draft: nil)
             }
         )
     }
@@ -596,7 +550,7 @@ class ChatTableViewController: UITableViewController {
     
     func editMessage(_ message: String) {
         guard let messageToEdit = getSelectedMessage() else { return }
-        webimService.edit(
+        WebimServiceController.currentSession.edit(
             message: messageToEdit,
             text: message,
             completionHandler: self
@@ -605,7 +559,7 @@ class ChatTableViewController: UITableViewController {
     
     func deleteMessage() {
         guard let messageToDelete = getSelectedMessage() else { return }
-        webimService.delete(
+        WebimServiceController.currentSession.delete(
             message: messageToDelete,
             completionHandler: self
         )
@@ -619,7 +573,7 @@ class ChatTableViewController: UITableViewController {
         
         let row = (tableView.numberOfRows(inSection: 0)) - 1
         let bottomMessageIndex = IndexPath(row: row, section: 0)
-        tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: animated)
+        tableView.scrollToRowSafe(at: bottomMessageIndex, at: .bottom, animated: animated)
     }
     
     @objc
@@ -629,10 +583,10 @@ class ChatTableViewController: UITableViewController {
         }
         
         let indexPath = IndexPath(row: 0, section: 0)
-        self.tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
+        self.tableView.scrollToRowSafe(at: indexPath, at: .top, animated: animated)
     }
     
-    // MARK - Private methods
+    // MARK: - Private methods
     private func setupRefreshControl() {
         if #available(iOS 10.0, *) {
             tableView?.refreshControl = newRefreshControl
@@ -648,19 +602,25 @@ class ChatTableViewController: UITableViewController {
         newRefreshControl.tintColor = refreshControlTintColour
         let attributes = [NSAttributedString.Key.foregroundColor: refreshControlTextColour]
         newRefreshControl.attributedTitle = NSAttributedString(
-            string: ChatTableView.refreshControlText.rawValue.localized,
+            string: "Fetching more messages...".localized,
             attributes: attributes
         )
     }
     
+    private func reloadTableWithNewData() {
+        self.tableView?.reloadData()
+        WebimServiceController.currentSession.setChatRead()
+    }
+    
     @objc
     private func requestMessages() {
-        webimService.getNextMessages() { [weak self] messages in
+        WebimServiceController.currentSession.getNextMessages { [weak self] messages in
             self?.messages.insert(contentsOf: messages, at: 0)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self?.tableView?.reloadData()
+                self?.reloadTableWithNewData()
+                self?.tableView?.scrollToRowSafe(at: IndexPath(row: messages.count, section: 0), at: .middle, animated: false)
                 self?.newRefreshControl.endRefreshing()
-                self?.webimService.setChatRead()
+               
             }
         }
     }
@@ -692,7 +652,9 @@ class ChatTableViewController: UITableViewController {
     @objc
     private func showPopoverMenu(_ gestureRecognizer: UIGestureRecognizer) {
         DispatchQueue.main.async {
-            self.view.endEditing(true)
+            if UIApplication.shared.windows.count > 2 {
+                self.keyboardWindow?.isHidden = true
+            }
         }
         var stateToCheck = UIGestureRecognizer.State.ended
         
@@ -750,7 +712,7 @@ class ChatTableViewController: UITableViewController {
                     viewController.actions.append(.delete)
                 }
                 
-                if viewController.actions.count != 0 {
+                if !viewController.actions.isEmpty {
                     DispatchQueue.main.async {
                         self.present(viewController, animated: false)
                     }
@@ -815,7 +777,7 @@ class ChatTableViewController: UITableViewController {
     
     @objc
     private func showRatingDialog(_ notification: Notification) {
-        guard let currentOperator = webimService.getCurrentOperator() else {
+        guard let currentOperator = WebimServiceController.currentSession.getCurrentOperator() else {
             alertDialogHandler.showNoCurrentOperatorDialog()
             return
         }
@@ -898,7 +860,6 @@ class ChatTableViewController: UITableViewController {
         showRatingDialog(forOperatorInfo: operatorInfo)
     }
 
-    
     @objc
     private func addRatedOperator(_ notification: Notification) {
         guard let ratingInfoDictionary = notification.userInfo
@@ -914,7 +875,7 @@ class ChatTableViewController: UITableViewController {
     }
     
     private func rateOperator(operatorID: String, rating: Int) {
-        webimService.rateOperator(
+        WebimServiceController.currentSession.rateOperator(
             withID: operatorID,
             byRating: rating,
             completionHandler: self
@@ -923,25 +884,18 @@ class ChatTableViewController: UITableViewController {
     
     // Webim methods
     private func setupWebimSession() {
-        webimService.createSession()
-        webimService.startSession()
-        webimService.setMessageStream()
-        webimService.setMessageTracker(withMessageListener: self)
-        webimService.set(operatorTypingListener: self)
-        webimService.set(currentOperatorChangeListener: self)
-        webimService.set(chatStateListener: self)
-        webimService.getLastMessages() { [weak self] messages in
+        
+        WebimServiceController.currentSession.setMessageTracker(withMessageListener: self)
+        WebimServiceController.currentSession.set(operatorTypingListener: self)
+        WebimServiceController.currentSession.set(currentOperatorChangeListener: self)
+        WebimServiceController.currentSession.set(chatStateListener: self)
+        WebimServiceController.currentSession.getLastMessages { [weak self] messages in
             self?.messages.insert(contentsOf: messages, at: 0)
-            DispatchQueue.main.async() {
-                self?.tableView?.reloadData()
+            DispatchQueue.main.async {
+                self?.reloadTableWithNewData()
                 self?.scrollToBottom(animated: false)
-                self?.webimService.setChatRead()
             }
         }
-    }
-    
-    private func stopWebimSession() {
-        webimService.stopSession()
     }
     
     private func updateCurrentOperatorInfo(to newOperator: Operator?) {
@@ -960,7 +914,7 @@ class ChatTableViewController: UITableViewController {
             ]
         } else {
             operatorInfoDictionary = [
-                "OperatorName": OperatorStatus.noOperator.rawValue.localized,
+                "OperatorName": "Webim demo-chat".localized,
                 "OperatorAvatarURL": OperatorAvatar.empty.rawValue
             ]
         }
@@ -975,17 +929,31 @@ class ChatTableViewController: UITableViewController {
     @objc
     private func setVisitorTypingDraft(_ notification: Notification) {
         guard let typingDraftDictionary = notification.userInfo as? [String: String] else { // Not string passed (nil) set draft to nil
-            webimService.setVisitorTyping(draft: nil)
+            WebimServiceController.currentSession.setVisitorTyping(draft: nil)
             return
         }
         guard let draftText = typingDraftDictionary["DraftText"] else { return }
-        webimService.setVisitorTyping(draft: draftText)
+        WebimServiceController.currentSession.setVisitorTyping(draft: draftText)
     }
     
     private func registerCells() {
         tableView?.register(
             FlexibleTableViewCell.self,
             forCellReuseIdentifier: "FlexibleTableViewCell"
+        )
+    }
+    
+    // MARK: - WEBIM: DepartmentListHandlerDelegate
+    func show(departmentList: [Department], message: String?, action: @escaping (String) -> Void) {
+        alertDialogHandler.showDepartmentListDialog(
+            withDepartmentList: departmentList,
+            action: action,
+            senderButton: self.chatViewController?.textInputButton,
+            cancelAction: { [weak self] in
+                if let message = message, let textInputTextView = self?.chatViewController?.textInputTextView {
+                    textInputTextView.updateText(message)
+                }
+            }
         )
     }
 }
@@ -1013,9 +981,10 @@ extension ChatTableViewController: MessageListener {
             messages.append(newMessage)
         }
         
-        DispatchQueue.main.async() {
+        DispatchQueue.main.async {
             self.tableView?.reloadData()
             self.scrollToBottom(animated: true)
+            WebimServiceController.currentSession.setChatRead()
         }
     }
     
@@ -1041,7 +1010,7 @@ extension ChatTableViewController: MessageListener {
         }
         
         if toUpdate {
-            DispatchQueue.main.async() {
+            DispatchQueue.main.async {
                 self.tableView?.reloadData()
                 self.scrollToBottom(animated: true)
             }
@@ -1052,7 +1021,7 @@ extension ChatTableViewController: MessageListener {
         messages.removeAll()
         cellHeights.removeAll()
         
-        DispatchQueue.main.async() {
+        DispatchQueue.main.async {
             self.tableView?.reloadData()
         }
     }
@@ -1074,7 +1043,7 @@ extension ChatTableViewController: MessageListener {
         }
         
         if toUpdate {
-            DispatchQueue.main.async() {
+            DispatchQueue.main.async {
                 let indexPath = IndexPath(row: cellIndexToUpdate, section: 0)
                 if self.messages.count != messagesCountBefore ||
                     self.messages.count != self.tableView.numberOfRows(inSection: 0) {
@@ -1085,7 +1054,7 @@ extension ChatTableViewController: MessageListener {
             }
         }
         
-        DispatchQueue.main.async() {
+        DispatchQueue.main.async {
             self.scrollToBottom(animated: false)
         }
     }
@@ -1108,19 +1077,6 @@ extension ChatTableViewController: FatalErrorHandlerDelegate {
     
 }
 
-// MARK: - WEBIM: DepartmentListHandlerDelegate
-extension ChatTableViewController: DepartmentListHandlerDelegate {
-    
-    // MARK: - Methods
-    func show(departmentList: [Department], action: @escaping (String) -> ()) {
-        alertDialogHandler.showDepartmentListDialog(
-            withDepartmentList: departmentList,
-            action: action
-        )
-    }
-    
-}
-
 // MARK: - WEBIM: CompletionHandlers
 extension ChatTableViewController: SendFileCompletionHandler,
                                    EditMessageCompletionHandler,
@@ -1132,8 +1088,8 @@ extension ChatTableViewController: SendFileCompletionHandler,
     func onSuccess() {
         // Workaround needed since operator dialog dismissed after a small delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.41) {
-            let title = AlertDialog.rateSuccessTitle.rawValue.localized
-            let message = AlertDialog.rateSuccessMessage.rawValue.localized
+            let title = "Thank you!".localized
+            let message = "You are helping us to become better".localized
             self.alertDialogHandler.showDialog(withMessage: message, title: title)
         }
     }
@@ -1141,40 +1097,34 @@ extension ChatTableViewController: SendFileCompletionHandler,
     func onSuccess(messageID: String) {
         // Ignored.
         // Delete visitor typing draft after message is sent.
-        self.webimService.setVisitorTyping(draft: nil)
+        WebimServiceController.currentSession.setVisitorTyping(draft: nil)
     }
     
     // SendFileCompletionHandler
     func onFailure(messageID: String, error: SendFileError) {
         DispatchQueue.main.async {
-            var message = SendFileErrorMessage.unknownError.rawValue.localized
+            var message = "Find sending unknown error".localized
             switch error {
             case .fileSizeExceeded:
-                message = SendFileErrorMessage.fileSizeExceeded.rawValue.localized
-                break
+                message = "File is too large.".localized
             case .fileTypeNotAllowed:
-                message = SendFileErrorMessage.fileTypeNotAllowed.rawValue.localized
-                break
+                message = "File type is not supported".localized
             case .unknown:
-                message = SendFileErrorMessage.unknownError.rawValue.localized
-                break
+                message = "Find sending unknown error".localized
             case .uploadedFileNotFound:
-                message = SendFileErrorMessage.fileNotFound.rawValue.localized
-                break
+                message = "Sending files in body is not supported".localized
             case .unauthorized:
-                message = SendFileErrorMessage.unauthorized.rawValue.localized
-                break
+                message = "Failed to upload file: visitor is not logged in".localized
             case .maxFilesCountPerChatExceeded:
-                message = SendFileErrorMessage.maxFilesCountPerChatExceeded.rawValue.localized
-                break
+                message = "MaxFilesCountExceeded".localized
             case .fileSizeTooSmall:
-                message = SendFileErrorMessage.fileSizeTooSmall.rawValue.localized
+                message = "File is too small".localized
             }
             
             self.alertOnFailure(
                 with: message,
                 id: messageID,
-                title: SendFileErrorMessage.title.rawValue.localized
+                title: "File sending failed".localized
             )
         }
     }
@@ -1182,26 +1132,26 @@ extension ChatTableViewController: SendFileCompletionHandler,
     // EditMessageCompletionHandler
     func onFailure(messageID: String, error: EditMessageError) {
         DispatchQueue.main.async {
-            var message = EditMessageErrorMessage.unknownError.rawValue.localized
+            var message = "Edit message unknown error".localized
             switch error {
             case .unknown:
-                message = EditMessageErrorMessage.unknownError.rawValue.localized
+                message = "Edit message unknown error".localized
             case .notAllowed:
-                message = EditMessageErrorMessage.notAllowed.rawValue.localized
+                message = "Editing messages is turned off on the server".localized
             case .messageEmpty:
-                message = EditMessageErrorMessage.messageEmpty.rawValue.localized
+                message = "Editing message is empty".localized
             case .messageNotOwned:
-                message = EditMessageErrorMessage.messageNotOwned.rawValue.localized
+                message = "Message not owned by visitor".localized
             case .maxLengthExceeded:
-                message = EditMessageErrorMessage.maxMessageLengthExceede.rawValue.localized
+                message = "MaxMessageLengthExceeded".localized
             case .wrongMesageKind:
-                message = EditMessageErrorMessage.wrongMessageKind.rawValue.localized
+                message = "Wrong message kind (not text)".localized
             }
             
             self.alertOnFailure(
                 with: message,
                 id: messageID,
-                title: EditMessageErrorMessage.title.rawValue.localized
+                title: "Message editing failed".localized
             )
         }
     }
@@ -1209,22 +1159,22 @@ extension ChatTableViewController: SendFileCompletionHandler,
     // DeleteMessageCompletionHandler
     func onFailure(messageID: String, error: DeleteMessageError) {
         DispatchQueue.main.async {
-            var message = DeleteMessageErrorMessage.unknownError.rawValue.localized
+            var message = "Delete message unknown error".localized
             switch error {
             case .unknown:
-                message = DeleteMessageErrorMessage.unknownError.rawValue.localized
+                message = "Delete message unknown error".localized
             case .notAllowed:
-                message = DeleteMessageErrorMessage.notAllowed.rawValue.localized
+                message = "Deleting messages is turned off on the server".localized
             case .messageNotOwned:
-                message = DeleteMessageErrorMessage.messageNotOwned.rawValue.localized
+                message = "Message not owned by visitor".localized
             case .messageNotFound:
-                message = DeleteMessageErrorMessage.messageNotFound.rawValue.localized
+                message = "Message not found".localized
             }
             
             self.alertOnFailure(
                 with: message,
                 id: messageID,
-                title: DeleteMessageErrorMessage.title.rawValue.localized
+                title: "Message deleting failed".localized
             )
         }
     }
@@ -1235,16 +1185,16 @@ extension ChatTableViewController: SendFileCompletionHandler,
             var message = String()
             switch error {
             case .noChat:
-                message = RateOperatorErrorMessage.rateOperatorNoChat.rawValue.localized
+                message = "This chat does not exist".localized
             case .wrongOperatorId:
-                message = RateOperatorErrorMessage.rateOperatorWrongID.rawValue.localized
+                message = "RateOperatorWrongID".localized
             case .noteIsTooLong:
-                message = RateOperatorErrorMessage.rateOperatorLongNote.rawValue.localized
+                message = "Note for rate is too long".localized
             }
             
             self.alertDialogHandler.showDialog(
                 withMessage: message,
-                title: RateOperatorErrorMessage.title.rawValue.localized
+                title: "Operator rating failed".localized
             )
         }
     }
@@ -1252,21 +1202,21 @@ extension ChatTableViewController: SendFileCompletionHandler,
     // SendKeyboardRequestCompletionHandler
     func onFailure(messageID: String, error: KeyboardResponseError) {
         DispatchQueue.main.async {
-            var message = SendKeyboardRequestErrorMessage.unknownError.rawValue.localized
+            var message = "Send keyboard request unknown error".localized
             switch error {
             case .unknown:
-                message = SendKeyboardRequestErrorMessage.unknownError.rawValue.localized
+                message = "Send keyboard request unknown error".localized
             case .noChat:
-                message = SendKeyboardRequestErrorMessage.noChat.rawValue.localized
+                message = "Chat does not exist".localized
             case .buttonIdNotSet:
-                message = SendKeyboardRequestErrorMessage.buttonIDNotSet.rawValue.localized
+                message = "Wrong button ID in request".localized
             case .requestMessageIdNotSet:
-                message = SendKeyboardRequestErrorMessage.requestMessageIDNotSet.rawValue.localized
+                message = "Wrong message ID in request".localized
             case .canNotCreateResponse:
-                message = SendKeyboardRequestErrorMessage.cannotCreateResponse.rawValue.localized
+                message = "Response cannot be created for this request".localized
             }
             
-            let title = SendKeyboardRequestErrorMessage.title.rawValue.localized
+            let title = "Send keyboard request failed".localized
             
             self.alertDialogHandler.showSendFailureDialog(
                 withMessage: message,
@@ -1278,7 +1228,7 @@ extension ChatTableViewController: SendFileCompletionHandler,
 //                    for (index, message) in self.messages.enumerated() {
 //                        if message.getID() == messageID {
 //                            self.messages.remove(at: index)
-//                            DispatchQueue.main.async() {
+//                            DispatchQueue.main.async {
 //                                self.tableView?.reloadData()
 //                            }
 //
@@ -1293,14 +1243,14 @@ extension ChatTableViewController: SendFileCompletionHandler,
     private func alertOnFailure(with message: String, id messageID: String, title: String) {
         alertDialogHandler.showSendFailureDialog(
             withMessage: message,
-            title:title,
+            title: title,
             action: { [weak self] in
                 guard let self = self else { return }
                 
                 for (index, message) in self.messages.enumerated() {
                     if message.getID() == messageID {
                         self.messages.remove(at: index)
-                        DispatchQueue.main.async() {
+                        DispatchQueue.main.async {
                             self.tableView?.reloadData()
                         }
                         return
@@ -1314,10 +1264,10 @@ extension ChatTableViewController: SendFileCompletionHandler,
 // MARK: - WEBIM: OperatorTypingListener
 extension ChatTableViewController: OperatorTypingListener {
     func onOperatorTypingStateChanged(isTyping: Bool) {
-        guard webimService.getCurrentOperator() != nil else { return }
+        guard WebimServiceController.currentSession.getCurrentOperator() != nil else { return }
         
         if isTyping {
-            let statusTyping = OperatorStatus.isTyping.rawValue.localized
+            let statusTyping = "typing".localized
             let operatorStatus = ["Status": statusTyping]
             NotificationCenter.default.post(
                 name: .shouldChangeOperatorStatus,
@@ -1325,7 +1275,7 @@ extension ChatTableViewController: OperatorTypingListener {
                 userInfo: operatorStatus
             )
         } else {
-            let operatorStatus = ["Status": OperatorStatus.online.rawValue.localized]
+            let operatorStatus = ["Status": "Online".localized]
             NotificationCenter.default.post(
                 name: .shouldChangeOperatorStatus,
                 object: nil,
@@ -1348,5 +1298,16 @@ extension ChatTableViewController: ChatStateListener {
         if newState == .closedByVisitor || newState == .closed || newState == .closedByOperator {
             // TODO: rating operator
         }
+    }
+}
+
+// MARK: - WEBIM: NotFatalErrorHandler
+extension ChatTableViewController: NotFatalErrorHandler {
+    
+    func on(error: WebimNotFatalError) {
+    }
+    
+    func connectionStateChanged(connected: Bool) {
+        chatViewController?.setConnectionStatus(connected: connected)
     }
 }

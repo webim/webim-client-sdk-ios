@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>694403499568-b6v842mbkubljsikbh0ghrucigs7u056.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.694403499568-b6v842mbkubljsikbh0ghrucigs7u056</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBTsTKz2nSo3lk-2NK1NGLKHLsSizzTd8g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>694403499568</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ru.webim.Webim-Client</string>
+	<key>PROJECT_ID</key>
+	<string>webim-demo-chat</string>
+	<key>STORAGE_BUCKET</key>
+	<string>webim-demo-chat.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:694403499568:ios:6d2367e037eb797a1ecff5</string>
+	<key>DATABASE_URL</key>
+	<string>https://webim-demo-chat.firebaseio.com</string>
+</dict>
+</plist>

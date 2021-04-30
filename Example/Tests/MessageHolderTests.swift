@@ -67,7 +67,7 @@ class MessageHolderTests: XCTestCase {
                                        type: MessageType.operatorMessage,
                                        rawData: nil,
                                        data: nil,
-                                       text: MessageImplMockData.text.rawValue,
+                                       text: MessageImplMockData.text.rawValue + String(index),
                                        timeInMicrosecond: Int64(index),
                                        historyMessage: true,
                                        internalID: String(index),
@@ -99,7 +99,7 @@ class MessageHolderTests: XCTestCase {
                                            type: MessageType.operatorMessage,
                                            rawData: nil,
                                            data: nil,
-                                           text: MessageImplMockData.text.rawValue,
+                                           text: MessageImplMockData.text.rawValue + String(index),
                                            timeInMicrosecond: Int64(index),
                                            historyMessage: false,
                                            internalID: String(index),
@@ -629,11 +629,11 @@ class MessageHolderTests: XCTestCase {
         XCTAssertEqual(completionHandlerMessages!, Array(currentChat[0 ... 8]))
         
         // MARK: Test 4
-        try messageTracker.getNextMessages(byLimit: 10) { messages in
+        try messageTracker.getNextMessages(byLimit: 5) { messages in
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handlers should be called first on received history messages.
-        XCTAssertEqual(completionHandlerMessages!, Array(history2[5 ... 9]))
+        XCTAssertEqual(completionHandlerMessages!, Array(history1[5 ... 9]))
     }
     
     func testRequestAsManyMessagesAsReceivedWithHistoryForCurrentChat() throws {

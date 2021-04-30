@@ -50,6 +50,7 @@ class ImageViewController: UIViewController {
     
     // MARK: - View Life Cycle
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         DispatchQueue.global(qos: .userInteractive).async {
             self.reloadImageIfNeed()
         }

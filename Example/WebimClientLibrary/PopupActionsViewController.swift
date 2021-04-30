@@ -51,6 +51,10 @@ class PopupActionsViewController: UIViewController {
     // MARK: - Private properties
     private var actionsTableViewCenterYPosition = CGFloat()
     private var actionsTableViewContentHeight = CGFloat()
+    private var keyboardWindow: UIWindow? {
+        // The window containing the keyboard always seems to be the last one
+        return UIApplication.shared.windows.last
+    }
     
     // MARK: - Subviews
     lazy var blurBackground: UIVisualEffectView = {
@@ -96,6 +100,7 @@ class PopupActionsViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(
             self,
             name: .shouldHidePopupActionsViewController,
@@ -104,6 +109,11 @@ class PopupActionsViewController: UIViewController {
         
         if let index = self.actionsTableView.indexPathForSelectedRow {
             self.actionsTableView.deselectRow(at: index, animated: true)
+        }
+        DispatchQueue.main.async {
+            if UIApplication.shared.windows.count > 2 {
+                self.keyboardWindow?.isHidden = false
+            }
         }
     }
     

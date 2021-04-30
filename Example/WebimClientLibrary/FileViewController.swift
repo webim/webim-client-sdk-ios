@@ -68,7 +68,7 @@ class FileViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     override func observeValue(
         forKeyPath keyPath: String?,
         of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
+        change: [NSKeyValueChangeKey: Any]?,
         context: UnsafeMutableRawPointer?
     ) {
         guard keyPath == "estimatedProgress",
@@ -119,7 +119,7 @@ class FileViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }
     
     private func setupLoadingSubiews() {
-        loadingStatusLabel.text = FileView.loadingFileText.rawValue.localized
+        loadingStatusLabel.text = "Loading File...".localized
         loadingStatusIndicator.startAnimating()
     }
     

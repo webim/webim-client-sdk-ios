@@ -42,7 +42,7 @@ extension UIView {
         self.isHidden = false
         UIView.animate(withDuration: duration,
                        animations: { self.alpha = 1 },
-                       completion: { (value: Bool) in
+                       completion: { (_: Bool) in
                           if let complete = onCompletion { complete() }
                        }
         )
@@ -51,7 +51,7 @@ extension UIView {
     func fadeOut(_ duration: TimeInterval = 0.2, onCompletion: (() -> Void)? = nil) {
         UIView.animate(withDuration: duration,
                        animations: { self.alpha = 0 },
-                       completion: { (value: Bool) in
+                       completion: { (_: Bool) in
                            self.isHidden = true
                            if let complete = onCompletion { complete() }
                        }
@@ -64,16 +64,16 @@ extension UIView {
             self.layer.maskedCorners = corners
         } else {
             var cornerMask = UIRectCorner()
-            if (corners.contains(.layerMinXMinYCorner)) {
+            if corners.contains(.layerMinXMinYCorner) {
                 cornerMask.insert(.topLeft)
             }
-            if (corners.contains(.layerMaxXMinYCorner)) {
+            if corners.contains(.layerMaxXMinYCorner) {
                 cornerMask.insert(.topRight)
             }
-            if (corners.contains(.layerMinXMaxYCorner)) {
+            if corners.contains(.layerMinXMaxYCorner) {
                 cornerMask.insert(.bottomLeft)
             }
-            if (corners.contains(.layerMaxXMaxYCorner)) {
+            if corners.contains(.layerMaxXMaxYCorner) {
                 cornerMask.insert(.bottomRight)
             }
             let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornerMask, cornerRadii: CGSize(width: radius, height: radius))
@@ -91,5 +91,11 @@ extension UIView {
         UIGraphicsEndImageContext()
         
         return image ?? UIImage()
+    }
+    
+    func loadViewFromNib(_ nibName: String) -> UIView {
+        
+        let nib = UINib(nibName: nibName, bundle: Bundle.main)
+        return nib.instantiate(withOwner: nil, options: nil)[0] as! UIView
     }
 }

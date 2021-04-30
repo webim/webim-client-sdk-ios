@@ -133,7 +133,7 @@ class FAQActions {
                 completion: @escaping (_ data: Data?) throws -> ()) {
         let dataToPost = [Parameter.categoryId.rawValue: categoryId,
                           Parameter.query.rawValue: query,
-                          Parameter.limit.rawValue: String(limit)] as [String: Any]
+                          Parameter.limit.rawValue: limit] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.search.rawValue
         

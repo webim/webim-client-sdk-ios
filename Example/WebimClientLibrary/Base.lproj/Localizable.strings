@@ -1,222 +1,210 @@
-/* 
-  Localizable.strings
-  WebimClientLibrary
-
-  Created by Nikita Lazarev-Zubov on 11.12.17.
-  Copyright © 2017 Webim. All rights reserved.
- 
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
- 
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
- 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-*/
-
-
-// MARK: - Remote notifications
-
-"P.OA" = "Operator assigned to your appeal: %@.";
-"P.OF" = "%@ has sent file: %@.";
-"P.OM" = "%@ has sent message: %@.";
-
-
-// MARK: - StringConstants.swift
-
-// Avatar
-"SenderAvatarImage" = "Sender avatar image";
-"ShowsRatingDialog" = "Shows rating dialog.";
-
-// BackButton
-"Back" = "Close screen";
-"ClosesScreen" = "Closes screen for returning to previous screen.";
-
-// CancelButton
-"Cancel" = "Cancel";
-
-// ChatClosedDialog
-"ChatClosed" = "Chat finished.";
-"OK" = "OK";
-"ClosesRateOperatorError" = "Closes dialog.";
-
-// CloseChatButton
-"CloseChat" = "Close chat";
-"ClosesChat" = "Closes chat without closing this screen.";
-
-// DepartmentListDialog
-"ContactTopic" = "Contact topic";
-"ChoosesTopic" = "Chooses this topic for contacting.";
-"Cancel" = "Cancel";
-"ClosesDialog" = "Closes dialog.";
-
-// FileMessage
-"FileUnavailable" = "File is unavailable";
-
-// LeftButton
-"ChooseFile" = "Choose file";
-"ShowsImagePicker" = "Shows image picker to choose an image to send.";
-
-// NoCurrentOperatorErrorMessage
-"NoCurrentOperator" = "No agents available";
-"OK" = "OK";
-"NoAvailableOperator" = "There is no current agent to rate";
-
-// AlertDialog
-"RateSuccessTitle" = "Thank you!";
-"RateSuccessMessage" = "You are helping us to become better";
-"OK" = "OK";
-"ClosesRateOperatorError" = "Closes dialog.";
-
-// RateOperatorErrorMessage
-"OperatorRatingFailed" = "Operator rating failed";
-"RateOperatorNoChat" = "This chat does not exist";
-"RateOperatorWrongID" = "This agent not in the current chat";
-"RateOperatorLongNote" = "Note for rate is too long";
-
-// SendFileErrorMessage
-"FileSendingFailed" = "File sending failed";
-"ClosesSendFileError" = "Closes dialog.";
-"FileTooLarge" = "File is too large.";
-"FileTypeNotSupported" = "File type is not supported";
-"FileNotFound" = "Sending files in body is not supported";
-"FileSendingUnknownError" = "Find sending unknown error";
-"FileSengingUnauthorized" = "Failed to upload file: visitor is not logged in";
-"MaxFilesCountExceeded" = "Files count per message limit exceeded";
-"FileTooSmall" = "File is too small";
-
-// SendMessageErrorMessage
-"SendMessageFailed" = "Message sending failed";
-"MessageIsEmpty" = "Message is empty";
-"MaxMessageLengthExceeded" = "Max message length exceeded";
-
-// EditMessageErrorMessage
-"EditMessageFailed" = "Message editing failed";
-"EditMessageUnknownError" = "Edit message unknown error";
-"EditingMessagesIsTurnedOffOnTheServer" = "Editing messages is turned off on the server";
-"EditingMessageIsEmpty" = "Editing message is empty";
-"MessageNotOwnedByVisitor" = "Message not owned by visitor";
-"MaxMessageLengthExceeded" = "Max message lenght exceeded";
-"WrongMessageKind" = "Wrong message kind (not text)";
-
-// DeleteMessageErrorMessage
-"DeleteMessageFailed" = "Message deleting failed";
-"DeleteMessageUnknownError" = "Delete message unknown error";
-"DeletingMessagesIsTurnedOffOnTheServer" = "Deleting messages is turned off on the server";
-"MessageNotOwnedByVisitor" = "Message not owned by visitor";
-"MessageNotFound" = "Message not found";
-
-// SendKeyboardRequestErrorMessage
-"SendKeyboardRequestFailed" = "Send keyboard request failed";
-"SendKeyboardRequestUnknownError" = "Send keyboard request unknown error";
-"ChatDoesNotExist" = "Chat does not exist";
-"WrongButtonID" = "Wrong button ID in request";
-"WrongMessageID" = "Wrong message ID in request";
-"ResponseCannotBeCreated" = "Response cannot be created for this request";
-
-// SessionCreationErrorDialog
-"ClosesSessionError" = "Closes dialog.";
-"SessionCreationFailed" = "Session creation failed";
+//Main.storyboard
+"* Account name can't be empty." = "* Account name can't be empty.";
+//Main.storyboard
+"* Location can't be empty." = "* Location can't be empty.";
+//Main.storyboard
+"99" = "99";
+//SettingsViewController.swift
+"Account name can't be empty" = "Account name can't be empty";
+//Main.storyboard
+"Account name text field" = "Account name text field";
+//Main.storyboard
+"Account name*" = "Account name*";
+//WebimService.swift
 "AccountBlocked" = "Account that is used to create session is blocked. Please contact Webim support or use another one.";
-"VisitorBanned" = "Your visitor account is in the black list.";
-
-// SettingsErrorDialog
-"ClosesSettingsError" = "Closes dialog.";
-"InvalidSettings" = "Invalid account settings";
-"AccountNameEmpty" = "Account name can't be empty";
-"LocationEmpty" = "Location can't be empty";
-
-// ShowFileDialog
-"ImageFormatInvalid" = "Image format is not valid";
-"ImageLinkInvalid" = "Image link is not valid";
-"PreviewUnavailable" = "Preview is not available";
-"ClosesFilePreview" = "Closes file preview.";
-
-// StartView
-"WelcomeTitle" = "Welcome to the WebimClientLibrary demo app!";
-"WelcomeText" = "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios";
-"StartChat" = "Start Chat";
-"Settings" = "Settings";
-
-// TableView
-"EmptyChat" = "Send first message to start chat.";
-
-// ChatTableView
-"LoadMessages" = "Fetching more messages...";
-
-// ChatView
-"HardcodedVisitorMessageName" = "You";
-"EditMessage" = "Edit Message";
-"InputPlaceholderText" = "Message";
-"AccessibilityTextWebimLogo" = "Webim logo";
-
-// FileView
-"LoadingFile" = "Loading the file...";
-
-// PopupActions
-"Reply" = "Reply";
-"Copy" = "Copy";
-"Edit" = "Edit";
-"Delete" = "Delete";
-
-// RatingDialogView
-"RateOperator" = "Please rate the agent";
-
-// SavingImageDialog
-"OK" = "ОК";
-"SaveError" = "Save error";
-"SaveErrorMessage" = "No access to save images on the device. Grant access in the application settings.";
-"ErrorButtonTitle" = "Go to Settings";
-"Saved" = "Saved!";
-"ImageSaved" = "The image has been saved to your photos";
-
-// SavingFileDialog
-"OK" = "ОК";
-"SaveError" = "Save error";
-"ErrorButtonTitle" = "Go to Settings";
-"SaveFileErrorMessage" = "No access to save files on the device. Grant access in the application settings.";
-"Saved" = "Saved!";
-"FileSaved" = "The file has been saved to your device in Files App";
-
-// LoadingFileDialog
-"OK" = "ОК";
-"LoadError" = "Load error";
-
-// OperatorStatus
-"NoOperator" = "Webim demo-chat";
-"OperatorsOffline" = "No agent";
-"Online" = "Online";
-"IsTyping" = "typing";
-
-// FilePicker
+//Main.storyboard
+"Back" = "Back";
+//FilePicker.swift
 "Camera" = "Camera";
-"PhotoLibrary" = "Photo Library";
+//FilePicker.swift
+"Camera access is required to make full use of this app" = "Camera access is required to make full use of this app";
+//FilePicker.swift
+"Camera is not available" = "Camera is not available";
+//FilePicker.swift,UIAlertHandler.swift
 "Cancel" = "Cancel";
-"File" = "File";
-"CameraIsNotAvailable" = "Camera is not available";
-"OK" = "OK";
-"CameraAccessTitle" = "Need camera access";
-"CameraAccessMessage" = "Camera access is required to make full use of this app";
-"CameraAccessOpenSettings" = "Open app settings";
-"CameraAccessCancel" = "Cancel";
-
-// MessageStatus
-"EditedMessage" = "edited";
-
-// FlexibleCellDate
-"DateToday" = "Today";
-"DateYesterday" = "Yesterday";
-
-// UploadingFileDescription
-"UploadingFile" = "Uploading file";
+//ChatTableViewController.swift
+"Chat does not exist" = "Chat does not exist";
+//UIAlertHandler.swift
+"Chat finished." = "Chat finished.";
+//ConnectionErrorView.xib
+"Connection error" = "Connection error";
+//UIAlertHandler.swift
+"Contact topic" = "Contact topic";
+//FlexibleTableViewCell.swift
 "Counting" = "Counting";
+//ChatTableViewController.swift
+"Delete message unknown error" = "Delete message unknown error";
+//ChatTableViewController.swift
+"Deleting messages is turned off on the server" = "Deleting messages is turned off on the server";
+//ChatViewController.swift
+"Edit Message" = "Edit Message";
+//ChatTableViewController.swift
+"Edit message unknown error" = "Edit message unknown error";
+//ChatTableViewController.swift
+"Editing message is empty" = "Editing message is empty";
+//ChatTableViewController.swift
+"Editing messages is turned off on the server" = "Editing messages is turned off on the server";
+//ChatTableViewController.swift
+"Failed to upload file: visitor is not logged in" = "Failed to upload file: visitor is not logged in";
+//ChatTableViewController.swift
+"Fetching more messages..." = "Fetching more messages...";
+//FilePicker.swift
+"File" = "File";
+//ChatTableViewController.swift
+"File is too large." = "File is too large.";
+//ChatTableViewController.swift
+"File is too small" = "File is too small";
+//ChatTableViewController.swift
+"File sending failed" = "File sending failed";
+//ChatTableViewController.swift
+"File type is not supported" = "File type is not supported";
+//ChatTableViewController.swift
+"Find sending unknown error" = "Find sending unknown error";
+//UIAlertHandler.swift
+"Go to Settings" = "Go to Settings";
+//Main.storyboard
+"Greeting title" = "Greeting title";
+//Main.storyboard
+"Greeting words" = "Greeting words";
+//ChatViewController.swift,FlexibleTableViewCell.swift
+"HardcodedVisitorMessageName" = "You";
+//Main.storyboard
+"If you are registered in Webim service you can use your own account name and location." = "If you are registered in Webim service you can use your own account name and location.";
+//UIAlertHandler.swift
+"InvalidSettings" = "Invalid account settings";
+//UIAlertHandler.swift
+"LoadError" = "Load error";
+//FileViewController.swift,Main.storyboard
+"Loading File..." = "Loading the file...";
+//SettingsViewController.swift
+"Location can't be empty" = "Location can't be empty";
+//Main.storyboard
+"Location text field" = "Location text field";
+//Main.storyboard
+"Location*" = "Location*";
+//ChatTableViewController.swift
+"MaxFilesCountExceeded" = "Files count per message limit exceeded";
+//ChatTableViewController.swift
+"MaxMessageLengthExceeded" = "Max message lenght exceeded";
+//ChatViewController.swift
+"Message" = "Message";
+//ChatTableViewController.swift
+"Message deleting failed" = "Message deleting failed";
+//ChatTableViewController.swift
+"Message editing failed" = "Message editing failed";
+//ChatTableViewController.swift
+"Message not found" = "Message not found";
+//ChatTableViewController.swift
+"Message not owned by visitor" = "Message not owned by visitor";
+//FilePicker.swift
+"Need camera access" = "Need camera access";
+//ChatViewController.swift
+"No agent" = "No agent";
+//UIAlertHandler.swift
+"No agents available" = "No agents available";
+//ChatTableViewController.swift
+"Note for rate is too long" = "Note for rate is too long";
+//FilePicker.swift,UIAlertHandler.swift
+"OK" = "OK";
+//ChatTableViewController.swift,ChatViewController.swift
+"Online" = "Online";
+//FilePicker.swift
+"Open app settings" = "Open app settings";
+//ChatTableViewController.swift
+"Operator rating failed" = "Operator rating failed";
+//AdditionalKeys.swift
+"P.OA" = "Operator assigned to your appeal: %@.";
+//AdditionalKeys.swift
+"P.OF" = "%@ has sent file: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ has sent message: %@.";
+//Main.storyboard
+"Page title" = "Page title";
+//Main.storyboard
+"Page title text field" = "Page title text field";
+//FilePicker.swift
+"Photo Library" = "Photo Library";
+//RatingDialogViewController.swift
+"Please rate the agent" = "Please rate the agent";
+//ChatTableViewController.swift
+"RateOperatorWrongID" = "This agent not in the current chat";
+//ChatTableViewController.swift
+"Response cannot be created for this request" = "Response cannot be created for this request";
+//Main.storyboard
+"Save" = "Save";
+//UIAlertHandler.swift
+"Save error" = "Save error";
+//UIAlertHandler.swift
+"SaveError" = "SaveError";
+//UIAlertHandler.swift
+"SaveErrorMessage" = "No access to save images on the device. Grant access in the application settings.";
+//UIAlertHandler.swift
+"SaveFileErrorMessage" = "No access to save files on the device. Grant access in the application settings.";
+//UIAlertHandler.swift
+"Saved!" = "Saved!";
+//Main.storyboard
+"Saves current settings and shows start screen." = "Saves current settings and shows start screen.";
+//ChatTableViewController.swift
+"Send first message to start chat." = "Send first message to start chat.";
+//ChatTableViewController.swift
+"Send keyboard request failed" = "Send keyboard request failed";
+//ChatTableViewController.swift
+"Send keyboard request unknown error" = "Send keyboard request unknown error";
+//ChatTableViewController.swift
+"Sending files in body is not supported" = "Sending files in body is not supported";
+//UIAlertHandler.swift
+"Session creation failed" = "Session creation failed";
+//Main.storyboard
+"Settings" = "Settings";
+//Main.storyboard
+"Shows settings." = "Shows settings.";
+//Main.storyboard
+"Start chat" = "Start chat";
+//Main.storyboard
+"Starts chat." = "Starts chat.";
+//ChatTableViewController.swift
+"Thank you!" = "Thank you!";
+//UIAlertHandler.swift
+"The file has been saved to your device in Files App" = "The file has been saved to your device in Files App";
+//UIAlertHandler.swift
+"The image has been saved to your photos" = "The image has been saved to your photos";
+//UIAlertHandler.swift
+"There is no current agent to rate" = "There is no current agent to rate";
+//ChatTableViewController.swift
+"This chat does not exist" = "This chat does not exist";
+//Main.storyboard
+"To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios";
+//FlexibleTableViewCell.swift
+"Today" = "Today";
+//FlexibleTableViewCell.swift
+"Uploading file" = "Uploading file";
+//ChatTableViewController.swift,ChatViewController.swift
+"Webim demo-chat" = "Webim demo-chat";
+//SettingsViewController.swift
+"Webim logo" = "Webim logo";
+//Main.storyboard
+"Welcome to the WebimClientLibrary demo app!" = "Welcome to the WebimClientLibrary demo app!";
+//ChatTableViewController.swift
+"Wrong button ID in request" = "Wrong button ID in request";
+//ChatTableViewController.swift
+"Wrong message ID in request" = "Wrong message ID in request";
+//ChatTableViewController.swift
+"Wrong message kind (not text)" = "Wrong message kind (not text)";
+//FlexibleTableViewCell.swift
+"Yesterday" = "Yesterday";
+//ChatTableViewController.swift
+"You are helping us to become better" = "You are helping us to become better";
+//WebimService.swift
+"Your visitor account is in the black list." = "Your visitor account is in the black list.";
+//FlexibleTableViewCell.swift
+"edited" = "edited";
+//Main.storyboard
+"iOS demo app" = "iOS demo app";
+//Main.storyboard
+"mobile" = "mobile";
+//ChatTableViewController.swift,ChatViewController.swift
+"typing" = "typing";
+//Main.storyboard
+"wmtest" = "wmtest";
+//LaunchScreen.storyboard,LaunchScreenController.storyboard
+"© 2020 Webim.ru Inc. All rights reserved." = "© 2020 Webim.ru Inc. All rights reserved.";

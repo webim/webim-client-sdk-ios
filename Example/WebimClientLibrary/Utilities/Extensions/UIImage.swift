@@ -47,7 +47,8 @@ extension UIImage {
         }
         
         context.translateBy(x: -size.width / 2, y: -size.height / 2)
-        context.draw(self.cgImage!, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let cgImage: CGImage! = self.cgImage
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         
         return UIGraphicsGetImageFromCurrentImageContext() ?? self
     }
@@ -64,7 +65,8 @@ extension UIImage {
         context.setBlendMode(.multiply)
         
         let rectangle = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        context.clip(to: rectangle, mask: cgImage!)
+        let cgImage: CGImage! = self.cgImage
+        context.clip(to: rectangle, mask: cgImage)
         colour.setFill()
         context.fill(rectangle)
         

@@ -27,16 +27,12 @@
 import UIKit
 import WebimClientLibrary
 
-final class StartViewController: UIViewController {
+final class StartViewController: UIViewController, DepartmentListHandlerDelegate {
     
     // MARK: - Private Properties
     private var unreadMessageCounter: Int = 0
     
     private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
-    private lazy var webimService = WebimService(
-        fatalErrorHandlerDelegate: self,
-        departmentListHandlerDelegate: self
-    )
     
     // MARK: - Outlets
     @IBOutlet weak var startChatButton: UIButton!
@@ -44,6 +40,7 @@ final class StartViewController: UIViewController {
     @IBOutlet weak var welcomeTextView: UITextView!
     @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var logoImageView: UIImageView!
+    @IBOutlet weak var unreadMessageCounterView: UIView!
     @IBOutlet weak var unreadMessageCounterLabel: UILabel!
     @IBOutlet weak var unreadMessageCounterActivity: UIActivityIndicatorView!
     
@@ -51,11 +48,11 @@ final class StartViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.isHidden = true
         // Workaround for displaying correctly the position of the text inside weclomeTextView
         DispatchQueue.main.async {
-            // Workaround for localization
-            self.welcomeTextView.text = StartView.welcomeText.rawValue.localized
-            self.welcomeTextView.scrollRangeToVisible(NSRange(location: 0,length: 0))
+            self.welcomeTextView.setTextWithHyperLinks(self.welcomeTextView.text.localized)
+            self.welcomeTextView.scrollRangeToVisible(NSRange(location: 0, length: 0))
         }
         
         setupColorScheme()
@@ -71,7 +68,8 @@ final class StartViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        stopWebimSession()
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     @IBAction func unwindFromSettings(_: UIStoryboardSegue) {
@@ -100,9 +98,6 @@ final class StartViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = navigationBarBarTintColour
         
         navigationController?.navigationBar.tintColor = navigationBarTintColour
-
-        logoImageView.image = logoImageViewImage
-
         welcomeLabel.textColor = welcomeLabelTextColour
 
         welcomeTextView.textColor = welcomeTextViewTextColour
@@ -120,29 +115,24 @@ final class StartViewController: UIViewController {
     
     private func updateMessageCounter() {
         DispatchQueue.main.async {
-            self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
-            self.unreadMessageCounterActivity.stopAnimating()
-            self.unreadMessageCounterLabel.fadeTransition(0.2)
-            self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
+            if self.unreadMessageCounter > 0 {
+                self.unreadMessageCounterView.alpha = 1
+                self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
+                self.unreadMessageCounterActivity.stopAnimating()
+                self.unreadMessageCounterLabel.fadeTransition(0.2)
+                self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
+            } else {
+                self.unreadMessageCounterView.alpha = 0
+            }
+            
         }
     }
     
     private func startWebimSession() {
-        webimService.createSession()
-        webimService.startSession()
-        webimService.setMessageStream()
-        webimService.set(unreadByVisitorMessageCountChangeListener: self)
-        
-        unreadMessageCounter = webimService.getUnreadMessagesByVisitor()
+        WebimServiceController.currentSession.set(unreadByVisitorMessageCountChangeListener: self)
+        WebimServiceController.shared.fatalErrorHandlerDelegate = self
+        unreadMessageCounter = WebimServiceController.currentSession.getUnreadMessagesByVisitor()
         updateMessageCounter()
-    }
-
-    private func stopWebimSession() {
-        webimService.stopSession()
-        
-        unreadMessageCounter = 0
-        unreadMessageCounterLabel.text = nil
-        unreadMessageCounterActivity.startAnimating()
     }
 }
 
@@ -168,21 +158,6 @@ extension StartViewController: FatalErrorHandlerDelegate {
     // MARK: - Methods
     func showErrorDialog(withMessage message: String) {
         alertDialogHandler.showCreatingSessionFailureDialog(withMessage: message)
-    }
-    
-}
-
-// MARK: - DepartmentListHandlerDelegate
-extension StartViewController: DepartmentListHandlerDelegate {
-    
-    // MARK: - Methods
-    func show(departmentList: [Department], action: @escaping (String) -> ()) {
-        
-        // Due to the fact that it is the start screen, there is no need in diplaying departmentlist
-//        alertDialogHandler.showDepartmentListDialog(
-//            withDepartmentList: departmentList,
-//            action: action
-//        )
     }
     
 }

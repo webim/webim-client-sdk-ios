@@ -394,6 +394,7 @@ Returns `self` with location name set.
 Method is mandatory to create [WebimSession](#webim-session) object.
 
 <h3 id ="set-prechat">Instance method set(prechat:)</h3>
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Sets prechat fields for the session.
 `prechat` parameter  – `String`-typed prechat fields in JSON format.
 Returns `self` with location name set.
@@ -483,6 +484,7 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 
 <h3 id ="set-multivisitor-section">Instance method set(multivisitorSection:)</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Sets necesarity to receive remote notifications by different visitors on one device. Without multivisitor section only last visitor can receive remote notifications.
 `multivisitorSection` parameter – suffix for device ID. Each visitor has device ID. This parameter can split one device to some virtual devices.
 Returns `self` with the functionality activation setting.
@@ -573,7 +575,7 @@ Error that is thrown when trying to create session object with invalid remote no
 
 When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
 When provided authorization token is generated (or passed to session by client app), `update(providedAuthorizationToken:)` method is called. This method call indicates that client app must send provided authorisation token to its server which is responsible to send it to Webim service.
-This mechanism can't be used as is. It requires that client server to support this mecahnism.
+This mechanism can't be used as is. It requires that client server to support this mechanism.
 
 <h3 id ="update-provided-authorization-token">update(providedAuthorizationToken:) method</h3>
 
@@ -679,6 +681,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="rate-operator-with-id-note-by-rating-rating">rateOperatorWith(id:note:byRating:completionHandler:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Rates an operator.
 To get an ID of the current operator call [getCurrentOperator()](#get-current-operator).
 `id` parameter – String-typed ID of the operator to be rated. Optional: if `nil` is passed, current chat operator will be rated.
@@ -689,6 +692,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="respond-sentry-call">respondSentryCall(id:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Respond sentry call.
 `id` parameter – String-typed ID of redirect to sentry message.
 Can throw errors of [AccessError](#access-error) type.
@@ -707,6 +711,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-custom-fields">startChat(customFields:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Changes [ChatState](#chat-state) to [queue](#queue). Starts chat with custom fields.
 Method call is not mandatory. Starts chat with custom fields.
 `customFields` paramater – String-typed custom fields in JSON format.
@@ -730,6 +735,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-first-question-custom-fields">startChat(firstQuestion:customFields:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Starts chat with custom fields and sends first message simultaneously.
 Changes [ChatState](#chat-state) to [queue](#queue).
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
@@ -737,6 +743,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-department-key-custom-fields">startChat(departmentKey:customFields:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Starts chat with particular department and custom fields. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
 Changes [ChatState](#chat-state) to [queue](#queue).
 In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [departmentSelection state](#department-selection).
@@ -745,6 +752,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="start-chat-department-key-first-question-custom-fields">startChat(departmentKey:firstQuestion:customFields:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Starts chat with particular department and customFields  and sends first message simultaneously. Department is identified by `departmentKey` parameter (see [getKey()](#get-key) of [Department](#department) protocol)
 Changes [ChatState](#chat-state) to [queue](#queue).
 In most cases method call is not mandatory, send message or send file methods start chat automatically. But it is mandatory when [VisitSessionState](#visit-session-state) is in [departmentSelection state](#department-selection).
@@ -764,6 +772,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="send-message-data">send(message:data:completionHandler:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Sends a text message.
 When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [sending case](#sending) in the status is also called.
 `message` parameter – `String`-typed message text.
@@ -774,6 +783,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="send-message-is-hint-question">send(message:isHintQuestion:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Sends a text message.
 When calling this method, if there is an active [MessageTracker](#message-tracker) object. [added(message newMessage:,after previousMessage:) method](#added-message-new-message-after-previous-message)) with a message [sending case](#sending) in the status is also called.
 `message` parameter – `String`-typed message text.
@@ -810,7 +820,8 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="update-widget-status">updateWidgetStatus(data:) method</h3>
 
-Update widget status. The change is displayed by the operator..
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
+Update widget status. The change is displayed by the operator.
 `data` parameter – JSON string with new widget status.
 Can throw errors of [AccessError](#access-error) type.
 
@@ -834,7 +845,7 @@ When calling this method, if there is an active [MessageTracker](#message-tracke
 Returns true if message can be edited.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="delete-message">edit(message:text:completionHandler:) method</h3>
+<h3 id ="delete-message">delete(message:completionHandler:) method</h3>
 
 Deletes a text message.
 Before calling this method recommended to find out the possibility of editing the message using [canBeEdited() method](#can-be-edited).
@@ -861,6 +872,7 @@ Can throw errors of [AccessError](#access-error) type.
 
 <h3 id ="set-prechat-fields">set(prechatFields:) method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Sends prechat fields to server.
 Can throw errors of [AccessError](#access-error) type.
 
@@ -915,6 +927,7 @@ Sets [UnreadByVisitorTimestampChangeListener](#unread-by-visitor-timestamp-chang
 
 <h2 id ="data-message-completion-handler">DataMessageCompletionHandler protocol</h2>
 
+Attention: this mechanism can't be used as is. It requires that client server to support this mechanism!
 Protocol which methods are called after [send(message:data:completionHandler:)](#send-message-data) method is finished. Must be adopted.
 
 <h3 id ="on-success-message-id-data-message-completion-handler">onSuccess(messageID:) method</h3>
@@ -1271,6 +1284,7 @@ First status is not recieved yet or status is not supported by this version of t
 
 <h2 id ="data-message-error">DataMessageError enum</h2>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Error types that could be passed in [onFailure(messageID:error:) method](#on-failure-message-id-error-data-message-completion-handler).
 
 <h3 id ="unknown-data-message-error">unknown case</h3>
@@ -1954,10 +1968,12 @@ Returns parameters of this remote notification of array of `String` type.
 
 <h3 id ="get-location">getLocation() method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Returns location of this remote notification of array of type `String` type.
 
 <h3 id ="get-unread-by-visitor-messages-count">getUnreadByVisitorMessagesCount() method</h3>
 
+Attention: this method can't be used as is. It requires that client server to support this mechanism!
 Returns unread by visitor messages count of this remote notification of array of `Int` type.
 
 [Go to table of contents](#table-of-contents)

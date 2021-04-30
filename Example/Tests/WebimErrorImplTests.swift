@@ -38,7 +38,7 @@ class WebimErrorImplTests: XCTestCase {
         XCTAssertEqual(webimError.getErrorType(),
                        FatalErrorType.accountBlocked)
         XCTAssertEqual(webimError.getErrorString(),
-                       "ACCOUNT_BLOCKED")
+                       "accountBlocked")
         
         webimError = WebimErrorImpl(errorType: .unknown,
                                     errorString: "Error")

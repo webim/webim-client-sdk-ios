@@ -29,8 +29,8 @@ import Foundation
 /**
  When client provides custom visitor authorization mechanism, it can be realised by providing custom authorization token which is used instead of visitor fields.
  When provided authorization token is generated (or passed to session by client app), `update(providedAuthorizationToken:)` method is called. This method call indicates that client app must send provided authorisation token to its server which is responsible to send it to Webim service.
- - important:
- This mechanism can't be used as is. It requires that client server to support this mecahnism.
+ - attention:
+ This mechanism can't be used as is. It requires that client server to support this mechanism.
  - author:
  Nikita Lazarev-Zubov
  - copyright:

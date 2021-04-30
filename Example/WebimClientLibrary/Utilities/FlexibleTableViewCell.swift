@@ -336,7 +336,7 @@ class FlexibleTableViewCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        //stackView.alignment = .center
+        // stackView.alignment = .center
         stackView.distribution = .fill
         stackView.spacing = SPACING_CELL * 2
         return stackView
@@ -605,14 +605,14 @@ class FlexibleTableViewCell: UITableViewCell {
         self.addSubview(messageBackgroundView)
         roundCornersForMessage(on: messageBackgroundView, forOperator: forOperator)
         
-        //timeLabel
+        // timeLabel
         self.addSubview(timeLabel)
         
-        //messageStatusImageView
+        // messageStatusImageView
         self.addSubview(messageStatusImageView)
          
         if !forOperator {
-            //messageStatusIndicator
+            // messageStatusIndicator
             self.addSubview(messageStatusIndicator)
         }
         
@@ -649,9 +649,9 @@ class FlexibleTableViewCell: UITableViewCell {
     ) {
         if showFullDate {
             if calendar.isDateInToday(message.getTime()) {
-                dateLabel.text = FlexibleCellDate.dateToday.rawValue.localized
+                dateLabel.text = "Today".localized
             } else if calendar.isDateInYesterday(message.getTime()) {
-                dateLabel.text = FlexibleCellDate.dateYesterday.rawValue.localized
+                dateLabel.text = "Yesterday".localized
             } else {
                 dateLabel.text = dateFormatter.string(from: message.getTime())
             }
@@ -675,9 +675,9 @@ class FlexibleTableViewCell: UITableViewCell {
     ) {
         if showFullDate {
             if calendar.isDateInToday(message.getTime()) {
-                dateLabel.text = FlexibleCellDate.dateToday.rawValue.localized
+                dateLabel.text = "Today".localized
             } else if calendar.isDateInYesterday(message.getTime()) {
-                dateLabel.text = FlexibleCellDate.dateYesterday.rawValue.localized
+                dateLabel.text = "Yesterday".localized
             } else {
                 dateLabel.text = dateFormatter.string(from: message.getTime())
             }
@@ -708,7 +708,7 @@ class FlexibleTableViewCell: UITableViewCell {
                 uiButton.accessibilityIdentifier = buttonID
                 uiButton.setTitle(buttonText, for: .normal)
                 
-                ///add buttons only with text
+                /// add buttons only with text
                 guard let titleLabel = uiButton.titleLabel else {
                     continue
                 }
@@ -716,7 +716,7 @@ class FlexibleTableViewCell: UITableViewCell {
                 titleLabel.textAlignment = .center
                 titleLabel.numberOfLines = 0
                 
-                ///button text insets
+                /// button text insets
                 titleLabel.snp.remakeConstraints { make in
                     make.top.bottom.equalToSuperview().inset(10)
                     make.left.right.equalToSuperview().inset(16)
@@ -769,7 +769,7 @@ class FlexibleTableViewCell: UITableViewCell {
         hasQuote: Bool,
         hasQuoteAttachment: Bool,
         hasQuoteImage: Bool,
-        hasAttachment:Bool,
+        hasAttachment: Bool,
         hasImage: Bool,
         hasSendingFile: Bool,
         imageViewSize: CGSize,
@@ -778,9 +778,9 @@ class FlexibleTableViewCell: UITableViewCell {
     ) {
         if showFullDate {
             if calendar.isDateInToday(message.getTime()) {
-                dateLabel.text = FlexibleCellDate.dateToday.rawValue.localized
+                dateLabel.text = "Today".localized
             } else if calendar.isDateInYesterday(message.getTime()) {
-                dateLabel.text = FlexibleCellDate.dateYesterday.rawValue.localized
+                dateLabel.text = "Yesterday".localized
             } else {
                 dateLabel.text = dateFormatter.string(from: message.getTime())
             }
@@ -789,7 +789,7 @@ class FlexibleTableViewCell: UITableViewCell {
         if hasAttachment,
             let attachment = message.getData()?.getAttachment(),
             let url = attachment.getFileInfo().getURL(),
-            let contentType = attachment.getFileInfo().getContentType(){
+            let contentType = attachment.getFileInfo().getContentType() {
             let fileInfo = attachment.getFileInfo()
             
             if hasImageAsDocument {
@@ -970,9 +970,8 @@ class FlexibleTableViewCell: UITableViewCell {
                     }
                 }
                 
-                
                 if message.getQuote()?.getSenderName() == "Посетитель" {
-                    quoteUsernameLabel.text = ChatView.hardcodedVisitorMessageName.rawValue.localized
+                    quoteUsernameLabel.text = "HardcodedVisitorMessageName".localized
                 } else {
                     quoteUsernameLabel.text = message.getQuote()?.getSenderName()
                 }
@@ -1034,8 +1033,8 @@ class FlexibleTableViewCell: UITableViewCell {
                 messageStatusIndicator.startAnimating()
                 messageStatusImageView.image = nil
                 if hasSendingFile {
-                    documentFileNameLabel.text = UploadingFileDescription.uploadingFile.rawValue.localized
-                    documentFileDescriptionLabel.text = UploadingFileDescription.counting.rawValue.localized
+                    documentFileNameLabel.text = "Uploading file".localized
+                    documentFileDescriptionLabel.text = "Counting".localized
                     documentFileNameLabel.textColor = documentFileNameLabelColourVisitor
                     documentFileDescriptionLabel.textColor = documentFileDescriptionLabelColourVisitor
                     documentFileStatusButton.setBackgroundImage(
@@ -1054,7 +1053,7 @@ class FlexibleTableViewCell: UITableViewCell {
         }
         
         if isEdited {
-            messageStatusLabel.text = MessageStatus.editedMessage.rawValue.localized
+            messageStatusLabel.text = "edited".localized
         } else {
             messageStatusLabel.text = ""
         }
@@ -1195,7 +1194,7 @@ class FlexibleTableViewCell: UITableViewCell {
         hasQuote: Bool,
         hasQuoteAttachment: Bool,
         hasQuoteImage: Bool,
-        hasAttachment:Bool,
+        hasAttachment: Bool,
         hasImage: Bool,
         hasSendingFile: Bool,
         imageViewSize: CGSize,
@@ -1295,7 +1294,6 @@ class FlexibleTableViewCell: UITableViewCell {
                     .inset(SPACING_CELL).priority(999)
             }
             
-           
             if forOperator {
                 make.leading.equalTo(messageBackgroundView.snp.leading)
                     .inset(5)
@@ -1649,7 +1647,7 @@ class FlexibleTableViewCell: UITableViewCell {
             // TODO: Compare files here before moving forward
             showFile(fileName: fileName)
         } else {
-            //documentFileStatusButton.setBackgroundImage(UIImage(), for: .normal)
+            // documentFileStatusButton.setBackgroundImage(UIImage(), for: .normal)
             downloadTask.resume()
         }
     }
@@ -1808,19 +1806,18 @@ extension FlexibleTableViewCell {
     }
 }
 
-
 // MARK: - URLSessionDownloadDelegate
-extension FlexibleTableViewCell:  URLSessionDownloadDelegate {
+extension FlexibleTableViewCell: URLSessionDownloadDelegate {
         
     func urlSession(
         _ session: URLSession,
         downloadTask: URLSessionDownloadTask,
         didFinishDownloadingTo location: URL
     ) {
-        guard let httpResponse = downloadTask.response as? HTTPURLResponse,httpResponse.statusCode >= 200,
+        guard let httpResponse = downloadTask.response as? HTTPURLResponse, httpResponse.statusCode >= 200,
             httpResponse.statusCode < 300
             else {
-                print ("Server error")
+                print("Server error")
                 return
         }
         

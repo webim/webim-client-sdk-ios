@@ -54,6 +54,7 @@ class MessageStreamImplTests: XCTestCase {
                                           currentChatMessageFactoriesMapper: CurrentChatMessageMapper(withServerURLString: serverURLString),
                                           sendingMessageFactory: SendingFactory(withServerURLString: serverURLString),
                                           operatorFactory: OperatorFactory(withServerURLString: serverURLString),
+                                          surveyFactory: SurveyFactory(),
                                           accessChecker: accessChecker,
                                           webimActions: webimActions!,
                                           messageHolder: MessageHolder(accessChecker: accessChecker,

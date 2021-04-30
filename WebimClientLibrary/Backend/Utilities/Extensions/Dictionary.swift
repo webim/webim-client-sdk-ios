@@ -45,24 +45,48 @@ extension Dictionary {
      */
     func stringFromHTTPParameters() -> String {
         let parameterArray = map { (key, value) -> String in
-            guard let key = key as? String,
-                let value = value as? String else {
-                    WebimInternalLogger.shared.log(entry: "Key and Value has incorrect type or nil in extension Dictionary.\(#function)")
+            guard let key = key as? String else {
+                    WebimInternalLogger.shared.log(entry: "Key has incorrect type or nil in extension Dictionary.\(#function)")
                     return String()
             }
             
-            guard let percentEscapedKey = key.addingPercentEncodingForURLQueryValue() else {
-                WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Key failure in Extension Dictionary.\(#function)")
-                return "\(key)=\(value)"
-            }
-            guard let percentEscapedValue = value.addingPercentEncodingForURLQueryValue() else {
-                WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Value failure in Extension Dictionary.\(#function)")
-                return "\(key)=\(value)"
-            }
-            return "\(percentEscapedKey)=\(percentEscapedValue)"
+            return getPercentEscapedString(forKey: key, value: value)
         }
         
         return parameterArray.joined(separator: "&")
+    }
+    
+    private func getPercentEscapedString<T>(forKey key: String, value: T?) -> String {
+        guard let value = value else {
+            WebimInternalLogger.shared.log(entry: "Value is nil in extension Dictionary.\(#function)")
+            return String()
+        }
+        
+        var stringValue: String
+        switch value {
+        case is String,
+             is Int,
+             is Int64,
+             is Double:
+            stringValue = "\(value)"
+        case is Bool:
+            stringValue = (value as? Bool ?? false) ? "1" : "0"
+        default:
+            WebimInternalLogger.shared.log(entry: "Value has incorrect type in extension Dictionary.\(#function)")
+            return String()
+        }
+        
+        guard let percentEscapedKey = key.addingPercentEncodingForURLQueryValue() else {
+            WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Key failure in Extension Dictionary.\(#function)")
+            return "\(key)=\(stringValue)"
+        }
+        
+        guard let percentEscapedValue = stringValue.addingPercentEncodingForURLQueryValue() else {
+            WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Value failure in Extension Dictionary.\(#function)")
+            return "\(key)=\(stringValue)"
+        }
+        
+        return "\(percentEscapedKey)=\(percentEscapedValue)"
     }
     
 }

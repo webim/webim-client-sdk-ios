@@ -78,6 +78,8 @@ public protocol WebimRemoteNotification {
      Chat location.
      - seealso:
      `NotificationType`
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -90,6 +92,8 @@ public protocol WebimRemoteNotification {
      Unread by visitor messages count.
      - seealso:
      `NotificationType`
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:

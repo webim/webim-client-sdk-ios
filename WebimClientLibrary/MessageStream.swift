@@ -178,6 +178,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -197,6 +199,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -258,6 +262,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -295,6 +301,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -315,6 +323,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -337,6 +347,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -380,6 +392,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -443,6 +457,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -466,6 +482,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -490,6 +508,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -543,6 +563,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -566,6 +588,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -584,6 +608,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Yury Vozleev
      - copyright:
@@ -639,6 +665,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -927,6 +955,8 @@ public protocol MessageStream: class {
      Sets listener for hello message.
      - parameter helloMessageListener:
      `HelloMessageListener` object.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Yury Vozleev
      - copyright:

@@ -29,7 +29,7 @@ import MobileCoreServices
 import AVFoundation
 import CloudKit
 
-public protocol FilePickerDelegate: class {
+public protocol FilePickerDelegate: AnyObject {
     func didSelect(image: UIImage?, imageURL: URL?)
     func didSelect(file: Data?, fileURL: URL?)
 }
@@ -87,7 +87,7 @@ open class FilePicker: NSObject {
         )
         
         let cameraAction = UIAlertAction(
-            title: FilePickerObject.actionCamera.rawValue.localized,
+            title: "Camera".localized,
             style: .default,
             handler: { _ in
                 let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
@@ -106,7 +106,7 @@ open class FilePicker: NSObject {
         )
         
         let photoLibraryAction = UIAlertAction(
-            title: FilePickerObject.actionPhotoLibrary.rawValue.localized,
+            title: "Photo Library".localized,
             style: .default,
             handler: { _ in
                 self.imagePickerController.sourceType = .photoLibrary
@@ -118,7 +118,7 @@ open class FilePicker: NSObject {
         )
         
         let fileAction = UIAlertAction(
-            title: FilePickerObject.actionFile.rawValue.localized,
+            title: "File".localized,
             style: .default,
             handler: { _ in
                 self.presentationController?.present(
@@ -128,7 +128,7 @@ open class FilePicker: NSObject {
         )
         
         let cancelAction = UIAlertAction(
-            title: FilePickerObject.actionCancel.rawValue.localized,
+            title: "Cancel".localized,
             style: .cancel
         )
         
@@ -150,7 +150,6 @@ open class FilePicker: NSObject {
         
         self.presentationController?.present(fileMenuSheet, animated: true)
     }
-    
     
     // MARK: - Private methods
     private func pickerControllerImage(
@@ -181,26 +180,26 @@ open class FilePicker: NSObject {
     }
     
     private func presentCamera() {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 self.imagePickerController.sourceType = .camera
                 self.presentationController?.present(self.imagePickerController, animated: true)
+            } else {
+                let ac = UIAlertController(
+                    title: "Camera is not available".localized,
+                    message: nil,
+                    preferredStyle: .alert
+                )
+                
+                let okAction = UIAlertAction(
+                    title: "OK".localized,
+                    style: .cancel
+                )
+                
+                ac.addAction(okAction)
+                
+                self.presentationController?.present(ac, animated: true)
             }
-        } else {
-            let ac = UIAlertController(
-                title: FilePickerObject.cameraNotAvailable.rawValue.localized,
-                message: nil,
-                preferredStyle: .alert
-            )
-            
-            let okAction = UIAlertAction(
-                title: FilePickerObject.ok.rawValue.localized,
-                style: .cancel
-            )
-            
-            ac.addAction(okAction)
-            
-            self.presentationController?.present(ac, animated: true)
         }
     }
     
@@ -208,13 +207,13 @@ open class FilePicker: NSObject {
         guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
         
         let ac = UIAlertController(
-            title: FilePickerObject.cameraAccessTitle.rawValue.localized,
-            message: FilePickerObject.cameraAccessMessage.rawValue.localized,
+            title: "Need camera access".localized,
+            message: "Camera access is required to make full use of this app".localized,
             preferredStyle: .alert
         )
         
         let showAppSettingsAction = UIAlertAction(
-            title: FilePickerObject.cameraAccessOpenSetting.rawValue.localized,
+            title: "Open app settings".localized,
             style: .default,
             handler: { _ in
                 UIApplication.shared.open(
@@ -224,7 +223,7 @@ open class FilePicker: NSObject {
         )
         
         let cancelAction = UIAlertAction(
-            title: FilePickerObject.cameraAccessCancel.rawValue.localized,
+            title: "Cancel".localized,
             style: .cancel
         )
         
@@ -243,7 +242,7 @@ extension FilePicker: UIImagePickerControllerDelegate {
     
     public func imagePickerController(
         _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
         guard let image = info[.editedImage] as? UIImage else {
             return self.pickerControllerImage(picker)

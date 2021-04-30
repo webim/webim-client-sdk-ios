@@ -152,7 +152,7 @@ class WebimActions {
                           Parameter.clientSideID.rawValue: clientSideID,
                           Parameter.message.rawValue: message] as [String: Any]
         if let isHintQuestion = isHintQuestion {
-            dataToPost[Parameter.hintQuestion.rawValue] = isHintQuestion ? "1" : "0" // True / false.
+            dataToPost[Parameter.hintQuestion.rawValue] = isHintQuestion
         }
         if let dataJSONString = dataJSONString {
             dataToPost[Parameter.data.rawValue] = dataJSONString
@@ -205,7 +205,7 @@ class WebimActions {
                           Parameter.message.rawValue: message,
                           Parameter.kind.rawValue: "file_visitor"] as [String: Any]
         if let isHintQuestion = isHintQuestion {
-            dataToPost[Parameter.hintQuestion.rawValue] = isHintQuestion ? "1" : "0" // True / false.
+            dataToPost[Parameter.hintQuestion.rawValue] = isHintQuestion
         }
         
         let urlString = baseURL + ServerPathSuffix.doAction.rawValue
@@ -273,7 +273,7 @@ class WebimActions {
                    departmentKey: String? = nil,
                    customFields: String? = nil) {
         var dataToPost = [Parameter.actionn.rawValue: Action.startChat.rawValue,
-                          Parameter.forceOnline.rawValue: "1", // true
+                          Parameter.forceOnline.rawValue: true,
                           Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
         if let firstQuestion = firstQuestion {
             dataToPost[Parameter.firstQuestion.rawValue] = firstQuestion
@@ -351,7 +351,7 @@ class WebimActions {
     
     func requestHistory(beforeMessageTimestamp: Int64,
                         completion: @escaping (_ data: Data?) throws -> ()) {
-        let dataToPost = [Parameter.beforeTimestamp.rawValue: String(beforeMessageTimestamp)] as [String: Any]
+        let dataToPost = [Parameter.beforeTimestamp.rawValue: beforeMessageTimestamp] as [String: Any]
         
         let urlString = baseURL + ServerPathSuffix.getHistory.rawValue
         
@@ -466,7 +466,7 @@ class WebimActions {
                      completionHandler: SendStickerCompletionHandler? = nil) {
         let dataToPost = [
             Parameter.actionn.rawValue: Action.sendSticker.rawValue,
-            Parameter.stickerId.rawValue: String(stickerId),
+            Parameter.stickerId.rawValue: stickerId,
             Parameter.clientSideID.rawValue: clientSideId
         ] as [String: Any]
         
@@ -488,8 +488,8 @@ class WebimActions {
                             sendSurveyAnswerCompletionHandler: SendSurveyAnswerCompletionHandlerWrapper?) {
         let dataToPost = [Parameter.actionn.rawValue: Action.surveyAnswer.rawValue,
                           Parameter.surveyID.rawValue: surveyID,
-                          Parameter.surveyFormID.rawValue: String(formID),
-                          Parameter.surveyQuestionID.rawValue: String(questionID),
+                          Parameter.surveyFormID.rawValue: formID,
+                          Parameter.surveyQuestionID.rawValue: questionID,
                           Parameter.surveyAnswer.rawValue: surveyAnswer] as [String: Any]
 
         let urlString = baseURL + ServerPathSuffix.doAction.rawValue

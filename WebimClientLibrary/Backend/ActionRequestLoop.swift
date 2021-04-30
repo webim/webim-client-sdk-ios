@@ -36,11 +36,17 @@ import Foundation
 class ActionRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
-    var operationQueue: OperationQueue?
+    var actionOperationQueue: OperationQueue?
+    var historyRequestOperationQueue: OperationQueue?
     private var authorizationData: AuthorizationData?
     
     
     // MARK: - Initialization
+    init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
+         internalErrorListener: InternalErrorListener, notFatalErrorHandler: NotFatalErrorHandler?) {
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener)
+    }
+    
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
          internalErrorListener: InternalErrorListener) {
         super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener)
@@ -49,20 +55,27 @@ class ActionRequestLoop: AbstractRequestLoop {
     // MARK: - Methods
     
     override func start() {
-        guard operationQueue == nil else {
+        guard actionOperationQueue == nil && historyRequestOperationQueue == nil else {
             return
         }
         
-        operationQueue = OperationQueue()
-        operationQueue?.maxConcurrentOperationCount = 1
-        operationQueue?.qualityOfService = .userInitiated
+        actionOperationQueue = OperationQueue()
+        actionOperationQueue?.maxConcurrentOperationCount = 1
+        actionOperationQueue?.qualityOfService = .userInitiated
+        
+        historyRequestOperationQueue = OperationQueue()
+        historyRequestOperationQueue?.maxConcurrentOperationCount = 1
+        historyRequestOperationQueue?.qualityOfService = .userInitiated
     }
     
     override func stop() {
         super.stop()
         
-        operationQueue?.cancelAllOperations()
-        operationQueue = nil
+        actionOperationQueue?.cancelAllOperations()
+        actionOperationQueue = nil
+        
+        historyRequestOperationQueue?.cancelAllOperations()
+        historyRequestOperationQueue = nil
     }
     
     func set(authorizationData: AuthorizationData?) {
@@ -70,6 +83,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     func enqueue(request: WebimRequest) {
+        let operationQueue = request.getCompletionHandler() != nil ? historyRequestOperationQueue : actionOperationQueue
         operationQueue?.addOperation { [weak self] in
             guard let `self` = self else {
                 return

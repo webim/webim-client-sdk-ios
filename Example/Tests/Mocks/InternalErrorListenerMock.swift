@@ -28,10 +28,13 @@ import Foundation
 @testable import WebimClientLibrary
 
 final class InternalErrorListenerForTests: InternalErrorListener {
-    func onNotFaral(error: NotFatalErrorType) {
+    func onNotFatal(error: NotFatalErrorType) {
         // No need to do anything when testing
     }
     
+    func connectionStateChanged(connected: Bool) {
+        // No need to do anything when testing
+    }
     
     func on(error: String) {
         // No need to do anything when testing.

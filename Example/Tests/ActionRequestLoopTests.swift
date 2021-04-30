@@ -46,7 +46,7 @@ class ActionRequestLoopTests: XCTestCase {
         actionRequestLoop.start()
         
         // Then: ActionRequestLoop OperationQueue shouldn't be nil and has to have .userInitiated QoS.
-        let operationQueue = actionRequestLoop.operationQueue
+        let operationQueue = actionRequestLoop.actionOperationQueue
         XCTAssertNotNil(operationQueue)
         XCTAssertEqual(operationQueue!.qualityOfService,
                        QualityOfService.userInitiated)
@@ -58,7 +58,7 @@ class ActionRequestLoopTests: XCTestCase {
         
         // Then: ActionRequestLoop OperationQueue stays the same.
         XCTAssertEqual(operationQueue,
-                       actionRequestLoop.operationQueue)
+                       actionRequestLoop.actionOperationQueue)
     }
     
     func testStop() {
@@ -66,6 +66,6 @@ class ActionRequestLoopTests: XCTestCase {
         actionRequestLoop.stop()
         
         // Then: ActionRequestLoop OperationQueue should be nil.
-        XCTAssertNil(actionRequestLoop.operationQueue)
+        XCTAssertNil(actionRequestLoop.actionsOperationQueue)
     }
 }

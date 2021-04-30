@@ -1,9 +1,3 @@
-<center>
-
-![Webim logo](Documentation/Images/Logo.png)
-
-</center>
-
 # WebimClientLibrary
 
 This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobile-sdk/ios-sdk-howto/) – a way to integrate _Webim_ service into your _iOS_ app.
@@ -16,7 +10,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'master', :tag => '3.34.3'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'master', :tag => '3.34.4'
 ```
 `use_frameworks!` must be specified.
 
@@ -24,7 +18,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.34.3
+github "webim/webim-client-sdk-ios" ~> 3.34.4
 ```
 
 ### Additional notes
@@ -38,7 +32,8 @@ Trying to integrate _WebimClientLibrary_ into your _Objective-C_ code? Try out o
 Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **version2** branch.
 
 ## Release notes
-* Empty history bug fixed.
+* Additional queue for history requests.
+* Code refactoring.
 
 ## Example
 

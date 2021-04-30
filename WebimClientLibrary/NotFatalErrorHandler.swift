@@ -52,4 +52,11 @@ public protocol NotFatalErrorHandler: class {
      */
     func on(error: WebimNotFatalError)
     
+    /**
+     This method is to be called when Webim service receive any data from server or connection error.
+     - important:
+     Method called NOT FROM THE MAIN THREAD!
+     */
+    func connectionStateChanged(connected: Bool)
+    
 }

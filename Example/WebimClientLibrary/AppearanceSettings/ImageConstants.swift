@@ -30,7 +30,7 @@ import UIKit
 // ChatViewController.swift
 let closeButtonImage = #imageLiteral(resourceName: "CloseButton")
 let fileButtonImage = #imageLiteral(resourceName: "AttachmentButton")
-let loadingPlaceholderImage = UIImage(named: "ImagePlaceholder")!
+let loadingPlaceholderImage: UIImage! = UIImage(named: "ImagePlaceholder")
 let navigationBarTitleImageViewImage = #imageLiteral(resourceName: "LogoWebimNavigationBar_dark")
 let scrollButtonImage = #imageLiteral(resourceName: "SendMessageButton").flipImage(.vertically)
 let textInputButtonImage = #imageLiteral(resourceName: "SendMessageButton")
@@ -48,9 +48,6 @@ let trailingSwipeActionImage =
 
 // ImageViewController.swift
 let saveImageButtonImage = #imageLiteral(resourceName: "ImageDownload")
-
-// StartViewController.swift
-let logoImageViewImage = #imageLiteral(resourceName: "LogoWebimNavigationBar_dark")
 
 // FlexibleTableViewCell.swift
 let documentFileStatusButtonDownloadOperator = #imageLiteral(resourceName: "FileDownloadButtonOperator")

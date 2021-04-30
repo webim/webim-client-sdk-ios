@@ -36,6 +36,8 @@ protocol InternalErrorListener {
     
     func on(error: String)
     
-    func onNotFaral(error: NotFatalErrorType)
+    func onNotFatal(error: NotFatalErrorType)
+    
+    func connectionStateChanged(connected: Bool)
     
 }

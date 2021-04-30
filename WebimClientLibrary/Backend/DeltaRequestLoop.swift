@@ -147,7 +147,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestInitialization() {
         let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.34.3", forHTTPHeaderField: WebimActions.Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.34.4", forHTTPHeaderField: WebimActions.Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -249,8 +249,8 @@ class DeltaRequestLoop: AbstractRequestLoop {
                                    WebimActions.Parameter.event.rawValue: WebimActions.Event.initialization.rawValue,
                                    WebimActions.Parameter.location.rawValue: location,
                                    WebimActions.Parameter.platform.rawValue: WebimActions.Platform.ios.rawValue,
-                                   WebimActions.Parameter.respondImmediately.rawValue: String(1), // true
-                                   WebimActions.Parameter.since.rawValue: String(0),
+                                   WebimActions.Parameter.respondImmediately.rawValue: true,
+                                   WebimActions.Parameter.since.rawValue: 0,
                                    WebimActions.Parameter.title.rawValue: title] as [String: Any]
         if let appVersion = appVersion {
             parameterDictionary[WebimActions.Parameter.applicationVersion.rawValue] = appVersion
@@ -280,7 +280,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private func getDeltaParameterString() -> String {
         let currentTimestamp = Int64(CFAbsoluteTimeGetCurrent() * 1000)
         var parameterDictionary = [WebimActions.Parameter.since.rawValue: String(since),
-                                   WebimActions.Parameter.timestamp.rawValue: String(currentTimestamp)] as [String: Any]
+                                   WebimActions.Parameter.timestamp.rawValue: currentTimestamp] as [String: Any]
         if let authorizationData = authorizationData {
             parameterDictionary[WebimActions.Parameter.pageID.rawValue] = authorizationData.getPageID()
             parameterDictionary[WebimActions.Parameter.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()

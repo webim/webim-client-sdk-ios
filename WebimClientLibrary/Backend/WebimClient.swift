@@ -44,6 +44,7 @@ final class WebimClientBuilder {
     private var deviceID: String?
     private var deviceToken: String?
     private var internalErrorListener: InternalErrorListener?
+    private var notFatalErrorHandler: NotFatalErrorHandler?
     private var location: String?
     private var providedAuthenticationToken: String?
     private weak var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
@@ -147,6 +148,12 @@ final class WebimClientBuilder {
         return self
     }
     
+    func set(notFatalErrorHandler: NotFatalErrorHandler?) -> WebimClientBuilder {
+        self.notFatalErrorHandler = notFatalErrorHandler
+        
+        return self
+    }
+    
     func set(prechat:String?) -> WebimClientBuilder {
         self.prechat = prechat
         return self
@@ -163,7 +170,8 @@ final class WebimClientBuilder {
         }
         
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: completionHandlerExecutor,
-                                                  internalErrorListener: internalErrorListener)
+                                                  internalErrorListener: internalErrorListener,
+                                                  notFatalErrorHandler: notFatalErrorHandler)
         
         actionRequestLoop.set(authorizationData: authorizationData)
         

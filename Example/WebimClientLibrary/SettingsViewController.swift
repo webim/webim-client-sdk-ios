@@ -25,6 +25,7 @@
 //
 
 import UIKit
+import Firebase
 
 final class SettingsViewController: UIViewController {
     
@@ -81,6 +82,7 @@ final class SettingsViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
            NotificationCenter.default.removeObserver(
             self,
             name: UIResponder.keyboardWillChangeFrameNotification,
@@ -116,7 +118,7 @@ final class SettingsViewController: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = navigationBarTitleImageViewImage
-        imageView.accessibilityLabel = ChatView.navigationBarAccessibilityLabelText.rawValue.localized
+        imageView.accessibilityLabel = "Webim logo".localized
         imageView.accessibilityTraits = .header
         
         navigationItem.titleView = imageView
@@ -172,7 +174,7 @@ final class SettingsViewController: UIViewController {
             .trimmingCharacters(in: .whitespacesAndNewlines),
             !accountName.isEmpty else {
                 alertDialogHandler.showSettingsAlertDialog(
-                    withMessage: SettingsErrorDialog.wrongAccountName.rawValue.localized
+                    withMessage: "Account name can't be empty".localized
                 )
                 return false
         }
@@ -180,7 +182,7 @@ final class SettingsViewController: UIViewController {
             .trimmingCharacters(in: .whitespacesAndNewlines),
             !location.isEmpty else {
                 alertDialogHandler.showSettingsAlertDialog(
-                    withMessage: SettingsErrorDialog.wrongLocation.rawValue.localized
+                    withMessage: "Location can't be empty".localized
                 )
                 return false
         }
@@ -198,6 +200,7 @@ final class SettingsViewController: UIViewController {
         pageTitle: String?
     ) {
         Settings.shared.accountName = accountName
+        Crashlytics.crashlytics().setCustomValue(accountName, forKey: "AccountName")
         Settings.shared.location = location
         if let pageTitle = pageTitle,
             !pageTitle.isEmpty {

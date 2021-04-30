@@ -77,7 +77,6 @@ final class MessageTableViewCell: UITableViewCell {
         return label
     }()
     
-    
     // MARK: - Initialization
     
     override init(style: UITableViewCell.CellStyle,
@@ -94,7 +93,6 @@ final class MessageTableViewCell: UITableViewCell {
         super.init(coder: aDecoder)
     }
     
-    
     // MARK: - Methods
     
     override func prepareForReuse() {
@@ -109,44 +107,34 @@ final class MessageTableViewCell: UITableViewCell {
         case .actionRequest:
             layoutActionRequest(message: message)
             
-            break
         case .contactInformationRequest:
             layoutOperator(message: message)
             
-            break
         case .fileFromOperator:
             layoutFileFromOperator(message: message)
             
-            break
         case .fileFromVisitor:
             layoutFileFromVisitor(message: message)
             
-            break
         case .info:
             layoutInfo(message: message)
             
-            break
         case .keyboard,
              .keyboardResponse:
             layoutInfo(message: message)
             
-            break
         case .operatorMessage:
             layoutOperator(message: message)
             
-            break
         case .operatorBusy:
             layoutOperatorBusy(message: message)
             
-            break
         case .visitorMessage:
             layoutVisitor(message: message)
             
-            break
         case .stickerVisitor:
             layoutSticker(message: message)
             
-            break
         }
         
         backgroundColor = backgroundTableViewColor.color()

@@ -106,7 +106,7 @@ class SpinningIndicator: UIView {
         let center = CGPoint(x: bounds.midX, y: bounds.midY)
         let radius = min(bounds.width, bounds.height) / 2 - circleLayer.lineWidth / 2
         
-        let startAngle = CGFloat(-Double.pi/2) // -90°
+        let startAngle = CGFloat(-Double.pi / 2) // -90°
         let endAngle = startAngle + CGFloat(Double.pi * 2)
         let path = UIBezierPath(
             arcCenter: CGPoint.zero,

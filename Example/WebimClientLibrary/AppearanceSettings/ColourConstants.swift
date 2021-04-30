@@ -33,6 +33,7 @@ fileprivate let WHITE = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alph
 fileprivate let BLACK = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
 fileprivate let LIGHT_GREY = #colorLiteral(red: 0.8823529412, green: 0.8901960784, blue: 0.9176470588, alpha: 1)
 fileprivate let GREY = #colorLiteral(red: 0.4901960784, green: 0.4980392157, blue: 0.5843137255, alpha: 1)
+fileprivate let NO_CONNECTION_GREY = #colorLiteral(red: 0.4784313725, green: 0.4941176471, blue: 0.5803921569, alpha: 1)
 fileprivate let TRANSLUCENT_GREY = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
 fileprivate let WEBIM_CYAN = #colorLiteral(red: 0.08675732464, green: 0.6737991571, blue: 0.8237424493, alpha: 1)
 fileprivate let WEBIM_PUPRLE = #colorLiteral(red: 0.1529411765, green: 0.1647058824, blue: 0.3058823529, alpha: 1)
@@ -65,7 +66,7 @@ let imageUsernameLabelColourOperator = WHITE
 let imageUsernameLabelBackgroundViewColourOperator = WEBIM_GREY
 let quoteLineViewColourOperator = WEBIM_CYAN
 let quoteUsernameLabelColourOperator = WEBIM_PUPRLE
-///Other
+/// Other
 let quoteBodyLabelColourOperator = GREY
 let dateLabelColour = GREY
 let timeLabelColour = GREY
@@ -137,6 +138,7 @@ let editViewBackgroundColourDefault = GREY
 // StartViewController.swift
 let startViewBackgroundColour = WEBIM_PUPRLE
 let navigationBarBarTintColour = WEBIM_PUPRLE
+let navigationBarNoConnectionColour = NO_CONNECTION_GREY
 let navigationBarTintColour = WHITE
 let welcomeLabelTextColour = WHITE
 let welcomeTextViewTextColour = WHITE

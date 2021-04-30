@@ -28,6 +28,7 @@ import Foundation
 
 // MARK: - Global constants
 fileprivate let DEFAULT_MIME_TYPE = "application/octet-stream"
+// swiftlint:disable colon
 fileprivate let mimeTypes = [
     "html" : "text/html",
     "htm" : "text/html",
@@ -139,6 +140,7 @@ fileprivate let mimeTypes = [
     "numbers" : "application/x-iwork-numbers-sffnumbers"
 ]
 
+// swiftlint:enable colon
 // MARK: -
 struct MimeType {
     

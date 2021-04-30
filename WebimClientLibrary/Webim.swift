@@ -52,6 +52,8 @@ public final class Webim {
      Returns new FAQBuilder object for creating FAQ object.
      - returns:
      The instance of FAQ builder.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -204,6 +206,8 @@ public final class SessionBuilder  {
      Prechat fields in JSON format.
      - returns:
      `SessionBuilder` object with location set.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -291,6 +295,8 @@ public final class SessionBuilder  {
      Optional. Client generated provided authorization token. If it is not passed, library generates its own.
      - seealso:
      `ProvidedAuthorizationTokenStateListener`
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -431,6 +437,8 @@ public final class SessionBuilder  {
      Boolean parameter that indicated if an app should receive remote notifications for different visitors.
      - returns:
      `SessionBuilder` object with isVisitorDataClearingEnabled parameter set.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -795,6 +803,8 @@ public final class SessionBuilder  {
  `FAQ` builder.
  - seealso:
  `Webim.newFAQBuilder()`
+ - attention:
+ This class can't be used as is. It requires that client server to support this mechanism.
  - author:
  Nikita Kaberov
  - copyright:

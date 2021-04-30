@@ -1,222 +1,210 @@
-/* 
-  Localizable.strings
-  WebimClientLibrary
-
-  Created by Nikita Lazarev-Zubov on 11.12.17.
-  Copyright © 2017 Webim. All rights reserved.
- 
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-*/
-
-
-// MARK: - Remote notifications
-
-"P.OA" = "Обращению назначен оператор: %@.";
-"P.OF" = "%@ прислал файл: %@.";
-"P.OM" = "%@ написал сообщение: %@.";
-
-
-// MARK: - StringConstants.swift
-
-// Avatar
-"SenderAvatarImage" = "Изображение аватара отправителя сообщения";
-"ShowsRatingDialog" = "Показывает окно оценки оператора.";
-
-// BackButton
-"Back" = "Закрыть экран";
-"ClosesScreen" = "Закрывает экран и возвращает на предыдущий.";
-
-// CancelButton
-"Cancel" = "Отменить";
-
-// ChatClosedDialog
-"ChatClosed" = "Чат закончен.";
-"OK" = "OK";
-"ClosesRateOperatorError" = "Закрывает окно.";
-
-// CloseChatButton
-"CloseChat" = "Закрыть чат";
-"ClosesChat" = "Закрывает чат не закрывая данный экран.";
-
-// DepartmentListDialog
-"ContactTopic" = "Тема обращения";
-"ChoosesTopic" = "Выбирает данную тему для обращения";
-"Cancel" = "Отмена";
-"ClosesDialog" = "Закрывает окно.";
-
-// FileMessage
-"FileUnavailable" = "Файл недоступен";
-
-// LeftButton
-"ChooseFile" = "Выбрать файл для отправки";
-"ShowsImagePicker" = "Показывает окно выбора изображения для отправки.";
-
-// NoCurrentOperatorErrorMessage
-"NoCurrentOperator" = "Нет доступных операторов";
-"OK" = "OК";
-"NoAvailableOperator" = "Нет оператора для выставления оценки";
-
-// AlertDialog
-"RateSuccessTitle" = "Спасибо!";
-"RateSuccessMessage" = "Вы помогаете нам становиться лучше";
-"OK" = "OK";
-"ClosesRateOperatorError" = "Закрывает окно.";
-
-// RateOperatorErrorMessage
-"OperatorRatingFailed" = "Неудачная попытка оценить оператора";
-"RateOperatorNoChat" = "Этот чат не существует";
-"RateOperatorWrongID" = "Этот оператор не находится в данном чате";
-"RateOperatorLongNote" = "Комментарий к оценке слишком длинный";
-
-// SendFileErrorMessage
-"FileSendingFailed" = "Неудачная попытка отправки файла";
-"ClosesSendFileError" = "Закрывает окно.";
-"FileTooLarge" = "Размер файла превышен";
-"FileTypeNotSupported" = "Данный тип файла не поддерживается";
-"FileNotFound" = "Отправляемый файл не был получен";
-"FileSendingUnknownError" = "Неизвестная ошибка при отправке файла";
-"FileSengingUnauthorized" = "Не удалось загрузить файл: посетитель не авторизован";
-"MaxFilesCountExceeded" = "Превышено максимальное число отправляемых файлов для сообщения";
-"FileTooSmall" = "Размер файла слишком мал";
-
-// SendMessageErrorMessage
-"SendMessageFailed" = "Неудачная попытка отправки сообщения";
-"MessageIsEmpty" = "Отправляемое сообщение является пустым";
-"MaxMessageLengthExceeded" = "Превышена максимальная длина сообщения";
-
-// EditMessageErrorMessage
-"EditMessageFailed" = "Неудачная попытка редактирования сообщения";
-"EditMessageUnknownError" = "Неизвестная ошибка при редактировании сообщения";
-"EditingMessagesIsTurnedOffOnTheServer" = "Редактирование сообщений отключено на сервере";
-"EditingMessageIsEmpty" = "Редактируемое сообщение является пустым";
-"MessageNotOwnedByVisitor" = "Сообщение не принадлежит посетителю";
-"MaxMessageLengthExceeded" = "Превышена максимальная длина сообщения";
-"WrongMessageKind" = "Неправильный тип сообщения (не текст)";
-
-// DeleteMessageErrorMessage
-"DeleteMessageFailed" = "Неудачная попытка удаления сообщения";
-"DeleteMessageUnknownError" = "Неизвестная ошибка при удалении сообщения";
-"DeletingMessagesIsTurnedOffOnTheServer" = "Удаление сообщений отключено на сервере";
-"MessageNotOwnedByVisitor" = "Сообщение не принадлежит посетителю";
-"MessageNotFound" = "Сообщение не найдено";
-
-// SendKeyboardRequestErrorMessage
-"SendKeyboardRequestFailed" = "Неудачная попытка отправки запроса клавиатуры";
-"SendKeyboardRequestUnknownError" = "Неизвестная ошибка при отправке запроса клавиатуры";
-"ChatDoesNotExist" = "Чат не существует";
-"WrongButtonID" = "Неправильный ID кнопки в запросе";
-"WrongMessageID" = "Неправильный ID сообщения в запросе";
-"ResponseCannotBeCreated" = "Ответ не может быть создан для данного запроса";
-
-// SessionCreationErrorDialog
-"ClosesSessionError" = "Закрывает окно.";
-"SessionCreationFailed" = "Неудачная попытка создания сессии";
+//Main.storyboard
+"* Account name can't be empty." = "* Это поле не может быть пустым";
+//Main.storyboard
+"* Location can't be empty." = "* Это поле не может быть пустым";
+//Main.storyboard
+"99" = "99";
+//SettingsViewController.swift
+"Account name can't be empty" = "Название учетной записи не может быть пустым";
+//Main.storyboard
+"Account name text field" = "Текстовое поле названия учетной записи";
+//Main.storyboard
+"Account name*" = "Название аккаунта*";
+//WebimService.swift
 "AccountBlocked" = "Учетная запись, с помощью которой была произведена попытка начать сессию, заблокирован. Пожалуйста, обратитесь в службу поддержки \"Webim\" или используйте другую учетную запись.";
-"VisitorBanned" = "Ваша учетная запись посетителя находится в черном списке.";
-
-// SettingsErrorDialog
-"ClosesSettingsError" = "Закрывает окно.";
-"InvalidSettings" = "Неверные данные учетной записи";
-"AccountNameEmpty" = "Название учетной записи не может быть пустым";
-"LocationEmpty" = "Значение размещения не может быть пустым";
-
-// ShowFileDialog
-"ImageFormatInvalid" = "Неверный формат изображения";
-"ImageLinkInvalid" = "Ссылка недействительна";
-"PreviewUnavailable" = "Просмотр недоступен";
-"ClosesFilePreview" = "Закрывает окно.";
-
-// StartView
-"WelcomeTitle" = "Добро пожаловать в демо приложение WebimClientLibrary!";
-"WelcomeText" = "Чтобы начать чат, нажмите кнопку ниже.\n\nОператор может ответить в Ваш чат по ссылке:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код этого приложения может быть найден по ссылке:\nhttps://github.com/webim/webim-client-sdk-ios";
-"StartChat" = "Начать чат";
-"Settings" = "Настройки";
-
-// TableView
-"EmptyChat" = "Отправьте первое сообщение, чтобы начать чат.";
-
-// ChatTableView
-"LoadMessages" = "Сообщения загружаются...";
-
-// ChatView
-"HardcodedVisitorMessageName" = "Вы";
-"EditMessage" = "Редактирование";
-"InputPlaceholderText" = "Сообщение";
-"AccessibilityTextWebimLogo" = "Логотип Вебим";
-
-// FileView
-"LoadingFile" = "Загружаем файл...";
-
-// PopupActions
-"Reply" = "Ответить";
-"Copy" = "Копировать";
-"Edit" = "Изменить";
-"Delete" = "Удалить";
-
-// RatingDialogView
-"RateOperator" = "Пожалуйста, оцените работу оператора";
-
-// SavingImageDialog
-"OK" = "ОК";
-"SaveError" = "Ошибка сохранения";
-"SaveErrorMessage" = "Нет доступа к сохранению изображений на устройстве. Предоставьте доступ в настройках приложения.";
-"ErrorButtonTitle" = "Перейти в настройки";
-"Saved" = "Сохранено!";
-"ImageSaved" = "Изображение было сохранено в Вашу фотогалерею";
-
-// SavingFileDialog
-"OK" = "ОК";
-"SaveError" = "Ошибка сохранения";
-"ErrorButtonTitle" = "Перейти в настройки";
-"SaveFileErrorMessage" = "Нет доступа к сохранению файлов на устройстве. Предоставьте доступ в настройках приложения.";
-"Saved" = "Сохранено!";
-"FileSaved" = "Файл было сохранено на устройстве в приложении Файлы";
-
-// LoadingFileDialog
-"OK" = "ОК";
-"LoadError" = "Ошибка загрузки";
-
-// OperatorStatus
-"NoOperator" = "Webim демо-чат";
-"OperatorsOffline" = "Нет оператора";
-"Online" = "В сети";
-"IsTyping" = "печатает";
-
-// FilePicker
+//Main.storyboard
+"Back" = "Закрыть экран";
+//FilePicker.swift
 "Camera" = "Камера";
-"PhotoLibrary" = "Фотогалерея";
+//FilePicker.swift
+"Camera access is required to make full use of this app" = "Требуется доступ к камере для полноценного использования приложения";
+//FilePicker.swift
+"Camera is not available" = "Камера недоступна";
+//FilePicker.swift,UIAlertHandler.swift
 "Cancel" = "Отменить";
-"File" = "Документ";
-"CameraIsNotAvailable" = "Камера недоступна";
-"OK" = "ОК";
-"CameraAccessTitle" = "Необходим доступ к камере";
-"CameraAccessMessage" = "Требуется доступ к камере для полноценного использования приложения";
-"CameraAccessOpenSettings" = "Открыть настройки приложения";
-"CameraAccessCancel" = "Отменить";
-
-// MessageStatus
-"EditedMessage" = "изменено";
-
-// FlexibleCellDate
-"DateToday" = "Сегодня";
-"DateYesterday" = "Вчера";
-
-// UploadingFileDescription
-"UploadingFile" = "Отправка файла";
+//ChatTableViewController.swift
+"Chat does not exist" = "Чат не существует";
+//UIAlertHandler.swift
+"Chat finished." = "Чат закончен.";
+//ConnectionErrorView.xib
+"Connection error" = "Отсутствует подключение";
+//UIAlertHandler.swift
+"Contact topic" = "Тема обращения";
+//FlexibleTableViewCell.swift
 "Counting" = "Подсчет";
+//ChatTableViewController.swift
+"Delete message unknown error" = "Неизвестная ошибка при удалении сообщения";
+//ChatTableViewController.swift
+"Deleting messages is turned off on the server" = "Удаление сообщений отключено на сервере";
+//ChatViewController.swift
+"Edit Message" = "Редактирование";
+//ChatTableViewController.swift
+"Edit message unknown error" = "Неизвестная ошибка при редактировании сообщения";
+//ChatTableViewController.swift
+"Editing message is empty" = "Редактируемое сообщение является пустым";
+//ChatTableViewController.swift
+"Editing messages is turned off on the server" = "Редактирование сообщений отключено на сервере";
+//ChatTableViewController.swift
+"Failed to upload file: visitor is not logged in" = "Не удалось загрузить файл: посетитель не авторизован";
+//ChatTableViewController.swift
+"Fetching more messages..." = "Сообщения загружаются...";
+//FilePicker.swift
+"File" = "Документ";
+//ChatTableViewController.swift
+"File is too large." = "Размер файла превышен";
+//ChatTableViewController.swift
+"File is too small" = "Размер файла слишком мал";
+//ChatTableViewController.swift
+"File sending failed" = "Неудачная попытка отправки файла";
+//ChatTableViewController.swift
+"File type is not supported" = "Данный тип файла не поддерживается";
+//ChatTableViewController.swift
+"Find sending unknown error" = "Неизвестная ошибка при отправке файла";
+//UIAlertHandler.swift
+"Go to Settings" = "Перейти в настройки";
+//Main.storyboard
+"Greeting title" = "Приветственное заглавие";
+//Main.storyboard
+"Greeting words" = "Приветственные слова";
+//ChatViewController.swift,FlexibleTableViewCell.swift
+"HardcodedVisitorMessageName" = "Вы";
+//Main.storyboard
+"If you are registered in Webim service you can use your own account name and location." = "Если Вы зарегистрированы в сервисе Webim, тогда можете использовать собственное название аккаунта и размещение.";
+//UIAlertHandler.swift
+"InvalidSettings" = "Неверные данные учетной записи";
+//UIAlertHandler.swift
+"LoadError" = "Ошибка загрузки";
+//FileViewController.swift,Main.storyboard
+"Loading File..." = "Загружаем файл...";
+//SettingsViewController.swift
+"Location can't be empty" = "Значение размещения не может быть пустым";
+//Main.storyboard
+"Location text field" = "Текстовое поле размещения";
+//Main.storyboard
+"Location*" = "Размещение*";
+//ChatTableViewController.swift
+"MaxFilesCountExceeded" = "Превышено максимальное число отправляемых файлов для сообщения";
+//ChatTableViewController.swift
+"MaxMessageLengthExceeded" = "Превышена максимальная длина сообщения";
+//ChatViewController.swift
+"Message" = "Сообщение";
+//ChatTableViewController.swift
+"Message deleting failed" = "Неудачная попытка удаления сообщения";
+//ChatTableViewController.swift
+"Message editing failed" = "Неудачная попытка редактирования сообщения";
+//ChatTableViewController.swift
+"Message not found" = "Сообщение не найдено";
+//ChatTableViewController.swift
+"Message not owned by visitor" = "Сообщение не принадлежит посетителю";
+//FilePicker.swift
+"Need camera access" = "Необходим доступ к камере";
+//ChatViewController.swift
+"No agent" = "Нет оператора";
+//UIAlertHandler.swift
+"No agents available" = "Нет доступных операторов";
+//ChatTableViewController.swift
+"Note for rate is too long" = "Комментарий к оценке слишком длинный";
+//FilePicker.swift,UIAlertHandler.swift
+"OK" = "ОК";
+//ChatTableViewController.swift,ChatViewController.swift
+"Online" = "В сети";
+//FilePicker.swift
+"Open app settings" = "Открыть настройки приложения";
+//ChatTableViewController.swift
+"Operator rating failed" = "Неудачная попытка оценить оператора";
+//AdditionalKeys.swift
+"P.OA" = "Обращению назначен оператор: %@.";
+//AdditionalKeys.swift
+"P.OF" = "%@ прислал файл: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ написал сообщение: %@.";
+//Main.storyboard
+"Page title" = "Название экрана чата";
+//Main.storyboard
+"Page title text field" = "Текстовое поле названия экрана чата";
+//FilePicker.swift
+"Photo Library" = "Фотогалерея";
+//RatingDialogViewController.swift
+"Please rate the agent" = "Пожалуйста, оцените работу оператора";
+//ChatTableViewController.swift
+"RateOperatorWrongID" = "Этот оператор не находится в данном чате";
+//ChatTableViewController.swift
+"Response cannot be created for this request" = "Ответ не может быть создан для данного запроса";
+//Main.storyboard
+"Save" = "Сохранить";
+//UIAlertHandler.swift
+"Save error" = "Ошибка сохранения";
+//UIAlertHandler.swift
+"SaveError" = "SaveError";
+//UIAlertHandler.swift
+"SaveErrorMessage" = "Нет доступа к сохранению изображений на устройстве. Предоставьте доступ в настройках приложения.";
+//UIAlertHandler.swift
+"SaveFileErrorMessage" = "Нет доступа к сохранению файлов на устройстве. Предоставьте доступ в настройках приложения.";
+//UIAlertHandler.swift
+"Saved!" = "Сохранено!";
+//Main.storyboard
+"Saves current settings and shows start screen." = "Сохраняет текущие настройки и возвращает к начальной странице.";
+//ChatTableViewController.swift
+"Send first message to start chat." = "Отправьте первое сообщение, чтобы начать чат.";
+//ChatTableViewController.swift
+"Send keyboard request failed" = "Неудачная попытка отправки запроса клавиатуры";
+//ChatTableViewController.swift
+"Send keyboard request unknown error" = "Неизвестная ошибка при отправке запроса клавиатуры";
+//ChatTableViewController.swift
+"Sending files in body is not supported" = "Отправляемый файл не был получен";
+//UIAlertHandler.swift
+"Session creation failed" = "Неудачная попытка создания сессии";
+//Main.storyboard
+"Settings" = "Настройки";
+//Main.storyboard
+"Shows settings." = "Показывает настройки.";
+//Main.storyboard
+"Start chat" = "Начать чат";
+//Main.storyboard
+"Starts chat." = "Начинает чат.";
+//ChatTableViewController.swift
+"Thank you!" = "Спасибо!";
+//UIAlertHandler.swift
+"The file has been saved to your device in Files App" = "Файл было сохранено на устройстве в приложении Файлы";
+//UIAlertHandler.swift
+"The image has been saved to your photos" = "Изображение было сохранено в Вашу фотогалерею";
+//UIAlertHandler.swift
+"There is no current agent to rate" = "Нет оператора для выставления оценки";
+//ChatTableViewController.swift
+"This chat does not exist" = "Этот чат не существует";
+//Main.storyboard
+"To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "Для того, чтобы начать чат, нажмите на кнопку ниже.\n\nПринять чат со стороны оператора вы можете на странице:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код данного приложения вы можете найти по адресу:\nhttps://github.com/webim/webim-client-sdk-ios";
+//FlexibleTableViewCell.swift
+"Today" = "Сегодня";
+//FlexibleTableViewCell.swift
+"Uploading file" = "Отправка файла";
+//ChatTableViewController.swift,ChatViewController.swift
+"Webim demo-chat" = "Webim демо-чат";
+//SettingsViewController.swift
+"Webim logo" = "Логотип Вебим";
+//Main.storyboard
+"Welcome to the WebimClientLibrary demo app!" = "Добро пожаловать в демо-приложение Webim Mobile SDK!";
+//ChatTableViewController.swift
+"Wrong button ID in request" = "Неправильный ID кнопки в запросе";
+//ChatTableViewController.swift
+"Wrong message ID in request" = "Неправильный ID сообщения в запросе";
+//ChatTableViewController.swift
+"Wrong message kind (not text)" = "Неправильный тип сообщения (не текст)";
+//FlexibleTableViewCell.swift
+"Yesterday" = "Вчера";
+//ChatTableViewController.swift
+"You are helping us to become better" = "Вы помогаете нам становиться лучше";
+//WebimService.swift
+"Your visitor account is in the black list." = "Ваша учетная запись посетителя находится в черном списке.";
+//FlexibleTableViewCell.swift
+"edited" = "изменено";
+//Main.storyboard
+"iOS demo app" = "iOS demo app";
+//Main.storyboard
+"mobile" = "mobile";
+//ChatTableViewController.swift,ChatViewController.swift
+"typing" = "печатает";
+//Main.storyboard
+"wmtest" = "wmtest";
+//LaunchScreen.storyboard,LaunchScreenController.storyboard
+"© 2020 Webim.ru Inc. All rights reserved." = "© 2020 Webim.ru Inc. All rights reserved.";

@@ -35,7 +35,7 @@ class ChatViewController: UIViewController {
     private var alreadyPutTextFromBufferString = false
     private var textInputTextViewBufferString: String?
     
-    private weak var containerChatTableViewController: ChatTableViewController?
+    weak var chatTableViewController: ChatTableViewController?
     
     private lazy var filePicker = FilePicker(
         presentationController: self,
@@ -47,7 +47,7 @@ class ChatViewController: UIViewController {
     private let fileButtonLeadingSpacing: CGFloat = 20
     private let fileButtonTrailingSpacing: CGFloat = 10
     private let textInputBackgroundViewTopBottomSpacing: CGFloat = 8
-
+    
     // MARK: - Outletls
     @IBOutlet weak var tableViewControllerContainerView: UIView!
     @IBOutlet weak var bottomBarBackgroundView: UIView!
@@ -75,6 +75,8 @@ class ChatViewController: UIViewController {
         view.animationDuration = 0.5
         return view
     }()
+    
+    private var connectionErrorView: UIView!
     
     // Bottom bar
     lazy var separatorView: UIView = {
@@ -124,11 +126,14 @@ class ChatViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
         
         if let vc = segue.destination as? ChatTableViewController {
-            containerChatTableViewController = vc
+            self.chatTableViewController = vc
+            chatTableViewController = vc
+            vc.chatViewController = self
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(
             self, selector: #selector(keyboardWillChange),
             name: UIResponder.keyboardWillChangeFrameNotification,
@@ -192,6 +197,8 @@ class ChatViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         setupKeyboard()
         
         setupNavigationBar()
@@ -200,52 +207,8 @@ class ChatViewController: UIViewController {
         setupScrollButton()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldShowQuoteEditBar,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldHideQuoteEditBar,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldShowScrollButton,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldHideScrollButton,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldCopyMessage,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldDeleteMessage,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldChangeOperatorStatus,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldUpdateOperatorInfo,
-            object: nil
-        )
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Methods
@@ -297,7 +260,7 @@ class ChatViewController: UIViewController {
                 
                 self.view.layoutIfNeeded()
                 if keyboardHeight > 0 {
-                    self.containerChatTableViewController?.scrollToBottom(animated: false)
+                    self.chatTableViewController?.scrollToBottom(animated: false)
                 }
             },
             completion: nil
@@ -311,10 +274,10 @@ class ChatViewController: UIViewController {
     
     private func setupTitleView() {
         // TitleView
-        titleViewOperatorNameLabel.text = OperatorStatus.noOperator.rawValue.localized
+        titleViewOperatorNameLabel.text = "Webim demo-chat".localized
         titleViewOperatorNameLabel.textColor = .white
         titleViewOperatorNameLabel.highlightedTextColor = .lightGray
-        titleViewOperatorStatusLabel.text = OperatorStatus.allOperatorsOffline.rawValue.localized
+        titleViewOperatorStatusLabel.text = "No agent".localized
         titleViewOperatorStatusLabel.textColor = .white
         titleViewOperatorStatusLabel.highlightedTextColor = .lightGray
         
@@ -399,7 +362,7 @@ class ChatViewController: UIViewController {
         let status = operatorStatus["Status"]
         
         DispatchQueue.main.async {
-            if status == OperatorStatus.isTyping.rawValue.localized {
+            if status == "typing".localized {
                 let offsetX = self.titleViewTypingIndicator.frame.width / 2
                 self.titleViewTypingIndicator.addAllAnimations()
                 self.titleViewOperatorStatusLabel.snp.remakeConstraints { (make) -> Void in
@@ -431,10 +394,10 @@ class ChatViewController: UIViewController {
         DispatchQueue.main.async {
             self.titleViewOperatorNameLabel.text = operatorName
             
-            if operatorName == OperatorStatus.noOperator.rawValue.localized {
-                self.titleViewOperatorStatusLabel.text = OperatorStatus.allOperatorsOffline.rawValue.localized
+            if operatorName == "Webim demo-chat".localized {
+                self.titleViewOperatorStatusLabel.text = "No agent".localized
             } else {
-                self.titleViewOperatorStatusLabel.text = OperatorStatus.online.rawValue.localized
+                self.titleViewOperatorStatusLabel.text = "Online".localized
             }
             
             if operatorAvatarURL == OperatorAvatar.empty.rawValue {
@@ -500,8 +463,16 @@ class ChatViewController: UIViewController {
             }
         }
     }
+    private func configureNetworkErrorView() {
+        
+        self.connectionErrorView = tableViewControllerContainerView.loadViewFromNib("ConnectionErrorView")
+        self.connectionErrorView.frame = CGRect(x: 0, y: 0, width: tableViewControllerContainerView.frame.width, height: 25)
+        self.connectionErrorView.alpha = 0
+        tableViewControllerContainerView.addSubview(connectionErrorView)
+    }
     
     private func configureSubviews() {
+        configureNetworkErrorView()
         // tableViewControllerContainerView
         view.addSubview(tableViewControllerContainerView)
         tableViewControllerContainerView.snp.remakeConstraints { (make) -> Void in
@@ -550,7 +521,7 @@ class ChatViewController: UIViewController {
         
         // textInputTextViewPlaceholderLabel
         textInputBackgroundView.addSubview(textInputTextViewPlaceholderLabel)
-        textInputTextViewPlaceholderLabel.text = ChatView.textInputPlaceholderText.rawValue.localized
+        textInputTextViewPlaceholderLabel.text = "Message".localized
         textInputTextViewPlaceholderLabel.textColor = textInputViewPlaceholderLabelTextColour
         textInputTextViewPlaceholderLabel.backgroundColor = textInputViewPlaceholderLabelBackgroundColour
         textInputTextViewPlaceholderLabel.snp.remakeConstraints { (make) -> Void in
@@ -558,7 +529,7 @@ class ChatViewController: UIViewController {
                 .inset(10)
             if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
                 make.trailing.equalToSuperview()
-                    .inset(10+30)
+                    .inset(10 + 30)
             } else {
                 make.trailing.equalToSuperview()
                     .inset(10)
@@ -567,7 +538,7 @@ class ChatViewController: UIViewController {
                 .inset(12)
         }
         
-        //textInputButton
+        // textInputButton
         textInputBackgroundView.addSubview(textInputButton)
         textInputButton.setBackgroundImage(textInputButtonImage, for: .normal)
         textInputButton.addTarget(
@@ -628,37 +599,30 @@ class ChatViewController: UIViewController {
     @objc
     private func sendMessage(_ sender: UIButton) { // Right button pressed
         if !textInputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            if var text: String =  textInputTextView.text {
+            if var text: String = textInputTextView.text {
                 text = text.trimWhitespacesIn()
                 if bottomBarQuoteBackgroundView.isDescendant(of: self.view) {
                     // If bottomBarQuoteBackgroundView is a subview of self.view
                     // (i.e. is visible and present on the screen)
                     
                     if bottomBarQuoteUsernameLabel.text ==
-                        ChatView.editMessageText.rawValue.localized {
+                        "Edit Message".localized {
                         // Edit mode
                         if text.trimmingCharacters(in: .whitespacesAndNewlines) !=
                             bottomBarQuoteBodyLabel.text?
                                 .trimmingCharacters(in: .whitespacesAndNewlines) {
-                            containerChatTableViewController?.editMessage(text)
+                            chatTableViewController?.editMessage(text)
                         }
                     } else {
-                        containerChatTableViewController?.replyToMessage(text)
+                        chatTableViewController?.replyToMessage(text)
                     }
                     removeQuoteEditBar()
                 } else {
-                    containerChatTableViewController?.sendMessage(text)
+                    chatTableViewController?.sendMessage(text)
                 }
                 
                 if !alreadyPutTextFromBufferString {
-                    textInputTextView.text = ""
-                    // Workaround to trigger textViewDidChange
-                    textInputTextView.replace(
-                        textInputTextView.textRange(
-                            from: textInputTextView.beginningOfDocument,
-                            to: textInputTextView.endOfDocument) ?? UITextRange(),
-                            withText: ""
-                    )
+                    textInputTextView.updateText("")
                 } else {
                     alreadyPutTextFromBufferString = false
                 }
@@ -666,7 +630,7 @@ class ChatViewController: UIViewController {
                 return
             }
         }
-        containerChatTableViewController?.selectedCellRow = nil
+        chatTableViewController?.selectedCellRow = nil
     }
     
     @objc
@@ -679,7 +643,7 @@ class ChatViewController: UIViewController {
         guard let actions = sender.userInfo as? [String: PopupAction] else { return }
         let action = actions["Action"]
         
-        guard let message = containerChatTableViewController?.getSelectedMessage()
+        guard let message = chatTableViewController?.getSelectedMessage()
         else { return }
         
         // Save text from input text view if there was some
@@ -697,7 +661,7 @@ class ChatViewController: UIViewController {
             make.top.bottom.equalToSuperview()
                 .inset(textInputBackgroundViewTopBottomSpacing)
             // TODO: Check this
-            //make.bottom.equalToSuperview()
+            // make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
                 .inset(
                     fileButtonLeadingSpacing +
@@ -711,12 +675,12 @@ class ChatViewController: UIViewController {
         
         if action == .reply {
             if message.getSenderName() == "Посетитель" {
-                bottomBarQuoteUsernameLabel.text = ChatView.hardcodedVisitorMessageName.rawValue.localized
+                bottomBarQuoteUsernameLabel.text = "HardcodedVisitorMessageName".localized
             } else {
                 bottomBarQuoteUsernameLabel.text = message.getSenderName()
             }
         } else {
-            bottomBarQuoteUsernameLabel.text = ChatView.editMessageText.rawValue.localized
+            bottomBarQuoteUsernameLabel.text = "Edit Message".localized
             textInputTextView.text = message.getText()
             hidePlaceholderIfVisible()
         }
@@ -899,7 +863,7 @@ class ChatViewController: UIViewController {
         // bottomBarQuoteBackgroundView
         bottomBarBackgroundView.addSubview(bottomBarQuoteBackgroundView)
         
-        containerChatTableViewController?.scrollToBottom(animated: true)
+        chatTableViewController?.scrollToBottom(animated: true)
         textInputTextView.becomeFirstResponder()
     }
 
@@ -913,7 +877,7 @@ class ChatViewController: UIViewController {
             userInfo: typingDraftDictionary
         )
         
-        if bottomBarQuoteUsernameLabel.text == ChatView.editMessageText.rawValue.localized {
+        if bottomBarQuoteUsernameLabel.text == "Edit Message".localized {
             // Edit mode
             bottomBarQuoteUsernameLabel.text = ""
             if !textInputTextView.text.isEmpty {
@@ -923,15 +887,7 @@ class ChatViewController: UIViewController {
                     textInputTextViewBufferString = nil
                     alreadyPutTextFromBufferString = true
                 }
-                
-                textInputTextView.text = newText
-                // Workaround to trigger textViewDidChange
-                textInputTextView.replace(
-                    textInputTextView.textRange(
-                        from: textInputTextView.beginningOfDocument,
-                        to: textInputTextView.endOfDocument) ?? UITextRange(),
-                    withText: newText
-                )
+                textInputTextView.updateText(newText)
             }
         }
         
@@ -966,12 +922,12 @@ class ChatViewController: UIViewController {
     
     @objc
     private func copyMessage(sender: Notification) {
-        containerChatTableViewController?.copyMessage()
+        chatTableViewController?.copyMessage()
     }
     
     @objc
     private func deleteMessage(sender: Notification) {
-        containerChatTableViewController?.deleteMessage()
+        chatTableViewController?.deleteMessage()
     }
     
     private func setupScrollButton() {
@@ -1004,7 +960,7 @@ class ChatViewController: UIViewController {
     
     @objc
     private func scrollTableView(_ sender: UIButton) {
-        containerChatTableViewController?.scrollToBottom(animated: true)
+        chatTableViewController?.scrollToBottom(animated: true)
     }
     
     @objc
@@ -1024,7 +980,19 @@ class ChatViewController: UIViewController {
             }
         }
     }
+    
+    public func setConnectionStatus(connected: Bool) {
+        DispatchQueue.main.async {
+            if connected {
+                self.navigationController?.navigationBar.barTintColor = navigationBarBarTintColour
+            } else {
+                self.navigationController?.navigationBar.barTintColor = navigationBarNoConnectionColour
+            }
+            self.connectionErrorView?.alpha = connected ? 0 : 1
+        }
+    }
 }
+
 // MARK: - UI methods
 extension ChatViewController {
     func createUILabel(
@@ -1072,13 +1040,13 @@ extension ChatViewController {
 // MARK: - UITextViewDelegate methods
 extension ChatViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        if bottomBarQuoteUsernameLabel.text != ChatView.editMessageText.rawValue.localized {
+        if bottomBarQuoteUsernameLabel.text != "Edit Message".localized {
             // If in edit mode, don't setTypingDraft
             let typingDraftDictionary = ["DraftText": textView.text]
             NotificationCenter.default.post(
                 name: .shouldSetVisitorTypingDraft,
                 object: nil,
-                userInfo: typingDraftDictionary as [AnyHashable : Any]
+                userInfo: typingDraftDictionary as [AnyHashable: Any]
             )
         }
         
@@ -1107,7 +1075,7 @@ extension ChatViewController: FilePickerDelegate {
         
         guard let imageToSend = image else { return }
         
-        containerChatTableViewController?.sendImage(
+        chatTableViewController?.sendImage(
             image: imageToSend,
             imageURL: imageURL
         )
@@ -1117,7 +1085,7 @@ extension ChatViewController: FilePickerDelegate {
         
         guard let fileToSend = file else { return }
         
-        containerChatTableViewController?.sendFile(
+        chatTableViewController?.sendFile(
             file: fileToSend,
             fileURL: fileURL
         )

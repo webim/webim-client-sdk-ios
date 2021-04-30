@@ -53,6 +53,7 @@ class SettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        WebimServiceController.shared.stopSession()
         accountNameTextField.text = Settings.shared.accountName
         locationTextField.text = Settings.shared.location
         pageTitleTextField.text = Settings.shared.pageTitle
@@ -94,13 +95,13 @@ class SettingsTableViewController: UITableViewController {
     func scrollToBottom(animated: Bool) {
         let row = (tableView.numberOfRows(inSection: 0)) - 1
         let bottomMessageIndex = IndexPath(row: row, section: 0)
-        tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: animated)
+        tableView.scrollToRowSafe(at: bottomMessageIndex, at: .bottom, animated: animated)
     }
     
     @objc
     func scrollToTop(animated: Bool) {
         let indexPath = IndexPath(row: 0, section: 0)
-        self.tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
+        self.tableView.scrollToRowSafe(at: indexPath, at: .top, animated: animated)
     }
     
     // MARK: - Private Methods
@@ -123,7 +124,7 @@ class SettingsTableViewController: UITableViewController {
             withDuration: 0.2,
             animations: {
                 hintLabel?.alpha = 0.0
-                editView!.backgroundColor = editViewBackgroundColourEditing
+                editView?.backgroundColor = editViewBackgroundColourEditing
             }
         )
     }
@@ -152,10 +153,10 @@ class SettingsTableViewController: UITableViewController {
                 if let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                     text.isEmpty {
                     hintLabel?.alpha = 1.0
-                    editView!.backgroundColor = editViewBackgroundColourError
+                    editView?.backgroundColor = editViewBackgroundColourError
                 } else {
                     hintLabel?.alpha = 0.0
-                    editView!.backgroundColor = editViewBackgroundColourDefault
+                    editView?.backgroundColor = editViewBackgroundColourDefault
                 }
             }
         )

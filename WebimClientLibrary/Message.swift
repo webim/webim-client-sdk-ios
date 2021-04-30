@@ -132,6 +132,8 @@ public protocol Message {
     /**
      - returns:
      The sticker item that was sent to the server.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Yury Vozleev
      - copyright:
@@ -287,6 +289,8 @@ public protocol MessageData {
  Contains an attachment file.
  - seealso:
  `MessageData.getAttachment()`
+ - attention:
+ This mechanism can't be used as is. It requires that client server to support this mechanism.
  - author:
  Yury Vozleev
  - copyright:
@@ -359,6 +363,8 @@ public protocol MessageAttachment {
  Shows the state of the attachment.
  - seealso:
  `MessageAttachment.getState()`
+ - attention:
+ This mechanism can't be used as is. It requires that client server to support this mechanism.
  - author:
  Yury Vozleev
  - copyright:
@@ -801,6 +807,8 @@ public protocol Quote {
  Contains information about sticker.
  - seealso:
  `Message.getSticker()`
+ - attention:
+ This mechanism can't be used as is. It requires that client server to support this mechanism.
  - author:
  Yury Vozleev
  - copyright:

@@ -34,6 +34,17 @@ extension String {
                                  comment: "")
     }
 
+    func substring(_ nsrange: NSRange) -> Substring? {
+        guard let range = Range(nsrange, in: self) else { return nil }
+        return self[range]
+    }
+    
+    func addHttpsPrefix() -> String {
+        if self.lowercased().hasPrefix("https://") || self.lowercased().hasPrefix("http://") {
+            return self
+        }
+        return "https://" + self
+    }
 }
 
 // MARK: -
@@ -45,9 +56,12 @@ extension String {
         
         let checkingTypes: NSTextCheckingResult.CheckingType = [.link]
         if let linksDetector = try? NSDataDetector(types: checkingTypes.rawValue) {
+            
+            // swiftlint:disable legacy_constructor
             let linkMatches = linksDetector.matches(in: self,
                                                     range: NSMakeRange(0,
                                                                        self.count))
+            // swiftlint:enable legacy_constructor
             if !linkMatches.isEmpty {
                 var position = 0
                 
@@ -64,8 +78,8 @@ extension String {
                         position = linkMatchRange.location + linkMatchRange.length
                         
                         let urlString = url.absoluteString.removingPercentEncoding
-                        if urlString != nil {
-                            convertedString += urlString!
+                        if let urlString = urlString {
+                            convertedString += urlString
                         } else {
                             let linkStringSliceRangeStart = self.index(self.startIndex,
                                                                        offsetBy: linkMatchRange.location)

@@ -29,6 +29,8 @@ import Foundation
 
 /**
  FAQ category contains pages with some information and subcategories.
+ - attention:
+ This mechanism can't be used as is. It requires that client server to support this mechanism.
  - author:
  Nikita Kaberov
  - copyright:

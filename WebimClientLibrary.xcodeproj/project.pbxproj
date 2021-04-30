@@ -265,9 +265,9 @@
 		8FD2427C200CDB18007EB9CB /* WebimClientLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */,
 				8FD24465200CE25A007EB9CB /* Backend */,
 				8FD2449A200CE25B007EB9CB /* Implementation */,
+				8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */,
 				8FD24461200CE259007EB9CB /* Department.swift */,
 				8FD244A4200CE25B007EB9CB /* FatalErrorHandler.swift */,
 				CE6A6979220C731600B11E29 /* FAQ.swift */,

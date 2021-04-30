@@ -59,7 +59,7 @@ class CurrentChatMapperTests: XCTestCase {
         
         XCTAssertEqual(message.getType(),
                        MessageType.operatorMessage)
-        XCTAssertNil(message.getAttachment())
+        XCTAssertNil(message.getData()?.getAttachment())
         XCTAssertEqual(message.getText(),
                        "42")
         XCTAssertNil(message.getRawText())
@@ -92,7 +92,7 @@ class HistoryMapperTests: XCTestCase {
         
         XCTAssertEqual(message.getType(),
                        MessageType.operatorMessage)
-        XCTAssertNil(message.getAttachment())
+        XCTAssertNil(message.getData()?.getAttachment())
         XCTAssertEqual(message.getText(),
                        "42")
         XCTAssertNil(message.getRawText())

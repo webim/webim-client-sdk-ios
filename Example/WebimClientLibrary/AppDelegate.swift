@@ -24,8 +24,7 @@
 //  SOFTWARE.
 //
 
-import Crashlytics
-import Fabric
+import Firebase
 import UIKit
 import WebimClientLibrary
 import UserNotifications
@@ -45,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        Fabric.with([Crashlytics.self])
+        FirebaseApp.configure()
         
         // Remote notifications configuration
         let notificationTypes: UNAuthorizationOptions = [.alert,
@@ -53,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                          .sound]
         UNUserNotificationCenter.current().requestAuthorization(options: notificationTypes) { (granted, error) in
             if granted {
-                //application.registerUserNotificationSettings(remoteNotificationSettings)
+                // application.registerUserNotificationSettings(remoteNotificationSettings)
                 DispatchQueue.main.async {
                     application.registerForRemoteNotifications()
                     application.applicationIconBadgeNumber = 0
