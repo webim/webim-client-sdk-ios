@@ -911,6 +911,7 @@ final class QuoteImpl: Quote {
     private let messageType: MessageType?
     private let senderName: String?
     private let text: String?
+    private let rawText: String?
     private let timestamp: Int64?
     
     init(state: QuoteState,
@@ -920,6 +921,7 @@ final class QuoteImpl: Quote {
          messageType: MessageType?,
          senderName: String?,
          text: String?,
+         rawText: String?,
          timestamp: Int64?) {
         self.state = state
         self.authorID = authorID
@@ -928,21 +930,31 @@ final class QuoteImpl: Quote {
         self.messageType = messageType
         self.senderName = senderName
         self.text = text
+        self.rawText = rawText
         self.timestamp = timestamp
     }
     
     // MARK: - Methods
-    static func getQuote(quoteItem: QuoteItem?, messageAttachment: FileInfo?) -> Quote? {
+    static func getQuote(quoteItem: QuoteItem?, messageAttachment: FileInfo?, fileUrlCreator: FileUrlCreator? = nil) -> Quote? {
         guard let quoteItem = quoteItem else {
             return nil
         }
         var text = quoteItem.getText()
-        if let messageAttachment = messageAttachment {
-            text = messageAttachment.getFileName()
-        }
+        let rawText = quoteItem.getText()
         var messageType: MessageType? = nil
         if let messageKind = quoteItem.getMessageKind() {
             messageType = MessageMapper.convert(messageKind: messageKind)
+        }
+        var quoteMessageAttachment = messageAttachment
+        if let messageAttachment = messageAttachment {
+            text = messageAttachment.getFileName()
+        } else if messageType == .fileFromOperator || messageType == .fileFromVisitor,
+           let fileUrlCreator = fileUrlCreator,
+           let rawText = text {
+            quoteMessageAttachment = FileInfoImpl.getAttachment(byFileUrlCreator: fileUrlCreator, text: rawText)
+            if let quoteMessageAttachment = quoteMessageAttachment {
+                text = quoteMessageAttachment.getFileName()
+            }
         }
         guard let quoteState = quoteItem.getState() else {
             WebimInternalLogger.shared.log(entry: "Quote Item has not State in KeyboardRequestImpl.\(#function)")
@@ -951,12 +963,17 @@ final class QuoteImpl: Quote {
         
         return QuoteImpl(state: convert(quoteState: quoteState),
                          authorID: quoteItem.getAuthorID(),
-                         messageAttachment: messageAttachment,
+                         messageAttachment: quoteMessageAttachment,
                          messageID: quoteItem.getID(),
                          messageType: messageType,
                          senderName: quoteItem.getSenderName(),
                          text: text,
+                         rawText: rawText,
                          timestamp: quoteItem.getTimeInMicrosecond())
+    }
+    
+    func getRawText() -> String? {
+        return rawText
     }
     
     func getAuthorID() -> String? {

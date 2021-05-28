@@ -43,7 +43,7 @@ class MessageMapper {
     
     // MARK: - Properties
     private let serverURLString: String
-    private weak var fileUrlCreator: FileUrlCreator?
+    private var fileUrlCreator: FileUrlCreator?
     
     // MARK: - Initialization
     init(withServerURLString serverURLString: String) {
@@ -327,6 +327,7 @@ final class SendingFactory {
                                               messageType: repliedMessage.getType(),
                                               senderName: repliedMessage.getSenderName(),
                                               text: repliedMessage.getText(),
+                                              rawText: repliedMessage.getText(),
                                               timestamp: Int64(repliedMessage.getTime().timeIntervalSince1970 * 1000)))
     }
 

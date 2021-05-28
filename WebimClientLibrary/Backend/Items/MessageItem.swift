@@ -389,6 +389,7 @@ final class QuoteItem {
     }
     
     static func toDictionary(quote: Quote) -> [String: Any] {
+        
         var messageDictionary = [String : Any]()
         if let authorId = quote.getAuthorID() {
             messageDictionary[JSONField.authorId.rawValue] = authorId
@@ -401,6 +402,10 @@ final class QuoteItem {
         }
         if let text = quote.getMessageText() {
             messageDictionary[JSONField.text.rawValue] = text
+        }
+        if quote.getMessageAttachment() != nil,
+           let quoteImpl = quote as? QuoteImpl {
+            messageDictionary[JSONField.text.rawValue] = quoteImpl.getRawText()
         }
         if let messageType = quote.getMessageType() {
             messageDictionary[JSONField.kind.rawValue] = MessageItem.MessageKind(messageType: messageType).rawValue
