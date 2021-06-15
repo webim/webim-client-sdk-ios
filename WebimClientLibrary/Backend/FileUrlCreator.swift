@@ -69,7 +69,7 @@ final class FileUrlCreator {
                 WebimInternalLogger.shared.log(entry: "Adding Percent Encoding With Allowed Characters failure in MessageImpl.\(#function)",
                                                verbosityLevel: .warning)
             }
-            let fileURLString = serverURL + WebimActions.ServerPathSuffix.downloadFile.rawValue + "/"
+            let fileURLString = serverURL + ServerPathSuffix.downloadFile.rawValue + "/"
                 + guid + "/"
                 + formatedFilename + "?"
                 + "page-id" + "=" + pageID + "&"

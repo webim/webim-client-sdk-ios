@@ -73,7 +73,7 @@ class ProjectParser: NSObject {
     static func updateXibTranslations(projectFolderPath: String, xibKeysMap: XibFileData, translations: Translations, xibTranslations: XibTranslations ) {
         let stringsFiles = StringsFileParser.filesList(inFolder: projectFolderPath, withSuffix: ".strings")
         for filePath in stringsFiles {
-            if !filePath.hasSuffix("Localizable.strings")  && !filePath.hasSuffix("InfoPlist.strings"){
+            if !filePath.hasSuffix("Localizable.strings") && !filePath.hasSuffix("InfoPlist.strings") {
                 
                 let locale = filePath.getLocale()
                 let filename = filePath.nameWithoutExtension().lastPathComponent
@@ -94,7 +94,6 @@ class ProjectParser: NSObject {
                 }
                 fileString.writeToFile(filePath)
             }
-            
         }
     }
     
@@ -104,7 +103,6 @@ class ProjectParser: NSObject {
         let stringsFiles = StringsFileParser.filesList(inFolder: projectFolderPath, withSuffix: "Localizable.strings")
         for filePath in stringsFiles.reversed() {
             
-            print(filePath)
             let locale = filePath.getLocale()
             
             let text = ShellWrapper.readUTF8File(filePath)
@@ -161,10 +159,30 @@ class ProjectParser: NSObject {
         }
     }
     
+    static func checkLocalizationForEveryUIFile(_ projectFolderPath: String, files: [String]) {
+        let ignoredUIFiles = ["LaunchScreen", "LaunchScreenController"]
+        let stringsFiles = StringsFileParser.filesList(inFolder: projectFolderPath, withSuffix: ".strings")
+        
+        for file in files {
+            
+            if file.nameWithoutExtension().lastPathComponent.presentAsSuffixInArray(ignoredUIFiles) {
+                continue
+            }
+            
+            if !("/" + file.nameWithoutExtension().lastPathComponent + ".strings").presentAsSuffixInArray(stringsFiles) {
+                print("!!! file not localized \(file) ")
+                fatalError()
+            }
+            
+        }
+    }
+    
     static func getAllXibKeys(projectFolderPath: String, codeKeys: inout [CodeKey: [FileName]], xibKeysMap: inout XibFileData) {
         let xibFiles = StringsFileParser.filesList(inFolder: projectFolderPath, withSuffix: ".xib")
         let storyboardFiles = StringsFileParser.filesList(inFolder: projectFolderPath, withSuffix: ".storyboard")
         let UIFiles = xibFiles + storyboardFiles
+        
+        self.checkLocalizationForEveryUIFile(projectFolderPath, files: UIFiles)
         
         for file in UIFiles {
             

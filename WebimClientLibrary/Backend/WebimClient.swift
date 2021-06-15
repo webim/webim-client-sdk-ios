@@ -218,7 +218,7 @@ final class WebimClientBuilder {
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
-                           webimActions: WebimActions(baseURL: baseURL,
+                           webimActions: WebimActionsImpl(baseURL: baseURL,
                                                       actionRequestLoop: actionRequestLoop))
     }
     

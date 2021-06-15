@@ -165,6 +165,8 @@ struct MimeType {
 func isImage(contentType: String) -> Bool {
     return ((contentType == "image/gif")
         || (contentType == "image/jpeg")
+        || (contentType == "image/x-ms-bmp")
+        || (contentType == "image/webp")
         || (contentType == "image/png")
         || (contentType == "image/tiff"))
 }

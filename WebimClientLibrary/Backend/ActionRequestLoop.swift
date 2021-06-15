@@ -107,8 +107,8 @@ class ActionRequestLoop: AbstractRequestLoop {
             }
             
             var parameterDictionary = request.getPrimaryData()
-            parameterDictionary[WebimActions.Parameter.pageID.rawValue] = usedAuthorizationData.getPageID()
-            parameterDictionary[WebimActions.Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
+            parameterDictionary[Parameter.pageID.rawValue] = usedAuthorizationData.getPageID()
+            parameterDictionary[Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
             let parametersString = parameterDictionary.stringFromHTTPParameters()
             
             var urlRequest: URLRequest?

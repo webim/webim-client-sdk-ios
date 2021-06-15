@@ -91,4 +91,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Handle another type of remote notification.
         }
     }
+    
+    static var keyboardWindow: UIWindow? {
+        
+        let windows = UIApplication.shared.windows
+        if let keyboardWindow = windows.first(where: { NSStringFromClass($0.classForCoder) == "UIRemoteKeyboardWindow" }) {
+          return keyboardWindow
+        }
+        return nil
+    }
+    
+    static func keyboardHidden(_ hidden: Bool) {
+        DispatchQueue.main.async {
+            AppDelegate.keyboardWindow?.isHidden = hidden
+        }
+    }
 }

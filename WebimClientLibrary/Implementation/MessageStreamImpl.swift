@@ -537,7 +537,8 @@ extension MessageStreamImpl: MessageStream {
                           mimeType: mimeType,
                           clientSideID: messageID,
                           completionHandler: SendFileCompletionHandlerWrapper(sendFileCompletionHandler: completionHandler,
-                                                                              messageHolder: messageHolder))
+                                                                              messageHolder: messageHolder),
+                          uploadFileToServerCompletionHandler: nil)
         
         return messageID
     }
@@ -607,7 +608,7 @@ extension MessageStreamImpl: MessageStream {
         webimActions.send(file: file,
                           filename: filename,
                           mimeType: mimeType,
-                          clientSideID: messageID,
+                          clientSideID: messageID, completionHandler: nil,
                           uploadFileToServerCompletionHandler: completionHandler)
         
         return messageID
@@ -687,9 +688,9 @@ extension MessageStreamImpl: MessageStream {
                               clientSideID: id,
                               dataJSONString: nil,
                               isHintQuestion: false,
-                              editMessageCompletionHandler: EditMessageCompletionHandlerWrapper(editMessageCompletionHandler: completionHandler,
-                                                                                                messageHolder: messageHolder,
-                                                                                                message: oldMessage))
+                              dataMessageCompletionHandler: nil, editMessageCompletionHandler: EditMessageCompletionHandlerWrapper(editMessageCompletionHandler: completionHandler,
+                                                                                                                                   messageHolder: messageHolder,
+                                                                                                                                   message: oldMessage), sendMessageCompletionHandler: nil)
             return true
         }
         return false
@@ -833,7 +834,7 @@ extension MessageStreamImpl: MessageStream {
                           dataJSONString: dataJSONString,
                           isHintQuestion: isHintQuestion,
                           dataMessageCompletionHandler: DataMessageCompletionHandlerWrapper(dataMessageCompletionHandler: dataMessageCompletionHandler,
-                                                                                            messageHolder: messageHolder),
+                                                                                            messageHolder: messageHolder), editMessageCompletionHandler: nil,
                           sendMessageCompletionHandler: SendMessageCompletionHandlerWrapper(sendMessageCompletionHandler: sendMessageComplitionHandler, messageHolder: messageHolder))
         
         return messageID

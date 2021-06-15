@@ -46,7 +46,7 @@ class MessageStreamImplTests: XCTestCase {
         let accessChecker = AccessChecker(thread: Thread.current,
                                           sessionDestroyer: sessionDestroyer)
         let queue = DispatchQueue.main
-        webimActions = WebimActions(baseURL: serverURLString,
+        webimActions = WebimActionsImpl(baseURL: serverURLString,
                                     actionRequestLoop: ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                                                                               queue: queue),
                                                                                  internalErrorListener: InternalErrorListenerForTests()))

@@ -147,7 +147,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestInitialization() {
         let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.34.6", forHTTPHeaderField: WebimActions.Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.35.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -241,37 +241,37 @@ class DeltaRequestLoop: AbstractRequestLoop {
     // MARK: Private methods
     
     private func getDeltaServerURLString() -> String {
-        return (baseURL + WebimActions.ServerPathSuffix.getDelta.rawValue)
+        return (baseURL + ServerPathSuffix.getDelta.rawValue)
     }
     
     private func getInitializationParameterString() -> String {
-        var parameterDictionary = [WebimActions.Parameter.deviceID.rawValue: deviceID,
-                                   WebimActions.Parameter.event.rawValue: WebimActions.Event.initialization.rawValue,
-                                   WebimActions.Parameter.location.rawValue: location,
-                                   WebimActions.Parameter.platform.rawValue: WebimActions.Platform.ios.rawValue,
-                                   WebimActions.Parameter.respondImmediately.rawValue: true,
-                                   WebimActions.Parameter.since.rawValue: 0,
-                                   WebimActions.Parameter.title.rawValue: title] as [String: Any]
+        var parameterDictionary = [Parameter.deviceID.rawValue: deviceID,
+                                   Parameter.event.rawValue: Event.initialization.rawValue,
+                                   Parameter.location.rawValue: location,
+                                   Parameter.platform.rawValue: Platform.ios.rawValue,
+                                   Parameter.respondImmediately.rawValue: true,
+                                   Parameter.since.rawValue: 0,
+                                   Parameter.title.rawValue: title] as [String: Any]
         if let appVersion = appVersion {
-            parameterDictionary[WebimActions.Parameter.applicationVersion.rawValue] = appVersion
+            parameterDictionary[Parameter.applicationVersion.rawValue] = appVersion
         }
         if let deviceToken = deviceToken {
-            parameterDictionary[WebimActions.Parameter.deviceToken.rawValue] = deviceToken
+            parameterDictionary[Parameter.deviceToken.rawValue] = deviceToken
         }
         if let sessionID = sessionID {
-            parameterDictionary[WebimActions.Parameter.visitSessionID.rawValue] = sessionID
+            parameterDictionary[Parameter.visitSessionID.rawValue] = sessionID
         }
         if let visitorJSONString = visitorJSONString {
-            parameterDictionary[WebimActions.Parameter.visitor.rawValue] = visitorJSONString
+            parameterDictionary[Parameter.visitor.rawValue] = visitorJSONString
         }
         if let visitorFieldsJSONString = visitorFieldsJSONString {
-            parameterDictionary[WebimActions.Parameter.visitorExt.rawValue] = visitorFieldsJSONString
+            parameterDictionary[Parameter.visitorExt.rawValue] = visitorFieldsJSONString
         }
         if let providedAuthenticationToken = providedAuthenticationToken {
-            parameterDictionary[WebimActions.Parameter.providedAuthenticationToken.rawValue] = providedAuthenticationToken
+            parameterDictionary[Parameter.providedAuthenticationToken.rawValue] = providedAuthenticationToken
         }
         if let prechat = prechat {
-            parameterDictionary[WebimActions.Parameter.prechat.rawValue] = prechat
+            parameterDictionary[Parameter.prechat.rawValue] = prechat
         }
         
         return parameterDictionary.stringFromHTTPParameters()
@@ -279,11 +279,11 @@ class DeltaRequestLoop: AbstractRequestLoop {
     
     private func getDeltaParameterString() -> String {
         let currentTimestamp = Int64(CFAbsoluteTimeGetCurrent() * 1000)
-        var parameterDictionary = [WebimActions.Parameter.since.rawValue: String(since),
-                                   WebimActions.Parameter.timestamp.rawValue: currentTimestamp] as [String: Any]
+        var parameterDictionary = [Parameter.since.rawValue: String(since),
+                                   Parameter.timestamp.rawValue: currentTimestamp] as [String: Any]
         if let authorizationData = authorizationData {
-            parameterDictionary[WebimActions.Parameter.pageID.rawValue] = authorizationData.getPageID()
-            parameterDictionary[WebimActions.Parameter.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
+            parameterDictionary[Parameter.pageID.rawValue] = authorizationData.getPageID()
+            parameterDictionary[Parameter.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
         }
         
         return parameterDictionary.stringFromHTTPParameters()

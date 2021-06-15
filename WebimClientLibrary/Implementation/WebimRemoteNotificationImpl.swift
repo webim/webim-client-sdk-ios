@@ -59,6 +59,7 @@ final class WebimRemoteNotificationImpl {
         case operatorFile = "P.OF"
         case operatorMessage = "P.OM"
         case widget = "P.WM"
+        case rateOperator = "P.RO"
     }
     
     // MARK: - Properties
@@ -139,6 +140,8 @@ extension WebimRemoteNotificationImpl: WebimRemoteNotification {
             return .operatorMessage
         case .widget:
             return .widget
+        case .rateOperator:
+            return .rateOperator
         }
     }
     

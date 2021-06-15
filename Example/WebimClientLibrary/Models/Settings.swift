@@ -65,10 +65,18 @@ final class Settings {
             self.location = DefaultSettings.location.rawValue
             self.pageTitle = DefaultSettings.pageTitle.rawValue
         }
+        validateData()
+    }
+    
+    func validateData() {
+        if !"https://\(accountName).webim.ru/".validateURLString() {
+            self.accountName = "demo"
+        }
     }
     
     // MARK: - Methods
     func save() {
+        validateData()
         let settings = [
             UserDefaultsKey.accountName.rawValue: accountName,
             UserDefaultsKey.location.rawValue: location,

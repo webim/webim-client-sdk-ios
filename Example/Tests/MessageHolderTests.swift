@@ -228,7 +228,7 @@ class MessageHolderTests: XCTestCase {
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                   internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(baseURL: MessageImplMockData.serverURLString.rawValue,
+        let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
                                         actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),

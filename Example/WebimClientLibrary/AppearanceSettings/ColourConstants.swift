@@ -36,7 +36,8 @@ fileprivate let GREY = #colorLiteral(red: 0.4901960784, green: 0.4980392157, blu
 fileprivate let NO_CONNECTION_GREY = #colorLiteral(red: 0.4784313725, green: 0.4941176471, blue: 0.5803921569, alpha: 1)
 fileprivate let TRANSLUCENT_GREY = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
 fileprivate let WEBIM_CYAN = #colorLiteral(red: 0.08675732464, green: 0.6737991571, blue: 0.8237424493, alpha: 1)
-fileprivate let WEBIM_PUPRLE = #colorLiteral(red: 0.1529411765, green: 0.1647058824, blue: 0.3058823529, alpha: 1)
+fileprivate let WEBIM_PUPRLE = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
+fileprivate let WEBIM_DARK_PUPRLE = #colorLiteral(red: 0.1529411765, green: 0.1647058824, blue: 0.3058823529, alpha: 1)
 fileprivate let WEBIM_LIGHT_PURPLE = #colorLiteral(red: 0.4117647059, green: 0.4235294118, blue: 0.568627451, alpha: 1)
 fileprivate let WEBIM_RED = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
 fileprivate let WEBIM_GREY = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
@@ -58,19 +59,19 @@ let quoteUsernameLabelColourVisitor = WHITE
 let quoteBodyLabelColourVisitor = LIGHT_GREY
 /// Operator
 let messageUsernameLabelColourOperator = WEBIM_CYAN
-let messageBodyLabelColourOperator = WEBIM_PUPRLE
+let messageBodyLabelColourOperator = WEBIM_DARK_PUPRLE
 let messageBackgroundViewColourOperator = WHITE
-let documentFileNameLabelColourOperator = WEBIM_PUPRLE
+let documentFileNameLabelColourOperator = WEBIM_DARK_PUPRLE
 let documentFileDescriptionLabelColourOperator = GREY
 let imageUsernameLabelColourOperator = WHITE
 let imageUsernameLabelBackgroundViewColourOperator = WEBIM_GREY
 let quoteLineViewColourOperator = WEBIM_CYAN
-let quoteUsernameLabelColourOperator = WEBIM_PUPRLE
+let quoteUsernameLabelColourOperator = WEBIM_DARK_PUPRLE
 /// Other
 let quoteBodyLabelColourOperator = GREY
 let dateLabelColour = GREY
 let timeLabelColour = GREY
-let messageStatusIndicatorColour = WEBIM_PUPRLE.cgColor
+let messageStatusIndicatorColour = WEBIM_DARK_PUPRLE.cgColor
 let documentFileStatusPercentageIndicatorColour = WEBIM_CYAN.cgColor
 let buttonDefaultBackgroundColour = WHITE
 let buttonChoosenBackgroundColour = WEBIM_CYAN
@@ -79,16 +80,11 @@ let buttonDefaultTitleColour = WEBIM_CYAN
 let buttonChoosenTitleColour = WHITE
 let buttonCanceledTitleColour = WEBIM_GREY
 
-// RatingDialogViewController.swift
-let ratingDialogOperatorNameLabelColour = WEBIM_PUPRLE
-let ratingDialogTitleLabelColour = WEBIM_LIGHT_PURPLE
-let ratingDialogBackgroundColour = TRANSLUCENT_GREY
-let ratingDialogWhiteBackgroudColour = WHITE
-
+// RateStarsViewController.swift
 let cosmosViewFilledColour = WEBIM_CYAN
 let cosmosViewFilledBorderColour = WEBIM_CYAN
-let cosmosViewEmptyColour = CLEAR
-let cosmosViewEmptyBorderColour = GREY
+let cosmosViewEmptyColour = LIGHT_GREY
+let cosmosViewEmptyBorderColour = LIGHT_GREY
 
 // PopupActionTableViewCell.swift
 let actionColourCommon = WHITE
@@ -106,12 +102,12 @@ let textInputViewPlaceholderLabelTextColour = GREY
 let textInputViewPlaceholderLabelBackgroundColour = CLEAR
 
 // ChatTableViewController.swift
-let refreshControlTextColour = WEBIM_PUPRLE
-let refreshControlTintColour = WEBIM_PUPRLE
+let refreshControlTextColour = WEBIM_DARK_PUPRLE
+let refreshControlTintColour = WEBIM_DARK_PUPRLE
 
 // ImageViewController.swift
 // FileViewController.swift
-let topBarTintColourDefault = WEBIM_PUPRLE
+let topBarTintColourDefault = WEBIM_DARK_PUPRLE
 let topBarTintColourClear = CLEAR
 
 // PopupActionViewController.swift
@@ -128,16 +124,16 @@ let saveButtonBorderColour = BLACK.cgColor
 
 // SettingsTableViewController.swift
 let tableViewBackgroundColour = WHITE
-let labelTextColour = WEBIM_PUPRLE
-let textFieldTextColour = WEBIM_PUPRLE
-let textFieldTintColour = WEBIM_PUPRLE
+let labelTextColour = WEBIM_DARK_PUPRLE
+let textFieldTextColour = WEBIM_DARK_PUPRLE
+let textFieldTintColour = WEBIM_DARK_PUPRLE
 let editViewBackgroundColourEditing = WEBIM_CYAN
 let editViewBackgroundColourError = WEBIM_RED
 let editViewBackgroundColourDefault = GREY
 
 // StartViewController.swift
-let startViewBackgroundColour = WEBIM_PUPRLE
-let navigationBarBarTintColour = WEBIM_PUPRLE
+let startViewBackgroundColour = WEBIM_DARK_PUPRLE
+let navigationBarBarTintColour = WEBIM_DARK_PUPRLE
 let navigationBarNoConnectionColour = NO_CONNECTION_GREY
 let navigationBarTintColour = WHITE
 let welcomeLabelTextColour = WHITE
@@ -150,4 +146,4 @@ let settingsButtonTitleColour = WHITE
 let settingButtonBorderColour = GREY.cgColor
 
 // UITableView extension
-let textMainColour = WEBIM_PUPRLE
+let textMainColour = WEBIM_DARK_PUPRLE

@@ -3,4 +3,6 @@
 // MARK: - Remote notifications
 // "P.OA".localized
 // "P.OF".localized
+// "P.RO".localized
+// "P.CR".localized
 // "P.OM".localized

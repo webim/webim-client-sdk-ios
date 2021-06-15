@@ -4,8 +4,12 @@
 "* Location can't be empty." = "* Это поле не может быть пустым";
 //Main.storyboard
 "99" = "99";
+//SurveyCommentViewController.xib,SurveyRadioButtonViewController.xib,SurveyTableViewCell.xib
+"<this text will be replaced>" = "<this text will be replaced>";
 //SettingsViewController.swift
 "Account name can't be empty" = "Название учетной записи не может быть пустым";
+//SettingsViewController.swift
+"Account name has invalid characters" = "Название учетной записи содержит недопустимые символы";
 //Main.storyboard
 "Account name text field" = "Текстовое поле названия учетной записи";
 //Main.storyboard
@@ -26,6 +30,8 @@
 "Chat does not exist" = "Чат не существует";
 //UIAlertHandler.swift
 "Chat finished." = "Чат закончен.";
+//ChatTableViewController+Surveys.swift
+"Comment is too long" = "Слишком большой комментарий";
 //ConnectionErrorView.xib
 "Connection error" = "Отсутствует подключение";
 //UIAlertHandler.swift
@@ -44,6 +50,10 @@
 "Editing message is empty" = "Редактируемое сообщение является пустым";
 //ChatTableViewController.swift
 "Editing messages is turned off on the server" = "Редактирование сообщений отключено на сервере";
+//SurveyCommentViewController.xib
+"Enter your comment" = "Введите текст комментария";
+//ChatTableViewController+Surveys.swift
+"Failed to send survey answer" = "Не удалось отправить ответ на опрос";
 //ChatTableViewController.swift
 "Failed to upload file: visitor is not logged in" = "Не удалось загрузить файл: посетитель не авторизован";
 //ChatTableViewController.swift
@@ -70,6 +80,12 @@
 "HardcodedVisitorMessageName" = "Вы";
 //Main.storyboard
 "If you are registered in Webim service you can use your own account name and location." = "Если Вы зарегистрированы в сервисе Webim, тогда можете использовать собственное название аккаунта и размещение.";
+//ChatTableViewController+Surveys.swift
+"Incorrect radio value" = "Неправильное значение опроса";
+//ChatTableViewController+Surveys.swift
+"Incorrect stars value" = "Неправильное значение рейтинга";
+//ChatTableViewController+Surveys.swift
+"Incorrect survey ID" = "Неправильный ID опроса";
 //UIAlertHandler.swift
 "InvalidSettings" = "Неверные данные учетной записи";
 //UIAlertHandler.swift
@@ -86,7 +102,7 @@
 "MaxFilesCountExceeded" = "Превышено максимальное число отправляемых файлов для сообщения";
 //ChatTableViewController.swift
 "MaxMessageLengthExceeded" = "Превышена максимальная длина сообщения";
-//ChatViewController.swift
+//ChatViewController+UIView.swift
 "Message" = "Сообщение";
 //ChatTableViewController.swift
 "Message deleting failed" = "Неудачная попытка удаления сообщения";
@@ -98,11 +114,13 @@
 "Message not owned by visitor" = "Сообщение не принадлежит посетителю";
 //FilePicker.swift
 "Need camera access" = "Необходим доступ к камере";
-//ChatViewController.swift
+//ChatViewController+UIView.swift,ChatViewController.swift
 "No agent" = "Нет оператора";
 //UIAlertHandler.swift
 "No agents available" = "Нет доступных операторов";
-//ChatTableViewController.swift
+//ChatTableViewController+Surveys.swift
+"No current survey" = "Опрос не существует";
+//ChatTableViewController+Surveys.swift
 "Note for rate is too long" = "Комментарий к оценке слишком длинный";
 //FilePicker.swift,UIAlertHandler.swift
 "OK" = "ОК";
@@ -110,23 +128,31 @@
 "Online" = "В сети";
 //FilePicker.swift
 "Open app settings" = "Открыть настройки приложения";
-//ChatTableViewController.swift
+//ChatTableViewController+Surveys.swift
 "Operator rating failed" = "Неудачная попытка оценить оператора";
+//AdditionalKeys.swift
+"P.CR" = "Оператор запросил контактные данные.";
 //AdditionalKeys.swift
 "P.OA" = "Обращению назначен оператор: %@.";
 //AdditionalKeys.swift
 "P.OF" = "%@ прислал файл: %@.";
 //AdditionalKeys.swift
 "P.OM" = "%@ написал сообщение: %@.";
+//AdditionalKeys.swift
+"P.RO" = "Оцените оператора.";
 //Main.storyboard
 "Page title" = "Название экрана чата";
 //Main.storyboard
 "Page title text field" = "Текстовое поле названия экрана чата";
 //FilePicker.swift
 "Photo Library" = "Фотогалерея";
-//RatingDialogViewController.swift
-"Please rate the agent" = "Пожалуйста, оцените работу оператора";
-//ChatTableViewController.swift
+//RateStarsViewController.swift,RateStarsViewController.xib
+"Please rate the overall impression of the consultation" = "Пожалуйста, оцените общие впечатления от консультации";
+//ChatTableViewController+Surveys.swift
+"Question not found" = "Вопрос не найден";
+//RateStarsViewController.xib
+"Rate Operator" = "Оценить оператора";
+//ChatTableViewController+Surveys.swift
 "RateOperatorWrongID" = "Этот оператор не находится в данном чате";
 //ChatTableViewController.swift
 "Response cannot be created for this request" = "Ответ не может быть создан для данного запроса";
@@ -144,7 +170,9 @@
 "Saved!" = "Сохранено!";
 //Main.storyboard
 "Saves current settings and shows start screen." = "Сохраняет текущие настройки и возвращает к начальной странице.";
-//ChatTableViewController.swift
+//RateStarsViewController.xib,SurveyCommentViewController.xib,SurveyRadioButtonViewController.xib
+"Send" = "Отправить";
+//ChatTableViewController+UITableView.swift
 "Send first message to start chat." = "Отправьте первое сообщение, чтобы начать чат.";
 //ChatTableViewController.swift
 "Send keyboard request failed" = "Неудачная попытка отправки запроса клавиатуры";
@@ -162,23 +190,27 @@
 "Start chat" = "Начать чат";
 //Main.storyboard
 "Starts chat." = "Начинает чат.";
-//ChatTableViewController.swift
-"Thank you!" = "Спасибо!";
+//ChatTableViewController+Surveys.swift
+"Survey disabled" = "Опрос отключен";
+//WMThanksAlertView.xib
+"Thanks!" = "Спасибо!";
 //UIAlertHandler.swift
 "The file has been saved to your device in Files App" = "Файл было сохранено на устройстве в приложении Файлы";
 //UIAlertHandler.swift
 "The image has been saved to your photos" = "Изображение было сохранено в Вашу фотогалерею";
 //UIAlertHandler.swift
 "There is no current agent to rate" = "Нет оператора для выставления оценки";
-//ChatTableViewController.swift
+//ChatTableViewController+Surveys.swift
 "This chat does not exist" = "Этот чат не существует";
 //Main.storyboard
 "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "Для того, чтобы начать чат, нажмите на кнопку ниже.\n\nПринять чат со стороны оператора вы можете на странице:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код данного приложения вы можете найти по адресу:\nhttps://github.com/webim/webim-client-sdk-ios";
 //FlexibleTableViewCell.swift
 "Today" = "Сегодня";
+//ChatTableViewController+Surveys.swift
+"Unknown error" = "Неизвестная ошибка";
 //FlexibleTableViewCell.swift
 "Uploading file" = "Отправка файла";
-//ChatTableViewController.swift,ChatViewController.swift
+//ChatTableViewController.swift,ChatViewController+UIView.swift,ChatViewController.swift
 "Webim demo-chat" = "Webim демо-чат";
 //SettingsViewController.swift
 "Webim logo" = "Логотип Вебим";
@@ -192,10 +224,12 @@
 "Wrong message kind (not text)" = "Неправильный тип сообщения (не текст)";
 //FlexibleTableViewCell.swift
 "Yesterday" = "Вчера";
-//ChatTableViewController.swift
-"You are helping us to become better" = "Вы помогаете нам становиться лучше";
+//WMThanksAlertView.xib
+"Your feedback will help us become better" = "Ваш отзыв поможет нам стать лучше";
 //WebimService.swift
 "Your visitor account is in the black list." = "Ваша учетная запись посетителя находится в черном списке.";
+//SurveyCommentViewController.xib
+"comment" = "комментарий";
 //FlexibleTableViewCell.swift
 "edited" = "изменено";
 //Main.storyboard
@@ -207,4 +241,4 @@
 //Main.storyboard
 "wmtest" = "wmtest";
 //LaunchScreen.storyboard,LaunchScreenController.storyboard
-"© 2020 Webim.ru Inc. All rights reserved." = "© 2020 Webim.ru Inc. All rights reserved.";
+"© 2021 Webim.ru Inc. All rights reserved." = "© 2021 Webim.ru Inc. All rights reserved.";

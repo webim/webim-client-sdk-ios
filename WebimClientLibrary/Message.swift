@@ -454,6 +454,16 @@ public protocol FileInfo {
     func getSize() -> Int64?
     
     /**
+     - returns:
+     Attachment file GUID.
+     - author:
+     Evgenii Loshchenko
+     - copyright:
+     2021 Webim
+     */
+    func getGuid() -> String?
+    
+    /**
      - important:
      Notice that this URL is short-living and is tied to a session.
      - returns:

@@ -142,7 +142,8 @@ class MessageMapper {
                         data = MessageDataImpl(
                             attachment: MessageAttachmentImpl(fileInfo: fileInfoImpl,
                                                               filesInfo: attachments,
-                                                              state: .upload))
+                                                              state: .upload,
+                                                              downloadProgress: file.getDownloadProgress()))
                     }
                 }
             }

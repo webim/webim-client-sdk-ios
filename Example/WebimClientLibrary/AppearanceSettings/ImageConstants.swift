@@ -65,3 +65,7 @@ let replyImage = #imageLiteral(resourceName: "ActionReply")
 let copyImage = #imageLiteral(resourceName: "ActionCopy")
 let editImage = #imageLiteral(resourceName: "ActionEdit")
 let deleteImage = #imageLiteral(resourceName: "ActionDelete").colour(actionColourDelete)
+
+// SurveyRadioButtonViewController.swift
+let selectedSurveyPoint = #imageLiteral(resourceName: "selectedSurveyPoint")
+let unselectedSurveyPoint = #imageLiteral(resourceName: "unselectedSurveyPoint")

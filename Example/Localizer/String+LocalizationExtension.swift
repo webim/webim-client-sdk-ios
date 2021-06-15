@@ -74,4 +74,17 @@ extension String {
             print("Failed writing to URL: \(fileUrl), Error: " + error.localizedDescription)
         }
     }
+    
+    func contains(find: String) -> Bool {
+        return self.range(of: find) != nil
+    }
+    
+    func presentAsSuffixInArray(_ strings: [String]) -> Bool {
+        for string in strings {
+            if string.hasSuffix(self) {
+                return true
+            }
+        }
+        return false
+    }
 }

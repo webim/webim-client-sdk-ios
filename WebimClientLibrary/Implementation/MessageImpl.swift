@@ -641,6 +641,10 @@ extension FileInfoImpl: FileInfo {
         return size
     }
     
+    func getGuid() -> String? {
+        return guid
+    }
+    
     func getURL() -> URL? {
         guard let urlString = self.urlString else {
             WebimInternalLogger.shared.log(entry: "Getting URL from String failure because URL String is nil in MessageImpl.\(#function)")

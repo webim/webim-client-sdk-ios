@@ -186,6 +186,18 @@ public enum NotificationType {
     
     @available(*, unavailable, renamed: "widget")
     case WIDGET
+    
+    /**
+     This notification type indicated that an operator has sent rate operator widget.
+     Parameters: empty.
+     - important:
+     This type can be received only if server supports this functionality.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    case rateOperator
 }
 
 /**
