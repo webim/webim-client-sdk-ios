@@ -21,8 +21,6 @@
 //FilePicker.swift
 "Camera" = "Camera";
 //FilePicker.swift
-"Camera access is required to make full use of this app" = "Camera access is required to make full use of this app";
-//FilePicker.swift
 "Camera is not available" = "Camera is not available";
 //FilePicker.swift,UIAlertHandler.swift
 "Cancel" = "Cancel";
@@ -210,6 +208,8 @@
 "Unknown error" = "Unknown error";
 //FlexibleTableViewCell.swift
 "Uploading file" = "Uploading file";
+//FilePicker.swift
+"Webim Demo needs permission to access your camera so you can send photos to chat." = "Webim Demo needs permission to access your camera so you can send photos to chat.";
 //ChatTableViewController.swift,ChatViewController+UIView.swift,ChatViewController.swift
 "Webim demo-chat" = "Webim demo-chat";
 //SettingsViewController.swift

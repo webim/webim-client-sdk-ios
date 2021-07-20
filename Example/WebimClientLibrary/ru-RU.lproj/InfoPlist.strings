@@ -24,6 +24,8 @@
   SOFTWARE.
 */
 
-NSCameraUsageDescription = "Это приложение хочет делать снимки";
-NSPhotoLibraryAddUsageDescription = "Это приложение хочет сохранять изображения в Вашу фотогалерею";
-NSPhotoLibraryUsageDescription = "Это приложение хочет иметь доступ к изображениям в Вашей фотогалерее";
+NSCameraUsageDescription = "Чтобы Вы могли отправить фото в чат, Webim Demo требуется доступ к камере.";
+NSPhotoLibraryAddUsageDescription = "Webim Demo требуется доступ к фотогалерее, чтобы Вы могли сохранить изображение из чата.";
+NSPhotoLibraryUsageDescription = "Webim Demo требуется доступ к фотогалерее, чтобы Вы могли отправить изображение в чат.";
+NSFileProviderPresenceUsageDescription = "Webim Demo требуется доступ к документам, чтобы Вы могли отправить или сохранить файл из чата.";
+NSFileProviderDomainUsageDescription = "Webim Demo требуется доступ к документам, чтобы Вы могли отправить или сохранить файл из чата.";

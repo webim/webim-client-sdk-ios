@@ -111,6 +111,14 @@ final class MessageStreamImpl {
                                            to: publicState(ofVisitSessionState: visitSessionState))
     }
     
+    func disableBotButtons() {
+        for message in self.messageHolder.getCurrentChatMessages() {
+            if message.disableBotButtons() {
+                self.messageHolder.changed(message: message)
+            }
+        }
+    }
+    
     func set(onlineStatus: OnlineStatusItem) {
         self.onlineStatus = onlineStatus
     }
@@ -147,6 +155,7 @@ final class MessageStreamImpl {
     
     func changingChatStateOf(chat: ChatItem?) {
         guard let chat = chat else {
+            self.disableBotButtons()
             messageHolder.receiving(newChat: self.chat,
                                     previousChat: nil,
                                     newMessages: [MessageImpl]())
@@ -161,6 +170,14 @@ final class MessageStreamImpl {
             operatorTypingListener?.onOperatorTypingStateChanged(isTyping: false)
             return
         }
+        
+        let newOperator = operatorFactory.createOperatorFrom(operatorItem: chat.getOperator())
+        let newChatState = chat.getState()
+        
+        if newOperator != currentOperator || lastChatState != newChatState {
+            self.disableBotButtons()
+        }
+        
         let previousChat = self.chat
         self.chat = chat
         
@@ -168,7 +185,6 @@ final class MessageStreamImpl {
                                 previousChat: previousChat,
                                 newMessages: currentChatMessageFactoriesMapper.mapAll(messages: chat.getMessages()))
         
-        let newChatState = chat.getState()
         if let newChatState = newChatState {
             // Recieved chat state can be unsupported by the library.
             if lastChatState != newChatState {
@@ -178,7 +194,6 @@ final class MessageStreamImpl {
             lastChatState = newChatState
         }
         
-        let newOperator = operatorFactory.createOperatorFrom(operatorItem: self.chat?.getOperator())
         if newOperator != currentOperator {
             let previousOperator = currentOperator
             currentOperator = newOperator

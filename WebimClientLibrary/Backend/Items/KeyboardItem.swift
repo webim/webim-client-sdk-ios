@@ -44,7 +44,7 @@ struct KeyboardItem {
     
     // MARK: - Properties
     private let buttons: [[KeyboardButtonItem]]
-    private let state: KeyboardState
+    var state: KeyboardState
     private var response: KeyboardResponseItem?
     
     // MARK: - Initialization

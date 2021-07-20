@@ -208,7 +208,7 @@ open class FilePicker: NSObject {
         
         let ac = UIAlertController(
             title: "Need camera access".localized,
-            message: "Camera access is required to make full use of this app".localized,
+            message: "Webim Demo needs permission to access your camera so you can send photos to chat.".localized,
             preferredStyle: .alert
         )
         

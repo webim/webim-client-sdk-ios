@@ -43,15 +43,15 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app wants to take pictures.</string>
+	<string>Webim Demo needs permission to access your camera so you can send photos to chat.</string>
 	<key>NSFileProviderDomainUsageDescription</key>
-	<string>This app wants so get access to read files on your device.</string>
+	<string>Webim Demo needs permission to access your documents folder so you can send files to chat.</string>
 	<key>NSFileProviderPresenceUsageDescription</key>
-	<string>This app wants so get access to read files on your device.</string>
+	<string>Webim Demo needs permission to access your documents folder so you can send files to chat.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app wants so save images to your photo library.</string>
+	<string>Webim Demo needs permission to access your photo library so you can save images from chat.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app wants so get access images to your photo library.</string>
+	<string>Webim Demo needs permission to access your photo library so you can send images to chat.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

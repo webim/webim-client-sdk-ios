@@ -144,12 +144,6 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
         )
     }
     
-    // MARK: - Methods
-    /// Preparation for the future
-    internal func set(messages: [Message]) {
-        self.messages = messages
-    }
-    
     @objc
     private func sendKeyboardRequest(_ notification: Notification) {
         guard let buttonInfoDictionary = notification.userInfo as? [String: String],
@@ -367,7 +361,9 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     @objc
     private func requestMessages() {
         WebimServiceController.currentSession.getNextMessages { [weak self] messages in
-            self?.messages.insert(contentsOf: messages, at: 0)
+            DispatchQueue.main.async {
+                self?.messages.insert(contentsOf: messages, at: 0)
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self?.reloadTableWithNewData()
                 self?.tableView?.scrollToRowSafe(at: IndexPath(row: messages.count, section: 0), at: .middle, animated: false)
@@ -558,8 +554,9 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
         WebimServiceController.currentSession.set(chatStateListener: self)
         WebimServiceController.currentSession.set(surveyListener: self)
         WebimServiceController.currentSession.getLastMessages { [weak self] messages in
-            self?.messages.insert(contentsOf: messages, at: 0)
+            
             DispatchQueue.main.async {
+                self?.messages.insert(contentsOf: messages, at: 0)
                 self?.reloadTableWithNewData()
                 self?.scrollToBottom(animated: false)
             }
@@ -629,23 +626,23 @@ extension ChatTableViewController: MessageListener {
     
     func added(message newMessage: Message,
                after previousMessage: Message?) {
-        var inserted = false
-        
-        if let previousMessage = previousMessage {
-            for (index, message) in messages.enumerated() {
-                if previousMessage.isEqual(to: message) {
-                    messages.insert(newMessage, at: index)
-                    inserted = true
-                    break
+        DispatchQueue.main.async {
+            var inserted = false
+            
+            if let previousMessage = previousMessage {
+                for (index, message) in self.messages.enumerated() {
+                    if previousMessage.isEqual(to: message) {
+                        self.messages.insert(newMessage, at: index)
+                        inserted = true
+                        break
+                    }
                 }
             }
-        }
-        
-        if !inserted {
-            messages.append(newMessage)
-        }
-        
-        DispatchQueue.main.async {
+            
+            if !inserted {
+                self.messages.append(newMessage)
+            }
+            
             self.tableView?.reloadData()
             self.scrollToBottom(animated: true)
             WebimServiceController.currentSession.setChatRead()
@@ -653,28 +650,28 @@ extension ChatTableViewController: MessageListener {
     }
     
     func removed(message: Message) {
-        var toUpdate = false
-        if message.getCurrentChatID() == getSelectedMessage()?.getCurrentChatID() {
-            NotificationCenter.default.postInMainThread(
-                name: .shouldHideQuoteEditBar,
-                object: nil,
-                userInfo: nil
-            )
-        }
-        
-        for (messageIndex, iteratedMessage) in messages.enumerated() {
-            if iteratedMessage.getID() == message.getID() {
-                messages.remove(at: messageIndex)
-                let indexPath = IndexPath(row: messageIndex, section: 0)
-                cellHeights.removeValue(forKey: indexPath)
-                toUpdate = true
-                
-                break
+        DispatchQueue.main.async {
+            var toUpdate = false
+            if message.getCurrentChatID() == self.getSelectedMessage()?.getCurrentChatID() {
+                NotificationCenter.default.postInMainThread(
+                    name: .shouldHideQuoteEditBar,
+                    object: nil,
+                    userInfo: nil
+                )
             }
-        }
-        
-        if toUpdate {
-            DispatchQueue.main.async {
+            
+            for (messageIndex, iteratedMessage) in self.messages.enumerated() {
+                if iteratedMessage.getID() == message.getID() {
+                    self.messages.remove(at: messageIndex)
+                    let indexPath = IndexPath(row: messageIndex, section: 0)
+                    self.cellHeights.removeValue(forKey: indexPath)
+                    toUpdate = true
+                    
+                    break
+                }
+            }
+            
+            if toUpdate {
                 self.tableView?.reloadData()
                 self.scrollToBottom(animated: true)
             }
@@ -682,44 +679,22 @@ extension ChatTableViewController: MessageListener {
     }
     
     func removedAllMessages() {
-        messages.removeAll()
-        cellHeights.removeAll()
-        
         DispatchQueue.main.async {
+            self.messages.removeAll()
+            self.cellHeights.removeAll()
             self.tableView?.reloadData()
         }
     }
     
     func changed(message oldVersion: Message,
                  to newVersion: Message) {
-        let messagesCountBefore = messages.count
-        var toUpdate = false
-        var cellIndexToUpdate = 0
-        
-        for (messageIndex, iteratedMessage) in messages.enumerated() {
-            if iteratedMessage.getID() == oldVersion.getID() {
-                messages[messageIndex] = newVersion
-                toUpdate = true
-                cellIndexToUpdate = messageIndex
-                
-                break
-            }
-        }
-        
-        if toUpdate {
-            DispatchQueue.main.async {
-                let indexPath = IndexPath(row: cellIndexToUpdate, section: 0)
-                if self.messages.count != messagesCountBefore ||
-                    self.messages.count != self.tableView.numberOfRows(inSection: 0) {
-                        self.tableView.reloadData()
-                } else {
-                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        DispatchQueue.main.async {
+            for (messageIndex, iteratedMessage) in self.messages.enumerated() {
+                if iteratedMessage.getID() == oldVersion.getID() {
+                    self.messages[messageIndex] = newVersion
                 }
             }
-        }
-        
-        DispatchQueue.main.async {
-            self.scrollToBottom(animated: false)
+            self.tableView.reloadData()
         }
     }
 }
@@ -880,14 +855,13 @@ extension ChatTableViewController: SendFileCompletionHandler,
             title: title,
             action: { [weak self] in
                 guard let self = self else { return }
-                
-                for (index, message) in self.messages.enumerated() {
-                    if message.getID() == messageID {
-                        self.messages.remove(at: index)
-                        DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    for (index, message) in self.messages.enumerated() {
+                        if message.getID() == messageID {
+                            self.messages.remove(at: index)
                             self.tableView?.reloadData()
+                            return
                         }
-                        return
                     }
                 }
             }

@@ -114,6 +114,22 @@ class MessageImpl {
                                   timeInMicrosecond: timeInMicrosecond)
         }
         currentChatID = internalID
+        
+        if historyMessage {
+            _ = self.disableBotButtons()
+        }
+    }
+    
+    func disableBotButtons() -> Bool {
+        if self.type == .keyboard {
+            if let keyboard = self.keyboard as? KeyboardImpl {
+                if keyboard.getState() == .pending {
+                    keyboard.keyboardItem.state = .canceled
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     // MARK: - Methods
@@ -728,7 +744,7 @@ final class ImageInfoImpl: ImageInfo {
  */
 final class KeyboardImpl: Keyboard {
     
-    private let keyboardItem: KeyboardItem
+    fileprivate var keyboardItem: KeyboardItem
     
     init?(data: [String: Any?]) {
         if let keyboard = KeyboardItem(jsonDictionary: data) {
