@@ -23,6 +23,8 @@
 		11638EEE22A448830085E4F4 /* KeyboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11638EED22A448830085E4F4 /* KeyboardItem.swift */; };
 		1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
+		1289E9752695BB3A007C15BF /* WMDataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9742695BB39007C15BF /* WMDataEncryptor.swift */; };
+		1289E9772695BBBC007C15BF /* WMKeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */; };
 		8FD2428B200CDB18007EB9CB /* WebimClientLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445C200CE258007EB9CB /* WebimLogger.swift */; };
 		8FD244A9200CE25C007EB9CB /* MessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445D200CE258007EB9CB /* MessageListener.swift */; };
@@ -138,6 +140,8 @@
 		11638EED22A448830085E4F4 /* KeyboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItem.swift; sourceTree = "<group>"; };
 		1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStatusResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
+		1289E9742695BB39007C15BF /* WMDataEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMDataEncryptor.swift; sourceTree = "<group>"; };
+		1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMKeychainWrapper.swift; sourceTree = "<group>"; };
 		8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WebimClientLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebimClientLibrary.h; sourceTree = "<group>"; };
 		8FD2445C200CE258007EB9CB /* WebimLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimLogger.swift; sourceTree = "<group>"; };
@@ -432,6 +436,8 @@
 		8FD2449A200CE25B007EB9CB /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */,
+				1289E9742695BB39007C15BF /* WMDataEncryptor.swift */,
 				8FD2449B200CE25B007EB9CB /* DepartmentImpl.swift */,
 				8FD244A3200CE25B007EB9CB /* LocationSettingsImpl.swift */,
 				8FD2449F200CE25B007EB9CB /* MessageImpl.swift */,
@@ -551,6 +557,7 @@
 				8FD244C1200CE25C007EB9CB /* InternalUtils.swift in Sources */,
 				8FD244C3200CE25C007EB9CB /* AbstractRequestLoop.swift in Sources */,
 				1134DD5E234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift in Sources */,
+				1289E9752695BB3A007C15BF /* WMDataEncryptor.swift in Sources */,
 				CE6A697C220C799300B11E29 /* FAQActions.swift in Sources */,
 				CE6A6978220C730F00B11E29 /* FAQItem.swift in Sources */,
 				8FD244C0200CE25C007EB9CB /* MessageFactories.swift in Sources */,
@@ -581,6 +588,7 @@
 				8FD244EB200CE25C007EB9CB /* MessageStream.swift in Sources */,
 				8FD244AB200CE25C007EB9CB /* WebimSession.swift in Sources */,
 				8FD244E7200CE25C007EB9CB /* WebimSessionImpl.swift in Sources */,
+				1289E9772695BBBC007C15BF /* WMKeychainWrapper.swift in Sources */,
 				8FD244B2200CE25C007EB9CB /* MemoryHistoryStorage.swift in Sources */,
 				8FD244DF200CE25C007EB9CB /* MessageHolder.swift in Sources */,
 				113C582324EF24D9006A08C2 /* SurveyController.swift in Sources */,

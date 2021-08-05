@@ -27,10 +27,10 @@
 import Foundation
 
 // MARK: - Constants
-fileprivate enum UserDefaultsName: String {
+fileprivate enum WMKeychainWrapperName: String {
     case main = "ru.webim.WebimClientSDKiOS.faq"
 }
-fileprivate enum UserDefaultsMainPrefix: String {
+fileprivate enum WMKeychainWrapperMainPrefix: String {
     case historyMajorVersion = "history_major_version"
 }
 
@@ -90,25 +90,25 @@ final class FAQImpl {
             faqClient.stop()
         }
         
-        let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.main.rawValue)
+        let userDefaults = WMKeychainWrapper.standard.dictionary(forKey: WMKeychainWrapperName.main.rawValue)
         
         let cache = FAQSQLiteHistoryStorage(dbName: "faqcache.db", queue: DispatchQueue.global(qos: .userInteractive))
         
         let historyMajorVersion = cache.getMajorVersion()
-        if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
-            if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.main.rawValue) {
-                if let version = userDefaults[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int {
+        if (userDefaults?[WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
+            if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: WMKeychainWrapperName.main.rawValue) {
+                if let version = userDefaults[WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue] as? Int {
                     if version < 3 {
                         deleteDBFileFor()
                     } else if version < 5 {
                         transferDBFiles()
                     }
                 }
-                userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
-                userDefaults.updateValue(historyMajorVersion, forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
+                userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue)
+                userDefaults.updateValue(historyMajorVersion, forKey: WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue)
                 cache.updateDB()
-                UserDefaults.standard.setValue(userDefaults,
-                                               forKey: UserDefaultsName.main.rawValue)
+                WMKeychainWrapper.standard.setDictionary(userDefaults,
+                                               forKey: WMKeychainWrapperName.main.rawValue)
             }
         }
         

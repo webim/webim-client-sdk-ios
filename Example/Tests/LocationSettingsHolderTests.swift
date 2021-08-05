@@ -38,11 +38,11 @@ class LocationSettingsHolderTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        UserDefaults.standard.removeObject(forKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
+        WMKeychainWrapper.standard.removeObject(forKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
     }
     
     override func tearDown() {
-        UserDefaults.standard.removeObject(forKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
+        WMKeychainWrapper.standard.removeObject(forKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
         
         super.tearDown()
     }

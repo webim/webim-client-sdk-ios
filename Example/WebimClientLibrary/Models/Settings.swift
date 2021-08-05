@@ -25,10 +25,10 @@
 //
 
 import Foundation
-
+import WebimClientLibrary
 // MARK: - Global constants
 let USER_DEFAULTS_NAME = "settings"
-enum UserDefaultsKey: String {
+enum WMSettingsKeychainKey: String {
     case accountName = "account_name"
     case location = "location"
     case pageTitle = "page_title"
@@ -52,13 +52,13 @@ final class Settings {
     
     // MARK: - Initialization
     private init() {
-        if let settings = UserDefaults.standard.object(forKey: USER_DEFAULTS_NAME)
+        if let settings = WMKeychainWrapper.standard.dictionary(forKey: USER_DEFAULTS_NAME)
             as? [String: String] {
-            self.accountName = settings[UserDefaultsKey.accountName.rawValue] ??
+            self.accountName = settings[WMSettingsKeychainKey.accountName.rawValue] ??
                 DefaultSettings.accountName.rawValue
-            self.location = settings[UserDefaultsKey.location.rawValue] ??
+            self.location = settings[WMSettingsKeychainKey.location.rawValue] ??
                 DefaultSettings.location.rawValue
-            self.pageTitle = settings[UserDefaultsKey.pageTitle.rawValue] ??
+            self.pageTitle = settings[WMSettingsKeychainKey.pageTitle.rawValue] ??
                 DefaultSettings.pageTitle.rawValue
         } else {
             self.accountName = DefaultSettings.accountName.rawValue
@@ -78,12 +78,12 @@ final class Settings {
     func save() {
         validateData()
         let settings = [
-            UserDefaultsKey.accountName.rawValue: accountName,
-            UserDefaultsKey.location.rawValue: location,
-            UserDefaultsKey.pageTitle.rawValue: pageTitle
+            WMSettingsKeychainKey.accountName.rawValue: accountName,
+            WMSettingsKeychainKey.location.rawValue: location,
+            WMSettingsKeychainKey.pageTitle.rawValue: pageTitle
         ]
         
-        UserDefaults.standard.set(settings,
+        WMKeychainWrapper.standard.setDictionary(settings,
                                   forKey: USER_DEFAULTS_NAME)
     }
     

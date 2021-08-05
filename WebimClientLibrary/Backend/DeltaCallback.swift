@@ -176,14 +176,14 @@ final class DeltaCallback {
                 if let message = currentChatMessageMapper.map(message: messageItem) {
                     if (message.getType() == MessageType.fileFromVisitor || message.getType() != MessageType.visitorMessage) && message.isReadByOperator() {
                         let time = message.getTimeInMicrosecond()
-                        if time > historyPoller?.getReadBeforeTimestamp(byUserDefaultsKey: userDefaultsKey) ?? -1 {
-                            historyPoller?.updateReadBeforeTimestamp(timestamp: time, byUserDefaultsKey: userDefaultsKey)
+                        if time > historyPoller?.getReadBeforeTimestamp(byWMKeychainWrapperKey: userDefaultsKey) ?? -1 {
+                            historyPoller?.updateReadBeforeTimestamp(timestamp: time, byWMKeychainWrapperKey: userDefaultsKey)
                         }
                     }
                 }
             }
         } else {
-            historyPoller?.updateReadBeforeTimestamp(timestamp: -1, byUserDefaultsKey: userDefaultsKey)
+            historyPoller?.updateReadBeforeTimestamp(timestamp: -1, byWMKeychainWrapperKey: userDefaultsKey)
         }
     }
     
@@ -287,8 +287,8 @@ final class DeltaCallback {
                         currentChat.set(messages: currentChatMessages)
                         messageHolder?.changed(message: message)
                         let time = message.getTimeInMicrosecond()
-                        if time > historyPoller?.getReadBeforeTimestamp(byUserDefaultsKey: userDefaultsKey) ?? -1 {
-                            historyPoller?.updateReadBeforeTimestamp(timestamp: time, byUserDefaultsKey: userDefaultsKey)
+                        if time > historyPoller?.getReadBeforeTimestamp(byWMKeychainWrapperKey: userDefaultsKey) ?? -1 {
+                            historyPoller?.updateReadBeforeTimestamp(timestamp: time, byWMKeychainWrapperKey: userDefaultsKey)
                         }
                         break
                     }

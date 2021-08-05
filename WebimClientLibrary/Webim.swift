@@ -238,7 +238,7 @@ public final class SessionBuilder  {
 
     /**
      A visitor can be anonymous or authorized. Without calling this method when creating a session visitor is anonymous.
-     In this case visitor receives a random ID, which is written in `UserDefaults`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
+     In this case visitor receives a random ID, which is written in `WMKeychainWrapper`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
      Authorizing of a visitor can be useful when there are internal mechanisms of authorization in your application and you want the message history to exist regardless of a device communication occurs from.
      This method takes as a parameter a string containing the signed fields of a user in JSON format. Since the fields are necessary to be signed with a private key that can never be included into the code of a client's application, this string must be created and signed somewhere on your backend side. Read more about forming a string and a signature here: https://webim.ru/help/identification/
      - important:
@@ -263,7 +263,7 @@ public final class SessionBuilder  {
 
     /**
      A visitor can be anonymous or authorized. Without calling this method when creating a session visitor is anonymous.
-     In this case visitor receives a random ID, which is written in `UserDefaults`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
+     In this case visitor receives a random ID, which is written in `WMKeychainWrapper`. If the data is lost (for example when application was reinstalled), the user ID is also lost, as well as the message history.
      Authorizing of a visitor can be useful when there are internal mechanisms of authorization in your application and you want the message history to exist regardless of a device communication occurs from.
      This method takes as a parameter a string containing the signed fields of a user in JSON format. Since the fields are necessary to be signed with a private key that can never be included into the code of a client's application, this string must be created and signed somewhere on your backend side. Read more about forming a string and a signature here: https://webim.ru/help/identification/
      - important:

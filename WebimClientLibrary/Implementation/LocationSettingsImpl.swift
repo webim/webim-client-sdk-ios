@@ -36,7 +36,7 @@ import Foundation
 final class LocationSettingsImpl {
     
     // MARK: - Constants
-    enum UserDefaultsKey: String {
+    enum WMLocationSettingsKeychainKey: String {
         case hintsEnabled = "hints_enabled"
     }
     
@@ -54,8 +54,8 @@ final class LocationSettingsImpl {
     // MARK: - Methods
     
     static func getFrom(userDefaults userDefaultsKey: String) -> LocationSettingsImpl {
-        if let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            if let hintsEnabled = userDefaults[UserDefaultsKey.hintsEnabled.rawValue] as? Bool {
+        if let userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+            if let hintsEnabled = userDefaults[WMLocationSettingsKeychainKey.hintsEnabled.rawValue] as? Bool {
                 return LocationSettingsImpl(hintsEnabled: hintsEnabled)
             }
         }
@@ -64,13 +64,13 @@ final class LocationSettingsImpl {
     }
     
     func saveTo(userDefaults userDefaultsKey: String) {
-        if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsKey.hintsEnabled.rawValue] = hintsEnabled
-            UserDefaults.standard.set(userDefaults,
+        if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+            userDefaults[WMLocationSettingsKeychainKey.hintsEnabled.rawValue] = hintsEnabled
+            WMKeychainWrapper.standard.setDictionary(userDefaults,
                                       forKey: userDefaultsKey)
         }
         
-        UserDefaults.standard.setValue([UserDefaultsKey.hintsEnabled.rawValue: hintsEnabled],
+        WMKeychainWrapper.standard.setDictionary([WMLocationSettingsKeychainKey.hintsEnabled.rawValue: hintsEnabled],
                                        forKey: userDefaultsKey)
     }
     

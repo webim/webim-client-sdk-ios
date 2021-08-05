@@ -34,8 +34,7 @@ protocol WMDownloadFileManagerDelegate: AnyObject {
 
 class WMDownloadFileManager {
     
-    private static let fileGuidURLDictionaryKey = "fileGuidURLDictionaryKey"
-    private var fileGuidURLDictionary: [String: String] = (UserDefaults.standard.dictionary(forKey: WMDownloadFileManager.fileGuidURLDictionaryKey) as? [String: String]) ?? [:]
+    private var fileGuidURLDictionary: [String: String] = (WMKeychainWrapper.standard.dictionary(forKey: WMKeychainWrapper.fileGuidURLDictionaryKey) as? [String: String]) ?? [:]
     
     private var delegatesSet = Set<WMWeakReferenseContainer<WMDownloadFileManagerDelegate>>()
     
@@ -51,7 +50,7 @@ class WMDownloadFileManager {
     
     func saveUrl(_ url: URL?, forGuid guid: String) {
         self.fileGuidURLDictionary[guid] = url?.absoluteString
-        UserDefaults.standard.setValue(fileGuidURLDictionary, forKey: WMDownloadFileManager.fileGuidURLDictionaryKey)
+        WMKeychainWrapper.standard.setDictionary(fileGuidURLDictionary, forKey: WMKeychainWrapper.fileGuidURLDictionaryKey)
     }
     
     var progressDictionary: [URL: Float] = [:]

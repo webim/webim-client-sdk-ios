@@ -410,7 +410,7 @@ Method is not mandatory to create [WebimSession](#webim-session) object.
 <h3 id ="set-visitor-fields-json-string-json-string">Instance method set(visitorFieldsJSONString:)</h3>
 
 Sets visitor authorization data.
-Without this method calling a visitor is anonymous, with randomly generated ID. This ID is saved inside app UserDefaults and can be lost (e.g. when app is uninstalled), thereby message history is lost too.
+Without this method calling a visitor is anonymous, with randomly generated ID. This ID is saved inside Keychain
 Authorized visitor data are saved by server and available with any device.
 `jsonString` parameter – _JSON_-formatted `String`-typed [visitor fields](https://webim.ru/help/identification/).
 Returns `self` with visitor authorization data set.

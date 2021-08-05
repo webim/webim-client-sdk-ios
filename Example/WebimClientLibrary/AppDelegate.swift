@@ -31,11 +31,6 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    // MARK: - Constants
-    enum UserDefaultsKey: String {
-        case deviceToken = "device-token"
-    }
 
     // MARK: - Properties
     var window: UIWindow?
@@ -68,8 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        UserDefaults.standard.set(deviceToken,
-                                  forKey: UserDefaultsKey.deviceToken.rawValue)
+        WMKeychainWrapper.standard.setString(deviceToken, forKey: WMKeychainWrapper.deviceTokenKey)
         
         print("Device token: \(deviceToken)")
     }

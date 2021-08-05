@@ -10,7 +10,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'master', :tag => '3.35.1'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :branch => 'master', :tag => '3.35.2'
 ```
 `use_frameworks!` must be specified.
 
@@ -18,8 +18,14 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.35.1
+github "webim/webim-client-sdk-ios" ~> 3.35.2
 ```
+
+### Swift Package Manager
+
+1. Select File > Swift Packages > Add Package Dependency. Enter `https://github.com/webim/webim-client-sdk-ios` in the "Choose Package Repository" dialog.
+ 2. In the next page, specify the version resolving rule as "Up to Next Major" with the latest `webim-client-sdk-ios` release.
+ 3. After Xcode checking out the source and resolving the version, you can choose the "WebimClientLibrary" library and add it to your app target.
 
 ### Additional notes
 
@@ -33,8 +39,9 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* `Keyboard` bugs fixed.
-
+* `getLastMessages` bug fixed.
+* Data encryption.
+* Swift Package Manager support.
 
 ## Example
 

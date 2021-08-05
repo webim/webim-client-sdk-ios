@@ -109,13 +109,12 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     // MARK: HistoryStorage protocol methods
     
-    func getMajorVersion() -> Int {
-        // No need in this implementation.
-        return 8
+    static func getMajorVersion() -> Int {
+        return 9
     }
     
-    func getVersionDB() -> Int {
-        return 8
+    func getMajorVersion() -> Int {
+        return SQLiteHistoryStorage.getMajorVersion()
     }
     
     func set(reachedHistoryEnd: Bool) {
@@ -278,6 +277,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      VALUES
                      (message.getID(), messageHistorID.getTimeInMicrosecond(), message.getOperatorID(), message.getSenderName(), message.getSenderAvatarURLString(), MessageItem.MessageKind(messageType: message.getType()).rawValue, message.getRawText() ?? message.getText(), SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()), SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()))
                      */
+                    let text = WMDataEncryptor.shared?.encryptToBase64String(text: (message.getRawText() ?? message.getText())) ?? "no data"
+                    
                     let statement = try db.prepare("INSERT OR FAIL INTO history ("
                         + "\(SQLiteHistoryStorage.ColumnName.id.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.timestamp.rawValue), "
@@ -295,7 +296,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                       message.getSenderName(),
                                       message.getSenderAvatarURLString(),
                                       MessageItem.MessageKind(messageType: message.getType()).rawValue,
-                                      message.getRawText() ?? message.getText(),
+                                      text,
                                       SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
                                       message.canBeReplied(),
                                       SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()))
@@ -621,7 +622,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         let clientSideID = row[SQLiteHistoryStorage.clientSideID]
         
         var rawText: String? = nil
-        var text = row[SQLiteHistoryStorage.text]
+        var text = WMDataEncryptor.shared?.decryptFromBase64String(base64String: row[SQLiteHistoryStorage.text]) ?? "no data"
         guard let messageKind = MessageItem.MessageKind(rawValue: row[SQLiteHistoryStorage.type]),
             let type = MessageMapper.convert(messageKind: messageKind) else {
                 WebimInternalLogger.shared.log(entry: "Getting Message type from row failure in SQLiteHistoryStorage.\(#function)")
@@ -728,6 +729,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
          (message.getRawText() ?? message.getText()),
          SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
          */
+        let text = WMDataEncryptor.shared?.encryptToBase64String(text: (message.getRawText() ?? message.getText())) ?? "no data"
         try db.run(SQLiteHistoryStorage
             .history
             .insert(SQLiteHistoryStorage.id <- messageHistoryID.getDBid(),
@@ -737,7 +739,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.senderName <- message.getSenderName(),
                     SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
                     SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
-                    SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
+                    SQLiteHistoryStorage.text <- text,
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
                     SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
                     SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))
@@ -767,6 +769,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
          data = SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
          WHERE id = messageHistoryID.getDBid()
          */
+        let text = WMDataEncryptor.shared?.encryptToBase64String(text: (message.getRawText() ?? message.getText())) ?? "no data"
         try db.run(SQLiteHistoryStorage
             .history
             .where(SQLiteHistoryStorage.id == messageHistoryID.getDBid())
@@ -776,7 +779,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.senderName <- message.getSenderName(),
                     SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
                     SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
-                    SQLiteHistoryStorage.text <- (message.getRawText() ?? message.getText()),
+                    SQLiteHistoryStorage.text <- text,
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
                     SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
                     SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))

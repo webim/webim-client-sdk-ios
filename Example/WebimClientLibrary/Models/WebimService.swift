@@ -70,9 +70,8 @@ final class WebimService {
     
     // MARK: - Methods
     func createSession() {
-        let deviceToken: String? = UserDefaults.standard.object(
-            forKey: AppDelegate.UserDefaultsKey.deviceToken.rawValue
-        ) as? String
+        
+        let deviceToken: String? = WMKeychainWrapper.standard.string(forKey: WMKeychainWrapper.deviceTokenKey)
         
         var sessionBuilder = Webim.newSessionBuilder()
             .set(accountName: Settings.shared.accountName)

@@ -184,7 +184,6 @@ final class MessageHolder {
                                             idsToDelete: deleted) { [weak self] (endOfBatch: Bool, messageDeleted: Bool, deletedMessageID: String?, messageChanged: Bool, changedMessage: MessageImpl?, messageAdded: Bool, addedMessage: MessageImpl?, idBeforeAddedMessage: HistoryID?) -> () in
                                                 if endOfBatch {
                                                     self?.messageTracker?.endedHistoryBatch()
-                                                    self?.reachedEndOfRemoteHistory = true
                                                     
                                                     completion()
                                                 }

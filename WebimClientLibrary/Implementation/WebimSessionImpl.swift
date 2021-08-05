@@ -27,13 +27,12 @@
 import Foundation
 
 // MARK: - Constants
-fileprivate enum UserDefaultsName: String {
+fileprivate enum WMKeychainWrapperName: String {
     case guid = "ru.webim.WebimClientSDKiOS.guid"
     case main = "ru.webim.WebimClientSDKiOS.visitor."
 }
-fileprivate enum UserDefaultsMainPrefix: String {
+fileprivate enum WMKeychainWrapperMainPrefix: String {
     case authorizationToken = "auth_token"
-    case dbVersion = "db_version"
     case deviceToken = "push_token"
     case historyEnded = "history_ended"
     case historyDBname = "history_db_name"
@@ -46,7 +45,7 @@ fileprivate enum UserDefaultsMainPrefix: String {
     case visitor = "visitor"
     case visitorExt = "visitor_ext"
 }
-fileprivate enum UserDefaultsGUIDPrefix: String {
+fileprivate enum WMKeychainWrapperGUIDPrefix: String {
     case uuid = "guid"
 }
 
@@ -112,24 +111,24 @@ final class WebimSessionImpl {
         
         let queue = DispatchQueue.global(qos: .userInteractive)
         
-        let userDefaultsKey = UserDefaultsName.main.rawValue + (visitorFields?.getID() ?? "anonymous")
+        let userDefaultsKey = WMKeychainWrapperName.main.rawValue + (visitorFields?.getID() ?? "anonymous")
         
-        var userDefaults: [String: Any]? = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
+        var userDefaults: [String: Any]? = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)
         
-        let previousAccount = UserDefaults.standard.string(forKey: UserDefaultsMainPrefix.previousAccount.rawValue)
+        let previousAccount = WMKeychainWrapper.standard.string(forKey: WMKeychainWrapperMainPrefix.previousAccount.rawValue)
 
         if (previousAccount != nil && previousAccount != accountName) ||  isVisitorDataClearingEnabled {
             clearVisitorDataFor(userDefaultsKey: userDefaultsKey)
         }
         
-        UserDefaults.standard.set(accountName, forKey: UserDefaultsMainPrefix.previousAccount.rawValue)
+        WMKeychainWrapper.standard.setString(accountName, forKey: WMKeychainWrapperMainPrefix.previousAccount.rawValue)
         
         checkSavedSessionFor(userDefaultsKey: userDefaultsKey,
                              newProvidedVisitorFields: visitorFields)
         
         let sessionDestroyer = SessionDestroyer(userDefaultsKey: userDefaultsKey)
         
-        guard let visitorJSON = userDefaults?[UserDefaultsMainPrefix.visitor.rawValue] as? String? else {
+        guard let visitorJSON = userDefaults?[WMKeychainWrapperMainPrefix.visitor.rawValue] as? String? else {
             WebimInternalLogger.shared.log(entry: "Wrong visitorJSON type in WebimSessionImpl.\(#function)")
             fatalError("Wrong visitorJSON type in WebimSessionImpl.\(#function)")
         }
@@ -142,17 +141,17 @@ final class WebimSessionImpl {
         
         let currentChatMessageMapper: MessageMapper = CurrentChatMessageMapper(withServerURLString: serverURLString)
         
-        guard let sessionID = userDefaults?[UserDefaultsMainPrefix.sessionID.rawValue] as? String? else {
+        guard let sessionID = userDefaults?[WMKeychainWrapperMainPrefix.sessionID.rawValue] as? String? else {
             WebimInternalLogger.shared.log(entry: "Wrong sessionID type in WebimSessionImpl.\(#function)")
             fatalError("Wrong sessionID type in WebimSessionImpl.\(#function)")
         }
         
-        guard let pageID = userDefaults?[UserDefaultsMainPrefix.pageID.rawValue] as? String? else {
+        guard let pageID = userDefaults?[WMKeychainWrapperMainPrefix.pageID.rawValue] as? String? else {
             WebimInternalLogger.shared.log(entry: "Wrong pageID type in WebimSessionImpl.\(#function)")
             fatalError("Wrong pageID type in WebimSessionImpl.\(#function)")
         }
         
-        guard let authorizationToken = userDefaults?[UserDefaultsMainPrefix.authorizationToken.rawValue] as? String? else {
+        guard let authorizationToken = userDefaults?[WMKeychainWrapperMainPrefix.authorizationToken.rawValue] as? String? else {
             WebimInternalLogger.shared.log(entry: "Wrong authorizationToken type in WebimSessionImpl.\(#function)")
             fatalError("Wrong authorizationToken type in WebimSessionImpl.\(#function)")
         }
@@ -169,7 +168,7 @@ final class WebimSessionImpl {
             .set(appVersion: appVersion)
             .set(visitorFieldsJSONString: visitorFieldsJSONString)
             .set(deltaCallback: deltaCallback)
-            .set(sessionParametersListener: SessionParametersListenerImpl(withUserDefaultsKey: userDefaultsKey))
+            .set(sessionParametersListener: SessionParametersListenerImpl(withWMKeychainWrapperKey: userDefaultsKey))
             .set(internalErrorListener: DestroyOnFatalErrorListener(sessionDestroyer: sessionDestroyer,
                                                                     internalErrorListener: ErrorHandlerToInternalAdapter(fatalErrorHandler: fatalErrorHandler), notFatalErrorHandler: notFatalErrorHandler))
             .set(visitorJSONString: visitorJSON)
@@ -189,25 +188,25 @@ final class WebimSessionImpl {
         var historyMetaInformationStoragePreferences: HistoryMetaInformationStorage
         let fileUrlCreator = FileUrlCreator(webimClient: webimClient, serverURL: serverURLString)
         if isLocalHistoryStoragingEnabled {
-            if userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String == nil {
-                let dbName = "webim_\(ClientSideID.generateClientSideID()).db"
+            let savedDBName = userDefaults?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String
+            if savedDBName == nil || !(savedDBName?.hasPrefix(WMKeychainWrapper.actualDBPrefix()) ?? false) {
+                let dbName = WMKeychainWrapper.actualDBPrefix() + "\(ClientSideID.generateClientSideID()).db"
                 if userDefaults == nil {
-                    userDefaults = [UserDefaultsMainPrefix.historyDBname.rawValue: dbName]
+                    userDefaults = [WMKeychainWrapperMainPrefix.historyDBname.rawValue: dbName]
                 } else {
-                    userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] = dbName
+                    userDefaults?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] = dbName
                 }
-                UserDefaults.standard.set(userDefaults,
+                WMKeychainWrapper.standard.setDictionary(userDefaults,
                                           forKey: userDefaultsKey)
             }
-                        
-            guard let dbName = userDefaults?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String else {
-                WebimInternalLogger.shared.log(entry: "Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")
-                fatalError("Can not find or write DB Name to UserDefaults in WebimSessionImpl.\(#function)")
+            guard let dbName = userDefaults?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String else {
+                WebimInternalLogger.shared.log(entry: "Can not find or write DB Name to WMKeychainWrapper in WebimSessionImpl.\(#function)")
+                fatalError("Can not find or write DB Name to WMKeychainWrapper in WebimSessionImpl.\(#function)")
             }
             
             historyMetaInformationStoragePreferences = HistoryMetaInformationStoragePreferences(userDefaultsKey: userDefaultsKey)
             
-            guard let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
+            guard let readBeforeTimestamp = userDefaults?[WMKeychainWrapperMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
                 WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
                 fatalError("Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
             }
@@ -220,24 +219,23 @@ final class WebimSessionImpl {
             historyStorage = sqlhistoryStorage
             
             let historyMajorVersion = historyStorage.getMajorVersion()
-            if (userDefaults?[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
-                if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-                    if let version = userDefaults[UserDefaultsMainPrefix.historyMajorVersion.rawValue] as? Int,
+            if (userDefaults?[WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue] as? Int) != historyMajorVersion {
+                if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+                    if let version = userDefaults[WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue] as? Int,
                         version < 5 {
                         transferDBFiles(for: userDefaultsKey)
                     }
                     
-                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyRevision.rawValue)
-                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyEnded.rawValue)
-                    userDefaults.removeValue(forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
-                    userDefaults.updateValue(historyMajorVersion, forKey: UserDefaultsMainPrefix.historyMajorVersion.rawValue)
+                    userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyRevision.rawValue)
+                    userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyEnded.rawValue)
+                    userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue)
+                    userDefaults.updateValue(historyMajorVersion, forKey: WMKeychainWrapperMainPrefix.historyMajorVersion.rawValue)
                     sqlhistoryStorage.updateDB()
-                    UserDefaults.standard.setValue(userDefaults,
-                                                   forKey: userDefaultsKey)
+                    WMKeychainWrapper.standard.setDictionary(userDefaults, forKey: userDefaultsKey)
                 }
             }
         } else {
-            guard let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
+            guard let readBeforeTimestamp = userDefaults?[WMKeychainWrapperMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
                 WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
                 fatalError("Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
             }
@@ -316,11 +314,11 @@ final class WebimSessionImpl {
     
     private static func clearVisitorDataFor(userDefaultsKey: String) {
         deleteDBFileFor(userDefaultsKey: userDefaultsKey)
-        UserDefaults.standard.removeObject(forKey: userDefaultsKey)
+        _ = WMKeychainWrapper.removeObject(key: userDefaultsKey)
     }
     
     private static func deleteDBFileFor(userDefaultsKey: String) {
-        if let dbName = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String {
+        if let dbName = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String {
             let fileManager = FileManager.default
             let optionalDocumentsDirectory = try? fileManager.url(for: .documentDirectory,
                                                           in: .userDomainMask,
@@ -344,9 +342,9 @@ final class WebimSessionImpl {
     }
     
     private static func transferDBFiles(for userDefaultsKey: String) {
-        guard let dbName = UserDefaults.standard.dictionary(
+        guard let dbName = WMKeychainWrapper.standard.dictionary(
                 forKey: userDefaultsKey
-            )?[UserDefaultsMainPrefix.historyDBname.rawValue] as? String,
+            )?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String,
             let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
                                                               in: .userDomainMask).first,
             let libraryDirectory = FileManager.default.urls(for: .libraryDirectory,
@@ -366,7 +364,7 @@ final class WebimSessionImpl {
     private static func checkSavedSessionFor(userDefaultsKey: String,
                                              newProvidedVisitorFields: ProvidedVisitorFields?) {
         let newVisitorFieldsJSONString = newProvidedVisitorFields?.getJSONString()
-        let previousVisitorFieldsJSONString = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.visitorExt.rawValue] as? String
+        let previousVisitorFieldsJSONString = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)?[WMKeychainWrapperMainPrefix.visitorExt.rawValue] as? String
         
         var previousProvidedVisitorFields: ProvidedVisitorFields? = nil
         if let fields = previousVisitorFieldsJSONString {
@@ -379,17 +377,17 @@ final class WebimSessionImpl {
         }
         
         if newVisitorFieldsJSONString != previousVisitorFieldsJSONString {
-            UserDefaults.standard.removeObject(forKey: userDefaultsKey)
+            _ = WMKeychainWrapper.removeObject(key: userDefaultsKey)
             
-            let newVisitorFieldsDictionary = [UserDefaultsMainPrefix.visitorExt.rawValue: newVisitorFieldsJSONString]
-            UserDefaults.standard.set(newVisitorFieldsDictionary,
+            let newVisitorFieldsDictionary = [WMKeychainWrapperMainPrefix.visitorExt.rawValue: newVisitorFieldsJSONString]
+            WMKeychainWrapper.standard.setDictionary(newVisitorFieldsDictionary as [String: Any],
                                       forKey: userDefaultsKey)
         }
     }
     
     private static func getDeviceID(withSuffix suffix: String) -> String? {
-        let userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue)
-        let name = UserDefaultsGUIDPrefix.uuid.rawValue + (suffix.isEmpty ? suffix : "-" + suffix)
+        let userDefaults = WMKeychainWrapper.standard.dictionary(forKey: WMKeychainWrapperName.guid.rawValue)
+        let name = WMKeychainWrapperGUIDPrefix.uuid.rawValue + (suffix.isEmpty ? suffix : "-" + suffix)
         var uuidString: String? = userDefaults?[name] as? String
         
         if uuidString == String() || uuidString == nil {
@@ -398,13 +396,12 @@ final class WebimSessionImpl {
                 return nil
             }
             uuidString = currentIdentifierForVendor.uuidString + (suffix.isEmpty ? suffix : "-" + suffix)
-            if var userDefaults = UserDefaults.standard.dictionary(forKey: UserDefaultsName.guid.rawValue) {
+            if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: WMKeychainWrapperName.guid.rawValue) {
                 userDefaults[name] = uuidString
-                UserDefaults.standard.set(userDefaults,
-                                          forKey: UserDefaultsName.guid.rawValue)
+                WMKeychainWrapper.standard.setDictionary(userDefaults,
+                                          forKey: WMKeychainWrapperName.guid.rawValue)
             } else {
-                UserDefaults.standard.setValue([name: uuidString],
-                                               forKey: UserDefaultsName.guid.rawValue)
+                WMKeychainWrapper.standard.setDictionary([name: uuidString as Any], forKey: WMKeychainWrapperName.guid.rawValue)
             }
         }
         guard let deviceID = uuidString else {
@@ -589,17 +586,17 @@ final class HistoryPoller {
         self.hasHistoryRevision = hasHistoryRevision
     }
     
-    func updateReadBeforeTimestamp(timestamp: Int64, byUserDefaultsKey userDefaultsKey: String) {
+    func updateReadBeforeTimestamp(timestamp: Int64, byWMKeychainWrapperKey userDefaultsKey: String) {
         self.messageHolder.updateReadBeforeTimestamp(timestamp: timestamp)
-        if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] = timestamp
-            UserDefaults.standard.set(userDefaults, forKey: userDefaultsKey)
+        if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+            userDefaults[WMKeychainWrapperMainPrefix.readBeforeTimestamp.rawValue] = timestamp
+            WMKeychainWrapper.standard.setDictionary(userDefaults, forKey: userDefaultsKey)
         }
     }
     
-    func getReadBeforeTimestamp(byUserDefaultsKey userDefaultsKey: String) -> Int64 {
-        let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey)
-        guard let readBeforeTimestamp = userDefaults?[UserDefaultsMainPrefix.readBeforeTimestamp.rawValue] as? Int64 else {
+    func getReadBeforeTimestamp(byWMKeychainWrapperKey userDefaultsKey: String) -> Int64 {
+        let userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)
+        guard let readBeforeTimestamp = userDefaults?[WMKeychainWrapperMainPrefix.readBeforeTimestamp.rawValue] as? Int64 else {
             WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
             return Int64(-1)
         }
@@ -870,7 +867,7 @@ final class SessionParametersListenerImpl: SessionParametersListener {
     private let userDefaultsKey: String
     
     // MARK: - Initialization
-    init(withUserDefaultsKey userDefaultsKey: String) {
+    init(withWMKeychainWrapperKey userDefaultsKey: String) {
         self.userDefaultsKey = userDefaultsKey
     }
     
@@ -879,19 +876,20 @@ final class SessionParametersListenerImpl: SessionParametersListener {
     func onSessionParametersChanged(visitorFieldsJSONString: String,
                                     sessionID: String,
                                     authorizationData: AuthorizationData) {
-        if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsMainPrefix.visitor.rawValue] = visitorFieldsJSONString
-            userDefaults[UserDefaultsMainPrefix.sessionID.rawValue] = sessionID
-            userDefaults[UserDefaultsMainPrefix.pageID.rawValue] = authorizationData.getPageID()
-            userDefaults[UserDefaultsMainPrefix.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
-            UserDefaults.standard.set(userDefaults,
+        if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+            userDefaults[WMKeychainWrapperMainPrefix.visitor.rawValue] = visitorFieldsJSONString
+            userDefaults[WMKeychainWrapperMainPrefix.sessionID.rawValue] = sessionID
+            userDefaults[WMKeychainWrapperMainPrefix.pageID.rawValue] = authorizationData.getPageID()
+            userDefaults[WMKeychainWrapperMainPrefix.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
+            WMKeychainWrapper.standard.setDictionary(userDefaults,
                                       forKey: userDefaultsKey)
         } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.visitor.rawValue: visitorFieldsJSONString,
-                                            UserDefaultsMainPrefix.sessionID.rawValue: sessionID,
-                                            UserDefaultsMainPrefix.pageID.rawValue: authorizationData.getPageID(),
-                                            UserDefaultsMainPrefix.authorizationToken.rawValue: authorizationData.getAuthorizationToken()],
-                                           forKey: userDefaultsKey)
+            WMKeychainWrapper.standard.setDictionary(
+                [WMKeychainWrapperMainPrefix.visitor.rawValue: visitorFieldsJSONString,
+                 WMKeychainWrapperMainPrefix.sessionID.rawValue: sessionID,
+                 WMKeychainWrapperMainPrefix.pageID.rawValue: authorizationData.getPageID(),
+                 WMKeychainWrapperMainPrefix.authorizationToken.rawValue: authorizationData.getAuthorizationToken() as Any],
+                forKey: userDefaultsKey)
         }
     }
     
@@ -1015,7 +1013,7 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     // MARK: HistoryMetaInformationStorage protocol methods
     
     func isHistoryEnded() -> Bool {
-        if let historyEnded = UserDefaults.standard.dictionary(forKey: userDefaultsKey)?[UserDefaultsMainPrefix.historyEnded.rawValue] as? Bool {
+        if let historyEnded = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)?[WMKeychainWrapperMainPrefix.historyEnded.rawValue] as? Bool {
             return historyEnded
         }
         
@@ -1023,32 +1021,32 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
     }
     
     func set(historyEnded: Bool) {
-        if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-            userDefaults[UserDefaultsMainPrefix.historyEnded.rawValue] = historyEnded
-            UserDefaults.standard.set(userDefaults,
+        if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+            userDefaults[WMKeychainWrapperMainPrefix.historyEnded.rawValue] = historyEnded
+            WMKeychainWrapper.standard.setDictionary(userDefaults,
                                       forKey: userDefaultsKey)
         } else {
-            UserDefaults.standard.setValue([UserDefaultsMainPrefix.historyEnded.rawValue: historyEnded],
+            WMKeychainWrapper.standard.setDictionary([WMKeychainWrapperMainPrefix.historyEnded.rawValue: historyEnded],
                                            forKey: userDefaultsKey)
         }
     }
     
     func set(revision: String?) {
         if let revision = revision {
-            if var userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey) {
-                userDefaults[UserDefaultsMainPrefix.historyRevision.rawValue] = revision
-                UserDefaults.standard.set(userDefaults,
+            if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+                userDefaults[WMKeychainWrapperMainPrefix.historyRevision.rawValue] = revision
+                WMKeychainWrapper.standard.setDictionary(userDefaults,
                                           forKey: userDefaultsKey)
             } else {
-                UserDefaults.standard.setValue([UserDefaultsMainPrefix.historyRevision.rawValue: revision],
+                WMKeychainWrapper.standard.setDictionary([WMKeychainWrapperMainPrefix.historyRevision.rawValue: revision],
                                                forKey: userDefaultsKey)
             }
         }
     }
     
     func getRevision() -> String? {
-        guard let userDefaults = UserDefaults.standard.dictionary(forKey: userDefaultsKey),
-            let revision = userDefaults[UserDefaultsMainPrefix.historyRevision.rawValue] as? String? else {
+        guard let userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey),
+            let revision = userDefaults[WMKeychainWrapperMainPrefix.historyRevision.rawValue] as? String? else {
                 return nil
         }
         return revision
