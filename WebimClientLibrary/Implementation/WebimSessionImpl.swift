@@ -25,6 +25,7 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: - Constants
 fileprivate enum WMKeychainWrapperName: String {

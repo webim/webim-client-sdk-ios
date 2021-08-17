@@ -25,6 +25,7 @@
 //
 
 import Foundation
+import UIKit
 
 /**
  Class that responsible for handling full set of events inside message stream.
