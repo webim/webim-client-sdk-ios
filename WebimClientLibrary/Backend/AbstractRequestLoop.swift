@@ -102,7 +102,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUesrAngent = request
-        requestWithUesrAngent.setValue("iOS: Webim-Client 3.35.4; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUesrAngent.setValue("iOS: Webim-Client 3.35.5; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
         var lastHTTPCode = -1
@@ -179,19 +179,9 @@ class AbstractRequestLoop {
             }
             
             if let receivedData = receivedData,
-                httpCode == 200 {
+                (httpCode == 200 || httpCode == 403 || httpCode == 413 || httpCode == 415) {
                 self.internalErrorListener?.connectionStateChanged(connected: true)
                 return receivedData
-            }
-            
-            if httpCode == 403 {
-                throw SendFileError.fileSizeTooSmall
-            }
-            if httpCode == 413 { // Request Entity Too Large
-                throw SendFileError.fileSizeExceeded
-            }
-            if httpCode == 415 { // Unsupported Media Type
-                throw SendFileError.fileTypeNotAllowed
             }
             
             if httpCode == lastHTTPCode {

@@ -399,8 +399,6 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     
     @objc
     func showPopoverMenu(_ gestureRecognizer: UIGestureRecognizer) {
-
-        AppDelegate.keyboardHidden(true)
         
         var stateToCheck = UIGestureRecognizer.State.ended
         
@@ -459,6 +457,7 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
                 }
                 
                 if !viewController.actions.isEmpty {
+                    AppDelegate.keyboardHidden(true)
                     DispatchQueue.main.async {
                         self.present(viewController, animated: false)
                     }

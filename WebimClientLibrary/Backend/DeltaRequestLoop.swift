@@ -46,7 +46,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private let deviceID: String
     private let sessionParametersListener: SessionParametersListener?
     private let title: String
-    var authorizationData: AuthorizationData?
+    var authorizationData: WMSynchronizedObject<AuthorizationData> = WMSynchronizedObject<AuthorizationData>()
     var queue: DispatchQueue?
     var since: Int64 = 0
     private var deviceToken: String?
@@ -87,7 +87,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.deviceToken = deviceToken
         self.visitorJSONString = visitorJSONString
         self.sessionID = sessionID
-        self.authorizationData = authorizationData
+        self.authorizationData.value = authorizationData
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
         self.prechat = prechat
@@ -124,19 +124,19 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func change(location: String) throws {
         self.location = location
         
-        authorizationData = nil
+        authorizationData.value = nil
         since = 0
         
         requestInitialization()
     }
     
     func getAuthorizationData() -> AuthorizationData? {
-        return authorizationData
+        return authorizationData.value
     }
     
     func run() {
         while isRunning() {
-            if authorizationData != nil && since != 0 {
+            if authorizationData.value != nil && since != 0 {
                 requestDelta()
             } else {
                 requestInitialization()
@@ -144,50 +144,89 @@ class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
-    func requestInitialization() {
-        let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
-        var request = URLRequest(url: url!)
-        request.setValue("3.35.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
-        request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
-        
-        do {
-            let data = try perform(request: request)
-            if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as? [String: Any]) {
-                if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
-                    handleInitialization(error: error)
-                } else {
-                    DeltaRequestLoop.providedAuthenticationTokenErrorCount = 0
-                    
-                    let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
-                    
-                    if let deltaList = deltaResponse.getDeltaList() {
-                        if deltaList.count > 0 {
-                            handleIncorrectServerAnswer()
-                            
-                            return
-                        }
-                    }
-                    
-                    guard let fullUpdate = deltaResponse.getFullUpdate() else {
+    func parseRequestInitialization(data: Data) {
+        if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as? [String: Any]) {
+            if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                handleInitialization(error: error)
+            } else {
+                DeltaRequestLoop.providedAuthenticationTokenErrorCount = 0
+                
+                let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
+                
+                if let deltaList = deltaResponse.getDeltaList() {
+                    if deltaList.count > 0 {
                         handleIncorrectServerAnswer()
                         
                         return
                     }
-                    
-                    if let since = deltaResponse.getRevision() {
-                        self.since = since
-                    }
-                    
-                    process(fullUpdate: fullUpdate)
                 }
-            } else {
-                WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                    verbosityLevel: .warning)
+                
+                guard let fullUpdate = deltaResponse.getFullUpdate() else {
+                    handleIncorrectServerAnswer()
+                    
+                    return
+                }
+                
+                if let since = deltaResponse.getRevision() {
+                    self.since = since
+                }
+                
+                process(fullUpdate: fullUpdate)
             }
+        } else {
+            WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                                           verbosityLevel: .warning)
+        }
+    }
+    
+    func requestInitialization() {
+        let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
+        var request = URLRequest(url: url!)
+        request.setValue("3.35.5", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
+        
+        do {
+            let data = try perform(request: request)
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.parseRequestInitialization(data: data)
+            })
         } catch let unknownError as UnknownError {
-            handleRequestLoop(error: unknownError)
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.handleRequestLoop(error: unknownError)
+            })
         } catch {
             WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(error.localizedDescription)",
+                                           verbosityLevel: .warning)
+        }
+    }
+    
+    private func parseDelta(data: Data) {
+        if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as? [String: Any]) {
+            if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                handleDeltaRequest(error: error)
+            } else {
+                let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
+                
+                guard let revision = deltaResponse.getRevision() else {
+                    // Delta timeout.
+                    return
+                }
+                since = revision
+                
+                if let fullUpdate = deltaResponse.getFullUpdate() {
+                    completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                        self.process(fullUpdate: fullUpdate)
+                    })
+                } else if let deltaList = deltaResponse.getDeltaList() {
+                    if deltaList.count > 0 {
+                        completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                            self.deltaCallback.process(deltaList: deltaList)
+                        })
+                    }
+                }
+            }
+        } else {
+            WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
                 verbosityLevel: .warning)
         }
     }
@@ -202,34 +241,9 @@ class DeltaRequestLoop: AbstractRequestLoop {
         
         do {
             let data = try perform(request: request)
-            if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as? [String: Any]) {
-                if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
-                    handleDeltaRequest(error: error)
-                } else {
-                    let deltaResponse = DeltaResponse(jsonDictionary: dataJSON)
-                    
-                    guard let revision = deltaResponse.getRevision() else {
-                        // Delta timeout.
-                        return
-                    }
-                    since = revision
-                    
-                    if let fullUpdate = deltaResponse.getFullUpdate() {
-                        completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                            self.process(fullUpdate: fullUpdate)
-                        })
-                    } else if let deltaList = deltaResponse.getDeltaList() {
-                        if deltaList.count > 0 {
-                            completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                                self.deltaCallback.process(deltaList: deltaList)
-                            })
-                        }
-                    }
-                }
-            } else {
-                WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                    verbosityLevel: .warning)
-            }
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.parseDelta(data: data)
+            })
         } catch let unknownError as UnknownError {
             handleRequestLoop(error: unknownError)
         } catch {
@@ -281,7 +295,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         let currentTimestamp = Int64(CFAbsoluteTimeGetCurrent() * 1000)
         var parameterDictionary = [Parameter.since.rawValue: String(since),
                                    Parameter.timestamp.rawValue: currentTimestamp] as [String: Any]
-        if let authorizationData = authorizationData {
+        if let authorizationData = authorizationData.value {
             parameterDictionary[Parameter.pageID.rawValue] = authorizationData.getPageID()
             parameterDictionary[Parameter.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
         }
@@ -290,7 +304,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func sleepBetweenInitializationAttempts() {
-        authorizationData = nil
+        authorizationData.value = nil
         since = 0
         
         usleep(1_000_000)  // 1s
@@ -335,7 +349,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func handleReinitializationRequiredError() {
-        authorizationData = nil
+        authorizationData.value = nil
         since = 0
     }
     
@@ -367,35 +381,37 @@ class DeltaRequestLoop: AbstractRequestLoop {
             || (self.visitorFieldsJSONString != visitorFieldsJSONString)
         let isNecessaryToUpdateSessionID = (self.sessionID == nil)
             || (self.sessionID != sessionID)
-        let isNecessaryToUpdateAuthorizationData = (self.authorizationData == nil)
-            || ((self.authorizationData?.getPageID() != fullUpdate.getPageID())
-                || (self.authorizationData?.getAuthorizationToken() != fullUpdate.getAuthorizationToken()))
+        let isNecessaryToUpdateAuthorizationData = (self.authorizationData.value == nil)
+            || ((self.authorizationData.value?.getPageID() != fullUpdate.getPageID())
+                || (self.authorizationData.value?.getAuthorizationToken() != fullUpdate.getAuthorizationToken()))
         
         if (isNecessaryToUpdateVisitorFieldJSONString
             || isNecessaryToUpdateSessionID)
             || isNecessaryToUpdateAuthorizationData {
             self.visitorJSONString = visitorJSONString
             self.sessionID = sessionID
-            self.authorizationData = authorizationData
+            self.authorizationData.value = authorizationData
             
             DispatchQueue.global(qos: .background).async { [weak self] in
                 guard let `self` = self,
                     let visitorJSONString = self.visitorJSONString,
                     let sessionID = self.sessionID,
-                    let authorizationData = self.authorizationData else {
+                    let authorizationData = self.authorizationData.value else {
                         WebimInternalLogger.shared.log(entry: "Changing parameters failure while unwrpping in DeltaRequestLoop.\(#function)")
                         return
                 }
-                
-                
-                self.sessionParametersListener?.onSessionParametersChanged(visitorFieldsJSONString: visitorJSONString,
-                                                                           sessionID: sessionID,
-                                                                           authorizationData: authorizationData)
+                self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                    self.sessionParametersListener?.onSessionParametersChanged(visitorFieldsJSONString: visitorJSONString,
+                                                                               sessionID: sessionID,
+                                                                               authorizationData: authorizationData)
+                })
             }
         }
         
         completionHandlerExecutor?.execute(task: DispatchWorkItem {
-            self.deltaCallback.process(fullUpdate: fullUpdate)
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.deltaCallback.process(fullUpdate: fullUpdate)
+            })
         })
     }
     

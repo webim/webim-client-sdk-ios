@@ -109,8 +109,8 @@ final class WebimSessionImpl {
                                 onlineStatusRequestFrequencyInMillis: Int64?) -> WebimSessionImpl {
         WebimInternalLogger.setup(webimLogger: webimLogger,
                                   verbosityLevel: verbosityLevel)
+        var webimSdkQueue = DispatchQueue.current!
         
-        let queue = DispatchQueue.global(qos: .userInteractive)
         
         let userDefaultsKey = WMKeychainWrapperName.main.rawValue + (visitorFields?.getID() ?? "anonymous")
         
@@ -178,7 +178,7 @@ final class WebimSessionImpl {
             .set(sessionID: sessionID)
             .set(authorizationData: authorizationData)
             .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
-                                                                              queue: queue))
+                                                                              queue: webimSdkQueue))
             .set(title: (pageTitle ?? DefaultSettings.pageTitle.rawValue))
             .set(deviceToken: deviceToken)
             .set(deviceID: getDeviceID(withSuffix: multivisitorSection))
@@ -215,7 +215,7 @@ final class WebimSessionImpl {
                                                   serverURL: serverURLString,
                                                   fileUrlCreator: fileUrlCreator,
                                                   reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
-                                                  queue: queue,
+                                                  queue: webimSdkQueue,
                                                   readBeforeTimestamp: readBeforeTimestamp ?? Int64(-1))
             historyStorage = sqlhistoryStorage
             
@@ -264,11 +264,11 @@ final class WebimSessionImpl {
                                               webimActions: webimActions,
                                               messageHolder: messageHolder,
                                               messageComposingHandler: MessageComposingHandler(webimActions: webimActions,
-                                                                                               queue: queue),
+                                                                                               queue: webimSdkQueue),
                                               locationSettingsHolder: LocationSettingsHolder(userDefaultsKey: userDefaultsKey))
         
         let historyPoller = HistoryPoller(withSessionDestroyer: sessionDestroyer,
-                                          queue: queue,
+                                          queue: webimSdkQueue,
                                           historyMessageMapper: historyMessageMapper,
                                           webimActions: webimActions,
                                           messageHolder: messageHolder,
@@ -277,7 +277,7 @@ final class WebimSessionImpl {
         var locationStatusPoller: LocationStatusPoller?
         if let onlineStatusRequestFrequencyInMillis = onlineStatusRequestFrequencyInMillis {
             locationStatusPoller = LocationStatusPoller(withSessionDestroyer: sessionDestroyer,
-                                                        queue: queue,
+                                                        queue: webimSdkQueue,
                                                         webimActions: webimActions,
                                                         messageStream: messageStream,
                                                         location: location,
@@ -832,19 +832,22 @@ final class LocationStatusPoller {
     private func requestLocationStatus(location: String,
                                        completion: @escaping (_ locationStatusResponse: LocationStatusResponse?) -> ()) {
         webimActions.getOnlineStatus(location: location) { data in
-            if let data = data {
-                let json = try? JSONSerialization.jsonObject(with: data,
-                                                             options: [])
-                if let locationStatusResponseDictionary = json as? [String: Any?] {
-                    let locationStatusResponse = LocationStatusResponse(jsonDictionary: locationStatusResponseDictionary)
-                    completion(locationStatusResponse)
-                    if let onlineStatusString = locationStatusResponse.getOnlineStatus(),
-                       let onlineStatus = OnlineStatusItem(rawValue: onlineStatusString) {
-                        self.messageStream.onOnlineStatusChanged(to: onlineStatus)
+            self.queue.async {
+                
+                if let data = data {
+                    let json = try? JSONSerialization.jsonObject(with: data,
+                                                                 options: [])
+                    if let locationStatusResponseDictionary = json as? [String: Any?] {
+                        let locationStatusResponse = LocationStatusResponse(jsonDictionary: locationStatusResponseDictionary)
+                        completion(locationStatusResponse)
+                        if let onlineStatusString = locationStatusResponse.getOnlineStatus(),
+                           let onlineStatus = OnlineStatusItem(rawValue: onlineStatusString) {
+                            self.messageStream.onOnlineStatusChanged(to: onlineStatus)
+                        }
                     }
+                } else {
+                    completion(nil)
                 }
-            } else {
-                completion(nil)
             }
         }
     }

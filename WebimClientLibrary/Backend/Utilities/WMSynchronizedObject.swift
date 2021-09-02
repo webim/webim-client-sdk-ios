@@ -1,9 +1,9 @@
 //
-//  ExecIfNotDestroyedHandlerExecutor.swift
+//  WMSynchronizedObject.swift
 //  WebimClientLibrary
 //
-//  Created by Nikita Lazarev-Zubov on 11.09.17.
-//  Copyright © 2017 Webim. All rights reserved.
+//  Created by EVGENII Loshchenko on 25.08.2021.
+//  
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,37 +24,33 @@
 //  SOFTWARE.
 //
 
-import Foundation
+import UIKit
 
-/**
- Class that encapsulates asynchronous callbacks calling.
- - author:
- Nikita Lazarev-Zubov
- - copyright:
- 2017 Webim
- */
-final class ExecIfNotDestroyedHandlerExecutor {
+class WMDispatchQueueManager {
+    static public let globalBackgroundSyncronizeDataQueue = DispatchQueue(label: "globalBackgroundSyncronizeSharedData")
+}
+
+class WMSynchronizedObject<T> {
+    private var _Value: T?
     
-    // MARK: - Properties
-    private let sessionDestroyer: SessionDestroyer
-    private let queue: DispatchQueue
-    
-    // MARK: - Initialization
-    init(sessionDestroyer: SessionDestroyer,
-         queue: DispatchQueue) {
-        self.sessionDestroyer = sessionDestroyer
-        self.queue = queue
-    }
-    
-    // MARK: - Methods
-    func execute(task: DispatchWorkItem) {
-        if !sessionDestroyer.isDestroyed() {
-            self.queue.async {
-                if !self.sessionDestroyer.isDestroyed() {
-                    task.perform()
-                }
+    public var value: T? {
+        set(newValue) {
+            WMDispatchQueueManager.globalBackgroundSyncronizeDataQueue.sync() {
+                self._Value = newValue
+            }
+        }
+        get {
+            return WMDispatchQueueManager.globalBackgroundSyncronizeDataQueue.sync {
+                return _Value
             }
         }
     }
     
+    func getAndSetNil() -> T? {
+        return WMDispatchQueueManager.globalBackgroundSyncronizeDataQueue.sync {
+            let temp = _Value
+            self._Value = nil
+            return temp
+        }
+    }
 }

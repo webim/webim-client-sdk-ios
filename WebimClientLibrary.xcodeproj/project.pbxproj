@@ -23,6 +23,7 @@
 		11638EEE22A448830085E4F4 /* KeyboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11638EED22A448830085E4F4 /* KeyboardItem.swift */; };
 		1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
+		123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */; };
 		1289E9752695BB3A007C15BF /* WMDataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9742695BB39007C15BF /* WMDataEncryptor.swift */; };
 		1289E9772695BBBC007C15BF /* WMKeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */; };
 		8FD2428B200CDB18007EB9CB /* WebimClientLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -140,6 +141,7 @@
 		11638EED22A448830085E4F4 /* KeyboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItem.swift; sourceTree = "<group>"; };
 		1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStatusResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
+		123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSynchronizedObject.swift; sourceTree = "<group>"; };
 		1289E9742695BB39007C15BF /* WMDataEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMDataEncryptor.swift; sourceTree = "<group>"; };
 		1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMKeychainWrapper.swift; sourceTree = "<group>"; };
 		8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WebimClientLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -361,6 +363,7 @@
 		8FD24473200CE25A007EB9CB /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */,
 				8FD24474200CE25A007EB9CB /* Extensions */,
 				8FD24479200CE25A007EB9CB /* CompletionHandlerWrappers.swift */,
 				CE86FAAC203B2A4500CB9C2D /* DepartmentFactory.swift */,
@@ -647,6 +650,7 @@
 				1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */,
 				CE6A697A220C731600B11E29 /* FAQ.swift in Sources */,
 				8FD244D9200CE25C007EB9CB /* MessageToSend.swift in Sources */,
+				123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */,
 				8FD244D1200CE25C007EB9CB /* DeltaResponse.swift in Sources */,
 				CE2E681520123DD0004E99EA /* Int.swift in Sources */,
 			);
