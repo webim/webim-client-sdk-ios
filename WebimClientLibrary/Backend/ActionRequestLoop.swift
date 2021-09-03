@@ -661,6 +661,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSurveyCloseCompletionHandler()?.onSuccess()
             request.getRateOperatorCompletionHandler()?.onSuccess()
             request.getSendStickerCompletionHandler()?.onSuccess()
+            request.getDeleteUploadedFileCompletionHandler()?.onSuccess()
             guard let messageID = request.getMessageID() else {
                 WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
                 return
@@ -674,7 +675,6 @@ class ActionRequestLoop: AbstractRequestLoop {
             if let dataJSON = dataJSON {
                 request.getUploadFileToServerCompletionHandler()?.onSuccess(id: messageID, uploadedFile: self.getUploadedFileFrom(dataJSON: dataJSON))
             }
-            request.getDeleteUploadedFileCompletionHandler()?.onSuccess()
         })
     }
     
