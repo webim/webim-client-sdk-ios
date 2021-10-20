@@ -35,12 +35,12 @@ import Foundation
 class RemoteHistoryProvider {
     
     // MARK: - Properties
-    private var webimActions: WebimActions
+    private var webimActions: WebimActionsImpl
     private var historyMessageMapper: MessageMapper
     private var historyMetaInformationStorage: HistoryMetaInformationStorage
     
     // MARK: - Initialization
-    init(webimActions: WebimActions,
+    init(webimActions: WebimActionsImpl,
          historyMessageMapper: MessageMapper,
          historyMetaInformationStorage: HistoryMetaInformationStorage) {
         self.webimActions = webimActions

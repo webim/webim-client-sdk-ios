@@ -1,8 +1,8 @@
 //
-//  WMChatViewController+Views.swift
+//  TextViewWithPlaceholder.swift
 //  WebimClientLibrary_Example
 //
-//  Created by EVGENII Loshchenko on 19.04.2021.
+//  Created by EVGENII Loshchenko on 13.08.2021.
 //  Copyright © 2021 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,20 +26,30 @@
 
 import UIKit
 
-extension ChatViewController {
-    
-    func configureNetworkErrorView() {
-        
-        self.connectionErrorView = tableViewControllerContainerView.loadViewFromNib("ConnectionErrorView")
-        self.connectionErrorView.frame = CGRect(x: 0, y: 0, width: tableViewControllerContainerView.frame.width, height: 25)
-        self.connectionErrorView.alpha = 0
-        tableViewControllerContainerView.addSubview(connectionErrorView)
+class TextViewWithPlaceholder: UITextView {
+    var placeholderLabel: UILabel = UILabel.createUILabel(systemFontSize: 16, numberOfLines: 0)
+    func setPlaceholder(_ placeholder: String, placeholderColor: UIColor) {
+        self.addSubview(placeholderLabel)
+        self.placeholderLabel.font = self.font
+        placeholderLabel.text = placeholder
+        placeholderLabel.textColor = placeholderColor
+        self.placeholderLabel.snp.remakeConstraints { (make) -> Void in
+            make.top.equalToSuperview().offset(10)
+            make.centerX.equalToSuperview().offset(6)
+            make.width.equalToSuperview()
+        }
+        self.textViewDidChange()
     }
     
-    func configureThanksView() {
-        
-        self.thanksView = WMThanksAlertView.loadXibView()
-        tableViewControllerContainerView.addSubview(thanksView)
-        self.thanksView.hideWithoutAnimation()
+    func textViewDidChange() {
+        if self.text.isEmpty {
+            UIView.animate(withDuration: 0.1) {
+                self.placeholderLabel.alpha = 1.0
+            }
+        } else {
+            UIView.animate(withDuration: 0.1) {
+                self.placeholderLabel.alpha = 0.0
+            }
+        }
     }
 }

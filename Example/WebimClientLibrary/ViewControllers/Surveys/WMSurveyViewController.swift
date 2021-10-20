@@ -28,6 +28,7 @@ import UIKit
 
 protocol WMSurveyViewControllerDelegate: AnyObject {
     func sendSurveyAnswer(_ surveyAnswer: String)
+    func surveyViewControllerClosed()
 }
 
 class WMSurveyViewController: UIViewController {
@@ -51,6 +52,7 @@ class WMSurveyViewController: UIViewController {
     func closeViewController() {
         self.transparentBackgroundView?.alpha = 0
         dismiss(animated: true, completion: nil)
+        self.delegate?.surveyViewControllerClosed()
     }
     
     @IBAction func close(_ sender: Any?) {

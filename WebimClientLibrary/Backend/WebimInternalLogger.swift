@@ -57,6 +57,9 @@ final class WebimInternalLogger {
     
     func log(entry: String,
              verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel = .error) {
+        if !AbstractRequestLoop.logRequestData {
+            return
+        }
         let logEntry = "WEBIM LOG. " + Date().debugDescription + " " + entry
         switch verbosityLevel {
         case .verbose:

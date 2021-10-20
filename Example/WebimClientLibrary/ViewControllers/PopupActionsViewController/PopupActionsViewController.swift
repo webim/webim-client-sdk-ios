@@ -310,6 +310,18 @@ extension PopupActionsViewController: UITableViewDelegate, UITableViewDataSource
                 name: .shouldDeleteMessage,
                 object: nil
             )
+        case .like:
+            NotificationCenter.default.postInMainThread(
+                name: .shouldLikeMessage,
+                object: nil,
+                userInfo: actionsDictionary
+            )
+        case .dislike:
+            NotificationCenter.default.postInMainThread(
+                name: .shouldDislikeMessage,
+                object: nil,
+                userInfo: actionsDictionary
+            )
         }
         
         hidePopupActionsViewController()

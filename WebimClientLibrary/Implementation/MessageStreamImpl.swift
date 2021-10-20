@@ -44,7 +44,7 @@ final class MessageStreamImpl {
     private let messageHolder: MessageHolder
     private let sendingMessageFactory: SendingFactory
     private let serverURLString: String
-    private let webimActions: WebimActions
+    private let webimActions: WebimActionsImpl
     private var chat: ChatItem?
     private weak var chatStateListener: ChatStateListener?
     private var currentOperator: OperatorImpl?
@@ -79,7 +79,7 @@ final class MessageStreamImpl {
          operatorFactory: OperatorFactory,
          surveyFactory: SurveyFactory,
          accessChecker: AccessChecker,
-         webimActions: WebimActions,
+         webimActions: WebimActionsImpl,
          messageHolder: MessageHolder,
          messageComposingHandler: MessageComposingHandler,
          locationSettingsHolder: LocationSettingsHolder) {
@@ -98,7 +98,7 @@ final class MessageStreamImpl {
     
     // MARK: - Methods
     
-    func getWebimActions() -> WebimActions {
+    func getWebimActions() -> WebimActionsImpl {
         return webimActions
     }
     
@@ -425,6 +425,40 @@ extension MessageStreamImpl: MessageStream {
         webimActions.respondSentryCall(id: id)
     }
     
+    func searchStreamMessagesBy(query: String, completionHandler: SearchMessagesCompletionHandler?) {
+        do {
+            
+            try accessChecker.checkAccess()
+
+            webimActions.searchMessagesBy(query: query) { data in
+                let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any?]
+                if let data = json?["data"] as? [String: Any?] {
+                    let itemsCount =  data["count"] as? Int
+                    if itemsCount == 0 {
+                        completionHandler?.onSearchMessageSuccess(query: query, messages: [])
+                        return
+                    }
+                    if let messages = data["items"] as? [[String: Any?]] {
+                        
+                        var searchMessagesArray = [Message]()
+                        
+                        for item in messages {
+                            let messageItem = MessageItem(jsonDictionary: item)
+                            if let message = self.currentChatMessageFactoriesMapper.map(message: messageItem) {
+                                searchMessagesArray.append(message)
+                            }
+                        }
+                        completionHandler?.onSearchMessageSuccess(query: query, messages: searchMessagesArray)
+                        return
+                    }
+                }
+            }
+            completionHandler?.onSearchMessageFailure(query: query)
+        } catch {
+            completionHandler?.onSearchMessageFailure(query: query)
+        }
+    }
+    
     func startChat() throws {
         try startChat(departmentKey: nil,
                       firstQuestion: nil)
@@ -666,6 +700,23 @@ extension MessageStreamImpl: MessageStream {
         webimActions.sendSticker(stickerId: stickerId, clientSideId: messageID, completionHandler: completionHandler)
     }
     
+    func getRawConfig(forLocation location: String, completionHandler: RawLocationConfigCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.getRawConfig(forLocation: location) {
+            data in
+            if let data = data {
+                let json = try? JSONSerialization.jsonObject(with: data,
+                                                             options: [])
+                if let locationSettingsResponseDictionary = json as? [String: Any?] {
+                    let locationSettingsResponse = LocationSettingsResponse(jsonDictionary: locationSettingsResponseDictionary)
+                    completionHandler?.onSuccess(rawLocationConfig: locationSettingsResponse.getLocationSettings())
+                }
+            } else {
+                completionHandler?.onFailure()
+            }
+        }
+    }
     
     func updateWidgetStatus(data: String) throws {
         try accessChecker.checkAccess()
@@ -710,6 +761,18 @@ extension MessageStreamImpl: MessageStream {
             return true
         }
         return false
+    }
+    
+    func react(message: Message, reaction: ReactionString, completionHandler: ReactionCompletionHandler?) throws -> Bool {
+        try accessChecker.checkAccess()
+        if !message.canVisitorReact() || !(message.getVisitorReaction() == nil || message.canVisitorChangeReaction()) {
+            return false
+        } 
+        let id = message.getID()
+        webimActions.sendReaction(reaction: reaction,
+                                  clientSideId: id,
+                                  completionHandler: completionHandler)
+        return true
     }
     
     func delete(message: Message, completionHandler: DeleteMessageCompletionHandler?) throws -> Bool {
@@ -832,6 +895,12 @@ extension MessageStreamImpl: MessageStream {
     
     func set(helloMessageListener: HelloMessageListener) {
         self.helloMessageListener = helloMessageListener
+    }
+    
+    func clearHistory() throws {
+        try accessChecker.checkAccess()
+        webimActions.clearHistory()
+        messageHolder.clearHistory()
     }
     
     // MARK: Private methods

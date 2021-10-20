@@ -57,7 +57,6 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavigationItem()
         setupSaveButton()
         
@@ -120,9 +119,26 @@ final class SettingsViewController: UIViewController {
         imageView.accessibilityLabel = "Webim logo".localized
         imageView.accessibilityTraits = .header
         
+        let toogleTestModeGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(toogleTestMode)
+        )
+        toogleTestModeGestureRecognizer.numberOfTapsRequired = 5
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(toogleTestModeGestureRecognizer)
+        
         navigationItem.titleView = imageView
     }
-
+    
+    @objc
+    func toogleTestMode() {
+        let message = WMTestManager.toogleTestMode() ? "Test mode enabled" : "Test mode disabled"
+        
+        let alert = UIAlertController(title: message, message: "", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @objc
     private func onBackButtonClick(sender: UIButton) {
         if settingsValidated() {
@@ -204,7 +220,6 @@ final class SettingsViewController: UIViewController {
         pageTitle: String?
     ) {
         Settings.shared.accountName = accountName
-        Crashlytics.crashlytics().setCustomValue(accountName, forKey: "AccountName")
         Settings.shared.location = location
         if let pageTitle = pageTitle,
             !pageTitle.isEmpty {

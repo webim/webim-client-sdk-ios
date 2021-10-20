@@ -53,7 +53,9 @@ final class OperatorFactory {
         }
         return OperatorImpl(id: operatorItem.getID(),
                             name: operatorItem.getFullName(),
-                            avatarURLString: avatarURL)
+                            avatarURLString: avatarURL,
+                            title: operatorItem.getTitle(),
+                            info: operatorItem.getInfo())
     }
     
 }

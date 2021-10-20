@@ -43,6 +43,7 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     var cellHeights = [IndexPath: CGFloat]()
     private var overlayWindow: UIWindow?
     private var visibleRows = [IndexPath]()
+    private var scrollToBottom = false
     
     weak var chatViewController: ChatViewController?
     
@@ -50,9 +51,13 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     var surveyCommentViewController: SurveyCommentViewController?
     var surveyRadioButtonViewController: SurveyRadioButtonViewController?
     
-    lazy var messages = [Message]()
+    var chatMessages = [Message]()
+    var searchMessages = [Message]()
+    var showSearchResult = false
+    
     lazy var alertDialogHandler = UIAlertHandler(delegate: self)
-
+    var delayedSurvayQuestion: SurveyQuestion?
+    
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -93,9 +98,26 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
             object: nil
         )
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(clearHistory),
+            name: .shouldClearHistory,
+            object: nil
+        )
+        
         registerCells()
         
         setupRefreshControl()
+    }
+    
+    @objc func clearHistory() {
+        removedAllMessages()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        WMTestManager.testDialogModeEnabled = false
+        updateTestModeState()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -162,13 +184,59 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
                 message: message,
                 completionHandler: self
             )
+            //checkButtonInfo(button)
         } else {
             print("HALT! There isn't such message or button in #function")
         }
     }
     
+//    private func checkButtonInfo(_ button: KeyboardButton) {
+//        let buttonConfiguration = button.getConfiguration()
+//        let state = buttonConfiguration?.getState()
+//        let type = buttonConfiguration?.getButtonType()
+//        let data = buttonConfiguration?.getData() ?? ""
+//        let active = buttonConfiguration?.isActive().description ?? ""
+//        var stringType = ""
+//        var stringState = ""
+//        switch state {
+//        case .showing:
+//            stringState = "showing"
+//            break
+//        case .showingSelected:
+//            stringState = "showing_selected"
+//            break
+//        default:
+//            stringState = "hidden"
+//        }
+//        
+//        switch type {
+//        case .url:
+//            stringType = "url"
+//            break
+//        case .insert:
+//            stringType = "insert"
+//            break
+//        case .none:
+//            stringType = "none"
+//        }
+//        
+//        let alert = UIAlertController(title: button.getID(),
+//                                      message: "text: " + button.getText() + "\ndata: " + data + "\nstate: " + stringState + "\nbuttonType: " + stringType + " \nisActive: " + active,
+//                                      preferredStyle: .alert)
+//
+//        let cancelAction = UIAlertAction(
+//            title: "Отменить",
+//            style: .cancel
+//        )
+//        
+//        let actions = [cancelAction]
+//        actions.forEach({ alert.addAction($0) })
+//        self.present(alert, animated: true)
+//        
+//    }
+    
     private func findMessage(withID id: String) -> Message? {
-        for message in messages {
+        for message in chatMessages {
             if message.getID() == id {
                 return message
             }
@@ -190,7 +258,6 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
         }
         return nil
     }
-    ///
     
     func sendMessage(_ message: String) {
         WebimServiceController.currentSession.send(message: message) {
@@ -273,8 +340,8 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     func getSelectedMessage() -> Message? {
         guard let selectedCellRow = selectedCellRow,
             selectedCellRow >= 0,
-            selectedCellRow < messages.count else { return nil }
-        return messages[selectedCellRow]
+            selectedCellRow < messages().count else { return nil }
+        return messages()[selectedCellRow]
     }
     
     func replyToMessage(_ message: String) {
@@ -303,6 +370,15 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
         )
     }
     
+    func reactMessage(reaction: ReactionString) {
+        guard let messageToReact = getSelectedMessage() else { return }
+        WebimServiceController.currentSession.react(
+            reaction: reaction,
+            message: messageToReact,
+            completionHandler: self
+        )
+    }
+    
     func deleteMessage() {
         guard let messageToDelete = getSelectedMessage() else { return }
         WebimServiceController.currentSession.delete(
@@ -313,7 +389,7 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     
     @objc
     func scrollToBottom(animated: Bool) {
-        if messages.isEmpty {
+        if messages().isEmpty {
             return
         }
         
@@ -324,7 +400,7 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     
     @objc
     func scrollToTop(animated: Bool) {
-        if messages.isEmpty {
+        if messages().isEmpty {
             return
         }
         
@@ -362,21 +438,26 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     private func requestMessages() {
         WebimServiceController.currentSession.getNextMessages { [weak self] messages in
             DispatchQueue.main.async {
-                self?.messages.insert(contentsOf: messages, at: 0)
+                self?.chatMessages.insert(contentsOf: messages, at: 0)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self?.reloadTableWithNewData()
-                self?.tableView?.scrollToRowSafe(at: IndexPath(row: messages.count, section: 0), at: .middle, animated: false)
+                if self?.scrollToBottom == true {
+                    self?.scrollToBottom(animated: false)
+                    self?.scrollToBottom = false
+                } else {
+                    self?.tableView?.scrollToRowSafe(at: IndexPath(row: messages.count, section: 0), at: .middle, animated: false)
+                }
+                
                 self?.newRefreshControl.endRefreshing()
-               
             }
         }
     }
     
     func shouldShowFullDate(forMessageNumber index: Int) -> Bool {
         guard index - 1 >= 0 else { return true }
-        let currentMessageTime = messages[index].getTime()
-        let previousMessageTime = messages[index - 1].getTime()
+        let currentMessageTime = chatMessages[index].getTime()
+        let previousMessageTime = chatMessages[index - 1].getTime()
         let differenceBetweenDates = Calendar.current.dateComponents(
             [.day],
             from: previousMessageTime,
@@ -386,12 +467,13 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
     }
     
     func shouldShowOperatorInfo(forMessageNumber index: Int) -> Bool {
-        guard messages[index].isOperatorType() else { return false }
-        guard index + 1 < messages.count else { return true }
+        guard chatMessages[index].isOperatorType() else { return false }
+        guard index + 1 < chatMessages.count else { return true }
         
-        let nextMessage = messages[index + 1]
+        let nextMessage = chatMessages[index + 1]
+        let progress = nextMessage.getData()?.getAttachment()?.getDownloadProgress() ?? 100
         if nextMessage.isOperatorType() {
-            return false
+            return progress != 100
         } else {
             return true
         }
@@ -428,7 +510,7 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
                 guard let cellHeight = cellHeights[indexPath] else { return }
                 viewController.cellImageViewHeight = cellHeight
                 
-                let message = messages[selectedCellRow]
+                let message = messages()[selectedCellRow]
                 
                 if message.isOperatorType() {
                     viewController.originalCellAlignment = .leading
@@ -454,6 +536,13 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
                         }
                     }
                     viewController.actions.append(.delete)
+                }
+                
+                if message.canVisitorReact() {
+                    if message.getVisitorReaction() == nil || message.canVisitorChangeReaction() {
+                        viewController.actions.append(.like)
+                        viewController.actions.append(.dislike)
+                    }
                 }
                 
                 if !viewController.actions.isEmpty {
@@ -485,7 +574,7 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
         let tapLocation = recognizer.location(in: tableView)
         
         guard let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) else { return }
-        let message = messages[tapIndexPath.row]
+        let message = messages()[tapIndexPath.row]
         guard let url = message.getData()?.getAttachment()?.getFileInfo().getURL(),
             let vc = storyboard?.instantiateViewController(withIdentifier: "ImageView")
                 as? ImageViewController
@@ -525,7 +614,7 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
         let tapLocation = recognizer.location(in: tableView)
         
         guard let tapIndexPath = tableView?.indexPathForRow(at: tapLocation) else { return }
-        let message = messages[tapIndexPath.row]
+        let message = messages()[tapIndexPath.row]
         
         self.showRateOperatorDialog(operatorId: message.getOperatorID())
     }
@@ -555,9 +644,13 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
         WebimServiceController.currentSession.getLastMessages { [weak self] messages in
             
             DispatchQueue.main.async {
-                self?.messages.insert(contentsOf: messages, at: 0)
+                self?.chatMessages.insert(contentsOf: messages, at: 0)
                 self?.reloadTableWithNewData()
                 self?.scrollToBottom(animated: false)
+                if messages.count < WebimService.ChatSettings.messagesPerRequest.rawValue {
+                    self?.scrollToBottom = true
+                    self?.requestMessages()
+                }
             }
         }
     }
@@ -571,15 +664,18 @@ class ChatTableViewController: UITableViewController, DepartmentListHandlerDeleg
             } else {
                 operatorURLString = OperatorAvatar.placeholder.rawValue
             }
-        
             operatorInfoDictionary = [
                 "OperatorName": currentOperator.getName(),
-                "OperatorAvatarURL": operatorURLString
+                "OperatorAvatarURL": operatorURLString,
+                "OperatorInfo": currentOperator.getInfo() ?? "",
+                "OperatorTitle": currentOperator.getTitle() ?? ""
             ]
         } else {
             operatorInfoDictionary = [
                 "OperatorName": "Webim demo-chat".localized,
-                "OperatorAvatarURL": OperatorAvatar.empty.rawValue
+                "OperatorAvatarURL": OperatorAvatar.empty.rawValue,
+                "OperatorInfo": "",
+                "OperatorTitle": ""
             ]
         }
         
@@ -629,9 +725,9 @@ extension ChatTableViewController: MessageListener {
             var inserted = false
             
             if let previousMessage = previousMessage {
-                for (index, message) in self.messages.enumerated() {
+                for (index, message) in self.chatMessages.enumerated() {
                     if previousMessage.isEqual(to: message) {
-                        self.messages.insert(newMessage, at: index)
+                        self.chatMessages.insert(newMessage, at: index)
                         inserted = true
                         break
                     }
@@ -639,7 +735,7 @@ extension ChatTableViewController: MessageListener {
             }
             
             if !inserted {
-                self.messages.append(newMessage)
+                self.chatMessages.append(newMessage)
             }
             
             self.tableView?.reloadData()
@@ -659,9 +755,9 @@ extension ChatTableViewController: MessageListener {
                 )
             }
             
-            for (messageIndex, iteratedMessage) in self.messages.enumerated() {
+            for (messageIndex, iteratedMessage) in self.chatMessages.enumerated() {
                 if iteratedMessage.getID() == message.getID() {
-                    self.messages.remove(at: messageIndex)
+                    self.chatMessages.remove(at: messageIndex)
                     let indexPath = IndexPath(row: messageIndex, section: 0)
                     self.cellHeights.removeValue(forKey: indexPath)
                     toUpdate = true
@@ -679,7 +775,7 @@ extension ChatTableViewController: MessageListener {
     
     func removedAllMessages() {
         DispatchQueue.main.async {
-            self.messages.removeAll()
+            self.chatMessages.removeAll()
             self.cellHeights.removeAll()
             self.tableView?.reloadData()
         }
@@ -688,9 +784,9 @@ extension ChatTableViewController: MessageListener {
     func changed(message oldVersion: Message,
                  to newVersion: Message) {
         DispatchQueue.main.async {
-            for (messageIndex, iteratedMessage) in self.messages.enumerated() {
+            for (messageIndex, iteratedMessage) in self.chatMessages.enumerated() {
                 if iteratedMessage.getID() == oldVersion.getID() {
-                    self.messages[messageIndex] = newVersion
+                    self.chatMessages[messageIndex] = newVersion
                 }
             }
             self.tableView.reloadData()
@@ -719,7 +815,9 @@ extension ChatTableViewController: FatalErrorHandlerDelegate {
 extension ChatTableViewController: SendFileCompletionHandler,
                                    EditMessageCompletionHandler,
                                    DeleteMessageCompletionHandler,
-                                   SendKeyboardRequestCompletionHandler {
+                                   SendKeyboardRequestCompletionHandler,
+                                   ReactionCompletionHandler {
+    
     // MARK: - Methods
     
     func onSuccess(messageID: String) {
@@ -807,6 +905,28 @@ extension ChatTableViewController: SendFileCompletionHandler,
         }
     }
     
+    // ReacionCompletionHandler
+    func onFailure(error: ReactionError) {
+        DispatchQueue.main.async {
+            var message = "Неизвестная ошибка"
+            switch error {
+            case .unknown:
+                message = "Неизвестная ошибка"
+            case .notAllowed:
+                message = "Реакция на сообщения отключена на сервере"
+            case .messageNotOwned:
+                message = "Сообщение не принадлежит оператору"
+            case .messageNotFound:
+                message = "Сообщение не найдено"
+            }
+            self.alertOnFailure(
+                with: message,
+                id: "",
+                title: "Ошибка"
+            )
+        }
+    }
+    
     // SendKeyboardRequestCompletionHandler
     func onFailure(messageID: String, error: KeyboardResponseError) {
         DispatchQueue.main.async {
@@ -855,9 +975,9 @@ extension ChatTableViewController: SendFileCompletionHandler,
             action: { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    for (index, message) in self.messages.enumerated() {
+                    for (index, message) in self.chatMessages.enumerated() {
                         if message.getID() == messageID {
-                            self.messages.remove(at: index)
+                            self.chatMessages.remove(at: index)
                             self.tableView?.reloadData()
                             return
                         }
@@ -902,8 +1022,8 @@ extension ChatTableViewController: CurrentOperatorChangeListener {
 // MARK: - WEBIM: ChatStateLisneter
 extension ChatTableViewController: ChatStateListener {
     func changed(state previousState: ChatState, to newState: ChatState) {
-        if newState == .closedByVisitor || newState == .closed || newState == .closedByOperator {
-            // TODO: rating operator
+        if (newState == .closedByVisitor || newState == .closedByOperator) && WebimServiceController.currentSession.sessionState() == .chatting {
+            self.showRateOperatorDialog(operatorId: currentOperatorId())
         }
     }
 }

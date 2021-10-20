@@ -449,7 +449,9 @@ class MessageAttachmentTests: XCTestCase {
         let messageAttachment = FileInfoImpl(urlString: "/image.jpg",
                                              size: 1,
                                              filename: "image",
-                                             contentType: "image/jpeg")
+                                             contentType: "image/jpeg",
+                                             guid: "image123",
+                                             fileUrlCreator: nil)
         
         XCTAssertEqual(messageAttachment.getContentType(),
                        "image/jpeg")
@@ -459,6 +461,8 @@ class MessageAttachmentTests: XCTestCase {
                        1)
         XCTAssertEqual(messageAttachment.getURL(),
                        URL(string: "/image.jpg")!)
+        XCTAssertEqual(messageAttachment.getGuid(),
+                        "image123")
     }
     
 }
@@ -468,13 +472,48 @@ class ImageInfoImplTests: XCTestCase {
     
     // MARK: - Tests
     func testInit() {
+        let pageID = "page_id"
+        let authorizationToken = "auth_token"
+        let authorizationData = AuthorizationData(pageID: pageID,
+                                              authorizationToken: authorizationToken)
+        let SERVER_URL_STRING = "https://demo.webim.ru"
+        let userDefaultsKey = "userDefaultsKey"
+        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: userDefaultsKey),
+                                                                                  queue: DispatchQueue.main)
+        let internalErrorListener = InternalErrorListenerForTests()
+        let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+                                                          internalErrorListener: internalErrorListener)
+        let deltaRequestLoop = DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: SERVER_URL_STRING),
+                                                historyMessageMapper: HistoryMessageMapper(withServerURLString: SERVER_URL_STRING),
+                                                userDefaultsKey: userDefaultsKey),
+                                                completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+                                                sessionParametersListener: nil,
+                                                internalErrorListener: internalErrorListener,
+                                                baseURL: SERVER_URL_STRING,
+                                                title: "title",
+                                                location: "location",
+                                                appVersion: nil,
+                                                visitorFieldsJSONString: nil,
+                                                providedAuthenticationTokenStateListener: nil,
+                                                providedAuthenticationToken: nil,
+                                                deviceID: "id",
+                                                deviceToken: nil,
+                                                visitorJSONString: nil,
+                                                sessionID: nil,
+                                                prechat: nil,
+                                                authorizationData: authorizationData)
+        
+        let webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
+                                      deltaRequestLoop: deltaRequestLoop,
+                                      webimActions: WebimActionsImpl(baseURL: SERVER_URL_STRING,
+                                                                     actionRequestLoop: actionRequestLoop))
+        let fileUrlCreator =  FileUrlCreator(webimClient: webimClient, serverURL: SERVER_URL_STRING)
         let imageInfo = ImageInfoImpl(withThumbURLString: "https://demo.webim.ru/thumb.jpg",
+                                      fileUrlCreator: fileUrlCreator,
+                                      filename: "thumb.jpg",
+                                      guid: "123",
                                       width: 100,
                                       height: 200)
-        
-        
-        XCTAssertEqual(imageInfo.getThumbURL(),
-                       URL(string: "https://demo.webim.ru/thumb.jpg"))
         XCTAssertEqual(imageInfo.getWidth(),
                        100)
         XCTAssertEqual(imageInfo.getHeight(),

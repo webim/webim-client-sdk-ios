@@ -65,7 +65,10 @@ final class MessageToSend: MessageImpl {
                    read: false,
                    messageCanBeEdited: false,
                    messageCanBeReplied: false,
-                   messageIsEdited: false)
+                   messageIsEdited: false,
+                   visitorReactionInfo: nil,
+                   visitorCanReact: false,
+                   visitorChangeReaction: false)
     }
     
 }

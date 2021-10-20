@@ -8,8 +8,8 @@
 "ViG-wh-bJl.accessibilityLabel" = "Location text field";
 "ViG-wh-bJl.placeholder" = "mobile";
 "ViG-wh-bJl.text" = "mobile";
-"WP9-KH-Pcx.text" = "Loading File...";
-"Wgr-pM-cdE.text" = "* This field can't be empty";
+"WP9-KH-Pcx.text" = "Loading the file...";
+"Wgr-pM-cdE.text" = "* Account name can't be empty.";
 "akL-LD-AeE.title" = "Back";
 "bC4-gI-YBa.accessibilityLabel" = "Account name text field";
 "bC4-gI-YBa.placeholder" = "wmtest";
@@ -22,7 +22,7 @@
 "edo-SU-HN8.normalTitle" = "Start chat";
 "f2l-5B-zsO.accessibilityLabel" = "Greeting title";
 "f2l-5B-zsO.text" = "Welcome to the WebimClientLibrary demo app!";
-"kOW-ZJ-ash.text" = "* This field can't be empty";
+"kOW-ZJ-ash.text" = "* Location can't be empty.";
 "rMR-x2-dzu.accessibilityHint" = "Shows settings.";
 "rMR-x2-dzu.accessibilityLabel" = "Settings";
 "rMR-x2-dzu.normalTitle" = "Settings";

@@ -67,6 +67,10 @@ class WebimServiceController {
         self.webimService?.stopSession()
         self.webimService = nil
     }
+    
+    func sessionState() -> ChatState {
+        return webimService?.sessionState() ?? .unknown
+    }
 }
 
 extension WebimServiceController: FatalErrorHandlerDelegate {

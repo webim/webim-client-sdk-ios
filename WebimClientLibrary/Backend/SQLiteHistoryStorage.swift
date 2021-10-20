@@ -57,6 +57,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
         case data = "data"
         case canBeReplied = "can_be_replied"
         case quote = "quote"
+        case canVisitorReact = "can_visitor_react"
+        case canVisitorChangeReaction = "can_visitor_change_reaction"
+        case reaction = "reaction"
     }
     
     // MARK: SQLite.swift abstractions
@@ -76,6 +79,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static let canBeReplied = Expression<Bool?>(ColumnName.canBeReplied.rawValue)
     private static let quote = Expression<Blob?>(ColumnName.quote.rawValue)
     private static let SQLITE_CONSTRAINT: Int = 19
+    private static let canVisitorReact = Expression<Bool?>(ColumnName.canVisitorReact.rawValue)
+    private static let canVisitorChangeReaction = Expression<Bool?>(ColumnName.canVisitorChangeReaction.rawValue)
+    private static let reaction = Expression<String?>(ColumnName.reaction.rawValue)
     
     
     // MARK: - Properties
@@ -290,7 +296,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.text.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.data.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canBeReplied.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+                        + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.canVisitorReact.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.canVisitorChangeReaction.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
                     try statement.run(message.getID(),
                                       messageHistorID.getTimeInMicrosecond(),
                                       message.getOperatorID(),
@@ -300,7 +309,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                       text,
                                       SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
                                       message.canBeReplied(),
-                                      SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()))
+                                      SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
+                                      message.canVisitorReact(),
+                                      message.canVisitorChangeReaction(),
+                                      message.getVisitorReaction())
                     // Raw SQLite statement constructed because there's no way to implement INSERT OR FAIL query with SQLite.swift methods. Appropriate INSERT query can look like this:
                     /*try db.run(SQLiteHistoryStorage
                      .history
@@ -452,6 +464,20 @@ final class SQLiteHistoryStorage: HistoryStorage {
         self.readBeforeTimestamp = timestamp
     }
     
+    public func clearHistory() {
+        SQLiteHistoryStorage.queryQueue.async { [weak self] in
+            guard let `self` = self,
+                  let db = self.db else {
+                return
+            }
+            do {
+                try db.run(SQLiteHistoryStorage.history.delete())
+            } catch {
+                WebimInternalLogger.shared.log(entry: "Failed to delete from database: \(error.localizedDescription)")
+            }
+            
+        }
+    }
     // MARK: Private methods
     
     private static func convertToBlob(dictionary: [String: Any?]?) -> Blob? {
@@ -550,6 +576,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
             t.column(SQLiteHistoryStorage.data)
             t.column(SQLiteHistoryStorage.canBeReplied)
             t.column(SQLiteHistoryStorage.quote)
+            t.column(SQLiteHistoryStorage.canVisitorReact)
+            t.column(SQLiteHistoryStorage.canVisitorChangeReaction)
+            t.column(SQLiteHistoryStorage.reaction)
         })
         db.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",
@@ -658,9 +687,26 @@ final class SQLiteHistoryStorage: HistoryStorage {
         
         var data: MessageData?
         if let attachment = attachment {
+            var file: FileItem?
+            if let rawData = rawData {
+                file = MessageDataItem(jsonDictionary: rawData).getFile()
+            }
+            let state: AttachmentState
+            switch file?.getState() {
+            case .ready:
+                state = .ready
+                break
+            case .externalChecks:
+                state = .externalChecks
+                break
+            default:
+                state = .error
+            }
             data = MessageDataImpl(attachment: MessageAttachmentImpl(fileInfo: attachment,
                                                                      filesInfo: attachments,
-                                                                     state: .ready))
+                                                                     state: state,
+                                                                     errorType: file?.getErrorType(),
+                                                                     errorMessage: file?.getErrorMessage()))
         }
         
         var keyboard: Keyboard? = nil
@@ -679,6 +725,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
             let data = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(quoteValue)) as? [String : Any?] {
                 quote = QuoteImpl.getQuote(quoteItem: QuoteItem(jsonDictionary: data), messageAttachment: nil, fileUrlCreator: fileUrlCreator)
         }
+        let canVisitorReact = row[SQLiteHistoryStorage.canVisitorReact] ?? false
+        let canVisitorChangeReact = row[SQLiteHistoryStorage.canVisitorChangeReaction] ?? false
+        let reaction = row[SQLiteHistoryStorage.reaction] ?? nil
         
         return MessageImpl(serverURLString: serverURLString,
                            id: (clientSideID ?? id),
@@ -700,7 +749,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            read: row[SQLiteHistoryStorage.timestamp] <= readBeforeTimestamp || readBeforeTimestamp == -1,
                            messageCanBeEdited: false,
                            messageCanBeReplied: canBeReplied,
-                           messageIsEdited: false)
+                           messageIsEdited: false,
+                           visitorReactionInfo: reaction,
+                           visitorCanReact: canVisitorReact,
+                           visitorChangeReaction: canVisitorChangeReact)
     }
     
     private func insert(message: MessageImpl) throws {
@@ -743,7 +795,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.text <- text,
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
                     SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
-                    SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))
+                    SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
+                    SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
+                    SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
+                    SQLiteHistoryStorage.reaction <- message.getVisitorReaction()))
         
         db.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",
@@ -783,7 +838,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.text <- text,
                     SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
                     SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
-                    SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))
+                    SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
+                    SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
+                    SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
+                    SQLiteHistoryStorage.reaction <- message.getVisitorReaction()))
         
         db.trace {
             WebimInternalLogger.shared.log(entry: "\($0)",

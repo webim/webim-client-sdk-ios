@@ -34,13 +34,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Properties
     var window: UIWindow?
-
+    static var shared: AppDelegate!
+    
     // MARK: - Methods
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        AppDelegate.shared = self
         FirebaseApp.configure()
-        
+        Crashlytics.crashlytics().setCustomValue(Settings.shared.accountName, forKey: "AccountName")
         // Remote notifications configuration
         let notificationTypes: UNAuthorizationOptions = [.alert,
                                                          .badge,

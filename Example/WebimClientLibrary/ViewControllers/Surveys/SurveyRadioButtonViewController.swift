@@ -26,7 +26,6 @@
 
 import AVFoundation
 import UIKit
-import SnapKit
 
 class SurveyRadioButtonViewController: WMSurveyViewController, WMFixedWidthViewDelegate {
 
@@ -39,7 +38,8 @@ class SurveyRadioButtonViewController: WMSurveyViewController, WMFixedWidthViewD
     
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet var grayViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var sendButtonView: UIView!
     
     private var cells = [SurveyTableViewCell]()
     
@@ -62,17 +62,40 @@ class SurveyRadioButtonViewController: WMSurveyViewController, WMFixedWidthViewD
         self.disableSendButton()
         self.tableView.reloadData()
         self.view.setNeedsLayout()
+        recountContentViewHeight()
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    @objc
+    func rotated() {
+        recountContentViewHeight()
     }
     
     @IBAction private func send(_ sender: Any) {
-        self.delegate?.sendSurveyAnswer(self.points[selectedPoint])
+        // important: radio button answer numeration starts from 1
+        self.delegate?.sendSurveyAnswer("\(selectedPoint + 1)")
         self.closeViewController()
     }
     
     func viewWillResize(_ view: UIView) {
         DispatchQueue.main.asyncAfter(deadline: .now() ) {
             self.tableView.reloadData()
+            self.recountContentViewHeight()
         }
+    }
+    
+    func recountContentViewHeight() {
+        let contentViewHeight = self.tableView.contentSize.height + self.sendButtonView.frame.height + self.tableHeaderView.frame.height
+        
+        var greyViewHeight = max(WMInterfaceData.shared.screenHeight() - contentViewHeight, 0)
+        if greyViewHeight < 100 {
+            if WMInterfaceData.shared.screenHeight() < 450 {
+                greyViewHeight = 0
+            } else {
+                greyViewHeight = 100
+            }
+        }
+        self.grayViewHeightConstraint.constant = greyViewHeight
     }
 }
 

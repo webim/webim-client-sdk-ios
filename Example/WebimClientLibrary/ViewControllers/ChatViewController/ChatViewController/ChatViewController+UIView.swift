@@ -25,6 +25,21 @@
 //
 
 import UIKit
+extension UILabel {
+    static func createUILabel(
+        textAlignment: NSTextAlignment = .left,
+        systemFontSize: CGFloat,
+        systemFontWeight: UIFont.Weight = .regular,
+        numberOfLines: Int = 1
+    ) -> UILabel {
+        let label = UILabel()
+        label.textAlignment = textAlignment
+        label.font = .systemFont(ofSize: systemFontSize, weight: .regular )
+        label.numberOfLines = numberOfLines
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+}
 
 extension ChatViewController {
     
@@ -43,20 +58,6 @@ extension ChatViewController {
         return textView
     }
     
-    func createUILabel(
-        textAlignment: NSTextAlignment = .left,
-        systemFontSize: CGFloat,
-        systemFontWeight: UIFont.Weight = .regular,
-        numberOfLines: Int = 1
-    ) -> UILabel {
-        let label = UILabel()
-        label.textAlignment = textAlignment
-        label.font = .systemFont(ofSize: systemFontSize, weight: .regular )
-        label.numberOfLines = numberOfLines
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }
-
     func createUIView() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -215,6 +216,17 @@ extension ChatViewController {
         setupRightBarButtonItem()
     }
     
+    func setupTestView() {
+        if WMTestManager.testModeEnabled() {
+            chatTestView.setupView(delegate: self)
+            self.view.addSubview(chatTestView)
+            chatTestView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+            chatTestView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+            chatTestView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+            self.view.bringSubviewToFront(chatTestView)
+        }
+    }
+    
     func setupTitleView() {
         // TitleView
         titleViewOperatorNameLabel.text = "Webim demo-chat".localized
@@ -254,7 +266,6 @@ extension ChatViewController {
             action: #selector(titleViewTapAction)
         )
         customViewForOperatorNameAndStatus.addGestureRecognizer(gestureRecognizer)
-        
         navigationItem.titleView = customViewForOperatorNameAndStatus
     }
     
@@ -276,8 +287,24 @@ extension ChatViewController {
         let customRightBarButtonItem = UIBarButtonItem(
             customView: customViewForOperatorAvatar
         )
-
+        
         navigationItem.rightBarButtonItem = customRightBarButtonItem
+        navigationItem.rightBarButtonItem?.action = #selector(titleViewTapAction)
+    }
+    
+    func configureNetworkErrorView() {
+        
+        self.connectionErrorView = tableViewControllerContainerView.loadViewFromNib("ConnectionErrorView")
+        self.connectionErrorView.frame = CGRect(x: 0, y: 0, width: tableViewControllerContainerView.frame.width, height: 25)
+        self.connectionErrorView.alpha = 0
+        tableViewControllerContainerView.addSubview(connectionErrorView)
+    }
+    
+    func configureThanksView() {
+        
+        self.thanksView = WMThanksAlertView.loadXibView()
+        tableViewControllerContainerView.addSubview(thanksView)
+        self.thanksView.hideWithoutAnimation()
     }
     
 }

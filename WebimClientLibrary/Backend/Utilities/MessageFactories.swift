@@ -123,14 +123,42 @@ class MessageMapper {
                     attachment = attachments.first
                 }
                 if let attachment = attachment {
+                    var file: FileItem?
+                    if let rawData = messageItem.getRawData() {
+                        file = MessageDataItem(jsonDictionary: rawData).getFile()
+                    }
+                    let state: AttachmentState
+                    switch file?.getState() {
+                    case .ready:
+                        state = .ready
+                        break
+                    case .externalChecks:
+                        state = .externalChecks
+                        break
+                    default:
+                        state = .error
+                    }
                     data = MessageDataImpl(
                         attachment: MessageAttachmentImpl(fileInfo: attachment,
                                                           filesInfo: attachments,
-                                                          state: .ready)
+                                                          state: state,
+                                                          errorType: file?.getErrorType(),
+                                                          errorMessage: file?.getErrorMessage())
                     )
                 } else {
                     if let rawData = messageItem.getRawData(),
                        let file = MessageDataItem(jsonDictionary: rawData).getFile() {
+                        let state: AttachmentState
+                        switch file.getState() {
+                        case .ready:
+                            state = .ready
+                            break
+                        case .externalChecks:
+                            state = .externalChecks
+                            break
+                        default:
+                            state = .error
+                        }
                         let fileInfoImpl = FileInfoImpl(urlString: nil,
                                                         size: file.getProperties()?.getSize() ?? 0,
                                                         filename: file.getProperties()?.getFilename() ?? "",
@@ -142,8 +170,10 @@ class MessageMapper {
                         data = MessageDataImpl(
                             attachment: MessageAttachmentImpl(fileInfo: fileInfoImpl,
                                                               filesInfo: attachments,
-                                                              state: .upload,
-                                                              downloadProgress: file.getDownloadProgress()))
+                                                              state: state,
+                                                              downloadProgress: file.getDownloadProgress(),
+                                                              errorType: file.getErrorType(),
+                                                              errorMessage: file.getErrorMessage()))
                     }
                 }
             }
@@ -227,7 +257,10 @@ class MessageMapper {
                            read: messageItem.getRead() ?? true,
                            messageCanBeEdited: messageItem.getCanBeEdited(),
                            messageCanBeReplied: messageItem.getCanBeReplied(),
-                           messageIsEdited: messageItem.getIsEdited())
+                           messageIsEdited: messageItem.getIsEdited(),
+                           visitorReactionInfo: messageItem.getReaction(),
+                           visitorCanReact: messageItem.getCanVisitorReact(),
+                           visitorChangeReaction: messageItem.getCanVisitorChangeReaction())
     }
     
     func set(fileUrlCreator: FileUrlCreator) {

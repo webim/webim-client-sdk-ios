@@ -8,10 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */ = {isa = PBXBuildFile; fileRef = 11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */; };
-		121035A2266895580015297B /* RateStarsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121035A4266895580015297B /* RateStarsViewController.xib */; };
-		121035AC266895630015297B /* SurveyCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121035AE266895630015297B /* SurveyCommentViewController.xib */; };
-		121035B6266895720015297B /* SurveyRadioButtonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121035B8266895720015297B /* SurveyRadioButtonViewController.xib */; };
-		121035C3266895D70015297B /* SurveyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121035C5266895D70015297B /* SurveyTableViewCell.xib */; };
+		121785FE26CA5D6D00B31B6F /* WMInterfaceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121785FD26CA5D6D00B31B6F /* WMInterfaceData.swift */; };
 		1224A05D261BCFE900E1A09A /* ChatTableViewController+Surveys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224A05C261BCFE900E1A09A /* ChatTableViewController+Surveys.swift */; };
 		125FE5B62632D25700831448 /* NotificationCenter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125FE5B52632D25700831448 /* NotificationCenter+Extensions.swift */; };
 		12620C70260C0DE000F6E397 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12620C6F260C0DBF00F6E397 /* GoogleService-Info.plist */; };
@@ -20,12 +17,14 @@
 		127807382614013A0080B46B /* StringsFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127807342614013A0080B46B /* StringsFileParser.swift */; };
 		127807392614013A0080B46B /* ProjectParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127807352614013A0080B46B /* ProjectParser.swift */; };
 		1278073A2614013A0080B46B /* String+LocalizationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127807362614013A0080B46B /* String+LocalizationExtension.swift */; };
-		127F785C264A794C0084836E /* WMThanksAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 127F785E264A794C0084836E /* WMThanksAlertView.xib */; };
+		127D2AEC26E6018100FD60DF /* WMTestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127D2AEB26E6018100FD60DF /* WMTestManager.swift */; };
 		127F7877264A7D320084836E /* ChatTableViewController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127F7876264A7D320084836E /* ChatTableViewController+UITableView.swift */; };
 		127F7886264A7E2E0084836E /* ChatViewController+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127F7885264A7E2E0084836E /* ChatViewController+UIView.swift */; };
+		1284800B26C644E3005EF3D4 /* TextViewWithPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1284800A26C644E3005EF3D4 /* TextViewWithPlaceholder.swift */; };
+		1288716F269D858F0080159A /* WMSaveView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12887171269D858F0080159A /* WMSaveView.xib */; };
+		12887177269D8DCA0080159A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE5A03BC1FDEB756009D320A /* Localizable.strings */; };
 		128A477C262D7D860036B476 /* WMThanksAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A477A262D7D860036B476 /* WMThanksAlertView.swift */; };
-		128A4785262D80620036B476 /* WMChatViewController+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A4784262D80620036B476 /* WMChatViewController+Views.swift */; };
-		128A47D1262EC0E00036B476 /* WMSurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A47D0262EC0E00036B476 /* WMSurveyViewController.swift */; };
+		128D145126E0C574009E9146 /* ChatTestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D145326E0C574009E9146 /* ChatTestView.xib */; };
 		129360672614C20C008F8EF1 /* AdditionalKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129360662614C20C008F8EF1 /* AdditionalKeys.swift */; };
 		1295C6772602A2C600F7BE80 /* ConnectionErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */; };
 		1295C6AF2602BB5200F7BE80 /* WebimServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */; };
@@ -33,13 +32,19 @@
 		129E5149264AF8BC00A6C315 /* WMWeakReferenseContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E5147264AF8BC00A6C315 /* WMWeakReferenseContainer.swift */; };
 		129E5151264AFA7F00A6C315 /* ChatTableViewController+FlexibleTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E5150264AFA7F00A6C315 /* ChatTableViewController+FlexibleTableViewCellDelegate.swift */; };
 		129E5161264AFB4200A6C315 /* URL+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E5160264AFB4200A6C315 /* URL+extension.swift */; };
-		12A0D8D625FF467B003AF10E /* logo_webim.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A0D8D525FF467B003AF10E /* logo_webim.png */; };
 		12A45C3826023D19004B077F /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A45C3726023D19004B077F /* UITextView.swift */; };
 		12A5DF0F262EE8EB00E427EB /* WMFixedContentSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5DF0E262EE8EB00E427EB /* WMFixedContentSizeView.swift */; };
-		38249EF42609FBF800B3F562 /* SurveyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38249EF22609FBF800B3F562 /* SurveyTableViewCell.swift */; };
-		3826F58825FA861A0015E7A6 /* SurveyCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826F58625FA861A0015E7A6 /* SurveyCommentViewController.swift */; };
-		3826F59C25FBBE430015E7A6 /* RateStarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826F59A25FBBE430015E7A6 /* RateStarsViewController.swift */; };
-		3826F5A425FBD1C50015E7A6 /* SurveyRadioButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3826F5A225FBD1C50015E7A6 /* SurveyRadioButtonViewController.swift */; };
+		12BAC8AD2685E63B00C8D842 /* ChatViewController+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BAC8AC2685E63B00C8D842 /* ChatViewController+Notifications.swift */; };
+		12EFAA02267B45C900D0F803 /* SurveyRadioButtonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EFA9F9267B45C800D0F803 /* SurveyRadioButtonViewController.xib */; };
+		12EFAA03267B45C900D0F803 /* RateStarsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EFA9FB267B45C900D0F803 /* RateStarsViewController.xib */; };
+		12EFAA05267B45C900D0F803 /* SurveyCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EFA9FE267B45C900D0F803 /* SurveyCommentViewController.xib */; };
+		12EFAA06267B45C900D0F803 /* SurveyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EFAA00267B45C900D0F803 /* SurveyTableViewCell.xib */; };
+		12EFAA48267B469C00D0F803 /* SurveyCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFAA47267B469C00D0F803 /* SurveyCommentViewController.swift */; };
+		12EFAA56267B470800D0F803 /* RateStarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFAA55267B470800D0F803 /* RateStarsViewController.swift */; };
+		12EFAA61267B475A00D0F803 /* WMSurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFAA60267B475A00D0F803 /* WMSurveyViewController.swift */; };
+		12EFAA6C267B479500D0F803 /* SurveyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFAA6B267B479500D0F803 /* SurveyTableViewCell.swift */; };
+		12EFAA77267B47D700D0F803 /* SurveyRadioButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFAA76267B47D700D0F803 /* SurveyRadioButtonViewController.swift */; };
+		12EFAAA8267B4EF600D0F803 /* WMThanksAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EFAAA6267B4EF600D0F803 /* WMThanksAlertView.xib */; };
 		38683A7524A4FDCB007DED63 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38683A7424A4FDCB007DED63 /* UIButton.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* StartViewController.swift */; };
@@ -48,6 +53,8 @@
 		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
 		625B0CFF11CFB24FA44C17A0 /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85F5395A54F1170A064A76BF /* Pods_WebimClientLibrary_Example.framework */; };
 		754A3410E17BB84F9F78C1E0 /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBB18D8A6A1E4DEE621109CB /* Pods_WebimClientLibrary_Tests.framework */; };
+		907E494426BA1719001F0C55 /* ChatTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907E494326BA1719001F0C55 /* ChatTestView.swift */; };
+		908D147A2669B63E00B43B60 /* WMSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908D14782669B63E00B43B60 /* WMSaveView.swift */; };
 		CE07E9952049794C00E0A0D3 /* SessionBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */; };
 		CE0CD75A202338FD00719DBE /* HistoryIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD758202338EE00719DBE /* HistoryIDTests.swift */; };
 		CE0CD75D20234BD800719DBE /* SessionDestroyerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */; };
@@ -75,7 +82,6 @@
 		CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
 		CE48362C2031DA5E00E18A20 /* MimeTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE48362B2031DA5E00E18A20 /* MimeTypeTests.swift */; };
 		CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
-		CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE5A03BC1FDEB756009D320A /* Localizable.strings */; };
 		CE5B7E5C20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5B7E5B20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift */; };
 		CE5B7E622056B26C00DDA407 /* WebimClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5B7E612056B26C00DDA407 /* WebimClientTests.swift */; };
 		CE6741C8200F9A600061EEFD /* HMACSha256Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6741C7200F9A600061EEFD /* HMACSha256Tests.swift */; };
@@ -159,18 +165,7 @@
 
 /* Begin PBXFileReference section */
 		11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "FAQ methods documentation.md"; sourceTree = "<group>"; };
-		121035A3266895580015297B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RateStarsViewController.xib; sourceTree = "<group>"; };
-		121035A92668955D0015297B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RateStarsViewController.strings; sourceTree = "<group>"; };
-		121035AB2668955E0015297B /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/RateStarsViewController.strings"; sourceTree = "<group>"; };
-		121035AD266895630015297B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SurveyCommentViewController.xib; sourceTree = "<group>"; };
-		121035B3266895670015297B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SurveyCommentViewController.strings; sourceTree = "<group>"; };
-		121035B5266895680015297B /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/SurveyCommentViewController.strings"; sourceTree = "<group>"; };
-		121035B7266895720015297B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SurveyRadioButtonViewController.xib; sourceTree = "<group>"; };
-		121035BD266895760015297B /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/SurveyRadioButtonViewController.strings"; sourceTree = "<group>"; };
-		121035BF266895A40015297B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SurveyRadioButtonViewController.strings; sourceTree = "<group>"; };
-		121035C4266895D70015297B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SurveyTableViewCell.xib; sourceTree = "<group>"; };
-		121035CA266895DB0015297B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SurveyTableViewCell.strings; sourceTree = "<group>"; };
-		121035CC266895DC0015297B /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/SurveyTableViewCell.strings"; sourceTree = "<group>"; };
+		121785FD26CA5D6D00B31B6F /* WMInterfaceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMInterfaceData.swift; sourceTree = "<group>"; };
 		1224A05C261BCFE900E1A09A /* ChatTableViewController+Surveys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatTableViewController+Surveys.swift"; sourceTree = "<group>"; };
 		1252F7A725E5F2BD00F16DBB /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		125FE5B52632D25700831448 /* NotificationCenter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Extensions.swift"; sourceTree = "<group>"; };
@@ -182,14 +177,17 @@
 		127807342614013A0080B46B /* StringsFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringsFileParser.swift; sourceTree = "<group>"; };
 		127807352614013A0080B46B /* ProjectParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectParser.swift; sourceTree = "<group>"; };
 		127807362614013A0080B46B /* String+LocalizationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+LocalizationExtension.swift"; sourceTree = "<group>"; };
-		127F785D264A794C0084836E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMThanksAlertView.xib; sourceTree = "<group>"; };
-		127F7863264A795B0084836E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMThanksAlertView.strings; sourceTree = "<group>"; };
-		127F7865264A795C0084836E /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/WMThanksAlertView.strings"; sourceTree = "<group>"; };
+		127D2AEB26E6018100FD60DF /* WMTestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMTestManager.swift; sourceTree = "<group>"; };
 		127F7876264A7D320084836E /* ChatTableViewController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatTableViewController+UITableView.swift"; sourceTree = "<group>"; };
 		127F7885264A7E2E0084836E /* ChatViewController+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewController+UIView.swift"; sourceTree = "<group>"; };
+		1284800A26C644E3005EF3D4 /* TextViewWithPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewWithPlaceholder.swift; sourceTree = "<group>"; };
+		12887170269D858F0080159A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMSaveView.xib; sourceTree = "<group>"; };
+		12887173269D85950080159A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMSaveView.strings; sourceTree = "<group>"; };
+		12887175269D85960080159A /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/WMSaveView.strings"; sourceTree = "<group>"; };
 		128A477A262D7D860036B476 /* WMThanksAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMThanksAlertView.swift; sourceTree = "<group>"; };
-		128A4784262D80620036B476 /* WMChatViewController+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WMChatViewController+Views.swift"; sourceTree = "<group>"; };
-		128A47D0262EC0E00036B476 /* WMSurveyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSurveyViewController.swift; sourceTree = "<group>"; };
+		128D145226E0C574009E9146 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ChatTestView.xib; sourceTree = "<group>"; };
+		128D145526E0C578009E9146 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ChatTestView.strings; sourceTree = "<group>"; };
+		128D145726E0C57A009E9146 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/ChatTestView.strings"; sourceTree = "<group>"; };
 		129360662614C20C008F8EF1 /* AdditionalKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalKeys.swift; sourceTree = "<group>"; };
 		1295C6762602A2C600F7BE80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ConnectionErrorView.xib; sourceTree = "<group>"; };
 		1295C67A2602A2D000F7BE80 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ConnectionErrorView.strings; sourceTree = "<group>"; };
@@ -202,11 +200,28 @@
 		12A0D8D525FF467B003AF10E /* logo_webim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_webim.png; sourceTree = "<group>"; };
 		12A45C3726023D19004B077F /* UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		12A5DF0E262EE8EB00E427EB /* WMFixedContentSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMFixedContentSizeView.swift; sourceTree = "<group>"; };
+		12BAC8AC2685E63B00C8D842 /* ChatViewController+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewController+Notifications.swift"; sourceTree = "<group>"; };
+		12EFA9FA267B45C800D0F803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SurveyRadioButtonViewController.xib; sourceTree = "<group>"; };
+		12EFA9FC267B45C900D0F803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RateStarsViewController.xib; sourceTree = "<group>"; };
+		12EFA9FF267B45C900D0F803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SurveyCommentViewController.xib; sourceTree = "<group>"; };
+		12EFAA01267B45C900D0F803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SurveyTableViewCell.xib; sourceTree = "<group>"; };
+		12EFAA0A267B45D100D0F803 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SurveyTableViewCell.strings; sourceTree = "<group>"; };
+		12EFAA0B267B45D300D0F803 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/SurveyTableViewCell.strings"; sourceTree = "<group>"; };
+		12EFAA0C267B45D700D0F803 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SurveyRadioButtonViewController.strings; sourceTree = "<group>"; };
+		12EFAA0D267B45D900D0F803 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/SurveyRadioButtonViewController.strings"; sourceTree = "<group>"; };
+		12EFAA0E267B45DD00D0F803 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SurveyCommentViewController.strings; sourceTree = "<group>"; };
+		12EFAA0F267B45DF00D0F803 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/SurveyCommentViewController.strings"; sourceTree = "<group>"; };
+		12EFAA10267B45E200D0F803 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RateStarsViewController.strings; sourceTree = "<group>"; };
+		12EFAA11267B45E400D0F803 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/RateStarsViewController.strings"; sourceTree = "<group>"; };
+		12EFAA47267B469C00D0F803 /* SurveyCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyCommentViewController.swift; sourceTree = "<group>"; };
+		12EFAA55267B470800D0F803 /* RateStarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateStarsViewController.swift; sourceTree = "<group>"; };
+		12EFAA60267B475A00D0F803 /* WMSurveyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSurveyViewController.swift; sourceTree = "<group>"; };
+		12EFAA6B267B479500D0F803 /* SurveyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyTableViewCell.swift; sourceTree = "<group>"; };
+		12EFAA76267B47D700D0F803 /* SurveyRadioButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyRadioButtonViewController.swift; sourceTree = "<group>"; };
+		12EFAAA7267B4EF600D0F803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMThanksAlertView.xib; sourceTree = "<group>"; };
+		12EFAAAC267B4F1500D0F803 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMThanksAlertView.strings; sourceTree = "<group>"; };
+		12EFAAAD267B4F1700D0F803 /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/WMThanksAlertView.strings"; sourceTree = "<group>"; };
 		1480012CD38CEC0494B440FD /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
-		38249EF22609FBF800B3F562 /* SurveyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyTableViewCell.swift; sourceTree = "<group>"; };
-		3826F58625FA861A0015E7A6 /* SurveyCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyCommentViewController.swift; sourceTree = "<group>"; };
-		3826F59A25FBBE430015E7A6 /* RateStarsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateStarsViewController.swift; sourceTree = "<group>"; };
-		3826F5A225FBD1C50015E7A6 /* SurveyRadioButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyRadioButtonViewController.swift; sourceTree = "<group>"; };
 		38683A7424A4FDCB007DED63 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimClientLibrary_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -219,6 +234,8 @@
 		607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHolderTests.swift; sourceTree = "<group>"; };
 		7767259DD04077F82FEB0E85 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		85F5395A54F1170A064A76BF /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		907E494326BA1719001F0C55 /* ChatTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTestView.swift; sourceTree = "<group>"; };
+		908D14782669B63E00B43B60 /* WMSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSaveView.swift; sourceTree = "<group>"; };
 		AB52E1C1E0F009A386DC1C6C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		B8CA89B3A42B8B92B0515245 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		C4CD65CA48F80B5A4AD826B3 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimClientLibrary.podspec; path = ../WebimClientLibrary.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -359,9 +376,8 @@
 			children = (
 				127F786E264A7B220084836E /* ChatTableViewController */,
 				127F786D264A7B100084836E /* ChatViewController */,
-				127F786F264A7B2D0084836E /* WMThanksAlertView */,
 				127F7869264A79F10084836E /* FlexibleTableViewCell */,
-				1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */,
+				12A7D8EC26C3D7D900E543EB /* Views */,
 			);
 			path = ChatViewController;
 			sourceTree = "<group>";
@@ -396,6 +412,7 @@
 		127F7850264A78790084836E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				908D14772669B63E00B43B60 /* WMSaveView */,
 				1224A05B261BCFC100E1A09A /* ChatViewController */,
 				38AE82F825CBE09700BF9424 /* Surveys */,
 				127F785B264A791F0084836E /* SettingsViewController */,
@@ -467,7 +484,7 @@
 			isa = PBXGroup;
 			children = (
 				DD0B8693234330DA00CB5712 /* ChatViewController.swift */,
-				128A4784262D80620036B476 /* WMChatViewController+Views.swift */,
+				12BAC8AC2685E63B00C8D842 /* ChatViewController+Notifications.swift */,
 				127F7885264A7E2E0084836E /* ChatViewController+UIView.swift */,
 			);
 			path = ChatViewController;
@@ -488,7 +505,7 @@
 			isa = PBXGroup;
 			children = (
 				128A477A262D7D860036B476 /* WMThanksAlertView.swift */,
-				127F785E264A794C0084836E /* WMThanksAlertView.xib */,
+				12EFAAA6267B4EF600D0F803 /* WMThanksAlertView.xib */,
 			);
 			path = WMThanksAlertView;
 			sourceTree = "<group>";
@@ -501,18 +518,29 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		12A7D8EC26C3D7D900E543EB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */,
+				127F786F264A7B2D0084836E /* WMThanksAlertView */,
+				907E494226BA16EF001F0C55 /* ChatTestView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		38AE82F825CBE09700BF9424 /* Surveys */ = {
 			isa = PBXGroup;
 			children = (
-				3826F59A25FBBE430015E7A6 /* RateStarsViewController.swift */,
-				121035A4266895580015297B /* RateStarsViewController.xib */,
-				3826F58625FA861A0015E7A6 /* SurveyCommentViewController.swift */,
-				121035AE266895630015297B /* SurveyCommentViewController.xib */,
-				3826F5A225FBD1C50015E7A6 /* SurveyRadioButtonViewController.swift */,
-				121035B8266895720015297B /* SurveyRadioButtonViewController.xib */,
-				38249EF22609FBF800B3F562 /* SurveyTableViewCell.swift */,
-				121035C5266895D70015297B /* SurveyTableViewCell.xib */,
-				128A47D0262EC0E00036B476 /* WMSurveyViewController.swift */,
+				1284800A26C644E3005EF3D4 /* TextViewWithPlaceholder.swift */,
+				12EFAA60267B475A00D0F803 /* WMSurveyViewController.swift */,
+				12EFAA55267B470800D0F803 /* RateStarsViewController.swift */,
+				12EFA9FB267B45C900D0F803 /* RateStarsViewController.xib */,
+				12EFAA47267B469C00D0F803 /* SurveyCommentViewController.swift */,
+				12EFA9FE267B45C900D0F803 /* SurveyCommentViewController.xib */,
+				12EFAA76267B47D700D0F803 /* SurveyRadioButtonViewController.swift */,
+				12EFA9F9267B45C800D0F803 /* SurveyRadioButtonViewController.xib */,
+				12EFAA6B267B479500D0F803 /* SurveyTableViewCell.swift */,
+				12EFAA00267B45C900D0F803 /* SurveyTableViewCell.xib */,
 			);
 			path = Surveys;
 			sourceTree = "<group>";
@@ -657,6 +685,24 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		907E494226BA16EF001F0C55 /* ChatTestView */ = {
+			isa = PBXGroup;
+			children = (
+				907E494326BA1719001F0C55 /* ChatTestView.swift */,
+				128D145326E0C574009E9146 /* ChatTestView.xib */,
+			);
+			path = ChatTestView;
+			sourceTree = "<group>";
+		};
+		908D14772669B63E00B43B60 /* WMSaveView */ = {
+			isa = PBXGroup;
+			children = (
+				908D14782669B63E00B43B60 /* WMSaveView.swift */,
+				12887171269D858F0080159A /* WMSaveView.xib */,
+			);
+			path = WMSaveView;
+			sourceTree = "<group>";
+		};
 		CE24A015203ADC2D009EE7E7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -681,6 +727,8 @@
 			children = (
 				129E5147264AF8BC00A6C315 /* WMWeakReferenseContainer.swift */,
 				CE45EDDF1F95F95C00F56319 /* MimeType.swift */,
+				121785FD26CA5D6D00B31B6F /* WMInterfaceData.swift */,
+				127D2AEB26E6018100FD60DF /* WMTestManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -874,20 +922,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12EFAAA8267B4EF600D0F803 /* WMThanksAlertView.xib in Resources */,
 				12620C70260C0DE000F6E397 /* GoogleService-Info.plist in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				DD976EC323700D1C00412518 /* InfoPlist.strings in Resources */,
-				121035AC266895630015297B /* SurveyCommentViewController.xib in Resources */,
-				CE5A03BA1FDEB756009D320A /* Localizable.strings in Resources */,
-				127F785C264A794C0084836E /* WMThanksAlertView.xib in Resources */,
-				12A0D8D625FF467B003AF10E /* logo_webim.png in Resources */,
-				121035B6266895720015297B /* SurveyRadioButtonViewController.xib in Resources */,
-				121035A2266895580015297B /* RateStarsViewController.xib in Resources */,
-				121035C3266895D70015297B /* SurveyTableViewCell.xib in Resources */,
 				11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */,
 				DDC7924623573CFF00AF424F /* LaunchScreen.storyboard in Resources */,
+				12EFAA06267B45C900D0F803 /* SurveyTableViewCell.xib in Resources */,
 				DDC7924123573CB500AF424F /* LaunchScreenController.storyboard in Resources */,
+				12EFAA05267B45C900D0F803 /* SurveyCommentViewController.xib in Resources */,
+				12EFAA03267B45C900D0F803 /* RateStarsViewController.xib in Resources */,
+				12887177269D8DCA0080159A /* Localizable.strings in Resources */,
+				1288716F269D858F0080159A /* WMSaveView.xib in Resources */,
+				128D145126E0C574009E9146 /* ChatTestView.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				12EFAA02267B45C900D0F803 /* SurveyRadioButtonViewController.xib in Resources */,
 				1295C6772602A2C600F7BE80 /* ConnectionErrorView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1027,14 +1076,12 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\" \n";
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\" -gsp \"${PROJECT_DIR}/WebimClientLibrary/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1056,30 +1103,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12EFAA77267B47D700D0F803 /* SurveyRadioButtonViewController.swift in Sources */,
 				DD8A8D31232F6CF10011D275 /* SettingsTableViewController.swift in Sources */,
 				CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */,
 				DD71AD05234DAFDC00A32FB6 /* UIAlertHandler.swift in Sources */,
 				CEBFB67F2018CB0F00D9E5F6 /* String.swift in Sources */,
 				DDCC52582356333400D39F8A /* ImageConstants.swift in Sources */,
+				12BAC8AD2685E63B00C8D842 /* ChatViewController+Notifications.swift in Sources */,
+				907E494426BA1719001F0C55 /* ChatTestView.swift in Sources */,
 				129E5151264AFA7F00A6C315 /* ChatTableViewController+FlexibleTableViewCellDelegate.swift in Sources */,
 				DD5B1ADF2383FCC6005F95A8 /* CustomUIImage.swift in Sources */,
 				DD72BE81238E7FB10055F200 /* UIImage.swift in Sources */,
 				DDDE82CF23830145008DDF61 /* CustomUIView.swift in Sources */,
 				607FACD81AFB9204008FA782 /* StartViewController.swift in Sources */,
 				CEA849051FFCE29A006CC417 /* UITableView.swift in Sources */,
-				3826F59C25FBBE430015E7A6 /* RateStarsViewController.swift in Sources */,
 				DD38105B2341EACA00F44FC6 /* FileViewController.swift in Sources */,
+				121785FE26CA5D6D00B31B6F /* WMInterfaceData.swift in Sources */,
 				CE88BCD31FCD88EA00A4FA2E /* Settings.swift in Sources */,
+				12EFAA6C267B479500D0F803 /* SurveyTableViewCell.swift in Sources */,
+				127D2AEC26E6018100FD60DF /* WMTestManager.swift in Sources */,
 				129E5161264AFB4200A6C315 /* URL+extension.swift in Sources */,
+				12EFAA61267B475A00D0F803 /* WMSurveyViewController.swift in Sources */,
 				DD2F158523336A7600532934 /* ChatTableViewController.swift in Sources */,
-				128A4785262D80620036B476 /* WMChatViewController+Views.swift in Sources */,
 				DD8F7D0D237B3C0E006D9146 /* UIStackView.swift in Sources */,
-				38249EF42609FBF800B3F562 /* SurveyTableViewCell.swift in Sources */,
 				CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */,
 				DD2B08B7233A24D900BF0283 /* FlexibleTableViewCell.swift in Sources */,
+				1284800B26C644E3005EF3D4 /* TextViewWithPlaceholder.swift in Sources */,
 				DD94E0B02345148A009133B4 /* PopupActionsTableViewCell.swift in Sources */,
 				128A477C262D7D860036B476 /* WMThanksAlertView.swift in Sources */,
 				CEBFB6812018E50500D9E5F6 /* UIViewController.swift in Sources */,
+				12EFAA56267B470800D0F803 /* RateStarsViewController.swift in Sources */,
 				12A45C3826023D19004B077F /* UITextView.swift in Sources */,
 				127F7877264A7D320084836E /* ChatTableViewController+UITableView.swift in Sources */,
 				DD2F15872333FB2100532934 /* ImageViewController.swift in Sources */,
@@ -1093,20 +1146,19 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				DD5AA7A5236089AF009680D6 /* CustomUIButton.swift in Sources */,
 				DDCC525A2356360F00D39F8A /* ColourConstants.swift in Sources */,
-				128A47D1262EC0E00036B476 /* WMSurveyViewController.swift in Sources */,
 				127F7886264A7E2E0084836E /* ChatViewController+UIView.swift in Sources */,
 				DD8A8D35232FE5D30011D275 /* Notification.Name.swift in Sources */,
 				CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */,
 				DDC9418E2354F0060005A59C /* SpinningIndicator.swift in Sources */,
 				DD584C0423715F0600B2EC34 /* TypingIndicator.swift in Sources */,
+				908D147A2669B63E00B43B60 /* WMSaveView.swift in Sources */,
 				129E5148264AF8BC00A6C315 /* WMDownloadFileManager.swift in Sources */,
-				3826F58825FA861A0015E7A6 /* SurveyCommentViewController.swift in Sources */,
 				DD8F7D0B237AFA23006D9146 /* FilePicker.swift in Sources */,
 				125FE5B62632D25700831448 /* NotificationCenter+Extensions.swift in Sources */,
 				129E5149264AF8BC00A6C315 /* WMWeakReferenseContainer.swift in Sources */,
 				DDC478B32366E13C005E6057 /* Message.swift in Sources */,
 				CE88BCD11FCD7F9A00A4FA2E /* SettingsViewController.swift in Sources */,
-				3826F5A425FBD1C50015E7A6 /* SurveyRadioButtonViewController.swift in Sources */,
+				12EFAA48267B469C00D0F803 /* SurveyCommentViewController.swift in Sources */,
 				12A5DF0F262EE8EB00E427EB /* WMFixedContentSizeView.swift in Sources */,
 				38683A7524A4FDCB007DED63 /* UIButton.swift in Sources */,
 			);
@@ -1180,54 +1232,24 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		121035A4266895580015297B /* RateStarsViewController.xib */ = {
+		12887171269D858F0080159A /* WMSaveView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				121035A3266895580015297B /* Base */,
-				121035A92668955D0015297B /* en */,
-				121035AB2668955E0015297B /* ru-RU */,
+				12887170269D858F0080159A /* Base */,
+				12887173269D85950080159A /* en */,
+				12887175269D85960080159A /* ru-RU */,
 			);
-			name = RateStarsViewController.xib;
+			name = WMSaveView.xib;
 			sourceTree = "<group>";
 		};
-		121035AE266895630015297B /* SurveyCommentViewController.xib */ = {
+		128D145326E0C574009E9146 /* ChatTestView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				121035AD266895630015297B /* Base */,
-				121035B3266895670015297B /* en */,
-				121035B5266895680015297B /* ru-RU */,
+				128D145226E0C574009E9146 /* Base */,
+				128D145526E0C578009E9146 /* en */,
+				128D145726E0C57A009E9146 /* ru-RU */,
 			);
-			name = SurveyCommentViewController.xib;
-			sourceTree = "<group>";
-		};
-		121035B8266895720015297B /* SurveyRadioButtonViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				121035B7266895720015297B /* Base */,
-				121035BD266895760015297B /* ru-RU */,
-				121035BF266895A40015297B /* en */,
-			);
-			name = SurveyRadioButtonViewController.xib;
-			sourceTree = "<group>";
-		};
-		121035C5266895D70015297B /* SurveyTableViewCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				121035C4266895D70015297B /* Base */,
-				121035CA266895DB0015297B /* en */,
-				121035CC266895DC0015297B /* ru-RU */,
-			);
-			name = SurveyTableViewCell.xib;
-			sourceTree = "<group>";
-		};
-		127F785E264A794C0084836E /* WMThanksAlertView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				127F785D264A794C0084836E /* Base */,
-				127F7863264A795B0084836E /* en */,
-				127F7865264A795C0084836E /* ru-RU */,
-			);
-			name = WMThanksAlertView.xib;
+			name = ChatTestView.xib;
 			sourceTree = "<group>";
 		};
 		1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */ = {
@@ -1238,6 +1260,56 @@
 				1295C67B2602A2D200F7BE80 /* ru-RU */,
 			);
 			name = ConnectionErrorView.xib;
+			sourceTree = "<group>";
+		};
+		12EFA9F9267B45C800D0F803 /* SurveyRadioButtonViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12EFA9FA267B45C800D0F803 /* Base */,
+				12EFAA0C267B45D700D0F803 /* en */,
+				12EFAA0D267B45D900D0F803 /* ru-RU */,
+			);
+			name = SurveyRadioButtonViewController.xib;
+			sourceTree = "<group>";
+		};
+		12EFA9FB267B45C900D0F803 /* RateStarsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12EFA9FC267B45C900D0F803 /* Base */,
+				12EFAA10267B45E200D0F803 /* en */,
+				12EFAA11267B45E400D0F803 /* ru-RU */,
+			);
+			name = RateStarsViewController.xib;
+			sourceTree = "<group>";
+		};
+		12EFA9FE267B45C900D0F803 /* SurveyCommentViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12EFA9FF267B45C900D0F803 /* Base */,
+				12EFAA0E267B45DD00D0F803 /* en */,
+				12EFAA0F267B45DF00D0F803 /* ru-RU */,
+			);
+			name = SurveyCommentViewController.xib;
+			sourceTree = "<group>";
+		};
+		12EFAA00267B45C900D0F803 /* SurveyTableViewCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12EFAA01267B45C900D0F803 /* Base */,
+				12EFAA0A267B45D100D0F803 /* en */,
+				12EFAA0B267B45D300D0F803 /* ru-RU */,
+			);
+			name = SurveyTableViewCell.xib;
+			sourceTree = "<group>";
+		};
+		12EFAAA6267B4EF600D0F803 /* WMThanksAlertView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12EFAAA7267B4EF600D0F803 /* Base */,
+				12EFAAAC267B4F1500D0F803 /* en */,
+				12EFAAAD267B4F1700D0F803 /* ru-RU */,
+			);
+			name = WMThanksAlertView.xib;
 			sourceTree = "<group>";
 		};
 		607FACD91AFB9204008FA782 /* Main.storyboard */ = {
@@ -1456,7 +1528,7 @@
 				INFOPLIST_FILE = WebimClientLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.35.6;
+				MARKETING_VERSION = 3.36.0;
 				MODULE_NAME = ExampleApp;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -warn-long-expression-type-checking=400 -Xfrontend -warn-long-function-bodies=400 -Onone";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client";
@@ -1483,7 +1555,7 @@
 				INFOPLIST_FILE = WebimClientLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.35.6;
+				MARKETING_VERSION = 3.36.0;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client";
 				PRODUCT_NAME = "$(TARGET_NAME)";

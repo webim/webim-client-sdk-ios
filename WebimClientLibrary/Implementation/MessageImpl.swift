@@ -59,6 +59,9 @@ class MessageImpl {
     private var messageCanBeEdited: Bool
     private var messageCanBeReplied: Bool
     private var messageIsEdited: Bool
+    private var visitorReactionInfo: String?
+    private var visitorCanReact: Bool?
+    private var visitorChangeReaction: Bool?
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -82,7 +85,10 @@ class MessageImpl {
          read: Bool,
          messageCanBeEdited: Bool,
          messageCanBeReplied: Bool,
-         messageIsEdited: Bool) {
+         messageIsEdited: Bool,
+         visitorReactionInfo: String?,
+         visitorCanReact: Bool?,
+         visitorChangeReaction: Bool?) {
         self.data = data
         self.id = id
         self.keyboard = keyboard
@@ -103,6 +109,9 @@ class MessageImpl {
         self.messageCanBeEdited = messageCanBeEdited
         self.messageCanBeReplied = messageCanBeReplied
         self.messageIsEdited = messageIsEdited
+        self.visitorReactionInfo = visitorReactionInfo
+        self.visitorCanReact = visitorCanReact
+        self.visitorChangeReaction = visitorChangeReaction
         
         self.historyMessage = historyMessage
         if historyMessage {
@@ -395,6 +404,18 @@ extension MessageImpl: Message {
     
     func isEdited() -> Bool {
         return messageIsEdited
+    }
+    
+    func getVisitorReaction() -> String? {
+        return visitorReactionInfo
+    }
+    
+    func canVisitorReact() -> Bool {
+        return visitorCanReact ?? false
+    }
+
+    func canVisitorChangeReaction() -> Bool {
+        return visitorChangeReaction ?? false
     }
     
 }
@@ -843,6 +864,10 @@ final class KeyboardButtonImpl: KeyboardButton {
     func getText() -> String {
         return buttonItem.getText()
     }
+    
+    func getConfiguration() -> Configuration? {
+        return ConfigurationImpl(data: buttonItem.getConfiguration())
+    }
 }
 
 // MARK: -
@@ -912,6 +937,46 @@ final class KeyboardRequestImpl: KeyboardRequest {
         return keyboardRequestItem.getMessageId()
     }
 }
+
+// MARK: -
+/**
+ - seealso:
+ `KeyboardButton`
+ - author:
+ Anna Frolova
+ - copyright:
+ 2021 Webim
+ */
+final class ConfigurationImpl: Configuration {
+    
+    private let configurationItem: ConfigurationItem
+    
+    init?(data: ConfigurationItem?) {
+        if let configurationItem = data {
+            self.configurationItem = configurationItem
+        } else {
+            return nil
+        }
+    }
+    
+    func isActive() -> Bool {
+        return configurationItem.isActive()
+    }
+    
+    func getButtonType() -> ButtonType {
+        return configurationItem.getButtonType()
+    }
+    
+    func getData() -> String {
+        return configurationItem.getData()
+    }
+    
+    func getState() -> ButtonState {
+        return configurationItem.getState()
+    }
+ 
+}
+
 
 // MARK: -
 /**

@@ -255,6 +255,37 @@ public protocol Message {
      2019 Webim
      */
     func isEdited() -> Bool
+    
+    
+    /**
+     - returns:
+     True if this message can be reacted.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func canVisitorReact() -> Bool
+    
+    /**
+     - returns:
+     Visitor reaction.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func getVisitorReaction() -> String?
+    
+    /**
+     - returns:
+     True if visitor can change react.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func canVisitorChangeReaction() -> Bool
 }
 
 /**
@@ -398,6 +429,15 @@ public enum AttachmentState {
      2020 Webim
      */
     case upload
+    
+    /**
+     The file is checked by server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2021 Webim
+     */
+    case externalChecks
 }
 
 /**
@@ -688,7 +728,68 @@ public protocol KeyboardButton {
      2019 Webim
      */
     func getText() -> String
+    
+    /**
+     - returns:
+     Config of a button.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func getConfiguration() -> Configuration?
 }
+
+/**
+ Keyboard button config.
+ - author:
+ Anna Frolova
+ - copyright:
+ 2021 Webim
+ */
+public protocol Configuration {
+    
+    /**
+     - returns:
+     Is button active or not.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func isActive() -> Bool
+    
+    /**
+     - returns:
+     Button type.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func getButtonType() -> ButtonType
+    
+    /**
+     - returns:
+     Data a button.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func getData() -> String
+    
+    /**
+     - returns:
+     Button state.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func getState() -> ButtonState
+}
+
 
 /**
  Keyboard request.
@@ -924,6 +1025,15 @@ public enum FileState {
      2020 Webim
      */
     case upload
+    
+    /**
+     The file is checked by server.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2021 Webim
+     */
+    case externalChecks
 }
 
 // MARK: -
@@ -1123,5 +1233,23 @@ public enum MessageSendStatus {
     
     @available(*, unavailable, renamed: "sent")
     case SENT
+    
+}
+
+public enum ButtonType {
+    
+    case url
+    
+    case insert
+    
+}
+
+public enum ButtonState {
+    
+    case showing
+    
+    case showingSelected
+    
+    case hidden
     
 }

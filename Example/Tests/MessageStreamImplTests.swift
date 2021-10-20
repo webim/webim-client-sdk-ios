@@ -35,7 +35,7 @@ class MessageStreamImplTests: XCTestCase {
     
     // MARK: - Properties
     var messageStream: MessageStreamImpl?
-    var webimActions: WebimActions?
+    var webimActions: WebimActionsImpl?
     
     // MARK: - Methods
     override func setUp() {
@@ -47,7 +47,7 @@ class MessageStreamImplTests: XCTestCase {
                                           sessionDestroyer: sessionDestroyer)
         let queue = DispatchQueue.main
         webimActions = WebimActionsImpl(baseURL: serverURLString,
-                                    actionRequestLoop: ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
+                                        actionRequestLoop: ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                                                                               queue: queue),
                                                                                  internalErrorListener: InternalErrorListenerForTests()))
         messageStream = MessageStreamImpl(serverURLString: serverURLString,

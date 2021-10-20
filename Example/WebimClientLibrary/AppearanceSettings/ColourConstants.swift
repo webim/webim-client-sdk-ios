@@ -109,11 +109,11 @@ let refreshControlTintColour = WEBIM_DARK_PUPRLE
 // FileViewController.swift
 let topBarTintColourDefault = WEBIM_DARK_PUPRLE
 let topBarTintColourClear = CLEAR
+let webimCyan = WEBIM_CYAN.cgColor
 
 // PopupActionViewController.swift
 let popupBackgroundColour = CLEAR
 let actionsTableViewBackgroundColour = BLACK
-let separatorViewBackgroundColour = WHITE
 let actionsTableViewCellBackgroundColour = CLEAR
 
 // SettingsViewController.swift
@@ -147,3 +147,6 @@ let settingButtonBorderColour = GREY.cgColor
 
 // UITableView extension
 let textMainColour = WEBIM_DARK_PUPRLE
+
+// SurveyCommentViewController
+let WMSurveyCommentPlaceholderColor = #colorLiteral(red: 0.6116228104, green: 0.6236780286, blue: 0.7096156478, alpha: 1)

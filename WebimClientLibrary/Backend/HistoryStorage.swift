@@ -49,6 +49,7 @@ protocol HistoryStorage {
     func getHistoryBefore(id: HistoryID,
                           limitOfMessages: Int,
                           completion: @escaping ([Message]) -> ())
+    func clearHistory()
     
     func receiveHistoryBefore(messages: [MessageImpl],
                               hasMoreMessages: Bool)

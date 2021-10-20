@@ -163,6 +163,13 @@ class ImageViewController: UIViewController {
         if let error = error {
             // Save error
             alertDialogHandler.showImageSavingFailureDialog(withError: error)
+        } else {
+            let saveView = WMSaveView.loadXibView()
+            self.view.addSubview(saveView)
+            saveView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            saveView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+            self.view.bringSubviewToFront(saveView)
+            saveView.animateImage()
         }
     }
     

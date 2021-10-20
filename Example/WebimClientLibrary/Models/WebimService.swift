@@ -30,7 +30,7 @@ import WebimClientLibrary
 final class WebimService {
     
     // MARK: - Constants
-    private enum ChatSettings: Int {
+    public enum ChatSettings: Int {
         case messagesPerRequest = 25
     }
     private enum VisitorFields: String {
@@ -66,6 +66,10 @@ final class WebimService {
         self.fatalErrorHandlerDelegate = fatalErrorHandlerDelegate
         self.departmentListHandlerDelegate = departmentListHandlerDelegate
         self.notFatalErrorHandler = notFatalErrorHandler
+    }
+    
+    func sessionState() -> ChatState {
+        return webimSession?.getStream().getChatState() ?? .unknown
     }
     
     // MARK: - Methods
@@ -126,21 +130,10 @@ final class WebimService {
     func startSession() {
         do {
             try webimSession?.resume()
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
-                
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
-                
-            }
         } catch {
-            print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Webim session starting/resuming")
         }
-        
+       
         startChat()
     }
     
@@ -178,19 +171,8 @@ final class WebimService {
                 setMessageStream()
             }
             try messageStream?.setVisitorTyping(draftMessage: draft)
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle.
-                print("Visitor status sending failed because it was called when session object is invalid.")
-                
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Visitor status sending failed because it was called from a wrong thread.")
-                
-            }
         } catch {
-            print("Visitor typing status sending failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Visitor status sending")
         }
     }
     
@@ -219,25 +201,25 @@ final class WebimService {
                 _ = try messageStream?.send(message: message) // Returned message ID ignored.
                 completion?()
             }
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Message sending failed because it was called when session object is invalid.")
-                
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Message sending failed because it was called from a wrong thread.")
-                
-            }
         } catch {
-            print("Message sending failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Message sending")
         }
     }
     
-    func send(surveyAnswer: String,
-              completionHandler: SendSurveyAnswerCompletionHandler?) {
+    func searchMessagesBy(query: String, completionHandler: SearchMessagesCompletionHandler?) {
         
+        do {
+            if messageStream == nil {
+                setMessageStream()
+            }
+            try messageStream?.searchStreamMessagesBy(query: query, completionHandler: completionHandler)
+            
+        } catch {
+            self.printError(error: error, message: "Search")
+        }
+    }
+    
+    func send(surveyAnswer: String, completionHandler: SendSurveyAnswerCompletionHandler?) {
         do {
             if messageStream == nil {
                 setMessageStream()
@@ -247,17 +229,8 @@ final class WebimService {
                 surveyAnswer: surveyAnswer,
                 completionHandler: completionHandler
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
-            }
         } catch {
-            print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Send survey answer")
         }
     }
     
@@ -394,6 +367,38 @@ final class WebimService {
         }
     }
     
+    func react(
+        reaction: ReactionString,
+        message: Message,
+        completionHandler: ReactionCompletionHandler
+    ) {
+        if messageStream == nil {
+            setMessageStream()
+        }
+        
+        if shouldShowDepartmentSelection(),
+           let departments = messageStream?.getDepartmentList() {
+            departmentListHandlerDelegate?.showDepartmentsList(
+                departments,
+                action: { [weak self] departmentKey in
+                    self?.startChat(departmentKey: departmentKey)
+                    
+                    self?.setReaction(
+                        message: message,
+                        reaction: reaction,
+                        completionHandler: completionHandler
+                    )
+                }
+            )
+        } else {
+            self.setReaction(
+                message: message,
+                reaction: reaction,
+                completionHandler: completionHandler
+            )
+        }
+    }
+    
     func isChatExist() -> Bool {
         guard let chatState = messageStream?.getChatState() else {
             return false
@@ -410,6 +415,18 @@ final class WebimService {
             }
             
             try messageStream?.closeChat()
+        } catch {
+            self.printError(error: error, message: "Close chat")
+        }
+    }
+    
+    func clearHistory() {
+        do {
+            if messageStream == nil {
+                setMessageStream()
+            }
+            
+            try messageStream?.clearHistory()
         } catch let error as AccessError {
             switch error {
             case .invalidSession:
@@ -441,18 +458,8 @@ final class WebimService {
                 byRating: rating,
                 completionHandler: completionHandler
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
-                
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
-            }
         } catch {
-            print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Rate operator")
         }
     }
     
@@ -472,19 +479,8 @@ final class WebimService {
             try messageTracker = messageStream?.newMessageTracker(
                 messageListener: messageListener
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
-                
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
-                
-            }
         } catch {
-            print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Set message tracker")
         }
     }
     
@@ -494,17 +490,8 @@ final class WebimService {
                 byLimit: ChatSettings.messagesPerRequest.rawValue,
                 completion: completion
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
-            }
         } catch {
-            print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Get last messages")
         }
     }
     
@@ -514,17 +501,8 @@ final class WebimService {
                 byLimit: ChatSettings.messagesPerRequest.rawValue,
                 completion: completion
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Webim session starting/resuming failed because it was called when session object is invalid.")
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Webim session starting/resuming failed because it was called from a wrong thread.")
-            }
         } catch {
-            print("Webim session starting/resuming failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Get next messages")
         }
     }
     
@@ -636,18 +614,8 @@ final class WebimService {
                 departmentKey: departmentKey,
                 firstQuestion: message
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Chat starting failed because it was called when session object is invalid.")
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Chat starting failed because it was called from a wrong thread.")
-
-            }
         } catch {
-            print("Chat starting failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Start chat")
         }
     }
     
@@ -660,56 +628,20 @@ final class WebimService {
                 message: message,
                 repliedMessage: repliedMessage
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Chat reply failed because it was called when session object is invalid.")
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Chat reply failed because it was called from a wrong thread.")
-            }
         } catch {
-            print("Chat reply failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Reply message")
         }
     }
     
-    private func sendFile(
-        data: Data,
-        fileName: String,
-        mimeType: String,
-        completionHandler: SendFileCompletionHandler
-    ) {
-        do {
-            _ = try messageStream?.send(
-                file: data,
-                filename: fileName,
-                mimeType: mimeType,
-                completionHandler: completionHandler
-            )  // Returned message ID ignored.
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Message sending failed because it was called when session object is invalid.")
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Message sending failed because it was called from a wrong thread.")
-            }
-        } catch {
-            print("Message status sending failed with unknown error: \(error.localizedDescription)")
-        }
-    }
-    
-    private func editMessage(
+    private func setReaction(
         message: Message,
-        text: String,
-        completionHandler: EditMessageCompletionHandler
+        reaction: ReactionString,
+        completionHandler: ReactionCompletionHandler?
     ) {
         do {
-            _ = try messageStream?.edit(
+            _ = try messageStream?.react(
                 message: message,
-                text: text,
+                reaction: reaction,
                 completionHandler: completionHandler
             )
         } catch let error as AccessError {
@@ -726,6 +658,40 @@ final class WebimService {
         }
     }
     
+    private func sendFile(
+        data: Data,
+        fileName: String,
+        mimeType: String,
+        completionHandler: SendFileCompletionHandler
+    ) {
+        do {
+            _ = try messageStream?.send(
+                file: data,
+                filename: fileName,
+                mimeType: mimeType,
+                completionHandler: completionHandler
+            )  // Returned message ID ignored.
+        } catch {
+            self.printError(error: error, message: "Send file")
+        }
+    }
+    
+    private func editMessage(
+        message: Message,
+        text: String,
+        completionHandler: EditMessageCompletionHandler
+    ) {
+        do {
+            _ = try messageStream?.edit(
+                message: message,
+                text: text,
+                completionHandler: completionHandler
+            )
+        } catch {
+            self.printError(error: error, message: "Edit message")
+        }
+    }
+    
     private func deleteMessage(
         message: Message,
         completionHandler: DeleteMessageCompletionHandler
@@ -735,19 +701,8 @@ final class WebimService {
                 message: message,
                 completionHandler: completionHandler
             )
-        } catch let error as AccessError {
-            switch error {
-            case .invalidSession:
-                // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                print("Message deleting failed because it was called when session object is invalid.")
-                
-            case .invalidThread:
-                // Assuming to check concurrent calls of WebimClientLibrary methods.
-                print("Message deleting failed because it was called from a wrong thread.")
-                
-            }
         } catch {
-            print("Message status deleting failed with unknown error: \(error.localizedDescription)")
+            self.printError(error: error, message: "Delete message")
         }
     }
     
@@ -762,26 +717,28 @@ final class WebimService {
                 message: message,
                 completionHandler: completionHandler
             )
-        } catch let error as AccessError {
-                switch error {
-                case .invalidSession:
-                    // Assuming to check Webim session object lifecycle or re-creating Webim session object.
-                    print("Sending keyboard request failed because it was called when session object is invalid.")
-                    
-                case .invalidThread:
-                    // Assuming to check concurrent calls of WebimClientLibrary methods.
-                    print("Sending keyboard request failed because it was called from a wrong thread.")
-                    
-                }
-            } catch {
-                print("Sending keyboard requestg failed with unknown error: \(error.localizedDescription)")
-            }
+        } catch {
+            self.printError(error: error, message: "Sending keyboard request")
+        }
     }
     
     func shouldShowDepartmentSelection() -> Bool {
         return messageStream?.getVisitSessionState() == .departmentSelection || messageStream?.getVisitSessionState() == .idleAfterChat
     }
-
+    
+    func printError(error: Error, message: String) {
+        switch error {
+        case AccessError.invalidSession:
+            // Assuming to check Webim session object lifecycle or re-creating Webim session object.
+            print(message + " failed because it was called when session object is invalid.")
+        case AccessError.invalidThread:
+            // Assuming to check concurrent calls of WebimClientLibrary methods.
+            print(message + " failed because it was called from a wrong thread.")
+        default :
+            print(message + " failed with unknown error: \(error.localizedDescription)")
+        }
+    }
+    
 }
 
 // MARK: - WEBIM: FatalErrorHandler

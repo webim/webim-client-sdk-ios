@@ -16,6 +16,10 @@
 "Account name*" = "Название аккаунта*";
 //WebimService.swift
 "AccountBlocked" = "Учетная запись, с помощью которой была произведена попытка начать сессию, заблокирован. Пожалуйста, обратитесь в службу поддержки \"Webim\" или используйте другую учетную запись.";
+//ChatTestView.swift
+"Additional information" = "Дополнительная информация";
+//ChatTestView.swift
+"Agent title" = "Заголовок сотрудника";
 //Main.storyboard
 "Back" = "Закрыть экран";
 //FilePicker.swift
@@ -34,12 +38,18 @@
 "Connection error" = "Отсутствует подключение";
 //UIAlertHandler.swift
 "Contact topic" = "Тема обращения";
+//StringConstants.swift
+"Copy" = "Копировать";
 //FlexibleTableViewCell.swift
 "Counting" = "Подсчет";
+//StringConstants.swift
+"Delete" = "Удалить";
 //ChatTableViewController.swift
 "Delete message unknown error" = "Неизвестная ошибка при удалении сообщения";
 //ChatTableViewController.swift
 "Deleting messages is turned off on the server" = "Удаление сообщений отключено на сервере";
+//StringConstants.swift
+"Edit" = "Редактировать";
 //ChatViewController.swift
 "Edit Message" = "Редактирование";
 //ChatTableViewController.swift
@@ -48,7 +58,7 @@
 "Editing message is empty" = "Редактируемое сообщение является пустым";
 //ChatTableViewController.swift
 "Editing messages is turned off on the server" = "Редактирование сообщений отключено на сервере";
-//SurveyCommentViewController.xib
+//SurveyCommentViewController.swift
 "Enter your comment" = "Введите текст комментария";
 //ChatTableViewController+Surveys.swift
 "Failed to send survey answer" = "Не удалось отправить ответ на опрос";
@@ -58,6 +68,8 @@
 "Fetching more messages..." = "Сообщения загружаются...";
 //FilePicker.swift
 "File" = "Документ";
+//FlexibleTableViewCell.swift
+"File is being sent" = "Оператор отправляет файл";
 //ChatTableViewController.swift
 "File is too large." = "Размер файла превышен";
 //ChatTableViewController.swift
@@ -126,6 +138,8 @@
 "Online" = "В сети";
 //FilePicker.swift
 "Open app settings" = "Открыть настройки приложения";
+//UIAlertHandler.swift
+"Operator Info" = "Информация об операторе";
 //ChatTableViewController+Surveys.swift
 "Operator rating failed" = "Неудачная попытка оценить оператора";
 //AdditionalKeys.swift
@@ -150,10 +164,12 @@
 "Question not found" = "Вопрос не найден";
 //RateStarsViewController.xib
 "Rate Operator" = "Оценить оператора";
-//ChatTableViewController+Surveys.swift
-"RateOperatorWrongID" = "Этот оператор не находится в данном чате";
+//StringConstants.swift
+"Reply" = "Ответить";
 //ChatTableViewController.swift
 "Response cannot be created for this request" = "Ответ не может быть создан для данного запроса";
+//ChatTestView.xib
+"Run autotest" = "Run autotest";
 //Main.storyboard
 "Save" = "Сохранить";
 //UIAlertHandler.swift
@@ -199,6 +215,8 @@
 //UIAlertHandler.swift
 "There is no current agent to rate" = "Нет оператора для выставления оценки";
 //ChatTableViewController+Surveys.swift
+"This agent not in the current chat" = "Этот оператор не находится в данном чате";
+//ChatTableViewController+Surveys.swift
 "This chat does not exist" = "Этот чат не существует";
 //Main.storyboard
 "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "Для того, чтобы начать чат, нажмите на кнопку ниже.\n\nПринять чат со стороны оператора вы можете на странице:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код данного приложения вы можете найти по адресу:\nhttps://github.com/webim/webim-client-sdk-ios";
@@ -225,7 +243,7 @@
 //FlexibleTableViewCell.swift
 "Yesterday" = "Вчера";
 //WMThanksAlertView.xib
-"Your feedback will help us become better" = "Ваш отзыв поможет нам стать лучше";
+"Your feedback will help us become better." = "Ваш отзыв поможет нам стать лучше.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Ваша учетная запись посетителя находится в черном списке.";
 //SurveyCommentViewController.xib

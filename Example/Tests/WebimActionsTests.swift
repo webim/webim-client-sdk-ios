@@ -44,7 +44,7 @@ class WebimActionsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        webimActions = WebimActions(baseURL: "https://demo.webim.ru",
+        webimActions = WebimActionsImpl(baseURL: "https://demo.webim.ru",
                                     actionRequestLoop: actionRequestLoop)
     }
     
@@ -70,7 +70,9 @@ class WebimActionsTests: XCTestCase {
                            clientSideID: clientSideID,
                            dataJSONString: dataJSONString,
                            isHintQuestion: isHintQuestion,
-                           dataMessageCompletionHandler: nil)
+                           dataMessageCompletionHandler: nil,
+                           editMessageCompletionHandler: nil,
+                           sendMessageCompletionHandler: nil)
         
         // Then: Request parameters should be like this.
         
@@ -80,7 +82,7 @@ class WebimActionsTests: XCTestCase {
         var expectedParametersDictionary = ["message" : message,
                                             "client-side-id" : clientSideID,
                                             "action" : "chat.message",
-                                            "hint_question" : "1",
+                                            "hint_question" : true,
                                             "data" : dataJSONString] as [String : Any]
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["message"] as! String,
                        expectedParametersDictionary["message"] as! String)
@@ -88,13 +90,13 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["client-side-id"] as! String)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["action"] as! String,
                        expectedParametersDictionary["action"] as! String)
-        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["hint_question"] as! String,
-                       expectedParametersDictionary["hint_question"] as! String)
+        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["hint_question"] as! Bool,
+                       expectedParametersDictionary["hint_question"] as! Bool)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["data"] as! String,
                        expectedParametersDictionary["data"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         var expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
@@ -114,7 +116,9 @@ class WebimActionsTests: XCTestCase {
                            clientSideID: clientSideID,
                            dataJSONString: dataJSONString,
                            isHintQuestion: isHintQuestion,
-                           dataMessageCompletionHandler: nil)
+                           dataMessageCompletionHandler: nil,
+                           editMessageCompletionHandler: nil,
+                           sendMessageCompletionHandler: nil)
         
         // Then: Request parameters should be like this.
         
@@ -124,7 +128,7 @@ class WebimActionsTests: XCTestCase {
         expectedParametersDictionary = ["message" : message,
                                             "client-side-id" : clientSideID,
                                             "action" : "chat.message",
-                                            "hint_question" : "0",
+                                            "hint_question" : false,
                                             "data" : dataJSONString] as [String : Any]
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["message"] as! String,
                        expectedParametersDictionary["message"] as! String)
@@ -132,13 +136,13 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["client-side-id"] as! String)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["action"] as! String,
                        expectedParametersDictionary["action"] as! String)
-        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["hint_question"] as! String,
-                       expectedParametersDictionary["hint_question"] as! String)
+        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["hint_question"] as! Bool,
+                       expectedParametersDictionary["hint_question"] as! Bool)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["data"] as! String,
                        expectedParametersDictionary["data"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
@@ -157,7 +161,8 @@ class WebimActionsTests: XCTestCase {
                            filename: fileName,
                            mimeType: mimeType,
                            clientSideID: clientSideID,
-                           completionHandler: nil)
+                           completionHandler: nil,
+                           uploadFileToServerCompletionHandler: nil)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getHTTPMethod(),
                        AbstractRequestLoop.HTTPMethods.post)
@@ -188,7 +193,8 @@ class WebimActionsTests: XCTestCase {
         // When: Starting chat.
         webimActions?.startChat(withClientSideID: clientSideID,
                                 firstQuestion: message,
-                                departmentKey: departmentKey)
+                                departmentKey: departmentKey,
+                                customFields: nil)
         
         // Then: Request parameters should be like this.
         
@@ -198,7 +204,7 @@ class WebimActionsTests: XCTestCase {
         let expectedParametersDictionary = ["first-question" : message,
                                             "client-side-id" : clientSideID,
                                             "action" : "chat.start",
-                                            "force-online" : "1",
+                                            "force-online" : true,
                                             "department-key" : departmentKey] as [String : Any]
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["first-question"] as! String,
                        expectedParametersDictionary["first-question"] as! String)
@@ -206,13 +212,13 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["client-side-id"] as! String)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["action"] as! String,
                        expectedParametersDictionary["action"] as! String)
-        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["force-online"] as! String,
-                       expectedParametersDictionary["force-online"] as! String)
+        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["force-online"] as! Bool,
+                       expectedParametersDictionary["force-online"] as! Bool)
         XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["department-key"] as! String,
                        expectedParametersDictionary["department-key"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         let expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
@@ -233,7 +239,7 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["action"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         let expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
@@ -270,7 +276,7 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["typing"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         let expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
@@ -303,7 +309,7 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["typing"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         let expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
@@ -342,11 +348,11 @@ class WebimActionsTests: XCTestCase {
     
     func testRequestHistoryBeforeFormation() {
         // Setup.
-        let before = "1"
+        let before = Int64(1)
         
         // When: Requesting history before.
         let expectaion = XCTestExpectation()
-        webimActions?.requestHistory(beforeMessageTimestamp: Int64(before)!) { data in
+        webimActions?.requestHistory(beforeMessageTimestamp: Int64(exactly: before)!) { data in
             expectaion.fulfill()
         }
         
@@ -360,8 +366,8 @@ class WebimActionsTests: XCTestCase {
                        AbstractRequestLoop.HTTPMethods.get)
         
         let expectedParametersDictionary = ["before-ts" : before] as [String : Any]
-        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["before-ts"] as! String,
-                       expectedParametersDictionary["before-ts"] as! String)
+        XCTAssertEqual(actionRequestLoop.webimRequest!.getPrimaryData()["before-ts"] as! Int64,
+                       expectedParametersDictionary["before-ts"] as! Int64)
         
         XCTAssertNil(actionRequestLoop.webimRequest!.getContentType())
         
@@ -401,7 +407,7 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["operator_id"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         let expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
@@ -430,7 +436,7 @@ class WebimActionsTests: XCTestCase {
                        expectedParametersDictionary["push-token"] as! String)
         
         XCTAssertEqual(actionRequestLoop.webimRequest!.getContentType(),
-                       WebimActions.ContentType.urlEncoded.rawValue)
+                       ContentType.urlEncoded.rawValue)
         
         let expectedBaseURLString = "https://demo.webim.ru/l/v/m/action"
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),

@@ -41,7 +41,9 @@ class WebimClientTests: XCTestCase {
         let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                           internalErrorListener: internalErrorListener)
         let urlString = "http://webim.ru"
-        let deltaRequestLoop = DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString), userDefaultsKey: WebimClientTests.userDefaultsKey),
+        let deltaRequestLoop = DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString),
+                                                historyMessageMapper: HistoryMessageMapper(withServerURLString: urlString),
+                                                userDefaultsKey: WebimClientTests.userDefaultsKey),
                                                 completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                 sessionParametersListener: nil,
                                                 internalErrorListener: internalErrorListener,
@@ -61,8 +63,8 @@ class WebimClientTests: XCTestCase {
         
         let webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
                                       deltaRequestLoop: deltaRequestLoop,
-                                      webimActions: WebimActions(baseURL: urlString,
-                                                                 actionRequestLoop: actionRequestLoop))
+                                      webimActions: WebimActionsImpl(baseURL: urlString,
+                                                                     actionRequestLoop: actionRequestLoop))
         
         XCTAssertTrue(deltaRequestLoop === webimClient.getDeltaRequestLoop())
     }
@@ -74,11 +76,13 @@ class WebimClientTests: XCTestCase {
         let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                           internalErrorListener: internalErrorListener)
         let urlString = "http://webim.ru"
-        let webimActions = WebimActions(baseURL: urlString,
-                                        actionRequestLoop: actionRequestLoop)
+        let webimActions = WebimActionsImpl(baseURL: urlString,
+                                            actionRequestLoop: actionRequestLoop)
         
         let webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
-                                      deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString), userDefaultsKey: WebimClientTests.userDefaultsKey),
+                                      deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString),
+                                                                         historyMessageMapper: HistoryMessageMapper(withServerURLString: urlString),
+                                                                         userDefaultsKey: WebimClientTests.userDefaultsKey),
                                                                          completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                                          sessionParametersListener: nil,
                                                                          internalErrorListener: internalErrorListener,

@@ -137,6 +137,10 @@ final class MemoryHistoryStorage: HistoryStorage {
         completion(true, false, nil, false, nil, false, nil, nil)
     }
     
+    func clearHistory() {
+        historyMessages.removeAll()
+    }
+    
     func updateReadBeforeTimestamp(timestamp: Int64) {
         self.readBeforeTimestamp = timestamp
     }

@@ -97,9 +97,13 @@ protocol WebimActions {
     func sendDialogTo(emailAddress: String,
                       completionHandler: SendDialogToEmailAddressCompletionHandler?)
     
-    func sendSticker(stickerId:Int,
+    func sendSticker(stickerId: Int,
                      clientSideId: String,
                      completionHandler: SendStickerCompletionHandler?)
+    
+    func sendReaction(reaction: ReactionString,
+                     clientSideId: String,
+                     completionHandler: ReactionCompletionHandler?)
     
     func sendQuestionAnswer(surveyID: String,
                             formID: Int,
@@ -112,5 +116,12 @@ protocol WebimActions {
     
     func getOnlineStatus(location: String,
                          completion: @escaping (_ data: Data?) throws -> ()) 
-
+    
+    func searchMessagesBy(query: String,
+                          completion: @escaping (_ data: Data?) throws -> ())
+    
+    func clearHistory()
+    
+    func getRawConfig(forLocation: String,
+                      completion: @escaping (_ data: Data?) throws -> ())
 }

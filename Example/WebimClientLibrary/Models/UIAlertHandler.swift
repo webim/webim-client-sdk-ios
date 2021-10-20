@@ -206,6 +206,14 @@ final class UIAlertHandler {
         )
     }
     
+    func showOperatorInfo(withMessage message: String) {
+        showDialog(
+            withMessage: message,
+            title: "Operator Info".localized,
+            buttonTitle: "OK".localized
+        )
+    }
+    
     // MARK: - Private methods
     private func getGoToSettingsAction() -> (() -> Void) {
         return {

@@ -39,6 +39,7 @@ final class DeltaCallback {
     
     // MARK: - Properties
     private let currentChatMessageMapper: MessageMapper
+    private let historyMessageMapper: MessageMapper
     private var currentChat: ChatItem?
     private let userDefaultsKey: String
     private weak var messageHolder: MessageHolder?
@@ -47,8 +48,10 @@ final class DeltaCallback {
     
     // MARK: - Initialization
     init(currentChatMessageMapper: MessageMapper,
+         historyMessageMapper: MessageMapper,
          userDefaultsKey: String) {
         self.currentChatMessageMapper = currentChatMessageMapper
+        self.historyMessageMapper = historyMessageMapper
         self.userDefaultsKey = userDefaultsKey
     }
     
@@ -72,58 +75,45 @@ final class DeltaCallback {
             case .chat:
                 handleChatUpdateBy(delta: delta)
                 
-                break
             case .chatMessage:
                 handleChatMessageUpdateBy(delta: delta)
                 
-                break
             case .chatOperator:
                 handleChatOperatorUpdateBy(delta: delta)
                 
-                break
             case .chatOperatorTyping:
                 handleChatOperatorTypingUpdateBy(delta: delta)
                 
-                break
             case .chatReadByVisitor:
                 handleChatReadByVisitorUpdateBy(delta: delta)
                 
-                break
             case .chatState:
                 handleChatStateUpdateBy(delta: delta)
                 
-                break
             case .chatUnreadByOperatorTimestamp:
                 handleUnreadByOperatorTimestampUpdateBy(delta: delta)
                 
-                break
             case .departmentList:
                 handleDepartmentListUpdateBy(delta: delta)
                 
-                break
             case .historyRevision:
                 handleHistoryRevisionUpdateBy(delta: delta)
                 
-                break
             case .operatorRate:
                 handleOperatorRateUpdateBy(delta: delta)
                 
-                break
             case .survey:
                 handleSurveyBy(delta: delta)
                 
-                break
             case .unreadByVisitor:
                 handleUnreadByVisitorUpdateBy(delta: delta)
                 
-                break
             case .visitSessionState:
                 handleVisitSessionStateUpdateBy(delta: delta)
                 
-                break
             case .chatMessageRead:
                 handleMessageRead(delta: delta)
-                break
+                
             default:
                 // Not supported delta type.
                 
@@ -192,8 +182,9 @@ final class DeltaCallback {
     private func handleChatUpdateBy(delta: DeltaItem) {
         guard delta.getEvent() == .update,
             let deltaData = delta.getData() as? [String : Any?] else {
-                messageStream?.changingChatStateOf(chat: nil)
-                return
+            messageStream?.changingChatStateOf(chat: nil)
+            currentChat?.set(messages: [MessageItem]())
+            return
         }
         
         currentChat = ChatItem(jsonDictionary: deltaData)
@@ -216,12 +207,14 @@ final class DeltaCallback {
         let deltaID = delta.getID()
         
         if deltaEvent == .delete {
+            var historyMessage: MessageImpl? = nil
             if let currentChat = currentChat {
                 var currentChatMessages = currentChat.getMessages()
                 for (currentChatMessageIndex, currentChatMessage) in currentChatMessages.enumerated() {
                     if currentChatMessage.getID() == deltaID { // Deleted message ID is passed as delta ID.
                         currentChatMessages.remove(at: currentChatMessageIndex)
                         currentChat.set(messages: currentChatMessages)
+                        historyMessage = historyMessageMapper.map(message: currentChatMessage)
                         
                         break
                     }
@@ -229,6 +222,9 @@ final class DeltaCallback {
             }
             
             messageHolder?.deletedMessageWith(id: deltaID)
+            if let historyMessage = historyMessage {
+                historyPoller?.deleteMessageFromDB(message: historyMessage.getID())
+            }
         } else {
             guard let deltaData = delta.getData() as? [String : Any] else {
                 return
@@ -236,6 +232,7 @@ final class DeltaCallback {
             
             let messageItem = MessageItem(jsonDictionary: deltaData)
             let message = currentChatMessageMapper.map(message: messageItem)
+            let historyMessage = historyMessageMapper.map(message: messageItem)
             if deltaEvent == .add {
                 var isNewMessage = false
                 if let currentChat = currentChat,
@@ -247,6 +244,10 @@ final class DeltaCallback {
                 if isNewMessage,
                     let message = message {
                     messageHolder?.receive(newMessage: message)
+                }
+                
+                if let historyMessage = historyMessage {
+                    historyPoller?.insertMessageInDB(message: historyMessage)
                 }
                 
             } else if deltaEvent == .update {
@@ -264,6 +265,9 @@ final class DeltaCallback {
                 
                 if let message = message {
                     messageHolder?.changed(message: message)
+                }
+                if let historyMessage = historyMessage {
+                    historyPoller?.insertMessageInDB(message: historyMessage)
                 }
             }
         }

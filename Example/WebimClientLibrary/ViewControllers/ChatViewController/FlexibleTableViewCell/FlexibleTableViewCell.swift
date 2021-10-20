@@ -441,6 +441,12 @@ class FlexibleTableViewCell: UITableViewCell {
         isEdited: Bool = false
     ) {
         emptyTheCell()
+        if let progress = message.getData()?.getAttachment()?.getDownloadProgress() {
+            if progress != 100 {
+                fillUploadingFileCell()
+                return
+            }
+        }
         if message.getData()?.getAttachment() != nil {
             configureURLSession()
         }
@@ -460,7 +466,6 @@ class FlexibleTableViewCell: UITableViewCell {
             // dateLabel
             self.addSubview(dateLabel)
         }
-        
         if forOperator {
             // userAvatarImageView
             self.addSubview(userAvatarImageView)
@@ -472,12 +477,12 @@ class FlexibleTableViewCell: UITableViewCell {
                  .layerMaxXMaxYCorner],
                 radius: 20
             )
-
             // documentFileStatusPercentageIndicator
             userAvatarImageView.addSubview(documentFileStatusPercentageIndicator)
             
             // messageUsernameLabel
             messageBackgroundView.addSubview(messageUsernameLabel)
+            
             /// Text
             messageUsernameLabel.textColor = messageUsernameLabelColourOperator
         }
@@ -778,6 +783,30 @@ class FlexibleTableViewCell: UITableViewCell {
         cellLayoutConstraintButtons(showFullDate: showFullDate)
     }
     
+    private func fillUploadingFileCell() {
+        
+        // messageBodylabel
+        messageBackgroundView.addSubview(messageBodyLabel)
+        /// Attributes
+        messageBodyLabel.textAlignment = .left
+        messageBodyLabel.textColor = messageBodyLabelColourSystem
+        
+        // messageBackgroundView
+        self.addSubview(messageBackgroundView)
+        /// Set round corners
+        messageBackgroundView.roundCorners(
+            [.layerMinXMinYCorner,
+             .layerMaxXMinYCorner,
+             .layerMaxXMaxYCorner],
+            radius: 15
+        )
+        /// Set colour
+        messageBackgroundView.backgroundColor = messageBackgroundViewColourSystem
+        messageBodyLabel.text = "File is being sent".localized
+        
+        cellLayoutConstraintUploadingFile()
+    }
+    
     private func fillOtherCell(
         showFullDate: Bool,
         forOperator: Bool,
@@ -803,79 +832,17 @@ class FlexibleTableViewCell: UITableViewCell {
         }
         
         if hasAttachment,
-            let attachment = message.getData()?.getAttachment(),
-            let url = WMDownloadFileManager.shared.urlFromFileInfo(attachment.getFileInfo()),
-            let contentType = attachment.getFileInfo().getContentType() {
-            let fileInfo = attachment.getFileInfo()
-            
-            if hasImageAsDocument {
-                self.attachmentImageUrl = url
-                let image = self.delegate?.imageForUrl(url)
+            let attachment = message.getData()?.getAttachment() {
+            if let url = WMDownloadFileManager.shared.urlFromFileInfo(attachment.getFileInfo()),
+               let contentType = attachment.getFileInfo().getContentType() {
+                let fileInfo = attachment.getFileInfo()
                 
-                if image != nil {
-                    self.documentFileStatusPercentageIndicator.isHidden = true
-                    if forOperator {
-                        documentFileStatusButton.setBackgroundImage(
-                            documentFileStatusButtonDownloadSuccessOperator,
-                            for: .normal
-                        )
-                    } else {
-                        documentFileStatusButton.setBackgroundImage(
-                            documentFileStatusButtonDownloadSuccessVisitor,
-                            for: .normal
-                        )
-                    }
-                } else {
-                    self.updateImageDownloadProgress(self.delegate?.progressForUrl(url) ?? 0)
+                if hasImageAsDocument {
+                    self.attachmentImageUrl = url
+                    let image = self.delegate?.imageForUrl(url)
                     
-                    if forOperator {
-                        documentFileStatusButton.setBackgroundImage(
-                            documentFileStatusButtonDownloadOperator,
-                            for: .normal
-                        )
-                    } else {
-                        documentFileStatusButton.setBackgroundImage(
-                            documentFileStatusButtonDownloadVisitor,
-                            for: .normal
-                        )
-                    }
-                    
-                }
-            }
-            
-            if hasImage && !hasImageAsDocument {
-                if forOperator && shouldShowOperatorInfo {
-                    imageUsernameLabel.text = message.getSenderName()
-                } else {
-                    imageUsernameLabel.text = nil
-                }
-                
-                imageImageView.clipsToBounds = true
-                roundCornersForMessage(on: imageImageView, forOperator: forOperator)
-                
-                self.imageUrl = url
-                if let image = self.delegate?.imageForUrl(url) {
-                    self.documentFileStatusPercentageIndicator.isHidden = true
-                    self.imageImageView.image = image
-                } else {
-                    self.imageImageView.image = loadingPlaceholderImage
-                    self.updateImageDownloadProgress(self.delegate?.progressForUrl(url) ?? 0) 
-                }
-            } else {
-                documentFileNameLabel.text = fileInfo.getFileName()
-                documentFileDescriptionLabel.text =
-                    byteCountFormatter.string(fromByteCount: fileInfo.getSize() ?? 0)
-                
-                if forOperator {
-                    documentFileNameLabel.textColor = documentFileNameLabelColourOperator
-                    documentFileDescriptionLabel.textColor = documentFileDescriptionLabelColourOperator
-                } else {
-                    documentFileNameLabel.textColor = documentFileNameLabelColourVisitor
-                    documentFileDescriptionLabel.textColor = documentFileDescriptionLabelColourVisitor
-                }
-                
-                if isAcceptableFile(contentType: contentType) {
-                    if isFileExist(fileName: fileInfo.getFileName()) {
+                    if image != nil {
+                        self.documentFileStatusPercentageIndicator.isHidden = true
                         if forOperator {
                             documentFileStatusButton.setBackgroundImage(
                                 documentFileStatusButtonDownloadSuccessOperator,
@@ -887,8 +854,9 @@ class FlexibleTableViewCell: UITableViewCell {
                                 for: .normal
                             )
                         }
-                        
                     } else {
+                        self.updateImageDownloadProgress(self.delegate?.progressForUrl(url) ?? 0)
+                        
                         if forOperator {
                             documentFileStatusButton.setBackgroundImage(
                                 documentFileStatusButtonDownloadOperator,
@@ -900,18 +868,80 @@ class FlexibleTableViewCell: UITableViewCell {
                                 for: .normal
                             )
                         }
+                        
                     }
-                } else if !hasImageAsDocument {
-                    documentFileStatusButton.setBackgroundImage(
-                        documentFileStatusButtonDownloadError,
-                        for: .normal)
                 }
-                if !hasImageAsDocument {
-                    documentFileStatusButton.addTarget(
-                        self,
-                        action: #selector(downloadFile),
-                        for: .touchUpInside
-                    )
+                
+                if hasImage && !hasImageAsDocument {
+                    if forOperator && shouldShowOperatorInfo {
+                        imageUsernameLabel.text = message.getSenderName()
+                    } else {
+                        imageUsernameLabel.text = nil
+                    }
+                    
+                    imageImageView.clipsToBounds = true
+                    roundCornersForMessage(on: imageImageView, forOperator: forOperator)
+                
+                    self.imageUrl = url
+                    if let image = self.delegate?.imageForUrl(url) {
+                        self.documentFileStatusPercentageIndicator.isHidden = true
+                        self.imageImageView.image = image
+                    } else {
+                        self.imageImageView.image = loadingPlaceholderImage
+                        self.updateImageDownloadProgress(self.delegate?.progressForUrl(url) ?? 0)
+                    }
+                } else {
+                    documentFileNameLabel.text = fileInfo.getFileName()
+                    documentFileDescriptionLabel.text =
+                        byteCountFormatter.string(fromByteCount: fileInfo.getSize() ?? 0)
+                
+                    if forOperator {
+                        documentFileNameLabel.textColor = documentFileNameLabelColourOperator
+                        documentFileDescriptionLabel.textColor = documentFileDescriptionLabelColourOperator
+                    } else {
+                        documentFileNameLabel.textColor = documentFileNameLabelColourVisitor
+                        documentFileDescriptionLabel.textColor = documentFileDescriptionLabelColourVisitor
+                    }
+                
+                    if isAcceptableFile(contentType: contentType) {
+                        if isFileExist(fileName: fileInfo.getFileName()) {
+                            if forOperator {
+                                documentFileStatusButton.setBackgroundImage(
+                                    documentFileStatusButtonDownloadSuccessOperator,
+                                    for: .normal
+                                )
+                            } else {
+                                documentFileStatusButton.setBackgroundImage(
+                                    documentFileStatusButtonDownloadSuccessVisitor,
+                                    for: .normal
+                                )
+                            }
+                            
+                        } else {
+                            if forOperator {
+                                documentFileStatusButton.setBackgroundImage(
+                                    documentFileStatusButtonDownloadOperator,
+                                    for: .normal
+                                )
+                            } else {
+                                documentFileStatusButton.setBackgroundImage(
+                                    documentFileStatusButtonDownloadVisitor,
+                                    for: .normal
+                                )
+                            }
+                        }
+                    } else if !hasImageAsDocument {
+                        documentFileStatusButton.setBackgroundImage(
+                            documentFileStatusButtonDownloadError,
+                            for: .normal)
+                    }
+                    if !hasImageAsDocument {
+                        documentFileStatusButton.addTarget(
+                            self,
+                            action: #selector(downloadFile),
+                            for: .touchUpInside
+                        )
+                    }
                 }
             }
         } else {
@@ -1147,6 +1177,28 @@ class FlexibleTableViewCell: UITableViewCell {
                     make.top.equalToSuperview()
                 }
             }
+        }
+    }
+    
+    private func cellLayoutConstraintUploadingFile() {
+        
+        // messageBodyLabel
+        messageBodyLabel.snp.remakeConstraints { (make) -> Void in
+            make.edges.equalToSuperview()
+                .inset(SPACING_DEFAULT)
+        }
+        
+        // messageBackgroundView
+        messageBackgroundView.snp.remakeConstraints { (make) -> Void in
+            if #available(iOS 11.0, *) {
+                make.leading.left.equalTo(self.safeAreaLayoutGuide)
+                    .inset(SPACING_DEFAULT)
+            } else {
+                make.leading.left.equalToSuperview()
+                    .inset(SPACING_DEFAULT)
+            }
+            make.width.greaterThanOrEqualTo(CHAT_BUBBLE_MIN_WIDTH)
+            make.width.lessThanOrEqualTo(CHAT_BUBBLE_MAX_WIDTH)
         }
     }
     

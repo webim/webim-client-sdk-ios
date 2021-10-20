@@ -31,49 +31,54 @@ import WebimClientLibrary
 extension ChatTableViewController: SurveyListener {
     
     func on(survey: Survey) {
-//        disabled for 35 release
-//        surveyCounter = survey.getConfig().getDescriptor().getForms().count
+        surveyCounter = 0
+        for form in survey.getConfig().getDescriptor().getForms() {
+            surveyCounter += form.getQuestions().count
+        }
     }
 
     func on(nextQuestion: SurveyQuestion) {
-//        disabled for 35 release
-//        surveyCounter -= 1
-//        let description = nextQuestion.getText()
-//
-//        let operatorId = ""
-//        switch nextQuestion.getType() {
-//        case .comment:
-//            showSurveyCommentDialog(description: description)
-//        case .radio:
-//            showSurveyRadioButtonDialog(description: description, points: nextQuestion.getOptions() ?? [])
-//        case .stars:
-//            showRateStars(operatorId: operatorId, isSurvey: true, description: description)
-//        }
+        DispatchQueue.main.async {
+            if self.rateStarsViewController != nil {
+                self.delayedSurvayQuestion = nextQuestion
+                return
+            }
+            self.delayedSurvayQuestion = nil
+            self.surveyCounter -= 1
+            let description = nextQuestion.getText()
+            
+            let operatorId = ""
+            switch nextQuestion.getType() {
+            case .comment:
+                self.showSurveyCommentDialog(description: description)
+            case .radio:
+                self.showSurveyRadioButtonDialog(description: description, points: nextQuestion.getOptions() ?? [])
+            case .stars:
+                self.showRateStars(operatorId: operatorId, isSurvey: true, description: description)
+            }
+        }
     }
 
     func onSurveyCancelled() {
-//        disabled for 35 release
-//        surveyCounter = -1
-//        self.surveyCommentViewController?.close(nil)
-//        self.rateStarsViewController?.close(nil)
-//        self.surveyRadioButtonViewController?.close(nil)
+        surveyCounter = -1
+        self.surveyCommentViewController?.close(nil)
+        self.rateStarsViewController?.close(nil)
+        self.surveyRadioButtonViewController?.close(nil)
+        
+        self.rateStarsViewController = nil
+        self.surveyRadioButtonViewController = nil
+        self.surveyCommentViewController = nil
+        
+        self.delayedSurvayQuestion = nil
     }
-    
 }
 
 // MARK: - WEBIM: Survey
 extension ChatTableViewController {
     
     func showRateOperatorDialog(operatorId: String?) {
-        if WebimServiceController.currentSession.isChatExist() {
-            if let operatorId = operatorId {
-                self.showRateStars(operatorId: operatorId, isSurvey: false, description: "")
-            }
-        } else {
-            self.alertDialogHandler.showDialog(
-                withMessage: "This chat does not exist".localized,
-                title: "Operator rating failed".localized
-            )
+        if let operatorId = operatorId {
+            self.showRateStars(operatorId: operatorId, isSurvey: false, description: "")
         }
     }
     
@@ -81,9 +86,13 @@ extension ChatTableViewController {
         showRateOperatorDialog(operatorId: currentOperatorId())
     }
     
-    private func currentOperatorId() -> String? {
-        for index in stride(from: self.messages.count - 1, to: 0, by: -1) {
-            let operatorId = self.messages[index].getOperatorID()
+    func currentOperatorId() -> String? {
+        if let operatorId = WebimServiceController.currentSession.getCurrentOperator()?.getID() {
+            return operatorId
+        }
+        
+        for index in stride(from: self.chatMessages.count - 1, to: 0, by: -1) {
+            let operatorId = self.chatMessages[index].getOperatorID()
             if operatorId != nil {
                 return operatorId
             }
@@ -97,7 +106,6 @@ extension ChatTableViewController {
     }
     
     private func showRateStars(operatorId: String, isSurvey: Bool, description: String) {
-        
         DispatchQueue.main.async {
             
             let vc = RateStarsViewController()
@@ -121,7 +129,7 @@ extension ChatTableViewController {
             self.surveyCommentViewController = vc
             vc.descriptionText = description
             vc.delegate = self
-            vc.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+            vc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             self.present(vc, animated: false, completion: nil)
         }
     }
@@ -136,7 +144,7 @@ extension ChatTableViewController {
             vc.descriptionText = description
             vc.points = points
             vc.delegate = self
-            vc.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+            vc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             self.present(vc, animated: false, completion: nil)
             
         }
@@ -145,12 +153,12 @@ extension ChatTableViewController {
 
 extension ChatTableViewController: RateStarsViewControllerDelegate, WMSurveyViewControllerDelegate {
     func rateOperator(operatorID: String, rating: Int) {
-        if WebimServiceController.currentSession.isChatExist() {
-            WebimServiceController.currentSession.rateOperator(
-                withID: operatorID,
-                byRating: rating,
-                completionHandler: self
-            )
+        WebimServiceController.currentSession.rateOperator(
+            withID: operatorID,
+            byRating: rating,
+            completionHandler: self
+        )
+        if self.delayedSurvayQuestion == nil { // no surveys after operator rate requests
             self.chatViewController?.thanksView.showAlert()
         }
     }
@@ -165,6 +173,13 @@ extension ChatTableViewController: RateStarsViewControllerDelegate, WMSurveyView
         if surveyCounter == 0 {
             self.chatViewController?.thanksView.showAlert()
             surveyCounter = -1
+        }
+    }
+    
+    func surveyViewControllerClosed() {
+        self.rateStarsViewController = nil
+        if let delayedQuestion = self.delayedSurvayQuestion {
+            self.on(nextQuestion: delayedQuestion)
         }
     }
 }
@@ -183,7 +198,7 @@ extension ChatTableViewController: RateOperatorCompletionHandler, SendSurveyAnsw
             case .noChat:
                 message = "This chat does not exist".localized
             case .wrongOperatorId:
-                message = "RateOperatorWrongID".localized
+                message = "This agent not in the current chat".localized
             case .noteIsTooLong:
                 message = "Note for rate is too long".localized
             }

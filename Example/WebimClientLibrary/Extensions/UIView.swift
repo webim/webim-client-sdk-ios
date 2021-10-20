@@ -102,6 +102,11 @@ extension UIView {
     static func loadXibView() -> Self {
         let identifier = "\(Self.self)"
         let nib = UINib(nibName: identifier, bundle: nil)
-        return nib.instantiate(withOwner: nil, options: nil).first as! Self
+        let view = nib.instantiate(withOwner: nil, options: nil).first as! Self
+        view.loadXibViewSetup()
+        return view
     }
+    
+    @objc
+    func loadXibViewSetup() { }
 }

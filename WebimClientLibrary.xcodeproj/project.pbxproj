@@ -22,6 +22,7 @@
 		11474E6225F2A5AD00D560FB /* FileUrlCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11474E6125F2A5AD00D560FB /* FileUrlCreator.swift */; };
 		11638EEE22A448830085E4F4 /* KeyboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11638EED22A448830085E4F4 /* KeyboardItem.swift */; };
 		1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */; };
+		11D5A33326D45E4A00AE290C /* LocationSettingsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
 		123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */; };
 		1289E9752695BB3A007C15BF /* WMDataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9742695BB39007C15BF /* WMDataEncryptor.swift */; };
@@ -140,6 +141,7 @@
 		11474E6125F2A5AD00D560FB /* FileUrlCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUrlCreator.swift; sourceTree = "<group>"; };
 		11638EED22A448830085E4F4 /* KeyboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItem.swift; sourceTree = "<group>"; };
 		1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStatusResponse.swift; sourceTree = "<group>"; };
+		11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
 		123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSynchronizedObject.swift; sourceTree = "<group>"; };
 		1289E9742695BB39007C15BF /* WMDataEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMDataEncryptor.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 				8FD24489200CE25A007EB9CB /* HistorySinceResponse.swift */,
 				8FD2448A200CE25A007EB9CB /* DeltaResponse.swift */,
 				1165DAA425D9F67700FBF72E /* LocationStatusResponse.swift */,
+				11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -603,6 +606,7 @@
 				8FD244DA200CE25C007EB9CB /* SessionParametersListener.swift in Sources */,
 				8FD244D0200CE25C007EB9CB /* HistorySinceResponse.swift in Sources */,
 				8FD244C5200CE25C007EB9CB /* ActionRequestLoop.swift in Sources */,
+				11D5A33326D45E4A00AE290C /* LocationSettingsResponse.swift in Sources */,
 				1134DD5A234A3FF5008FA6F0 /* NotFatalErrorHandler.swift in Sources */,
 				8FD244C9200CE25C007EB9CB /* AuthorizationData.swift in Sources */,
 				CE6A6982220C968D00B11E29 /* FAQImpl.swift in Sources */,

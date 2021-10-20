@@ -55,19 +55,22 @@ class ChatViewController: UIViewController {
     
     // Top bar (top navigation bar)
     lazy var titleViewOperatorAvatarImageView: UIImageView = createUIImageView(contentMode: .scaleAspectFit)
-    lazy var titleViewOperatorNameLabel: UILabel = createUILabel(systemFontSize: 15)
-    lazy var titleViewOperatorStatusLabel: UILabel = createUILabel(systemFontSize: 13, systemFontWeight: .light)
+    lazy var titleViewOperatorNameLabel: UILabel = UILabel.createUILabel(systemFontSize: 15)
+    lazy var titleViewOperatorStatusLabel: UILabel = UILabel.createUILabel(systemFontSize: 13, systemFontWeight: .light)
+    var titleViewOperatorInfo: String?
+    var titleViewOperatorTitle: String?
+    
     lazy var titleViewTypingIndicator: TypingIndicator = createTypingIndicator()
     
     var connectionErrorView: UIView!
     var thanksView: WMThanksAlertView!
+    var chatTestView = ChatTestView.loadXibView()
     
     // Bottom bar
-    lazy var separatorView: UIView = createUIView()
     lazy var fileButton: UIButton = createCustomUIButton(type: .system)
     lazy var textInputBackgroundView: UIView = createUIView()
     lazy var textInputTextView: UITextView = createTextInputTextView()
-    lazy var textInputTextViewPlaceholderLabel: UILabel = createUILabel(systemFontSize: 16, numberOfLines: 0)
+    lazy var textInputTextViewPlaceholderLabel: UILabel = UILabel.createUILabel(systemFontSize: 16, numberOfLines: 0)
     lazy var textInputButton: UIButton = createUIButton(type: .system)
     
     // Bottom bar quote/edit
@@ -75,8 +78,8 @@ class ChatViewController: UIViewController {
     lazy var bottomBarQuoteLineView: UIView = createUIView()
     
     lazy var bottomBarQuoteAttachmentImageView: UIImageView = createUIImageView(contentMode: .scaleAspectFill)
-    lazy var bottomBarQuoteUsernameLabel: UILabel = createUILabel(systemFontSize: 16, systemFontWeight: .heavy)
-    lazy var bottomBarQuoteBodyLabel: UILabel = createUILabel(systemFontSize: 15, systemFontWeight: .light)
+    lazy var bottomBarQuoteUsernameLabel: UILabel = UILabel.createUILabel(systemFontSize: 16, systemFontWeight: .heavy)
+    lazy var bottomBarQuoteBodyLabel: UILabel = UILabel.createUILabel(systemFontSize: 15, systemFontWeight: .light)
     lazy var bottomBarQuoteCancelButton: UIButton = createCustomUIButton(type: .system)
     
     // MARK: - View Life Cycle
@@ -92,66 +95,7 @@ class ChatViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(
-            self, selector: #selector(keyboardWillChange),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(showScrollButton),
-            name: .shouldShowScrollButton,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(hideScrollButton),
-            name: .shouldHideScrollButton,
-            object: nil)
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(addQuoteEditBar),
-            name: .shouldShowQuoteEditBar,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(removeQuoteEditBar),
-            name: .shouldHideQuoteEditBar,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(copyMessage),
-            name: .shouldCopyMessage,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(deleteMessage),
-            name: .shouldDeleteMessage,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateOperatorStatus),
-            name: .shouldChangeOperatorStatus,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateOperatorInfo),
-            name: .shouldUpdateOperatorInfo,
-            object: nil
-        )
+        self.subscribeToNotifications()
     }
     
     override func viewDidLoad() {
@@ -163,6 +107,10 @@ class ChatViewController: UIViewController {
         configureSubviews()
         
         setupScrollButton()
+        
+        if true {
+            setupTestView()
+        }
     }
     
     deinit {
@@ -185,7 +133,7 @@ class ChatViewController: UIViewController {
     }
     
     @objc
-    private func keyboardWillChange(_ notification: Notification) {
+    func keyboardWillChange(_ notification: Notification) {
         guard let animationDuration =
             notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
                 as? TimeInterval,
@@ -231,7 +179,7 @@ class ChatViewController: UIViewController {
     }
     
     @objc
-    private func updateOperatorStatus(sender: Notification) {
+    func updateOperatorStatus(sender: Notification) {
         guard let operatorStatus = sender.userInfo as? [String: String] else { return }
         let status = operatorStatus["Status"]
         
@@ -260,11 +208,13 @@ class ChatViewController: UIViewController {
     }
     
     @objc
-    private func updateOperatorInfo(sender: Notification) {
+    func updateOperatorInfo(sender: Notification) {
         guard let operatorInfo = sender.userInfo as? [String: String] else { return }
         let operatorName = operatorInfo["OperatorName"]
         let operatorAvatarURL = operatorInfo["OperatorAvatarURL"]
-        
+        titleViewOperatorInfo = operatorInfo["OperatorInfo"]
+        titleViewOperatorTitle = operatorInfo["OperatorTitle"]
+        chatTestView.setupOperatorInfo(titleViewOperatorTitle: titleViewOperatorTitle, titleViewOperatorInfo: titleViewOperatorInfo)
         DispatchQueue.main.async {
             self.titleViewOperatorNameLabel.text = operatorName
             
@@ -382,7 +332,7 @@ class ChatViewController: UIViewController {
     }
     
     @objc
-    private func addQuoteEditBar(sender: Notification) {
+    func addQuoteEditBar(sender: Notification) {
         guard let actions = sender.userInfo as? [String: PopupAction] else { return }
         let action = actions["Action"]
         
@@ -611,7 +561,7 @@ class ChatViewController: UIViewController {
     }
 
     @objc
-    private func removeQuoteEditBar() {
+    func removeQuoteEditBar() {
         guard bottomBarQuoteBackgroundView.isDescendant(of: self.view) else { return }
         let typingDraftDictionary = ["DraftText": 123]
         NotificationCenter.default.postInMainThread(
@@ -664,13 +614,23 @@ class ChatViewController: UIViewController {
     }
     
     @objc
-    private func copyMessage(sender: Notification) {
+    func copyMessage(sender: Notification) {
         chatTableViewController?.copyMessage()
     }
     
     @objc
-    private func deleteMessage(sender: Notification) {
+    func deleteMessage(sender: Notification) {
         chatTableViewController?.deleteMessage()
+    }
+    
+    @objc
+    func likeMessage(sender: Notification) {
+        chatTableViewController?.reactMessage(reaction: ReactionString.like)
+    }
+    
+    @objc
+    func dislikeMessage(sender: Notification) {
+        chatTableViewController?.reactMessage(reaction: ReactionString.dislike)
     }
     
     private func setupScrollButton() {
@@ -707,12 +667,12 @@ class ChatViewController: UIViewController {
     }
     
     @objc
-    private func showScrollButton(_ sender: Notification) {
+    func showScrollButton(_ sender: Notification) {
         scrollButton.fadeIn()
     }
     
     @objc
-    private func hideScrollButton(_ sender: Notification) {
+    func hideScrollButton(_ sender: Notification) {
         scrollButton.fadeOut()
     }
     
@@ -790,5 +750,22 @@ extension ChatViewController: FilePickerDelegate {
             file: fileToSend,
             fileURL: fileURL
         )
+    }
+}
+
+extension ChatViewController: ChatTestViewDelegate {
+    
+    func getSearchMessageText() -> String {
+        let searchText = textInputTextView.text
+        textInputTextView.text = ""
+        return searchText ?? ""
+    }
+    
+    func toogleAutotest() -> Bool {
+        return self.chatTableViewController?.toggleAutotest() ?? false
+    }
+    
+    func showSearchResult(searcMessages: [Message]?) {
+        self.chatTableViewController?.showSearchResult(messages: searcMessages)
     }
 }

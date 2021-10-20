@@ -202,6 +202,12 @@ extension FileViewController: UIDocumentPickerDelegate {
             let data = try Data(contentsOf: fileDestinationURL!)
             try data.write(to: savingURL)
             fileURL?.stopAccessingSecurityScopedResource()
+            let saveView = WMSaveView.loadXibView()
+            self.view.addSubview(saveView)
+            saveView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            saveView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+            self.view.bringSubviewToFront(saveView)
+            saveView.animateImage()
         } catch {
             fileURL?.stopAccessingSecurityScopedResource()
             alertDialogHandler.showFileSavingFailureDialog(withError: error)

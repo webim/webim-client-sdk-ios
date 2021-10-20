@@ -56,15 +56,18 @@ final class WebimActionsImpl {
         case widgetUpdate = "widget.update"
         case keyboardResponse = "chat.keyboard_response"
         case sendSticker = "sticker"
+        case clearHistory = "chat.clear_history"
+        case reaction = "chat.react_message"
     }
     
     // MARK: - Properties
     private let baseURL: String
-    private let actionRequestLoop: ActionRequestLoop
+    let actionRequestLoop: ActionRequestLoop
     
     // MARK: - Initialization
     init(baseURL: String,
-         actionRequestLoop: ActionRequestLoop) {
+         actionRequestLoop: ActionRequestLoop
+    ) {
         self.baseURL = baseURL
         self.actionRequestLoop = actionRequestLoop
     }
@@ -327,6 +330,18 @@ extension WebimActionsImpl: WebimActions {
                                                         baseURLString: urlString))
     }
     
+    func searchMessagesBy(query: String, completion: @escaping (_ data: Data?) throws -> ()) {
+        let pageId = self.actionRequestLoop.authorizationData.value?.getPageID() ?? ""
+        let authToken = self.actionRequestLoop.authorizationData.value?.getAuthorizationToken() ?? ""
+        
+        let parameterDictionary: [String: String] = [Parameter.pageID.rawValue: pageId, Parameter.query.rawValue: query, Parameter.authorizationToken.rawValue:authToken]
+        let urlString = baseURL + ServerPathSuffix.search.rawValue
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
+                                                        primaryData: parameterDictionary,
+                                                        baseURLString: urlString,
+                                                        searchMessagesCompletionHandler: completion))
+    }
+    
     func update(deviceToken: String) {
         let dataToPost = [Parameter.actionn.rawValue: Action.setDeviceToken.rawValue,
                           Parameter.deviceToken.rawValue: deviceToken] as [String: Any]
@@ -394,7 +409,7 @@ extension WebimActionsImpl: WebimActions {
     }
     
     
-    func sendSticker(stickerId:Int,
+    func sendSticker(stickerId: Int,
                      clientSideId: String,
                      completionHandler: SendStickerCompletionHandler? = nil) {
         let dataToPost = [
@@ -412,6 +427,34 @@ extension WebimActionsImpl: WebimActions {
             baseURLString: urlString,
             sendStickerCompletionHandler: completionHandler
         ))
+    }
+    
+    func sendReaction(reaction: ReactionString,
+                      clientSideId: String,
+                      completionHandler: ReactionCompletionHandler?) {
+        let react: String
+        switch reaction {
+            case .like:
+                react = "like"
+            case .dislike:
+                react = "dislike"
+        }
+        let dataToPost = [
+            Parameter.actionn.rawValue: Action.reaction.rawValue,
+            Parameter.reaction.rawValue: react,
+            Parameter.clientSideID.rawValue: clientSideId
+        ] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(
+            httpMethod: .post,
+            primaryData: dataToPost,
+            contentType: ContentType.urlEncoded.rawValue,
+            baseURLString: urlString,
+            reacionCompletionHandler: completionHandler
+        ))
+        
     }
     
     func sendQuestionAnswer(surveyID: String,
@@ -459,6 +502,29 @@ extension WebimActionsImpl: WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         locationStatusRequestCompletionHandler: completion))
+    }
+    
+    func clearHistory() {
+        let dataToPost = [Parameter.actionn.rawValue: Action.clearHistory.rawValue] as [String: Any]
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString))
+    }
+    
+    func getRawConfig(forLocation location: String, completion: @escaping (Data?) throws -> ()) {
+        let dataToPost = [String: Any]()
+
+        let urlString = baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)"
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        locationSettingsCompletionHandler: completion))
     }
     
 }

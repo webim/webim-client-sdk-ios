@@ -113,11 +113,13 @@ struct KeyboardButtonItem {
     private enum JSONField: String {
         case id = "id"
         case text = "text"
+        case config = "config"
     }
     
     // MARK: - Properties
     private let id: String?
     private let text: String?
+    private var config: ConfigurationItem?
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
@@ -131,6 +133,10 @@ struct KeyboardButtonItem {
             self.text = text
         } else {
             return nil
+        }
+        
+        if let config = jsonDictionary[JSONField.config.rawValue] as? [String: Any?] {
+            self.config = ConfigurationItem(jsonDictionary: config)
         }
     }
     
@@ -151,6 +157,11 @@ struct KeyboardButtonItem {
         }
         return text
     }
+    
+    func getConfiguration() -> ConfigurationItem? {
+        return config
+    }
+    
 }
 
 /**
@@ -259,4 +270,83 @@ struct KeyboardRequestItem {
         }
         return button
     }
+}
+
+/**
+ - author:
+ Anna Frolova
+ - copyright:
+ 2021 Webim
+ */
+struct ConfigurationItem {
+    
+    // MARK: - Constants
+    // Raw values equal to field names received in responses from server.
+    private enum JSONField: String {
+        case active = "active"
+        case link = "link"
+        case textToInsert = "text_to_insert"
+        case state = "state"
+    }
+    
+    // MARK: - Properties
+    private var active: Bool
+    private var data: String
+    private var state: ButtonState
+    private var type: ButtonType
+    
+    // MARK: - Initialization
+    init?(jsonDictionary: [String: Any?]) {
+        if let active = jsonDictionary[JSONField.active.rawValue] as? Bool {
+            self.active = active
+        } else {
+            return nil
+        }
+        
+        if let data = jsonDictionary[JSONField.link.rawValue] as? String {
+            self.data = data
+            self.type = ButtonType.url
+        } else if let data = jsonDictionary[JSONField.textToInsert.rawValue] as? String {
+            self.data = data
+            self.type = ButtonType.insert
+        } else {
+            return nil
+        }
+        
+        if let state = jsonDictionary[JSONField.state.rawValue] as? String {
+            switch state {
+            case "showing":
+                self.state = .showing
+                
+                break
+            case "showing_selected":
+                self.state = .showingSelected
+                
+                break
+            default:
+                self.state = .hidden
+            }
+        } else {
+            return nil
+        }
+    }
+    
+    // MARK: - Methods
+    
+    func isActive() -> Bool {
+        return active
+    }
+    
+    func getData() -> String {
+        return data
+    }
+    
+    func getState() -> ButtonState {
+        return state
+    }
+    
+    func getButtonType() -> ButtonType {
+        return type
+    }
+    
 }

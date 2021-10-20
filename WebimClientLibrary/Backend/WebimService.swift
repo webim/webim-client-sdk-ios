@@ -81,6 +81,8 @@ enum Parameter: String {
     case prechat = "prechat-key-independent-fields"
     case customFields = "custom_fields"
     case webimSDKVersion = "x-webim-sdk-version"
+    case query = "query"
+    case reaction = "reaction"
 }
 
 enum Platform: String {
@@ -95,9 +97,10 @@ enum ServerPathSuffix: String {
     case downloadFile = "/l/v/m/download"
     case getHistory = "/l/v/m/history"
     case uploadFile = "/l/v/m/upload"
+    case search = "/l/v/m/search-messages"
+    case getConfig = "/api/visitor/v1/configs"
 }
 
 enum MultipartBody: String {
     case name = "webim_upload_file"
 }
-

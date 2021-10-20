@@ -25,12 +25,13 @@
 //
 
 import UIKit
+import WebimClientLibrary
 
 // MARK: - WEBIM: SurveyListener
 extension ChatTableViewController {
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if !messages.isEmpty {
+        if !messages().isEmpty {
             tableView.backgroundView = nil
             return 1
         } else {
@@ -44,15 +45,15 @@ extension ChatTableViewController {
     override func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
-    ) -> Int { messages.count }
+    ) -> Int { messages().count }
     
     override func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         
-        guard indexPath.row < messages.count else { return UITableViewCell() }
-        let message = messages[indexPath.row]
+        guard indexPath.row < messages().count else { return UITableViewCell() }
+        let message = messages()[indexPath.row]
         
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "FlexibleTableViewCell",
@@ -135,7 +136,7 @@ extension ChatTableViewController {
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
         
-        let message = messages[indexPath.row]
+        let message = messages()[indexPath.row]
         
         if message.isSystemType() || message.isOperatorType() || !message.canBeReplied() {
             return nil
@@ -175,7 +176,7 @@ extension ChatTableViewController {
         leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
 
-        let message = messages[indexPath.row]
+        let message = messages()[indexPath.row]
 
         if message.isSystemType() || message.isVisitorType() || !message.canBeReplied() {
             return nil
@@ -255,5 +256,21 @@ extension ChatTableViewController {
             }
         }
         
+    }
+    
+    func messages() -> [Message] {
+        return showSearchResult ? searchMessages : chatMessages
+    }
+    
+    func showSearchResult(messages: [Message]?) {
+        if let messages = messages {
+            self.searchMessages = messages
+            self.showSearchResult = true
+        } else {
+            self.searchMessages = []
+            self.showSearchResult = false
+        }
+        
+        self.tableView.reloadData()
     }
 }

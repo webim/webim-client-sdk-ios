@@ -83,7 +83,7 @@ final class FAQSQLiteHistoryStorage {
     
     func getMajorVersion() -> Int {
         // No need in this implementation.
-        return 5
+        return 12
     }
     
     func updateDB() {

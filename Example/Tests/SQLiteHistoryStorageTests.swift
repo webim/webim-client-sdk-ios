@@ -51,8 +51,8 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                                           internalErrorListener: internalErrorListener)
         sqLiteHistoryStorage = SQLiteHistoryStorage(dbName: SQLiteHistoryStorageTests.DB_NAME,
                                                     serverURL: SQLiteHistoryStorageTests.DB_NAME,
-                                                    webimClient: WebimClient(withActionRequestLoop: actionRequestLoop,
-                                                                             deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: SQLiteHistoryStorageTests.SERVER_URL_STRING), userDefaultsKey: SQLiteHistoryStorageTests.userDefaultsKey),
+                                                    fileUrlCreator: FileUrlCreator(webimClient: WebimClient(withActionRequestLoop:  actionRequestLoop,
+                                                                                deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: SQLiteHistoryStorageTests.SERVER_URL_STRING), historyMessageMapper: CurrentChatMessageMapper(withServerURLString: SQLiteHistoryStorageTests.SERVER_URL_STRING), userDefaultsKey: SQLiteHistoryStorageTests.userDefaultsKey),
                                                                                                                 completionHandlerExecutor: exeIfNotDestroyedHandlerExecutor,
                                                                                                                 sessionParametersListener: nil,
                                                                                                                 internalErrorListener: internalErrorListener,
@@ -69,8 +69,8 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                                                                                                 sessionID: nil,
                                                                                                                 prechat: nil,
                                                                                                                 authorizationData: nil),
-                                                                             webimActions: WebimActions(baseURL: SQLiteHistoryStorageTests.SERVER_URL_STRING,
-                                                                                                        actionRequestLoop: actionRequestLoop)),
+                                                                             webimActions: WebimActionsImpl(baseURL: SQLiteHistoryStorageTests.SERVER_URL_STRING,
+                                                                                                            actionRequestLoop: actionRequestLoop)), serverURL: SQLiteHistoryStorageTests.SERVER_URL_STRING),
                                                     reachedHistoryEnd: true,
                                                     queue: queue,
                                                     readBeforeTimestamp: -1)
@@ -128,7 +128,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
     
     func testGetMajorVersion() {
         XCTAssertEqual(sqLiteHistoryStorage!.getMajorVersion(),
-                       7)
+                       8)
     }
     
     func testGetFullHistory() {

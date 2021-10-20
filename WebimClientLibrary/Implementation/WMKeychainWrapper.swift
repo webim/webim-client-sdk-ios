@@ -33,7 +33,7 @@ public class WMKeychainWrapper: NSObject {
     public static let dbFilePrefix = "webim_"
     public static let fileGuidURLDictionaryKey = "fileGuidURLDictionaryKey"
     public static let deviceTokenKey = "device-token"
-    static let webimKeyPrefix = "ru.webim."
+    public static let webimKeyPrefix = "ru.webim."
     let webimUserDefaultsFirstRunKey = "ru.webim.userDefaultsFirstRunKey"
     override init() {
         super.init()

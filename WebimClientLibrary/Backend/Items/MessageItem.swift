@@ -55,6 +55,9 @@ final class MessageItem {
         case text = "text"
         case timestampInMicrosecond = "ts_m"
         case timestampInSecond = "ts"
+        case reaction = "reaction"
+        case canVisitorReact = "canVisitorReact"
+        case canVisitorChangeReaction = "canVisitorChangeReaction"
     }
     
     // MARK: - Properties
@@ -76,6 +79,9 @@ final class MessageItem {
     private var text: String?
     private var timestampInMicrosecond: Int64 = -1
     private var timestampInSecond: Double?
+    private var reaction: String?
+    private var canVisitorReact: Bool?
+    private var canVisitorChangeReaction: Bool?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -150,6 +156,18 @@ final class MessageItem {
         if let isEdited = jsonDictionary[JSONField.isEdited.rawValue] as? Bool {
             self.isEdited = isEdited
         }
+        
+        if let reaction = jsonDictionary[JSONField.reaction.rawValue] as? String {
+            self.reaction = reaction
+        }
+        
+        if let canVisitorReact = jsonDictionary[JSONField.canVisitorReact.rawValue] as? Bool {
+            self.canVisitorReact = canVisitorReact
+        }
+        
+        if let canVisitorChangeReaction = jsonDictionary[JSONField.canVisitorChangeReaction.rawValue] as? Bool {
+            self.canVisitorChangeReaction = canVisitorChangeReaction
+        }
     }
     
     // MARK: - Methods
@@ -216,7 +234,7 @@ final class MessageItem {
         return read
     }
     
-    func setRead(read:Bool) {
+    func setRead(read: Bool) {
         self.read = read
     }
     
@@ -232,6 +250,17 @@ final class MessageItem {
         return isEdited ?? false
     }
     
+    func getReaction() -> String? {
+        return reaction
+    }
+    
+    func getCanVisitorReact() -> Bool {
+        return canVisitorReact ?? false
+    }
+    
+    func getCanVisitorChangeReaction() -> Bool {
+        return canVisitorChangeReaction ?? false
+    }
     // MARK: -
     enum MessageKind: String {
         // Raw values equal to field names received in responses from server.
@@ -499,7 +528,7 @@ final class FileItem {
     }
     
     private var downloadProgress: Int64?
-    private var state: String?
+    private var state: FileStateItem?
     private var properties: FileParametersItem?
     private var errorType: String?
     private var errorMessage: String?
@@ -509,13 +538,17 @@ final class FileItem {
         if let progress = jsonDictionary[JSONField.downloadProgress.rawValue] as? Int64 {
             self.downloadProgress = progress
         }
-        
         if let state = jsonDictionary[JSONField.state.rawValue] as? String {
-            self.state = state
+            self.state = FileStateItem(rawValue: state)
         }
-        
         if let fileParametersDictonary = jsonDictionary[JSONField.properties.rawValue] as? [String: Any?]  {
             self.properties = FileParametersItem(jsonDictionary: fileParametersDictonary)
+        }
+        if let errorType = jsonDictionary[JSONField.errorType.rawValue] as? String {
+            self.errorType = errorType
+        }
+        if let errorMessage = jsonDictionary[JSONField.errorMessage.rawValue] as? String {
+            self.errorMessage = errorMessage
         }
     }
     
@@ -523,7 +556,7 @@ final class FileItem {
         return downloadProgress
     }
     
-    func getState() -> String? {
+    func getState() -> FileStateItem? {
         return state
     }
     
@@ -544,6 +577,7 @@ final class FileItem {
         case error = "error"
         case ready = "ready"
         case upload = "upload"
+        case externalChecks = "external_checks"
         
         init(fileState: FileState) {
             switch fileState {
@@ -557,6 +591,10 @@ final class FileItem {
                 break
             case .upload:
                 self = .upload
+                
+                break
+            case .externalChecks:
+                self = .externalChecks
             }
         }
     }

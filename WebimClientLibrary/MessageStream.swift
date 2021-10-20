@@ -209,6 +209,21 @@ public protocol MessageStream: class {
     func respondSentryCall(id: String) throws
     
     /**
+     Search messages in history by query.
+     - parameter query:
+     Query to be searched.
+     - throws:
+     `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - author:
+     Evgeniy Loshchenko
+     - copyright:
+     2021 Webim
+     */
+    
+    func searchStreamMessagesBy(query: String, completionHandler: SearchMessagesCompletionHandler?) throws
+    
+    /**
      Changes `ChatState` to `ChatState.queue`.
      Can cause `VisitSessionState.departmentSelection` session state. It means that chat must be started by `startChat(departmentKey:)` method.
      - throws:
@@ -269,7 +284,7 @@ public protocol MessageStream: class {
      - copyright:
      2018 Webim
     */
-    func startChat(customFields:String?) throws
+    func startChat(customFields: String?) throws
     
     /**
      Starts chat with particular department and sends first message simultaneously.
@@ -619,6 +634,46 @@ public protocol MessageStream: class {
                      completionHandler: SendStickerCompletionHandler?) throws
     
     /**
+     Receive raw location config from server.
+     - parameter forLocation:
+     Contains the name of current location.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2021 Webim
+     */
+    func getRawConfig(forLocation: String,
+                      completionHandler: RawLocationConfigCompletionHandler?) throws
+    
+    /**
+     Send visitor react.
+     - parameter message:
+     Message to react.
+     - parameter reaction:
+     Visitor reaction.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    
+    func react(message: Message,
+               reaction: ReactionString,
+               completionHandler: ReactionCompletionHandler?) throws -> Bool
+    
+    /**
      Send keyboard request with button.
      - parameter button:
      Selected button.
@@ -772,6 +827,7 @@ public protocol MessageStream: class {
     
     /**
      Send survey answer.
+     important: radio button answer numeration starts from 1
      - parameter surveyAnswer
      Answer to survey. If question type is 'stars', answer is var 1-5 that corresponds the rating. If question type is 'radio', answer is index of element in options array beginning with 1. If question type is 'comment', answer is a string.
      - parameter completionHandler
@@ -963,6 +1019,15 @@ public protocol MessageStream: class {
      2020 Webim
      */
     func set(helloMessageListener: HelloMessageListener)
+    
+    /**
+     Called when user clear history.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func clearHistory() throws
     
 }
 
@@ -1350,6 +1415,13 @@ public protocol SendDialogToEmailAddressCompletionHandler: class {
     
 }
 
+public protocol SearchMessagesCompletionHandler: class {
+    
+    /** Executed after search message operation complited. */
+    func onSearchMessageSuccess(query: String, messages: [Message])
+    func onSearchMessageFailure(query: String)
+}
+
 /**
  - seealso:
  `MessageStream.sendSticker(withId:completionHandler:)`.
@@ -1382,6 +1454,37 @@ public protocol SendStickerCompletionHandler: class {
      */
     func onFailure(error: SendStickerError)
     
+}
+
+/**
+ - seealso:
+ `MessageStream.getRawConfig(forLocation:completionHandler:)`.
+ - author:
+ Yury Vozleev
+ - copyright:
+ 2020 Webim
+ */
+public protocol RawLocationConfigCompletionHandler: class {
+    
+    /**
+     Executed when operation is done successfully.
+     - parameter rawLocationConfig:
+     Location config.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2021 Webim
+     */
+    func onSuccess(rawLocationConfig: [String: Any?])
+    
+    /**
+     Executed when operation is failed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2021 Webim
+     */
+    func onFailure()
 }
 
 /**
@@ -1769,6 +1872,34 @@ public protocol HelloMessageListener: class {
      2020 Webim
      */
     func helloMessage(message: String)
+    
+}
+
+public protocol ReactionCompletionHandler: class {
+    
+    /**
+     Executed when operation is done successfully.
+     - parameter messageID:
+     ID of the message.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func onSuccess(messageID: String)
+    
+    /**
+     Executed when operation is failed.
+     - parameter error:
+     Error.
+     - seealso:
+     `ReactionError`.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func onFailure(error: ReactionError)
     
 }
 
@@ -2579,6 +2710,52 @@ public enum SendStickerError: Error {
 
 /**
 - seealso:
+`ReactionCompletionHandler.onFailure(error:)`
+- author:
+Anna Frolova
+- copyright:
+2021 Webim
+*/
+public enum ReactionError: Error {
+    /**
+     Reaction messages by visitor is turned off on the server.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    case notAllowed
+    
+    /**
+     Visitor can react only operator messages.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    case messageNotOwned
+    
+    /**
+     Message with the specified id is not found in history.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    case messageNotFound
+    
+    /**
+     Unknown error
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    case unknown
+}
+
+/**
+- seealso:
 `SendSurveyAnswerCompletionHandler.onFailure(error:)`
 - author:
 Nikita Kaberov
@@ -2703,4 +2880,33 @@ public enum SurveyCloseError {
      2020 Webim
      */
     case unknown
+}
+
+// MARK: -
+/**
+ Item for set reaction
+ - author:
+ Anna Frolova
+ - copyright:
+ 2021 Webim
+ */
+public enum ReactionString {
+    /**
+    Set like.
+    - author:
+    Anna Frolova
+    - copyright:
+    2021 Webim
+    */
+    case like
+    
+    /**
+    Set dislike.
+    - author:
+    Anna Frolova
+    - copyright:
+    2021 Webim
+    */
+    case dislike
+    
 }

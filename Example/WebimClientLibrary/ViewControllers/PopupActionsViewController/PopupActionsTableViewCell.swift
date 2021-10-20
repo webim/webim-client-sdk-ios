@@ -74,6 +74,16 @@ class PopupActionsTableViewCell: UITableViewCell {
                 actionText: action.rawValue.localized,
                 actionImage: deleteImage
             )
+        case .like:
+            fillCell(
+                actionText: action.rawValue.localized,
+                actionImage: editImage
+            )
+        case .dislike:
+            fillCell(
+                actionText: action.rawValue.localized,
+                actionImage: editImage
+            )
         }
     }
     

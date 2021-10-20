@@ -250,6 +250,9 @@ class ActionRequestLoop: AbstractRequestLoop {
              WebimInternalError.messageNotOwned.rawValue:
             self.handleDeleteMessage(error: error,
                                     ofRequest: request)
+            self.handleReactionError(error: error,
+                                    ofRequest: request)
+            
             break
         case WebimInternalError.buttonIdNotSet.rawValue,
              WebimInternalError.requestMessageIdNotSet.rawValue,
@@ -279,7 +282,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             self.handleSendStickerError(error: error,
                                         ofRequest: request)
         default:
-            
+
             break
         }
     }
@@ -291,8 +294,31 @@ class ActionRequestLoop: AbstractRequestLoop {
             self.handleDataMessage(error: errorString,
                                    ofRequest: request)
         }
+        
+        if let completionHandler = request.getSearchMessagesCompletionHandler() {
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                do {
+                    try completionHandler(data)
+                } catch {
+                    WebimInternalLogger.shared.log(entry: "Error executing search messages callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                        verbosityLevel: .warning)
+                }
+            })
+        }
 
         if let completionHandler = request.getCompletionHandler() {
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                do {
+                    try completionHandler(data)
+                } catch {
+                    WebimInternalLogger.shared.log(entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                        verbosityLevel: .warning)
+                }
+                
+            })
+        }
+        
+        if let completionHandler = request.getLocationSettingsRequestCompletionHandler() {
             self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 do {
                     try completionHandler(data)
@@ -546,6 +572,29 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleReactionError(error errorString: String,
+                                     ofRequest webimRequest: WebimRequest) {
+        if let reactionCompletionHandler = webimRequest.getReactionCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let reactionError: ReactionError
+                switch errorString {
+                case WebimInternalError.messageNotFound.rawValue:
+                    reactionError = .messageNotFound
+                    break
+                case WebimInternalError.notAllowed.rawValue:
+                    reactionError = .notAllowed
+                    break
+                case WebimInternalError.messageNotOwned.rawValue:
+                    reactionError = .messageNotOwned
+                    break
+                default:
+                    reactionError = .unknown
+                }
+                reactionCompletionHandler.onFailure(error: reactionError)
+            })
+        }
+    }
+    
     private func handleKeyboardResponse(error errorString: String,
                                         ofRequest webimRequest: WebimRequest) {
         if let keyboardResponseCompletionHandler = webimRequest.getKeyboardResponseCompletionHandler() {
@@ -661,7 +710,6 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSurveyCloseCompletionHandler()?.onSuccess()
             request.getRateOperatorCompletionHandler()?.onSuccess()
             request.getSendStickerCompletionHandler()?.onSuccess()
-            request.getDeleteUploadedFileCompletionHandler()?.onSuccess()
             guard let messageID = request.getMessageID() else {
                 WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
                 return
@@ -670,11 +718,13 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
             request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
             request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
+            request.getReactionCompletionHandler()?.onSuccess(messageID: messageID)
             request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: messageID)
             request.getSendFilesCompletionHandler()?.onSuccess(messageID: messageID)
             if let dataJSON = dataJSON {
                 request.getUploadFileToServerCompletionHandler()?.onSuccess(id: messageID, uploadedFile: self.getUploadedFileFrom(dataJSON: dataJSON))
             }
+            request.getDeleteUploadedFileCompletionHandler()?.onSuccess()
         })
     }
     

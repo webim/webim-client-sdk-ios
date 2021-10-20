@@ -66,6 +66,6 @@ class ActionRequestLoopTests: XCTestCase {
         actionRequestLoop.stop()
         
         // Then: ActionRequestLoop OperationQueue should be nil.
-        XCTAssertNil(actionRequestLoop.actionsOperationQueue)
+        XCTAssertNil(actionRequestLoop.actionOperationQueue)
     }
 }

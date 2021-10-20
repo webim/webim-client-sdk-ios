@@ -141,6 +141,7 @@ final class WebimSessionImpl {
             verbosityLevel: .debug)
         
         let currentChatMessageMapper: MessageMapper = CurrentChatMessageMapper(withServerURLString: serverURLString)
+        let historyMessageMapper: MessageMapper = HistoryMessageMapper(withServerURLString: serverURLString)
         
         guard let sessionID = userDefaults?[WMKeychainWrapperMainPrefix.sessionID.rawValue] as? String? else {
             WebimInternalLogger.shared.log(entry: "Wrong sessionID type in WebimSessionImpl.\(#function)")
@@ -161,6 +162,7 @@ final class WebimSessionImpl {
                                                   authorizationToken: authorizationToken)
         
         let deltaCallback = DeltaCallback(currentChatMessageMapper: currentChatMessageMapper,
+                                          historyMessageMapper: historyMessageMapper,
                                           userDefaultsKey: userDefaultsKey)
 
         let webimClient = WebimClientBuilder()
@@ -248,7 +250,6 @@ final class WebimSessionImpl {
                                           sessionDestroyer: sessionDestroyer)
         
         let webimActions = webimClient.getActions()
-        let historyMessageMapper: MessageMapper = HistoryMessageMapper(withServerURLString: serverURLString)
         let messageHolder = MessageHolder(accessChecker: accessChecker,
                                           remoteHistoryProvider: RemoteHistoryProvider(webimActions: webimActions,
                                                                                        historyMessageMapper: historyMessageMapper,
@@ -315,23 +316,29 @@ final class WebimSessionImpl {
     
     private static func clearVisitorDataFor(userDefaultsKey: String) {
         deleteDBFileFor(userDefaultsKey: userDefaultsKey)
+        if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
+            userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyRevision.rawValue)
+            userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyEnded.rawValue)
+            WMKeychainWrapper.standard.setDictionary(userDefaults,
+                                      forKey: userDefaultsKey)
+        }
         _ = WMKeychainWrapper.removeObject(key: userDefaultsKey)
     }
     
     private static func deleteDBFileFor(userDefaultsKey: String) {
         if let dbName = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String {
             let fileManager = FileManager.default
-            let optionalDocumentsDirectory = try? fileManager.url(for: .documentDirectory,
+            let optionalLibraryDirectory = try? fileManager.url(for: .libraryDirectory,
                                                           in: .userDomainMask,
                                                           appropriateFor: nil,
                                                           create: false)
-            guard let documentsDirectory = optionalDocumentsDirectory else {
-                WebimInternalLogger.shared.log(entry: "Error getting access to Documents directory.",
+            guard let libraryDirectory = optionalLibraryDirectory else {
+                WebimInternalLogger.shared.log(entry: "Error getting access to Library directory.",
                                                verbosityLevel: .verbose)
                 return
             }
             
-            let dbURL = documentsDirectory.appendingPathComponent(dbName)
+            let dbURL = libraryDirectory.appendingPathComponent(dbName)
             
             do {
                 try fileManager.removeItem(at: dbURL)
@@ -614,7 +621,9 @@ final class HistoryPoller {
             }
             
             self.lastPollingTime = Int64(ProcessInfo.processInfo.systemUptime) * 1000
-            self.lastRevision = revision
+            if revision != nil {
+                self.lastRevision = revision
+            }
             
             if isInitial && !hasMore {
                 self.messageHolder.set(endOfHistoryReached: true)
@@ -626,7 +635,7 @@ final class HistoryPoller {
                                                         completion: { [weak self] in
                                                             // Revision is saved after history is saved only.
                                                             // I.e. if history will not be saved, then revision will not be overwritten. History will be re-requested.
-                                                            self?.historyMetaInformationStorage.set(revision: revision)
+                                                            self?.historyMetaInformationStorage.set(revision: self?.lastRevision)
             })
             
             if self.running != true {
@@ -639,7 +648,7 @@ final class HistoryPoller {
             }
             
             if !isInitial && hasMore {
-                self.requestHistory(since: revision,
+                self.requestHistory(since: self.lastRevision,
                                     completion: self.createHistorySinceCompletionHandler())
             } else {
                 if !self.hasHistoryRevision {
@@ -647,7 +656,7 @@ final class HistoryPoller {
                         guard let `self` = self, self.hasHistoryRevision == false else {
                             return
                         }
-                        self.requestHistory(since: revision,
+                        self.requestHistory(since: self.lastRevision,
                                             completion: self.createHistorySinceCompletionHandler())
                     
                     
@@ -704,6 +713,30 @@ final class HistoryPoller {
             } else {
                 completion([MessageImpl](), Set<String>(), false, (since == nil), since)
             }
+        }
+    }
+    
+    public func insertMessageInDB(message: MessageImpl) {
+        guard !sessionDestroyer.isDestroyed() else {
+            return
+        }
+        var messages = [MessageImpl]()
+        messages.append(message)
+        messageHolder.receiveHistoryUpdateWith(messages: messages, deleted: Set<String>()) {
+            [weak self] in
+            self?.historyMetaInformationStorage.set(revision: self?.lastRevision)
+        }
+    }
+    
+    public func deleteMessageFromDB(message: String) {
+        guard !sessionDestroyer.isDestroyed() else {
+            return
+        }
+        var deleted = Set<String>()
+        deleted.insert(message)
+        messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](), deleted: deleted) {
+            [weak self] in
+            self?.historyMetaInformationStorage.set(revision: self?.lastRevision)
         }
     }
     

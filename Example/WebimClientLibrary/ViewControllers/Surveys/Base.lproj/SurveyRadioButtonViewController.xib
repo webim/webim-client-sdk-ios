@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,7 +12,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SurveyRadioButtonViewController" customModule="WebimClientLibrary_Example" customModuleProvider="target">
             <connections>
                 <outlet property="descriptionLabel" destination="5Im-WM-AWK" id="sXC-YD-d1x"/>
+                <outlet property="grayViewHeightConstraint" destination="cZw-hs-wCZ" id="taF-mj-i9M"/>
                 <outlet property="sendButton" destination="jzi-KJ-kAH" id="tvr-eN-iKw"/>
+                <outlet property="sendButtonView" destination="DNx-X1-xpi" id="eXr-O4-4GR"/>
                 <outlet property="tableHeaderView" destination="AP4-gs-o69" id="Dqj-no-n9d"/>
                 <outlet property="tableView" destination="lRR-Me-JyR" id="94a-1O-vgS"/>
                 <outlet property="transparentBackgroundView" destination="Jxb-tb-W5Z" id="FyH-PQ-0sc"/>
@@ -29,6 +31,13 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <viewLayoutGuide key="safeArea" id="pXm-rZ-pc6"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3G-Wt-SmY">
+                    <rect key="frame" x="0.0" y="800" width="320" height="200"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="200" id="BBK-YI-5Gl"/>
+                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DNx-X1-xpi">
                     <rect key="frame" x="0.0" y="819" width="320" height="82"/>
@@ -56,11 +65,11 @@
                         <constraint firstItem="mr3-lR-QDo" firstAttribute="bottom" secondItem="jzi-KJ-kAH" secondAttribute="bottom" constant="16" id="rf5-0a-M02"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="lRR-Me-JyR">
-                    <rect key="frame" x="0.0" y="166" width="320" height="657"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="lRR-Me-JyR">
+                    <rect key="frame" x="0.0" y="100" width="320" height="719"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="320" id="skn-xV-rb2"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="skn-xV-rb2"/>
                     </constraints>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="w5p-nN-2L2"/>
@@ -73,10 +82,13 @@
             <constraints>
                 <constraint firstItem="jzi-KJ-kAH" firstAttribute="leading" secondItem="DeO-kn-Mb7" secondAttribute="leading" constant="16" id="723-ng-VZs"/>
                 <constraint firstItem="lRR-Me-JyR" firstAttribute="leading" secondItem="DeO-kn-Mb7" secondAttribute="leading" id="7uU-kO-cbK"/>
+                <constraint firstItem="d3G-Wt-SmY" firstAttribute="width" secondItem="DNx-X1-xpi" secondAttribute="width" id="Af4-g7-H5J"/>
                 <constraint firstItem="DNx-X1-xpi" firstAttribute="leading" secondItem="DeO-kn-Mb7" secondAttribute="leading" id="CbU-sB-6tx"/>
                 <constraint firstItem="lRR-Me-JyR" firstAttribute="width" secondItem="DeO-kn-Mb7" secondAttribute="width" id="GP7-ZI-Crh"/>
+                <constraint firstItem="d3G-Wt-SmY" firstAttribute="centerX" secondItem="DeO-kn-Mb7" secondAttribute="centerX" id="JA1-ii-5jS"/>
+                <constraint firstItem="d3G-Wt-SmY" firstAttribute="bottom" secondItem="DeO-kn-Mb7" secondAttribute="bottom" constant="100" id="KAx-xu-xZt"/>
                 <constraint firstItem="DNx-X1-xpi" firstAttribute="top" secondItem="lRR-Me-JyR" secondAttribute="bottom" id="QoW-Cc-ETC"/>
-                <constraint firstItem="lRR-Me-JyR" firstAttribute="top" relation="lessThanOrEqual" secondItem="DeO-kn-Mb7" secondAttribute="top" constant="100" id="cZw-hs-wCZ"/>
+                <constraint firstItem="lRR-Me-JyR" firstAttribute="top" secondItem="DeO-kn-Mb7" secondAttribute="top" constant="100" id="cZw-hs-wCZ"/>
                 <constraint firstItem="DeO-kn-Mb7" firstAttribute="trailing" secondItem="jzi-KJ-kAH" secondAttribute="trailing" constant="16" id="drE-m6-G2j"/>
                 <constraint firstItem="DeO-kn-Mb7" firstAttribute="trailing" secondItem="lRR-Me-JyR" secondAttribute="trailing" id="mSV-Vq-JzA"/>
                 <constraint firstItem="DNx-X1-xpi" firstAttribute="bottom" secondItem="DeO-kn-Mb7" secondAttribute="bottom" constant="1" id="ppD-c0-KpC"/>

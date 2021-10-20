@@ -32,6 +32,7 @@ extension Notification.Name {
     
     static let shouldCopyMessage = Notification.Name("shouldCopyMessage")
     static let shouldDeleteMessage = Notification.Name("shouldDeleteMessage")
+    static let shouldClearHistory = Notification.Name("shouldClearHistory")
     
     static let shouldSetVisitorTypingDraft = Notification.Name("shouldSetVisitorTypingDraft")
     
@@ -45,6 +46,9 @@ extension Notification.Name {
     
     static let shouldHidePopupActionsViewController = Notification.Name("shouldHidePopupActionsViewController")
     static let shouldHideOverlayWindow = Notification.Name("shouldHideOverlayWindow")
+    
+    static let shouldLikeMessage = Notification.Name("shouldLikeMessage")
+    static let shouldDislikeMessage = Notification.Name("shouldDislikeMessage")
     
     static let shouldSendKeyboardRequest = Notification.Name("shouldSendKeyboardRequest")
 }

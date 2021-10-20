@@ -70,4 +70,23 @@ public protocol Operator {
      */
     func getAvatarURL() -> URL?
     
+    /**
+     - returns:
+     Display operator title.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func getTitle() -> String?
+    
+    /**
+     - returns:
+     Display operator additional Information.
+     - author:
+     Anna Frolova
+     - copyright:
+     2021 Webim
+     */
+    func getInfo() -> String?
 }

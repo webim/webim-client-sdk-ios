@@ -559,10 +559,13 @@ extension MessageTrackerImpl: MessageTracker {
                 }
             }
         } else {
+            messagesLoading = true
             let result = Array(currentChatMessages.suffix(limitOfMessages))
             headMessage = result.first
             
             wrappedCompletion(result)
+            firstHistoryUpdateReceived = true
+            messagesLoading = false
         }
     }
     

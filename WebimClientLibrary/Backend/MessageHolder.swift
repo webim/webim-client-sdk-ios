@@ -91,6 +91,11 @@ final class MessageHolder {
         self.currentChatMessagesWereReceived = currentChatMessagesWereReceived
     }
     
+    func clearHistory() {
+        historyStorage.clearHistory()
+        currentChatMessages.removeAll()
+    }
+    
     func getLatestMessages(byLimit limitOfMessages: Int,
                            completion: @escaping ([Message]) -> ()) {
         if !currentChatMessages.isEmpty {
@@ -336,7 +341,10 @@ final class MessageHolder {
                                      read: messageImpl.isReadByOperator(),
                                      messageCanBeEdited: messageImpl.canBeEdited(),
                                      messageCanBeReplied: messageImpl.canBeReplied(),
-                                     messageIsEdited: messageImpl.isEdited())
+                                     messageIsEdited: messageImpl.isEdited(),
+                                     visitorReactionInfo: messageImpl.getVisitorReaction(),
+                                     visitorCanReact: messageImpl.canVisitorReact(),
+                                     visitorChangeReaction: messageImpl.canVisitorChangeReaction())
         messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
         return messageImpl.getText()
     }
@@ -380,7 +388,10 @@ final class MessageHolder {
                                      read: messageImpl.isReadByOperator(),
                                      messageCanBeEdited: messageImpl.canBeEdited(),
                                      messageCanBeReplied: messageImpl.canBeReplied(),
-                                     messageIsEdited: messageImpl.isEdited())
+                                     messageIsEdited: messageImpl.isEdited(),
+                                     visitorReactionInfo: messageImpl.getVisitorReaction(),
+                                     visitorCanReact: messageImpl.canVisitorReact(),
+                                     visitorChangeReaction: messageImpl.canVisitorChangeReaction())
         messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
     }
     

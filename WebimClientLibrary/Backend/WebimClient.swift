@@ -238,12 +238,12 @@ final class WebimClient {
     // MARK: - Properties
     private let actionRequestLoop: ActionRequestLoop
     private let deltaRequestLoop: DeltaRequestLoop
-    private let webimActions: WebimActions
+    private let webimActions: WebimActionsImpl
     
     // MARK: - Initialization
     init(withActionRequestLoop actionRequestLoop: ActionRequestLoop,
          deltaRequestLoop: DeltaRequestLoop,
-         webimActions: WebimActions) {
+         webimActions: WebimActionsImpl) {
         self.actionRequestLoop = actionRequestLoop
         self.deltaRequestLoop = deltaRequestLoop
         self.webimActions = webimActions
@@ -280,7 +280,7 @@ final class WebimClient {
         return deltaRequestLoop
     }
     
-    func getActions() -> WebimActions {
+    func getActions() -> WebimActionsImpl {
         return webimActions
     }
     

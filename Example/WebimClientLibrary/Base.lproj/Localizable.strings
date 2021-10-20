@@ -16,6 +16,10 @@
 "Account name*" = "Account name*";
 //WebimService.swift
 "AccountBlocked" = "Account that is used to create session is blocked. Please contact Webim support or use another one.";
+//ChatTestView.swift
+"Additional information" = "Additional information";
+//ChatTestView.swift
+"Agent title" = "Agent title";
 //Main.storyboard
 "Back" = "Back";
 //FilePicker.swift
@@ -34,12 +38,18 @@
 "Connection error" = "Connection error";
 //UIAlertHandler.swift
 "Contact topic" = "Contact topic";
+//StringConstants.swift
+"Copy" = "Copy";
 //FlexibleTableViewCell.swift
 "Counting" = "Counting";
+//StringConstants.swift
+"Delete" = "Delete";
 //ChatTableViewController.swift
 "Delete message unknown error" = "Delete message unknown error";
 //ChatTableViewController.swift
 "Deleting messages is turned off on the server" = "Deleting messages is turned off on the server";
+//StringConstants.swift
+"Edit" = "Edit";
 //ChatViewController.swift
 "Edit Message" = "Edit Message";
 //ChatTableViewController.swift
@@ -48,7 +58,7 @@
 "Editing message is empty" = "Editing message is empty";
 //ChatTableViewController.swift
 "Editing messages is turned off on the server" = "Editing messages is turned off on the server";
-//SurveyCommentViewController.xib
+//SurveyCommentViewController.swift
 "Enter your comment" = "Enter your comment";
 //ChatTableViewController+Surveys.swift
 "Failed to send survey answer" = "Failed to send survey answer";
@@ -58,6 +68,8 @@
 "Fetching more messages..." = "Fetching more messages...";
 //FilePicker.swift
 "File" = "File";
+//FlexibleTableViewCell.swift
+"File is being sent" = "File is being sent by agent";
 //ChatTableViewController.swift
 "File is too large." = "File is too large.";
 //ChatTableViewController.swift
@@ -126,6 +138,8 @@
 "Online" = "Online";
 //FilePicker.swift
 "Open app settings" = "Open app settings";
+//UIAlertHandler.swift
+"Operator Info" = "Info about Operator";
 //ChatTableViewController+Surveys.swift
 "Operator rating failed" = "Operator rating failed";
 //AdditionalKeys.swift
@@ -150,10 +164,12 @@
 "Question not found" = "Question not found";
 //RateStarsViewController.xib
 "Rate Operator" = "Rate Operator";
-//ChatTableViewController+Surveys.swift
-"RateOperatorWrongID" = "This agent not in the current chat";
+//StringConstants.swift
+"Reply" = "Reply";
 //ChatTableViewController.swift
 "Response cannot be created for this request" = "Response cannot be created for this request";
+//ChatTestView.xib
+"Run autotest" = "Run autotest";
 //Main.storyboard
 "Save" = "Save";
 //UIAlertHandler.swift
@@ -199,6 +215,8 @@
 //UIAlertHandler.swift
 "There is no current agent to rate" = "There is no current agent to rate";
 //ChatTableViewController+Surveys.swift
+"This agent not in the current chat" = "This agent not in the current chat";
+//ChatTableViewController+Surveys.swift
 "This chat does not exist" = "This chat does not exist";
 //Main.storyboard
 "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios";
@@ -225,7 +243,7 @@
 //FlexibleTableViewCell.swift
 "Yesterday" = "Yesterday";
 //WMThanksAlertView.xib
-"Your feedback will help us become better" = "Your feedback will help us become better";
+"Your feedback will help us become better." = "Your feedback will help us become better.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Your visitor account is in the black list.";
 //SurveyCommentViewController.xib

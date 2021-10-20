@@ -102,7 +102,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUesrAngent = request
-        requestWithUesrAngent.setValue("iOS: Webim-Client 3.35.6; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUesrAngent.setValue("iOS: Webim-Client 3.36.0; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
         var lastHTTPCode = -1
@@ -252,6 +252,8 @@ class AbstractRequestLoop {
                                        verbosityLevel: .info)
     }
     
+    static let logRequestData = true
+    
     private func configureLogMessage(type: String,
                                      method: String? = nil,
                                      url: URL? = nil,
@@ -259,6 +261,9 @@ class AbstractRequestLoop {
                                      code: Int? = nil,
                                      data: Data? = nil,
                                      error: Error? = nil) -> String {
+        if !AbstractRequestLoop.logRequestData {
+            return ""
+        }
         var logMessage = "Webim \(type):"
         
         if let method = method {

@@ -229,7 +229,7 @@ class MessageHolderTests: XCTestCase {
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                   internalErrorListener: InternalErrorListenerForTests())
         let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
-                                        actionRequestLoop: actionRequestLoop)
+                                            actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
@@ -250,8 +250,8 @@ class MessageHolderTests: XCTestCase {
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                   internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActions(baseURL: MessageImplMockData.serverURLString.rawValue,
-                                        actionRequestLoop: actionRequestLoop)
+        let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
+                                            actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
@@ -340,7 +340,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, history1)
+        XCTAssertEqual(completionHandlerMessages!, [])
     }
     
     func testMessageTrackerAwaitsForHistoryResponseWithCurrentChat() throws {
@@ -388,7 +388,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, history1)
+        XCTAssertEqual(completionHandlerMessages!, [])
     }
     
     func testRemoteHistoryProviderStopsRequesting() throws {
@@ -400,12 +400,12 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 1
         // When: Request all messages.
-        messageHolder.receiveHistoryUpdateWith(messages: history2,
+        messageHolder.receiveHistoryUpdateWith(messages: history1 + history2,
                                                deleted: Set<String>()) {
                                                 // No need to do anything when testing.
         }
         var completionHandlerMessages: [MessageImpl]? = nil
-        try messageTracker.getNextMessages(byLimit: 100) { messages in
+        try messageTracker.getNextMessages(byLimit: 10) { messages in
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: 10 previously received messages should be received and no history requests should be performed.
@@ -414,21 +414,21 @@ class MessageHolderTests: XCTestCase {
         
         // MARK: Test 2
         // When: Requesting all messages.
-        try messageTracker.getNextMessages(byLimit: 100) { messages in
+        try messageTracker.getNextMessages(byLimit: 10) { messages in
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Next 10 messages should be received and history request for more should be performed.
         XCTAssertEqual(completionHandlerMessages!, history1)
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 1)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 0)
         
         // MARK: Test 3
         // When: Requesting more messages.
-        try messageTracker.getNextMessages(byLimit: 100) { messages in
+        try messageTracker.getNextMessages(byLimit: 10) { messages in
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: after emptying the history will be made a one more request.
         XCTAssertEqual(completionHandlerMessages!, [MessageImpl]())
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 2)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 0)
         
         // MARK: Test 4
         // When: Resetting 15 messages back and requesting for all messages.
@@ -438,7 +438,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: 15 messages should be received and no history requests should be preformed.
         XCTAssertEqual(completionHandlerMessages!, (history1 + Array(history2[0 ... 4])))
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 2)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 0)
     }
     
     func testInsertMessagesBetweenOlderHistoryAndCurrentChat() throws {
@@ -633,7 +633,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handlers should be called first on received history messages.
-        XCTAssertEqual(completionHandlerMessages!, Array(history1[5 ... 9]))
+        XCTAssertEqual(completionHandlerMessages!, [MessageImpl]())
     }
     
     func testRequestAsManyMessagesAsReceivedWithHistoryForCurrentChat() throws {
@@ -1002,7 +1002,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on full history.
-        XCTAssertEqual(completionHandlerMessages!, history1)
+        XCTAssertEqual(completionHandlerMessages!, [MessageImpl]())
         
         // MARK: Test 5
         // When: Receiving second chat with next 3 messages.
@@ -1029,7 +1029,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion should be called on full history.
-        XCTAssertEqual(completionHandlerMessages!, (history1 + Array(history2[0 ... 1])))
+        XCTAssertEqual(completionHandlerMessages!, (Array(history2[0 ... 1])))
         
         // MARK: Test 8
         // When: Receiving second chat with one message deleted and one added.
@@ -1180,7 +1180,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, history1)
+        XCTAssertEqual(completionHandlerMessages!, [])
         
         // MARK: Test 4
         // When: Receiving next current chat message.
@@ -1212,7 +1212,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, history1)
+        XCTAssertEqual(completionHandlerMessages!, [])
     }
     
     func testReceiveNewMessageWhenHistoryIsEmpty() throws {
@@ -1691,7 +1691,7 @@ class MessageHolderTests: XCTestCase {
         var numberOfCalls = 0
         
         // MARK: - Initialization
-        init(withWebimActions webimActions: WebimActions,
+        init(withWebimActions webimActions: WebimActionsImpl,
              historyMessageMapper: MessageMapper,
              historyMetaInformation: HistoryMetaInformationStorage,
              history: [MessageImpl] = [MessageImpl]()) {

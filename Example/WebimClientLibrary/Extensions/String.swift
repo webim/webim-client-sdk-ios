@@ -30,8 +30,7 @@ extension String {
     
     // MARK: - Properties
     var localized: String {
-        return NSLocalizedString(self,
-                                 comment: "")
+        return NSLocalizedString(self, comment: "")
     }
 
     func substring(_ nsrange: NSRange) -> Substring? {
