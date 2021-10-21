@@ -117,7 +117,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     // MARK: HistoryStorage protocol methods
     
     static func getMajorVersion() -> Int {
-        return 9
+        return 10
     }
     
     func getMajorVersion() -> Int {
