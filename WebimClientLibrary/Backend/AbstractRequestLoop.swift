@@ -101,8 +101,8 @@ class AbstractRequestLoop {
     }
     
     func perform(request: URLRequest) throws -> Data {
-        var requestWithUesrAngent = request
-        requestWithUesrAngent.setValue("iOS: Webim-Client 3.36.2; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        var requestWithUserAgent = request
+        requestWithUserAgent.setValue("iOS: Webim-Client 3.36.3; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
         var lastHTTPCode = -1
@@ -114,9 +114,9 @@ class AbstractRequestLoop {
             let semaphore = DispatchSemaphore(value: 0)
             var receivedData: Data? = nil
             
-            log(request: requestWithUesrAngent)
+            log(request: requestWithUserAgent)
             
-            let dataTask = URLSession.shared.dataTask(with: requestWithUesrAngent) { [weak self] data, response, error in
+            let dataTask = URLSession.shared.dataTask(with: requestWithUserAgent) { [weak self] data, response, error in
                 guard let `self` = `self` else {
                     return
                 }
@@ -128,8 +128,8 @@ class AbstractRequestLoop {
                 
                 let webimLoggerEntry = self.configureLogMessage(
                     type: "response",
-                    url: requestWithUesrAngent.url,
-                    parameters: requestWithUesrAngent.httpBody,
+                    url: requestWithUserAgent.url,
+                    parameters: requestWithUserAgent.httpBody,
                     code: httpCode,
                     data: data,
                     error: error
@@ -187,8 +187,8 @@ class AbstractRequestLoop {
             if httpCode == lastHTTPCode {
                 let webimLoggerEntry = self.configureLogMessage(
                     type: "Request failed",
-                    url: requestWithUesrAngent.url,
-                    parameters: requestWithUesrAngent.httpBody,
+                    url: requestWithUserAgent.url,
+                    parameters: requestWithUserAgent.httpBody,
                     code: httpCode
                 )
                 WebimInternalLogger.shared.log(entry: webimLoggerEntry,
