@@ -117,11 +117,8 @@ public class WMKeychainWrapper: NSObject {
     }
     
     static func removeObject(key: String) -> OSStatus{
-        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: key]
-        if #available(iOS 9.0, *) {
-            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUISkip as String
-        }
         return SecItemDelete(query as CFDictionary)
     }
     
@@ -141,13 +138,10 @@ public class WMKeychainWrapper: NSObject {
     class func save(key: String, data: Data?) -> OSStatus {
         let secureStringKey = webimKeyPrefix + key
         
-        var query = [
+        let query = [
             kSecClass as String       : kSecClassGenericPassword as String,
             kSecAttrAccount as String : secureStringKey,
             kSecValueData as String   : data as Any] as [String : Any]
-        if #available(iOS 9.0, *) {
-            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUISkip as String
-        }
         
         SecItemDelete(query as CFDictionary)
         
@@ -157,14 +151,11 @@ public class WMKeychainWrapper: NSObject {
     class func load(key: String) -> Data? {
         let secureStringKey = webimKeyPrefix + key
         
-        var query = [
+        let query = [
             kSecClass as String       : kSecClassGenericPassword,
             kSecAttrAccount as String : secureStringKey,
             kSecReturnData as String  : kCFBooleanTrue!,
             kSecMatchLimit as String  : kSecMatchLimitOne ] as [String : Any]
-        if #available(iOS 9.0, *) {
-            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUISkip as String
-        }
         
         var dataTypeRef: AnyObject? = nil
         
@@ -178,13 +169,10 @@ public class WMKeychainWrapper: NSObject {
     }
     
     open func getAllKeychainItems() -> [String?] {
-        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
                                     kSecReturnAttributes as String: true,
                                     kSecReturnRef as String: true]
-        if #available(iOS 9.0, *) {
-            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUISkip as String
-        }
         var items_ref: CFTypeRef?
         _ = SecItemCopyMatching(query as CFDictionary, &items_ref)
         let items = items_ref as? Array<Dictionary<String, Any>> ?? []

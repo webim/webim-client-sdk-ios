@@ -129,14 +129,14 @@ class MessageMapper {
                     }
                     let state: AttachmentState
                     switch file?.getState() {
-                    case .ready:
-                        state = .ready
+                    case .error:
+                        state = .error
                         break
                     case .externalChecks:
                         state = .externalChecks
                         break
                     default:
-                        state = .error
+                        state = .ready
                     }
                     data = MessageDataImpl(
                         attachment: MessageAttachmentImpl(fileInfo: attachment,
@@ -150,14 +150,14 @@ class MessageMapper {
                        let file = MessageDataItem(jsonDictionary: rawData).getFile() {
                         let state: AttachmentState
                         switch file.getState() {
-                        case .ready:
-                            state = .ready
+                        case .error:
+                            state = .error
                             break
                         case .externalChecks:
                             state = .externalChecks
                             break
                         default:
-                            state = .error
+                            state = .ready
                         }
                         let fileInfoImpl = FileInfoImpl(urlString: nil,
                                                         size: file.getProperties()?.getSize() ?? 0,
