@@ -693,14 +693,14 @@ final class SQLiteHistoryStorage: HistoryStorage {
             }
             let state: AttachmentState
             switch file?.getState() {
-            case .ready:
-                state = .ready
+            case .error:
+                state = .error
                 break
             case .externalChecks:
                 state = .externalChecks
                 break
             default:
-                state = .error
+                state = .ready
             }
             data = MessageDataImpl(attachment: MessageAttachmentImpl(fileInfo: attachment,
                                                                      filesInfo: attachments,
