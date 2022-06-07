@@ -46,6 +46,7 @@ final class MessageToSend: MessageImpl {
          sticker: Sticker? = nil) {
         super.init(serverURLString: serverURLString,
                    id: id,
+                   serverSideID: nil,
                    keyboard: nil,
                    keyboardRequest: nil,
                    operatorID: nil,

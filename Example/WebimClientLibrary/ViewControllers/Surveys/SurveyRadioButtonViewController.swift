@@ -49,7 +49,6 @@ class SurveyRadioButtonViewController: WMSurveyViewController, WMFixedWidthViewD
         
         descriptionLabel.text = descriptionText
         descriptionLabel.setNeedsLayout()
-        self.tableView.registerCellWithType(SurveyTableViewCell.self)
         
         self.tableHeaderView.delegate = self
         

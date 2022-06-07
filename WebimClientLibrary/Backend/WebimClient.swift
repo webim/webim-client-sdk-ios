@@ -43,6 +43,7 @@ final class WebimClientBuilder {
     private var deltaCallback: DeltaCallback?
     private var deviceID: String?
     private var deviceToken: String?
+    private var remoteNotificationSystem: Webim.RemoteNotificationSystem?
     private var internalErrorListener: InternalErrorListener?
     private var notFatalErrorHandler: NotFatalErrorHandler?
     private var location: String?
@@ -142,6 +143,12 @@ final class WebimClientBuilder {
         return self
     }
     
+    func set(remoteNotificationSystem: Webim.RemoteNotificationSystem?) -> WebimClientBuilder {
+        self.remoteNotificationSystem = remoteNotificationSystem
+        
+        return self
+    }
+    
     func set(deviceID: String?) -> WebimClientBuilder {
         self.deviceID = deviceID
         
@@ -210,6 +217,7 @@ final class WebimClientBuilder {
                                                 providedAuthenticationToken: providedAuthenticationToken,
                                                 deviceID: deviceID,
                                                 deviceToken: deviceToken,
+                                                remoteNotificationSystem: remoteNotificationSystem,
                                                 visitorJSONString: visitorJSONString,
                                                 sessionID: sessionID,
                                                 prechat: prechat,

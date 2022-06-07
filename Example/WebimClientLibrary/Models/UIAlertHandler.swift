@@ -161,15 +161,6 @@ final class UIAlertHandler {
         )
     }
     
-    func showFileSavingSuccessDialog() {
-        showDialog(
-            withMessage: "The file has been saved to your device in Files App".localized,
-            title: "Saved!".localized,
-            buttonTitle: "OK".localized
-        )
-        dismiss()
-    }
-    
     func showImageSavingFailureDialog(withError error: NSError) {
         let action = getGoToSettingsAction()
 
@@ -210,6 +201,13 @@ final class UIAlertHandler {
         showDialog(
             withMessage: message,
             title: "Operator Info".localized,
+            buttonTitle: "OK".localized
+        )
+    }
+    func showAlertForAccountName() {
+        showDialog(
+            withMessage: "Alert account name".localized,
+            title: "Account".localized,
             buttonTitle: "OK".localized
         )
     }

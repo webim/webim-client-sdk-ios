@@ -37,10 +37,10 @@ class WebimServiceController {
     weak var departmentListHandlerDelegate: DepartmentListHandlerDelegate?
     weak var notFatalErrorHandler: NotFatalErrorHandler?
     
-    private func createSession() -> WebimService {
+    func createSession() -> WebimService {
         
         stopSession()
-        
+        print("createSession")
         let service = WebimService(
             fatalErrorHandlerDelegate: self,
             departmentListHandlerDelegate: self,
@@ -64,6 +64,7 @@ class WebimServiceController {
     }
     
     func stopSession() {
+        print("stopSession")
         self.webimService?.stopSession()
         self.webimService = nil
     }

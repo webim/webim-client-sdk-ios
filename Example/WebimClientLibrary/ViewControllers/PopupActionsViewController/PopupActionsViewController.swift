@@ -27,6 +27,18 @@
 import AVFoundation
 import UIKit
 
+protocol WMDialogPopoverDelegate: AnyObject {
+    func deleteMessage()
+    func addQuoteEditBar()
+    func addQuoteReplyBar()
+    func copyMessage()
+    func hideQuoteView()
+    func likeMessage()
+    func dislikeMessage()
+    func hideOverlayWindow()
+    func removeQuoteEditBar()
+}
+
 class PopupActionsViewController: UIViewController {
     // MARK: - ActionsTableView positions
     private enum ActionsTableViewPosition {
@@ -37,7 +49,7 @@ class PopupActionsViewController: UIViewController {
     // HINT: Look for same properties in FlexibleTableViewCell.swift
     fileprivate let CELL_SPACING_DEFAULT: CGFloat = 10.0
     fileprivate let USERAVATARIMAGEVIEW_WIDTH: CGFloat = 40.0
-
+    
     // MARK: - Properties
     enum OriginalCellAlignment {
         case leading, center, trailing
@@ -47,6 +59,8 @@ class PopupActionsViewController: UIViewController {
     var cellImageViewCenterYPosition = CGFloat()
     var actions = [PopupAction]()
     var originalCellAlignment = OriginalCellAlignment.center
+    
+    weak var delegate: WMDialogPopoverDelegate?
     
     // MARK: - Private properties
     private var actionsTableViewCenterYPosition = CGFloat()
@@ -73,13 +87,6 @@ class PopupActionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AudioServicesPlaySystemSound(1519) // Actuate "Peek" feedback (weak boom)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(hidePopupActionsViewController),
-            name: .shouldHidePopupActionsViewController,
-            object: nil
-        )
-        
         view.backgroundColor = popupBackgroundColour
         
         setupSubviews()
@@ -87,22 +94,12 @@ class PopupActionsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.postInMainThread(
-            name: .shouldHideQuoteEditBar,
-            object: nil,
-            userInfo: nil
-        )
+        self.delegate?.removeQuoteEditBar()
         findAvailableSpace()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .shouldHidePopupActionsViewController,
-            object: nil
-        )
-        
         if let index = self.actionsTableView.indexPathForSelectedRow {
             self.actionsTableView.deselectRow(at: index, animated: true)
         }
@@ -122,7 +119,7 @@ class PopupActionsViewController: UIViewController {
             yValueTopScreen = self.view.frame.minY
             yValueBottomScreen = self.view.frame.maxY
         }
-
+        
         let topSpace = yValueImageViewTopEdge - yValueTopScreen
         let bottomSpace = yValueBottomScreen - yValueImageViewBottomEdge
         
@@ -183,18 +180,9 @@ class PopupActionsViewController: UIViewController {
         view.addSubview(actionsTableView)
     }
     
-    @objc
-    private func hidePopupActionsViewController() {
+    @objc func hidePopupActionsViewController() {
         dismiss(animated: false)
-        hideOverlayWindowIfPresented()
-    }
-    
-    private func hideOverlayWindowIfPresented() {
-        // Will not trigger hideOverlayWindow() if there is no keyboard shown. Could fail. For more check todo in ChatTableViewController.swift
-        NotificationCenter.default.postInMainThread(
-            name: .shouldHideOverlayWindow,
-            object: nil
-        )
+        self.delegate?.hideOverlayWindow()
     }
     
     private func setupCellImageView() {
@@ -230,15 +218,15 @@ class PopupActionsViewController: UIViewController {
         switch position {
         case .top:
             actionsTableViewCenterYPosition =
-                cellImageViewCenterYPosition -
-                cellImageViewHeight / 2 -
-                actionsTableViewContentHeight / 2
+            cellImageViewCenterYPosition -
+            cellImageViewHeight / 2 -
+            actionsTableViewContentHeight / 2
             
         case .bottom:
             actionsTableViewCenterYPosition =
-                cellImageViewCenterYPosition +
-                cellImageViewHeight / 2 +
-                actionsTableViewContentHeight / 2
+            cellImageViewCenterYPosition +
+            cellImageViewHeight / 2 +
+            actionsTableViewContentHeight / 2
         }
         
         actionsTableView.snp.remakeConstraints { (make) -> Void in
@@ -284,44 +272,21 @@ extension PopupActionsViewController: UITableViewDelegate, UITableViewDataSource
     ) -> Int { actions.count }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let actionsDictionary = ["Action": actions[indexPath.row]]
         
         switch actions[indexPath.row] {
             
         case .reply:
-            NotificationCenter.default.postInMainThread(
-                name: .shouldShowQuoteEditBar,
-                object: nil,
-                userInfo: actionsDictionary
-            )
+            self.delegate?.addQuoteReplyBar()
         case .copy:
-            NotificationCenter.default.postInMainThread(
-                name: .shouldCopyMessage,
-                object: nil
-            )
+            self.delegate?.copyMessage()
         case .edit:
-            NotificationCenter.default.postInMainThread(
-                name: .shouldShowQuoteEditBar,
-                object: nil,
-                userInfo: actionsDictionary
-            )
+            self.delegate?.addQuoteEditBar()
         case .delete:
-            NotificationCenter.default.postInMainThread(
-                name: .shouldDeleteMessage,
-                object: nil
-            )
+            self.delegate?.deleteMessage()
         case .like:
-            NotificationCenter.default.postInMainThread(
-                name: .shouldLikeMessage,
-                object: nil,
-                userInfo: actionsDictionary
-            )
+            self.delegate?.likeMessage()
         case .dislike:
-            NotificationCenter.default.postInMainThread(
-                name: .shouldDislikeMessage,
-                object: nil,
-                userInfo: actionsDictionary
-            )
+            self.delegate?.dislikeMessage()
         }
         
         hidePopupActionsViewController()
@@ -331,8 +296,8 @@ extension PopupActionsViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "PopupActionsTableViewCell",
             for: indexPath) as? PopupActionsTableViewCell
-            else {
-                fatalError("The dequeued cell is not an instance of PopupActionsTableViewCell.")
+        else {
+            fatalError("The dequeued cell is not an instance of PopupActionsTableViewCell.")
         }
         
         cell.backgroundColor = actionsTableViewCellBackgroundColour
@@ -347,5 +312,4 @@ extension PopupActionsViewController: UIGestureRecognizerDelegate {
         _ gestureRecognizer: UIGestureRecognizer,
         shouldReceive touch: UITouch
     ) -> Bool { !(touch.view?.isDescendant(of: self.actionsTableView) ?? false) }
-    
 }

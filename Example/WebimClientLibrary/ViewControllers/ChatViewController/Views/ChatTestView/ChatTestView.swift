@@ -32,6 +32,7 @@ protocol ChatTestViewDelegate: UIViewController {
     func getSearchMessageText() -> String
     func showSearchResult(searcMessages: [Message]?)
     func toogleAutotest() -> Bool
+    func clearHistory()
 }
 
 class ChatTestView: UIView {
@@ -82,10 +83,7 @@ class ChatTestView: UIView {
             style: .default,
             handler: { _ in
                 WebimServiceController.currentSession.clearHistory()
-                NotificationCenter.default.postInMainThread(
-                    name: .shouldClearHistory,
-                    object: nil
-                )
+                self.delegate.clearHistory()
             }
         )
         

@@ -29,32 +29,28 @@ import XCTest
 @testable import WebimClientLibrary
 @testable import WebimClientLibrary_Example
 
-class ChatTableViewControllerTests: XCTestCase {
+class ChatViewControllerTests: XCTestCase {
     
     // MARK: - Properties
-    var chatTableViewController: ChatTableViewController!
+    var chatTableViewController = ChatViewController.loadViewControllerFromXib()
     
     // MARK: - Methods
     override func setUp() {
         super.setUp()
-        
-        let storyboard = UIStoryboard(name: "Main",
-                                      bundle: nil)
-        chatTableViewController = storyboard.instantiateViewController(withIdentifier: "ChatTableViewController") as? ChatTableViewController
-        
     }
     
     // MARK: - Tests
     
     func testBackgroundViewEmpty() {
         // When: Table view is empty.
-        let tableView = chatTableViewController.tableView!
-        tableView.reloadData()
-
+        chatTableViewController.chatMessages = [Message]()
+        chatTableViewController.searchMessages = [Message]()
+        chatTableViewController.chatTableView.reloadData()
+    
+        
         // Then: Table view background has the message.
-        let label = tableView.backgroundView as! UILabel
-
-        XCTAssertEqual(label.attributedText?.string, "Send first message to start chat.")
+        let label = chatTableViewController.chatTableView.backgroundView as? UILabel
+        XCTAssertEqual(label?.attributedText?.string, "Send first message to start chat.")
     }
     
     func testBackgroundViewNotEmpty() {
@@ -63,6 +59,7 @@ class ChatTableViewControllerTests: XCTestCase {
         for index in 0 ... 2 {
             let message = MessageImpl(serverURLString: "http://demo.webim.ru/",
                                       id: String(index),
+                                      serverSideID: nil,
                                       keyboard: nil,
                                       keyboardRequest: nil,
                                       operatorID: nil,
@@ -81,15 +78,18 @@ class ChatTableViewControllerTests: XCTestCase {
                                       read: false,
                                       messageCanBeEdited: false,
                                       messageCanBeReplied: false,
-                                      messageIsEdited: false)
+                                      messageIsEdited: false,
+                                      visitorReactionInfo: nil,
+                                      visitorCanReact: nil,
+                                      visitorChangeReaction: nil)
             messages.append(message as Message)
         }
         
         // When: Table view is not empty.
-        chatTableViewController.set(messages: messages)
-        chatTableViewController.tableView?.reloadData()
+        chatTableViewController.chatMessages = messages
+        chatTableViewController.chatTableView?.reloadData()
         
         // Then: Table view background view is empty.
-        XCTAssertNil(chatTableViewController.tableView!.backgroundView)
+        XCTAssertNil(chatTableViewController.chatTableView?.backgroundView)
     }
 }

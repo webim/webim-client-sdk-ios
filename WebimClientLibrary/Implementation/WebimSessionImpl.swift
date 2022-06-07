@@ -100,6 +100,7 @@ final class WebimSessionImpl {
                                 fatalErrorHandler: FatalErrorHandler?,
                                 notFatalErrorHandler: NotFatalErrorHandler?,
                                 deviceToken: String?,
+                                remoteNotificationSystem: Webim.RemoteNotificationSystem?,
                                 isLocalHistoryStoragingEnabled: Bool,
                                 isVisitorDataClearingEnabled: Bool,
                                 webimLogger: WebimLogger?,
@@ -109,7 +110,7 @@ final class WebimSessionImpl {
                                 onlineStatusRequestFrequencyInMillis: Int64?) -> WebimSessionImpl {
         WebimInternalLogger.setup(webimLogger: webimLogger,
                                   verbosityLevel: verbosityLevel)
-        var webimSdkQueue = DispatchQueue.current!
+        let webimSdkQueue = DispatchQueue.current!
         
         
         let userDefaultsKey = WMKeychainWrapperName.main.rawValue + (visitorFields?.getID() ?? "anonymous")
@@ -183,6 +184,7 @@ final class WebimSessionImpl {
                                                                               queue: webimSdkQueue))
             .set(title: (pageTitle ?? DefaultSettings.pageTitle.rawValue))
             .set(deviceToken: deviceToken)
+            .set(remoteNotificationSystem: remoteNotificationSystem)
             .set(deviceID: getDeviceID(withSuffix: multivisitorSection))
             .set(prechat: prechat)
             .build() as WebimClient

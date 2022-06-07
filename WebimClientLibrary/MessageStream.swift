@@ -856,6 +856,21 @@ public protocol MessageStream: class {
      2020 Webim
      */
     func closeSurvey(completionHandler: SurveyCloseCompletionHandler?) throws
+    
+    /**
+     Sends geolocation to server.
+     - parameter latitude:
+     Latitude of geo point.
+     - parameter longitude:
+     Longitude of geo point.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    func sendGeolocation(latitude: Double,
+                         longitude: Double,
+                         completionHandler: GeolocationCompletionHandler?) throws
 
     /**
      Sets `SurveyListener` object.
@@ -1547,6 +1562,35 @@ public protocol SurveyCloseCompletionHandler {
      2020 Webim
      */
     func onFailure(error: SurveyCloseError)
+}
+
+/**
+ - seealso:
+ `MessageStream.sendGeolocation(latitude:longtitude:completionHandler:)`.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2022 Webim
+ */
+public protocol GeolocationCompletionHandler: class {
+    
+    /**
+     Invoked when when operation is done successfully.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    func onSuccess()
+
+    /**
+     Invoked when an error occurred while geolocation sending.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    func onFailure(error: GeolocationError)
 }
 
 /**
@@ -2878,6 +2922,34 @@ public enum SurveyCloseError {
      Nikita Kaberov
      - copyright:
      2020 Webim
+     */
+    case unknown
+}
+
+/**
+- seealso:
+`GeolocationCompletionHandler.onFailure(error:)`
+- author:
+Nikita Kaberov
+- copyright:
+2022 Webim
+*/
+public enum GeolocationError {
+    /**
+     Invalid geolocation.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    case invalidGeolocation
+    
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
      */
     case unknown
 }

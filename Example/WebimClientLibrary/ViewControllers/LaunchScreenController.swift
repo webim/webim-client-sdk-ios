@@ -30,9 +30,9 @@ import UIKit
 class LaunchScreenController: UIViewController {
     
     // MARK: - Outlets
-    @IBOutlet weak var progressBarView: UIProgressView!
-    @IBOutlet weak var bottomTextLabel: UILabel!
-    @IBOutlet weak var webimLogoImageView: UIImageView!
+    @IBOutlet var progressBarView: UIProgressView!
+    @IBOutlet var bottomTextLabel: UILabel!
+    @IBOutlet var webimLogoImageView: UIImageView!
     
     // MARK: - Properties
     private let progress = Progress(totalUnitCount: 100)

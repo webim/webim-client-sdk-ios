@@ -1,5 +1,5 @@
 //
-//  FileViewController.swift
+//  WMSaveView.swift
 //  Webim.Ru
 //
 //  Created by Anna Frolova on 01.06.2021.
@@ -29,7 +29,7 @@ import UIKit
 class WMSaveView: UIView {
     
     @IBOutlet var circleView: UIView!
-    @IBOutlet weak var checkmark: CheckmarkView!
+    @IBOutlet var checkmark: CheckmarkView!
     
     override func loadXibViewSetup() {
         self.layer.cornerRadius = 10
@@ -56,11 +56,6 @@ class WMSaveView: UIView {
 }
 
 class CheckmarkView: UIView {
-
-    @objc override dynamic class var layerClass: AnyClass {
-        get { return CAShapeLayer.self }
-    }
-
     public func animateCheckmark() {
         setupLayer()
         guard let layer = layer as? CAShapeLayer else { return }

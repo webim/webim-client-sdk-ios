@@ -1,9 +1,9 @@
 //
 //  CircleProgressIndicator.swift
-//  WebimClientLibrary_Example
+//  Webim.Ru
 //
-//  Created by Eugene Ilyin on 21.10.2019.
-//  Copyright © 2019 Webim. All rights reserved.
+//  Created by Возлеев Юрий on 06.08.2020.
+//  Copyright © 2020 _webim_. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 //  SOFTWARE.
 //
 
-import Foundation
 import UIKit
 
 class CircleProgressIndicator: UIView {
@@ -107,11 +106,30 @@ class CircleProgressIndicator: UIView {
         circleLayer.add(animation, forKey: "strokeEnd")
     }
     
+    func updateImageDownloadProgress(_ progress: Float) {
+        if self.isHidden {
+            self.isHidden = false
+            self.enableRotationAnimation()
+        }
+        self.setProgressWithAnimation(
+            duration: 0.1,
+            value: progress
+        )
+    }
+    
+    func setDefaultSetup() {
+        self.lineWidth = 1
+        self.strokeColor = WMCircleProgressIndicatorCyan.cgColor
+        self.isUserInteractionEnabled = false
+        self.isHidden = true
+        self.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
     // MARK: - Private methods
     private func setup() {
         backgrondCircleLayer.lineWidth = lineWidth
         backgrondCircleLayer.fillColor = nil
-        backgrondCircleLayer.strokeColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor
+        backgrondCircleLayer.strokeColor = WMCircleProgressIndicatorLightGrey.cgColor
         layer.addSublayer(backgrondCircleLayer)
         
         circleLayer.lineWidth = lineWidth
@@ -119,4 +137,5 @@ class CircleProgressIndicator: UIView {
         circleLayer.strokeColor = strokeColor
         layer.addSublayer(circleLayer)
     }
+    
 }

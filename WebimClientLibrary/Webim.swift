@@ -119,6 +119,8 @@ public final class Webim {
         @available(*, unavailable, renamed: "apns")
         case APNS
         
+        case fcm
+        
         case none
         
         @available(*, unavailable, renamed: "none")
@@ -584,6 +586,7 @@ public final class SessionBuilder  {
                                                 fatalErrorHandler: fatalErrorHandler,
                                                 notFatalErrorHandler: notFatalErrorHandler,
                                                 deviceToken: deviceToken,
+                                                remoteNotificationSystem: remoteNotificationSystem,
                                                 isLocalHistoryStoragingEnabled: localHistoryStoragingEnabled,
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled,
                                                 webimLogger: webimLogger,

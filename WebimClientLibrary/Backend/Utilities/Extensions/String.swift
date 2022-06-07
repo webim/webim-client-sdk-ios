@@ -63,7 +63,7 @@ extension String {
      - copyright:
      2017 Webim
      */
-    func hmacSHA256(withKey key: String) -> String? {
+    public func hmacSHA256(withKey key: String) -> String? {
         let stringBytes: [UInt8] = Array(self.utf8)
         let keyBytes: [UInt8] = Array(key.utf8)
         guard let hmac = try? HMACsha256(key: keyBytes).authenticate(stringBytes).toHexString() else { return nil }

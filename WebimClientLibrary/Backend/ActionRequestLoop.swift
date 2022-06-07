@@ -38,7 +38,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     // MARK: - Properties
     var actionOperationQueue: OperationQueue?
     var historyRequestOperationQueue: OperationQueue?
-    var authorizationData: WMSynchronizedObject<AuthorizationData> = WMSynchronizedObject<AuthorizationData>()
+    @WMSynchronized var authorizationData: AuthorizationData?
     
     
     // MARK: - Initialization
@@ -79,7 +79,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     func set(authorizationData: AuthorizationData?) {
-        self.authorizationData.value = authorizationData
+        self.authorizationData = authorizationData
     }
     
     func enqueue(request: WebimRequest) {
@@ -102,7 +102,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                     if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
                         if error == WebimInternalError.reinitializationRequired.rawValue {
                             do {
-                                try self.authorizationData.value = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil)
+                                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil)
                             } catch {
                                 return
                             }
@@ -144,15 +144,15 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     private func createUrlRequest(request: WebimRequest) -> URLRequest? {
-        if self.authorizationData.value == nil {
+        if self.authorizationData == nil {
             do {
-                try self.authorizationData.value = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil) // wtf
+                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil) // wtf
             } catch {
                 return nil
             }
         }
         
-        guard let usedAuthorizationData = self.authorizationData.value else {
+        guard let usedAuthorizationData = self.authorizationData else {
             WebimInternalLogger.shared.log(entry: "Authorization Data is nil in ActionRequestLoop.\(#function)")
             return nil
         }
@@ -281,6 +281,16 @@ class ActionRequestLoop: AbstractRequestLoop {
         case WebimInternalError.noStickerId.rawValue:
             self.handleSendStickerError(error: error,
                                         ofRequest: request)
+    
+        case WebimInternalError.accountBlocked.rawValue,
+             WebimInternalError.visitorBanned.rawValue,
+             WebimInternalError.providedVisitorFieldsExpired.rawValue,
+             WebimInternalError.wrongProvidedVisitorFieldsHashValue.rawValue:
+             self.internalErrorListener?.on(error: error)
+             self.internalErrorListener?.connectionStateChanged(connected: false)
+             break
+        case WebimInternalError.invalidCoordinatesReceived.rawValue:
+            self.handleGeolocationCompletionHandler(error: error, ofRequest: request)
         default:
 
             break
@@ -391,11 +401,11 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) throws -> AuthorizationData {
         while isRunning()
-                && (lastAuthorizationData == self.authorizationData.value) {
+                && (lastAuthorizationData == self.authorizationData) {
                 usleep(100_000) // 0.1 s.
         }
         
-        guard let authorizationData = self.authorizationData.value else {
+        guard let authorizationData = self.authorizationData else {
             // Interrupted request.
             throw AbstractRequestLoop.UnknownError.interrupted
         }
@@ -698,6 +708,24 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleGeolocationCompletionHandler(error errorString: String,
+                                                    ofRequest webimRequest: WebimRequest) {
+        if let geolocationCompletionHandler = webimRequest.getGeolocationCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let geolocationError: GeolocationError
+                switch errorString {
+                case WebimInternalError.invalidCoordinatesReceived.rawValue:
+                    geolocationError = .invalidGeolocation
+                    break
+                default:
+                    geolocationError = .unknown
+                }
+                
+                geolocationCompletionHandler.onFailure(error: geolocationError)
+            })
+        }
+    }
+    
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
         WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
             verbosityLevel: .warning)
@@ -710,21 +738,23 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSurveyCloseCompletionHandler()?.onSuccess()
             request.getRateOperatorCompletionHandler()?.onSuccess()
             request.getSendStickerCompletionHandler()?.onSuccess()
-            guard let messageID = request.getMessageID() else {
-                WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
-                return
-            }
-            request.getDataMessageCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getReactionCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: messageID)
-            request.getSendFilesCompletionHandler()?.onSuccess(messageID: messageID)
-            if let dataJSON = dataJSON {
-                request.getUploadFileToServerCompletionHandler()?.onSuccess(id: messageID, uploadedFile: self.getUploadedFileFrom(dataJSON: dataJSON))
-            }
             request.getDeleteUploadedFileCompletionHandler()?.onSuccess()
+            request.getGeolocationCompletionHandler()?.onSuccess()
+            
+            if let messageID = request.getMessageID() {
+                request.getDataMessageCompletionHandler()?.onSuccess(messageID: messageID)
+                request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
+                request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
+                request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
+                request.getReactionCompletionHandler()?.onSuccess(messageID: messageID)
+                request.getKeyboardResponseCompletionHandler()?.onSuccess(messageID: messageID)
+                request.getSendFilesCompletionHandler()?.onSuccess(messageID: messageID)
+                if let dataJSON = dataJSON {
+                    request.getUploadFileToServerCompletionHandler()?.onSuccess(id: messageID, uploadedFile: self.getUploadedFileFrom(dataJSON: dataJSON))
+                }
+            } else {
+                WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
+            }
         })
     }
     

@@ -52,7 +52,7 @@ final class WebimRequest {
     private var fileData: Data?
     private var boundaryString: String?
     private var rateOperatorCompletionHandler: RateOperatorCompletionHandler?
-    private var sendMessageComplitionHandler: SendMessageCompletionHandler?
+    private var sendMessageCompletionHandler: SendMessageCompletionHandler?
     private var sendFileCompletionHandler: SendFileCompletionHandler?
     private var deleteMessageCompletionHandler: DeleteMessageCompletionHandler?
     private var editMessageCompletionHandler: EditMessageCompletionHandler?
@@ -65,6 +65,7 @@ final class WebimRequest {
     private var deleteUploadedFileCompletionHandler: DeleteUploadedFileCompletionHandler?
     private var uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler?
     private var reacionCompletionHandler: ReactionCompletionHandler?
+    private var geolocationCompletionHandler: GeolocationCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
@@ -95,7 +96,8 @@ final class WebimRequest {
          sendFilesCompletionHandler: SendFilesCompletionHandler? = nil,
          deleteUploadedFileCompletionHandler: DeleteUploadedFileCompletionHandler? = nil,
          uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler? = nil,
-         reacionCompletionHandler: ReactionCompletionHandler? = nil) {
+         reacionCompletionHandler: ReactionCompletionHandler? = nil,
+         geolocationCompletionHandler: GeolocationCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -111,7 +113,7 @@ final class WebimRequest {
         self.searchMessagesCompletionHandler = searchMessagesCompletionHandler
         self.dataMessageCompletionHandler = dataMessageCompletionHandler
         self.rateOperatorCompletionHandler = rateOperatorCompletionHandler
-        self.sendMessageComplitionHandler = sendMessageCompletionHandler
+        self.sendMessageCompletionHandler = sendMessageCompletionHandler
         self.sendFileCompletionHandler = sendFileCompletionHandler
         self.deleteMessageCompletionHandler = deleteMessageCompletionHandler
         self.editMessageCompletionHandler = editMessageCompletionHandler
@@ -125,6 +127,7 @@ final class WebimRequest {
         self.deleteUploadedFileCompletionHandler = deleteUploadedFileCompletionHandler
         self.uploadFileToServerCompletionHandler = uploadFileToServerCompletionHandler
         self.reacionCompletionHandler = reacionCompletionHandler
+        self.geolocationCompletionHandler = geolocationCompletionHandler
     }
     
     
@@ -195,7 +198,7 @@ final class WebimRequest {
     }
     
     func getSendMessageCompletionHandler() -> SendMessageCompletionHandler? {
-        return sendMessageComplitionHandler
+        return sendMessageCompletionHandler
     }
     
     func getSendFileCompletionHandler() -> SendFileCompletionHandler? {
@@ -244,5 +247,9 @@ final class WebimRequest {
     
     func getReactionCompletionHandler() -> ReactionCompletionHandler? {
         return reacionCompletionHandler
+    }
+    
+    func getGeolocationCompletionHandler() -> GeolocationCompletionHandler? {
+        return geolocationCompletionHandler
     }
 }

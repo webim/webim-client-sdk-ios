@@ -41,6 +41,8 @@ fileprivate let WEBIM_DARK_PUPRLE = #colorLiteral(red: 0.1529411765, green: 0.16
 fileprivate let WEBIM_LIGHT_PURPLE = #colorLiteral(red: 0.4117647059, green: 0.4235294118, blue: 0.568627451, alpha: 1)
 fileprivate let WEBIM_RED = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
 fileprivate let WEBIM_GREY = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
+fileprivate let WEBIM_LIGHT_BLUE = #colorLiteral(red: 0.9411764706, green: 0.9725490196, blue: 0.9843137255, alpha: 1)
+fileprivate let WEBIM_LIGHT_CYAN = #colorLiteral(red: 0.02352941176, green: 0.5411764706, blue: 0.7058823529, alpha: 0.15)
 
 // MARK: - Views' colour properties
 // FlexibleTableViewCell.swift
@@ -69,6 +71,7 @@ let quoteLineViewColourOperator = WEBIM_CYAN
 let quoteUsernameLabelColourOperator = WEBIM_DARK_PUPRLE
 /// Other
 let quoteBodyLabelColourOperator = GREY
+let quoteBackgroundColor = WEBIM_LIGHT_BLUE
 let dateLabelColour = GREY
 let timeLabelColour = GREY
 let messageStatusIndicatorColour = WEBIM_DARK_PUPRLE.cgColor
@@ -100,6 +103,7 @@ let textInputBackgroundViewBorderColour = LIGHT_GREY.cgColor
 /// Bottom bar for edit/reply
 let textInputViewPlaceholderLabelTextColour = GREY
 let textInputViewPlaceholderLabelBackgroundColour = CLEAR
+let wmCoral = #colorLiteral(red: 0.7882352941, green: 0.3411764706, blue: 0.2196078431, alpha: 1)
 
 // ChatTableViewController.swift
 let refreshControlTextColour = WEBIM_DARK_PUPRLE
@@ -150,3 +154,10 @@ let textMainColour = WEBIM_DARK_PUPRLE
 
 // SurveyCommentViewController
 let WMSurveyCommentPlaceholderColor = #colorLiteral(red: 0.6116228104, green: 0.6236780286, blue: 0.7096156478, alpha: 1)
+// CircleProgressIndicator
+let WMCircleProgressIndicatorLightGrey = LIGHT_GREY
+let WMCircleProgressIndicatorCyan = WEBIM_CYAN
+
+let wmGreyMessage = #colorLiteral(red: 0.6116228104, green: 0.6236780286, blue: 0.7096156478, alpha: 1).cgColor
+let wmLayerColor = #colorLiteral(red: 0.1490196078, green: 0.1960784314, blue: 0.2196078431, alpha: 1).cgColor
+let wmInfoCell = WEBIM_LIGHT_CYAN.cgColor

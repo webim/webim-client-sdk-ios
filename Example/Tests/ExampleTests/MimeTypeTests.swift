@@ -38,7 +38,7 @@ class MimeTypeTests: XCTestCase {
         
         XCTAssertEqual(MimeType(url: url).value,
                        "image/jpeg")
-        XCTAssertTrue(isImage(contentType: MimeType(url: url).value))
+        XCTAssertTrue(MimeType.isImage(contentType: MimeType(url: url).value))
         
         // MARK: Test 2
         // Unknown extension
@@ -48,7 +48,7 @@ class MimeTypeTests: XCTestCase {
         
         XCTAssertEqual(MimeType(url: url).value,
                        "application/octet-stream")
-        XCTAssertFalse(isImage(contentType: MimeType(url: url).value))
+        XCTAssertFalse(MimeType.isImage(contentType: MimeType(url: url).value))
         
         // MARK: Test 3
         // No extension

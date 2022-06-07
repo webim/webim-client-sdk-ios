@@ -32,6 +32,7 @@ enum WMSettingsKeychainKey: String {
     case accountName = "account_name"
     case location = "location"
     case pageTitle = "page_title"
+    case userDataJson = "userDataJson"
 }
 
 // MARK: -
@@ -42,6 +43,7 @@ final class Settings {
         case accountName = "demo"
         case location = "mobile"
         case pageTitle = "iOS demo app"
+        case userDataJson = ""
     }
     
     // MARK: - Properties
@@ -49,6 +51,7 @@ final class Settings {
     var accountName: String
     var location: String
     var pageTitle: String
+    var userDataJson: String
     
     // MARK: - Initialization
     private init() {
@@ -60,10 +63,13 @@ final class Settings {
                 DefaultSettings.location.rawValue
             self.pageTitle = settings[WMSettingsKeychainKey.pageTitle.rawValue] ??
                 DefaultSettings.pageTitle.rawValue
+            self.userDataJson = settings[WMSettingsKeychainKey.userDataJson.rawValue] ??
+                DefaultSettings.userDataJson.rawValue
         } else {
             self.accountName = DefaultSettings.accountName.rawValue
             self.location = DefaultSettings.location.rawValue
             self.pageTitle = DefaultSettings.pageTitle.rawValue
+            self.userDataJson = DefaultSettings.userDataJson.rawValue
         }
         validateData()
     }

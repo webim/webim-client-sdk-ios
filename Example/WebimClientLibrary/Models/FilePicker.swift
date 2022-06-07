@@ -28,6 +28,9 @@ import UIKit
 import MobileCoreServices
 import AVFoundation
 import CloudKit
+import AVKit
+import Photos
+import PhotosUI
 
 public protocol FilePickerDelegate: AnyObject {
     func didSelect(image: UIImage?, imageURL: URL?)
@@ -109,11 +112,7 @@ open class FilePicker: NSObject {
             title: "Photo Library".localized,
             style: .default,
             handler: { _ in
-                self.imagePickerController.sourceType = .photoLibrary
-                self.presentationController?.present(
-                    self.imagePickerController,
-                    animated: true
-                )
+                self.showPhotoLibrary()
             }
         )
         
@@ -150,6 +149,99 @@ open class FilePicker: NSObject {
         
         self.presentationController?.present(fileMenuSheet, animated: true)
     }
+    
+    private func showPhotoLibrary() {
+        var status: PHAuthorizationStatus
+        if #available(iOS 14, *) {
+            status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        } else {
+            status = PHPhotoLibrary.authorizationStatus()
+        }
+        switch status {
+        case .notDetermined:
+            self.requesetPhotoPermission()
+        case .authorized, .limited:
+            self.presentPhoto()
+        case .restricted, .denied:
+            self.showAlertForPhotoAccess()
+        @unknown default:
+            // Handle possibly added (in future) values
+            break
+        }
+    }
+    
+    private func requesetPhotoPermission() {
+        PHPhotoLibrary.requestAuthorization { status in
+            if #available(iOS 14, *) {
+                if status == .limited {
+                    self.presentPhoto()
+                }
+            }
+            if status == .authorized {
+                self.presentPhoto()
+            }
+        }
+    }
+    
+    private func presentPhoto() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            DispatchQueue.main.async {
+                self.showImagePicker()
+            }
+        } else {
+            let ac = UIAlertController(
+                title: "Please Allow Access".localized,
+                message: "Need photo access".localized,
+                preferredStyle: .alert
+            )
+            let okAction = UIAlertAction(
+                title: "OK".localized,
+                style: .cancel
+            )
+            
+            ac.addAction(okAction)
+            
+            self.presentationController?.present(ac, animated: true)
+        }
+    }
+    
+    private func showAlertForPhotoAccess() {
+        
+        let ac = UIAlertController(
+            title: "Please Allow Access".localized,
+            message: "Need photo access".localized,
+            preferredStyle: .alert
+        )
+        guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else { return }
+        let showAppSettingsAction = UIAlertAction(
+            title: "Settings".localized,
+            style: .default,
+            handler: { _ in
+                UIApplication.shared.open(
+                    settingsAppURL,
+                    options: [:])
+            }
+        )
+        
+        let cancelAction = UIAlertAction(
+            title: "Cancel".localized,
+            style: .cancel
+        )
+        
+        ac.addAction(showAppSettingsAction)
+        ac.addAction(cancelAction)
+        
+        self.presentationController?.present(ac, animated: true)
+    }
+    
+    private func showImagePicker() {
+        self.imagePickerController.sourceType = .photoLibrary
+        self.presentationController?.present(
+            self.imagePickerController,
+            animated: true
+        )
+    }
+
     
     // MARK: - Private methods
     private func pickerControllerImage(

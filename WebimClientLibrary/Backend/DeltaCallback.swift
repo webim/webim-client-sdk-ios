@@ -232,7 +232,6 @@ final class DeltaCallback {
             
             let messageItem = MessageItem(jsonDictionary: deltaData)
             let message = currentChatMessageMapper.map(message: messageItem)
-            let historyMessage = historyMessageMapper.map(message: messageItem)
             if deltaEvent == .add {
                 var isNewMessage = false
                 if let currentChat = currentChat,
@@ -246,9 +245,6 @@ final class DeltaCallback {
                     messageHolder?.receive(newMessage: message)
                 }
                 
-                if let historyMessage = historyMessage {
-                    historyPoller?.insertMessageInDB(message: historyMessage)
-                }
                 
             } else if deltaEvent == .update {
                 if let currentChat = currentChat {
@@ -265,9 +261,6 @@ final class DeltaCallback {
                 
                 if let message = message {
                     messageHolder?.changed(message: message)
-                }
-                if let historyMessage = historyMessage {
-                    historyPoller?.insertMessageInDB(message: historyMessage)
                 }
             }
         }

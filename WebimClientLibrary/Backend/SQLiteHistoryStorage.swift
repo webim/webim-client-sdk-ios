@@ -731,6 +731,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         
         return MessageImpl(serverURLString: serverURLString,
                            id: (clientSideID ?? id),
+                           serverSideID: id,
                            keyboard: keyboard,
                            keyboardRequest: keyboardRequest,
                            operatorID: row[SQLiteHistoryStorage.senderID],

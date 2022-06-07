@@ -57,6 +57,7 @@ class DeltaRequestLoopTests: XCTestCase {
                                                     providedAuthenticationToken: nil,
                                                     deviceID: "device_id",
                                                     deviceToken: nil,
+                                                    remoteNotificationSystem: nil,
                                                     visitorJSONString: nil,
                                                     sessionID: nil,
                                                     prechat: nil,

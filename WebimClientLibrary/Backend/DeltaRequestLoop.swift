@@ -44,19 +44,23 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private let baseURL: String
     private let deltaCallback: DeltaCallback
     private let deviceID: String
-    private let sessionParametersListener: SessionParametersListener?
+    
     private let title: String
-    var authorizationData: WMSynchronizedObject<AuthorizationData> = WMSynchronizedObject<AuthorizationData>()
-    var queue: DispatchQueue?
-    var since: Int64 = 0
-    private var deviceToken: String?
-    private var location: String
-    private var providedAuthenticationToken: String?
+    @WMSynchronized var authorizationData: AuthorizationData?
+    @WMSynchronized private var providedAuthenticationToken: String?
+    @WMSynchronized var queue: DispatchQueue?
+    @WMSynchronized var since: Int64 = 0
+    @WMSynchronized private var deviceToken: String?
+    @WMSynchronized private var remoteNotificationSystem: Webim.RemoteNotificationSystem?
+    @WMSynchronized private var location: String
+    
+    @WMSynchronized private var sessionID: String?
+    @WMSynchronized private var visitorFieldsJSONString: String?
+    @WMSynchronized private var visitorJSONString: String?
+    @WMSynchronized private var prechat: String?
+    
+    private let sessionParametersListener: SessionParametersListener? // а не должен ли он быть weak ?
     private weak var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
-    private var sessionID: String?
-    private var visitorFieldsJSONString: String?
-    private var visitorJSONString: String?
-    private var prechat: String?
     
     // MARK: - Initialization
     init(deltaCallback: DeltaCallback,
@@ -72,6 +76,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
          providedAuthenticationToken: String?,
          deviceID: String,
          deviceToken: String?,
+         remoteNotificationSystem: Webim.RemoteNotificationSystem?,
          visitorJSONString: String?,
          sessionID: String?,
          prechat:String?,
@@ -85,9 +90,10 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.visitorFieldsJSONString = visitorFieldsJSONString
         self.deviceID = deviceID
         self.deviceToken = deviceToken
+        self.remoteNotificationSystem = remoteNotificationSystem
         self.visitorJSONString = visitorJSONString
         self.sessionID = sessionID
-        self.authorizationData.value = authorizationData
+        self.authorizationData = authorizationData
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
         self.prechat = prechat
@@ -124,19 +130,19 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func change(location: String) throws {
         self.location = location
         
-        authorizationData.value = nil
+        authorizationData = nil
         since = 0
         
         requestInitialization()
     }
     
     func getAuthorizationData() -> AuthorizationData? {
-        return authorizationData.value
+        return authorizationData
     }
     
     func run() {
         while isRunning() {
-            if authorizationData.value != nil && since != 0 {
+            if authorizationData != nil && since != 0 {
                 requestDelta()
             } else {
                 requestInitialization()
@@ -182,14 +188,12 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestInitialization() {
         let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.36.5", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.37.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
             let data = try perform(request: request)
-            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                self.parseRequestInitialization(data: data)
-            })
+            self.parseRequestInitialization(data: data)
         } catch let unknownError as UnknownError {
             self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 self.handleRequestLoop(error: unknownError)
@@ -241,14 +245,12 @@ class DeltaRequestLoop: AbstractRequestLoop {
         
         do {
             let data = try perform(request: request)
-            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                self.parseDelta(data: data)
-            })
+            self.parseDelta(data: data)
         } catch let unknownError as UnknownError {
             handleRequestLoop(error: unknownError)
         } catch {
             WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(error.localizedDescription).",
-                verbosityLevel: .warning)
+                                           verbosityLevel: .warning)
         }
     }
     
@@ -271,6 +273,14 @@ class DeltaRequestLoop: AbstractRequestLoop {
         }
         if let deviceToken = deviceToken {
             parameterDictionary[Parameter.deviceToken.rawValue] = deviceToken
+            switch remoteNotificationSystem {
+            case .apns:
+                parameterDictionary[Parameter.pushService.rawValue] = "apns"
+            case .fcm:
+                parameterDictionary[Parameter.pushService.rawValue] = "fcm"
+            default:
+                break
+            }
         }
         if let sessionID = sessionID {
             parameterDictionary[Parameter.visitSessionID.rawValue] = sessionID
@@ -295,7 +305,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         let currentTimestamp = Int64(CFAbsoluteTimeGetCurrent() * 1000)
         var parameterDictionary = [Parameter.since.rawValue: String(since),
                                    Parameter.timestamp.rawValue: currentTimestamp] as [String: Any]
-        if let authorizationData = authorizationData.value {
+        if let authorizationData = authorizationData {
             parameterDictionary[Parameter.pageID.rawValue] = authorizationData.getPageID()
             parameterDictionary[Parameter.authorizationToken.rawValue] = authorizationData.getAuthorizationToken()
         }
@@ -304,7 +314,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func sleepBetweenInitializationAttempts() {
-        authorizationData.value = nil
+        authorizationData = nil
         since = 0
         
         usleep(1_000_000)  // 1s
@@ -349,7 +359,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func handleReinitializationRequiredError() {
-        authorizationData.value = nil
+        authorizationData = nil
         since = 0
     }
     
@@ -381,22 +391,22 @@ class DeltaRequestLoop: AbstractRequestLoop {
             || (self.visitorFieldsJSONString != visitorFieldsJSONString)
         let isNecessaryToUpdateSessionID = (self.sessionID == nil)
             || (self.sessionID != sessionID)
-        let isNecessaryToUpdateAuthorizationData = (self.authorizationData.value == nil)
-            || ((self.authorizationData.value?.getPageID() != fullUpdate.getPageID())
-                || (self.authorizationData.value?.getAuthorizationToken() != fullUpdate.getAuthorizationToken()))
+        let isNecessaryToUpdateAuthorizationData = (self.authorizationData == nil)
+            || ((self.authorizationData?.getPageID() != fullUpdate.getPageID())
+                || (self.authorizationData?.getAuthorizationToken() != fullUpdate.getAuthorizationToken()))
         
         if (isNecessaryToUpdateVisitorFieldJSONString
             || isNecessaryToUpdateSessionID)
             || isNecessaryToUpdateAuthorizationData {
             self.visitorJSONString = visitorJSONString
             self.sessionID = sessionID
-            self.authorizationData.value = authorizationData
+            self.authorizationData = authorizationData
             
             DispatchQueue.global(qos: .background).async { [weak self] in
                 guard let `self` = self,
                     let visitorJSONString = self.visitorJSONString,
                     let sessionID = self.sessionID,
-                    let authorizationData = self.authorizationData.value else {
+                    let authorizationData = self.authorizationData else {
                         WebimInternalLogger.shared.log(entry: "Changing parameters failure while unwrpping in DeltaRequestLoop.\(#function)")
                         return
                 }

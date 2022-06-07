@@ -322,6 +322,7 @@ final class MessageHolder {
         
         let newMessage = MessageImpl(serverURLString: messageImpl.getServerUrlString(),
                                      id: messageID,
+                                     serverSideID: messageImpl.getServerSideID(),
                                      keyboard: messageImpl.getKeyboard(),
                                      keyboardRequest: messageImpl.getKeyboardRequest(),
                                      operatorID: messageImpl.getOperatorID(),
@@ -369,6 +370,7 @@ final class MessageHolder {
         
         let newMessage = MessageImpl(serverURLString: messageImpl.getServerUrlString(),
                                      id: messageID,
+                                     serverSideID: messageImpl.getServerSideID(),
                                      keyboard: messageImpl.getKeyboard(),
                                      keyboardRequest: messageImpl.getKeyboardRequest(),
                                      operatorID: messageImpl.getOperatorID(),

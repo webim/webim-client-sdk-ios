@@ -124,4 +124,8 @@ protocol WebimActions {
     
     func getRawConfig(forLocation: String,
                       completion: @escaping (_ data: Data?) throws -> ())
+    
+    func sendGeolocation(latitude: Double,
+                         longitude: Double,
+                         completionHandler: GeolocationCompletionHandler?)
 }

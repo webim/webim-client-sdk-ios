@@ -30,27 +30,27 @@ class WMDispatchQueueManager {
     static public let globalBackgroundSyncronizeDataQueue = DispatchQueue(label: "globalBackgroundSyncronizeSharedData")
 }
 
-class WMSynchronizedObject<T> {
-    private var _Value: T?
-    
-    public var value: T? {
-        set(newValue) {
-            WMDispatchQueueManager.globalBackgroundSyncronizeDataQueue.sync() {
-                self._Value = newValue
-            }
-        }
+@propertyWrapper
+struct WMSynchronized<Value> {
+
+    private var value: Value
+
+    init(wrappedValue value: Value) {
+        self.value = value
+    }
+
+    var wrappedValue: Value {
         get {
             return WMDispatchQueueManager.globalBackgroundSyncronizeDataQueue.sync {
-                return _Value
+                return value
+            }
+        }
+        set {
+            WMDispatchQueueManager.globalBackgroundSyncronizeDataQueue.sync() {
+                self.value = newValue
             }
         }
     }
     
-    func getAndSetNil() -> T? {
-        return WMDispatchQueueManager.globalBackgroundSyncronizeDataQueue.sync {
-            let temp = _Value
-            self._Value = nil
-            return temp
-        }
-    }
 }
+

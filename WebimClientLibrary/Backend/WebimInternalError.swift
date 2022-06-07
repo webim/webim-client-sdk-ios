@@ -106,4 +106,7 @@ enum WebimInternalError: String, Error {
     //Errors for Delete files
     case fileHasBeenSent = "file-has-been-sent"
     case fileNotFound = "file-not-found"
+    
+    // Geolocation errors
+    case invalidCoordinatesReceived = "invalid-coordinates-received"
 }

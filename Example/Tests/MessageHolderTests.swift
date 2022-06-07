@@ -57,6 +57,7 @@ class MessageHolderTests: XCTestCase {
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             history.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                        id: String(index),
+                                       serverSideID: nil,
                                        keyboard: nil,
                                        keyboardRequest: nil,
                                        operatorID: MessageImplMockData.operatorID.rawValue,
@@ -75,7 +76,10 @@ class MessageHolderTests: XCTestCase {
                                        read: false,
                                        messageCanBeEdited: false,
                                        messageCanBeReplied: false,
-                                       messageIsEdited: false))
+                                       messageIsEdited: false,
+                                       visitorReactionInfo: nil,
+                                       visitorCanReact: nil,
+                                       visitorChangeReaction: nil))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -89,6 +93,7 @@ class MessageHolderTests: XCTestCase {
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             currentChat.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                            id: String(index),
+                                           serverSideID: nil,
                                            keyboard: nil,
                                            keyboardRequest: nil,
                                            operatorID: MessageImplMockData.operatorID.rawValue,
@@ -107,7 +112,10 @@ class MessageHolderTests: XCTestCase {
                                            read: false,
                                            messageCanBeEdited: false,
                                            messageCanBeReplied: false,
-                                           messageIsEdited: false))
+                                           messageIsEdited: false,
+                                           visitorReactionInfo: nil,
+                                           visitorCanReact: nil,
+                                           visitorChangeReaction: nil))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -121,6 +129,7 @@ class MessageHolderTests: XCTestCase {
         for message in currentChat {
             let newMessage = MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                                          id: message.getID(),
+                                         serverSideID: message.getServerSideID(),
                                          keyboard: message.getKeyboard(),
                                          keyboardRequest: message.getKeyboardRequest(),
                                          operatorID: message.getOperatorID(),
@@ -139,7 +148,10 @@ class MessageHolderTests: XCTestCase {
                                          read: message.getRead(),
                                          messageCanBeEdited: message.canBeEdited(),
                                          messageCanBeReplied: false,
-                                         messageIsEdited: false)
+                                         messageIsEdited: false,
+                                         visitorReactionInfo: message.getVisitorReaction(),
+                                         visitorCanReact: message.canVisitorReact(),
+                                         visitorChangeReaction: message.canVisitorChangeReaction())
             result.append(newMessage)
         }
         
@@ -151,6 +163,7 @@ class MessageHolderTests: XCTestCase {
         
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: String(messagesCount),
+                           serverSideID: nil,
                            keyboard: nil,
                            keyboardRequest: nil,
                            operatorID: MessageImplMockData.operatorID.rawValue,
@@ -169,12 +182,16 @@ class MessageHolderTests: XCTestCase {
                            read: false,
                            messageCanBeEdited: false,
                            messageCanBeReplied: false,
-                           messageIsEdited: false)
+                           messageIsEdited: false,
+                           visitorReactionInfo: nil,
+                           visitorCanReact: nil,
+                           visitorChangeReaction: nil)
     }
     
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: currentChatMessage.getID(),
+                           serverSideID: nil,
                            keyboard: currentChatMessage.getKeyboard(),
                            keyboardRequest: currentChatMessage.getKeyboardRequest(),
                            operatorID: currentChatMessage.getOperatorID(),
@@ -193,12 +210,16 @@ class MessageHolderTests: XCTestCase {
                            read: false,
                            messageCanBeEdited: false,
                            messageCanBeReplied: false,
-                           messageIsEdited: false)
+                           messageIsEdited: false,
+                           visitorReactionInfo: nil,
+                           visitorCanReact: nil,
+                           visitorChangeReaction: nil)
     }
     
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            id: historyMessage.getID(),
+                           serverSideID: nil,
                            keyboard: historyMessage.getKeyboard(),
                            keyboardRequest: historyMessage.getKeyboardRequest(),
                            operatorID: historyMessage.getOperatorID(),
@@ -217,7 +238,10 @@ class MessageHolderTests: XCTestCase {
                            read: false,
                            messageCanBeEdited: false,
                            messageCanBeReplied: false,
-                           messageIsEdited: false)
+                           messageIsEdited: false,
+                           visitorReactionInfo: nil,
+                           visitorCanReact: nil,
+                           visitorChangeReaction: nil)
     }
     
     private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {
@@ -340,7 +364,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, [])
+        XCTAssertEqual(completionHandlerMessages!, history1)
     }
     
     func testMessageTrackerAwaitsForHistoryResponseWithCurrentChat() throws {
@@ -388,7 +412,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, [])
+        XCTAssertEqual(completionHandlerMessages!, history1)
     }
     
     func testRemoteHistoryProviderStopsRequesting() throws {
@@ -428,7 +452,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: after emptying the history will be made a one more request.
         XCTAssertEqual(completionHandlerMessages!, [MessageImpl]())
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 0)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 1)
         
         // MARK: Test 4
         // When: Resetting 15 messages back and requesting for all messages.
@@ -438,7 +462,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: 15 messages should be received and no history requests should be preformed.
         XCTAssertEqual(completionHandlerMessages!, (history1 + Array(history2[0 ... 4])))
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 0)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 1)
     }
     
     func testInsertMessagesBetweenOlderHistoryAndCurrentChat() throws {
@@ -633,7 +657,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handlers should be called first on received history messages.
-        XCTAssertEqual(completionHandlerMessages!, [MessageImpl]())
+        XCTAssertEqual(completionHandlerMessages!, Array(history1[5 ... 9]))
     }
     
     func testRequestAsManyMessagesAsReceivedWithHistoryForCurrentChat() throws {
@@ -1002,7 +1026,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on full history.
-        XCTAssertEqual(completionHandlerMessages!, [MessageImpl]())
+        XCTAssertEqual(completionHandlerMessages!, history1)
         
         // MARK: Test 5
         // When: Receiving second chat with next 3 messages.
@@ -1029,7 +1053,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion should be called on full history.
-        XCTAssertEqual(completionHandlerMessages!, (Array(history2[0 ... 1])))
+        XCTAssertEqual(completionHandlerMessages!, (history1 + Array(history2[0 ... 1])))
         
         // MARK: Test 8
         // When: Receiving second chat with one message deleted and one added.
@@ -1180,7 +1204,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, [])
+        XCTAssertEqual(completionHandlerMessages!, history1)
         
         // MARK: Test 4
         // When: Receiving next current chat message.
@@ -1212,7 +1236,7 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on history1.
-        XCTAssertEqual(completionHandlerMessages!, [])
+        XCTAssertEqual(completionHandlerMessages!, history1)
     }
     
     func testReceiveNewMessageWhenHistoryIsEmpty() throws {

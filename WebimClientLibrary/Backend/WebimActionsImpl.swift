@@ -41,6 +41,7 @@ final class WebimActionsImpl {
     }
     private enum Action: String {
         case closeChat = "chat.close"
+        case geoResponse = "geo_response"
         case rateOperator = "chat.operator_rate_select"
         case respondSentryCall = "chat.action_request.call_sentry_action_request"
         case sendMessage = "chat.message"
@@ -331,8 +332,8 @@ extension WebimActionsImpl: WebimActions {
     }
     
     func searchMessagesBy(query: String, completion: @escaping (_ data: Data?) throws -> ()) {
-        let pageId = self.actionRequestLoop.authorizationData.value?.getPageID() ?? ""
-        let authToken = self.actionRequestLoop.authorizationData.value?.getAuthorizationToken() ?? ""
+        let pageId = self.actionRequestLoop.authorizationData?.getPageID() ?? ""
+        let authToken = self.actionRequestLoop.authorizationData?.getAuthorizationToken() ?? ""
         
         let parameterDictionary: [String: String] = [Parameter.pageID.rawValue: pageId, Parameter.query.rawValue: query, Parameter.authorizationToken.rawValue:authToken]
         let urlString = baseURL + ServerPathSuffix.search.rawValue
@@ -525,6 +526,20 @@ extension WebimActionsImpl: WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         locationSettingsCompletionHandler: completion))
+    }
+    
+    func sendGeolocation(latitude: Double, longitude: Double, completionHandler: GeolocationCompletionHandler?) {
+        let dataToPost = [Parameter.actionn.rawValue: Action.geoResponse.rawValue,
+                          Parameter.latitude.rawValue: latitude,
+                          Parameter.longitude.rawValue: longitude] as [String: Any]
+
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        geolocationCompletionHandler: completionHandler))
     }
     
 }

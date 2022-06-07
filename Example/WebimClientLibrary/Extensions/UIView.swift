@@ -109,4 +109,36 @@ extension UIView {
     
     @objc
     func loadXibViewSetup() { }
+    
+    func bindWidthToSuperview() {
+        let widthConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: superview, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: 0)
+        self.superview?.addConstraint(widthConstraint)
+    }
+    
+    func bindHeightToSuperview() {
+        let heightTConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: superview, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: 0)
+        self.superview?.addConstraint(heightTConstraint)
+    }
+    
+    var globalPointOnScreen: CGPoint? {
+        let rootView = UIApplication.shared.keyWindow?.rootViewController?.view
+        return self.superview?.convert(self.frame.origin, to: rootView)
+    }
+    
+    func setWidth(_ width: CGFloat) {
+        var newFrame = frame
+        newFrame.size.width = width
+        self.frame = newFrame
+    }
+    
+    func setHeight(_ height: CGFloat) {
+        var newFrame = frame
+        newFrame.size.height = height
+        self.frame = newFrame
+    }
+    
+    func addSubviewWithSameWidth(_ subview: UIView) {
+        subview.setWidth(frame.width)
+        addSubview(subview)
+    }
 }

@@ -74,6 +74,20 @@ public protocol Message {
     func getID() -> String
     
     /**
+     Every message can be uniquefied by its server ID. Messages also can be lined up by its IDs.
+     - important:
+     ID doesn’t change while changing the content of a message.
+     - returns:
+     Unique server ID of the message.
+     - author:
+     Anna Frolova
+     - copyright:
+     2022 Webim
+     */
+    func getServerSideID() -> String?
+    
+    
+    /**
      Current chat id of the message.
      - important:
      ID doesn’t change while changing the content of a message.

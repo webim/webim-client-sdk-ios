@@ -53,4 +53,15 @@ extension Message {
         return self.getType() == .operatorMessage
             || self.getType() == .visitorMessage
     }
+    
+    func isFile() -> Bool {
+        return self.getType() == .fileFromOperator
+            || self.getType() == .fileFromVisitor
+    }
+    
+    func isText() -> Bool {
+        return self.getType() == .operatorMessage
+            || self.getType() == .visitorMessage
+    }
+    
 }

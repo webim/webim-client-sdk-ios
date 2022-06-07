@@ -72,12 +72,36 @@ final class WebimService {
         return webimSession?.getStream().getChatState() ?? .unknown
     }
     
+    func createTestUserData() -> String {
+        // !!!secretString MUST NOT be used in real application!!!
+        let secretString = "64f7099e123231123123123121"
+        var properties = [String: String]()
+
+        properties["id"] = "test_id"
+        properties["display_name"] = "test_name"
+        
+        var keys = Array(properties.keys)
+        keys.sort()
+        var stringToSign = ""
+        for key in keys {
+            stringToSign += properties[key]!
+        }
+        
+        let crc = stringToSign.hmacSHA256(withKey: secretString)
+        properties["crc"] = crc
+        
+        let jsonData = try! JSONSerialization.data(withJSONObject: properties, options: [])
+        let jsonString = String(data: jsonData, encoding: String.Encoding.ascii)!
+
+        return jsonString
+    }
+
     // MARK: - Methods
     func createSession() {
         
         let deviceToken: String? = WMKeychainWrapper.standard.string(forKey: WMKeychainWrapper.deviceTokenKey)
         
-        var sessionBuilder = Webim.newSessionBuilder()
+        let sessionBuilder = Webim.newSessionBuilder()
             .set(accountName: Settings.shared.accountName)
             .set(location: Settings.shared.location)
             .set(pageTitle: Settings.shared.pageTitle)
@@ -86,13 +110,16 @@ final class WebimService {
             .set(deviceToken: deviceToken)
             .set(isVisitorDataClearingEnabled: false)
             .set(webimLogger: self, verbosityLevel: .verbose)
-            
-            if let notFatalErrorHandler = notFatalErrorHandler {
-                _ = sessionBuilder.set(notFatalErrorHandler: notFatalErrorHandler)
-            }
-            
-        if Settings.shared.accountName == Settings.DefaultSettings.accountName.rawValue {
-            sessionBuilder = sessionBuilder.set(visitorFieldsJSONString: "{\"\(VisitorFields.id.rawValue)\":\"\(VisitorFieldsValue.id.rawValue)\",\"\(VisitorFields.name.rawValue)\":\"\(VisitorFieldsValue.name.rawValue)\",\"\(VisitorFields.crc.rawValue)\":\"\(VisitorFieldsValue.crc.rawValue)\"}") // Hardcoded values that work with "demo" account only!
+        
+        if let notFatalErrorHandler = notFatalErrorHandler {
+            _ = sessionBuilder.set(notFatalErrorHandler: notFatalErrorHandler)
+        }
+        
+        // Only for development phase you can use this function to test generation visitorFieldsJSONString
+//        _ = sessionBuilder.set(visitorFieldsJSONString: createTestUserData())
+        
+        if !Settings.shared.userDataJson.isEmpty {
+            _ = sessionBuilder.set(visitorFieldsJSONString: Settings.shared.userDataJson)
         }
         
         sessionBuilder.build(

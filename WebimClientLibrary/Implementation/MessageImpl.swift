@@ -37,6 +37,7 @@ class MessageImpl {
     
     // MARK: - Properties
     private let id: String
+    private let serverSideID: String?
     private let keyboard: Keyboard?
     private let keyboardRequest: KeyboardRequest?
     private let operatorID: String?
@@ -66,6 +67,7 @@ class MessageImpl {
     // MARK: - Initialization
     init(serverURLString: String,
          id: String,
+         serverSideID: String?,
          keyboard: Keyboard?,
          keyboardRequest: KeyboardRequest?,
          operatorID: String?,
@@ -91,6 +93,7 @@ class MessageImpl {
          visitorChangeReaction: Bool?) {
         self.data = data
         self.id = id
+        self.serverSideID = serverSideID
         self.keyboard = keyboard
         self.keyboardRequest = keyboardRequest
         self.quote = quote
@@ -123,10 +126,6 @@ class MessageImpl {
                                   timeInMicrosecond: timeInMicrosecond)
         }
         currentChatID = internalID
-        
-        if historyMessage {
-            _ = self.disableBotButtons()
-        }
     }
     
     func disableBotButtons() -> Bool {
@@ -326,6 +325,10 @@ extension MessageImpl: Message {
     
     func getID() -> String {
         return id
+    }
+    
+    func getServerSideID() -> String? {
+        return serverSideID
     }
     
     func getCurrentChatID() -> String? {

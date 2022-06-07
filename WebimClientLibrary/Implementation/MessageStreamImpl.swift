@@ -523,7 +523,7 @@ extension MessageStreamImpl: MessageStream {
     }
     
     func send(message: String, completionHandler: SendMessageCompletionHandler?) throws -> String {
-        return try sendMessageInternally(messageText: message, sendMessageComplitionHandler: completionHandler)
+        return try sendMessageInternally(messageText: message, sendMessageCompletionHandler: completionHandler)
     }
     
     func send(message: String,
@@ -849,6 +849,12 @@ extension MessageStreamImpl: MessageStream {
                                  surveyCloseCompletionHandler: completionHandler)
     }
     
+    func sendGeolocation(latitude: Double, longitude: Double, completionHandler: GeolocationCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.sendGeolocation(latitude: latitude, longitude: longitude, completionHandler: completionHandler)
+    }
+    
     func set(visitSessionStateListener: VisitSessionStateListener) {
         self.visitSessionStateListener = visitSessionStateListener
     }
@@ -908,7 +914,7 @@ extension MessageStreamImpl: MessageStream {
                                        dataJSONString: String? = nil,
                                        isHintQuestion: Bool? = nil,
                                        dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
-                                       sendMessageComplitionHandler: SendMessageCompletionHandler? = nil) throws -> String {
+                                       sendMessageCompletionHandler: SendMessageCompletionHandler? = nil) throws -> String {
         try startChat()
         
         let messageID = ClientSideID.generateClientSideID()
@@ -920,7 +926,7 @@ extension MessageStreamImpl: MessageStream {
                           isHintQuestion: isHintQuestion,
                           dataMessageCompletionHandler: DataMessageCompletionHandlerWrapper(dataMessageCompletionHandler: dataMessageCompletionHandler,
                                                                                             messageHolder: messageHolder), editMessageCompletionHandler: nil,
-                          sendMessageCompletionHandler: SendMessageCompletionHandlerWrapper(sendMessageCompletionHandler: sendMessageComplitionHandler, messageHolder: messageHolder))
+                          sendMessageCompletionHandler: SendMessageCompletionHandlerWrapper(sendMessageCompletionHandler: sendMessageCompletionHandler, messageHolder: messageHolder))
         
         return messageID
     }

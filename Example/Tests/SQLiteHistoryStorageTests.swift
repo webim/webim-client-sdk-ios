@@ -65,6 +65,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                                                                                                 providedAuthenticationToken: nil,
                                                                                                                 deviceID: "ID",
                                                                                                                 deviceToken: nil,
+                                                                                                                remoteNotificationSystem: nil,
                                                                                                                 visitorJSONString: nil,
                                                                                                                 sessionID: nil,
                                                                                                                 prechat: nil,
@@ -99,6 +100,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
         for index in 1 ... numberOfMessages {
             messages.append(MessageImpl(serverURLString: SQLiteHistoryStorageTests.SERVER_URL_STRING,
                                         id: String(index),
+                                        serverSideID: nil,
                                         keyboard: nil,
                                         keyboardRequest: nil,
                                         operatorID: "1",
@@ -118,7 +120,10 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         read: true,
                                         messageCanBeEdited: false,
                                         messageCanBeReplied: false,
-                                        messageIsEdited: false))
+                                        messageIsEdited: false,
+                                        visitorReactionInfo: nil,
+                                        visitorCanReact: nil,
+                                        visitorChangeReaction: nil))
         }
         
         return messages
@@ -128,7 +133,7 @@ class SQLiteHistoryStorageTests: XCTestCase {
     
     func testGetMajorVersion() {
         XCTAssertEqual(sqLiteHistoryStorage!.getMajorVersion(),
-                       8)
+                       11)
     }
     
     func testGetFullHistory() {

@@ -159,33 +159,32 @@ struct MimeType {
         `extension` = "jpeg"
     }
     
-}
+    // MARK: -
+    static func isImage(contentType: String) -> Bool {
+        return ((contentType == "image/gif")
+            || (contentType == "image/jpeg")
+            || (contentType == "image/x-ms-bmp")
+            || (contentType == "image/webp")
+            || (contentType == "image/png")
+            || (contentType == "image/tiff"))
+    }
 
-// MARK: -
-func isImage(contentType: String) -> Bool {
-    return ((contentType == "image/gif")
-        || (contentType == "image/jpeg")
-        || (contentType == "image/x-ms-bmp")
-        || (contentType == "image/webp")
-        || (contentType == "image/png")
-        || (contentType == "image/tiff"))
-}
-
-// Check if file is acceptable to show in WKWebView
-func isAcceptableFile(contentType: String) -> Bool {
-    return ((contentType == mimeTypes["txt"])
-    || (contentType == mimeTypes["rtf"])
-    || (contentType == mimeTypes["pdf"])
-    || (contentType == mimeTypes["doc"])
-    || (contentType == mimeTypes["docx"])
-    || (contentType == mimeTypes["xls"])
-    || (contentType == mimeTypes["xlsx"])
-    || (contentType == mimeTypes["ppt"])
-    || (contentType == mimeTypes["pptx"])
-    || (contentType == mimeTypes["mp4"])
-    || (contentType == mimeTypes["key"])
-    || (contentType == mimeTypes["pages"])
-    || (contentType == mimeTypes["numbers"])
-        
-    || (contentType == "text/rtf"))
+    // Check if file is acceptable to show in WKWebView
+    static func isAcceptableFile(contentType: String) -> Bool {
+        return ((contentType == mimeTypes["txt"])
+        || (contentType == mimeTypes["rtf"])
+        || (contentType == mimeTypes["pdf"])
+        || (contentType == mimeTypes["doc"])
+        || (contentType == mimeTypes["docx"])
+        || (contentType == mimeTypes["xls"])
+        || (contentType == mimeTypes["xlsx"])
+        || (contentType == mimeTypes["ppt"])
+        || (contentType == mimeTypes["pptx"])
+        || (contentType == mimeTypes["mp4"])
+        || (contentType == mimeTypes["key"])
+        || (contentType == mimeTypes["pages"])
+        || (contentType == mimeTypes["numbers"])
+            
+        || (contentType == "text/rtf"))
+    }
 }

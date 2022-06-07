@@ -42,6 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         AppDelegate.shared = self
         FirebaseApp.configure()
+        let rootVC = WMStartViewController.loadViewControllerFromXib()
+        let navigationController = UINavigationController(rootViewController: rootVC)
+        AppDelegate.shared.window?.rootViewController = navigationController
         Crashlytics.crashlytics().setCustomValue(Settings.shared.accountName, forKey: "AccountName")
         // Remote notifications configuration
         let notificationTypes: UNAuthorizationOptions = [.alert,
@@ -83,6 +86,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Webim.isWebim(remoteNotification: userInfo) {
             _ = Webim.parse(remoteNotification: userInfo)
             // Handle Webim remote notification.
+            if UIApplication.shared.applicationState != .active {
+                if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                    navigationController.popToRootViewController(animated: false)
+                    if let startViewController = navigationController.viewControllers.first as? WMStartViewController {
+                        startViewController.startChatButton.sendActions(for: .touchUpInside)
+                    }
+                }
+            }
         } else {
             // Handle another type of remote notification.
         }
@@ -100,6 +111,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static func keyboardHidden(_ hidden: Bool) {
         DispatchQueue.main.async {
             AppDelegate.keyboardWindow?.isHidden = hidden
+        }
+    }
+    
+    static func checkMainThread() {
+        if !Thread.isMainThread {
+#if DEBUG
+            fatalError("Not main thread error")
+#else
+            print("Not main thread error")
+#endif
         }
     }
 }

@@ -29,16 +29,43 @@ import UIKit
 import Nuke
 import WebimClientLibrary
 
-class ChatViewController: UIViewController {
+class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, DepartmentListHandlerDelegate {
+    
+    var popupActionsViewController: PopupActionsViewController?
     
     private var alreadyPutTextFromBufferString = false
     private var textInputTextViewBufferString: String?
     private var rateOperatorID: String?
+    let newRefreshControl = UIRefreshControl()
     
-    weak var chatTableViewController: ChatTableViewController?
+    @IBOutlet var chatTableView: UITableView!
+    @IBOutlet var scrollView: UIScrollView!
+    
+    var selectedMessage: Message?
+    var scrollButtonIsHidden = true
+    var surveyCounter = -1
+    // MARK: - Private properties
+    
+    private var alreadyRatedOperators = [String: Bool]()
+    var cellHeights = [IndexPath: CGFloat]()
+    private var overlayWindow: UIWindow?
+    private var visibleRows = [IndexPath]()
+    private var scrollToBottom = false
+    
+    var rateStarsViewController: RateStarsViewController?
+    var surveyCommentViewController: SurveyCommentViewController?
+    var surveyRadioButtonViewController: SurveyRadioButtonViewController?
+    
+    var chatMessages = [Message]()
+    var searchMessages = [Message]()
+    var showSearchResult = false
+    
+    var hideKeyboardOnScrollEnabled = false
+    lazy var alertDialogHandler = UIAlertHandler(delegate: self)
+    var delayedSurvayQuestion: SurveyQuestion?
     
     private lazy var filePicker = FilePicker(presentationController: self, delegate: self)
-
+    
     // MARK: - Constraints
     let buttonWidthHeight: CGFloat = 20
     let fileButtonLeadingSpacing: CGFloat = 20
@@ -46,9 +73,9 @@ class ChatViewController: UIViewController {
     let textInputBackgroundViewTopBottomSpacing: CGFloat = 8
     
     // MARK: - Outletls
-    @IBOutlet weak var tableViewControllerContainerView: UIView!
-    @IBOutlet weak var bottomBarBackgroundView: UIView!
-    
+    @IBOutlet var toolbarBackgroundView: WMToolbarBackgroundView!
+    @IBOutlet var toolbarView: WMToolbarView!
+    @IBOutlet var messagesTableViewHeightConstraint: NSLayoutConstraint!
     // MARK: - Subviews
     // Scroll button
     lazy var scrollButton: UIButton = createUIButton(type: .system)
@@ -66,125 +93,120 @@ class ChatViewController: UIViewController {
     var thanksView: WMThanksAlertView!
     var chatTestView = ChatTestView.loadXibView()
     
+    var didLoad = false
     // Bottom bar
     lazy var fileButton: UIButton = createCustomUIButton(type: .system)
-    lazy var textInputBackgroundView: UIView = createUIView()
-    lazy var textInputTextView: UITextView = createTextInputTextView()
-    lazy var textInputTextViewPlaceholderLabel: UILabel = UILabel.createUILabel(systemFontSize: 16, numberOfLines: 0)
-    lazy var textInputButton: UIButton = createUIButton(type: .system)
     
-    // Bottom bar quote/edit
-    lazy var bottomBarQuoteBackgroundView: UIView = createUIView()
-    lazy var bottomBarQuoteLineView: UIView = createUIView()
-    
-    lazy var bottomBarQuoteAttachmentImageView: UIImageView = createUIImageView(contentMode: .scaleAspectFill)
-    lazy var bottomBarQuoteUsernameLabel: UILabel = UILabel.createUILabel(systemFontSize: 16, systemFontWeight: .heavy)
-    lazy var bottomBarQuoteBodyLabel: UILabel = UILabel.createUILabel(systemFontSize: 15, systemFontWeight: .light)
-    lazy var bottomBarQuoteCancelButton: UIButton = createCustomUIButton(type: .system)
-    
-    // MARK: - View Life Cycle
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        if let vc = segue.destination as? ChatTableViewController {
-            self.chatTableViewController = vc
-            chatTableViewController = vc
-            vc.chatViewController = self
-        }
+    override var inputAccessoryView: UIView? {
+        return toolbarBackgroundView
     }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    override var canResignFirstResponder: Bool {
+        return true
+    }
+    
+    func showToolbarWithHeight(_ height: CGFloat) {}
+    // MARK: - View Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.subscribeToNotifications()
+        WebimServiceController.shared.notFatalErrorHandler = self
+        WebimServiceController.shared.departmentListHandlerDelegate = self
+        WebimServiceController.shared.fatalErrorHandlerDelegate = self
+        updateCurrentOperatorInfo(to: WebimServiceController.currentSession.getCurrentOperator())
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupKeyboard()
-        
         setupNavigationBar()
-        configureSubviews()
-        
+        configureThanksView()
+        configureToolbarView()
         setupScrollButton()
+        setupWebimSession()
+        self.addDismissKeyboardGesture()
+        
+        setupRefreshControl()
         
         if true {
             setupTestView()
         }
+        configureNotifications()
+    }
+    override func viewDidLayoutSubviews() {
+        if !didLoad {
+            recountTableSize()
+        }
+        didLoad = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        WMTestManager.testDialogModeEnabled = false
+        updateTestModeState()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
+    override func viewWillTransition(
+        to size: CGSize,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        // Will not trigger method hidePopupActionsViewController()
+        // if PopupActionsTableView is not presented
+        self.popupActionsViewController?.hidePopupActionsViewController()
+        
+        coordinator.animate(
+            alongsideTransition: { context in
+                // Save visible rows position
+                if let visibleRows = self.chatTableView?.indexPathsForVisibleRows {
+                    self.visibleRows = visibleRows
+                }
+                context.viewController(forKey: .from)
+            },
+            completion: { _ in
+                // Scroll to the saved position prior to screen rotate
+                if let lastVisibleRow = self.visibleRows.last {
+                    self.chatTableView?.scrollToRowSafe(
+                        at: lastVisibleRow,
+                        at: .bottom,
+                        animated: true
+                    )
+                }
+            }
+        )
+    }
+    
     // MARK: - Methods
-    @objc
-    func dismissKeyboardNow() {
-        view.endEditing(true)
+    @objc func dismissViewKeyboard() {
+        self.toolbarView.messageView.resignMessageViewFirstResponder()
     }
     
     // MARK: - Private methods
-    private func setupKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(dismissKeyboardNow)
-        )
-        view.addGestureRecognizer(tap)
+    
+    func configureToolbarView() {
+        self.toolbarBackgroundView.delegate = self
+        self.toolbarBackgroundView.addSubview(toolbarView)
+        self.toolbarView.messageView.delegate = self
+        toolbarView.setup()
     }
     
-    @objc
-    func keyboardWillChange(_ notification: Notification) {
-        guard let animationDuration =
-            notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey]
-                as? TimeInterval,
-            let keyboardFrame =
-                notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
-                    as? NSValue
-            else { return }
-        let keyboardHeight: CGFloat = view.frame.maxY - keyboardFrame.cgRectValue.minY
-        
-        UIView.animate(
-            withDuration: animationDuration,
-            animations: {
-                self.bottomBarBackgroundView.snp.remakeConstraints { (make) -> Void in
-                    make.leading.trailing.equalToSuperview()
-                    
-                    if keyboardHeight > 0 { // Keyboard is visible
-                        make.bottom.equalToSuperview()
-                            .inset(keyboardHeight)
-                    } else { // Keyboard is hidden
-                        if #available(iOS 11.0, *) {
-                            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-                        } else {
-                            make.bottom.equalToSuperview()
-                        }
-                    }
-                    
-                    make.top.equalTo(self.tableViewControllerContainerView.snp.bottom)
-                    make.height.lessThanOrEqualTo(self.view.snp.height).multipliedBy(0.5)
-                }
-                
-                self.view.layoutIfNeeded()
-                if keyboardHeight > 0 {
-                    self.chatTableViewController?.scrollToBottom(animated: false)
-                }
-            },
-            completion: nil
-        )
-    }
-
     @objc
     func titleViewTapAction(_ sender: UITapGestureRecognizer) {
-        self.chatTableViewController?.showRateOperatorDialog()
+        self.showRateOperatorDialog()
     }
     
     @objc
-    func updateOperatorStatus(sender: Notification) {
-        guard let operatorStatus = sender.userInfo as? [String: String] else { return }
-        let status = operatorStatus["Status"]
-        
+    func updateOperatorStatus(typing: Bool, operatorStatus: String) {
         DispatchQueue.main.async {
-            if status == "typing".localized {
+            if typing {
                 let offsetX = self.titleViewTypingIndicator.frame.width / 2
                 self.titleViewTypingIndicator.addAllAnimations()
                 self.titleViewOperatorStatusLabel.snp.remakeConstraints { (make) -> Void in
@@ -203,17 +225,12 @@ class ChatViewController: UIViewController {
                         .offset(2)
                 }
             }
-            self.titleViewOperatorStatusLabel.text = status
+            self.titleViewOperatorStatusLabel.text = operatorStatus
         }
     }
     
     @objc
-    func updateOperatorInfo(sender: Notification) {
-        guard let operatorInfo = sender.userInfo as? [String: String] else { return }
-        let operatorName = operatorInfo["OperatorName"]
-        let operatorAvatarURL = operatorInfo["OperatorAvatarURL"]
-        titleViewOperatorInfo = operatorInfo["OperatorInfo"]
-        titleViewOperatorTitle = operatorInfo["OperatorTitle"]
+    func updateOperatorInfo(operatorName: String, operatorAvatarURL: String, titleViewOperatorInfo: String, titleViewOperatorTitle: String ) {
         chatTestView.setupOperatorInfo(titleViewOperatorTitle: titleViewOperatorTitle, titleViewOperatorInfo: titleViewOperatorInfo)
         DispatchQueue.main.async {
             self.titleViewOperatorNameLabel.text = operatorName
@@ -230,8 +247,7 @@ class ChatViewController: UIViewController {
                 self.titleViewOperatorAvatarImageView.image = userAvatarImagePlaceholder
                 self.titleViewOperatorAvatarImageView.layer.cornerRadius = self.titleViewOperatorAvatarImageView.bounds.height / 2
             } else {
-                guard let string = operatorAvatarURL else { return }
-                guard let url = URL(string: string) else { return }
+                guard let url = URL(string: operatorAvatarURL) else { return }
                 
                 let imageDownloadIndicator = CircleProgressIndicator()
                 imageDownloadIndicator.lineWidth = 1
@@ -240,11 +256,11 @@ class ChatViewController: UIViewController {
                 imageDownloadIndicator.isHidden = true
                 imageDownloadIndicator.translatesAutoresizingMaskIntoConstraints = false
                 
-                self.bottomBarQuoteAttachmentImageView.addSubview(imageDownloadIndicator)
-                imageDownloadIndicator.snp.remakeConstraints { (make) -> Void in
-                    make.edges.equalToSuperview()
-                        .inset(5)
-                }
+//                self.bottomBarQuoteAttachmentImageView.addSubview(imageDownloadIndicator)
+//                imageDownloadIndicator.snp.remakeConstraints { (make) -> Void in
+//                    make.edges.equalToSuperview()
+//                        .inset(5)
+//                }
                 
                 let loadingOptions = ImageLoadingOptions(
                     placeholder: UIImage(),
@@ -279,7 +295,7 @@ class ChatViewController: UIViewController {
                     },
                     completion: { _ in
                         DispatchQueue.main.async {
-                            self.bottomBarQuoteAttachmentImageView.image = ImageCache.shared[imageRequest]
+                            // self.bottomBarQuoteAttachmentImageView.image = ImageCache.shared[imageRequest]
                             imageDownloadIndicator.isHidden = true
                         }
                     }
@@ -289,441 +305,363 @@ class ChatViewController: UIViewController {
     }
     
     @objc
-    func sendMessage(_ sender: UIButton) { // Right button pressed
-        if !textInputTextView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            if var text: String = textInputTextView.text {
-                text = text.trimWhitespacesIn()
-                if bottomBarQuoteBackgroundView.isDescendant(of: self.view) {
-                    // If bottomBarQuoteBackgroundView is a subview of self.view
-                    // (i.e. is visible and present on the screen)
-                    
-                    if bottomBarQuoteUsernameLabel.text == "Edit Message".localized {
-                        // Edit mode
-                        if text.trimmingCharacters(in: .whitespacesAndNewlines) !=
-                            bottomBarQuoteBodyLabel.text?
-                                .trimmingCharacters(in: .whitespacesAndNewlines) {
-                            chatTableViewController?.editMessage(text)
-                        }
-                    } else {
-                        chatTableViewController?.replyToMessage(text)
-                    }
-                    removeQuoteEditBar()
-                } else {
-                    chatTableViewController?.sendMessage(text)
-                }
-                
-                let shouldLeaveTextInputAsIs = alreadyPutTextFromBufferString || WebimServiceController.currentSession.shouldShowDepartmentSelection()
-                
-                if !shouldLeaveTextInputAsIs {
-                    textInputTextView.updateText("")
-                }
-                
-                alreadyPutTextFromBufferString = false
-            } else {
-                return
-            }
-        }
-        chatTableViewController?.selectedCellRow = nil
-    }
-    
-    @objc
-    func showSendFileMenu(_ sender: UIButton) { // Send file button pressed
-        filePicker.showSendFileMenu(from: sender)
-    }
-    
-    @objc
-    func addQuoteEditBar(sender: Notification) {
-        guard let actions = sender.userInfo as? [String: PopupAction] else { return }
-        let action = actions["Action"]
-        
-        guard let message = chatTableViewController?.getSelectedMessage()
-        else { return }
-        
-        // Save text from input text view if there was some
-        if !textInputTextView.text.isEmpty {
-            textInputTextViewBufferString = textInputTextView.text
-            alreadyPutTextFromBufferString = false
-        }
-        
-        // bottomBarQuoteLineView
-        bottomBarQuoteBackgroundView.addSubview(bottomBarQuoteLineView)
-        bottomBarQuoteLineView.backgroundColor = bottomBarQuoteLineViewColour
-        bottomBarQuoteLineView.snp.remakeConstraints { (make) -> Void in
-            make.height.equalTo(45)
-            make.width.equalTo(2)
-            make.top.bottom.equalToSuperview()
-                .inset(textInputBackgroundViewTopBottomSpacing)
-            // TODO: Check this
-            // make.bottom.equalToSuperview()
-            make.leading.equalToSuperview()
-                .inset(
-                    fileButtonLeadingSpacing +
-                    fileButtonTrailingSpacing +
-                    buttonWidthHeight + 5
-            )
-        }
-        
-        // bottomBarQuoteUsernameLabel
-        bottomBarQuoteBackgroundView.addSubview(bottomBarQuoteUsernameLabel)
-        
-        if action == .reply {
-            if message.getSenderName() == "Посетитель" {
-                bottomBarQuoteUsernameLabel.text = "HardcodedVisitorMessageName".localized
-            } else {
-                bottomBarQuoteUsernameLabel.text = message.getSenderName()
-            }
-        } else {
-            bottomBarQuoteUsernameLabel.text = "Edit Message".localized
-            textInputTextView.text = message.getText()
-            hidePlaceholderIfVisible()
-        }
-        
-        bottomBarQuoteUsernameLabel.snp.remakeConstraints { (make) -> Void in
-            make.top.equalToSuperview()
-                .inset(10)
-            make.leading.equalTo(bottomBarQuoteLineView.snp.trailing)
-                .offset(10)
-        }
-        
-        // bottomBarQuoteBodyLabel
-        bottomBarQuoteBackgroundView.addSubview(bottomBarQuoteBodyLabel)
-        bottomBarQuoteBodyLabel.text = message.getText().replacingOccurrences(of: "\n+", with: " ", options: .regularExpression)
-        
-        bottomBarQuoteBodyLabel.snp.remakeConstraints { (make) -> Void in
-            make.top.equalTo(bottomBarQuoteUsernameLabel.snp.bottom)
-                .offset(5)
-            make.leading.equalTo(bottomBarQuoteLineView.snp.trailing)
-                .offset(10)
-            make.trailing.equalTo(bottomBarQuoteUsernameLabel.snp.trailing)
-        }
-        
-        // bottomBarQuoteCancelButton
-        bottomBarQuoteBackgroundView.addSubview(bottomBarQuoteCancelButton)
-        bottomBarQuoteCancelButton.setBackgroundImage(
-            closeButtonImage,
-            for: .normal
-        )
-        bottomBarQuoteCancelButton.addTarget(
-            self,
-            action: #selector(removeQuoteEditBar),
-            for: .touchUpInside
-        )
-        
-        bottomBarQuoteCancelButton.snp.remakeConstraints { (make) -> Void in
-            make.trailing.equalToSuperview()
-                .inset(10)
-            
-            make.centerY.equalTo(bottomBarQuoteLineView.snp.centerY)
-            make.height.width.equalTo(20)
-            
-            make.leading.equalTo(bottomBarQuoteUsernameLabel.snp.trailing)
-                .offset(10)
-        }
-        
-        // bottomBarQuoteAttachmentImageView
-        if let contentType = message.getData()?.getAttachment()?.getFileInfo().getContentType(),
-            let url = message.getData()?.getAttachment()?.getFileInfo().getURL() {
-            
-            bottomBarQuoteBackgroundView.addSubview(bottomBarQuoteAttachmentImageView)
-            bottomBarQuoteAttachmentImageView.clipsToBounds = true
-            bottomBarQuoteAttachmentImageView.roundCorners(
-                [.layerMinXMinYCorner,
-                 .layerMaxXMinYCorner,
-                 .layerMinXMaxYCorner,
-                 .layerMaxXMaxYCorner],
-                radius: 5
-            )
-            
-            bottomBarQuoteAttachmentImageView.snp.remakeConstraints { (make) -> Void in
-                make.top.equalToSuperview()
-                    .inset(10)
-                make.leading.equalTo(bottomBarQuoteLineView.snp.trailing)
-                    .offset(10)
-                make.width.height.equalTo(bottomBarQuoteLineView.snp.height)
-            }
-            
-            if isImage(contentType: contentType) {
-                let imageDownloadIndicator = CircleProgressIndicator()
-                imageDownloadIndicator.lineWidth = 1
-                imageDownloadIndicator.strokeColor = documentFileStatusPercentageIndicatorColour
-                imageDownloadIndicator.isUserInteractionEnabled = false
-                imageDownloadIndicator.isHidden = true
-                imageDownloadIndicator.translatesAutoresizingMaskIntoConstraints = false
-                
-                bottomBarQuoteAttachmentImageView.addSubview(imageDownloadIndicator)
-                imageDownloadIndicator.snp.remakeConstraints { (make) -> Void in
-                    make.edges.equalToSuperview()
-                        .inset(5)
-                }
-                
-                let request = ImageRequest(url: url)
-                if let image = ImageCache.shared[request] {
-                    imageDownloadIndicator.isHidden = true
-                    bottomBarQuoteAttachmentImageView.image = image
-                } else {
-                    bottomBarQuoteAttachmentImageView.image = loadingPlaceholderImage
-
-                    Nuke.ImagePipeline.shared.loadImage(
-                        with: url,
-                        progress: { _, completed, total in
-                            DispatchQueue.global(qos: .userInteractive).async {
-                                let progress = Float(completed) / Float(total)
-                                DispatchQueue.main.async {
-                                    if imageDownloadIndicator.isHidden {
-                                        imageDownloadIndicator.isHidden = false
-                                        imageDownloadIndicator.enableRotationAnimation()
-                                    }
-                                    imageDownloadIndicator.setProgressWithAnimation(
-                                        duration: 0.1,
-                                        value: progress
-                                    )
-                                }
-                            }
-                        },
-                        completion: { _ in
-                            DispatchQueue.main.async {
-                                self.bottomBarQuoteAttachmentImageView.image = ImageCache.shared[request]
-                                imageDownloadIndicator.isHidden = true
-                            }
-                        }
-                    )
-                }
-            } else {
-                bottomBarQuoteAttachmentImageView.image = nil
-            }
-            // bottomBarQuoteUsernameLabel
-            bottomBarQuoteUsernameLabel.snp.remakeConstraints { (make) -> Void in
-                make.top.equalToSuperview()
-                    .inset(10)
-                if bottomBarQuoteAttachmentImageView.image != nil {
-                    make.leading.equalTo(bottomBarQuoteAttachmentImageView.snp.trailing)
-                        .offset(10)
-                } else {
-                    make.leading.equalTo(bottomBarQuoteLineView.snp.trailing)
-                        .offset(10)
-                }
-            }
-            
-            // bottomBarQuoteBodyLabel
-            bottomBarQuoteBodyLabel.snp.remakeConstraints { (make) -> Void in
-                make.top.equalTo(bottomBarQuoteUsernameLabel.snp.bottom)
-                    .offset(5)
-                if bottomBarQuoteAttachmentImageView.image != nil {
-                    make.leading.equalTo(bottomBarQuoteAttachmentImageView.snp.trailing)
-                        .offset(10)
-                } else {
-                    make.leading.equalTo(bottomBarQuoteLineView.snp.trailing)
-                        .offset(10)
-                }
-                make.trailing.equalTo(bottomBarQuoteUsernameLabel.snp.trailing)
-            }
-        }
-        // bottomBarQuoteBackgroundView
-        bottomBarBackgroundView.addSubview(bottomBarQuoteBackgroundView)
-        
-        UIView.animate(withDuration: 0.1) {
-            self.bottomBarQuoteBackgroundView.snp.remakeConstraints { (make) -> Void in
-                make.top.leading.equalToSuperview()
-                if #available(iOS 11.0, *) {
-                    make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
-                        .inset(20)
-                } else {
-                    make.trailing.equalToSuperview()
-                        .inset(20)
-                }
-                make.trailing.equalTo(self.bottomBarQuoteUsernameLabel.snp.trailing)
-            }
-            
-            // textInputBackgroundView
-            self.textInputBackgroundView.snp.remakeConstraints { (make) -> Void in
-                make.top.equalTo(self.bottomBarQuoteBackgroundView.snp.bottom)
-                    .offset(self.textInputBackgroundViewTopBottomSpacing)
-                if #available(iOS 11.0, *) {
-                    make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
-                        .inset(20)
-                } else {
-                    make.trailing.equalToSuperview()
-                        .inset(20)
-                }
-                make.bottom.equalToSuperview()
-                    .inset(self.textInputBackgroundViewTopBottomSpacing)
-                make.leading.equalTo(self.fileButton.snp.trailing)
-                    .offset(self.fileButtonTrailingSpacing)
-            }
-            
-            self.view.layoutIfNeeded()
-        }
-        // bottomBarQuoteBackgroundView
-        bottomBarBackgroundView.addSubview(bottomBarQuoteBackgroundView)
-        
-        chatTableViewController?.scrollToBottom(animated: true)
-        textInputTextView.becomeFirstResponder()
-    }
-
-    @objc
-    func removeQuoteEditBar() {
-        guard bottomBarQuoteBackgroundView.isDescendant(of: self.view) else { return }
-        let typingDraftDictionary = ["DraftText": 123]
-        NotificationCenter.default.postInMainThread(
-            name: .shouldSetVisitorTypingDraft,
-            object: nil,
-            userInfo: typingDraftDictionary
-        )
-        
-        if bottomBarQuoteUsernameLabel.text == "Edit Message".localized {
-            // Edit mode
-            bottomBarQuoteUsernameLabel.text = ""
-            if !textInputTextView.text.isEmpty {
-                
-                let newText: String = textInputTextViewBufferString ?? ""
-                if textInputTextViewBufferString != nil {
-                    textInputTextViewBufferString = nil
-                    alreadyPutTextFromBufferString = true
-                }
-                textInputTextView.updateText(newText)
-            }
-        }
-        
-        bottomBarQuoteBackgroundView.removeFromSuperview()
-        bottomBarQuoteLineView.removeFromSuperview()
-        bottomBarQuoteAttachmentImageView.removeFromSuperview()
-        bottomBarQuoteUsernameLabel.removeFromSuperview()
-        bottomBarQuoteBodyLabel.removeFromSuperview()
-        bottomBarQuoteCancelButton.removeFromSuperview()
-        
-        UIView.animate(withDuration: 0.1) {
-            // textInputBackgroundView
-            self.textInputBackgroundView.snp.remakeConstraints { (make) -> Void in
-                make.top.equalToSuperview()
-                    .inset(self.textInputBackgroundViewTopBottomSpacing)
-            if #available(iOS 11.0, *) {
-                    make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing)
-                        .inset(20)
-                } else {
-                    make.trailing.equalToSuperview()
-                        .inset(20)
-                }
-                make.bottom.equalToSuperview()
-                    .inset(self.textInputBackgroundViewTopBottomSpacing)
-                make.leading.equalTo(self.fileButton.snp.trailing)
-                    .offset(self.fileButtonTrailingSpacing)
-            }
-            
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    @objc
-    func copyMessage(sender: Notification) {
-        chatTableViewController?.copyMessage()
-    }
-    
-    @objc
-    func deleteMessage(sender: Notification) {
-        chatTableViewController?.deleteMessage()
-    }
-    
-    @objc
-    func likeMessage(sender: Notification) {
-        chatTableViewController?.reactMessage(reaction: ReactionString.like)
-    }
-    
-    @objc
-    func dislikeMessage(sender: Notification) {
-        chatTableViewController?.reactMessage(reaction: ReactionString.dislike)
-    }
-    
-    private func setupScrollButton() {
-        scrollButton.setBackgroundImage(scrollButtonImage, for: .normal)
-        scrollButton.layoutIfNeeded()
-        scrollButton.subviews.first?.contentMode = .scaleAspectFill
-        scrollButton.addTarget(
-            self,
-            action: #selector(scrollTableView),
-            for: .touchUpInside
-        )
-        self.view.addSubview(scrollButton)
-        
-        scrollButton.snp.remakeConstraints { (make) -> Void in
-            if #available(iOS 11.0, *) {
-                make.trailing.equalTo(self.view.safeAreaLayoutGuide)
-                    .inset(5)
-            } else {
-                make.trailing.equalTo(tableViewControllerContainerView)
-                    .inset(5)
-            }
-            make.bottom.equalTo(tableViewControllerContainerView)
-                .inset(5)
-            make.height.equalTo(self.scrollButton.snp.width)
-            make.width.equalTo(30)
-        }
-        
-        scrollButton.isHidden = true
-    }
-    
-    @objc
-    private func scrollTableView(_ sender: UIButton) {
-        chatTableViewController?.scrollToBottom(animated: true)
-    }
-    
-    @objc
-    func showScrollButton(_ sender: Notification) {
-        scrollButton.fadeIn()
-    }
-    
-    @objc
-    func hideScrollButton(_ sender: Notification) {
-        scrollButton.fadeOut()
+    func scrollTableView(_ sender: UIButton) {
+        self.scrollToBottom(animated: true)
     }
     
     private func hidePlaceholderIfVisible() {
-        if !(self.textInputTextViewPlaceholderLabel.alpha == 0.0) {
-            UIView.animate(withDuration: 0.1) {
-                self.textInputTextViewPlaceholderLabel.alpha = 0.0
-            }
-        }
+//        if !(self.textInputTextViewPlaceholderLabel.alpha == 0.0) {
+//            UIView.animate(withDuration: 0.1) {
+//                self.textInputTextViewPlaceholderLabel.alpha = 0.0
+//            }
+//        }
     }
     
     public func setConnectionStatus(connected: Bool) {
         DispatchQueue.main.async {
             if connected {
-                self.navigationController?.navigationBar.barTintColor = navigationBarBarTintColour
+                self.navigationController?.setTopBar(isEnabled: false, isTranslucent: false, barTintColor: navigationBarTintColour, backgroundColor: navigationBarBarTintColour)
             } else {
-                self.navigationController?.navigationBar.barTintColor = navigationBarNoConnectionColour
+                self.navigationController?.setTopBar(isEnabled: false, isTranslucent: false, barTintColor: navigationBarNoConnectionColour, backgroundColor: navigationBarNoConnectionColour)
             }
             self.connectionErrorView?.alpha = connected ? 0 : 1
         }
     }
-}
-
-// MARK: - UITextViewDelegate methods
-extension ChatViewController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        if bottomBarQuoteUsernameLabel.text != "Edit Message".localized {
-            // If in edit mode, don't setTypingDraft
-            let typingDraftDictionary = ["DraftText": textView.text]
-            NotificationCenter.default.postInMainThread(
-                name: .shouldSetVisitorTypingDraft,
-                object: nil,
-                userInfo: typingDraftDictionary as [AnyHashable: Any]
-            )
+    
+    func sendMessage(_ message: String) {
+        WebimServiceController.currentSession.send(message: message) {
+            self.toolbarView.messageView.setMessageText("")
+            // Delete visitor typing draft after message is sent.
+            WebimServiceController.currentSession.setVisitorTyping(draft: nil)
         }
+    }
+    
+    func sendImage(image: UIImage, imageURL: URL?) {
+        dismissViewKeyboard()
         
-        if textView.text.isEmpty {
-            UIView.animate(withDuration: 0.1) {
-                self.textInputTextViewPlaceholderLabel.alpha = 1.0
+        var imageData = Data()
+        var imageName = String()
+        var mimeType = MimeType()
+        
+        if let imageURL = imageURL {
+            mimeType = MimeType(url: imageURL as URL)
+            imageName = imageURL.lastPathComponent
+            
+            let imageExtension = imageURL.pathExtension.lowercased()
+            
+            switch imageExtension {
+            case "jpg", "jpeg":
+                guard let unwrappedData = image.jpegData(compressionQuality: 1.0)
+                else { return }
+                imageData = unwrappedData
+                
+            case "heic", "heif":
+                guard let unwrappedData = image.jpegData(compressionQuality: 0.5)
+                else { return }
+                imageData = unwrappedData
+                
+                var components = imageName.components(separatedBy: ".")
+                if components.count > 1 {
+                    components.removeLast()
+                    imageName = components.joined(separator: ".")
+                }
+                imageName += ".jpeg"
+                
+            default:
+                guard let unwrappedData = image.pngData()
+                else { return }
+                imageData = unwrappedData
             }
         } else {
-            UIView.animate(withDuration: 0.1) {
-                self.textInputTextViewPlaceholderLabel.alpha = 0.0
+            guard let unwrappedData = image.jpegData(compressionQuality: 1.0)
+            else { return }
+            imageData = unwrappedData
+            imageName = "photo.jpeg"
+        }
+        
+        WebimServiceController.currentSession.send(
+            file: imageData,
+            fileName: imageName,
+            mimeType: mimeType.value,
+            completionHandler: self
+        )
+    }
+    
+    func sendFile(file: Data, fileURL: URL?) {
+        if let fileURL = fileURL {
+            WebimServiceController.currentSession.send(
+                file: file,
+                fileName: fileURL.lastPathComponent,
+                mimeType: MimeType(url: fileURL as URL).value,
+                completionHandler: self
+            )
+        } else {
+            let url = URL(fileURLWithPath: "document.pdf")
+            WebimServiceController.currentSession.send(
+                file: file,
+                fileName: url.lastPathComponent,
+                mimeType: MimeType(url: url).value,
+                completionHandler: self
+            )
+        }
+    }
+    
+    func replyToMessage(_ message: String) {
+        guard let messageToReply = selectedMessage else { return }
+        WebimServiceController.currentSession.reply(
+            message: message,
+            repliedMessage: messageToReply,
+            completion: {
+                // Delete visitor typing draft after message is sent.
+                WebimServiceController.currentSession.setVisitorTyping(draft: nil)
+            }
+        )
+    }
+    
+    @objc
+    func copyMessage() {
+        guard let messageToCopy = selectedMessage else { return }
+        UIPasteboard.general.string = messageToCopy.getText()
+    }
+    
+    func editMessage(_ message: String) {
+        guard let messageToEdit = selectedMessage else { return }
+        WebimServiceController.currentSession.edit(
+            message: messageToEdit,
+            text: message,
+            completionHandler: self
+        )
+    }
+    
+    func reactMessage(reaction: ReactionString) {
+        guard let messageToReact = selectedMessage else { return }
+        WebimServiceController.currentSession.react(
+            reaction: reaction,
+            message: messageToReact,
+            completionHandler: self
+        )
+    }
+    
+    @objc
+    func deleteMessage() {
+        guard let messageToDelete = selectedMessage else { return }
+        WebimServiceController.currentSession.delete(
+            message: messageToDelete,
+            completionHandler: self
+        )
+    }
+    
+    @objc
+    func scrollToBottom(animated: Bool) {
+        if messages().isEmpty {
+            return
+        }
+        
+        let row = (chatTableView.numberOfRows(inSection: 0)) - 1
+        let bottomMessageIndex = IndexPath(row: row, section: 0)
+        chatTableView?.scrollToRowSafe(at: bottomMessageIndex, at: .bottom, animated: animated)
+    }
+    
+    @objc
+    func scrollToTop(animated: Bool) {
+        if messages().isEmpty {
+            return
+        }
+        
+        let indexPath = IndexPath(row: 0, section: 0)
+        self.chatTableView?.scrollToRowSafe(at: indexPath, at: .top, animated: animated)
+    }
+    
+    // MARK: - Private methods
+    
+    private func reloadTableWithNewData() {
+        self.chatTableView?.reloadData()
+        WebimServiceController.currentSession.setChatRead()
+    }
+    
+    @objc
+    func requestMessages() {
+        WebimServiceController.currentSession.getNextMessages { [weak self] messages in
+            DispatchQueue.main.async {
+                self?.chatMessages.insert(contentsOf: messages, at: 0)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self?.reloadTableWithNewData()
+                if self?.scrollToBottom == true {
+                    self?.scrollToBottom(animated: false)
+                    self?.scrollToBottom = false
+                } else {
+                    //self?.chatTableView?.scrollToRowSafe(at: IndexPath(row: messages.count, section: 0), at: .middle, animated: false)
+                }
+                
+                self?.newRefreshControl.endRefreshing()
+            }
+        }
+    }
+    
+    func shouldShowFullDate(forMessageNumber index: Int) -> Bool {
+        guard index - 1 >= 0 else { return true }
+        let currentMessageTime = chatMessages[index].getTime()
+        let previousMessageTime = chatMessages[index - 1].getTime()
+        let differenceBetweenDates = Calendar.current.dateComponents(
+            [.day],
+            from: previousMessageTime,
+            to: currentMessageTime
+        )
+        return differenceBetweenDates.day != 0
+    }
+    
+    func shouldShowOperatorInfo(forMessageNumber index: Int) -> Bool {
+        guard chatMessages[index].isOperatorType() else { return false }
+        guard index + 1 < chatMessages.count else { return true }
+        
+        let nextMessage = chatMessages[index + 1]
+        let progress = nextMessage.getData()?.getAttachment()?.getDownloadProgress() ?? 100
+        if nextMessage.isOperatorType() {
+            return progress != 100
+        } else {
+            return true
+        }
+    }
+    
+    func shoowPopover(cell: UITableViewCell, message: Message, cellHeight: CGFloat) {
+        
+        let viewController = PopupActionsViewController()
+        self.popupActionsViewController = viewController
+        viewController.modalPresentationStyle = .overFullScreen
+        viewController.cellImageViewImage = cell.contentView.takeScreenshot()
+        viewController.delegate = self
+        UIImageView.animate(withDuration: 0.2, animations: {() -> Void in
+            viewController.cellImageView.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
+        })
+        guard let globalYPosition = cell.superview?
+                .convert(cell.center, to: nil)
+        else { return }
+        viewController.cellImageViewCenterYPosition = globalYPosition.y
+        viewController.cellImageViewHeight = cellHeight
+        if message.isOperatorType() {
+            viewController.originalCellAlignment = .leading
+        } else if message.isVisitorType() {
+            viewController.originalCellAlignment = .trailing
+        }
+        
+        if message.canBeReplied() {
+            viewController.actions.append(.reply)
+        }
+        
+        if message.canBeCopied() {
+            viewController.actions.append(.copy)
+        }
+        
+        if message.canBeEdited() && message.getData()?.getAttachment() == nil {
+            viewController.actions.append(.edit)
+            
+            // If image hide show edit action
+            if let contentType = message.getData()?.getAttachment()?.getFileInfo().getContentType() {
+                if MimeType.isImage(contentType: contentType) {
+                    viewController.actions.removeLast()
+                }
+            }
+            viewController.actions.append(.delete)
+        }
+        
+        if message.canVisitorReact() {
+            if message.getVisitorReaction() == nil || message.canVisitorChangeReaction() {
+                viewController.actions.append(.like)
+                viewController.actions.append(.dislike)
             }
         }
         
-        textInputTextView.snp.remakeConstraints { (make) -> Void in
-            make.top.bottom.leading.equalToSuperview()
-                .inset(5)
-            make.height.equalTo(min(130.5, max(35.5, textView.contentSize.height)))
+        if !viewController.actions.isEmpty {
+            AppDelegate.keyboardHidden(true)
+            let scale = (self.view.frame.width + 19) / self.view.frame.width
+            self.present(viewController, animated: false) {
+                UIImageView.animate(withDuration: 0.2, animations: {() -> Void in
+                    viewController.cellImageView.transform = CGAffineTransform(scaleX: scale, y: scale)
+                })
+            }
         }
+    }
+    
+    func showOverlayWindow() {
+        
+        if AppDelegate.keyboardWindow != nil {
+            overlayWindow?.isHidden = false
+        }
+        AppDelegate.keyboardHidden(true)
+    }
+    
+    @objc
+    func rateOperatorByTappingAvatar(recognizer: UITapGestureRecognizer) {
+        guard recognizer.state == .ended else { return }
+        let tapLocation = recognizer.location(in: chatTableView)
+        
+        guard let tapIndexPath = chatTableView?.indexPathForRow(at: tapLocation) else { return }
+        let message = messages()[tapIndexPath.row]
+        
+        self.showRateOperatorDialog(operatorId: message.getOperatorID())
+    }
+    
+    @objc
+    private func addRatedOperator(_ notification: Notification) {
+        guard let ratingInfoDictionary = notification.userInfo
+                as? [String: Int]
+        else { return }
+        
+        for (id, rating) in ratingInfoDictionary {
+            rateOperator(
+                operatorID: id,
+                rating: rating
+            )
+        }
+    }
+    
+    // Webim methods
+    private func setupWebimSession() {
+        
+        WebimServiceController.currentSession.setMessageTracker(withMessageListener: self)
+        WebimServiceController.currentSession.set(operatorTypingListener: self)
+        WebimServiceController.currentSession.set(currentOperatorChangeListener: self)
+        WebimServiceController.currentSession.set(chatStateListener: self)
+        WebimServiceController.currentSession.set(surveyListener: self)
+        WebimServiceController.currentSession.getLastMessages { [weak self] messages in
+            
+            DispatchQueue.main.async {
+                self?.chatMessages.insert(contentsOf: messages, at: 0)
+                self?.reloadTableWithNewData()
+                self?.scrollToBottom(animated: false)
+                if messages.count < WebimService.ChatSettings.messagesPerRequest.rawValue {
+                    self?.scrollToBottom = true
+                    self?.requestMessages()
+                }
+            }
+        }
+    }
+    
+    func updateCurrentOperatorInfo(to newOperator: Operator?) {
+        if let currentOperator = newOperator {
+            let operatorURLString = currentOperator.getAvatarURL()?.absoluteString ?? OperatorAvatar.placeholder.rawValue
+            updateOperatorInfo(operatorName: currentOperator.getName(),
+                               operatorAvatarURL: operatorURLString,
+                               titleViewOperatorInfo: currentOperator.getInfo() ?? "",
+                               titleViewOperatorTitle: currentOperator.getTitle() ?? "")
+            
+        } else {
+            updateOperatorInfo(operatorName: "Webim demo-chat".localized,
+                               operatorAvatarURL: OperatorAvatar.empty.rawValue,
+                               titleViewOperatorInfo: "",
+                               titleViewOperatorTitle: "")
+        }
+    }
+    
+    // MARK: - WEBIM: DepartmentListHandlerDelegate
+    func showDepartmentsList(_ departaments: [Department], action: @escaping (String) -> Void) {
+        alertDialogHandler.showDepartmentListDialog(
+            withDepartmentList: departaments,
+            action: action,
+            senderButton: self.toolbarView.messageView.sendButton,
+            cancelAction: { }
+        )
     }
 }
 
@@ -735,7 +673,7 @@ extension ChatViewController: FilePickerDelegate {
         
         guard let imageToSend = image else { return }
         
-        chatTableViewController?.sendImage(
+        self.sendImage(
             image: imageToSend,
             imageURL: imageURL
         )
@@ -746,26 +684,115 @@ extension ChatViewController: FilePickerDelegate {
         
         guard let fileToSend = file else { return }
         
-        chatTableViewController?.sendFile(
+        self.sendFile(
             file: fileToSend,
             fileURL: fileURL
         )
+    }
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if toolbarView.messageView.messageText.isFirstResponder && hideKeyboardOnScrollEnabled {
+//            self.toolbarView.messageView.messageText.resignFirstResponder()
+//        }
+//        if chatTableView.numberOfSections <= 0 { return }
+//
+//        let lastCellIndexPath = IndexPath(
+//            row: chatTableView.numberOfRows(inSection: 0) - 1,
+//            section: 0
+//        )
+//
+//        if chatTableView.indexPathsForVisibleRows?.contains(lastCellIndexPath) == false {
+//            if scrollButtonIsHidden {
+//                scrollButtonIsHidden = false
+//                scrollButton.fadeIn()
+//            }
+//        } else {
+//            if !scrollButtonIsHidden {
+//                scrollButtonIsHidden = true
+//                scrollButton.fadeOut()
+//            }
+//        }
+//    }
+    
+    func recountChatTableFrame(keyboardHeight: CGFloat) -> CGRect {
+        
+        let offset = max(keyboardHeight, self.toolbarView.frame.height )
+        let height = self.view.frame.height - self.chatTableView.frame.origin.y - offset
+        var newFrame = self.chatTableView.frame
+        newFrame.size.height = height
+        return newFrame
+    }
+    
+    func recountTableSize() {
+        let newFrame = recountChatTableFrame(keyboardHeight: 0)
+        self.chatTableView.frame = newFrame
+        var scrollButtonFrame = self.scrollButton.frame
+        scrollButtonFrame.origin.y = newFrame.size.height - 50
+        self.scrollButton.frame = scrollButtonFrame
+        self.view.setNeedsDisplay()
+        self.view.setNeedsLayout()
+    }
+    
+    @objc func keyboardWillChange(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            let offset = max(keyboardHeight, self.toolbarView.frame.height)
+            scrollView.contentOffset = CGPoint(x: 0, y: offset)
+        }
     }
 }
 
 extension ChatViewController: ChatTestViewDelegate {
     
     func getSearchMessageText() -> String {
-        let searchText = textInputTextView.text
-        textInputTextView.text = ""
-        return searchText ?? ""
+        let searchText = self.toolbarView.messageView.getMessage()
+        self.toolbarView.messageView.setMessageText("")
+        return searchText
     }
     
     func toogleAutotest() -> Bool {
-        return self.chatTableViewController?.toggleAutotest() ?? false
+        return self.toggleAutotest()
     }
     
     func showSearchResult(searcMessages: [Message]?) {
-        self.chatTableViewController?.showSearchResult(messages: searcMessages)
+        showSearchResult(messages: searcMessages)
+    }
+    
+    func clearHistory() {
+        removedAllMessages()
+    }
+}
+
+extension ChatViewController: WMNewMessageViewDelegate {
+    func inputTextChanged() {
+        self.view.layoutIfNeeded()
+        WebimServiceController.currentSession.setVisitorTyping(draft: self.toolbarView.messageView.getMessage())
+    }
+    
+    func sendMessage() {
+        let messageText = self.toolbarView.messageView.getMessage()
+        guard !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        
+        if self.toolbarView.quoteBarIsVisible() {
+            if self.toolbarView.quoteView.currentMode() == .edit {
+                if messageText.trimmingCharacters(in: .whitespacesAndNewlines) !=
+                    self.toolbarView.quoteView.currentMessage().trimmingCharacters(in: .whitespacesAndNewlines) {
+                    self.editMessage(messageText)
+                }
+            } else {
+                self.replyToMessage(messageText)
+            }
+            self.toolbarView.removeQuoteEditBar()
+        } else {
+            self.sendMessage(messageText)
+        }
+        self.scrollToBottom(animated: true)
+        self.toolbarView.messageView.setMessageText("")
+        self.selectedMessage = nil
+    }
+    
+    func showSendFileMenu(_ sender: UIButton) { // Send file button pressed
+        filePicker.showSendFileMenu(from: sender)
     }
 }
