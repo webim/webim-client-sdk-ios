@@ -286,7 +286,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      */
                     let text = WMDataEncryptor.shared?.encryptToBase64String(text: (message.getRawText() ?? message.getText())) ?? "no data"
                     
-                    let statement = try db.prepare("INSERT OR FAIL INTO history ("
+                    let query: String = "INSERT OR FAIL INTO history ("
                         + "\(SQLiteHistoryStorage.ColumnName.id.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.timestamp.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.senderID.rawValue), "
@@ -299,7 +299,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorReact.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorChangeReaction.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+                        + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    let statement = try db.prepare(query)
                     try statement.run(message.getID(),
                                       messageHistorID.getTimeInMicrosecond(),
                                       message.getOperatorID(),

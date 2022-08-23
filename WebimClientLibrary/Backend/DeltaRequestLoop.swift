@@ -189,6 +189,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
         request.setValue("3.37.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.37.1", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
