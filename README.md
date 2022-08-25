@@ -4,13 +4,13 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 ## Installation
 
-> Minimum iOS version supported – 8.0.
+> Minimum iOS version supported – 9.0.
 
 ### CocoaPods
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.37.1'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.37.2'
 ```
 `use_frameworks!` must be specified.
 
@@ -18,7 +18,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.37.1
+github "webim/webim-client-sdk-ios" ~> 3.37.2
 ```
 
 ### Swift Package Manager
@@ -39,7 +39,8 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* `The compiler is unable to type-check this expression in reasonable time` error on Xcode 14 fixed.
+* SQLite.swift version increase.
+* Minimum iOS version supported – 9.0.
 
 ## Example
 

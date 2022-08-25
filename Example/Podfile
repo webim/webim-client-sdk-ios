@@ -11,7 +11,7 @@ target 'WebimClientLibrary_Example' do
     pod 'Firebase/Analytics'
     pod 'SlackTextViewController', :inhibit_warnings => true
     pod 'SnapKit', :inhibit_warnings => true
-    pod 'SQLite.swift', '0.12.2', :inhibit_warnings => true # WebimClientLibrary dependency – added to inhibit its warnings.
+    pod 'SQLite.swift', '0.13.3', :inhibit_warnings => true # WebimClientLibrary dependency – added to inhibit its warnings.
     pod 'Nuke', '~> 8.0', :inhibit_warnings => true
 
     target 'WebimClientLibrary_Tests' do
