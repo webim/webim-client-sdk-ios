@@ -63,7 +63,7 @@ final class ChatItem {
     private var category: String?
     private var clientSideID: String?
     private var creationTimestamp: Double
-    private var id: String
+    private var id: Int
     private lazy var messages = [MessageItem]()
     private var modificationTimestamp: Double?
     private var offline: Bool?
@@ -88,10 +88,10 @@ final class ChatItem {
             creationTimestamp = ChatItem.createCreationTimestamp()
         }
         
-        if let idValue = jsonDictionary[JSONField.id.rawValue] as? String {
+        if let idValue = jsonDictionary[JSONField.id.rawValue] as? Int {
             id = idValue
         } else {
-            id = String(Int(-creationTimestamp))
+            id = Int(-creationTimestamp)
         }
         
         if let unreadByVisitorMessageCount = jsonDictionary[JSONField.unreadByVisitorMessageCount.rawValue] as? Int {
@@ -172,11 +172,11 @@ final class ChatItem {
     }
     
     // For testing purpoeses.
-    init(id: String? = nil) {
+    init(id: Int? = nil) {
         let creationTimestamp = ChatItem.createCreationTimestamp()
         
         self.creationTimestamp = creationTimestamp
-        self.id = id ?? String(Int(-creationTimestamp))
+        self.id = id ?? Int(-creationTimestamp)
         
         unreadByVisitorMessageCount = 0
     }
@@ -213,6 +213,10 @@ final class ChatItem {
             return nil
         }
         return ChatItemState(withType: state)
+    }
+    
+    func getId() -> Int {
+        return id
     }
     
     func set(state: ChatItemState) {

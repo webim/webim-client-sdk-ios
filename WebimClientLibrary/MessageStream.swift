@@ -62,6 +62,16 @@ public protocol MessageStream: class {
     
     /**
      - returns:
+     Current chat id.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    func getChatId() -> Int?
+    
+    /**
+     - returns:
      Timestamp after which all chat messages are unread by operator (at the moment of last server update recieved).
      - author:
      Nikita Lazarev-Zubov

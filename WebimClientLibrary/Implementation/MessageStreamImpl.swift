@@ -363,6 +363,10 @@ extension MessageStreamImpl: MessageStream {
         return publicState(ofChatState: lastChatState)
     }
     
+    func getChatId() -> Int? {
+        return chat?.getId()
+    }
+    
     func getUnreadByOperatorTimestamp() -> Date? {
         return unreadByOperatorTimestamp
     }
