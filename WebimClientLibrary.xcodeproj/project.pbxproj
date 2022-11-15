@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		113057D6256E8088004BB13E /* StickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057D5256E8088004BB13E /* StickerItem.swift */; };
 		113057A9256D209D004BB13E /* UploadedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057A8256D209D004BB13E /* UploadedFile.swift */; };
 		113057AC256D22DE004BB13E /* UploadedFileImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057AB256D22DE004BB13E /* UploadedFileImpl.swift */; };
+		113057D6256E8088004BB13E /* StickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057D5256E8088004BB13E /* StickerItem.swift */; };
 		1134DD5A234A3FF5008FA6F0 /* NotFatalErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */; };
 		1134DD5C234A4BC8008FA6F0 /* WebimNotFatalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD5B234A4BC8008FA6F0 /* WebimNotFatalError.swift */; };
 		1134DD5E234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD5D234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift */; };
@@ -126,9 +126,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		113057D5256E8088004BB13E /* StickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerItem.swift; sourceTree = "<group>"; };
 		113057A8256D209D004BB13E /* UploadedFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFile.swift; sourceTree = "<group>"; };
 		113057AB256D22DE004BB13E /* UploadedFileImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFileImpl.swift; sourceTree = "<group>"; };
+		113057D5256E8088004BB13E /* StickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerItem.swift; sourceTree = "<group>"; };
 		1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFatalErrorHandler.swift; sourceTree = "<group>"; };
 		1134DD5B234A4BC8008FA6F0 /* WebimNotFatalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalError.swift; sourceTree = "<group>"; };
 		1134DD5D234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalErrorImpl.swift; sourceTree = "<group>"; };
@@ -712,7 +712,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -766,7 +766,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -794,7 +794,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.webim.WebimClientLibrary;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -824,7 +824,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.webim.WebimClientLibrary;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
