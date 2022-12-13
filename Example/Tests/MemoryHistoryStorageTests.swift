@@ -89,4 +89,12 @@ class MemoryHistoryStorageTests: XCTestCase {
         XCTAssertEqual(gettedMessages.count,
                        messagesCount)
     }
+
+    func testGetMajorVersion() {
+        let expectedValue = Int(InternalUtils.getCurrentTimeInMicrosecond() % Int64(Int.max))
+
+        let sut = MemoryHistoryStorage()
+
+        XCTAssertEqual(sut.getMajorVersion(), expectedValue, accuracy: 1_000_000)
+    }
 }

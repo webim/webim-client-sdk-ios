@@ -29,54 +29,108 @@ import Foundation
 import XCTest
 
 class HistoryBeforeResponseTests: XCTestCase {
-    
-    // MARK: - Constants
-    private static let HISTORY_BEFORE_RESPONSE_JSON_STRING = """
-{
-    "result" : "ok",
-    "data" : {
-        "hasMore" : true,
-        "messages" : [
-            {
-                "avatar" : "/webim/images/avatar/demo_33201.png",
-                "chatId" : "2470",
-                "authorId" : 33201,
-                "data" : null,
-                "id" : "26066",
-                "ts_m" : 1518178864048925,
-                "text" : "5",
-                "clientSideId" : "2b29154364e14cf8b3823267740ac090",
-                "kind" : "operator",
-                "name" : "Administrator"
-            },
-            {
-                "avatar" : null,
-                "chatId" : "2470",
-                "authorId" : null,
-                "data" : null,
-                "id" : "26068",
-                "ts_m" : 1518181740640531,
-                "text" : "Text",
-                "clientSideId" : "b91d616953a4d05c3df82f63359ebb58",
-                "kind" : "file_visitor",
-                "name" : "Никита"
-            }
-        ]
+
+    var sut: HistoryBeforeResponse!
+    var nullSut: HistoryBeforeResponse!
+
+    private let defaultHistoryBeforeResponseJson = """
+    {
+       "result":"ok",
+       "data":{
+          "hasMore":true,
+          "messages":[
+             {
+                "avatar":"/webim/images/avatar/demo_33201.png",
+                "chatId":"2470",
+                "authorId":33201,
+                "data":null,
+                "id":"26066",
+                "ts_m":1518178864048925,
+                "text":"5",
+                "clientSideId":"2b29154364e14cf8b3823267740ac090",
+                "kind":"operator",
+                "name":"Administrator"
+             },
+             {
+                "avatar":null,
+                "chatId":"2470",
+                "authorId":null,
+                "data":null,
+                "id":"26068",
+                "ts_m":1518181740640531,
+                "text":"Text",
+                "clientSideId":"b91d616953a4d05c3df82f63359ebb58",
+                "kind":"file_visitor",
+                "name":"Никита"
+             }
+          ]
+       }
     }
-}
-"""
+    """
+
+    private let nullHistoryBeforeResponseDataJson = """
+    {
+       "result":"ok",
+       "data":{
+          "hasMore":null,
+          "messages": null
+       }
+    }
+    """
+
+    private let nullHistoryBeforeResponseJson = "{ }"
+
+    override func setUp() {
+        super.setUp()
+        sut = HistoryBeforeResponse(jsonDictionary: convertToDict(defaultHistoryBeforeResponseJson))
+        nullSut = HistoryBeforeResponse(jsonDictionary: convertToDict(nullHistoryBeforeResponseJson))
+    }
+
+    override func tearDown() {
+        sut = nil
+        nullSut = nil
+        super.tearDown()
+    }
     
-    // MARK: - Properties
-    private let historyBeforeResponseDictionary = try! JSONSerialization.jsonObject(with: HistoryBeforeResponseTests.HISTORY_BEFORE_RESPONSE_JSON_STRING.data(using: .utf8)!,
-                                                                                    options: []) as! [String : Any?]
+    private func convertToDict(_ json: String) -> [String: Any?] {
+        return try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!, options: []) as! [String : Any?]
+    }
     
     // MARK: - Tests
-    func testInit() {
-        let historyBeforeItem = HistoryBeforeResponse(jsonDictionary: historyBeforeResponseDictionary)
-        
-        XCTAssertTrue(historyBeforeItem.getData()!.isHasMore())
-        XCTAssertEqual(historyBeforeItem.getData()!.getMessages()!.count,
-                       2)
+
+    func testInitRawData() {
+        XCTAssertNotNil(sut.getData())
     }
-    
+
+    func testInitRawDataNullValue() {
+        XCTAssertNil(nullSut.getData())
+    }
+
+    func testInitHistoryResponseDataHasMore() {
+        let expectedIsHasMore = true
+
+        XCTAssertEqual(sut.getData()?.isHasMore(), expectedIsHasMore)
+    }
+
+    func testInitHistoryResponseDataHasMoreNullValue() {
+        let expectedIsHasMore = false
+
+        let sut = HistoryBeforeResponse(jsonDictionary: convertToDict(nullHistoryBeforeResponseDataJson))
+
+        XCTAssertEqual(sut.getData()?.isHasMore(), expectedIsHasMore)
+    }
+
+    func testInitHistoryResponseDataMessages() {
+        let expectedMessageCount = 2
+
+        XCTAssertEqual(sut.getData()?.getMessages()?.count, expectedMessageCount)
+    }
+
+    func testInitHistoryBeforeResponseDataMessagesNullValue() {
+        let expectedMessagesIsEmpty = true
+
+        let sut = HistoryBeforeResponse(jsonDictionary: convertToDict(nullHistoryBeforeResponseDataJson))
+
+        XCTAssertEqual(sut.getData()?.getMessages()?.isEmpty, expectedMessagesIsEmpty)
+    }
 }

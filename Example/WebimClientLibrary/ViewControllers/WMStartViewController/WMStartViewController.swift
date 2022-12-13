@@ -33,6 +33,7 @@ final class WMStartViewController: UIViewController {
     private var unreadMessageCounter: Int = 0
     
     private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
+    private lazy var navigationControllerManager = NavigationControllerManager()
     
     // MARK: - Outlets
     @IBOutlet var startChatButton: UIButton!
@@ -45,37 +46,43 @@ final class WMStartViewController: UIViewController {
     @IBOutlet var unreadMessageCounterActivity: UIActivityIndicatorView!
     
     // MARK: - View Life Cycle
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Workaround for displaying correctly the position of the text inside weclomeTextView
-        DispatchQueue.main.async {
-            self.welcomeTextView.setTextWithHyperLinks(self.welcomeTextView.text.localized)
-            self.welcomeTextView.scrollRangeToVisible(NSRange(location: 0, length: 0))
-        }
-        welcomeTextView.sizeToFit()
-        setupColorScheme()
-        startWebimSession()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupStartChatButton()
         setupSettingsButton()
+        setupLogoTapGestureRecognizer()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = false
-        
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Workaround for displaying correctly the position of the text inside weclomeTextView
+        welcomeTextView.text = NSLocalizedString("xS6-J8-Sm9.text", tableName: "WMStartViewController", comment: "")
+        welcomeTextView.sizeToFit()
+        setupColorScheme()
+        setupNavigationBar()
+        startWebimSession()
     }
-    
+
+    // MARK: - IBAction Methods
+
     @IBAction func startChat(_ sender: Any) {
-        _ = WebimServiceController.shared.createSession()
-        let dialogVC = ChatViewController.loadViewControllerFromXib()
-        self.navigationController?.pushViewController(dialogVC, animated: true)
+        presentChatViewController()
+    }
+
+    @IBAction func openSettings() {
+        let settingsVc = WMSettingsViewController.loadViewControllerFromXib()
+        navigationController?.pushViewController(settingsVc, animated: true)
     }
     
     // MARK: - Private methods
+    @objc private func presentWMLogsViewController(_ gesture: UIGestureRecognizer) {
+        if WMTestManager.testModeEnabled() {
+            let logsViewController = WMLogsViewController.loadViewControllerFromXib()
+            navigationController?.pushViewController(logsViewController, animated: true)
+        }
+    }
+
     private func setupStartChatButton() {
         startChatButton.layer.cornerRadius = 8.0
         startChatButton.layer.borderWidth = 1.0
@@ -86,17 +93,17 @@ final class WMStartViewController: UIViewController {
         settingsButton.layer.cornerRadius = 8.0
         settingsButton.layer.borderWidth = 1.0
     }
+
+    private func setupLogoTapGestureRecognizer() {
+        let gesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(presentWMLogsViewController(_:)))
+        logoImageView.addGestureRecognizer(gesture)
+    }
     
     private func setupColorScheme() {
         view.backgroundColor = startViewBackgroundColour
 
-        // Fixing 'shadow' on top of the main colour
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.setTopBar(isEnabled: false, isTranslucent: false, barTintColor: navigationBarBarTintColour, backgroundColor: navigationBarBarTintColour)
-        
-        navigationController?.navigationBar.tintColor = navigationBarTintColour
         welcomeLabel.textColor = welcomeLabelTextColour
 
         welcomeTextView.textColor = welcomeTextViewTextColour
@@ -118,12 +125,10 @@ final class WMStartViewController: UIViewController {
                 self.unreadMessageCounterView.alpha = 1
                 self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
                 self.unreadMessageCounterActivity.stopAnimating()
-                self.unreadMessageCounterLabel.fadeTransition(0.2)
                 self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
             } else {
                 self.unreadMessageCounterView.alpha = 0
             }
-            
         }
     }
     
@@ -133,10 +138,14 @@ final class WMStartViewController: UIViewController {
         unreadMessageCounter = WebimServiceController.currentSession.getUnreadMessagesByVisitor()
         updateMessageCounter()
     }
-    
-    @IBAction func openSettings() {
-        let settingsVc = WMSettingsViewController.loadViewControllerFromXib()
-        navigationController?.pushViewController(settingsVc, animated: true)
+
+    private func setupNavigationBar() {
+        navigationControllerManager.set(isNavigationBarVisible: false)
+    }
+
+    private func presentChatViewController() {
+        let dialogVC = ChatViewController.loadViewControllerFromXib()
+        self.navigationController?.pushViewController(dialogVC, animated: true)
     }
 }
 

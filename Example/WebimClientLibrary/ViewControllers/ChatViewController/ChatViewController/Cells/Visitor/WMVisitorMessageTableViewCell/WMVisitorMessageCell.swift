@@ -38,8 +38,13 @@ class WMVisitorMessageCell: WMMessageTableCell {
     override func setMessage(message: Message, tableView: UITableView) {
         super.setMessage(message: message, tableView: tableView)
         
-        let checkLink = self.messageTextView.setTextWithReferences(message.getText(), alignment: .right)
-        
+        let checkLink = self.messageTextView.setTextWithReferences(
+            message.getText(),
+            textColor: messageBodyLabelColourVisitor,
+            alignment: .right)
+        messageTextView.removeInsets()
+        messageTextView.delegate = self
+
         if !cellMessageWasInited {
             cellMessageWasInited = true
             for recognizer in messageTextView.gestureRecognizers ?? [] {
@@ -59,6 +64,10 @@ class WMVisitorMessageCell: WMMessageTableCell {
             self.messageTextView.addGestureRecognizer(longPressPopupGestureRecognizer)
         }
     }
+
+    override func resignTextViewFirstResponder() {
+        messageTextView.resignFirstResponder()
+    }
     
     override func initialSetup() -> Bool {
         let setup = super.initialSetup()
@@ -66,5 +75,10 @@ class WMVisitorMessageCell: WMMessageTableCell {
             self.sharpCorner(view: messageView, visitor: true)
         }
         return setup
+    }
+
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        guard textView.selectedTextRange?.isEmpty == false else { return }
+        delegate?.cellChangeTextViewSelection(self)
     }
 }

@@ -31,10 +31,13 @@ final class ActionRequestLoopForTests: ActionRequestLoop {
     
     // MARK: - Properties
     var webimRequest: WebimRequest?
+    var enqueueCalled = false
     
     // MARK: - Methods
     override func enqueue(request: WebimRequest) {
         webimRequest = request
+        enqueueCalled = true
+        super.enqueue(request: request)
     }
     
 }

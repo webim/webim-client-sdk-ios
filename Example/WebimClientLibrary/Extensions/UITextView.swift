@@ -137,7 +137,7 @@ extension UITextView {
     func setTextWithReferences(_ originalText: String, textColor: UIColor? = nil, alignment: NSTextAlignment) -> Bool {
         
         let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .left
+        paragraph.alignment = alignment
         
         var text = originalText
         var hyperLinkArray = [SearchLinkData]()
@@ -184,6 +184,7 @@ extension UITextView {
                 attributedOriginalText.addAttribute(NSAttributedString.Key.link, value: url, range: linkRange)
             }
         }
+        linkTextAttributes = [.foregroundColor: linkColor]
         self.attributedText = attributedOriginalText
         return !matches.isEmpty || !hyperLinkArray.isEmpty
     }
@@ -214,6 +215,12 @@ extension UITextView {
             print("NSDataDetector error")
         }
         self.attributedText = attributedOriginalText
+    }
+
+    func removeInsets() {
+        textContainer.lineFragmentPadding = 0
+        contentInset = .zero
+        textContainerInset = .zero
     }
     
 }

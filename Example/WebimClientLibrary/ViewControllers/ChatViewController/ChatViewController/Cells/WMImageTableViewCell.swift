@@ -39,7 +39,7 @@ class WMImageTableViewCell: WMMessageTableCell, WMFileDownloadProgressListener {
     override func setMessage(message: Message, tableView: UITableView) {
         super.setMessage(message: message, tableView: tableView)
         
-        self.imagePreview.image = UIImage(named: "placeholder")
+        self.imagePreview.image = loadingPlaceholderImage
         if let attachment = message.getData()?.getAttachment(), let imageURL = WMDownloadFileManager.shared.urlFromFileInfo(attachment.getFileInfo()) {
             self.url = imageURL
             WMFileDownloadManager.shared.subscribeForImage(url: imageURL, progressListener: self)
@@ -57,7 +57,12 @@ class WMImageTableViewCell: WMMessageTableCell, WMFileDownloadProgressListener {
             }
             self.imagePreview.addConstraint(self.imageAspectConstraint)
             self.imageAspectConstraint.isActive = true
-            self.tableView?.reloadData() // возмонжо этот вызов ломает таблицу когда идет запрос видимых ячеек во время перезагрузки
+            if let indexPath = self.tableView?.indexPath(for: self) {
+                self.setNeedsLayout()
+                self.layoutIfNeeded()
+                guard delegate?.canReloadRow() == true else { return }
+                self.tableView?.reloadRows(at: [indexPath], with: .none)
+            }
         }
     }
     

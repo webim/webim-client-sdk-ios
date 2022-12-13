@@ -102,7 +102,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUserAgent = request
-        requestWithUserAgent.setValue("iOS: Webim-Client 3.37.4; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUserAgent.setValue("iOS: Webim-Client 3.38.0; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
         var lastHTTPCode = -1
@@ -138,7 +138,9 @@ class AbstractRequestLoop {
                 if let error = error {
                     semaphore.signal()
                     
-                    WebimInternalLogger.shared.log(entry: webimLoggerEntry)
+                    WebimInternalLogger.shared.log(
+                        entry: webimLoggerEntry,
+                        logType: .networkRequest)
                     
                     if let error = error as NSError?,
                         !(error.domain == NSURLErrorDomain && error.code == NSURLErrorNotConnectedToInternet) {
@@ -149,7 +151,10 @@ class AbstractRequestLoop {
                 if let data = data {
                     receivedData = data
                     
-                    WebimInternalLogger.shared.log(entry: webimLoggerEntry, verbosityLevel: .debug)
+                    WebimInternalLogger.shared.log(
+                        entry: webimLoggerEntry,
+                        verbosityLevel: .debug,
+                        logType: .networkRequest)
                 }
                 
                 semaphore.signal()
@@ -191,8 +196,10 @@ class AbstractRequestLoop {
                     parameters: requestWithUserAgent.httpBody,
                     code: httpCode
                 )
-                WebimInternalLogger.shared.log(entry: webimLoggerEntry,
-                                               verbosityLevel: .warning)
+                WebimInternalLogger.shared.log(
+                    entry: webimLoggerEntry,
+                    verbosityLevel: .warning,
+                    logType: .networkRequest)
             }
             
             errorCounter += 1
@@ -221,15 +228,40 @@ class AbstractRequestLoop {
     func handleRequestLoop(error: UnknownError) {
         switch error {
         case .interrupted:
-            WebimInternalLogger.shared.log(entry: "Request interrupted (it's OK if WebimSession object was destroyed).",
-                                           verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "Request interrupted (it's OK if WebimSession object was destroyed).",
+                verbosityLevel: .debug,
+                logType: .networkRequest)
             
             break
         case .serverError:
-            WebimInternalLogger.shared.log(entry: "Request failed with server error.")
+            WebimInternalLogger.shared.log(
+                entry: "Request failed with server error.",
+                logType: .networkRequest)
             
             break
         }
+    }
+
+    func decodeToServerSideSettings(data: Data) throws -> WebimServerSideSettings  {
+        let readyData = prepareServerSideData(rawData: data)
+        let webimServerSideSettings = try JSONDecoder().decode(WebimServerSideSettings.self, from: readyData)
+        return webimServerSideSettings
+    }
+
+    func prepareServerSideData(rawData: Data) -> Data {
+        guard var rawDataString = String(data: rawData, encoding: .utf8),
+              rawDataString.count >= 31 else {
+            return Data()
+        }
+
+        rawDataString.removeFirst(29)
+        rawDataString.removeLast(2)
+
+        guard let newData = rawDataString.data(using: .utf8, allowLossyConversion: false) else {
+            return Data()
+        }
+        return newData
     }
     
     // MARK: Private methods
@@ -248,11 +280,13 @@ class AbstractRequestLoop {
                                                    url: request.url,
                                                    parameters: request.httpBody)
         
-        WebimInternalLogger.shared.log(entry: webimLoggerEntry,
-                                       verbosityLevel: .info)
+        WebimInternalLogger.shared.log(
+            entry: webimLoggerEntry,
+            verbosityLevel: .info,
+            logType: .networkRequest)
     }
     
-    static let logRequestData = true
+    static var logRequestData = true
     
     private func configureLogMessage(type: String,
                                      method: String? = nil,

@@ -442,4 +442,17 @@ class WebimActionsTests: XCTestCase {
         XCTAssertEqual(actionRequestLoop.webimRequest!.getBaseURLString(),
                        expectedBaseURLString)
     }
+
+    func testGetOnlineStatus() {
+        actionRequestLoop.enqueueCalled = false
+        actionRequestLoop.webimRequest = nil
+        let location = "expectedLocation"
+
+
+        webimActions?.getOnlineStatus(location: location) { _ in }
+        let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
+
+        XCTAssertEqual(primaryData?[Parameter.location.rawValue] as? String, location)
+        XCTAssertTrue(actionRequestLoop.enqueueCalled)
+    }
 }

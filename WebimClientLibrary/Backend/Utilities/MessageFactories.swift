@@ -74,10 +74,12 @@ class MessageMapper {
             return .operatorBusy
         case .visitorMessage:
             return .visitorMessage
+        case .stickerVisitor:
+            return .stickerVisitor
         default:
             WebimInternalLogger.shared.log(entry: "Invalid message type received: \(messageKind.rawValue)",
                 verbosityLevel: .warning)
-            
+
             return nil
         }
     }
@@ -367,13 +369,14 @@ final class SendingFactory {
     }
 
     
-    func createFileMessageToSendWith(id: String) -> MessageToSend {
+    func createFileMessageToSendWith(id: String, data: MessageData? = nil) -> MessageToSend {
         return MessageToSend(serverURLString: serverURLString,
                              id: id,
                              senderName: "",
                              type: .fileFromVisitor,
                              text: "",
-                             timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond())
+                             timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
+                             data: data)
     }
     
     func createStickerMessageToSendWith(id: String, stickerId: Int) -> MessageToSend {

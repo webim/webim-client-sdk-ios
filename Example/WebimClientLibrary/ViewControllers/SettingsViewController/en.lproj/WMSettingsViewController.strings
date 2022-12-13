@@ -2,7 +2,9 @@
 "0cS-HU-Nd5.placeholder" = "mobile";
 "0cS-HU-Nd5.text" = "mobile";
 "5kC-9w-Cf1.accessibilityLabel" = "Page title text field";
-"5kC-9w-Cf1.text" = "iOS demo app";
+"5kC-9w-Cf1.text" = "iOS app";
+"DAx-o8-RLt.text" = "User data json (optional)";
+"HKU-eN-lVD.text" = "{\"id\":\"123\",\"name\":\"test12\",\"crc\":\"567\"}";
 "Sjf-nR-MxD.text" = "If you are registered in Webim service you can use your own account name and location.";
 "YPf-5C-0ns.accessibilityHint" = "Saves current settings and shows start screen.";
 "YPf-5C-0ns.accessibilityLabel" = "Save";

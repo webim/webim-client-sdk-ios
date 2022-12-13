@@ -139,5 +139,432 @@ class SendingFactoryTests: XCTestCase {
                        MessageType.fileFromVisitor)
         XCTAssertTrue(message.getText().isEmpty)
     }
+
+
+    func testCreateTextMessageToSendWithQuoteWith() {
+        let message = MessageImpl(serverURLString: "Some",
+                                  id: "Some",
+                                  serverSideID: nil,
+                                  keyboard: nil,
+                                  keyboardRequest: nil,
+                                  operatorID: nil,
+                                  quote: nil,
+                                  senderAvatarURLString: "Some",
+                                  senderName: "Some",
+                                  sendStatus: .sent,
+                                  sticker: nil,
+                                  type: .visitorMessage,
+                                  rawData: nil,
+                                  data: nil,
+                                  text: "Some",
+                                  timeInMicrosecond: 12,
+                                  historyMessage: false,
+                                  internalID: nil,
+                                  rawText: nil,
+                                  read: false,
+                                  messageCanBeEdited: false,
+                                  messageCanBeReplied: false,
+                                  messageIsEdited: false,
+                                  visitorReactionInfo: nil,
+                                  visitorCanReact: nil,
+                                  visitorChangeReaction: nil)
+
+        let messageToSend = sendingFactory.createTextMessageToSendWithQuoteWith(
+            id: "someMessageID",
+            text: "reply message",
+            repliedMessage: message)
+
+        XCTAssertNotNil(messageToSend)
+    }
+
+    func testCreateFileMessageToSendWith() {
+        let messageToSend = sendingFactory.createFileMessageToSendWith(id: "someID")
+
+        XCTAssertNotNil(messageToSend)
+        XCTAssertEqual(messageToSend.getType(), .fileFromVisitor)
+    }
+
+    func testCreateStickerMessageToSendWith() {
+
+        let messageToSend = sendingFactory.createStickerMessageToSendWith(id: "someID", stickerId: .zero)
+
+        XCTAssertNotNil(messageToSend)
+        XCTAssertNotNil(messageToSend.getSticker())
+        XCTAssertEqual(messageToSend.getType(), .stickerVisitor)
+    }
     
+}
+
+class MessageMapperTests: XCTestCase {
+
+    let messageMapper = MessageMapper(withServerURLString: "https://example.com")
+
+    private func messageItemDictionary(_ kind: MessageItem.MessageKind) -> MessageItem {
+        let jsonDict = """
+{
+"avatar" : "/webim/images/avatar/demo_33202.png",
+"chatId" : "2489",
+"authorId" : 33202,
+"data" : null,
+"id" : "26871",
+"ts_m" : 1518609964579372,
+"text" : "55",
+"clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+"kind" : "\(kind.rawValue)",
+"name" : "Евгения Техподдержка"
+}
+"""
+        return MessageItem(jsonDictionary: try! JSONSerialization.jsonObject(
+            with: jsonDict.data(using: .utf8)!,
+            options: []) as! [String : Any?])
+    }
+
+    private func getMessageImpl(_ kind: MessageItem.MessageKind,
+                                _ text: String = "Some text") -> MessageImpl? {
+        messageMapper.convert(messageItem: messageItemDictionary(kind), historyMessage: false)
+    }
+
+    func testConvertMessageKind() {
+        XCTAssertEqual(MessageMapper.convert(messageKind: .actionRequest), MessageType.actionRequest)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .contactInformationRequest), MessageType.contactInformationRequest)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .fileFromOperator), MessageType.fileFromOperator)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .fileFromVisitor), MessageType.fileFromVisitor)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .info), MessageType.info)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .keyboard), MessageType.keyboard)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .keyboardResponse), MessageType.keyboardResponse)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .operatorMessage), MessageType.operatorMessage)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .operatorBusy), MessageType.operatorBusy)
+        XCTAssertEqual(MessageMapper.convert(messageKind: .visitorMessage), MessageType.visitorMessage)
+        XCTAssertEqual(getMessageImpl(.stickerVisitor)?.getType(), .stickerVisitor)
+
+        XCTAssertNil(MessageMapper.convert(messageKind: .contactInformation))
+        XCTAssertNil(MessageMapper.convert(messageKind: .forOperator))
+    }
+
+    func testConvertToMessageImplWithNilKind() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : null,
+    "id" : "26871",
+    "ts_m" : 1518609964579372,
+    "text" : "42",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : null,
+    "name" : "Евгения Техподдержка"
+}
+"""
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When
+        let messageItem = MessageItem(jsonDictionary: messageItemDictionary)
+
+        //Then
+        XCTAssertNil(messageMapper.convert(messageItem: messageItem, historyMessage: true))
+
+    }
+
+    func testConvertToMessageImplSameKinds() {
+
+        XCTAssertEqual(getMessageImpl(.actionRequest)?.getType(), .actionRequest)
+        XCTAssertEqual(getMessageImpl(.contactInformationRequest)?.getType(), .contactInformationRequest)
+        XCTAssertEqual(getMessageImpl(.info)?.getType(), .info)
+        XCTAssertEqual(getMessageImpl(.keyboard)?.getType(), .keyboard)
+        XCTAssertEqual(getMessageImpl(.keyboardResponse)?.getType(), .keyboardResponse)
+        XCTAssertEqual(getMessageImpl(.operatorMessage)?.getType(), .operatorMessage)
+        XCTAssertEqual(getMessageImpl(.operatorBusy)?.getType(), .operatorBusy)
+        XCTAssertEqual(getMessageImpl(.visitorMessage)?.getType(), .visitorMessage)
+        XCTAssertEqual(getMessageImpl(.actionRequest)?.getType(), .actionRequest)
+        XCTAssertEqual(getMessageImpl(.stickerVisitor)?.getType(), .stickerVisitor)
+
+        XCTAssertNil(getMessageImpl(.contactInformation))
+        XCTAssertNil(getMessageImpl(.forOperator))
+        XCTAssertNil(getMessageImpl(.fileFromOperator))
+        XCTAssertNil(getMessageImpl(.fileFromVisitor))
+    }
+
+    func testNilMessageItemText() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : null,
+    "id" : "26871",
+    "ts_m" : 1518609964579372,
+    "text" : null,
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : "operator",
+    "name" : "Евгения Техподдержка"
+}
+"""
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: MessageItem text is nil
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNil(messageImpl)
+    }
+
+    func testConvertWrongDataKeyboardKind() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : "SomeWrongData",
+    "id" : "26871",
+    "ts_m" : 1518609964579372,
+    "text" : "SomeText",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : "keyboard",
+    "name" : "Евгения Техподдержка"
+}
+"""
+
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: Kind Keyboard && wrong data
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNil(messageImpl?.getKeyboard())
+    }
+
+    func testConvertWrongDataKeyboardResponseKind() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : "SomeWrongData",
+    "id" : "26871",
+    "ts_m" : 1518609964579372,
+    "text" : "SomeText",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : "keyboardResponse",
+    "name" : "Евгения Техподдержка"
+}
+"""
+
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: Kind keyboardResponse && wrong data
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNil(messageImpl?.getKeyboardRequest())
+    }
+
+    func testConvertWrongDataStickerVisitor() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : "SomeWrongData",
+    "id" : "26871",
+    "ts_m" : 1518609964579372,
+    "text" : "SomeText",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : "stickerVisitor",
+    "name" : "Евгения Техподдержка"
+}
+"""
+
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: Kind stickerVisitor && wrong data
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNil(messageImpl?.getSticker())
+    }
+
+    func testConvertMessageItemWithQuote() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : "SomeData",
+    "id" : "26871",
+    "ts_m" : 1518609964579372,
+    "text" : "SomeText",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "quote" : {
+      "ref" : {
+        "msgId" : "bec8cdd63dbb43fb97b843021d97fb94",
+        "msgChannelSideId" : null,
+        "chatId" : null
+      },
+      "state" : "pending"
+    },
+    "kind" : "stickerVisitor",
+    "name" : "Евгения Техподдержка"
+}
+"""
+
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: MessageItem has quote
+        let messageItem = MessageItem(jsonDictionary: messageItemDictionary)
+        let messageImpl = messageMapper.convert(messageItem: messageItem, historyMessage: false)
+
+        //Then
+        XCTAssertEqual(messageItem.getQuote()?.getText(), messageImpl?.getQuote()?.getMessageText())
+        XCTAssertEqual(messageItem.getQuote()?.getID(), messageImpl?.getQuote()?.getMessageID())
+    }
+
+    func testConvertMessageItemClientSideIDNil() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : "SomeData",
+    "id" : null,
+    "ts_m" : 1518609964579372,
+    "text" : "SomeText",
+    "clientSideId" : null,
+    "kind" : "operator",
+    "name" : "Евгения Техподдержка"
+}
+"""
+
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: cliendSideID && id is nil
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNil(messageImpl)
+    }
+
+    func testConvertMessageItemSenderNameNil() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : "SomeData",
+    "id" : "26871",
+    "ts_m" : 1518609964579372,
+    "text" : "SomeText",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : "operator",
+    "name" : null
+}
+"""
+
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: senderName is nil
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNil(messageImpl)
+    }
+
+    func testConvertMessageItemTimeInMicrosecondNil() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : "SomeData",
+    "id" : "26871",
+    "ts_m" : null,
+    "text" : "SomeText",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : "operator",
+    "name" : "Operator name"
+}
+"""
+
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: timestamp in microsecond is nil
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNil(messageImpl)
+    }
+
+    func testConvertMessageItemKeyboardData() {
+        //Given
+        let MESSAGE_ITEM_JSON_STRING = """
+{
+    "avatar" : "/webim/images/avatar/demo_33202.png",
+    "chatId" : "2489",
+    "authorId" : 33202,
+    "data" : {
+        "stickerId" : 123
+    },
+    "id" : "26871",
+    "stickerId" : 154,
+    "ts_m" : 124123,
+    "text" : "SomeText",
+    "clientSideId" : "84e51d5638524ee7833a1fe19a1f2448",
+    "kind" : "sticker_visitor",
+    "name" : "Operator name"
+}
+"""
+        let messageItemDictionary = try! JSONSerialization.jsonObject(
+            with: MESSAGE_ITEM_JSON_STRING.data(using: .utf8)!,
+            options: []) as! [String : Any?]
+
+        //When: Kind stickerVisitor && has stickerID
+        let messageImpl = messageMapper.convert(
+            messageItem: MessageItem(jsonDictionary: messageItemDictionary),
+            historyMessage: false)
+
+        //Then
+        XCTAssertNotNil(messageImpl?.getSticker())
+    }
+
 }

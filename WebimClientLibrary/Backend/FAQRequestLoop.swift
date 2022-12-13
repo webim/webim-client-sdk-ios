@@ -82,7 +82,9 @@ class FAQRequestLoop: AbstractRequestLoop {
             let httpMethod = request.getHTTPMethod()
             if httpMethod == .get {
                 guard let url = URL(string: (request.getBaseURLString() + "?" + parametersString)) else {
-                    WebimInternalLogger.shared.log(entry: "Invalid URL in FAQRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Invalid URL in FAQRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 urlRequest = URLRequest(url: url)
@@ -90,7 +92,9 @@ class FAQRequestLoop: AbstractRequestLoop {
                 
                 // For URL encoded requests.
                 guard let url = URL(string: request.getBaseURLString()) else {
-                    WebimInternalLogger.shared.log(entry: "Invalid URL in FAQRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Invalid URL in FAQRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 urlRequest = URLRequest(url: url)
@@ -106,7 +110,9 @@ class FAQRequestLoop: AbstractRequestLoop {
             
             do {
                 guard let urlRequest = urlRequest else {
-                    WebimInternalLogger.shared.log(entry: "URL Request is nil in FAQRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "URL Request is nil in FAQRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 let data = try self.perform(request: urlRequest)
@@ -196,7 +202,9 @@ class FAQRequestLoop: AbstractRequestLoop {
         completionFAQHandlerExecutor.execute(task: DispatchWorkItem {
             
             guard let messageID = request.getMessageID() else {
-                WebimInternalLogger.shared.log(entry: "Request has not message ID in FAQRequestLoop.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Request has not message ID in FAQRequestLoop.\(#function)",
+                    logType: .networkRequest)
                 return
             }
             

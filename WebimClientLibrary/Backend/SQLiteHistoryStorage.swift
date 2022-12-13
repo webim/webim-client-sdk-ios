@@ -156,8 +156,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     messages.append(message)
                     
                     db.trace {
-                        WebimInternalLogger.shared.log(entry: "\($0)",
-                            verbosityLevel: .debug)
+                        WebimInternalLogger.shared.log(
+                            entry: "\($0)",
+                            verbosityLevel: .debug,
+                            logType: .messageHistory)
                     }
                 }
                 
@@ -165,8 +167,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     completion(messages as [Message])
                 }
             } catch {
-                WebimInternalLogger.shared.log(entry: error.localizedDescription,
-                                               verbosityLevel: .warning)
+                WebimInternalLogger.shared.log(
+                    entry: error.localizedDescription,
+                    verbosityLevel: .warning,
+                    logType: .messageHistory)
             }
         }
     }
@@ -198,8 +202,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                 }
                 
                 db.trace {
-                    WebimInternalLogger.shared.log(entry: "\($0)",
-                        verbosityLevel: .debug)
+                    WebimInternalLogger.shared.log(
+                        entry: "\($0)",
+                        verbosityLevel: .debug,
+                        logType: .messageHistory)
                 }
                 
                 messages = messages.reversed()
@@ -207,8 +213,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     completion(messages as [Message])
                 }
             } catch {
-                WebimInternalLogger.shared.log(entry: error.localizedDescription,
-                                               verbosityLevel: .warning)
+                WebimInternalLogger.shared.log(
+                    entry: error.localizedDescription,
+                    verbosityLevel: .warning,
+                    logType: .messageHistory)
             }
         }
     }
@@ -244,8 +252,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     messages.append(message)
                     
                     db.trace {
-                        WebimInternalLogger.shared.log(entry: "\($0)",
-                            verbosityLevel: .debug)
+                        WebimInternalLogger.shared.log(
+                            entry: "\($0)",
+                            verbosityLevel: .debug,
+                            logType: .messageHistory)
                     }
                 }
                 
@@ -254,8 +264,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     completion(messages as [Message])
                 }
             } catch {
-                WebimInternalLogger.shared.log(entry: error.localizedDescription,
-                                               verbosityLevel: .warning)
+                WebimInternalLogger.shared.log(
+                    entry: error.localizedDescription,
+                    verbosityLevel: .warning,
+                    logType: .messageHistory)
             }
         }
     }
@@ -328,12 +340,16 @@ final class SQLiteHistoryStorage: HistoryStorage {
                      SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote())))*/
                     
                     db.trace {
-                        WebimInternalLogger.shared.log(entry: "\($0)",
-                            verbosityLevel: .debug)
+                        WebimInternalLogger.shared.log(
+                            entry: "\($0)",
+                            verbosityLevel: .debug,
+                            logType: .messageHistory)
                     }
                 } catch {
-                    WebimInternalLogger.shared.log(entry: error.localizedDescription,
-                                                   verbosityLevel: .warning)
+                    WebimInternalLogger.shared.log(
+                        entry: error.localizedDescription,
+                        verbosityLevel: .warning,
+                        logType: .messageHistory)
                 }
             }
             
@@ -388,13 +404,17 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     do {
                         if let row = try db.pluck(postQuery) {
                             db.trace {
-                                WebimInternalLogger.shared.log(entry: "\($0)",
-                                    verbosityLevel: .debug)
+                                WebimInternalLogger.shared.log(
+                                    entry: "\($0)",
+                                    verbosityLevel: .debug,
+                                    logType: .messageHistory)
                             }
                             
                             let nextMessage = self.createMessageBy(row: row)
                             guard let historyID = nextMessage.getHistoryID() else {
-                                WebimInternalLogger.shared.log(entry: "Next message has not History ID in SQLiteHistoryStorage.\(#function)")
+                                WebimInternalLogger.shared.log(
+                                    entry: "Next message has not History ID in SQLiteHistoryStorage.\(#function)",
+                                    logType: .messageHistory)
                                 return
                             }
                             
@@ -421,8 +441,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                             }
                         }
                     } catch let error {
-                        WebimInternalLogger.shared.log(entry: error.localizedDescription,
-                                                       verbosityLevel: .warning)
+                        WebimInternalLogger.shared.log(
+                            entry: error.localizedDescription,
+                            verbosityLevel: .warning,
+                            logType: .messageHistory)
                     }
                 } catch let Result.error(_, code, _) where code == SQLiteHistoryStorage.SQLITE_CONSTRAINT {
                     do {
@@ -432,10 +454,14 @@ final class SQLiteHistoryStorage: HistoryStorage {
                             completion(false, false, nil, true, message, false, nil, nil)
                         }
                     } catch {
-                        WebimInternalLogger.shared.log(entry: "Update received message: \(message.toString()) failed: \(error.localizedDescription)")
+                        WebimInternalLogger.shared.log(
+                            entry: "Update received message: \(message.toString()) failed: \(error.localizedDescription)",
+                            logType: .messageHistory)
                     }
                 } catch {
-                    WebimInternalLogger.shared.log(entry: "Insert / update received message: \(message.toString()) failed: \(error.localizedDescription)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Insert / update received message: \(message.toString()) failed: \(error.localizedDescription)",
+                        logType: .messageHistory)
                 }
             } // End of `for message in messages`
             
@@ -446,7 +472,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         completion(false, true, idToDelete, false, nil, false, nil, nil)
                     }
                 } catch {
-                    WebimInternalLogger.shared.log(entry: "Delete received message with id \"\(idToDelete)\" failed: \(error.localizedDescription)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Delete received message with id \"\(idToDelete)\" failed: \(error.localizedDescription)",
+                        logType: .messageHistory)
                 }
             }
             
@@ -474,7 +502,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
             do {
                 try db.run(SQLiteHistoryStorage.history.delete())
             } catch {
-                WebimInternalLogger.shared.log(entry: "Failed to delete from database: \(error.localizedDescription)")
+                WebimInternalLogger.shared.log(
+                    entry: "Failed to delete from database: \(error.localizedDescription)",
+                    logType: .messageHistory)
             }
             
         }
@@ -521,8 +551,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                                   appropriateFor: nil,
                                                                   create: false)
             guard let libraryPath = optionalLibraryDirectory else {
-                WebimInternalLogger.shared.log(entry: "Error getting access to Library directory.",
-                                               verbosityLevel: .verbose)
+                WebimInternalLogger.shared.log(
+                    entry: "Error getting access to Library directory.",
+                    verbosityLevel: .verbose,
+                    logType: .messageHistory)
                 return
             }
             let dbPath = "\(libraryPath)/\(name)"
@@ -539,7 +571,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
                 self.db = db
                 createTables()
             } catch {
-                WebimInternalLogger.shared.log(entry: "Creating Connection(\(dbPath) failure in FAQSQLiteHistoryStorage.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Creating Connection(\(dbPath) failure in FAQSQLiteHistoryStorage.\(#function)",
+                    logType: .messageHistory)
                 return
             }
         }
@@ -547,7 +581,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     private func createTables() {
         guard let db = db else {
-            WebimInternalLogger.shared.log(entry: "Failure in SQLiteHistoryStorage.\(#function) because Database is nil")
+            WebimInternalLogger.shared.log(
+                entry: "Failure in SQLiteHistoryStorage.\(#function) because Database is nil",
+                logType: .messageHistory)
             return
         }
         
@@ -582,8 +618,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
             t.column(SQLiteHistoryStorage.reaction)
         })
         db.trace {
-            WebimInternalLogger.shared.log(entry: "\($0)",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "\($0)",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
         }
         createIndex()
     }
@@ -603,13 +641,17 @@ final class SQLiteHistoryStorage: HistoryStorage {
                              unique: true,
                              ifNotExists: true))
         } catch {
-            WebimInternalLogger.shared.log(entry: error.localizedDescription,
-                                           verbosityLevel: .verbose)
+            WebimInternalLogger.shared.log(
+                entry: error.localizedDescription,
+                verbosityLevel: .verbose,
+                logType: .messageHistory)
         }
         
         db.trace {
-            WebimInternalLogger.shared.log(entry: "\($0)",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "\($0)",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
         }
     }
     
@@ -635,15 +677,19 @@ final class SQLiteHistoryStorage: HistoryStorage {
             do {
                 if let row = try db.pluck(query) {
                     db.trace {
-                        WebimInternalLogger.shared.log(entry: "\($0)",
-                            verbosityLevel: .debug)
+                        WebimInternalLogger.shared.log(
+                            entry: "\($0)",
+                            verbosityLevel: .debug,
+                            logType: .messageHistory)
                     }
                     
                     firstKnownTimestamp = row[SQLiteHistoryStorage.timestamp]
                 }
             } catch {
-                WebimInternalLogger.shared.log(entry: error.localizedDescription,
-                                               verbosityLevel: .warning)
+                WebimInternalLogger.shared.log(
+                    entry: error.localizedDescription,
+                    verbosityLevel: .warning,
+                    logType: .messageHistory)
             }
         }
     }
@@ -656,7 +702,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
         var text = WMDataEncryptor.shared?.decryptFromBase64String(base64String: row[SQLiteHistoryStorage.text]) ?? "no data"
         guard let messageKind = MessageItem.MessageKind(rawValue: row[SQLiteHistoryStorage.type]),
             let type = MessageMapper.convert(messageKind: messageKind) else {
-                WebimInternalLogger.shared.log(entry: "Getting Message type from row failure in SQLiteHistoryStorage.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Getting Message type from row failure in SQLiteHistoryStorage.\(#function)",
+                    logType: .messageHistory)
             fatalError("Getting Message type from row failure in SQLiteHistoryStorage.\(#function). Can not create MessageImpl object without type")
         }
         if (type == .fileFromOperator)
@@ -803,8 +851,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.reaction <- message.getVisitorReaction()))
         
         db.trace {
-            WebimInternalLogger.shared.log(entry: "\($0)",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "\($0)",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
         }
     }
     
@@ -846,8 +896,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.reaction <- message.getVisitorReaction()))
         
         db.trace {
-            WebimInternalLogger.shared.log(entry: "\($0)",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "\($0)",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
         }
     }
     
@@ -861,8 +913,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
             .delete())
         
         db.trace {
-            WebimInternalLogger.shared.log(entry: "\($0)",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "\($0)",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
         }
     }
     

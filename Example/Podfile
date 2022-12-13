@@ -1,9 +1,16 @@
 platform :ios, '10.0'
-
+workspace 'WebimClientLibrary'
 use_frameworks!
 
 target 'WebimClientLibrary_Example' do
-    
+    target 'WebimClientShare' do
+        use_frameworks!
+	    pod 'Cosmos', '~> 19.0.3', :inhibit_warnings => true
+        pod 'Nuke', '~> 8.0', :inhibit_warnings => true
+	    pod 'SQLite.swift', '0.13.3', :inhibit_warnings => true # WebimClientLibrary dependency – added to inhibit its warnings.
+        pod 'WebimClientLibrary', :path => '../'
+        project 'WebimClientLibrary.xcodeproj'
+    end   
     pod 'WebimClientLibrary', :path => '../'
     
     pod 'Cosmos', '~> 19.0.3', :inhibit_warnings => true

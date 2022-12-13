@@ -29,57 +29,113 @@ import Foundation
 import XCTest
 
 class HistorySinceResponseTests: XCTestCase {
-    
+
+    var sut: HistorySinceResponse!
+    var nullSut: HistorySinceResponse!
+
     // MARK: - Constants
-    private static let HISTORY_SINCE_RESPONSE_JSON_STRING = """
-{
-    "result" : "ok",
-    "data" : {
-        "hasMore" : true,
-        "revision" : "1519046942029554",
-        "messages" : [
-            {
-                "avatar" : null,
-                "chatId" : "2489",
-                "authorId" : null,
-                "data" : null,
-                "id" : "26886",
-                "ts_m" : 1518610821878678,
-                "text" : "5",
-                "clientSideId" : "4855e5fb4cf72970fd1ee6d055db165f",
-                "kind" : "visitor",
-                "name" : "Никита"
-            },
-            {
-                "avatar" : null,
-                "chatId" : "2489",
-                "authorId" : null,
-                "data" : null,
-                "id" : "26887",
-                "ts_m" : 1518610834493789,
-                "text" : "Посетитель закрыл диалог",
-                "clientSideId" : "f90565d2ae724a5f969f72687af7fd49",
-                "kind" : "info",
-                "name" : ""
-            }
-        ]
+    private let defaultHistorySinceResponseJson = """
+    {
+       "result":"ok",
+       "data":{
+          "hasMore":true,
+          "revision":"1519046942029554",
+          "messages":[
+             {
+                "avatar":"/webim/images/avatar/demo_33201.png",
+                "chatId":"2470",
+                "authorId":33201,
+                "data":null,
+                "id":"26066",
+                "ts_m":1518178864048925,
+                "text":"5",
+                "clientSideId":"2b29154364e14cf8b3823267740ac090",
+                "kind":"operator",
+                "name":"Administrator"
+             },
+             {
+                "avatar":null,
+                "chatId":"2470",
+                "authorId":null,
+                "data":null,
+                "id":"26068",
+                "ts_m":1518181740640531,
+                "text":"Text",
+                "clientSideId":"b91d616953a4d05c3df82f63359ebb58",
+                "kind":"file_visitor",
+                "name":"Никита"
+             }
+          ]
+       }
     }
-}
-"""
-    
-    // MARK: - Properties
-    private let historySinceResponseDictionary = try! JSONSerialization.jsonObject(with: HistorySinceResponseTests.HISTORY_SINCE_RESPONSE_JSON_STRING.data(using: .utf8)!,
-                                                                                   options: []) as! [String : Any?]
-    
-    // MARK: - Methods
-    func testInit() {
-        let historySinceResponse = HistorySinceResponse(jsonDictionary: historySinceResponseDictionary)
-        
-        XCTAssertEqual(historySinceResponse.getData()!.getMessages()!.count,
-                       2)
-        XCTAssertTrue(historySinceResponse.getData()!.isHasMore()!)
-        XCTAssertEqual(historySinceResponse.getData()!.getRevision(),
-                       "1519046942029554")
+    """
+
+    private let nullHistorySinceResponseDataJson = """
+    {
+       "result":"ok",
+       "data":{
+          "hasMore":null,
+          "messages":null,
+          "revision":null
+       }
+    }
+    """
+
+    private let nullHistorySinceResponseJson = "{ }"
+
+    //MARK: Methods
+    override func setUp() {
+        super.setUp()
+        sut = HistorySinceResponse(jsonDictionary: convertToDict(defaultHistorySinceResponseJson))
+        nullSut = HistorySinceResponse(jsonDictionary: convertToDict(nullHistorySinceResponseDataJson))
+    }
+
+    override func tearDown() {
+        sut = nil
+        nullSut = nil
+        super.tearDown()
+    }
+
+    private func convertToDict(_ json: String) -> [String: Any?] {
+        return try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!, options: []) as! [String : Any?]
+    }
+
+    //MARK: Tests
+    func testInitRawData() {
+        XCTAssertNotNil(sut.getData())
+    }
+
+    func testInitRawDataNullValue() {
+        let nullSut = HistorySinceResponse(jsonDictionary: convertToDict(nullHistorySinceResponseJson))
+        XCTAssertNil(nullSut.getData())
+    }
+
+    func testInitHistoryResponseDataHasMore() {
+        let expectedIsHasMore = true
+
+        XCTAssertEqual(sut.getData()?.isHasMore(), expectedIsHasMore)
+    }
+
+    func testInitHistoryResponseDataHasMoreNullValue() {
+        let expectedIsHasMore = false
+
+        let sut = HistoryBeforeResponse(jsonDictionary: convertToDict(nullHistorySinceResponseDataJson))
+
+        XCTAssertEqual(sut.getData()?.isHasMore(), expectedIsHasMore)
+    }
+
+    func testInitHistoryResponseDataMessages() {
+        let expectedMessageCount = 2
+
+        XCTAssertEqual(sut.getData()?.getMessages()?.count, expectedMessageCount)
+    }
+
+    func testInitHistorySinceResponseDataMessagesNullValue() {
+        let expectedMessagesIsEmpty = true
+
+        let sut = HistoryBeforeResponse(jsonDictionary: convertToDict(nullHistorySinceResponseDataJson))
+
+        XCTAssertEqual(sut.getData()?.getMessages()?.isEmpty, expectedMessagesIsEmpty)
     }
     
 }

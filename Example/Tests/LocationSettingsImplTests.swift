@@ -31,40 +31,79 @@ import XCTest
 class LocationSettingsImplTests: XCTestCase {
     
     // MARK: - Constants
-    private static let USER_DEFAULTS_KEY = "mock"
+    private let userDefaultsKey = "LocationSettingsImplTests"
+    private let getFrom_UserDefaultsKey = "test_GetFrom"
+    private let getFrom_NilValue_UserDefaultsKey = "test_GetFrom_Null"
     
     // MARK: - Methods
     
     override func setUp() {
         super.setUp()
-        
-        WMKeychainWrapper.removeObject(key: LocationSettingsImplTests.USER_DEFAULTS_KEY)
+        WMKeychainWrapper.standard.setDictionary([:], forKey: userDefaultsKey)
+        WMKeychainWrapper.standard.setDictionary([:], forKey: getFrom_UserDefaultsKey)
+        WMKeychainWrapper.standard.setDictionary([:], forKey: getFrom_NilValue_UserDefaultsKey)
     }
     
     override func tearDown() {
-        WMKeychainWrapper.removeObject(key: LocationSettingsImplTests.USER_DEFAULTS_KEY)
-        
+        WMKeychainWrapper.standard.setDictionary([:], forKey: userDefaultsKey)
+        WMKeychainWrapper.standard.setDictionary([:], forKey: getFrom_UserDefaultsKey)
+        WMKeychainWrapper.standard.setDictionary([:], forKey: getFrom_NilValue_UserDefaultsKey)
         super.tearDown()
     }
     
     // MARK: - Tests
     
-    func testInit() {
-        let locationSettings = LocationSettingsImpl(hintsEnabled: true)
-        
-        XCTAssertTrue(locationSettings.areHintsEnabled())
+    func test_Init_AreHintsEnabled() {
+        let sut = LocationSettingsImpl(hintsEnabled: true)
+
+        XCTAssertTrue(sut.areHintsEnabled())
     }
-    
-    func testGetSave() {
-        let USER_DEFAULTS_KEY = "test"
-        
-        let locationSettings = LocationSettingsImpl(hintsEnabled: true)
-        locationSettings.saveTo(userDefaults: USER_DEFAULTS_KEY)
-        
-        let restoredLocationSettings = LocationSettingsImpl.getFrom(userDefaults: USER_DEFAULTS_KEY)
-        
-        XCTAssertEqual(locationSettings.areHintsEnabled(),
-                       restoredLocationSettings.areHintsEnabled())
+
+    func test_GetFrom() {
+        let locationSettingsToSave = LocationSettingsImpl(hintsEnabled: true)
+        locationSettingsToSave.saveTo(userDefaults: getFrom_UserDefaultsKey)
+        let expectedValue = locationSettingsToSave.areHintsEnabled()
+
+        let sut = LocationSettingsImpl.getFrom(userDefaults: getFrom_UserDefaultsKey)
+
+        XCTAssertEqual(sut.areHintsEnabled(), expectedValue)
     }
-    
+
+    func test_GetFrom_NullLocationSettings() {
+        WMKeychainWrapper.standard.setDictionary([:], forKey: getFrom_NilValue_UserDefaultsKey)
+
+        let sut = LocationSettingsImpl.getFrom(userDefaults: getFrom_UserDefaultsKey)
+
+        XCTAssertFalse(sut.areHintsEnabled())
+    }
+
+    func test_SaveTo() {
+        let locationSettingsToSave = LocationSettingsImpl(hintsEnabled: true)
+        locationSettingsToSave.saveTo(userDefaults: getFrom_UserDefaultsKey)
+        let expectedValue = locationSettingsToSave.areHintsEnabled()
+
+        let sut = LocationSettingsImpl.getFrom(userDefaults: getFrom_UserDefaultsKey)
+
+        XCTAssertEqual(sut.areHintsEnabled(), expectedValue)
+
+
+
+        let secondLocationSettingsToSave = LocationSettingsImpl(hintsEnabled: false)
+        secondLocationSettingsToSave.saveTo(userDefaults: getFrom_UserDefaultsKey)
+        let secondExpectedValue = secondLocationSettingsToSave.areHintsEnabled()
+
+        let secondSut = LocationSettingsImpl.getFrom(userDefaults: getFrom_UserDefaultsKey)
+
+        XCTAssertEqual(secondSut.areHintsEnabled(), secondExpectedValue)
+    }
+
+    func test_EqualOperation() {
+        let firstSut = LocationSettingsImpl(hintsEnabled: true)
+        let secondSut = LocationSettingsImpl(hintsEnabled: true)
+        let thirdSut = LocationSettingsImpl(hintsEnabled: false)
+
+        XCTAssertEqual(firstSut.areHintsEnabled(), secondSut.areHintsEnabled())
+        XCTAssertNotEqual(firstSut, thirdSut)
+        XCTAssertNotEqual(secondSut, thirdSut)
+    }
 }

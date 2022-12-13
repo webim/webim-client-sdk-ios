@@ -225,6 +225,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.INVALID_THREAD` if the method was called not from the thread the WebimSession was created in.
      `AccessError.INVALID_SESSION` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Evgeniy Loshchenko
      - copyright:
@@ -644,6 +646,25 @@ public protocol MessageStream: class {
                      completionHandler: SendStickerCompletionHandler?) throws
     
     /**
+     This method receiving hints.
+     - parameter text:
+     The string which hints are found for.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    func autocomplete(text: String,
+                      completionHandler: AutocompleteCompletionHandler?) throws
+    
+    /**
      Receive raw location config from server.
      - parameter forLocation:
      Contains the name of current location.
@@ -661,6 +682,21 @@ public protocol MessageStream: class {
      */
     func getRawConfig(forLocation: String,
                       completionHandler: RawLocationConfigCompletionHandler?) throws
+    /**
+     Receive server side settings from server.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
+     - author:
+     Aslan Kutumbaev
+     - copyright:
+     2022 Webim
+     */
+    func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?) throws
     
     /**
      Send visitor react.
@@ -673,6 +709,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Anna Frolova
      - copyright:
@@ -845,6 +883,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -860,6 +900,8 @@ public protocol MessageStream: class {
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -873,6 +915,8 @@ public protocol MessageStream: class {
      Latitude of geo point.
      - parameter longitude:
      Longitude of geo point.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Nikita Kaberov
      - copyright:
@@ -1047,6 +1091,8 @@ public protocol MessageStream: class {
     
     /**
      Called when user clear history.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
      - author:
      Anna Frolova
      - copyright:
@@ -1440,6 +1486,15 @@ public protocol SendDialogToEmailAddressCompletionHandler: class {
     
 }
 
+/**
+ - seealso:
+ `MessageStream.searchStreamMessagesBy(query:completionHandler:)`.
+ - attention:
+ This protocol can't be used as is. It requires that client server to support this mechanism.
+ - copyright:
+ 2021 Webim
+ */
+
 public protocol SearchMessagesCompletionHandler: class {
     
     /** Executed after search message operation complited. */
@@ -1450,6 +1505,8 @@ public protocol SearchMessagesCompletionHandler: class {
 /**
  - seealso:
  `MessageStream.sendSticker(withId:completionHandler:)`.
+ - attention:
+ This protocol can't be used as is. It requires that client server to support this mechanism.
  - author:
  Yury Vozleev
  - copyright:
@@ -1483,7 +1540,45 @@ public protocol SendStickerCompletionHandler: class {
 
 /**
  - seealso:
+ `MessageStream.autocomplete(text:completionHandler:)`.
+ - attention:
+ This protocol can't be used as is. It requires that client server to support this mechanism.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2022 Webim
+ */
+public protocol AutocompleteCompletionHandler: class {
+    
+    /**
+     Executed when operation is done successfully.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    func onSuccess(text: [String])
+    
+    /**
+     Executed when operation is failed.
+     - parameter error:
+     Error.
+     - seealso:
+     `SendStickerError`.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    func onFailure(error: AutocompleteError)
+    
+}
+
+/**
+ - seealso:
  `MessageStream.getRawConfig(forLocation:completionHandler:)`.
+ - attention:
+ This protocol can't be used as is. It requires that client server to support this mechanism.
  - author:
  Yury Vozleev
  - copyright:
@@ -1513,10 +1608,42 @@ public protocol RawLocationConfigCompletionHandler: class {
 }
 
 /**
+ - seealso:
+ `MessageStream.getServerSideSettings(completionHandler:)`.
+ - author:
+ Aslan Kutumbaev
+ - copyright:
+ 2022 Webim
+ */
+public protocol ServerSideSettingsCompletionHandler: class {
+    /**
+     Executed when operation is done successfully.
+     - parameter webimServerSideSettings:
+     Server side settings.
+     - author:
+     Aslan Kutumbaev
+     - copyright:
+     2022 Webim
+     */
+    func onSuccess(webimServerSideSettings: WebimServerSideSettings)
+
+    /**
+     Executed when operation is failed.
+     - author:
+     Aslan Kutumbaev
+     - copyright:
+     2022 Webim
+     */
+    func onFailure()
+}
+
+/**
 - seealso:
 `MessageStream.send(surveyAnswer:completionHandler:)`.
 - author:
 Nikita Kaberov
+ - attention:
+ This protocol can't be used as is. It requires that client server to support this mechanism.
 - copyright:
 2020 Webim
 */
@@ -1548,6 +1675,8 @@ public protocol SendSurveyAnswerCompletionHandler {
 /**
 - seealso:
 `MessageStream.closeSurvey(completionHandler:)`.
+- attention:
+This protocol can't be used as is. It requires that client server to support this mechanism.
 - author:
 Nikita Kaberov
 - copyright:
@@ -1909,6 +2038,8 @@ public protocol UnreadByVisitorTimestampChangeListener: class {
  Interface that provides methods for handling Hello messages.
  - seealso:
  `MessageStream.set(helloMessageListener:)`
+ - attention:
+ This protocol can't be used as is. It requires that client server to support this mechanism.
  - author:
  Yury Vozleev
  - copyright:
@@ -1928,6 +2059,15 @@ public protocol HelloMessageListener: class {
     func helloMessage(message: String)
     
 }
+
+/**
+ - attention:
+ This protocol can't be used as is. It requires that client server to support this mechanism.
+ - author:
+ Anna Frolova
+ - copyright:
+ 2021 Webim
+ */
 
 public protocol ReactionCompletionHandler: class {
     
@@ -2764,6 +2904,34 @@ public enum SendStickerError: Error {
 
 /**
 - seealso:
+`AutocompleteCompletionHandler.onFailure(error:)`
+- author:
+Nikita Kaberov
+- copyright:
+2022 Webim
+*/
+public enum AutocompleteError: Error {
+    /**
+     When visitor hints api endpoint is not set or invalid in the server account config.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    case hintApiInvalid
+    
+    /**
+     Received error is not supported by current WebimClientLibrary version.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2022 Webim
+     */
+    case unknown
+}
+
+/**
+- seealso:
 `ReactionCompletionHandler.onFailure(error:)`
 - author:
 Anna Frolova
@@ -2967,6 +3135,8 @@ public enum GeolocationError {
 // MARK: -
 /**
  Item for set reaction
+ - attention:
+ This method can't be used as is. It requires that client server to support this mechanism.
  - author:
  Anna Frolova
  - copyright:

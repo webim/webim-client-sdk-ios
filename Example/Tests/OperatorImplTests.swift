@@ -35,12 +35,14 @@ class OperatorImplTests: XCTestCase {
     func testInit() {
         let `operator` = OperatorImpl(id: "id",
                                       name: "name",
-                                      avatarURLString: nil)
+                                      avatarURLString: nil,
+                                      title: "title",
+                                      info: "info")
         
-        XCTAssertEqual(`operator`.getID(),
-                       "id")
-        XCTAssertEqual(`operator`.getName(),
-                       "name")
+        XCTAssertEqual(`operator`.getID(), "id")
+        XCTAssertEqual(`operator`.getName(), "name")
+        XCTAssertEqual(`operator`.getTitle(), "title")
+        XCTAssertEqual(`operator`.getInfo(), "info")
         XCTAssertNil(`operator`.getAvatarURL())
     }
     

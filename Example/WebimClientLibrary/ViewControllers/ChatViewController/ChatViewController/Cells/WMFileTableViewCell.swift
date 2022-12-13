@@ -35,9 +35,9 @@ class FileMessage: WMMessageTableCell, WMDocumentDownloadTaskDelegate {
     @IBOutlet var fileDownloadIndicator: CircleProgressIndicator?
     
     var isForOperator = false
-
+    
     var documentDownloadTask: WMDocumentDownloadTask?
-
+    
     static let byteCountFormatter: ByteCountFormatter = {
         let byteCountFormatter = ByteCountFormatter()
         byteCountFormatter.allowedUnits = .useAll
@@ -46,24 +46,26 @@ class FileMessage: WMMessageTableCell, WMDocumentDownloadTaskDelegate {
         byteCountFormatter.isAdaptive = true
         return byteCountFormatter
     }()
-
+    
     override func setMessage(message: Message, tableView: UITableView) {
         super.setMessage(message: message, tableView: tableView)
-        
         let fileSize = message.getData()?.getAttachment()?.getFileInfo().getSize() ?? -1
-        
-        if let attachment = message.getData()?.getAttachment(),
-           let fileURL = WMDownloadFileManager.shared.urlFromFileInfo(attachment.getFileInfo()) {
-            self.documentDownloadTask = WMDocumentDownloadTask.documentDownloadTaskFor(url: fileURL, fileSize: fileSize, delegate: self)
+        let sendStatus = message.getSendStatus() == .sent
+        if sendStatus {
+            if let attachment = message.getData()?.getAttachment(),
+               let fileURL = WMDownloadFileManager.shared.urlFromFileInfo(attachment.getFileInfo()) {
+                self.documentDownloadTask = WMDocumentDownloadTask.documentDownloadTaskFor(url: fileURL, fileSize: fileSize, delegate: self)
+            }
+            self.isForOperator = false
+            self.fileName?.text = message.getData()?.getAttachment()?.getFileInfo().getFileName()
+            resetFileStatus()
+        } else {
+            self.fileName?.text = "Uploading file".localized
+            self.fileStatus.setBackgroundImage(UIImage(named: "FileUploadButtonVisitor")!.colour(documentIcomColor), for: .normal)
+            self.fileDescription?.text = "File is being sent".localized
         }
-        
-        self.isForOperator = false
-
-        self.fileName?.text = message.getData()?.getAttachment()?.getFileInfo().getFileName()
         self.fileDownloadIndicator?.isHidden = true
         self.downloadStatusLabel?.text = ""
-
-        resetFileStatus()
     }
     
     @IBAction func openFile(_ sender: Any) {
@@ -74,7 +76,7 @@ class FileMessage: WMMessageTableCell, WMDocumentDownloadTaskDelegate {
             self.documentDownloadTask?.downloadFile()
         }
     }
-
+    
     func fileDownloadFaild(downloadFileUrl: URL) {
         if documentDownloadTask?.fileURL != downloadFileUrl {
             return
@@ -82,7 +84,7 @@ class FileMessage: WMMessageTableCell, WMDocumentDownloadTaskDelegate {
         print("fileDownloadFaild \(downloadFileUrl)")
         resetFileStatus()
     }
-
+    
     func updateFileDownloadProgress(downloadFileUrl: URL, progress: Float, localFileUrl: URL?) {
         if documentDownloadTask?.fileURL != downloadFileUrl {
             print("wrong cell progress ")
@@ -119,7 +121,6 @@ class FileMessage: WMMessageTableCell, WMDocumentDownloadTaskDelegate {
         self.fileDescription?.text = FileMessage.byteCountFormatter.string(fromByteCount: fileSize)
         if self.documentDownloadTask?.isFileExist() ?? false {
             self.fileStatus.setBackgroundImage( UIImage(named: "FileDownloadSuccess")!, for: .normal )
-            
         } else {
             self.fileStatus.setBackgroundImage( UIImage(named: "FileDownloadButton")!, for: .normal )
         }
@@ -132,6 +133,8 @@ class FileMessage: WMMessageTableCell, WMDocumentDownloadTaskDelegate {
             self.fileName?.textColor = buttonDefaultTitleColour
             self.fileDescription?.font = UIFont.systemFont(ofSize: 14)
             self.fileDescription?.textColor = editViewBackgroundColourDefault
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openFile(_:)))
+            self.messageView.addGestureRecognizer(tapGesture)
         }
         return setup
     }

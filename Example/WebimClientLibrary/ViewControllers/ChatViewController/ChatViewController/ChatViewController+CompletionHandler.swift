@@ -38,6 +38,7 @@ extension ChatViewController: SendFileCompletionHandler,
     func onSuccess(messageID: String) {
         // Ignored.
         // Delete visitor typing draft after message is sent.
+        self.scrollToBottom(animated: true)
         WebimServiceController.currentSession.setVisitorTyping(draft: nil)
     }
     

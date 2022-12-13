@@ -66,6 +66,8 @@ final class WebimRequest {
     private var uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler?
     private var reacionCompletionHandler: ReactionCompletionHandler?
     private var geolocationCompletionHandler: GeolocationCompletionHandler?
+    private var serverSideSettingsCompletionHandler: ServerSideSettingsCompletionHandler?
+    private var autocompleteCompletionHandler: AutocompleteCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
@@ -97,7 +99,9 @@ final class WebimRequest {
          deleteUploadedFileCompletionHandler: DeleteUploadedFileCompletionHandler? = nil,
          uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler? = nil,
          reacionCompletionHandler: ReactionCompletionHandler? = nil,
-         geolocationCompletionHandler: GeolocationCompletionHandler? = nil) {
+         geolocationCompletionHandler: GeolocationCompletionHandler? = nil,
+         serverSideSettingsCompletionHandler: ServerSideSettingsCompletionHandler? = nil,
+         autocompleteCompletionHandler: AutocompleteCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -128,6 +132,8 @@ final class WebimRequest {
         self.uploadFileToServerCompletionHandler = uploadFileToServerCompletionHandler
         self.reacionCompletionHandler = reacionCompletionHandler
         self.geolocationCompletionHandler = geolocationCompletionHandler
+        self.serverSideSettingsCompletionHandler = serverSideSettingsCompletionHandler
+        self.autocompleteCompletionHandler = autocompleteCompletionHandler
     }
     
     
@@ -251,5 +257,13 @@ final class WebimRequest {
     
     func getGeolocationCompletionHandler() -> GeolocationCompletionHandler? {
         return geolocationCompletionHandler
+    }
+
+    func getServerSideCompletionHandler() -> ServerSideSettingsCompletionHandler? {
+        return serverSideSettingsCompletionHandler
+    }
+    
+    func getAutocompleteCompletionHandler() -> AutocompleteCompletionHandler? {
+        return autocompleteCompletionHandler
     }
 }

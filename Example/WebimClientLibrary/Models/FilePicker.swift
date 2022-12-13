@@ -32,9 +32,12 @@ import AVKit
 import Photos
 import PhotosUI
 
+public typealias ImageToSend = (image: UIImage?, url: URL?)
+public typealias FileToSend = (file: Data?, url: URL?)
+
 public protocol FilePickerDelegate: AnyObject {
-    func didSelect(image: UIImage?, imageURL: URL?)
-    func didSelect(file: Data?, fileURL: URL?)
+    func didSelect(images: [ImageToSend])
+    func didSelect(files: [FileToSend])
 }
 
 open class FilePicker: NSObject {
@@ -75,10 +78,10 @@ open class FilePicker: NSObject {
         self.imagePickerController.delegate = self
         self.imagePickerController.allowsEditing = false
         self.imagePickerController.mediaTypes = ["public.image"]
-        
+
+        self.documentPickerController.delegate = self
         if #available(iOS 11.0, *) {
-            self.documentPickerController.delegate = self
-            self.documentPickerController.allowsMultipleSelection = false
+            self.documentPickerController.allowsMultipleSelection = true
         }
     }
     
@@ -146,18 +149,11 @@ open class FilePicker: NSObject {
             fileMenuSheet.popoverPresentationController?.sourceRect = sourceView.bounds
             fileMenuSheet.popoverPresentationController?.permittedArrowDirections = [.down, .up]
         }
-        
         self.presentationController?.present(fileMenuSheet, animated: true)
     }
     
     private func showPhotoLibrary() {
-        var status: PHAuthorizationStatus
-        if #available(iOS 14, *) {
-            status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
-        } else {
-            status = PHPhotoLibrary.authorizationStatus()
-        }
-        switch status {
+        switch PHPhotoLibrary.authorizationStatus() {
         case .notDetermined:
             self.requesetPhotoPermission()
         case .authorized, .limited:
@@ -171,14 +167,17 @@ open class FilePicker: NSObject {
     }
     
     private func requesetPhotoPermission() {
-        PHPhotoLibrary.requestAuthorization { status in
-            if #available(iOS 14, *) {
-                if status == .limited {
+        if #available(iOS 14, *) {
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                if status == .limited || status == .authorized {
                     self.presentPhoto()
                 }
             }
-            if status == .authorized {
-                self.presentPhoto()
+        } else {
+            PHPhotoLibrary.requestAuthorization { status in
+                if status == .authorized {
+                    self.presentPhoto()
+                }
             }
         }
     }
@@ -235,33 +234,26 @@ open class FilePicker: NSObject {
     }
     
     private func showImagePicker() {
-        self.imagePickerController.sourceType = .photoLibrary
-        self.presentationController?.present(
-            self.imagePickerController,
-            animated: true
-        )
+        if #available(iOS 14, *) {
+            self.presentationController?.present(producePickerViewController(), animated: true)
+        } else {
+            self.imagePickerController.sourceType = .photoLibrary
+            self.presentationController?.present(
+                self.imagePickerController,
+                animated: true
+            )
+        }
     }
-
     
     // MARK: - Private methods
-    private func pickerControllerImage(
-        _ controller: UIImagePickerController,
-        didSelect image: UIImage? = nil,
-        withURL imageURL: URL? = nil
-    ) {
+    private func pickerControllerImage(_ controller: UIImagePickerController, didSelect images: [ImageToSend] = []) {
         controller.dismiss(animated: true, completion: nil)
-        
-        self.delegate?.didSelect(image: image, imageURL: imageURL)
+        self.delegate?.didSelect(images: images)
     }
     
-    private func pickerControllerDocument(
-        _ controller: UIDocumentPickerViewController,
-        didSelect file: Data? = nil,
-        withURL documentURL: URL? = nil
-    ) {
+    private func pickerControllerDocument(_ controller: UIDocumentPickerViewController, didSelect files: [FileToSend] = []) {
         controller.dismiss(animated: true, completion: nil)
-        
-        self.delegate?.didSelect(file: file, fileURL: documentURL)
+        self.delegate?.didSelect(files: files)
     }
     
     private func requesetCameraPermission() {
@@ -300,7 +292,7 @@ open class FilePicker: NSObject {
         
         let ac = UIAlertController(
             title: "Need camera access".localized,
-            message: "Webim Demo needs permission to access your camera so you can send photos to chat.".localized,
+            message: "Webim needs permission to access your camera so you can send photos to chat.".localized,
             preferredStyle: .alert
         )
         
@@ -324,6 +316,15 @@ open class FilePicker: NSObject {
         
         self.presentationController?.present(ac, animated: true)
     }
+
+    @available(iOS 14, *)
+    private func producePickerViewController() -> PHPickerViewController {
+        var pickerConfig = PHPickerConfiguration(photoLibrary: .shared())
+        pickerConfig.selectionLimit = 10
+        let picker = PHPickerViewController(configuration: pickerConfig)
+        picker.delegate = self
+        return picker
+    }
 }
 
 // MARK: - UIImagePickerController extensions
@@ -341,35 +342,51 @@ extension FilePicker: UIImagePickerControllerDelegate {
         }
         
         guard let imageURL = info[.referenceURL] as? URL else {
-            return self.pickerControllerImage(picker, didSelect: image)
+            return self.pickerControllerImage(picker, didSelect: [ImageToSend(image: image, url: nil)])
         }
         
-        self.pickerControllerImage(
-            picker,
-            didSelect: image,
-            withURL: imageURL
+        self.pickerControllerImage(picker, didSelect: [ImageToSend(image: image, url: imageURL)]
         )
     }
 }
 
-extension FilePicker: UIDocumentMenuDelegate, UIDocumentPickerDelegate {
-    public func documentPicker(
-        _ picker: UIDocumentPickerViewController,
-        didPickDocumentsAt urls: [URL]
-    ) {
-        guard let fileURL = urls.first else {
-            return self.pickerControllerDocument(picker)
+extension FilePicker: PHPickerViewControllerDelegate {
+    @available(iOS 14, *)
+    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        var images: [ImageToSend] = []
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard error == nil else {
+                    DispatchQueue.main.async {
+                        self?.alertDialogHandler.showFileLoadingFailureDialog()
+                    }
+                    return
+                }
+                guard let image = image as? UIImage else { return }
+                images.append(ImageToSend(image: image, url: nil))
+                guard images.count == results.count else { return }
+                DispatchQueue.main.async {
+                    self?.delegate?.didSelect(images: images)
+                }
+            }
         }
-        
-        do {
-            let data = try Data(contentsOf: fileURL)
-            self.pickerControllerDocument(
-                picker,
-                didSelect: data,
-                withURL: fileURL
-            )
-        } catch {
-            alertDialogHandler.showFileLoadingFailureDialog(withError: error)
+    }
+}
+
+extension FilePicker: UIDocumentMenuDelegate, UIDocumentPickerDelegate {
+    public func documentPicker(_ picker: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        picker.dismiss(animated: true)
+        var files: [FileToSend] = []
+        for url in urls {
+            do {
+                let data = try Data(contentsOf: url)
+                files.append(FileToSend(file: data, url: url))
+                guard urls.count == files.count else { continue }
+                self.pickerControllerDocument(picker, didSelect: files)
+            } catch {
+                alertDialogHandler.showFileLoadingFailureDialog()
+            }
         }
     }
     

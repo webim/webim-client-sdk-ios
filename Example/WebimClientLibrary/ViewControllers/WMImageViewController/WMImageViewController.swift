@@ -32,6 +32,8 @@ class WMImageViewController: UIViewController {
     // MARK: - Properties
     var selectedImage: UIImage?
     var selectedImageURL: URL?
+
+    lazy var navigationControllerManager = NavigationControllerManager()
     
     // MARK: - Private properties
     private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
@@ -55,7 +57,11 @@ class WMImageViewController: UIViewController {
             self.reloadImageIfNeed()
         }
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationControllerManager.update(with: .clear)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,7 +212,6 @@ class WMImageViewController: UIViewController {
                 }
             )
             
-            guard navigationController?.navigationBar.isHidden == false else { return }
             let velocity = sender.velocity(in: view)
             
             guard velocity.y >= 1500 else { return }

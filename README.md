@@ -10,7 +10,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.37.4'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.38.0'
 ```
 `use_frameworks!` must be specified.
 
@@ -18,7 +18,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.37.4
+github "webim/webim-client-sdk-ios" ~> 3.38.0
 ```
 
 ### Swift Package Manager
@@ -39,7 +39,8 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* **IPHONEOS_DEPLOYMENT_TARGET** version increase to 9.0.
+* File name and file size in message with `sending` type.
+* Some demo app fixes.
 
 ## Example
 

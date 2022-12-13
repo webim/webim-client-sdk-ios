@@ -29,45 +29,93 @@ import Foundation
 import XCTest
 
 class ProvidedVisitorFieldsTests: XCTestCase {
-    
-    // MARK: - Constants
-    private static let PROVIDED_VISITOR_FIELDS_JSON_STRING = """
-{
-    "id" : "1234567890987654321",
-    "display_name" : "Никита",
-    "crc" : "ffadeb6aa3c788200824e311b9aa44cb"
-}
-"""
-    private static let PROVIDED_VISITOR_FIELDS_JSON_DATA = ProvidedVisitorFieldsTests.PROVIDED_VISITOR_FIELDS_JSON_STRING.data(using: .utf8)!
-    private static let WRONG_PROVIDED_VISITOR_FIELDS_JSON_STRING = """
-{
-    "display_name" : "Никита",
-    "crc" : "ffadeb6aa3c788200824e311b9aa44cb"
-}
-"""
-    
+    //MARK: Properties
+    var logger: WebimLoggerMock!
+    let defaultLogMessage = "Error serializing provided visitor fields:"
+
+    //MARK: Methods
+    override func setUp() {
+        super.setUp()
+        logger = WebimLoggerMock()
+        WebimInternalLogger.setup(webimLogger: logger,
+                                  verbosityLevel: .verbose,
+                                  availableLogTypes: [.undefined,
+                                                      .networkRequest,
+                                                      .messageHistory,
+                                                      .manualCall])
+    }
+
+    override func tearDown() {
+        logger = nil
+        super.tearDown()
+    }
+
     // MARK: - Tests
-    
-    func testInitWithString() {
-        let providedVisitorFields = ProvidedVisitorFields(withJSONString: ProvidedVisitorFieldsTests.PROVIDED_VISITOR_FIELDS_JSON_STRING)!
-        
-        XCTAssertEqual(ProvidedVisitorFieldsTests.PROVIDED_VISITOR_FIELDS_JSON_STRING,
-                       providedVisitorFields.getJSONString())
-        XCTAssertEqual("1234567890987654321",
-                       providedVisitorFields.getID())
+    func test_InitWithString() {
+        let jsonString = """
+        {
+            "id" : "1234567890987654321",
+            "display_name" : "Никита",
+            "crc" : "ffadeb6aa3c788200824e311b9aa44cb"
+        }
+        """
+
+        let sut = ProvidedVisitorFields(withJSONString: jsonString)
+
+        XCTAssertEqual(jsonString, sut?.getJSONString())
     }
-    
-    func testInitWithData() {
-        let providedVisitorFields = ProvidedVisitorFields(withJSONObject: ProvidedVisitorFieldsTests.PROVIDED_VISITOR_FIELDS_JSON_DATA)!
-        
-        XCTAssertEqual(ProvidedVisitorFieldsTests.PROVIDED_VISITOR_FIELDS_JSON_STRING,
-                       providedVisitorFields.getJSONString())
-        XCTAssertEqual("1234567890987654321",
-                       providedVisitorFields.getID())
+
+    func test_InitWithData() {
+        let jsonString = """
+        {
+            "id" : "1234567890987654321",
+            "display_name" : "Никита",
+            "crc" : "ffadeb6aa3c788200824e311b9aa44cb"
+        }
+        """
+
+        let sut = ProvidedVisitorFields(withJSONObject: jsonString.data(using: .utf8)!)
+
+        XCTAssertEqual(jsonString, sut?.getJSONString())
     }
-    
-    func testInitFailed() {
-        XCTAssertNil(ProvidedVisitorFields(withJSONString: ProvidedVisitorFieldsTests.WRONG_PROVIDED_VISITOR_FIELDS_JSON_STRING))
+
+    func test_Init_HasFieldsKeyValue() {
+        let jsonString = """
+        {
+            "fields" : {
+                "id" : "expectedId"
+            }
+        }
+        """
+
+        let sut = ProvidedVisitorFields(withJSONString: jsonString)
+
+        XCTAssertEqual(jsonString, sut?.getJSONString())
     }
-    
+
+    func test_Init_HasFieldsKey_WrongValue() {
+        logger.reset()
+        let jsonString = """
+        {
+            "fields" : {
+                "someKey" : "anyValue"
+            }
+        }
+        """
+
+        let sut = ProvidedVisitorFields(withJSONString: jsonString)
+
+        XCTAssertNil(sut)
+        XCTAssertTrue(logger.logText.contains(defaultLogMessage))
+    }
+
+    func test_Init_WrongJson() {
+        logger.reset()
+        let jsonString = "someWrongJson"
+
+        let sut = ProvidedVisitorFields(withJSONString: jsonString)
+
+        XCTAssertNil(sut)
+        XCTAssertTrue(logger.logText.contains(defaultLogMessage))
+    }
 }

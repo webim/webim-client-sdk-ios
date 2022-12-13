@@ -36,8 +36,14 @@ class WMOperatorMessageCell: WMMessageTableCell {
     
     override func setMessage(message: Message, tableView: UITableView) {
         super.setMessage(message: message, tableView: tableView)
-        
-        let checkLink = self.messageTextView.setTextWithReferences(message.getText(), alignment: .left)
+
+        let checkLink = self.messageTextView.setTextWithReferences(
+            message.getText(),
+            textColor: messageBodyLabelColourOperator,
+            alignment: .left)
+        messageTextView.removeInsets()
+        messageTextView.delegate = self
+
         if !cellMessageWasInited {
             cellMessageWasInited = true
             for recognizer in messageTextView.gestureRecognizers ?? [] {
@@ -57,6 +63,10 @@ class WMOperatorMessageCell: WMMessageTableCell {
             self.messageTextView.addGestureRecognizer(longPressPopupGestureRecognizer)
         }
     }
+
+    override func resignTextViewFirstResponder() {
+        messageTextView.resignFirstResponder()
+    }
     
     override func initialSetup() -> Bool {
         let setup = super.initialSetup()
@@ -66,4 +76,8 @@ class WMOperatorMessageCell: WMMessageTableCell {
         return setup
     }
 
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        guard textView.selectedTextRange?.isEmpty == false else { return }
+        delegate?.cellChangeTextViewSelection(self)
+    }
 }

@@ -115,7 +115,7 @@ public class WMKeychainWrapper: NSObject {
     open func string(forKey defaultName: String) -> String? {
         return WMKeychainWrapper.readString(key: defaultName)
     }
-    
+
     static func removeObject(key: String) -> OSStatus{
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: key]
@@ -147,7 +147,7 @@ public class WMKeychainWrapper: NSObject {
         
         return SecItemAdd(query as CFDictionary, nil)
     }
-    
+
     class func load(key: String) -> Data? {
         let secureStringKey = webimKeyPrefix + key
         

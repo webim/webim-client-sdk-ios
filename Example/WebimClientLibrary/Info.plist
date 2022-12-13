@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Webim Demo</string>
+	<string>Webim Chat</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -43,15 +43,15 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Webim Demo needs permission to access your camera so you can send photos to chat.</string>
+	<string>NSCameraUsageDescription</string>
 	<key>NSFileProviderDomainUsageDescription</key>
-	<string>Webim Demo needs permission to access your documents folder so you can send files to chat.</string>
+	<string>NSFileProviderDomainUsageDescription</string>
 	<key>NSFileProviderPresenceUsageDescription</key>
-	<string>Webim Demo needs permission to access your documents folder so you can send files to chat.</string>
+	<string>NSFileProviderPresenceUsageDescription</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Webim Demo needs permission to access your photo library so you can save images from chat.</string>
+	<string>NSPhotoLibraryAddUsageDescription</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Webim Demo needs permission to access your photo library so you can send images to chat.</string>
+	<string>NSPhotoLibraryUsageDescription</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

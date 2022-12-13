@@ -65,14 +65,24 @@ class ChatItemTests: XCTestCase {
         }
     ],
     "offline" : false,
+    "unreadByVisitorMsgCnt" : 5,
     "visitorMessageDraft" : null,
     "id" : 2530,
-    "unreadByVisitorSinceTs" : null,
-    "operatorIdToRate" : { },
+    "unreadByVisitorSinceTs" : 1518713140.778348,
+    "operatorIdToRate" : {
+        "firstOperatorId": {
+            "operatorId":12,
+            "rating":2
+        },
+        "secondOperatorId": {
+            "operatorId":65,
+            "rating":1
+        }
+    },
     "creationTs" : 1518713140.777204,
     "subcategory" : null,
     "requestedForm" : null,
-    "unreadByOperatorSinceTs" : null,
+    "unreadByOperatorSinceTs" : 1518713140.77720,
     "operator" : {
         "avatar" : "/webim/images/avatar/demo_33201.png",
         "fullname" : "Administrator",
@@ -88,6 +98,33 @@ class ChatItemTests: XCTestCase {
     }
 }
 """
+
+    static let CHAT_ITEM_JSON_STRING_NULL_VALUES = """
+{
+    "readByVisitor" : null,
+    "category" : null,
+    "subject" : null,
+    "operatorTyping" : null,
+    "clientSideId" : null,
+    "state" : null,
+    "needToBeClosed" : null,
+    "visitorTyping" : null,
+    "messages" : null,
+    "offline" : null,
+    "unreadByVisitorMsgCnt" : null,
+    "visitorMessageDraft" : null,
+    "id" : null,
+    "unreadByVisitorSinceTs" : null,
+    "operatorIdToRate" : null,
+    "creationTs" : null,
+    "subcategory" : null,
+    "requestedForm" : null,
+    "unreadByOperatorSinceTs" : null,
+    "operator" : null
+}
+"""
+
+
     private static let MESSAGE_JSON_STRING = """
 {
     "avatar" : null,
@@ -119,22 +156,39 @@ class ChatItemTests: XCTestCase {
     // MARK: - Properties
     private let chatItemDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.CHAT_ITEM_JSON_STRING.data(using: .utf8)!,
                                                                        options: []) as! [String : Any?]
+
+    private let chatItemNullValuesDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.CHAT_ITEM_JSON_STRING_NULL_VALUES.data(using: .utf8)!,
+                                                                                 options: []) as! [String : Any?]
     
     // MARK: - Tests
     
     func testInit() {
         let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
-        
-        XCTAssertFalse(chatItem.isOperatorTyping())
-        XCTAssertEqual(chatItem.getState(),
-                       ChatItem.ChatItemState.chatting)
-        XCTAssertEqual(chatItem.getOperator()!.getID(),
-                       "33201")
-        XCTAssertTrue(chatItem.getReadByVisitor()!)
-        XCTAssertTrue(chatItem.getOperatorIDToRate()!.isEmpty)
+
+        XCTAssertEqual(chatItem.getMessages().count, 2)
+        XCTAssertEqual(chatItem.isOperatorTyping(), false)
+        XCTAssertEqual(chatItem.getState(), ChatItem.ChatItemState.chatting)
+        XCTAssertEqual(chatItem.getOperator()!.getID(), "33201")
+        XCTAssertEqual(chatItem.getReadByVisitor(), true)
+        XCTAssertEqual(chatItem.getOperatorIDToRate()?.count, 2)
+        XCTAssertEqual(chatItem.getUnreadByVisitorMessageCount(), 5)
+        XCTAssertEqual(chatItem.getUnreadByVisitorTimestamp(), 1518713140.778348)
+        XCTAssertEqual(chatItem.getUnreadByOperatorTimestamp(), 1518713140.77720)
+    }
+
+    func testInitWithNullJSONValues() {
+        let chatItem = ChatItem(jsonDictionary: chatItemNullValuesDictionary)
+
+        XCTAssertEqual(chatItem.getMessages().count, 0)
+        XCTAssertEqual(chatItem.isOperatorTyping(), false)
+        XCTAssertNil(chatItem.getState())
+        XCTAssertNil(chatItem.getOperator())
+        XCTAssertNil(chatItem.getReadByVisitor())
+        XCTAssertTrue(chatItem.getOperatorIDToRate()?.isEmpty == true)
+        XCTAssertEqual(chatItem.getUnreadByVisitorMessageCount(), 0)
         XCTAssertNil(chatItem.getUnreadByVisitorTimestamp())
         XCTAssertNil(chatItem.getUnreadByOperatorTimestamp())
-        XCTAssertTrue(chatItem.getOperatorIDToRate()!.isEmpty)
+        
     }
     
     func testGetSetMessages() {
@@ -212,6 +266,69 @@ class ChatItemTests: XCTestCase {
         
         XCTAssertEqual(chatItem.getUnreadByOperatorTimestamp(),
                        1.0)
+    }
+
+    func testSetRating() {
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        let ratingItemJsonDict = ["operatorId": 1, "rating": 5]
+        let ratingItem = RatingItem(jsonDictionary: ratingItemJsonDict)!
+        chatItem.set(rating: ratingItem, toOperatorWithId: "opID")
+
+        XCTAssertTrue(chatItem.getOperatorIDToRate()!["opID"]! == ratingItem)
+    }
+
+    func testSetUnreadByVisitorMessageCount() {
+        // Given
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        // When
+        chatItem.set(unreadByVisitorMessageCount: 30)
+        // Then
+        XCTAssertEqual(chatItem.getUnreadByVisitorMessageCount(), 30)
+    }
+
+    func testSetNegativeUnreadByVisitorMessageCountShouldBeZero() {
+        // Given
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        // When
+        chatItem.set(unreadByVisitorMessageCount: -5)
+        // Then
+        XCTAssertEqual(chatItem.getUnreadByVisitorMessageCount(), 0)
+    }
+
+    func testSetUnreadByVisitorTimestamp() {
+        // Given
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        // When
+        chatItem.set(unreadByVisitorTimestamp: 12123.128412512)
+        // Then
+        XCTAssertEqual(chatItem.getUnreadByVisitorTimestamp(), 12123.128412512)
+    }
+
+    func testSetNegativeUnreadByVisitorTimestampShouldBeZero() {
+        // Given
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        // When
+        chatItem.set(unreadByVisitorTimestamp: -12123.128412512)
+        // Then
+        XCTAssertEqual(chatItem.getUnreadByVisitorTimestamp(), 0)
+    }
+
+    func testSetTooLargeUnreadByVisitorTimestamp() {
+        // Given
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        // When
+        chatItem.set(unreadByVisitorTimestamp: 9999999999999999999999999999999999999999999999999999999999999999999999999999999.999999999999999)
+        // Then
+        XCTAssertEqual(chatItem.getUnreadByVisitorTimestamp(), 9999999999999999999999999999999999999999999999999999999999999999999999999999999.999999999999999)
+    }
+
+    func testSetNilValueUnreadByVisitorTimeStamp() {
+        // Given
+        let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
+        // When
+        chatItem.set(unreadByVisitorTimestamp: nil)
+        // Then
+        XCTAssertNil(chatItem.getUnreadByVisitorTimestamp())
     }
     
     // MARK: ChatItemState tests

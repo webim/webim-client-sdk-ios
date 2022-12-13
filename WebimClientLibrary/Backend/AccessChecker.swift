@@ -50,14 +50,20 @@ class AccessChecker {
     // MARK: - Methods
     func checkAccess() throws {
         guard thread == Thread.current else {
+            WebimInternalLogger.shared.log(
+                entry: AccessError.invalidThread.localizedDescription)
             throw AccessError.invalidThread
         }
         
         guard self.queue == DispatchQueue.current else {
+            WebimInternalLogger.shared.log(
+                entry: AccessError.invalidSession.localizedDescription)
             throw AccessError.invalidSession
         }
         
         guard !sessionDestroyer.isDestroyed() else {
+            WebimInternalLogger.shared.log(
+                entry: AccessError.invalidSession.localizedDescription)
             throw AccessError.invalidSession
         }
     }

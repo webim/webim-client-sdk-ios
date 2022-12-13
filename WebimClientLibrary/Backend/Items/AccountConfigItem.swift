@@ -1,9 +1,9 @@
 //
-//  StringFromHTTPParametersTests.swift
+//  AccountConfigItem.swift
 //  WebimClientLibrary
 //
-//  Created by Nikita Lazarev-Zubov on 02.02.18.
-//  Copyright © 2018 Webim. All rights reserved.
+//  Created by Nikita Kaberov on 01.11.2022.
+//  Copyright © 2022 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,20 +25,33 @@
 //
 
 import Foundation
-import XCTest
-@testable import WebimClientLibrary
 
-class StringFromHTTPParametersTests: XCTestCase {
+/**
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2022 Webim
+ */
+final class AccountConfigItem {
     
-    // MARK: - Tests
-    func testStringFromHTTPParameters() {
-        let dictionary = ["parameter1" : "value1",
-                          "parameter2" : "1"] as [String : String]
-        let expectedString1 = "parameter1=value1&parameter2=1"
-        let expectedString2 = "parameter2=1&parameter1=value1"
-        let dictionaryString = dictionary.stringFromHTTPParameters()
-        
-        XCTAssertTrue(dictionaryString == expectedString1 || dictionaryString == expectedString2)
+    // MARK: - Constants
+    // Raw values equal to field names received in responses from server.
+    private enum JSONField: String {
+        case hintsEndpoint = "visitor_hints_api_endpoint"
     }
     
+    // MARK: - Properties
+    private var hintsEndpoint: String?
+    
+    // MARK: - Initialization
+    init(jsonDictionary: [String: Any?]) {
+        if let hintsEndpoint = jsonDictionary[JSONField.hintsEndpoint.rawValue] as? String {
+            self.hintsEndpoint = hintsEndpoint
+        }
+    }
+    
+    // MARK: - Methods
+    func getHintsEndpoint() -> String? {
+        return hintsEndpoint
+    }
 }

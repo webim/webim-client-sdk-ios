@@ -37,36 +37,8 @@ extension WMSettingsViewController {
     
     // MARK: - Private methods
     func setupNavigationItem() {
-        
-        let imageView = UIImageView(image: navigationBarTitleImageViewImage)
-        imageView.contentMode = .scaleAspectFit
-        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 130, height: 40))
-        imageView.frame = titleView.bounds
-        titleView.addSubview(imageView)
-        
-        let toogleTestModeGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(toogleTestMode)
-        )
-        toogleTestModeGestureRecognizer.numberOfTapsRequired = 5
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(toogleTestModeGestureRecognizer)
+        let titleView = getTitleView()
         self.navigationItem.titleView = titleView
-    }
-    
-    func setupTextFields() {
-        
-        pageTitleTextField.addTarget(
-            self,
-            action: #selector(stoppedTyping),
-            for: .editingDidEnd
-        )
-        pageTitleTextField.delegate = self
-        
-        accountNameTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)),
-                                  for: .editingChanged)
-        locationTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)),
-                                  for: .editingChanged)
     }
     
     func setupLabels() {
@@ -76,6 +48,39 @@ extension WMSettingsViewController {
         ] {
             guard let hintLabel = hintLabel else { continue }
             hintLabel.alpha = 0.0
+        }
+    }
+
+    func setupTextFieldsDelegate() {
+        pageTitleTextField.delegate = self
+        accountNameTextField.delegate = self
+        locationTextField.delegate = self
+        pageTitleTextField.delegate = self
+    }
+    
+    private func getTitleView() -> UIView {
+        let titleView = UIImageView()
+        setupTitleView(titleView)
+        setupTitleViewConstraints(titleView: titleView)
+        return titleView
+    }
+
+
+    private func setupTitleView(_ imageView: UIImageView) {
+//        let toogleTestModeGestureRecognizer = UITapGestureRecognizer(
+//            target: self,
+//            action: #selector(toogleTestMode)
+//        )
+        imageView.image = navigationBarTitleImageViewImage
+        imageView.contentMode = .scaleAspectFill
+    }
+
+
+    private func setupTitleViewConstraints(titleView: UIView) {
+        let navigationBarHeight = navigationController?.navigationBar.frame.height ?? 44
+
+        titleView.snp.makeConstraints { make in
+            make.width.equalTo(navigationBarHeight).multipliedBy(2)
         }
     }
 }

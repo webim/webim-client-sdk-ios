@@ -220,8 +220,10 @@ final class MessageTrackerImpl {
         do {
             try message.getSource().assertIsHistory()
         } catch {
-            WebimInternalLogger.shared.log(entry: "Message which is being changed is not a part of history: \(message.toString()).",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "Message which is being changed is not a part of history: \(message.toString()).",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
         }
         
         guard let headMessage = headMessage,
@@ -237,8 +239,10 @@ final class MessageTrackerImpl {
             messageListener?.changed(message: previousMessage,
                                      to: message)
         } else {
-            WebimInternalLogger.shared.log(entry: "Unknown message was changed: \(message.toString())",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "Unknown message was changed: \(message.toString())",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
         }
     }
     
@@ -247,8 +251,10 @@ final class MessageTrackerImpl {
         do {
             try message.getSource().assertIsHistory()
         } catch {
-            WebimInternalLogger.shared.log(entry: "Message which is being added is not a part of history: \(message.toString()).",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "Message which is being added is not a part of history: \(message.toString()).",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
             
             return
         }

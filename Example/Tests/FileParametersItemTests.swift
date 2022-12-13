@@ -31,8 +31,8 @@ import XCTest
 class FileParametersItemTests: XCTestCase {
  
     // MARK: - Constants
-    static let FILE_PARAMETERS_JSON_STRING = """
-{
+    let defaultFileParametersItemJson = """
+    {
     "client_content_type" : "image/jpeg",
     "image" : {
         "size" : {
@@ -45,29 +45,110 @@ class FileParametersItemTests: XCTestCase {
     "content_type" : "image/png",
     "guid" : "010a56da72ee41e2a78d0509155de755",
     "size" : 758611
-}
-"""
-    
-    // MARK: - Properties
-    private let fileParametersItemDictionary = try! JSONSerialization.jsonObject(with: FileParametersItemTests.FILE_PARAMETERS_JSON_STRING.data(using: .utf8)!,
-                                                                                 options: []) as! [String : Any?]
-    
-    // MARK: - Tests
-    func testInit() {
-        let fileParametersItem = FileParametersItem(jsonDictionary: fileParametersItemDictionary)
-        
-        XCTAssertEqual(fileParametersItem.getSize(),
-                       758611)
-        XCTAssertEqual(fileParametersItem.getGUID(),
-                       "010a56da72ee41e2a78d0509155de755")
-        XCTAssertEqual(fileParametersItem.getContentType(),
-                       "image/png")
-        XCTAssertEqual(fileParametersItem.getFilename(),
-                       "asset.JPG")
-        XCTAssertEqual(fileParametersItem.getImageParameters()!.getSize()!.getWidth(),
-                       700)
-        XCTAssertEqual(fileParametersItem.getImageParameters()!.getSize()!.getHeight(),
-                       501)
+    }
+    """
+
+    let nullFileParametersItemJson = """
+    {
+    "client_content_type" : null,
+    "image" : null,
+    "visitor_id" : null,
+    "filename" : null,
+    "content_type" : null,
+    "guid" : null,
+    "size" : null
+    }
+    """
+
+    var sut: FileParametersItem!
+    var nullSut: FileParametersItem!
+
+    private func convertToDict(_ json: String) -> [String: Any?] {
+        return try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!, options: []) as! [String : Any?]
+    }
+
+    override func setUp() {
+        super.setUp()
+        sut = FileParametersItem(jsonDictionary: convertToDict(defaultFileParametersItemJson))
+        nullSut = FileParametersItem(jsonDictionary: convertToDict(nullFileParametersItemJson))
+    }
+
+    override func tearDown() {
+        sut = nil
+        nullSut = nil
+        super.tearDown()
     }
     
+    // MARK: - Tests
+    func testInitContentType() {
+        let expectedContentType = "image/png"
+
+        XCTAssertEqual(sut.getContentType(), expectedContentType)
+    }
+
+    func testInitContenttypeNullValue() {
+        XCTAssertNil(nullSut.getContentType())
+    }
+
+    func testInitClientContentType() {
+        let expectedContentType = "image/jpeg"
+
+        XCTAssertEqual(sut.getClientContentType(), expectedContentType)
+    }
+
+    func testInitClientContenttypeNullValue() {
+        XCTAssertNil(nullSut.getClientContentType())
+    }
+
+    func testInitFileName() {
+        let expectedClientContentType = "asset.JPG"
+
+        XCTAssertEqual(sut.getFilename(), expectedClientContentType)
+    }
+
+    func testInitFileNameNullValue() {
+        XCTAssertNil(nullSut.getFilename())
+    }
+
+    func testInitGuid() {
+        let expectedGuidValue = "010a56da72ee41e2a78d0509155de755"
+
+        XCTAssertEqual(sut.getGUID(), expectedGuidValue)
+    }
+
+    func testInitGuidNullValue() {
+        XCTAssertNil(nullSut.getGUID())
+    }
+
+    func testInitImageParameters() {
+        let expectedImageWidth = 700
+        let expectedImageHeight = 501
+
+        XCTAssertEqual(sut.getImageParameters()?.getSize()?.getWidth(), expectedImageWidth)
+        XCTAssertEqual(sut.getImageParameters()?.getSize()?.getHeight(), expectedImageHeight)
+    }
+
+    func testInitImageParametersNullValue() {
+        XCTAssertNil(nullSut.getImageParameters())
+    }
+
+    func testInitSize() {
+        let expectedSize: Int64 = 758611
+
+        XCTAssertEqual(sut.getSize(), expectedSize)
+    }
+
+    func testInitSizeNullValue() {
+        XCTAssertNil(nullSut.getSize())
+    }
+
+    func testInitVisitorId() {
+        let expectedVisitorID = "877a920ede7082412656ac1cdec7ecde"
+
+        XCTAssertEqual(sut.getVisitorID(), expectedVisitorID)
+    }
+
+    func testInitVisitorIdNullValue() {
+        XCTAssertNil(nullSut.getVisitorID())
+    }
 }

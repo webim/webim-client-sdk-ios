@@ -55,7 +55,13 @@ class WMSaveView: UIView {
     }
 }
 
+
 class CheckmarkView: UIView {
+    
+    @objc override dynamic class var layerClass: AnyClass {
+        get { return CAShapeLayer.self }
+    }
+    
     public func animateCheckmark() {
         setupLayer()
         guard let layer = layer as? CAShapeLayer else { return }

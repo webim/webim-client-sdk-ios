@@ -78,9 +78,9 @@ class LaunchScreenController: UIViewController {
                 self.bottomTextLabel.alpha = 0
             },
             completion: { _ in
-                let sb = UIStoryboard(name: "Main", bundle: nil)
-                let vc = sb.instantiateInitialViewController()
-                UIApplication.shared.keyWindow?.rootViewController = vc
+                let rootVC = WMStartViewController.loadViewControllerFromXib()
+                let navigationController = UINavigationController(rootViewController: rootVC)
+                AppDelegate.shared.window?.rootViewController = navigationController
             }
         )
     }

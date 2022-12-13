@@ -158,6 +158,7 @@ public final class SessionBuilder  {
     private var visitorFields: ProvidedVisitorFields?
     private weak var webimLogger: WebimLogger?
     private var webimLoggerVerbosityLevel: WebimLoggerVerbosityLevel?
+    private var availableLogTypes = [WebimLogType]()
     private var prechat: String?
     private var onlineStatusRequestFrequencyInMillis: Int64?
 
@@ -483,8 +484,10 @@ public final class SessionBuilder  {
      2017 Webim
      */
     public func set(webimLogger: WebimLogger?,
-                    verbosityLevel: WebimLoggerVerbosityLevel = .warning) -> SessionBuilder {
+                    verbosityLevel: WebimLoggerVerbosityLevel = .warning,
+                    availableLogTypes: [WebimLogType] = []) -> SessionBuilder {
         self.webimLogger = webimLogger
+        self.availableLogTypes = availableLogTypes
         webimLoggerVerbosityLevel = verbosityLevel
 
         return self
@@ -552,7 +555,7 @@ public final class SessionBuilder  {
                     index = nextIndex
                 }
                 let data = Data(_: byteArray)
-                prechat = String(data:data, encoding: .utf8)!
+                prechat = String(data:data, encoding: .utf8) ?? ""
                 print("prechat parsed: \(prechat)")
             }
             //prechat is json or string data
@@ -591,6 +594,7 @@ public final class SessionBuilder  {
                                                 isVisitorDataClearingEnabled: visitorDataClearingEnabled,
                                                 webimLogger: webimLogger,
                                                 verbosityLevel: webimLoggerVerbosityLevel,
+                                                availableLogTypes: availableLogTypes,
                                                 prechat: prechat,
                                                 multivisitorSection: multivisitorSection,
                                                 onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis) as WebimSession
@@ -631,7 +635,7 @@ public final class SessionBuilder  {
     /**
      Verbosity level of `WebimLogger`.
      - seealso:
-     `SessionBuilder.set(webimLogger:verbosityLevel:)`
+     `SessionBuilder.set(webimLogger:verbosityLevel:availableLogTypes:)`
      - author:
      Nikita Lazarev-Zubov
      - copyright:
@@ -715,6 +719,54 @@ public final class SessionBuilder  {
         @available(*, unavailable, renamed: "error")
         case ERROR
 
+    }
+
+    /**
+     Log type of `WebimLogger`.
+     - seealso:
+     `SessionBuilder.set(webimLogger:verbosityLevel:availableLogTypes:)`
+     - author:
+     Aslan Kutumbaev
+     - copyright:
+     2022 Webim
+     */
+    public enum WebimLogType {
+
+        /**
+         Log type associated with network requests.
+         - author:
+         Aslan Kutumbaev
+         - copyright:
+         2022 Webim
+         */
+        case networkRequest
+
+        /**
+         Log type associated with message history.
+         - author:
+         Aslan Kutumbaev
+         - copyright:
+         2022 Webim
+         */
+        case messageHistory
+
+        /**
+         Log type associated with method, that manual call.
+         - author:
+         Aslan Kutumbaev
+         - copyright:
+         2022 Webim
+         */
+        case manualCall
+
+        /**
+         Undefined log type.
+         - author:
+         Aslan Kutumbaev
+         - copyright:
+         2022 Webim
+         */
+        case undefined
     }
 
     /**

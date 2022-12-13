@@ -31,14 +31,7 @@ import XCTest
 class MessageHolderTests: XCTestCase {
     
     // MARK: - Constants
-    private static let userDefaultsKey = "userDefaultsKey"
-    private enum MessageImplMockData: String {
-        case serverURLString = "https://demo.webim.ru/"
-        case operatorID = "operatorID"
-        case avatarURLString = "image.jpg"
-        case senderName = "Sender Name"
-        case text = "Text."
-    }
+    static let userDefaultsKey = "userDefaultsKey"
     
     // MARK: - Properties
     private var lastAddedMessage: MessageImpl?
@@ -254,7 +247,7 @@ class MessageHolderTests: XCTestCase {
                                                   internalErrorListener: InternalErrorListenerForTests())
         let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
                                             actionRequestLoop: actionRequestLoop)
-        let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
+        let remoteHistoryProvider = RemoteHistoryProviderMock(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
@@ -276,7 +269,7 @@ class MessageHolderTests: XCTestCase {
                                                   internalErrorListener: InternalErrorListenerForTests())
         let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
                                             actionRequestLoop: actionRequestLoop)
-        let remoteHistoryProvider = RemoteHistoryProviderForTests(withWebimActions: webimActions,
+        let remoteHistoryProvider = RemoteHistoryProviderMock(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
                                                                   history: history)
@@ -434,7 +427,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: 10 previously received messages should be received and no history requests should be performed.
         XCTAssertEqual(completionHandlerMessages!, history2)
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 0)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderMock).numberOfCalls, 0)
         
         // MARK: Test 2
         // When: Requesting all messages.
@@ -443,7 +436,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: Next 10 messages should be received and history request for more should be performed.
         XCTAssertEqual(completionHandlerMessages!, history1)
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 0)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderMock).numberOfCalls, 0)
         
         // MARK: Test 3
         // When: Requesting more messages.
@@ -452,7 +445,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: after emptying the history will be made a one more request.
         XCTAssertEqual(completionHandlerMessages!, [MessageImpl]())
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 1)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderMock).numberOfCalls, 1)
         
         // MARK: Test 4
         // When: Resetting 15 messages back and requesting for all messages.
@@ -462,7 +455,7 @@ class MessageHolderTests: XCTestCase {
         }
         // Then: 15 messages should be received and no history requests should be preformed.
         XCTAssertEqual(completionHandlerMessages!, (history1 + Array(history2[0 ... 4])))
-        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderForTests).numberOfCalls, 1)
+        XCTAssertEqual((messageHolder.getRemoteHistoryProvider() as! RemoteHistoryProviderMock).numberOfCalls, 1)
     }
     
     func testInsertMessagesBetweenOlderHistoryAndCurrentChat() throws {
@@ -1706,49 +1699,58 @@ class MessageHolderTests: XCTestCase {
         
         XCTAssertTrue(messageHolder.getMessagesToSend().isEmpty)
     }
-    
-    // MARK: - Mocking RemoteHistoryProvider
-    final class RemoteHistoryProviderForTests: RemoteHistoryProvider {
-        
-        // MARK: - Properties
-        var history: [MessageImpl]
-        var numberOfCalls = 0
-        
-        // MARK: - Initialization
-        init(withWebimActions webimActions: WebimActionsImpl,
-             historyMessageMapper: MessageMapper,
-             historyMetaInformation: HistoryMetaInformationStorage,
-             history: [MessageImpl] = [MessageImpl]()) {
-            self.history = history
-            
-            super.init(webimActions: webimActions,
-                       historyMessageMapper: historyMessageMapper,
-                       historyMetaInformationStorage: historyMetaInformation)
-        }
-        
-        // MARK: - Methods
-        override func requestHistory(beforeTimestamp: Int64,
-                                     completion: @escaping ([MessageImpl], Bool) -> ()) {
-            var beforeIndex = 0
-            for (messageIndex, message) in history.enumerated() {
-                if message.getTimeInMicrosecond() <= beforeTimestamp {
-                    beforeIndex = messageIndex
-                    
-                    continue
-                } else {
-                    break
-                }
-            }
-            
-            let afterIndex = max(0, (beforeIndex - 100))
-            
-            numberOfCalls = numberOfCalls + 1
-            
-            completion((beforeIndex <= 0) ? [MessageImpl]() : Array(history[afterIndex ..< beforeIndex]), (afterIndex != 0))
-        }
-        
+
+    func testChanging() throws {
+        let history = generateHistory(ofCount: 10)
+        let currentChat = generateCurrentChat(ofCount: 10)
+        let messageHolder = newMessageHolder(withHistory: history)
+        try messageHolder.newMessageTracker(withMessageListener: self)
+        messageHolder.set(currentChatMessages: currentChat)
+        let expectedValue = "Text.14"
+
+        let sut = messageHolder.changing(messageID: "14", message: "newMessageText")
+
+        XCTAssertEqual(sut, expectedValue)
     }
-    
+
+    func test_Changing_MessageTrackerNil() {
+        let history = generateHistory(ofCount: 10)
+        let currentChat = generateCurrentChat(ofCount: 10)
+        let messageHolder = newMessageHolder(withHistory: history)
+        messageHolder.set(currentChatMessages: currentChat)
+
+        let sut = messageHolder.changing(messageID: "14", message: "newMessageText")
+
+        XCTAssertNil(sut)
+    }
+
+    func testChangingCancellWith() throws {
+        let history = generateHistory(ofCount: 10)
+        let currentChat = generateCurrentChat(ofCount: 10)
+        let messageHolder = newMessageHolder(withHistory: history)
+        try messageHolder.newMessageTracker(withMessageListener: self)
+        messageHolder.set(currentChatMessages: currentChat)
+        let expectedId = "16"
+
+        lastOldVersionChangedMessage = nil
+        lastNewVersionChangedMessage = nil
+        messageHolder.changingCancelledWith(messageID: expectedId, message: "cancelledMessageText")
+
+        XCTAssertEqual(lastNewVersionChangedMessage?.getID(), expectedId)
+    }
+
+    func test_ChangingCancellWith_MessageTrackerNil() {
+        let history = generateHistory(ofCount: 10)
+        let currentChat = generateCurrentChat(ofCount: 10)
+        let messageHolder = newMessageHolder(withHistory: history)
+        messageHolder.set(currentChatMessages: currentChat)
+        let expectedId = "12"
+
+        lastNewVersionChangedMessage = nil
+        messageHolder.changingCancelledWith(messageID: expectedId, message: "cancelledMessageText")
+
+        XCTAssertNil(lastNewVersionChangedMessage)
+    }
 }
 
 // MARK: - MessageListener

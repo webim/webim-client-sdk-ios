@@ -32,8 +32,9 @@ extension ChatViewController: WMDialogCellDelegate {
     
     func longPressAction(cell: UITableViewCell, message: Message) {
         selectedMessage = message
-        shoowPopover(cell: cell, message: message, cellHeight: cell.frame.height)
+        showPopover(cell: cell, message: message, cellHeight: cell.frame.height)
     }
+
     func imageViewTapped(message: Message, image: UIImage?, url: URL?) {
         
         guard let url = url
@@ -53,6 +54,13 @@ extension ChatViewController: WMDialogCellDelegate {
             }) else { return }
             let indexPath = IndexPath(row: row, section: 0)
             chatTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+            UIView.animate(withDuration: 0.5, delay: 0.0, animations: {
+                self.chatTableView.cellForRow(at: indexPath)?.contentView.backgroundColor = quoteBodyLabelColourVisitor
+            }, completion: { _ in
+                UIView.animate(withDuration: 0.5, delay: 0.2, animations: {
+                    self.chatTableView.cellForRow(at: indexPath)?.contentView.backgroundColor = .clear
+                })
+            })
         }
     }
     
@@ -65,7 +73,11 @@ extension ChatViewController: WMDialogCellDelegate {
     func cleanTextView() {
         self.toolbarView.messageView.setMessageText("")
     }
-    
+
+    func canReloadRow() -> Bool {
+        return canReloadRows
+    }
+
     func sendKeyboardRequest(buttonInfoDictionary: [String: String]) {
         guard let messageID = buttonInfoDictionary["Message"],
             let buttonID = buttonInfoDictionary["ButtonID"],
@@ -85,6 +97,10 @@ extension ChatViewController: WMDialogCellDelegate {
         } else {
             print("HALT! There isn't such message or button in #function")
         }
+    }
+
+    func cellChangeTextViewSelection(_ cell: WMMessageTableCell) {
+        cellWithSelection = cell
     }
     
     private func findMessage(withID id: String) -> Message? {

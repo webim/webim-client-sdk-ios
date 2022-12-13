@@ -109,7 +109,9 @@ final class WebimService {
             .set(remoteNotificationSystem: ((deviceToken != nil) ? .apns : .none))
             .set(deviceToken: deviceToken)
             .set(isVisitorDataClearingEnabled: false)
-            .set(webimLogger: self, verbosityLevel: .verbose)
+            .set(webimLogger: WebimLogManager.shared,
+                 verbosityLevel: .verbose,
+                 availableLogTypes: [.networkRequest, .messageHistory, .manualCall, .undefined])
         
         if let notFatalErrorHandler = notFatalErrorHandler {
             _ = sessionBuilder.set(notFatalErrorHandler: notFatalErrorHandler)
@@ -192,6 +194,10 @@ final class WebimService {
         messageStream = webimSession?.getStream()
     }
     
+    func getMessageStream() -> MessageStream? {
+        return messageStream
+    }
+    
     func setVisitorTyping(draft: String?) {
         do {
             if messageStream == nil {
@@ -243,6 +249,18 @@ final class WebimService {
             
         } catch {
             self.printError(error: error, message: "Search")
+        }
+    }
+
+    func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?) {
+        do {
+            if messageStream == nil {
+                setMessageStream()
+            }
+            try messageStream?.getServerSideSettings(completionHandler: completionHandler)
+
+        } catch {
+            self.printError(error: error, message: "Getting Server side settings")
         }
     }
     
@@ -625,10 +643,9 @@ final class WebimService {
             )
         }
     }
+
     
-    // MARK: Private methods
-    
-    private func startChat(
+    func startChat(
         departmentKey: String? = nil,
         message: String? = nil
     ) {
@@ -645,6 +662,7 @@ final class WebimService {
             self.printError(error: error, message: "Start chat")
         }
     }
+    // MARK: Private methods
     
     private func replyMessage(
         message: String,
@@ -685,7 +703,7 @@ final class WebimService {
         }
     }
     
-    private func sendFile(
+    func sendFile(
         data: Data,
         fileName: String,
         mimeType: String,
@@ -752,6 +770,10 @@ final class WebimService {
     func shouldShowDepartmentSelection() -> Bool {
         return messageStream?.getVisitSessionState() == .departmentSelection || messageStream?.getVisitSessionState() == .idleAfterChat
     }
+
+    func departmentList() -> [Department]? {
+        return messageStream?.getDepartmentList()
+    }
     
     func printError(error: Error, message: String) {
         switch error {
@@ -809,16 +831,6 @@ extension WebimService: NotFatalErrorHandler {
     
     func connectionStateChanged(connected: Bool) {
         self.notFatalErrorHandler?.connectionStateChanged(connected: connected)
-    }
-    
-}
-
-// MARK: - WebimLogger
-extension WebimService: WebimLogger {
-    
-    // MARK: - Methods
-    func log(entry: String) {
-        print(entry)
     }
     
 }

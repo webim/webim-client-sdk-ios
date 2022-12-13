@@ -105,11 +105,13 @@ final class WebimSessionImpl {
                                 isVisitorDataClearingEnabled: Bool,
                                 webimLogger: WebimLogger?,
                                 verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?,
+                                availableLogTypes: [SessionBuilder.WebimLogType],
                                 prechat: String?,
                                 multivisitorSection: String,
                                 onlineStatusRequestFrequencyInMillis: Int64?) -> WebimSessionImpl {
         WebimInternalLogger.setup(webimLogger: webimLogger,
-                                  verbosityLevel: verbosityLevel)
+                                  verbosityLevel: verbosityLevel,
+                                  availableLogTypes: availableLogTypes)
         let webimSdkQueue = DispatchQueue.current!
         
         
@@ -131,31 +133,36 @@ final class WebimSessionImpl {
         let sessionDestroyer = SessionDestroyer(userDefaultsKey: userDefaultsKey)
         
         guard let visitorJSON = userDefaults?[WMKeychainWrapperMainPrefix.visitor.rawValue] as? String? else {
-            WebimInternalLogger.shared.log(entry: "Wrong visitorJSON type in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Wrong visitorJSON type in WebimSessionImpl -\(#function)")
             fatalError("Wrong visitorJSON type in WebimSessionImpl.\(#function)")
         }
         
         let visitorFieldsJSONString = visitorFields?.getJSONString()
         
         let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
-        WebimInternalLogger.shared.log(entry: "Specified Webim server – \(serverURLString).",
+        WebimInternalLogger.shared.log(
+            entry: "Specified Webim server – \(serverURLString).",
             verbosityLevel: .debug)
         
         let currentChatMessageMapper: MessageMapper = CurrentChatMessageMapper(withServerURLString: serverURLString)
         let historyMessageMapper: MessageMapper = HistoryMessageMapper(withServerURLString: serverURLString)
         
         guard let sessionID = userDefaults?[WMKeychainWrapperMainPrefix.sessionID.rawValue] as? String? else {
-            WebimInternalLogger.shared.log(entry: "Wrong sessionID type in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Wrong sessionID type in WebimSessionImpl.\(#function)")
             fatalError("Wrong sessionID type in WebimSessionImpl.\(#function)")
         }
         
         guard let pageID = userDefaults?[WMKeychainWrapperMainPrefix.pageID.rawValue] as? String? else {
-            WebimInternalLogger.shared.log(entry: "Wrong pageID type in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Wrong pageID type in WebimSessionImpl.\(#function)")
             fatalError("Wrong pageID type in WebimSessionImpl.\(#function)")
         }
         
         guard let authorizationToken = userDefaults?[WMKeychainWrapperMainPrefix.authorizationToken.rawValue] as? String? else {
-            WebimInternalLogger.shared.log(entry: "Wrong authorizationToken type in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Wrong authorizationToken type in WebimSessionImpl.\(#function)")
             fatalError("Wrong authorizationToken type in WebimSessionImpl.\(#function)")
         }
         
@@ -205,14 +212,16 @@ final class WebimSessionImpl {
                                           forKey: userDefaultsKey)
             }
             guard let dbName = userDefaults?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String else {
-                WebimInternalLogger.shared.log(entry: "Can not find or write DB Name to WMKeychainWrapper in WebimSessionImpl.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Can not find or write DB Name to WMKeychainWrapper in WebimSessionImpl.\(#function)")
                 fatalError("Can not find or write DB Name to WMKeychainWrapper in WebimSessionImpl.\(#function)")
             }
             
             historyMetaInformationStoragePreferences = HistoryMetaInformationStoragePreferences(userDefaultsKey: userDefaultsKey)
             
             guard let readBeforeTimestamp = userDefaults?[WMKeychainWrapperMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
-                WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
                 fatalError("Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
             }
             let sqlhistoryStorage = SQLiteHistoryStorage(dbName: dbName,
@@ -241,7 +250,8 @@ final class WebimSessionImpl {
             }
         } else {
             guard let readBeforeTimestamp = userDefaults?[WMKeychainWrapperMainPrefix.readBeforeTimestamp.rawValue] as? Int64? else {
-                WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
                 fatalError("Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
             }
             historyStorage = MemoryHistoryStorage(readBeforeTimestamp: readBeforeTimestamp ?? Int64(-1))
@@ -259,6 +269,7 @@ final class WebimSessionImpl {
                                           historyStorage: historyStorage,
                                           reachedEndOfRemoteHistory: historyMetaInformationStoragePreferences.isHistoryEnded())
         let messageStream = MessageStreamImpl(serverURLString: serverURLString,
+                                              location: location,
                                               currentChatMessageFactoriesMapper: currentChatMessageMapper,
                                               sendingMessageFactory: SendingFactory(withServerURLString: serverURLString),
                                               operatorFactory: OperatorFactory(withServerURLString: serverURLString),
@@ -305,6 +316,10 @@ final class WebimSessionImpl {
         // Needed for message attachment secure download link generation.
         currentChatMessageMapper.set(fileUrlCreator: fileUrlCreator)
         historyMessageMapper.set(fileUrlCreator: fileUrlCreator)
+
+        WebimInternalLogger.shared.log(
+            entry: "WebimSession success created in WebimSessionImpl - \(#function)",
+            verbosityLevel: .verbose)
         
         return WebimSessionImpl(accessChecker: accessChecker,
                                 sessionDestroyer: sessionDestroyer,
@@ -325,18 +340,22 @@ final class WebimSessionImpl {
                                       forKey: userDefaultsKey)
         }
         _ = WMKeychainWrapper.removeObject(key: userDefaultsKey)
+        WebimInternalLogger.shared.log(
+            entry: "Clear visitor data in WebimSessionImpl - \(#function)",
+            verbosityLevel: .verbose)
     }
     
     private static func deleteDBFileFor(userDefaultsKey: String) {
         if let dbName = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String {
             let fileManager = FileManager.default
-            let optionalLibraryDirectory = try? fileManager.url(for: .libraryDirectory,
-                                                          in: .userDomainMask,
-                                                          appropriateFor: nil,
-                                                          create: false)
+            let optionalLibraryDirectory = try? fileManager.url(
+                for: .libraryDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: false)
             guard let libraryDirectory = optionalLibraryDirectory else {
-                WebimInternalLogger.shared.log(entry: "Error getting access to Library directory.",
-                                               verbosityLevel: .verbose)
+                WebimInternalLogger.shared.log(
+                    entry: "Error getting access to Library directory.")
                 return
             }
             
@@ -345,21 +364,39 @@ final class WebimSessionImpl {
             do {
                 try fileManager.removeItem(at: dbURL)
             } catch {
-                WebimInternalLogger.shared.log(entry: "Error deleting DB file at \(dbURL) or file doesn't exist.",
-                                               verbosityLevel: .verbose)
+                WebimInternalLogger.shared.log(
+                    entry: "Error deleting DB file at \(dbURL) or file doesn't exist.")
             }
+        } else {
+            WebimInternalLogger.shared.log(
+                entry: "Failure delete DB File. DB name is nil")
         }
     }
     
     private static func transferDBFiles(for userDefaultsKey: String) {
+
         guard let dbName = WMKeychainWrapper.standard.dictionary(
-                forKey: userDefaultsKey
-            )?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String,
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
-                                                              in: .userDomainMask).first,
-            let libraryDirectory = FileManager.default.urls(for: .libraryDirectory,
-                                                            in: .userDomainMask).first
-            else { return }
+            forKey: userDefaultsKey)?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String else {
+            WebimInternalLogger.shared.log(
+                entry: "Transfer DB files failure. DB name is nil.")
+            return
+        }
+
+        guard let documentsDirectory = FileManager.default.urls(
+            for: .documentDirectory,
+            in: .userDomainMask).first else {
+                WebimInternalLogger.shared.log(
+                    entry: "Transfer DB files failure.\nError getting access to Documents directory.")
+            return
+        }
+
+        guard let libraryDirectory = FileManager.default.urls(
+            for: .libraryDirectory,
+            in: .userDomainMask).first else {
+                WebimInternalLogger.shared.log(
+                    entry: "Transfer DB files failure.\nError getting access to Library directory.")
+                return
+            }
         
         do {
             let dbFileURL = documentsDirectory.appendingPathComponent(dbName)
@@ -367,6 +404,8 @@ final class WebimSessionImpl {
             let fileData = try Data(contentsOf: dbFileURL)
             try fileData.write(to: destanationURL)
         } catch {
+            WebimInternalLogger.shared.log(
+                entry: "Error reading DB file \(documentsDirectory.path): \(error.localizedDescription)")
             print("Error reading DB file \(documentsDirectory.path): \(error.localizedDescription)")
         }
     }
@@ -402,7 +441,8 @@ final class WebimSessionImpl {
         
         if uuidString == String() || uuidString == nil {
             guard let currentIdentifierForVendor = UIDevice.current.identifierForVendor else {
-                WebimInternalLogger.shared.log(entry: "Incorrect DeviceID in WebimSessionImpl.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Incorrect DeviceID in WebimSessionImpl.\(#function)")
                 return nil
             }
             uuidString = currentIdentifierForVendor.uuidString + (suffix.isEmpty ? suffix : "-" + suffix)
@@ -415,7 +455,8 @@ final class WebimSessionImpl {
             }
         }
         guard let deviceID = uuidString else {
-            WebimInternalLogger.shared.log(entry: "DeviceID is nil in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "DeviceID is nil in WebimSessionImpl.\(#function)")
             return nil
         }
         return deviceID
@@ -437,6 +478,9 @@ extension WebimSessionImpl: WebimSession {
         webimClient.resume()
         historyPoller.resume()
         locationStatusPoller?.resume()
+        WebimInternalLogger.shared.log(
+            entry: "Resume session in WebimSessionImpl - \(#function)",
+            verbosityLevel: .verbose)
     }
     
     func pause() throws {
@@ -449,6 +493,9 @@ extension WebimSessionImpl: WebimSession {
         webimClient.pause()
         historyPoller.pause()
         locationStatusPoller?.pause()
+        WebimInternalLogger.shared.log(
+            entry: "Pause session in WebimSessionImpl - \(#function)",
+            verbosityLevel: .verbose)
     }
     
     func destroy() throws {
@@ -459,10 +506,16 @@ extension WebimSessionImpl: WebimSession {
         try checkAccess()
         
         sessionDestroyer.destroy()
+        WebimInternalLogger.shared.log(
+            entry: "Destroy session in WebimSessionImpl - \(#function)",
+            verbosityLevel: .verbose)
     }
     
     func destroyWithClearVisitorData() throws {
         if sessionDestroyer.isDestroyed() {
+            WebimInternalLogger.shared.log(
+                entry: "Session already destroyed in WebimSessionImpl - \(#function)",
+                verbosityLevel: .verbose)
             return
         }
         
@@ -558,7 +611,8 @@ final class HistoryPoller {
         
         historySinceCompletionHandler = createHistorySinceCompletionHandler()
         guard let historySinceCompletionHandler = historySinceCompletionHandler else {
-            WebimInternalLogger.shared.log(entry: "Creating History Since Completion Handler failure in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Creating History Since Completion Handler failure in WebimSessionImpl - \(#function)")
             return
         }
         
@@ -582,7 +636,8 @@ final class HistoryPoller {
                 }
                 
                 guard let dispatchWorkItem = dispatchWorkItem else {
-                    WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
                     return
                 }
             
@@ -607,10 +662,57 @@ final class HistoryPoller {
     func getReadBeforeTimestamp(byWMKeychainWrapperKey userDefaultsKey: String) -> Int64 {
         let userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey)
         guard let readBeforeTimestamp = userDefaults?[WMKeychainWrapperMainPrefix.readBeforeTimestamp.rawValue] as? Int64 else {
-            WebimInternalLogger.shared.log(entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
             return Int64(-1)
         }
         return readBeforeTimestamp
+    }
+
+    public func requestHistory(since: String) {
+        if self.lastRevision == nil || self.lastRevision != since {
+            guard let historySinceCompletionHandler = historySinceCompletionHandler else {
+                WebimInternalLogger.shared.log(
+                    entry: "History Since Completion Handler is nil in WebimSessionImpl.\(#function)",
+                    logType: .networkRequest)
+                return
+            }
+            requestHistory(since: lastRevision, completion: historySinceCompletionHandler)
+        }
+    }
+
+    public func insertMessageInDB(message: MessageImpl) {
+        guard !sessionDestroyer.isDestroyed() else {
+            WebimInternalLogger.shared.log(
+                entry: "Current session is destroyed in WebimSessionImpl - \(#function)")
+            return
+        }
+        var messages = [MessageImpl]()
+        messages.append(message)
+        messageHolder.receiveHistoryUpdateWith(messages: messages, deleted: Set<String>()) {
+            [weak self] in
+            self?.historyMetaInformationStorage.set(revision: self?.lastRevision)
+        }
+        WebimInternalLogger.shared.log(
+            entry: "Insert message \(message.getText()) in DB",
+            verbosityLevel: .verbose)
+    }
+
+    public func deleteMessageFromDB(message: String) {
+        guard !sessionDestroyer.isDestroyed() else {
+            WebimInternalLogger.shared.log(
+                entry: "Current session is destroyed")
+            return
+        }
+        var deleted = Set<String>()
+        deleted.insert(message)
+        messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](), deleted: deleted) {
+            [weak self] in
+            self?.historyMetaInformationStorage.set(revision: self?.lastRevision)
+        }
+        WebimInternalLogger.shared.log(
+            entry: "Delete message \(message) in DB",
+            verbosityLevel: .verbose)
     }
     
     // MARK: Private methods
@@ -619,6 +721,8 @@ final class HistoryPoller {
         return { [weak self] (messageList: [MessageImpl], deleted: Set<String>, hasMore: Bool, isInitial: Bool, revision: String?) in
             guard let `self` = self,
                 !self.sessionDestroyer.isDestroyed() else {
+                    WebimInternalLogger.shared.log(
+                        entry: "Session destroyed in WebimSessionImpl - \(#function)")
                 return
             }
             
@@ -664,7 +768,8 @@ final class HistoryPoller {
                     
                     }
                     guard let dispatchWorkItem = self.dispatchWorkItem else {
-                        WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                        WebimInternalLogger.shared.log(
+                            entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
                         return
                     }
                     
@@ -673,16 +778,6 @@ final class HistoryPoller {
                                           execute: dispatchWorkItem)
                 }
             }
-        }
-    }
-    
-    public func requestHistory(since: String) {
-        if self.lastRevision == nil || self.lastRevision != since {
-            guard let historySinceCompletionHandler = historySinceCompletionHandler else {
-                WebimInternalLogger.shared.log(entry: "History Since Completion Handler is nil in WebimSessionImpl.\(#function)")
-                return
-            }
-            requestHistory(since: lastRevision, completion: historySinceCompletionHandler)
         }
     }
     
@@ -709,39 +804,24 @@ final class HistoryPoller {
                             }
                         }
                     }
-                    
+                    WebimInternalLogger.shared.log(
+                        entry: "Request history success. New \(messageChanges.count) messages",
+                        verbosityLevel: .verbose,
+                        logType: .networkRequest)
                     completion(self.historyMessageMapper.mapAll(messages: messageChanges), deletes, (historySinceResponse.getData()?.isHasMore() == true), (since == nil), historySinceResponse.getData()?.getRevision())
                 }
             } else {
+                WebimInternalLogger.shared.log(
+                    entry: "Request history completed. Data is nil",
+                    logType: .networkRequest)
                 completion([MessageImpl](), Set<String>(), false, (since == nil), since)
             }
         }
+        WebimInternalLogger.shared.log(
+            entry: "Request history",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
-    
-    public func insertMessageInDB(message: MessageImpl) {
-        guard !sessionDestroyer.isDestroyed() else {
-            return
-        }
-        var messages = [MessageImpl]()
-        messages.append(message)
-        messageHolder.receiveHistoryUpdateWith(messages: messages, deleted: Set<String>()) {
-            [weak self] in
-            self?.historyMetaInformationStorage.set(revision: self?.lastRevision)
-        }
-    }
-    
-    public func deleteMessageFromDB(message: String) {
-        guard !sessionDestroyer.isDestroyed() else {
-            return
-        }
-        var deleted = Set<String>()
-        deleted.insert(message)
-        messageHolder.receiveHistoryUpdateWith(messages: [MessageImpl](), deleted: deleted) {
-            [weak self] in
-            self?.historyMetaInformationStorage.set(revision: self?.lastRevision)
-        }
-    }
-    
 }
 
 // MARK: -
@@ -796,7 +876,8 @@ final class LocationStatusPoller {
         
         locationStatusCompletionHandler = createLocationStatusCompletionHandler()
         guard locationStatusCompletionHandler != nil else {
-            WebimInternalLogger.shared.log(entry: "Creating Location Status Completion Handler failure in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Creating Location Status Completion Handler failure in WebimSessionImpl.\(#function)")
             return
         }
         
@@ -814,7 +895,8 @@ final class LocationStatusPoller {
             }
                 
             guard let dispatchWorkItem = dispatchWorkItem else {
-                WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
                 return
             }
             
@@ -845,7 +927,8 @@ final class LocationStatusPoller {
                 self.requestLocationStatus(location: self.location)
             }
             guard let dispatchWorkItem = self.dispatchWorkItem else {
-                WebimInternalLogger.shared.log(entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Creating Dispatch Work Item failure in WebimSessionImpl.\(#function)")
                 return
             }
                     
@@ -857,7 +940,8 @@ final class LocationStatusPoller {
 
     public func requestLocationStatus(location: String) {
         guard let locationStatusCompletionHandler = self.locationStatusCompletionHandler else {
-            WebimInternalLogger.shared.log(entry: "Location Status Completion Handler is nil in WebimSessionImpl.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Location Status Completion Handler is nil in WebimSessionImpl.\(#function)")
             return
         }
         requestLocationStatus(location: location,
@@ -875,16 +959,26 @@ final class LocationStatusPoller {
                     if let locationStatusResponseDictionary = json as? [String: Any?] {
                         let locationStatusResponse = LocationStatusResponse(jsonDictionary: locationStatusResponseDictionary)
                         completion(locationStatusResponse)
+                        WebimInternalLogger.shared.log(
+                            entry: "Request location status success complete.",
+                            logType: .networkRequest)
                         if let onlineStatusString = locationStatusResponse.getOnlineStatus(),
                            let onlineStatus = OnlineStatusItem(rawValue: onlineStatusString) {
                             self.messageStream.onOnlineStatusChanged(to: onlineStatus)
                         }
                     }
                 } else {
+                    WebimInternalLogger.shared.log(
+                        entry: "Request location status complete. Data is nil",
+                        logType: .networkRequest)
                     completion(nil)
                 }
             }
         }
+        WebimInternalLogger.shared.log(
+            entry: "Request location status",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
 }
 

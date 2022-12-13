@@ -42,6 +42,7 @@ final class MessageToSend: MessageImpl {
          type: MessageType,
          text: String,
          timeInMicrosecond: Int64,
+         data: MessageData? = nil,
          quote: Quote? = nil,
          sticker: Sticker? = nil) {
         super.init(serverURLString: serverURLString,
@@ -57,7 +58,7 @@ final class MessageToSend: MessageImpl {
                    sticker: sticker,
                    type: type,
                    rawData: nil,
-                   data: nil,
+                   data: data,
                    text: text,
                    timeInMicrosecond: timeInMicrosecond,
                    historyMessage: false,

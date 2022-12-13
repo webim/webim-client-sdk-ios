@@ -74,11 +74,11 @@ final class UIAlertHandler {
     func showDepartmentListDialog(
         withDepartmentList departmentList: [Department],
         action: @escaping (String) -> Void,
-        senderButton: UIView?,
-        cancelAction: (() -> Void)?
+        sourceView: UIView? = nil,
+        cancelAction: (() -> Void)? = nil
     ) {
         alertController = UIAlertController(
-            title: "Contact topic".localized,
+            title: "Choose department".localized,
             message: nil,
             preferredStyle: .actionSheet
         )
@@ -101,13 +101,22 @@ final class UIAlertHandler {
             handler: { _ in cancelAction?() })
         
         alertController.addAction(alertAction)
-        
+
+        // Working around iPad
         if let popoverController = alertController.popoverPresentationController {
-            
-            if senderButton == nil {
+            guard let sourceView = sourceView else {
                 fatalError("No source view for presenting alert popover")
             }
-            popoverController.sourceView = senderButton
+
+            let commonInset: CGFloat = (delegate?.view.bounds.height ?? 0) / 4
+
+            popoverController.sourceView = sourceView
+            popoverController.permittedArrowDirections = .init(rawValue: 0) // Removing arrow.
+            popoverController.popoverLayoutMargins = UIEdgeInsets(
+                top: commonInset,
+                left: .zero,
+                bottom: commonInset,
+                right: .zero)
         }
         
         delegate?.present(alertController, animated: true)
@@ -142,9 +151,9 @@ final class UIAlertHandler {
         )
     }
     
-    func showFileLoadingFailureDialog(withError error: Error) {
+    func showFileLoadingFailureDialog() {
         showDialog(
-            withMessage: error.localizedDescription,
+            withMessage: "LoadFileErrorText".localized,
             title: "LoadError".localized,
             buttonTitle: "OK".localized
         )
@@ -204,6 +213,7 @@ final class UIAlertHandler {
             buttonTitle: "OK".localized
         )
     }
+
     func showAlertForAccountName() {
         showDialog(
             withMessage: "Alert account name".localized,

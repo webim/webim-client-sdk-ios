@@ -59,7 +59,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     @WMSynchronized private var visitorJSONString: String?
     @WMSynchronized private var prechat: String?
     
-    private let sessionParametersListener: SessionParametersListener? // а не должен ли он быть weak ?
+    private let sessionParametersListener: SessionParametersListener? // shouldn't it be weak?
     private weak var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
     
     // MARK: - Initialization
@@ -180,15 +180,17 @@ class DeltaRequestLoop: AbstractRequestLoop {
                 process(fullUpdate: fullUpdate)
             }
         } else {
-            WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                                           verbosityLevel: .warning)
+            WebimInternalLogger.shared.log(
+                entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
         }
     }
     
     func requestInitialization() {
         let url = URL(string: getDeltaServerURLString() + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.37.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.38.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -199,8 +201,10 @@ class DeltaRequestLoop: AbstractRequestLoop {
                 self.handleRequestLoop(error: unknownError)
             })
         } catch {
-            WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(error.localizedDescription)",
-                                           verbosityLevel: .warning)
+            WebimInternalLogger.shared.log(
+                entry: "Request failed with unknown error: \(error.localizedDescription)",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
         }
     }
     
@@ -230,8 +234,10 @@ class DeltaRequestLoop: AbstractRequestLoop {
                 }
             }
         } else {
-            WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                verbosityLevel: .warning)
+            WebimInternalLogger.shared.log(
+                entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
         }
     }
     
@@ -249,8 +255,10 @@ class DeltaRequestLoop: AbstractRequestLoop {
         } catch let unknownError as UnknownError {
             handleRequestLoop(error: unknownError)
         } catch {
-            WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(error.localizedDescription).",
-                                           verbosityLevel: .warning)
+            WebimInternalLogger.shared.log(
+                entry: "Request failed with unknown error: \(error.localizedDescription).",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
         }
     }
     
@@ -321,8 +329,10 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func handleIncorrectServerAnswer() {
-        WebimInternalLogger.shared.log(entry: "Incorrect server answer while requesting initialization.",
-                                       verbosityLevel: .debug)
+        WebimInternalLogger.shared.log(
+            entry: "Incorrect server answer while requesting initialization.",
+            verbosityLevel: .debug,
+            logType: .networkRequest)
         
         usleep(1_000_000)  // 1s
     }
@@ -407,7 +417,9 @@ class DeltaRequestLoop: AbstractRequestLoop {
                     let visitorJSONString = self.visitorJSONString,
                     let sessionID = self.sessionID,
                     let authorizationData = self.authorizationData else {
-                        WebimInternalLogger.shared.log(entry: "Changing parameters failure while unwrpping in DeltaRequestLoop.\(#function)")
+                        WebimInternalLogger.shared.log(
+                            entry: "Changing parameters failure while unwrpping in DeltaRequestLoop.\(#function)",
+                            logType: .networkRequest)
                         return
                 }
                 self.completionHandlerExecutor?.execute(task: DispatchWorkItem {

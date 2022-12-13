@@ -34,10 +34,13 @@ protocol WMDialogCellDelegate: AnyObject {
     func longPressAction(cell: UITableViewCell, message: Message)
     func cleanTextView()
     func sendKeyboardRequest(buttonInfoDictionary: [String: String])
+    func cellChangeTextViewSelection(_ cell: WMMessageTableCell)
+    func canReloadRow() -> Bool
 }
 
-class WMMessageTableCell: UITableViewCell {
-    @IBOutlet var time: UILabel!
+class WMMessageTableCell: UITableViewCell, UITextViewDelegate {
+    @IBOutlet var time: UILabel?
+
     private var cellWasInited = false
     var cellMessageWasInited = false
     
@@ -72,7 +75,7 @@ class WMMessageTableCell: UITableViewCell {
         } else {
             time = timeString
         }
-        self.time.text = time
+        self.time?.text = time
         self.authorName?.text = message.getSenderName()
         self.updateStatus(sendStatus: message.getSendStatus() == .sent, readStatus: message.isReadByOperator())
     }
@@ -136,6 +139,8 @@ class WMMessageTableCell: UITableViewCell {
             self.sendStatus?.image = UIImage(named: "Sent")
         }
     }
+
+    func resignTextViewFirstResponder() {}
     
     @objc func longPressAction(sender: UILongPressGestureRecognizer) {
         self.delegate?.longPressAction(cell: self, message: self.message)

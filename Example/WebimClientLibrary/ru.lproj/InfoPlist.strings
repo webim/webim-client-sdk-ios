@@ -1,31 +1,18 @@
-/*
+/* 
   InfoPlist.strings
   WebimClientLibrary
 
-  Created by Eugene Ilyin on 04.11.2019.
-  Copyright © 2019 Webim. All rights reserved.
- 
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
- 
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
- 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
 */
 
-NSCameraUsageDescription = "Чтобы Вы могли отправить фото в чат, Webim Demo требуется доступ к камере.";
-NSPhotoLibraryAddUsageDescription = "Webim Demo требуется доступ к фотогалерее, чтобы Вы могли сохранить изображение из чата.";
-NSPhotoLibraryUsageDescription = "Webim Demo требуется доступ к фотогалерее, чтобы Вы могли отправить изображение в чат.";
-NSFileProviderPresenceUsageDescription = "Webim Demo требуется доступ к документам, чтобы Вы могли отправить или сохранить файл из чата.";
-NSFileProviderDomainUsageDescription = "Webim Demo требуется доступ к документам, чтобы Вы могли отправить или сохранить файл из чата.";
+"NSPhotoLibraryAddUsageDescription" = "Чтобы Вы могли сохранять фотографии, приложению нужен доступ к галерее.";
+
+"NSCameraUsageDescription" = "Чтобы Вы могли отправить фото в чат, Webim требуется доступ к камере.";
+
+"NSFileProviderDomainUsageDescription" = "Приложению нужен доступ файлам.";
+
+"NSFileProviderPresenceUsageDescription" = "Приложению нужен доступ файлам.";
+
+"NSPhotoLibraryUsageDescription" = "Чтобы Вы могли отправлять фотографии, приложению нужен доступ к галерее.";
+

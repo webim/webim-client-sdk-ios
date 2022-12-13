@@ -29,48 +29,50 @@ import XCTest
 @testable import WebimClientLibrary
 
 class HistoryIDTests: XCTestCase {
-    
-    // MARK: - Tests
-    func testEquals() {
-        let dbID = "db_id"
-        let timeInMicrosecond: Int64 = 1
-        
-        // MARK: Test 1
-        // Two different normal HistoryID objects.
-        
-        var historyID1: HistoryID? = HistoryID(dbID: "db_id1",
-                                               timeInMicrosecond: 1)
-        var historyID2: HistoryID? = HistoryID(dbID: "db_id2",
-                                               timeInMicrosecond: 2)
-        
-        XCTAssertFalse(historyID1 == historyID2)
-        
-        // MARK: Test 2
-        // Two same normal HistoryID objects.
-        
-        historyID1 = HistoryID(dbID: dbID,
-                               timeInMicrosecond: timeInMicrosecond)
-        historyID2 = HistoryID(dbID: dbID,
-                               timeInMicrosecond: timeInMicrosecond)
-        
-        XCTAssertTrue(historyID1 == historyID2)
-        
-        // MARK: Test 3
-        // One normal HistoryID object and one nil.
-        
-        historyID1 = HistoryID(dbID: dbID,
-                               timeInMicrosecond: timeInMicrosecond)
-        historyID2 = nil
-        
-        XCTAssertFalse(historyID1 == historyID2)
-        
-        // MARK: Test 4
-        // Two nil objects.
-        
-        historyID1 = nil
-        historyID2 = nil
-        
-        XCTAssertTrue(historyID1 == historyID2)
+
+    var firstSut: HistoryID?
+    var secondSut: HistoryID?
+
+    let firstDataBaseId = "db_id1"
+    let secondDataBaseId = "db_id2"
+
+    override func setUp() {
+        super.setUp()
+    }
+
+    override func tearDown() {
+        firstSut = nil
+        secondSut = nil
+        super.tearDown()
     }
     
+    // MARK: - Tests
+
+    func testEqualOperationDifferentId() {
+        firstSut = HistoryID(dbID: firstDataBaseId, timeInMicrosecond: 1)
+        secondSut = HistoryID(dbID: secondDataBaseId, timeInMicrosecond: 2)
+
+        XCTAssertFalse(firstSut == secondSut)
+    }
+
+    func testEqualOperationSameId() {
+        firstSut = HistoryID(dbID: firstDataBaseId, timeInMicrosecond: 1)
+        secondSut = HistoryID(dbID: firstDataBaseId, timeInMicrosecond: 1)
+
+        XCTAssertTrue(firstSut == secondSut)
+    }
+
+    func testEqualOperationWithNil() {
+        firstSut = HistoryID(dbID: firstDataBaseId, timeInMicrosecond: 1)
+        secondSut = nil
+
+        XCTAssertFalse(firstSut == secondSut)
+    }
+
+    func testEqualOperationBothNil() {
+        firstSut = nil
+        secondSut = nil
+
+        XCTAssertTrue(firstSut == secondSut)
+    }
 }

@@ -66,5 +66,8 @@ struct RatingItem {
     func getRating() -> Int {
         return rating
     }
-    
+
+    static func ==(rhs: RatingItem, lhs: RatingItem) -> Bool {
+        return rhs.operatorID == lhs.operatorID && rhs.rating == lhs.rating
+    }
 }

@@ -42,7 +42,7 @@ final class Settings {
     enum DefaultSettings: String {
         case accountName = "demo"
         case location = "mobile"
-        case pageTitle = "iOS demo app"
+        case pageTitle = "iOS app"
         case userDataJson = ""
     }
     

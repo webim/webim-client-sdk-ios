@@ -159,8 +159,10 @@ class MessageImpl {
     
     func getHistoryID() -> HistoryID? {
         guard let historyID = historyID else {
-            WebimInternalLogger.shared.log(entry: "Message \(self.toString()) do not have history component.",
-                verbosityLevel: .debug)
+            WebimInternalLogger.shared.log(
+                entry: "Message \(self.toString()) do not have history component.",
+                verbosityLevel: .debug,
+                logType: .messageHistory)
             
             return nil
         }
@@ -207,8 +209,10 @@ class MessageImpl {
     func invertHistoryStatus() {
         guard historyID != nil,
             currentChatID != nil else {
-                WebimInternalLogger.shared.log(entry: "Message \(self.toString()) has not history component or does not belong to current chat.",
-                    verbosityLevel: .debug)
+                WebimInternalLogger.shared.log(
+                    entry: "Message \(self.toString()) has not history component or does not belong to current chat.",
+                    verbosityLevel: .debug,
+                    logType: .messageHistory)
                 
                 return
         }
@@ -219,8 +223,10 @@ class MessageImpl {
     func setSecondaryHistory(historyEquivalentMessage: MessageImpl) {
         guard !getSource().isHistoryMessage(),
             historyEquivalentMessage.getSource().isHistoryMessage() else {
-                WebimInternalLogger.shared.log(entry: "Message \(self.toString()) is already has history component.",
-                    verbosityLevel: .debug)
+                WebimInternalLogger.shared.log(
+                    entry: "Message \(self.toString()) is already has history component.",
+                    verbosityLevel: .debug,
+                    logType: .messageHistory)
                 
                 return
         }

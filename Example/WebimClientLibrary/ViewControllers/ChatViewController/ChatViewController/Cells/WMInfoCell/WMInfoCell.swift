@@ -37,10 +37,6 @@ class WMInfoCell: WMMessageTableCell {
     }
     override func initialSetup() -> Bool {
         let setup = super.initialSetup()
-        if setup {
-            self.borderView.layer.borderWidth = 1
-            self.borderView.layer.borderColor = wmInfoCell
-        }
         return setup
     }
 }

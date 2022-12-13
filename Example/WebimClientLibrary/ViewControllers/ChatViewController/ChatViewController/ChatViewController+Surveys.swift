@@ -91,10 +91,23 @@ extension ChatViewController {
             return operatorId
         }
         
-        for index in stride(from: self.chatMessages.count - 1, to: 0, by: -1) {
-            let operatorId = self.chatMessages[index].getOperatorID()
-            if operatorId != nil {
+        for message in chatMessages.reversed() {
+            if let operatorId = message.getOperatorID() {
                 return operatorId
+            }
+        }
+        return nil
+    }
+
+    func isCurrentOperatorRated() -> Bool? {
+
+        if let operatorId = WebimServiceController.currentSession.getCurrentOperator()?.getID() {
+            return alreadyRatedOperators[operatorId]
+        }
+
+        for message in chatMessages.reversed() {
+            if let operatorId = message.getOperatorID() {
+                return alreadyRatedOperators[operatorId]
             }
         }
         return nil
@@ -158,9 +171,6 @@ extension ChatViewController: RateStarsViewControllerDelegate, WMSurveyViewContr
             byRating: rating,
             completionHandler: self
         )
-        if self.delayedSurvayQuestion == nil { // no surveys after operator rate requests
-            self.thanksView.showAlert()
-        }
     }
     
     @objc
@@ -169,11 +179,6 @@ extension ChatViewController: RateStarsViewControllerDelegate, WMSurveyViewContr
             surveyAnswer: surveyAnswer,
             completionHandler: self
         )
-        
-        if surveyCounter == 0 {
-            self.thanksView.showAlert()
-            surveyCounter = -1
-        }
     }
     
     func surveyViewControllerClosed() {
@@ -188,7 +193,18 @@ extension ChatViewController: RateStarsViewControllerDelegate, WMSurveyViewContr
 extension ChatViewController: RateOperatorCompletionHandler, SendSurveyAnswerCompletionHandler {
     
     func onSuccess() {
-        // Workaround needed since operator dialog dismissed after a small delay
+        if self.delayedSurvayQuestion == nil || self.surveyCounter == 0 {
+            self.thanksView.showAlert()
+            if surveyCounter == 0 {
+                surveyCounter = -1
+            }
+            guard let currentOperator = WebimServiceController.currentSession.getCurrentOperator() else {
+                return
+            }
+            alreadyRatedOperators[currentOperator.getID()] = true
+            changed(operator: WebimServiceController.currentSession.getCurrentOperator(),
+                    to: WebimServiceController.currentSession.getCurrentOperator())
+        }
     }
     
     func onFailure(error: RateOperatorError) {

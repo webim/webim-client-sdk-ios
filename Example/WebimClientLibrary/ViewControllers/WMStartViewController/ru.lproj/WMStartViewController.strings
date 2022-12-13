@@ -1,33 +1,11 @@
-
-/* Class = "UILabel"; text = "99"; ObjectID = "XiB-ag-Lpg"; */
 "XiB-ag-Lpg.text" = "99";
-
-/* Class = "UILabel"; accessibilityLabel = "Greeting title"; ObjectID = "fgX-wy-ZIA"; */
 "fgX-wy-ZIA.accessibilityLabel" = "Приветственное заглавие";
-
-/* Class = "UILabel"; text = "Welcome to the WebimClientLibrary demo app!"; ObjectID = "fgX-wy-ZIA"; */
-"fgX-wy-ZIA.text" = "Добро пожаловать в демо-приложение Webim Mobile SDK!";
-
-/* Class = "UIButton"; accessibilityHint = "Shows settings."; ObjectID = "htJ-b1-n8p"; */
+"fgX-wy-ZIA.text" = "Добро пожаловать в приложение Webim Chat!";
 "htJ-b1-n8p.accessibilityHint" = "Показывает настройки.";
-
-/* Class = "UIButton"; accessibilityLabel = "Settings"; ObjectID = "htJ-b1-n8p"; */
 "htJ-b1-n8p.accessibilityLabel" = "Настройки";
-
-/* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "htJ-b1-n8p"; */
 "htJ-b1-n8p.normalTitle" = "Настройки";
-
-/* Class = "UIButton"; accessibilityHint = "Starts chat."; ObjectID = "wAh-BG-LeG"; */
 "wAh-BG-LeG.accessibilityHint" = "Начинает чат.";
-
-/* Class = "UIButton"; accessibilityLabel = "Start chat"; ObjectID = "wAh-BG-LeG"; */
 "wAh-BG-LeG.accessibilityLabel" = "Начать чат";
-
-/* Class = "UIButton"; normalTitle = "Start chat"; ObjectID = "wAh-BG-LeG"; */
 "wAh-BG-LeG.normalTitle" = "Начать чат";
-
-/* Class = "UITextView"; accessibilityLabel = "Greeting words"; ObjectID = "xS6-J8-Sm9"; */
 "xS6-J8-Sm9.accessibilityLabel" = "Приветственные слова";
-
-/* Class = "UITextView"; text = "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios"; ObjectID = "xS6-J8-Sm9"; */
-"xS6-J8-Sm9.text" = "Для того, чтобы начать чат, нажмите на кнопку ниже.\n\nПринять чат со стороны оператора вы можете на странице:\nhttps://demo.webim.ru/\nЛогин: o@webim.ru\nПароль: password\n\nИсходный код данного приложения вы можете найти по адресу:\nhttps://github.com/webim/webim-client-sdk-ios";
+"xS6-J8-Sm9.text" = "Для того, чтобы начать чат, нажмите на кнопку ниже.";

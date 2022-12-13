@@ -31,13 +31,11 @@ import XCTest
 class SessionDestroyerTests: XCTestCase {
     
     // MARK: - Constants
+    private let sessionDestroyer = SessionDestroyer(userDefaultsKey: SessionDestroyerTests.userDefaultsKey)
     private static let userDefaultsKey = "userDefaultsKey"
-    
     // MARK: - Tests
     func testDestroy() {
         // Setup.
-        
-        let sessionDestroyer = SessionDestroyer(userDefaultsKey: SessionDestroyerTests.userDefaultsKey)
         
         let expectation1 = XCTestExpectation()
         let expectation2 = XCTestExpectation()
@@ -64,6 +62,11 @@ class SessionDestroyerTests: XCTestCase {
              timeout: 1.0)
         wait(for: [expectation3],
              timeout: 1.0)
+    }
+
+    func testGetUserDefaultsKey() {
+        XCTAssertEqual(sessionDestroyer.getUserDefaulstKey(),
+                       SessionDestroyerTests.userDefaultsKey)
     }
  
 }

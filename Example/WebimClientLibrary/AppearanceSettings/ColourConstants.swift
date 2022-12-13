@@ -56,6 +56,7 @@ let messageBodyLabelColourVisitor = WHITE
 let messageBackgroundViewColourVisitor = WEBIM_CYAN
 let documentFileNameLabelColourVisitor = WHITE
 let documentFileDescriptionLabelColourVisitor = LIGHT_GREY
+let documentIcomColor = #colorLiteral(red: 0.01960784314, green: 0.5411764706, blue: 0.7058823529, alpha: 1)
 let quoteLineViewColourVisitor = WHITE
 let quoteUsernameLabelColourVisitor = WHITE
 let quoteBodyLabelColourVisitor = LIGHT_GREY
@@ -77,11 +78,12 @@ let timeLabelColour = GREY
 let messageStatusIndicatorColour = WEBIM_DARK_PUPRLE.cgColor
 let documentFileStatusPercentageIndicatorColour = WEBIM_CYAN.cgColor
 let buttonDefaultBackgroundColour = WHITE
-let buttonChoosenBackgroundColour = WEBIM_CYAN
+let buttonChoosenBackgroundColour = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
 let buttonCanceledBackgroundColour = WHITE
-let buttonDefaultTitleColour = WEBIM_CYAN
+let buttonDefaultTitleColour = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
 let buttonChoosenTitleColour = WHITE
-let buttonCanceledTitleColour = WEBIM_GREY
+let buttonCanceledTitleColour = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
+let buttonBorderColor = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
 
 // RateStarsViewController.swift
 let cosmosViewFilledColour = WEBIM_CYAN
@@ -104,6 +106,12 @@ let textInputBackgroundViewBorderColour = LIGHT_GREY.cgColor
 let textInputViewPlaceholderLabelTextColour = GREY
 let textInputViewPlaceholderLabelBackgroundColour = CLEAR
 let wmCoral = #colorLiteral(red: 0.7882352941, green: 0.3411764706, blue: 0.2196078431, alpha: 1)
+/// MessageTextView
+let linkColor = #colorLiteral(red: 0.1977989972, green: 0.5007162094, blue: 0.9563334584, alpha: 1)
+/// WMQuoteView
+let rawQuoteViewLabelColour = GREY
+/// ScrollButtonView
+let unreadMessagesBorderColour = LIGHT_GREY
 
 // ChatTableViewController.swift
 let refreshControlTextColour = WEBIM_DARK_PUPRLE
@@ -125,6 +133,7 @@ let backgroundViewColour = WHITE
 let saveButtonBackgroundColour = WEBIM_CYAN
 let saveButtonTitleColour = WHITE
 let saveButtonBorderColour = BLACK.cgColor
+let versionLabelFontColor = #colorLiteral(red: 0.4549019608, green: 0.5450980392, blue: 0.5882352941, alpha: 1)
 
 // SettingsTableViewController.swift
 let tableViewBackgroundColour = WHITE
@@ -140,6 +149,7 @@ let startViewBackgroundColour = WEBIM_DARK_PUPRLE
 let navigationBarBarTintColour = WEBIM_DARK_PUPRLE
 let navigationBarNoConnectionColour = NO_CONNECTION_GREY
 let navigationBarTintColour = WHITE
+let navigationBarClearColour = CLEAR
 let welcomeLabelTextColour = WHITE
 let welcomeTextViewTextColour = WHITE
 let welcomeTextViewForegroundColour = WEBIM_CYAN

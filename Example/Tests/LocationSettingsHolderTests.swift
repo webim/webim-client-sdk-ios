@@ -29,39 +29,40 @@ import Foundation
 import XCTest
 
 class LocationSettingsHolderTests: XCTestCase {
+
+    var sut = LocationSettingsHolder(userDefaultsKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
     
     // MARK: - Constants
-    private static let USER_DEFAULTS_KEY = "mock"
+    private static let USER_DEFAULTS_KEY = "LocationSettingsHolderTests"
     
     // MARK: - Methods
     
     override func setUp() {
         super.setUp()
-        
-        WMKeychainWrapper.removeObject(key: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
+        WMKeychainWrapper.standard.setDictionary([:], forKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
     }
     
     override func tearDown() {
-        WMKeychainWrapper.removeObject(key: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
-        
+        WMKeychainWrapper.standard.setDictionary([:], forKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
         super.tearDown()
     }
     
     // MARK: - Tests
     
-    func testInit() {
-        let locationSettingsHolder = LocationSettingsHolder(userDefaultsKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
-        
-        XCTAssertFalse(locationSettingsHolder.getLocationSettings().areHintsEnabled())
+    func testInitLocationSettings() {
+        XCTAssertFalse(sut.getLocationSettings().areHintsEnabled())
     }
     
-    func testReceiving() {
-        let locationSettingsHolder = LocationSettingsHolder(userDefaultsKey: LocationSettingsHolderTests.USER_DEFAULTS_KEY)
-        
-        XCTAssertFalse(locationSettingsHolder.receiving(locationSettings: locationSettingsHolder.getLocationSettings()))
-        
+    func test_Receiving_SameLocationSettings() {
+        let locationSettingsToReceiving = sut.getLocationSettings()
+
+        XCTAssertFalse(sut.receiving(locationSettings: locationSettingsToReceiving))
+    }
+
+    func test_Receiving_DifferentLocationSettings() {
         let newLocationSettings = LocationSettingsImpl(hintsEnabled: true)
-        XCTAssertTrue(locationSettingsHolder.receiving(locationSettings: newLocationSettings))
+
+        XCTAssertTrue(sut.receiving(locationSettings: newLocationSettings))
     }
     
 }

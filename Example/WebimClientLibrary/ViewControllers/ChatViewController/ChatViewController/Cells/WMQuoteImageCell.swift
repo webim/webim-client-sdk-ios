@@ -40,7 +40,7 @@ class WMQuoteImageCell: WMMessageTableCell, WMFileDownloadProgressListener {
     override func setMessage(message: Message, tableView: UITableView) {
         super.setMessage(message: message, tableView: tableView)
         self.quoteImage.image = UIImage(named: "placeholder")
-        self.quoteMessageText.text = message.getQuote()?.getMessageText()
+        self.quoteMessageText.text = "Image".localized
         self.quoteAuthorName.text = message.getQuote()?.getSenderName()
         
         if let imageURL = message.getQuote()?.getMessageAttachment()?.getImageInfo()?.getThumbURL() {
@@ -48,7 +48,7 @@ class WMQuoteImageCell: WMMessageTableCell, WMFileDownloadProgressListener {
             WMFileDownloadManager.shared.subscribeForImage(url: imageURL, progressListener: self)
         }
         
-        let checkLink = self.messageTextView.setTextWithReferences(message.getText(), alignment: .right)
+        let checkLink = self.messageTextView.setTextWithReferences(message.getText(), alignment: .left)
         for recognizer in messageTextView.gestureRecognizers ?? [] {
             if recognizer.isKind(of: UITapGestureRecognizer.self) && !checkLink {
                 recognizer.delegate = self

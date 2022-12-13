@@ -33,8 +33,9 @@ class DeltaItemTests: XCTestCase {
     // MARK: - Tests
     
     func testInit() {
-        let deltaItemJSONString = """
-{
+        //Given
+        let deltaItemDefaultJSONString = """
+    {
     "id" : "80a332f6fced40f290a5e8ace4a6d11c_5",
     "data" : {
         "avatar" : null,
@@ -49,12 +50,15 @@ class DeltaItemTests: XCTestCase {
     },
     "event" : "add",
     "objectType" : "CHAT_MESSAGE"
-}
-"""
-        let deltaItemDictionary = try! JSONSerialization.jsonObject(with: deltaItemJSONString.data(using: .utf8)!,
+    }
+    """
+        let deltaItemDictionary = try! JSONSerialization.jsonObject(with: deltaItemDefaultJSONString.data(using: .utf8)!,
                                                                     options: []) as! [String : Any?]
+
+        //When
         let deltaItem = DeltaItem(jsonDictionary: deltaItemDictionary)!
-        
+
+        //Then
         XCTAssertEqual(deltaItem.getDeltaType(),
                        DeltaItem.DeltaType.chatMessage)
         XCTAssertEqual(deltaItem.getEvent(),
@@ -64,9 +68,10 @@ class DeltaItemTests: XCTestCase {
         XCTAssertNotNil(deltaItem.getData())
     }
     
-    func testInitFails() {
-        let deltaItemJSONString = """
-{
+    func testInitWithNullEvent() {
+        //Given
+        let deltaItemNullEventJSONString = """
+    {
     "id" : "80a332f6fced40f290a5e8ace4a6d11c_5",
     "data" : {
         "avatar" : null,
@@ -79,13 +84,46 @@ class DeltaItemTests: XCTestCase {
         "kind" : "visitor",
         "name" : "Никита"
     },
+    "event" : null,
     "objectType" : "CHAT_MESSAGE"
-}
-"""
-        let deltaItemDictionary = try! JSONSerialization.jsonObject(with: deltaItemJSONString.data(using: .utf8)!,
+    }
+    """
+        let deltaItemDictionary = try! JSONSerialization.jsonObject(with: deltaItemNullEventJSONString.data(using: .utf8)!,
                                                                     options: []) as! [String : Any?]
-        
-        XCTAssertNil(DeltaItem(jsonDictionary: deltaItemDictionary))
+
+        //When
+        let deltaItem = DeltaItem(jsonDictionary: deltaItemDictionary)
+
+        //Then
+        XCTAssertNil(deltaItem)
+    }
+
+    func testInitWithNullID() {
+        //Given
+        let deltaItemNullIDJSONString = """
+    {
+    "id" : null,
+    "data" : {
+        "avatar" : null,
+        "authorId" : null,
+        "ts" : 1519043833.694463,
+        "sessionId" : "80a332f6fced40f290a5e8ace4a6d11c",
+        "id" : "80a332f6fced40f290a5e8ace4a6d11c_5",
+        "text" : "10",
+        "clientSideId" : "fbaa9bb54d47008b5bf56a5830510c64",
+        "kind" : "visitor",
+        "name" : "Никита"
+    },
+    "event" : "add",
+    "objectType" : "CHAT_MESSAGE"
+    }
+    """
+        let deltaItemDictionary = try! JSONSerialization.jsonObject(with: deltaItemNullIDJSONString.data(using: .utf8)!,
+                                                                    options: []) as! [String : Any?]
+        //When
+        let deltaItem = DeltaItem(jsonDictionary: deltaItemDictionary)
+        //Then
+        XCTAssertNil(deltaItem)
     }
     
 }

@@ -48,6 +48,8 @@ let trailingSwipeActionImage =
 
 // ImageViewController.swift
 let saveImageButtonImage = #imageLiteral(resourceName: "ImageDownload")
+let fileShare = #imageLiteral(resourceName: "FileShare")
+
 
 // FlexibleTableViewCell.swift
 let documentFileStatusButtonDownloadOperator = #imageLiteral(resourceName: "FileDownloadButtonOperator")

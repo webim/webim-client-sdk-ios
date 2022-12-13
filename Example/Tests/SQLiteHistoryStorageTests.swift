@@ -210,4 +210,54 @@ class SQLiteHistoryStorageTests: XCTestCase {
             XCTAssertTrue(timestamp < upperThresholdTimestamp)
         }
     }
+
+    func testReceiveHistoryUpdate() {
+        let expectation = XCTestExpectation()
+        var messagesChanged: Bool?
+        var batchEnd: Bool?
+
+        sqLiteHistoryStorage?.receiveHistoryUpdate(
+            withMessages: SQLiteHistoryStorageTests.generateMessages(ofCount: 3),
+            idsToDelete: [])
+        { endOfBatch,_,_,changed,_,_,_,_ in
+            messagesChanged = changed
+            batchEnd = endOfBatch
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+
+        XCTAssertEqual(messagesChanged, false)
+        XCTAssertEqual(batchEnd, true)
+    }
+
+    func testReceiveHistoryUpdate_WithDeleting() {
+        let expectation = XCTestExpectation()
+        var deletedMessageCount = 0
+
+        sqLiteHistoryStorage?.receiveHistoryUpdate(
+            withMessages: SQLiteHistoryStorageTests.generateMessages(ofCount: 5),
+            idsToDelete: ["1","2","3"])
+        { _,deleted,idToDelete,_,_,_,_,_ in
+            deleted ? deletedMessageCount += 1 : ()
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+
+        XCTAssertEqual(deletedMessageCount, 3)
+    }
+
+    func testClearHistory() {
+        let expectation = XCTestExpectation()
+        sqLiteHistoryStorage?.clearHistory()
+        var gettedMessages: [Message]?
+
+        sqLiteHistoryStorage?.getFullHistory { result in
+            gettedMessages = result
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 3)
+
+        XCTAssertNotNil(gettedMessages)
+        XCTAssertTrue(gettedMessages!.isEmpty)
+    }
 }

@@ -44,7 +44,9 @@ final class MessageStreamImpl {
     private let messageHolder: MessageHolder
     private let sendingMessageFactory: SendingFactory
     private let serverURLString: String
+    private let location: String
     private let webimActions: WebimActionsImpl
+    private var accountConfigResponse: AccountConfigItem?
     private var chat: ChatItem?
     private weak var chatStateListener: ChatStateListener?
     private var currentOperator: OperatorImpl?
@@ -74,6 +76,7 @@ final class MessageStreamImpl {
     
     // MARK: - Initialization
     init(serverURLString: String,
+         location: String,
          currentChatMessageFactoriesMapper: MessageMapper,
          sendingMessageFactory: SendingFactory,
          operatorFactory: OperatorFactory,
@@ -84,6 +87,7 @@ final class MessageStreamImpl {
          messageComposingHandler: MessageComposingHandler,
          locationSettingsHolder: LocationSettingsHolder) {
         self.serverURLString = serverURLString
+        self.location = location
         self.currentChatMessageFactoriesMapper = currentChatMessageFactoriesMapper
         self.sendingMessageFactory = sendingMessageFactory
         self.operatorFactory = operatorFactory
@@ -151,6 +155,10 @@ final class MessageStreamImpl {
         
         if previousValue != unreadByVisitorMessageCount {
             unreadByVisitorMessageCountChangeListener?.changedUnreadByVisitorMessageCountTo(newValue: self.unreadByVisitorMessageCount)
+            WebimInternalLogger.shared.log(
+                entry: "Unread message count changed from \(previousValue) to \(unreadByVisitorMessageCount) in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
     }
     
@@ -169,6 +177,10 @@ final class MessageStreamImpl {
                                                    to: newOperator)
             currentOperator = newOperator
             operatorTypingListener?.onOperatorTypingStateChanged(isTyping: false)
+            WebimInternalLogger.shared.log(
+                entry: "Received ChatItem is nil in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
             return
         }
         
@@ -191,6 +203,10 @@ final class MessageStreamImpl {
             if lastChatState != newChatState {
                 chatStateListener?.changed(state: publicState(ofChatState: lastChatState),
                                            to: publicState(ofChatState: newChatState))
+                WebimInternalLogger.shared.log(
+                    entry: "Chat state changed from \(lastChatState) to \(newChatState) in MessageStreamImpl - \(#function)",
+                    verbosityLevel: .verbose,
+                    logType: .networkRequest)
             }
             lastChatState = newChatState
         }
@@ -201,11 +217,19 @@ final class MessageStreamImpl {
             
             currentOperatorChangeListener?.changed(operator: previousOperator,
                                                        to: newOperator)
+            WebimInternalLogger.shared.log(
+                entry: "Operator changed from \(previousOperator?.getName() ?? "") to \(newOperator?.getName() ?? "") in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
         
         let operatorTypingStatus = chat.isOperatorTyping()
         if lastOperatorTypingStatus != operatorTypingStatus {
             operatorTypingListener?.onOperatorTypingStateChanged(isTyping: operatorTypingStatus)
+            WebimInternalLogger.shared.log(
+                entry: "Operator typing state changed from \(lastOperatorTypingStatus ?? false) to \(operatorTypingStatus) in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
         lastOperatorTypingStatus = operatorTypingStatus
         
@@ -221,6 +245,10 @@ final class MessageStreamImpl {
         }
         if chat.getReadByVisitor() == true {
             set(unreadByVisitorTimestamp: nil)
+            WebimInternalLogger.shared.log(
+                entry: "Chat is read by visitor",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
     }
     
@@ -245,6 +273,10 @@ final class MessageStreamImpl {
         if onlineStatus != newOnlineStatus {
             onlineStatusChangeListener?.changed(onlineStatus: previousPublicOnlineStatus,
                                                 to: newPublicOnlineStatus)
+            WebimInternalLogger.shared.log(
+                entry: "Operator online status changed from \(onlineStatus) to \(newOnlineStatus) in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
         
         onlineStatus = newOnlineStatus
@@ -409,8 +441,10 @@ extension MessageStreamImpl: MessageStream {
                           completionHandler: RateOperatorCompletionHandler?) throws {
         guard rating >= 1,
             rating <= 5 else {
-            WebimInternalLogger.shared.log(entry: "Rating must be within from 1 to 5 range. Passed value: \(rating)",
-                verbosityLevel: .warning)
+            WebimInternalLogger.shared.log(
+                entry: "Rating must be within from 1 to 5 range. Passed value: \(rating)",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
             
             return
         }
@@ -421,6 +455,11 @@ extension MessageStreamImpl: MessageStream {
                                       rating: (rating - 3), // Accepted range: (-2, -1, 0, 1, 2).
                                       visitorNote: note,
                                       completionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request rate operator with rating \(rating) in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func respondSentryCall(id: String) throws {
@@ -453,13 +492,26 @@ extension MessageStreamImpl: MessageStream {
                             }
                         }
                         completionHandler?.onSearchMessageSuccess(query: query, messages: searchMessagesArray)
+
+                        WebimInternalLogger.shared.log(
+                            entry: "Search message success.\nFind \(searchMessagesArray.count) messages in MessageStreamImpl - \(#function)",
+                            verbosityLevel: .verbose,
+                            logType: .networkRequest)
                         return
                     }
                 }
             }
             completionHandler?.onSearchMessageFailure(query: query)
+            WebimInternalLogger.shared.log(
+                entry: "Search message failure in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         } catch {
             completionHandler?.onSearchMessageFailure(query: query)
+            WebimInternalLogger.shared.log(
+                entry: "Search message failure in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
     }
     
@@ -506,6 +558,10 @@ extension MessageStreamImpl: MessageStream {
                                    firstQuestion: firstQuestion,
                                    departmentKey: departmentKey,
                                    customFields: customFields)
+            WebimInternalLogger.shared.log(
+                entry: "Request start chat in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
     }
     
@@ -513,6 +569,10 @@ extension MessageStreamImpl: MessageStream {
         try accessChecker.checkAccess()
         if !lastChatState.isClosed() {
             webimActions.closeChat()
+            WebimInternalLogger.shared.log(
+                entry: "Request close chat in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
     }
     
@@ -565,13 +625,14 @@ extension MessageStreamImpl: MessageStream {
         
         try startChat()
         
-        let messageID = ClientSideID.generateClientSideID()
-        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID))
-        
         if mimeType == "image/heic" || mimeType == "image/heif" {
             guard let image = UIImage(data: file),
                 let imageData = image.jpegData(compressionQuality: 0.5)
                 else {
+                    WebimInternalLogger.shared.log(
+                        entry: "Error with heic/heif in MessageStreamImpl - \(#function)",
+                        verbosityLevel: .verbose,
+                        logType: .networkRequest)
                 print("Error with heic/heif"); return String()
             }
             
@@ -586,6 +647,17 @@ extension MessageStreamImpl: MessageStream {
             filename += ".jpeg"
         }
         
+        let messageID = ClientSideID.generateClientSideID()
+        let data = MessageDataImpl(attachment: MessageAttachmentImpl(fileInfo: FileInfoImpl(urlString: nil,
+                                                                                            size: Int64(file.count),
+                                                                                            filename: filename,
+                                                                                            contentType: mimeType,
+                                                                                            guid: nil,
+                                                                                            fileUrlCreator: nil),
+                                                                     filesInfo: [],
+                                                                     state: .upload))
+        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data))
+        
         webimActions.send(file: file,
                           filename: filename,
                           mimeType: mimeType,
@@ -593,6 +665,11 @@ extension MessageStreamImpl: MessageStream {
                           completionHandler: SendFileCompletionHandlerWrapper(sendFileCompletionHandler: completionHandler,
                                                                               messageHolder: messageHolder),
                           uploadFileToServerCompletionHandler: nil)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request send file - \(file) in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
         
         return messageID
     }
@@ -606,10 +683,18 @@ extension MessageStreamImpl: MessageStream {
         let messageID = ClientSideID.generateClientSideID()
         if uploadedFiles.isEmpty {
             completionHandler?.onFailure(messageID: messageID, error: .fileNotFound)
+            WebimInternalLogger.shared.log(
+                entry: "Failure sending message with uplodaed files.\nUploaded files is empty in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
             return messageID
         }
         if uploadedFiles.count > 10 {
             completionHandler?.onFailure(messageID: messageID, error: .maxFilesCountPerMessage)
+            WebimInternalLogger.shared.log(
+                entry: "Failure sending message with uplodaed files.\nUploaded files number >10 in MessageStreamImpl - \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
             return messageID
         }
         var message = "[\(uploadedFiles[0].description)"
@@ -623,6 +708,11 @@ extension MessageStreamImpl: MessageStream {
                                clientSideID: messageID,
                                isHintQuestion: false,
                                sendFilesCompletionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request send message with \(uploadedFiles.count) uplodaed files chat in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
         
         return messageID
     }
@@ -645,6 +735,10 @@ extension MessageStreamImpl: MessageStream {
             guard let image = UIImage(data: file),
                 let imageData = image.jpegData(compressionQuality: 0.5)
                 else {
+                WebimInternalLogger.shared.log(
+                    entry: "Error with heic/heif in MessageStreamImpl - \(#function)",
+                    verbosityLevel: .verbose,
+                    logType: .networkRequest)
                 print("Error with heic/heif"); return String()
             }
             
@@ -664,6 +758,12 @@ extension MessageStreamImpl: MessageStream {
                           mimeType: mimeType,
                           clientSideID: messageID, completionHandler: nil,
                           uploadFileToServerCompletionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request upload file to server \(file) - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+
         
         return messageID
     }
@@ -674,6 +774,10 @@ extension MessageStreamImpl: MessageStream {
         
         webimActions.deleteUploadedFile(fileGuid: fileGuid,
                                         completionHandler: completionHandler)
+        WebimInternalLogger.shared.log(
+            entry: "Request delete uploaded files with guid - \(fileGuid) in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func sendKeyboardRequest(button: KeyboardButton,
@@ -684,6 +788,11 @@ extension MessageStreamImpl: MessageStream {
         webimActions.sendKeyboardRequest(buttonId: button.getID(),
                                          messageId: message.getCurrentChatID() ?? "",
                                          completionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request send keyboard in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func sendKeyboardRequest(buttonID: String,
@@ -694,6 +803,11 @@ extension MessageStreamImpl: MessageStream {
         webimActions.sendKeyboardRequest(buttonId: buttonID,
                                          messageId: messageCurrentChatID,
                                          completionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request send keyboard in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func sendSticker(withId stickerId: Int, completionHandler: SendStickerCompletionHandler?) throws {
@@ -702,30 +816,95 @@ extension MessageStreamImpl: MessageStream {
         let messageID = ClientSideID.generateClientSideID()
         messageHolder.sending(message: sendingMessageFactory.createStickerMessageToSendWith(id: messageID, stickerId: stickerId))
         webimActions.sendSticker(stickerId: stickerId, clientSideId: messageID, completionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request send sticker. Sticker ID - \(stickerId) in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+    
+    func autocomplete(text: String, completionHandler: AutocompleteCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        
+        if accountConfigResponse == nil {
+            webimActions.getServerSettings(forLocation: location) {
+                data in
+                if let data = data {
+                    let json = try? JSONSerialization.jsonObject(with: data,
+                                                                 options: [])
+                    if let locationSettingsResponseDictionary = json as? [String: Any?] {
+                        let locationSettingsResponse = ServerSettingsResponse(jsonDictionary: locationSettingsResponseDictionary)
+                        self.accountConfigResponse = locationSettingsResponse.getAccountConfig()
+                        if let url = self.accountConfigResponse?.getHintsEndpoint() {
+                            self.webimActions.autocomplete(forText: text, url: url, completion: completionHandler)
+                        } else {
+                            completionHandler?.onFailure(error: .hintApiInvalid)
+                        }
+                    }
+                }
+            }
+        } else {
+            if let url = accountConfigResponse?.getHintsEndpoint() {
+                webimActions.autocomplete(forText: text, url: url, completion: completionHandler)
+            } else {
+                completionHandler?.onFailure(error: .hintApiInvalid)
+            }
+        }
+        WebimInternalLogger.shared.log(
+            entry: "Autocomplete request in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func getRawConfig(forLocation location: String, completionHandler: RawLocationConfigCompletionHandler?) throws {
         try accessChecker.checkAccess()
         
-        webimActions.getRawConfig(forLocation: location) {
+        webimActions.getServerSettings(forLocation: location) {
             data in
             if let data = data {
                 let json = try? JSONSerialization.jsonObject(with: data,
                                                              options: [])
                 if let locationSettingsResponseDictionary = json as? [String: Any?] {
-                    let locationSettingsResponse = LocationSettingsResponse(jsonDictionary: locationSettingsResponseDictionary)
+                    let locationSettingsResponse = ServerSettingsResponse(jsonDictionary: locationSettingsResponseDictionary)
                     completionHandler?.onSuccess(rawLocationConfig: locationSettingsResponse.getLocationSettings())
+                    WebimInternalLogger.shared.log(
+                        entry: "Success get raw config in MessageStreamImpl- \(#function)",
+                        verbosityLevel: .verbose,
+                        logType: .networkRequest)
                 }
             } else {
                 completionHandler?.onFailure()
+                WebimInternalLogger.shared.log(
+                    entry: "Failure get raw config.\nEmpty data in MessageStreamImpl- \(#function)",
+                    verbosityLevel: .verbose,
+                    logType: .networkRequest)
             }
         }
+        WebimInternalLogger.shared.log(
+            entry: "Request get raw config in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+
+    func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+        webimActions.getServerSideSettings(completionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request get server side settings in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func updateWidgetStatus(data: String) throws {
         try accessChecker.checkAccess()
         
         webimActions.updateWidgetStatusWith(data: data)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request update widget status in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func reply(message: String, repliedMessage: Message) throws -> String? {
@@ -742,6 +921,11 @@ extension MessageStreamImpl: MessageStream {
         webimActions.replay(message: message,
                             clientSideID: messageID,
                             quotedMessageID: repliedMessage.getCurrentChatID() ?? repliedMessage.getID())
+
+        WebimInternalLogger.shared.log(
+            entry: "Request reply \(message) to \(repliedMessage.getText()) in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
         
         return messageID
     }
@@ -762,8 +946,16 @@ extension MessageStreamImpl: MessageStream {
                               dataMessageCompletionHandler: nil, editMessageCompletionHandler: EditMessageCompletionHandlerWrapper(editMessageCompletionHandler: completionHandler,
                                                                                                                                    messageHolder: messageHolder,
                                                                                                                                    message: oldMessage), sendMessageCompletionHandler: nil)
+            WebimInternalLogger.shared.log(
+                entry: "Request edit message \(oldMessage) to \(text) in MessageStreamImpl- \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
             return true
         }
+        WebimInternalLogger.shared.log(
+            entry: "Failure edit message.\nMessage to edit is nil in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
         return false
     }
     
@@ -776,6 +968,10 @@ extension MessageStreamImpl: MessageStream {
         webimActions.sendReaction(reaction: reaction,
                                   clientSideId: id,
                                   completionHandler: completionHandler)
+        WebimInternalLogger.shared.log(
+            entry: "Request react to message \(message.getText()) in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
         return true
     }
     
@@ -793,8 +989,16 @@ extension MessageStreamImpl: MessageStream {
                                 completionHandler: DeleteMessageCompletionHandlerWrapper(deleteMessageCompletionHandler: completionHandler,
                                                                                          messageHolder: messageHolder,
                                                                                          message: oldMessage))
+            WebimInternalLogger.shared.log(
+                entry: "Request delete message \(oldMessage) in MessageStreamImpl- \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
             return true
         }
+        WebimInternalLogger.shared.log(
+            entry: "Failure delete message.\nMessage to delete is nil in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
         return false
     }
     
@@ -802,6 +1006,11 @@ extension MessageStreamImpl: MessageStream {
         try accessChecker.checkAccess()
         
         webimActions.setChatRead()
+
+        WebimInternalLogger.shared.log(
+            entry: "Request read chat in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func sendDialogTo(emailAddress: String,
@@ -809,8 +1018,16 @@ extension MessageStreamImpl: MessageStream {
         try accessChecker.checkAccess()
         if !lastChatState.isClosed() {
             webimActions.sendDialogTo(emailAddress: emailAddress, completionHandler: completionHandler)
+            WebimInternalLogger.shared.log(
+                entry: "Request send dialog to email in MessageStreamImpl- \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         } else {
             completionHandler?.onFailure(error: .noChat)
+            WebimInternalLogger.shared.log(
+                entry: "Failure send dialog to mail.\nNo chat in MessageStreamImpl- \(#function)",
+                verbosityLevel: .verbose,
+                logType: .networkRequest)
         }
     }
     
@@ -841,6 +1058,10 @@ extension MessageStreamImpl: MessageStream {
                                         surveyAnswer: surveyAnswer,
                                         sendSurveyAnswerCompletionHandler: SendSurveyAnswerCompletionHandlerWrapper(surveyController: surveyController,
                                                                                                                     sendSurveyAnswerCompletionHandler: completionHandler))
+        WebimInternalLogger.shared.log(
+            entry: "Request send survey answer \(surveyAnswer) in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func closeSurvey(completionHandler: SurveyCloseCompletionHandler?) throws {
@@ -851,12 +1072,21 @@ extension MessageStreamImpl: MessageStream {
         
         webimActions.closeSurvey(surveyID: survey.getID(),
                                  surveyCloseCompletionHandler: completionHandler)
+        WebimInternalLogger.shared.log(
+            entry: "Request close survey answer in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func sendGeolocation(latitude: Double, longitude: Double, completionHandler: GeolocationCompletionHandler?) throws {
         try accessChecker.checkAccess()
         
         webimActions.sendGeolocation(latitude: latitude, longitude: longitude, completionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request send geolocation lat - \(latitude), long - \(longitude)  in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func set(visitSessionStateListener: VisitSessionStateListener) {
@@ -931,6 +1161,10 @@ extension MessageStreamImpl: MessageStream {
                           dataMessageCompletionHandler: DataMessageCompletionHandlerWrapper(dataMessageCompletionHandler: dataMessageCompletionHandler,
                                                                                             messageHolder: messageHolder), editMessageCompletionHandler: nil,
                           sendMessageCompletionHandler: SendMessageCompletionHandlerWrapper(sendMessageCompletionHandler: sendMessageCompletionHandler, messageHolder: messageHolder))
+        WebimInternalLogger.shared.log(
+            entry: "Request send message - \(messageText) in MessageStream - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
         
         return messageID
     }
@@ -955,6 +1189,10 @@ fileprivate final class SendMessageCompletionHandlerWrapper: SendMessageCompleti
 
     func onSuccess(messageID: String) {
         sendMessageCompletionHandler?.onSuccess(messageID: messageID)
+        WebimInternalLogger.shared.log(
+            entry: "Message success sended with ID - \(messageID) in MessageStream",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
 }
 
@@ -975,6 +1213,10 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
     
     func onSuccess(messageID: String) {
         sendFileCompletionHandler?.onSuccess(messageID: messageID)
+        WebimInternalLogger.shared.log(
+            entry: "File success sended with ID - \(messageID) in MessageStream",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func onFailure(messageID: String,
@@ -982,6 +1224,10 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
         messageHolder.sendingCancelledWith(messageID: messageID)
         sendFileCompletionHandler?.onFailure(messageID: messageID,
                                              error: error)
+        WebimInternalLogger.shared.log(
+            entry: "File send failure with ID - \(messageID) in MessageStream",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
 }
@@ -1003,11 +1249,19 @@ fileprivate final class DataMessageCompletionHandlerWrapper: DataMessageCompleti
     
     func onSuccess(messageID: String) {
         dataMessageCompletionHandler?.onSuccess(messageID : messageID)
+        WebimInternalLogger.shared.log(
+            entry: "Message data success sended with ID - \(messageID) in MessageStream",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func onFailure(messageID: String, error: DataMessageError) {
         messageHolder.sendingCancelledWith(messageID: messageID)
         dataMessageCompletionHandler?.onFailure(messageID: messageID, error: error)
+        WebimInternalLogger.shared.log(
+            entry: "Message data send failure with ID - \(messageID) in MessageStream",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
 }
@@ -1032,11 +1286,19 @@ fileprivate final class EditMessageCompletionHandlerWrapper: EditMessageCompleti
     
     func onSuccess(messageID: String) {
         editMessageCompletionHandler?.onSuccess(messageID : messageID)
+        WebimInternalLogger.shared.log(
+            entry: "Success edit message with ID \(messageID)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func onFailure(messageID: String, error: EditMessageError) {
         messageHolder.changingCancelledWith(messageID: messageID, message: message)
         editMessageCompletionHandler?.onFailure(messageID: messageID, error: error)
+        WebimInternalLogger.shared.log(
+            entry: "Failure edit message with ID \(messageID)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
 }
@@ -1061,11 +1323,19 @@ fileprivate final class DeleteMessageCompletionHandlerWrapper: DeleteMessageComp
     
     func onSuccess(messageID: String) {
         deleteMessageCompletionHandler?.onSuccess(messageID : messageID)
+        WebimInternalLogger.shared.log(
+            entry: "Success delete message with ID \(messageID)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func onFailure(messageID: String, error: DeleteMessageError) {
         messageHolder.changingCancelledWith(messageID: messageID, message: message)
         deleteMessageCompletionHandler?.onFailure(messageID: messageID, error: error)
+        WebimInternalLogger.shared.log(
+            entry: "Failure delete message with ID \(messageID)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
 }

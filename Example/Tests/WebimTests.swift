@@ -32,54 +32,54 @@ class WebimTests: XCTestCase {
     
     // MARK: - Constants
     private static let WEBIM_REMOTE_NOTIFICATION_JSON_STRING = """
-{
-    "aps" : {
-        "alert" : {
-            "loc-key" : "P.OM",
-            "loc-args" : ["Имя Оператора", "Сообщение"]
+    {
+        "aps" : {
+            "alert" : {
+                "loc-key" : "P.OM",
+                "loc-args" : ["Имя Оператора", "Сообщение"]
+            },
+            "sound" : "default",
         },
-        "sound" : "default",
-    },
-    "webim": 1
-}
-"""
+        "webim": 1
+    }
+    """
     private static let NOT_WEBIM_REMOTE_NOTIFICATION_JSON_STRING = """
-{
-    "aps" : {
+    {
+        "aps" : {
+            "alert" : {
+                "loc-key" : "P.OM",
+                "loc-args" : ["Имя Оператора", "Сообщение"]
+            },
+            "sound" : "default",
+        }
+    }
+    """
+    private static let INCORRECT_REMOTE_NOTIFICATION_JSON_STRING = """
+    {
         "alert" : {
             "loc-key" : "P.OM",
             "loc-args" : ["Имя Оператора", "Сообщение"]
         },
         "sound" : "default",
     }
-}
-"""
-    private static let INCORRECT_REMOTE_NOTIFICATION_JSON_STRING = """
-{
-    "alert" : {
-        "loc-key" : "P.OM",
-        "loc-args" : ["Имя Оператора", "Сообщение"]
-    },
-    "sound" : "default",
-}
-"""
+    """
     private static let REMOTE_NOTIFICATION_WITH_SPECIAL_FIELDS = """
-{
-  "aps": {
-    "alert": {
-      "loc-key": "P.OM",
-      "loc-args": [
-        "Имя Оператора",
-        "Сообщение"
-      ]
-    },
-    "sound": "default"
-  },
-  "webim": 1,
-  "unread_by_visitor_msg_cnt": 1,
-  "location": "mobile"
-}
-"""
+    {
+      "aps": {
+        "alert": {
+          "loc-key": "P.OM",
+          "loc-args": [
+            "Имя Оператора",
+            "Сообщение"
+          ]
+        },
+        "sound": "default"
+      },
+      "webim": 1,
+      "unread_by_visitor_msg_cnt": 1,
+      "location": "mobile"
+    }
+    """
     
     // MARK: - Properties
     let webimRemoteNotification = try! JSONSerialization.jsonObject(with: WebimTests.WEBIM_REMOTE_NOTIFICATION_JSON_STRING.data(using: .utf8)!,
@@ -114,6 +114,18 @@ class WebimTests: XCTestCase {
         let webimRemoteNotification = Webim.parse(remoteNotification: self.webimRemoteNotificationWithSpecialFields)
         XCTAssertEqual(webimRemoteNotification?.getUnreadByVisitorMessagesCount(), 1)
         XCTAssertEqual(webimRemoteNotification?.getLocation(), "mobile")
+    }
+
+    func testNewFAQBuilder() {
+        let faqBuilder = Webim.newFAQBuilder()
+
+        XCTAssertNoThrow(
+            try faqBuilder
+                .set(accountName: "accountName")
+                .set(application: "application")
+                .set(language: "language")
+                .set(departmentKey: "departmentKey")
+                .build())
     }
     
 }

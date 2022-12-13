@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */ = {isa = PBXBuildFile; fileRef = 11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */; };
-		120059EE27A29C80003CF192 /* WMTemplatesTooltipView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120059EC27A29C80003CF192 /* WMTemplatesTooltipView.xib */; };
 		120059EF27A29C80003CF192 /* WMTemplatesTooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120059ED27A29C80003CF192 /* WMTemplatesTooltipView.swift */; };
 		121785FE26CA5D6D00B31B6F /* WMInterfaceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121785FD26CA5D6D00B31B6F /* WMInterfaceData.swift */; };
 		12269FD027731C850008D5EA /* WMVisitorImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12269FCE27731C840008D5EA /* WMVisitorImageCell.xib */; };
@@ -85,12 +84,11 @@
 		12EFAA77267B47D700D0F803 /* SurveyRadioButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EFAA76267B47D700D0F803 /* SurveyRadioButtonViewController.swift */; };
 		12EFAAA8267B4EF600D0F803 /* WMThanksAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EFAAA6267B4EF600D0F803 /* WMThanksAlertView.xib */; };
 		38683A7524A4FDCB007DED63 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38683A7424A4FDCB007DED63 /* UIButton.swift */; };
+		528B54C7D62901B46CB00974 /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A108DF916E0A15F0A00DCC07 /* Pods_WebimClientLibrary_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* WMStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* WMStartViewController.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
-		625B0CFF11CFB24FA44C17A0 /* Pods_WebimClientLibrary_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85F5395A54F1170A064A76BF /* Pods_WebimClientLibrary_Example.framework */; };
-		754A3410E17BB84F9F78C1E0 /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBB18D8A6A1E4DEE621109CB /* Pods_WebimClientLibrary_Tests.framework */; };
 		900337D527D8A3FE000EFBEC /* UIActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900337D427D8A3FE000EFBEC /* UIActivityType.swift */; };
 		90038C8E279623B7000267B9 /* WMToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90038C7E279623B6000267B9 /* WMToolbarView.swift */; };
 		90038C8F279623B7000267B9 /* WMToolbarBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90038C7F279623B6000267B9 /* WMToolbarBackgroundView.swift */; };
@@ -100,12 +98,28 @@
 		90038C93279623B7000267B9 /* WMNewMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90038C86279623B6000267B9 /* WMNewMessageView.swift */; };
 		90038C94279623B7000267B9 /* WMQuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90038C8A279623B6000267B9 /* WMQuoteView.swift */; };
 		90038C96279629BE000267B9 /* NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90038C95279629BE000267B9 /* NSRange.swift */; };
+		906CBADB28D9DC7100CE86DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906CBADD28D9DC7100CE86DF /* InfoPlist.strings */; };
+		906CBB2028DA471300CE86DF /* WMLogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB2228DA471300CE86DF /* WMLogsViewController.xib */; };
+		906CBB2328DA471900CE86DF /* WMFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB2528DA471900CE86DF /* WMFileViewController.xib */; };
+		906CBB2E28DA472400CE86DF /* WMImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB3028DA472400CE86DF /* WMImageViewController.xib */; };
+		906CBB3528DA473100CE86DF /* WMNilTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB3728DA473100CE86DF /* WMNilTableViewCell.xib */; };
+		906CBB3C28DA473B00CE86DF /* WMBotButtonsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB3E28DA473B00CE86DF /* WMBotButtonsTableViewCell.xib */; };
+		906CBB4328DA474800CE86DF /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB4528DA474800CE86DF /* ChatViewController.xib */; };
+		906CBB4E28DA475600CE86DF /* WMTemplatesTooltipView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB5028DA475600CE86DF /* WMTemplatesTooltipView.xib */; };
+		906CBB5928DA478700CE86DF /* ScrollButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB5B28DA478700CE86DF /* ScrollButtonView.xib */; };
+		907869D3286B063000FC09A1 /* WebimServerSideSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907869D2286B063000FC09A1 /* WebimServerSideSettingsManager.swift */; };
 		907E494426BA1719001F0C55 /* ChatTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907E494326BA1719001F0C55 /* ChatTestView.swift */; };
 		9083159127E9C26500774EE0 /* WMBotButtonsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9083159027E9C26500774EE0 /* WMBotButtonsTableViewCell.swift */; };
-		9083159327E9C31200774EE0 /* WMBotButtonsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9083159227E9C31200774EE0 /* WMBotButtonsTableViewCell.xib */; };
 		908D147A2669B63E00B43B60 /* WMSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908D14782669B63E00B43B60 /* WMSaveView.swift */; };
-		90BC048A2799FA640081A75F /* WMImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90BC04892799FA640081A75F /* WMImageViewController.xib */; };
-		90BC04912799FB600081A75F /* WMFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90BC04902799FB600081A75F /* WMFileViewController.xib */; };
+		909D76CB28F54F380018E54C /* WMShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909D76CA28F54F380018E54C /* WMShareViewController.swift */; };
+		909D76D228F54F380018E54C /* WebimClientShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 909D76C828F54F380018E54C /* WebimClientShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		909D76D828F552820018E54C /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
+		909D76D928F55BC20018E54C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE5A03BC1FDEB756009D320A /* Localizable.strings */; };
+		909D76DA28F55BEA0018E54C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFB67E2018CB0F00D9E5F6 /* String.swift */; };
+		909D76DB28F5698F0018E54C /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE591A421FC2F31E004C95EE /* WebimService.swift */; };
+		909D76DC28F56A6E0018E54C /* WebimServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */; };
+		909D76DD28F56B000018E54C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE88BCD21FCD88EA00A4FA2E /* Settings.swift */; };
+		909D76DE28F56B330018E54C /* WebimLogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE17D420285B8C6F00DB606D /* WebimLogManager.swift */; };
 		90BC0494279A02CB0081A75F /* ConnectionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BC0493279A02CA0081A75F /* ConnectionErrorView.swift */; };
 		90BC0495279A040B0081A75F /* WMStartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90BC0497279A040B0081A75F /* WMStartViewController.xib */; };
 		90BC04AD279A13050081A75F /* ChatViewController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BC04AC279A13050081A75F /* ChatViewController+UITableView.swift */; };
@@ -115,12 +129,46 @@
 		90BC04B7279A15C10081A75F /* ChatViewController+CompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BC04B6279A15C10081A75F /* ChatViewController+CompletionHandler.swift */; };
 		90BC04B9279A175B0081A75F /* ChatViewController+Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BC04B8279A175B0081A75F /* ChatViewController+Listener.swift */; };
 		90BC04C2279A51C60081A75F /* logo_webim.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A0D8D525FF467B003AF10E /* logo_webim.png */; };
-		90EB75092796EB300088B402 /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90EB750627963A0A0088B402 /* ChatViewController.xib */; };
+		90F083AD2860C2D1006A6CD6 /* WMNilTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F083AB2860C2D1006A6CD6 /* WMNilTableViewCell.swift */; };
+		961503618761C20C3FC521A3 /* Pods_WebimClientLibrary_Example_WebimClientShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 647B4636BFC24F249CFB82F4 /* Pods_WebimClientLibrary_Example_WebimClientShare.framework */; };
+		B8C153AB1D7CDE17382EFCAC /* Pods_WebimClientLibrary_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16710902932478EB233CC9E0 /* Pods_WebimClientLibrary_Tests.framework */; };
+		BE17D41E285B7DCD00DB606D /* WMLogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE17D41C285B7DCD00DB606D /* WMLogsViewController.swift */; };
+		BE17D421285B8C6F00DB606D /* WebimLogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE17D420285B8C6F00DB606D /* WebimLogManager.swift */; };
+		BE24022928B4BA4700697F21 /* FAQActionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24022828B4BA4700697F21 /* FAQActionsTests.swift */; };
+		BE24022B28B4BE2100697F21 /* FAQRequestLoopMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24022A28B4BE2100697F21 /* FAQRequestLoopMock.swift */; };
+		BE24022D28B4DA6D00697F21 /* FAQCategoryInfoItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24022C28B4DA6D00697F21 /* FAQCategoryInfoItemTests.swift */; };
+		BE24022F28B4DEB800697F21 /* FAQCategoryItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24022E28B4DEB800697F21 /* FAQCategoryItemTests.swift */; };
+		BE385E0C286EB8FA00BCEB7A /* NavigationControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE385E0B286EB8FA00BCEB7A /* NavigationControllerManager.swift */; };
+		BE3D6F6828BE1C23000D097F /* RemoteHistoryProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3D6F6728BE1C23000D097F /* RemoteHistoryProviderTests.swift */; };
+		BE40E6F328B5EFA400B0584C /* FileUrlCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE40E6F228B5EFA400B0584C /* FileUrlCreatorTests.swift */; };
+		BE40E6F528B6272D00B0584C /* HistoryRevisionItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE40E6F428B6272D00B0584C /* HistoryRevisionItemTests.swift */; };
+		BE45B80828B7505F0011C7C8 /* KeyboardItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45B80728B7505F0011C7C8 /* KeyboardItemTests.swift */; };
+		BE45B80A28B77F3D0011C7C8 /* LocationSettingsResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45B80928B77F3D0011C7C8 /* LocationSettingsResponseTests.swift */; };
+		BE45B80C28B782EA0011C7C8 /* LocationStatusResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45B80B28B782EA0011C7C8 /* LocationStatusResponseTests.swift */; };
+		BE84E5A928BE4D5C00643A96 /* SurveyImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE84E5A828BE4D5C00643A96 /* SurveyImplTests.swift */; };
+		BE89309628B4A48B00B00D6A /* FAQStructureItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE89309528B4A48B00B00D6A /* FAQStructureItemTests.swift */; };
+		BE89309828B4B65E00B00D6A /* FAQAccessCheckerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE89309728B4B65E00B00D6A /* FAQAccessCheckerTests.swift */; };
+		BE924896288C46DD00B803E8 /* ScrollButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE924895288C46DD00B803E8 /* ScrollButtonView.swift */; };
+		BE92489C288E7B0000B803E8 /* MessageCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE92489B288E7B0000B803E8 /* MessageCounter.swift */; };
+		BEAEE77428AE300C004E8901 /* DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAEE77328AE300C004E8901 /* DictionaryTests.swift */; };
+		BEAEE77628AE7866004E8901 /* DeltaCallbackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAEE77528AE7866004E8901 /* DeltaCallbackTests.swift */; };
+		BEB93B1A28BCE52700863D7A /* ListenerMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB93B1928BCE52700863D7A /* ListenerMocks.swift */; };
+		BEB93B1C28BCE65500863D7A /* MessageTrackerImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB93B1B28BCE65500863D7A /* MessageTrackerImplTests.swift */; };
+		BEB93B1E28BCE95200863D7A /* MessageImplMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB93B1D28BCE95200863D7A /* MessageImplMockData.swift */; };
+		BEB93B2028BCE9C100863D7A /* RemoteHistoryProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB93B1F28BCE9C100863D7A /* RemoteHistoryProviderMock.swift */; };
+		BEB93B2228BCEC1D00863D7A /* WebimLoggerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB93B2128BCEC1D00863D7A /* WebimLoggerMock.swift */; };
+		BEE5D6A428C0A82800259577 /* UploadedFileImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE5D6A328C0A82800259577 /* UploadedFileImplTests.swift */; };
+		BEE5D6A628C0B0EA00259577 /* VisitorFieldsItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE5D6A528C0B0EA00259577 /* VisitorFieldsItemTests.swift */; };
+		BEE9C2A728B4EB1200C3C563 /* FAQClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C2A628B4EB1200C3C563 /* FAQClientTests.swift */; };
+		BEF5B39428C32DB800A0E642 /* WebimSessionImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF5B39328C32DB800A0E642 /* WebimSessionImplTests.swift */; };
+		BEF5B39628C3597D00A0E642 /* HistoryPollerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF5B39528C3597D00A0E642 /* HistoryPollerTests.swift */; };
+		BEFFCF6F28C0CA0C00B886AC /* WebimClientBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFCF6E28C0CA0C00B886AC /* WebimClientBuilderTests.swift */; };
+		BEFFCF7128C0D75D00B886AC /* WebimNotFatalErrorImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFCF7028C0D75D00B886AC /* WebimNotFatalErrorImpl.swift */; };
+		BEFFCF7328C0D88C00B886AC /* WebimRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFCF7228C0D88C00B886AC /* WebimRequestTests.swift */; };
 		CE07E9952049794C00E0A0D3 /* SessionBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */; };
 		CE0CD75A202338FD00719DBE /* HistoryIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD758202338EE00719DBE /* HistoryIDTests.swift */; };
 		CE0CD75D20234BD800719DBE /* SessionDestroyerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */; };
 		CE0CD7632024561B00719DBE /* InternalUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD7622024561B00719DBE /* InternalUtilsTests.swift */; };
-		CE0CD765202461FE00719DBE /* StringFromHTTPParametersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD764202461FE00719DBE /* StringFromHTTPParametersTests.swift */; };
 		CE0CD76720249C3E00719DBE /* OperatorImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0CD76620249C3E00719DBE /* OperatorImplTests.swift */; };
 		CE18FB9A203DA3890059B9FF /* AccessCheckerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB99203DA3890059B9FF /* AccessCheckerTests.swift */; };
 		CE18FB9C203DB32E0059B9FF /* LocationSettingsHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18FB9B203DB32E0059B9FF /* LocationSettingsHolderTests.swift */; };
@@ -204,6 +252,13 @@
 			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
 			remoteInfo = WebimClientLibrary;
 		};
+		909D76D028F54F380018E54C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 909D76C728F54F380018E54C;
+			remoteInfo = WebimClientShare;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -216,11 +271,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		909D76D328F54F380018E54C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				909D76D228F54F380018E54C /* WebimClientShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "FAQ methods documentation.md"; sourceTree = "<group>"; };
-		120059EC27A29C80003CF192 /* WMTemplatesTooltipView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMTemplatesTooltipView.xib; sourceTree = "<group>"; };
 		120059ED27A29C80003CF192 /* WMTemplatesTooltipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMTemplatesTooltipView.swift; sourceTree = "<group>"; };
 		121785FD26CA5D6D00B31B6F /* WMInterfaceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMInterfaceData.swift; sourceTree = "<group>"; };
 		12269FCF27731C840008D5EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMVisitorImageCell.xib; sourceTree = "<group>"; };
@@ -344,7 +409,9 @@
 		12EFAA76267B47D700D0F803 /* SurveyRadioButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyRadioButtonViewController.swift; sourceTree = "<group>"; };
 		12EFAAA7267B4EF600D0F803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMThanksAlertView.xib; sourceTree = "<group>"; };
 		12EFAAAC267B4F1500D0F803 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMThanksAlertView.strings; sourceTree = "<group>"; };
-		1480012CD38CEC0494B440FD /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
+		16710902932478EB233CC9E0 /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E79835E36906572846C2ECF /* Pods-WebimClientLibrary_Example-WebimClientShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example-WebimClientShare.debug.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example-WebimClientShare/Pods-WebimClientLibrary_Example-WebimClientShare.debug.xcconfig"; sourceTree = "<group>"; };
+		2D7BF3566DC427C2F24AF91B /* Pods-WebimClientLibrary_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.release.xcconfig"; sourceTree = "<group>"; };
 		38683A7424A4FDCB007DED63 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimClientLibrary_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -354,8 +421,9 @@
 		607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebimClientLibrary_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHolderTests.swift; sourceTree = "<group>"; };
-		7767259DD04077F82FEB0E85 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		85F5395A54F1170A064A76BF /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		647B4636BFC24F249CFB82F4 /* Pods_WebimClientLibrary_Example_WebimClientShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example_WebimClientShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		75E4F26F5277F5CD3B408124 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		84A331789FDB0780B29BF31A /* Pods-WebimClientLibrary_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.debug.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		900337D427D8A3FE000EFBEC /* UIActivityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActivityType.swift; sourceTree = "<group>"; };
 		90038C7E279623B6000267B9 /* WMToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMToolbarView.swift; sourceTree = "<group>"; };
 		90038C7F279623B6000267B9 /* WMToolbarBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMToolbarBackgroundView.swift; sourceTree = "<group>"; };
@@ -365,13 +433,45 @@
 		90038C86279623B6000267B9 /* WMNewMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMNewMessageView.swift; sourceTree = "<group>"; };
 		90038C8A279623B6000267B9 /* WMQuoteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMQuoteView.swift; sourceTree = "<group>"; };
 		90038C95279629BE000267B9 /* NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRange.swift; sourceTree = "<group>"; };
+		906CBADC28D9DC7100CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		906CBADE28D9DC7E00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		906CBB2128DA471300CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMLogsViewController.xib; sourceTree = "<group>"; };
+		906CBB2428DA471900CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMFileViewController.xib; sourceTree = "<group>"; };
+		906CBB2728DA471C00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
+		906CBB2928DA471C00CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
+		906CBB2B28DA471F00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMFileViewController.strings; sourceTree = "<group>"; };
+		906CBB2D28DA472000CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMFileViewController.strings; sourceTree = "<group>"; };
+		906CBB2F28DA472400CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMImageViewController.xib; sourceTree = "<group>"; };
+		906CBB3228DA472800CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMImageViewController.strings; sourceTree = "<group>"; };
+		906CBB3428DA472900CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMImageViewController.strings; sourceTree = "<group>"; };
+		906CBB3628DA473100CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMNilTableViewCell.xib; sourceTree = "<group>"; };
+		906CBB3928DA473500CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMNilTableViewCell.strings; sourceTree = "<group>"; };
+		906CBB3B28DA473600CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMNilTableViewCell.strings; sourceTree = "<group>"; };
+		906CBB3D28DA473B00CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMBotButtonsTableViewCell.xib; sourceTree = "<group>"; };
+		906CBB4028DA474100CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMBotButtonsTableViewCell.strings; sourceTree = "<group>"; };
+		906CBB4228DA474200CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMBotButtonsTableViewCell.strings; sourceTree = "<group>"; };
+		906CBB4428DA474800CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ChatViewController.xib; sourceTree = "<group>"; };
+		906CBB4728DA474C00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ChatViewController.strings; sourceTree = "<group>"; };
+		906CBB4928DA474C00CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ChatViewController.strings; sourceTree = "<group>"; };
+		906CBB4B28DA475100CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMToolbarView.strings; sourceTree = "<group>"; };
+		906CBB4D28DA475100CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMToolbarView.strings; sourceTree = "<group>"; };
+		906CBB4F28DA475600CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMTemplatesTooltipView.xib; sourceTree = "<group>"; };
+		906CBB5228DA475900CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMTemplatesTooltipView.strings; sourceTree = "<group>"; };
+		906CBB5428DA475A00CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMTemplatesTooltipView.strings; sourceTree = "<group>"; };
+		906CBB5628DA477600CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMQuoteView.strings; sourceTree = "<group>"; };
+		906CBB5828DA477600CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMQuoteView.strings; sourceTree = "<group>"; };
+		906CBB5A28DA478700CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ScrollButtonView.xib; sourceTree = "<group>"; };
+		906CBB5D28DA478B00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ScrollButtonView.strings; sourceTree = "<group>"; };
+		906CBB5F28DA478B00CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ScrollButtonView.strings; sourceTree = "<group>"; };
+		907869D2286B063000FC09A1 /* WebimServerSideSettingsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimServerSideSettingsManager.swift; sourceTree = "<group>"; };
 		907E494326BA1719001F0C55 /* ChatTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTestView.swift; sourceTree = "<group>"; };
 		9083159027E9C26500774EE0 /* WMBotButtonsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMBotButtonsTableViewCell.swift; sourceTree = "<group>"; };
-		9083159227E9C31200774EE0 /* WMBotButtonsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WMBotButtonsTableViewCell.xib; sourceTree = "<group>"; };
 		9083159427F1AC2400774EE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
 		908D14782669B63E00B43B60 /* WMSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSaveView.swift; sourceTree = "<group>"; };
-		90BC04892799FA640081A75F /* WMImageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WMImageViewController.xib; sourceTree = "<group>"; };
-		90BC04902799FB600081A75F /* WMFileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WMFileViewController.xib; sourceTree = "<group>"; };
+		909D76C828F54F380018E54C /* WebimClientShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WebimClientShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		909D76CA28F54F380018E54C /* WMShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMShareViewController.swift; sourceTree = "<group>"; };
+		909D76CF28F54F380018E54C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		909D76D728F54FBD0018E54C /* WebimClientShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebimClientShare.entitlements; sourceTree = "<group>"; };
 		90BC0493279A02CA0081A75F /* ConnectionErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionErrorView.swift; sourceTree = "<group>"; };
 		90BC0496279A040B0081A75F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMStartViewController.xib; sourceTree = "<group>"; };
 		90BC0499279A045F0081A75F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
@@ -384,16 +484,50 @@
 		90BC04B8279A175B0081A75F /* ChatViewController+Listener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewController+Listener.swift"; sourceTree = "<group>"; };
 		90BC04BD279A2E1C0081A75F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMNewMessageView.strings; sourceTree = "<group>"; };
 		90BC04BF279A2E1D0081A75F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMNewMessageView.strings; sourceTree = "<group>"; };
-		90EB750627963A0A0088B402 /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
+		90F083AB2860C2D1006A6CD6 /* WMNilTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMNilTableViewCell.swift; sourceTree = "<group>"; };
+		914305EE08704BC676C18880 /* Pods-WebimClientLibrary_Example-WebimClientShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example-WebimClientShare.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example-WebimClientShare/Pods-WebimClientLibrary_Example-WebimClientShare.release.xcconfig"; sourceTree = "<group>"; };
+		9899E84AC778DF03046E64DA /* Pods-WebimClientLibrary_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.debug.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		A108DF916E0A15F0A00DCC07 /* Pods_WebimClientLibrary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB52E1C1E0F009A386DC1C6C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		B8CA89B3A42B8B92B0515245 /* Pods-WebimClientLibrary_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Tests.release.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Tests/Pods-WebimClientLibrary_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		BE17D41C285B7DCD00DB606D /* WMLogsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMLogsViewController.swift; sourceTree = "<group>"; };
+		BE17D420285B8C6F00DB606D /* WebimLogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimLogManager.swift; sourceTree = "<group>"; };
+		BE24022828B4BA4700697F21 /* FAQActionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQActionsTests.swift; sourceTree = "<group>"; };
+		BE24022A28B4BE2100697F21 /* FAQRequestLoopMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRequestLoopMock.swift; sourceTree = "<group>"; };
+		BE24022C28B4DA6D00697F21 /* FAQCategoryInfoItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryInfoItemTests.swift; sourceTree = "<group>"; };
+		BE24022E28B4DEB800697F21 /* FAQCategoryItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryItemTests.swift; sourceTree = "<group>"; };
+		BE385E0B286EB8FA00BCEB7A /* NavigationControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerManager.swift; sourceTree = "<group>"; };
+		BE3D6F6728BE1C23000D097F /* RemoteHistoryProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteHistoryProviderTests.swift; sourceTree = "<group>"; };
+		BE40E6F228B5EFA400B0584C /* FileUrlCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUrlCreatorTests.swift; sourceTree = "<group>"; };
+		BE40E6F428B6272D00B0584C /* HistoryRevisionItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRevisionItemTests.swift; sourceTree = "<group>"; };
+		BE45B80728B7505F0011C7C8 /* KeyboardItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItemTests.swift; sourceTree = "<group>"; };
+		BE45B80928B77F3D0011C7C8 /* LocationSettingsResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsResponseTests.swift; sourceTree = "<group>"; };
+		BE45B80B28B782EA0011C7C8 /* LocationStatusResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStatusResponseTests.swift; sourceTree = "<group>"; };
+		BE84E5A828BE4D5C00643A96 /* SurveyImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyImplTests.swift; sourceTree = "<group>"; };
+		BE89309528B4A48B00B00D6A /* FAQStructureItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQStructureItemTests.swift; sourceTree = "<group>"; };
+		BE89309728B4B65E00B00D6A /* FAQAccessCheckerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQAccessCheckerTests.swift; sourceTree = "<group>"; };
+		BE924895288C46DD00B803E8 /* ScrollButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollButtonView.swift; sourceTree = "<group>"; };
+		BE92489B288E7B0000B803E8 /* MessageCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCounter.swift; sourceTree = "<group>"; };
+		BEAEE77328AE300C004E8901 /* DictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryTests.swift; sourceTree = "<group>"; };
+		BEAEE77528AE7866004E8901 /* DeltaCallbackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaCallbackTests.swift; sourceTree = "<group>"; };
+		BEB93B1928BCE52700863D7A /* ListenerMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerMocks.swift; sourceTree = "<group>"; };
+		BEB93B1B28BCE65500863D7A /* MessageTrackerImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTrackerImplTests.swift; sourceTree = "<group>"; };
+		BEB93B1D28BCE95200863D7A /* MessageImplMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageImplMockData.swift; sourceTree = "<group>"; };
+		BEB93B1F28BCE9C100863D7A /* RemoteHistoryProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteHistoryProviderMock.swift; sourceTree = "<group>"; };
+		BEB93B2128BCEC1D00863D7A /* WebimLoggerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimLoggerMock.swift; sourceTree = "<group>"; };
+		BEE5D6A328C0A82800259577 /* UploadedFileImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFileImplTests.swift; sourceTree = "<group>"; };
+		BEE5D6A528C0B0EA00259577 /* VisitorFieldsItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorFieldsItemTests.swift; sourceTree = "<group>"; };
+		BEE9C2A628B4EB1200C3C563 /* FAQClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQClientTests.swift; sourceTree = "<group>"; };
+		BEF5B39328C32DB800A0E642 /* WebimSessionImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimSessionImplTests.swift; sourceTree = "<group>"; };
+		BEF5B39528C3597D00A0E642 /* HistoryPollerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryPollerTests.swift; sourceTree = "<group>"; };
+		BEFFCF6E28C0CA0C00B886AC /* WebimClientBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimClientBuilderTests.swift; sourceTree = "<group>"; };
+		BEFFCF7028C0D75D00B886AC /* WebimNotFatalErrorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalErrorImpl.swift; sourceTree = "<group>"; };
+		BEFFCF7228C0D88C00B886AC /* WebimRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimRequestTests.swift; sourceTree = "<group>"; };
 		C4CD65CA48F80B5A4AD826B3 /* WebimClientLibrary.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimClientLibrary.podspec; path = ../WebimClientLibrary.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBuilderTests.swift; sourceTree = "<group>"; };
 		CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebimClientLibrary_Example.entitlements; sourceTree = "<group>"; };
 		CE0CD758202338EE00719DBE /* HistoryIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryIDTests.swift; sourceTree = "<group>"; };
 		CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDestroyerTests.swift; sourceTree = "<group>"; };
 		CE0CD7622024561B00719DBE /* InternalUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalUtilsTests.swift; sourceTree = "<group>"; };
-		CE0CD764202461FE00719DBE /* StringFromHTTPParametersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFromHTTPParametersTests.swift; sourceTree = "<group>"; };
 		CE0CD76620249C3E00719DBE /* OperatorImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorImplTests.swift; sourceTree = "<group>"; };
 		CE18FB99203DA3890059B9FF /* AccessCheckerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessCheckerTests.swift; sourceTree = "<group>"; };
 		CE18FB9B203DB32E0059B9FF /* LocationSettingsHolderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsHolderTests.swift; sourceTree = "<group>"; };
@@ -480,8 +614,6 @@
 		DDCC52592356360F00D39F8A /* ColourConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourConstants.swift; sourceTree = "<group>"; };
 		DDDE82CE23830144008DDF61 /* CustomUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUIView.swift; sourceTree = "<group>"; };
 		EB8C258A78F3730770936414 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		FBB18D8A6A1E4DEE621109CB /* Pods_WebimClientLibrary_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimClientLibrary_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF020338AD26065EB7512BAE /* Pods-WebimClientLibrary_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimClientLibrary_Example.debug.xcconfig"; path = "Target Support Files/Pods-WebimClientLibrary_Example/Pods-WebimClientLibrary_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -496,7 +628,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				625B0CFF11CFB24FA44C17A0 /* Pods_WebimClientLibrary_Example.framework in Frameworks */,
+				528B54C7D62901B46CB00974 /* Pods_WebimClientLibrary_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,7 +636,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				754A3410E17BB84F9F78C1E0 /* Pods_WebimClientLibrary_Tests.framework in Frameworks */,
+				B8C153AB1D7CDE17382EFCAC /* Pods_WebimClientLibrary_Tests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		909D76C528F54F380018E54C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				961503618761C20C3FC521A3 /* Pods_WebimClientLibrary_Example_WebimClientShare.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,6 +699,7 @@
 		127F7850264A78790084836E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				BE17D417285B7D7E00DB606D /* WMLogsViewController */,
 				90BC048D2799FAE60081A75F /* WMFileViewController */,
 				90BC04882799FA380081A75F /* WMImageViewController */,
 				90BC04832796F4BE0081A75F /* WMStartViewController */,
@@ -628,7 +769,7 @@
 			isa = PBXGroup;
 			children = (
 				1298A45B2769F78600F8FF08 /* Cells */,
-				90EB750627963A0A0088B402 /* ChatViewController.xib */,
+				906CBB4528DA474800CE86DF /* ChatViewController.xib */,
 				DD0B8693234330DA00CB5712 /* ChatViewController.swift */,
 				127F7885264A7E2E0084836E /* ChatViewController+Setup.swift */,
 				90BC04AC279A13050081A75F /* ChatViewController+UITableView.swift */,
@@ -684,6 +825,7 @@
 		1298A45B2769F78600F8FF08 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				90F083A92860C2D1006A6CD6 /* WMNilTableViewCell */,
 				9083158F27E9C25700774EE0 /* WMBotButtonsTableViewCell */,
 				12798615277C5B19009A12FD /* WMInfoCell */,
 				12D9C8FC277479E60076B0B7 /* WMMessageTableCell.swift */,
@@ -771,6 +913,7 @@
 		12A7D8EC26C3D7D900E543EB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BE924894288C467900B803E8 /* ScrollButton */,
 				90038C77279623B6000267B9 /* WMToolbarView */,
 				90BC0493279A02CA0081A75F /* ConnectionErrorView.swift */,
 				1295C6752602A2C600F7BE80 /* ConnectionErrorView.xib */,
@@ -809,10 +952,12 @@
 		3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FF020338AD26065EB7512BAE /* Pods-WebimClientLibrary_Example.debug.xcconfig */,
-				1480012CD38CEC0494B440FD /* Pods-WebimClientLibrary_Example.release.xcconfig */,
-				7767259DD04077F82FEB0E85 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
-				B8CA89B3A42B8B92B0515245 /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
+				9899E84AC778DF03046E64DA /* Pods-WebimClientLibrary_Example.debug.xcconfig */,
+				2D7BF3566DC427C2F24AF91B /* Pods-WebimClientLibrary_Example.release.xcconfig */,
+				1E79835E36906572846C2ECF /* Pods-WebimClientLibrary_Example-WebimClientShare.debug.xcconfig */,
+				914305EE08704BC676C18880 /* Pods-WebimClientLibrary_Example-WebimClientShare.release.xcconfig */,
+				84A331789FDB0780B29BF31A /* Pods-WebimClientLibrary_Tests.debug.xcconfig */,
+				75E4F26F5277F5CD3B408124 /* Pods-WebimClientLibrary_Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -827,10 +972,11 @@
 				607FACD21AFB9204008FA782 /* Example for WebimClientLibrary */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				1278071C261400380080B46B /* Localizer */,
+				909D76C928F54F380018E54C /* WebimClientShare */,
 				607FACD11AFB9204008FA782 /* Products */,
 				3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */,
-				D62C6F4259C77B8B65C26706 /* Frameworks */,
 				12A45C2626023BBD004B077F /* Recovered References */,
+				74A625A5DFAAE904A7316885 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -840,6 +986,7 @@
 				607FACD01AFB9204008FA782 /* WebimClientLibrary_Example.app */,
 				607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */,
 				1278071B261400380080B46B /* Localizer */,
+				909D76C828F54F380018E54C /* WebimClientShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -868,6 +1015,7 @@
 			children = (
 				12620C6F260C0DBF00F6E397 /* GoogleService-Info.plist */,
 				607FACD41AFB9204008FA782 /* Info.plist */,
+				906CBADD28D9DC7100CE86DF /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -888,6 +1036,8 @@
 				CE86FA9E203B07F400CB9C2D /* DeltaResponseTests.swift */,
 				CE86FAB0203C18D600CB9C2D /* DepartmentFactoryTests.swift */,
 				CE24A00D20372239009EE7E7 /* DepartmentItemTests.swift */,
+				BEAEE77528AE7866004E8901 /* DeltaCallbackTests.swift */,
+				BEAEE77328AE300C004E8901 /* DictionaryTests.swift */,
 				CE1FC99D202333B20090F7E6 /* ExecIfNotDestroyedHandlerExecutorTests.swift */,
 				CE24A00F20372629009EE7E7 /* FileParametersItemTests.swift */,
 				CE86FA9C203B009400CB9C2D /* FullUpdateTests.swift */,
@@ -913,7 +1063,6 @@
 				CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */,
 				CE0CD75B20234BD500719DBE /* SessionDestroyerTests.swift */,
 				CE86FAB2203C1E8500CB9C2D /* SQLiteHistoryStorageTests.swift */,
-				CE0CD764202461FE00719DBE /* StringFromHTTPParametersTests.swift */,
 				CE86FA98203AF6AC00CB9C2D /* UIColorHexStringTests.swift */,
 				CE86FA96203AF44700CB9C2D /* VisitorItemTests.swift */,
 				CED3BA07201F7E100071EC23 /* WebimActionsTests.swift */,
@@ -923,6 +1072,27 @@
 				CE995DC12020904300E27A3C /* WebimRemoteNotificationImplTests.swift */,
 				CEE382C12035D544006C809E /* WebimTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
+				BE89309528B4A48B00B00D6A /* FAQStructureItemTests.swift */,
+				BE89309728B4B65E00B00D6A /* FAQAccessCheckerTests.swift */,
+				BE24022828B4BA4700697F21 /* FAQActionsTests.swift */,
+				BE24022C28B4DA6D00697F21 /* FAQCategoryInfoItemTests.swift */,
+				BE24022E28B4DEB800697F21 /* FAQCategoryItemTests.swift */,
+				BEE9C2A628B4EB1200C3C563 /* FAQClientTests.swift */,
+				BE40E6F228B5EFA400B0584C /* FileUrlCreatorTests.swift */,
+				BE40E6F428B6272D00B0584C /* HistoryRevisionItemTests.swift */,
+				BE45B80728B7505F0011C7C8 /* KeyboardItemTests.swift */,
+				BE45B80928B77F3D0011C7C8 /* LocationSettingsResponseTests.swift */,
+				BE45B80B28B782EA0011C7C8 /* LocationStatusResponseTests.swift */,
+				BEB93B1B28BCE65500863D7A /* MessageTrackerImplTests.swift */,
+				BE3D6F6728BE1C23000D097F /* RemoteHistoryProviderTests.swift */,
+				BE84E5A828BE4D5C00643A96 /* SurveyImplTests.swift */,
+				BEE5D6A328C0A82800259577 /* UploadedFileImplTests.swift */,
+				BEE5D6A528C0B0EA00259577 /* VisitorFieldsItemTests.swift */,
+				BEFFCF6E28C0CA0C00B886AC /* WebimClientBuilderTests.swift */,
+				BEFFCF7028C0D75D00B886AC /* WebimNotFatalErrorImpl.swift */,
+				BEFFCF7228C0D88C00B886AC /* WebimRequestTests.swift */,
+				BEF5B39328C32DB800A0E642 /* WebimSessionImplTests.swift */,
+				BEF5B39528C3597D00A0E642 /* HistoryPollerTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -945,11 +1115,21 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		74A625A5DFAAE904A7316885 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A108DF916E0A15F0A00DCC07 /* Pods_WebimClientLibrary_Example.framework */,
+				647B4636BFC24F249CFB82F4 /* Pods_WebimClientLibrary_Example_WebimClientShare.framework */,
+				16710902932478EB233CC9E0 /* Pods_WebimClientLibrary_Tests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		90038C77279623B6000267B9 /* WMToolbarView */ = {
 			isa = PBXGroup;
 			children = (
 				120059ED27A29C80003CF192 /* WMTemplatesTooltipView.swift */,
-				120059EC27A29C80003CF192 /* WMTemplatesTooltipView.xib */,
+				906CBB5028DA475600CE86DF /* WMTemplatesTooltipView.xib */,
 				90038C7E279623B6000267B9 /* WMToolbarView.swift */,
 				90038C7F279623B6000267B9 /* WMToolbarBackgroundView.swift */,
 				90038C80279623B6000267B9 /* WMToolbarView.xib */,
@@ -974,7 +1154,7 @@
 			isa = PBXGroup;
 			children = (
 				9083159027E9C26500774EE0 /* WMBotButtonsTableViewCell.swift */,
-				9083159227E9C31200774EE0 /* WMBotButtonsTableViewCell.xib */,
+				906CBB3E28DA473B00CE86DF /* WMBotButtonsTableViewCell.xib */,
 			);
 			path = WMBotButtonsTableViewCell;
 			sourceTree = "<group>";
@@ -986,6 +1166,16 @@
 				12887171269D858F0080159A /* WMSaveView.xib */,
 			);
 			path = WMSaveView;
+			sourceTree = "<group>";
+		};
+		909D76C928F54F380018E54C /* WebimClientShare */ = {
+			isa = PBXGroup;
+			children = (
+				909D76D728F54FBD0018E54C /* WebimClientShare.entitlements */,
+				909D76CA28F54F380018E54C /* WMShareViewController.swift */,
+				909D76CF28F54F380018E54C /* Info.plist */,
+			);
+			path = WebimClientShare;
 			sourceTree = "<group>";
 		};
 		90BC04832796F4BE0081A75F /* WMStartViewController */ = {
@@ -1001,7 +1191,7 @@
 			isa = PBXGroup;
 			children = (
 				DD2F15862333FB2100532934 /* WMImageViewController.swift */,
-				90BC04892799FA640081A75F /* WMImageViewController.xib */,
+				906CBB3028DA472400CE86DF /* WMImageViewController.xib */,
 			);
 			path = WMImageViewController;
 			sourceTree = "<group>";
@@ -1010,9 +1200,36 @@
 			isa = PBXGroup;
 			children = (
 				DD38105A2341EACA00F44FC6 /* WMFileViewController.swift */,
-				90BC04902799FB600081A75F /* WMFileViewController.xib */,
+				906CBB2528DA471900CE86DF /* WMFileViewController.xib */,
 			);
 			path = WMFileViewController;
+			sourceTree = "<group>";
+		};
+		90F083A92860C2D1006A6CD6 /* WMNilTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				906CBB3728DA473100CE86DF /* WMNilTableViewCell.xib */,
+				90F083AB2860C2D1006A6CD6 /* WMNilTableViewCell.swift */,
+			);
+			path = WMNilTableViewCell;
+			sourceTree = "<group>";
+		};
+		BE17D417285B7D7E00DB606D /* WMLogsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				BE17D41C285B7DCD00DB606D /* WMLogsViewController.swift */,
+				906CBB2228DA471300CE86DF /* WMLogsViewController.xib */,
+			);
+			path = WMLogsViewController;
+			sourceTree = "<group>";
+		};
+		BE924894288C467900B803E8 /* ScrollButton */ = {
+			isa = PBXGroup;
+			children = (
+				BE924895288C46DD00B803E8 /* ScrollButtonView.swift */,
+				906CBB5B28DA478700CE86DF /* ScrollButtonView.xib */,
+			);
+			path = ScrollButton;
 			sourceTree = "<group>";
 		};
 		CE24A015203ADC2D009EE7E7 /* Images */ = {
@@ -1088,12 +1305,16 @@
 		CEC2787A2031A0110043899C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				907869D2286B063000FC09A1 /* WebimServerSideSettingsManager.swift */,
 				129E5146264AF8BC00A6C315 /* WMDownloadFileManager.swift */,
 				CE591A421FC2F31E004C95EE /* WebimService.swift */,
 				DD71AD04234DAFDC00A32FB6 /* UIAlertHandler.swift */,
 				DD8F7D0A237AFA23006D9146 /* FilePicker.swift */,
 				1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */,
 				CE88BCD21FCD88EA00A4FA2E /* Settings.swift */,
+				BE17D420285B8C6F00DB606D /* WebimLogManager.swift */,
+				BE385E0B286EB8FA00BCEB7A /* NavigationControllerManager.swift */,
+				BE92489B288E7B0000B803E8 /* MessageCounter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1103,17 +1324,13 @@
 			children = (
 				CE2845BC2020B70A007B1C25 /* ActionRequestLoopMock.swift */,
 				CED3BA0A201F87510071EC23 /* InternalErrorListenerMock.swift */,
+				BE24022A28B4BE2100697F21 /* FAQRequestLoopMock.swift */,
+				BEB93B1928BCE52700863D7A /* ListenerMocks.swift */,
+				BEB93B1D28BCE95200863D7A /* MessageImplMockData.swift */,
+				BEB93B1F28BCE9C100863D7A /* RemoteHistoryProviderMock.swift */,
+				BEB93B2128BCEC1D00863D7A /* WebimLoggerMock.swift */,
 			);
 			path = Mocks;
-			sourceTree = "<group>";
-		};
-		D62C6F4259C77B8B65C26706 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				85F5395A54F1170A064A76BF /* Pods_WebimClientLibrary_Example.framework */,
-				FBB18D8A6A1E4DEE621109CB /* Pods_WebimClientLibrary_Tests.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1140,18 +1357,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Example" */;
 			buildPhases = (
-				A10F31B5F0E29D244BDF000C /* [CP] Check Pods Manifest.lock */,
+				98EA6FEEF010BD4F9535AEC7 /* [CP] Check Pods Manifest.lock */,
 				8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				CE86FAB4203C3E6700CB9C2D /* ShellScript */,
-				CD51D5F18E3358E8AC393A4A /* [CP] Embed Pods Frameworks */,
 				129C626425E83D60009D4328 /* ShellScript */,
+				909D76D328F54F380018E54C /* Embed Foundation Extensions */,
+				AE677705331ED06F908065B4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				909D76D128F54F380018E54C /* PBXTargetDependency */,
 			);
 			name = WebimClientLibrary_Example;
 			productName = WebimClientLibrary;
@@ -1162,7 +1381,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimClientLibrary_Tests" */;
 			buildPhases = (
-				109E14635F799EDBF10172FC /* [CP] Check Pods Manifest.lock */,
+				584B359FB8C8B784736DDA2D /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
@@ -1177,13 +1396,31 @@
 			productReference = 607FACE51AFB9204008FA782 /* WebimClientLibrary_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		909D76C728F54F380018E54C /* WebimClientShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 909D76D628F54F380018E54C /* Build configuration list for PBXNativeTarget "WebimClientShare" */;
+			buildPhases = (
+				2D69FAADEFA2F610164A5983 /* [CP] Check Pods Manifest.lock */,
+				909D76C428F54F380018E54C /* Sources */,
+				909D76C528F54F380018E54C /* Frameworks */,
+				909D76C628F54F380018E54C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WebimClientShare;
+			productName = WebimClientShare;
+			productReference = 909D76C828F54F380018E54C /* WebimClientShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1230;
+				LastSwiftUpdateCheck = 1400;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Webim;
 				TargetAttributes = {
@@ -1208,6 +1445,11 @@
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
+					909D76C728F54F380018E54C = {
+						CreatedOnToolsVersion = 14.0.1;
+						DevelopmentTeam = 574GE9X9L7;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "WebimClientLibrary" */;
@@ -1227,6 +1469,7 @@
 				607FACCF1AFB9204008FA782 /* WebimClientLibrary_Example */,
 				607FACE41AFB9204008FA782 /* WebimClientLibrary_Tests */,
 				1278071A261400380080B46B /* Localizer */,
+				909D76C728F54F380018E54C /* WebimClientShare */,
 			);
 		};
 /* End PBXProject section */
@@ -1237,7 +1480,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1298A4C4276B4DE400F8FF08 /* WMVisitorQuoteImageCell.xib in Resources */,
-				90EB75092796EB300088B402 /* ChatViewController.xib in Resources */,
+				906CBADB28D9DC7100CE86DF /* InfoPlist.strings in Resources */,
+				906CBB4328DA474800CE86DF /* ChatViewController.xib in Resources */,
 				12EFAAA8267B4EF600D0F803 /* WMThanksAlertView.xib in Resources */,
 				1298A4C3276B4DE400F8FF08 /* WMVisitorQuoteFileCell.xib in Resources */,
 				12620C70260C0DE000F6E397 /* GoogleService-Info.plist in Resources */,
@@ -1245,9 +1489,11 @@
 				12269FD027731C850008D5EA /* WMVisitorImageCell.xib in Resources */,
 				1298A48F276B4A5F00F8FF08 /* WMOperatorFileCell.xib in Resources */,
 				11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */,
-				9083159327E9C31200774EE0 /* WMBotButtonsTableViewCell.xib in Resources */,
+				906CBB3C28DA473B00CE86DF /* WMBotButtonsTableViewCell.xib in Resources */,
 				12D9C908277483B40076B0B7 /* WMVisitorFileCell.xib in Resources */,
-				120059EE27A29C80003CF192 /* WMTemplatesTooltipView.xib in Resources */,
+				906CBB2028DA471300CE86DF /* WMLogsViewController.xib in Resources */,
+				906CBB3528DA473100CE86DF /* WMNilTableViewCell.xib in Resources */,
+				906CBB4E28DA475600CE86DF /* WMTemplatesTooltipView.xib in Resources */,
 				1298A488276B4A5F00F8FF08 /* WMOperatorQuoteFileCell.xib in Resources */,
 				DDC7924623573CFF00AF424F /* LaunchScreen.storyboard in Resources */,
 				12EFAA06267B45C900D0F803 /* SurveyTableViewCell.xib in Resources */,
@@ -1264,13 +1510,14 @@
 				1279861D277C5B19009A12FD /* WMInfoCell.xib in Resources */,
 				128D145126E0C574009E9146 /* ChatTestView.xib in Resources */,
 				90BC0495279A040B0081A75F /* WMStartViewController.xib in Resources */,
-				90BC048A2799FA640081A75F /* WMImageViewController.xib in Resources */,
+				906CBB2E28DA472400CE86DF /* WMImageViewController.xib in Resources */,
 				1298A4CF276B4DE400F8FF08 /* WMVisitorMessageCell.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				12EFAA02267B45C900D0F803 /* SurveyRadioButtonViewController.xib in Resources */,
 				1298A4532769F5ED00F8FF08 /* WMOperatorMessageCell.xib in Resources */,
 				1298A486276B4A5F00F8FF08 /* WMOperatorQuoteImageCell.xib in Resources */,
-				90BC04912799FB600081A75F /* WMFileViewController.xib in Resources */,
+				906CBB2328DA471900CE86DF /* WMFileViewController.xib in Resources */,
+				906CBB5928DA478700CE86DF /* ScrollButtonView.xib in Resources */,
 				90038C90279623B7000267B9 /* WMToolbarView.xib in Resources */,
 				1295C6772602A2C600F7BE80 /* ConnectionErrorView.xib in Resources */,
 				90038C92279623B7000267B9 /* WMQuoteView.xib in Resources */,
@@ -1284,10 +1531,57 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		909D76C628F54F380018E54C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				909D76D928F55BC20018E54C /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		109E14635F799EDBF10172FC /* [CP] Check Pods Manifest.lock */ = {
+		129C626425E83D60009D4328 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\n#else\n  #echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		2D69FAADEFA2F610164A5983 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WebimClientLibrary_Example-WebimClientShare-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		584B359FB8C8B784736DDA2D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1309,23 +1603,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		129C626425E83D60009D4328 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\n#else\n  #echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
 		8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1340,7 +1617,7 @@
 			shellPath = /bin/bash;
 			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
 		};
-		A10F31B5F0E29D244BDF000C /* [CP] Check Pods Manifest.lock */ = {
+		98EA6FEEF010BD4F9535AEC7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1362,7 +1639,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CD51D5F18E3358E8AC393A4A /* [CP] Embed Pods Frameworks */ = {
+		AE677705331ED06F908065B4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1372,6 +1649,7 @@
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
@@ -1389,6 +1667,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
@@ -1446,6 +1725,7 @@
 				1298A4C2276B4DE400F8FF08 /* WMVisitorQuoteFileCell.swift in Sources */,
 				120059EF27A29C80003CF192 /* WMTemplatesTooltipView.swift in Sources */,
 				CEBFB67F2018CB0F00D9E5F6 /* String.swift in Sources */,
+				BE17D421285B8C6F00DB606D /* WebimLogManager.swift in Sources */,
 				DDCC52582356333400D39F8A /* ImageConstants.swift in Sources */,
 				1298A484276B4A5F00F8FF08 /* WMOperatorQuoteFileCell.swift in Sources */,
 				1298A4DD276CA0B400F8FF08 /* WMImageTableViewCell.swift in Sources */,
@@ -1472,6 +1752,7 @@
 				12EFAA61267B475A00D0F803 /* WMSurveyViewController.swift in Sources */,
 				1298A489276B4A5F00F8FF08 /* WMOperatorQuoteMessageCell.swift in Sources */,
 				1298A48D276B4A5F00F8FF08 /* WMOperatorFileCell.swift in Sources */,
+				90F083AD2860C2D1006A6CD6 /* WMNilTableViewCell.swift in Sources */,
 				DD8F7D0D237B3C0E006D9146 /* UIStackView.swift in Sources */,
 				1298A48B276B4A5F00F8FF08 /* WMOperatorImageCell.swift in Sources */,
 				CE45EDE01F95F9F700F56319 /* MimeType.swift in Sources */,
@@ -1479,11 +1760,13 @@
 				90038C93279623B7000267B9 /* WMNewMessageView.swift in Sources */,
 				DD94E0B02345148A009133B4 /* PopupActionsTableViewCell.swift in Sources */,
 				90BC04AD279A13050081A75F /* ChatViewController+UITableView.swift in Sources */,
+				BE92489C288E7B0000B803E8 /* MessageCounter.swift in Sources */,
 				128A477C262D7D860036B476 /* WMThanksAlertView.swift in Sources */,
 				CEBFB6812018E50500D9E5F6 /* UIViewController.swift in Sources */,
 				12EFAA56267B470800D0F803 /* RateStarsViewController.swift in Sources */,
 				90BC0494279A02CB0081A75F /* ConnectionErrorView.swift in Sources */,
 				12A45C3826023D19004B077F /* UITextView.swift in Sources */,
+				BE17D41E285B7DCD00DB606D /* WMLogsViewController.swift in Sources */,
 				DD2F15872333FB2100532934 /* WMImageViewController.swift in Sources */,
 				12C4EE21277079D7005CD030 /* CollectionUtils.swift in Sources */,
 				DD70B9FA235E296100F457A1 /* CircleProgressIndicator.swift in Sources */,
@@ -1493,15 +1776,18 @@
 				1279861E277C5B19009A12FD /* WMInfoCell.swift in Sources */,
 				90BC04B9279A175B0081A75F /* ChatViewController+Listener.swift in Sources */,
 				DD0B8694234330DA00CB5712 /* ChatViewController.swift in Sources */,
+				BE924896288C46DD00B803E8 /* ScrollButtonView.swift in Sources */,
 				DD8A8D37233001510011D275 /* UIView.swift in Sources */,
 				1295C6AF2602BB5200F7BE80 /* WebimServiceController.swift in Sources */,
 				12C4EE1E277073E3005CD030 /* WMDocumentDownloadManager.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				12D9C8F9277478E90076B0B7 /* WMFileTableViewCell.swift in Sources */,
+				BE385E0C286EB8FA00BCEB7A /* NavigationControllerManager.swift in Sources */,
 				DD5AA7A5236089AF009680D6 /* CustomUIButton.swift in Sources */,
 				DDCC525A2356360F00D39F8A /* ColourConstants.swift in Sources */,
 				1239B89B277F189200D0CC2E /* WMSettingsViewController+UITableView.swift in Sources */,
 				127F7886264A7E2E0084836E /* ChatViewController+Setup.swift in Sources */,
+				907869D3286B063000FC09A1 /* WebimServerSideSettingsManager.swift in Sources */,
 				CEA8326A1F99079A004845F0 /* StringConstants.swift in Sources */,
 				90038C8F279623B7000267B9 /* WMToolbarBackgroundView.swift in Sources */,
 				DDC9418E2354F0060005A59C /* SpinningIndicator.swift in Sources */,
@@ -1538,55 +1824,96 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE24A012203730D5009EE7E7 /* MessageItemTests.swift in Sources */,
+				BEAEE77628AE7866004E8901 /* DeltaCallbackTests.swift in Sources */,
 				CE2CD5972035F12600997628 /* ChatItemTests.swift in Sources */,
 				CED3BA08201F7E100071EC23 /* WebimActionsTests.swift in Sources */,
-				CE0CD765202461FE00719DBE /* StringFromHTTPParametersTests.swift in Sources */,
 				CE0CD75A202338FD00719DBE /* HistoryIDTests.swift in Sources */,
 				CE995DC32020908F00E27A3C /* WebimRemoteNotificationImplTests.swift in Sources */,
 				CED72596200E20EF00CD1623 /* ChatTableViewControllerTests.swift in Sources */,
+				BE3D6F6828BE1C23000D097F /* RemoteHistoryProviderTests.swift in Sources */,
 				CE86FA97203AF44700CB9C2D /* VisitorItemTests.swift in Sources */,
 				CE86FAB8203C48DA00CB9C2D /* MemoryHistoryStorageTests.swift in Sources */,
+				BEE9C2A728B4EB1200C3C563 /* FAQClientTests.swift in Sources */,
+				BEE5D6A428C0A82800259577 /* UploadedFileImplTests.swift in Sources */,
+				BEB93B1C28BCE65500863D7A /* MessageTrackerImplTests.swift in Sources */,
 				CE18FB9C203DB32E0059B9FF /* LocationSettingsHolderTests.swift in Sources */,
 				CE0CD7632024561B00719DBE /* InternalUtilsTests.swift in Sources */,
 				CEE382C22035D544006C809E /* WebimTests.swift in Sources */,
 				CE2845C62021CF40007B1C25 /* ClientSideIDTests.swift in Sources */,
+				BEFFCF7328C0D88C00B886AC /* WebimRequestTests.swift in Sources */,
 				CE2845B82020A891007B1C25 /* AbstractRequestLoopTests.swift in Sources */,
+				BE84E5A928BE4D5C00643A96 /* SurveyImplTests.swift in Sources */,
 				CE86FAA3203B122A00CB9C2D /* HistorySinceResponseTests.swift in Sources */,
+				BE89309828B4B65E00B00D6A /* FAQAccessCheckerTests.swift in Sources */,
 				CE5B7E622056B26C00DDA407 /* WebimClientTests.swift in Sources */,
+				BE24022B28B4BE2100697F21 /* FAQRequestLoopMock.swift in Sources */,
 				CE2845C22021B9D4007B1C25 /* DecodePercentEscapedLinksIfPresentTests.swift in Sources */,
+				BEE5D6A628C0B0EA00259577 /* VisitorFieldsItemTests.swift in Sources */,
 				CE2CD5952035DF6E00997628 /* MemoryHistoryMetaInformationStorageTests.swift in Sources */,
 				CE6741C8200F9A600061EEFD /* HMACSha256Tests.swift in Sources */,
 				CE86FA9F203B07F400CB9C2D /* DeltaResponseTests.swift in Sources */,
+				BEFFCF6F28C0CA0C00B886AC /* WebimClientBuilderTests.swift in Sources */,
 				CE2845BB2020B6A3007B1C25 /* ActionRequestLoopTests.swift in Sources */,
 				CE86FAA5203B1B7300CB9C2D /* MessageFactoriesTests.swift in Sources */,
 				CE86FAC0203C6FBC00CB9C2D /* WebimErrorImplTests.swift in Sources */,
+				BEF5B39628C3597D00A0E642 /* HistoryPollerTests.swift in Sources */,
 				CE07E9952049794C00E0A0D3 /* SessionBuilderTests.swift in Sources */,
 				CE5B7E5C20500A6F00DDA407 /* ProvidedVisitorFieldsTests.swift in Sources */,
+				BE24022928B4BA4700697F21 /* FAQActionsTests.swift in Sources */,
 				CE0CD75D20234BD800719DBE /* SessionDestroyerTests.swift in Sources */,
+				BE24022D28B4DA6D00697F21 /* FAQCategoryInfoItemTests.swift in Sources */,
 				CE86FAB1203C18D600CB9C2D /* DepartmentFactoryTests.swift in Sources */,
 				CE86FAAF203B2D1800CB9C2D /* OperatorFactoryTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */,
 				CE24A019203ADF40009EE7E7 /* RatingItemTests.swift in Sources */,
 				CE2845BE2020B718007B1C25 /* ActionRequestLoopMock.swift in Sources */,
+				BE45B80C28B782EA0011C7C8 /* LocationStatusResponseTests.swift in Sources */,
 				CE18FB9E203EBCB00059B9FF /* MessageStreamImplTests.swift in Sources */,
 				CE2845C42021C2BF007B1C25 /* AuthorizationDataTests.swift in Sources */,
 				CE24A01020372629009EE7E7 /* FileParametersItemTests.swift in Sources */,
 				CE24A014203735C8009EE7E7 /* OperatorItemTests.swift in Sources */,
+				BE24022F28B4DEB800697F21 /* FAQCategoryItemTests.swift in Sources */,
+				BEB93B1E28BCE95200863D7A /* MessageImplMockData.swift in Sources */,
 				CE86FAA1203B0B1600CB9C2D /* HistoryBeforeResponseTests.swift in Sources */,
 				CE24A00E20372239009EE7E7 /* DepartmentItemTests.swift in Sources */,
+				BE89309628B4A48B00B00D6A /* FAQStructureItemTests.swift in Sources */,
+				BE40E6F528B6272D00B0584C /* HistoryRevisionItemTests.swift in Sources */,
 				CE0CD76720249C3E00719DBE /* OperatorImplTests.swift in Sources */,
 				CE48362C2031DA5E00E18A20 /* MimeTypeTests.swift in Sources */,
 				CE86FA99203AF6AC00CB9C2D /* UIColorHexStringTests.swift in Sources */,
+				BEB93B1A28BCE52700863D7A /* ListenerMocks.swift in Sources */,
 				CE86FA9B203AFBFB00CB9C2D /* DeltaItemTests.swift in Sources */,
 				CED72599200E5B2200CD1623 /* WebimInternalLoggerTests.swift in Sources */,
+				BEB93B2228BCEC1D00863D7A /* WebimLoggerMock.swift in Sources */,
 				CE1FC99E202333B20090F7E6 /* ExecIfNotDestroyedHandlerExecutorTests.swift in Sources */,
 				CE86FA9D203B009400CB9C2D /* FullUpdateTests.swift in Sources */,
+				BE45B80A28B77F3D0011C7C8 /* LocationSettingsResponseTests.swift in Sources */,
 				CE2845C82021DBE5007B1C25 /* DeltaRequestLoopTests.swift in Sources */,
 				CE86FAB3203C1E8500CB9C2D /* SQLiteHistoryStorageTests.swift in Sources */,
 				CE86FABC203C664F00CB9C2D /* LocationSettingsImplTests.swift in Sources */,
 				CED3BA0B201F87510071EC23 /* InternalErrorListenerMock.swift in Sources */,
+				BEAEE77428AE300C004E8901 /* DictionaryTests.swift in Sources */,
+				BE40E6F328B5EFA400B0584C /* FileUrlCreatorTests.swift in Sources */,
 				CE86FABE203C686600CB9C2D /* MessageImplTests.swift in Sources */,
+				BEFFCF7128C0D75D00B886AC /* WebimNotFatalErrorImpl.swift in Sources */,
+				BEB93B2028BCE9C100863D7A /* RemoteHistoryProviderMock.swift in Sources */,
+				BE45B80828B7505F0011C7C8 /* KeyboardItemTests.swift in Sources */,
 				CE18FB9A203DA3890059B9FF /* AccessCheckerTests.swift in Sources */,
+				BEF5B39428C32DB800A0E642 /* WebimSessionImplTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		909D76C428F54F380018E54C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				909D76DD28F56B000018E54C /* Settings.swift in Sources */,
+				909D76DE28F56B330018E54C /* WebimLogManager.swift in Sources */,
+				909D76DA28F55BEA0018E54C /* String.swift in Sources */,
+				909D76CB28F54F380018E54C /* WMShareViewController.swift in Sources */,
+				909D76DB28F5698F0018E54C /* WebimService.swift in Sources */,
+				909D76DC28F56A6E0018E54C /* WebimServiceController.swift in Sources */,
+				909D76D828F552820018E54C /* MimeType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1597,6 +1924,11 @@
 			isa = PBXTargetDependency;
 			target = 607FACCF1AFB9204008FA782 /* WebimClientLibrary_Example */;
 			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
+		};
+		909D76D128F54F380018E54C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 909D76C728F54F380018E54C /* WebimClientShare */;
+			targetProxy = 909D76D028F54F380018E54C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1825,6 +2157,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				90038C81279623B6000267B9 /* Base */,
+				906CBB4B28DA475100CE86DF /* ru */,
+				906CBB4D28DA475100CE86DF /* en */,
 			);
 			name = WMToolbarView.xib;
 			sourceTree = "<group>";
@@ -1843,8 +2177,99 @@
 			isa = PBXVariantGroup;
 			children = (
 				90038C85279623B6000267B9 /* Base */,
+				906CBB5628DA477600CE86DF /* ru */,
+				906CBB5828DA477600CE86DF /* en */,
 			);
 			name = WMQuoteView.xib;
+			sourceTree = "<group>";
+		};
+		906CBADD28D9DC7100CE86DF /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBADC28D9DC7100CE86DF /* en */,
+				906CBADE28D9DC7E00CE86DF /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		906CBB2228DA471300CE86DF /* WMLogsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB2128DA471300CE86DF /* Base */,
+				906CBB2728DA471C00CE86DF /* ru */,
+				906CBB2928DA471C00CE86DF /* en */,
+			);
+			name = WMLogsViewController.xib;
+			sourceTree = "<group>";
+		};
+		906CBB2528DA471900CE86DF /* WMFileViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB2428DA471900CE86DF /* Base */,
+				906CBB2B28DA471F00CE86DF /* ru */,
+				906CBB2D28DA472000CE86DF /* en */,
+			);
+			name = WMFileViewController.xib;
+			sourceTree = "<group>";
+		};
+		906CBB3028DA472400CE86DF /* WMImageViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB2F28DA472400CE86DF /* Base */,
+				906CBB3228DA472800CE86DF /* ru */,
+				906CBB3428DA472900CE86DF /* en */,
+			);
+			name = WMImageViewController.xib;
+			sourceTree = "<group>";
+		};
+		906CBB3728DA473100CE86DF /* WMNilTableViewCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB3628DA473100CE86DF /* Base */,
+				906CBB3928DA473500CE86DF /* ru */,
+				906CBB3B28DA473600CE86DF /* en */,
+			);
+			name = WMNilTableViewCell.xib;
+			sourceTree = "<group>";
+		};
+		906CBB3E28DA473B00CE86DF /* WMBotButtonsTableViewCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB3D28DA473B00CE86DF /* Base */,
+				906CBB4028DA474100CE86DF /* ru */,
+				906CBB4228DA474200CE86DF /* en */,
+			);
+			name = WMBotButtonsTableViewCell.xib;
+			sourceTree = "<group>";
+		};
+		906CBB4528DA474800CE86DF /* ChatViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB4428DA474800CE86DF /* Base */,
+				906CBB4728DA474C00CE86DF /* ru */,
+				906CBB4928DA474C00CE86DF /* en */,
+			);
+			name = ChatViewController.xib;
+			sourceTree = "<group>";
+		};
+		906CBB5028DA475600CE86DF /* WMTemplatesTooltipView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB4F28DA475600CE86DF /* Base */,
+				906CBB5228DA475900CE86DF /* ru */,
+				906CBB5428DA475A00CE86DF /* en */,
+			);
+			name = WMTemplatesTooltipView.xib;
+			sourceTree = "<group>";
+		};
+		906CBB5B28DA478700CE86DF /* ScrollButtonView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906CBB5A28DA478700CE86DF /* Base */,
+				906CBB5D28DA478B00CE86DF /* ru */,
+				906CBB5F28DA478B00CE86DF /* en */,
+			);
+			name = ScrollButtonView.xib;
 			sourceTree = "<group>";
 		};
 		90BC0497279A040B0081A75F /* WMStartViewController.xib */ = {
@@ -2044,19 +2469,20 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF020338AD26065EB7512BAE /* Pods-WebimClientLibrary_Example.debug.xcconfig */;
+			baseConfigurationReference = 9899E84AC778DF03046E64DA /* Pods-WebimClientLibrary_Example.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WebimClientLibrary_Example.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 574GE9X9L7;
 				FRAMEWORK_SEARCH_PATHS = " $(inherited)";
 				INFOPLIST_FILE = WebimClientLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.37.4;
+				MARKETING_VERSION = 3.38.0;
 				MODULE_NAME = ExampleApp;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -warn-long-expression-type-checking=400 -Xfrontend -warn-long-function-bodies=400 -Onone";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client";
@@ -2071,19 +2497,20 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1480012CD38CEC0494B440FD /* Pods-WebimClientLibrary_Example.release.xcconfig */;
+			baseConfigurationReference = 2D7BF3566DC427C2F24AF91B /* Pods-WebimClientLibrary_Example.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WebimClientLibrary_Example.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 574GE9X9L7;
 				FRAMEWORK_SEARCH_PATHS = " $(inherited)";
 				INFOPLIST_FILE = WebimClientLibrary/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.37.4;
+				MARKETING_VERSION = 3.38.0;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2097,7 +2524,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7767259DD04077F82FEB0E85 /* Pods-WebimClientLibrary_Tests.debug.xcconfig */;
+			baseConfigurationReference = 84A331789FDB0780B29BF31A /* Pods-WebimClientLibrary_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2119,7 +2546,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8CA89B3A42B8B92B0515245 /* Pods-WebimClientLibrary_Tests.release.xcconfig */;
+			baseConfigurationReference = 75E4F26F5277F5CD3B408124 /* Pods-WebimClientLibrary_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = "";
@@ -2131,6 +2558,76 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebimClientLibrary_Example.app/WebimClientLibrary_Example";
+			};
+			name = Release;
+		};
+		909D76D428F54F380018E54C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1E79835E36906572846C2ECF /* Pods-WebimClientLibrary_Example-WebimClientShare.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebimClientShare/WebimClientShare.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebimClientShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WebimClientShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Webim. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client.WebimClientShare";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		909D76D528F54F380018E54C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 914305EE08704BC676C18880 /* Pods-WebimClientLibrary_Example-WebimClientShare.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebimClientShare/WebimClientShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 574GE9X9L7;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebimClientShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WebimClientShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Webim. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client.WebimClientShare";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2169,6 +2666,15 @@
 			buildConfigurations = (
 				607FACF31AFB9204008FA782 /* Debug */,
 				607FACF41AFB9204008FA782 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		909D76D628F54F380018E54C /* Build configuration list for PBXNativeTarget "WebimClientShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				909D76D428F54F380018E54C /* Debug */,
+				909D76D528F54F380018E54C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

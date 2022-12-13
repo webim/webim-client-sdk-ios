@@ -74,7 +74,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             title: nil,
             handler: { (_, _, completionHandler) in
                 self.selectedMessage = message
-                self.addQuoteEditBar()
+                self.addQuoteReplyBar()
                 completionHandler(true)
             }
         )
@@ -132,21 +132,6 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         editingStyleForRowAt indexPath: IndexPath
     ) -> UITableViewCell.EditingStyle { .none }
     
-    // Dynamic Cell Sizing
-    func tableView(
-        _ tableView: UITableView,
-        willDisplay cell: UITableViewCell,
-        forRowAt indexPath: IndexPath
-    ) {
-        cellHeights[indexPath] = cell.frame.size.height
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        estimatedHeightForRowAt indexPath: IndexPath
-    ) -> CGFloat { cellHeights[indexPath] ?? 70.0 }
-    
-    
     func messages() -> [Message] {
         return showSearchResult ? searchMessages : chatMessages
     }
@@ -160,7 +145,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             self.showSearchResult = false
         }
         
-        self.chatTableView.reloadData()
+        self.reloadTableWithNewData()
     }
     
     func updatedCellGeneration(_ message: Message) -> UITableViewCell {
@@ -190,6 +175,9 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         if message.getType() == .keyboard {
             return self.messageCellWithType(WMBotButtonsTableViewCell.self, message: message)
         }
+        if message.getType() == .keyboardResponse {
+            return self.messageCellWithType(WMNilTableViewCell.self, message: message)
+        }
         
         if message.isVisitorType() {
             if hasQuote {
@@ -201,11 +189,10 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 return self.messageCellWithType(WMVisitorQuoteMessageCell.self, message: message)
             } else {
-                if isFile {
-                    return self.messageCellWithType(WMVisitorFileCell.self, message: message)
-                }
                 if isImage {
                     return self.messageCellWithType(WMVisitorImageCell.self, message: message)
+                } else if isFile || message.getType() == .fileFromVisitor {
+                    return self.messageCellWithType(WMVisitorFileCell.self, message: message)
                 }
             }
             return self.messageCellWithType(WMVisitorMessageCell.self, message: message)

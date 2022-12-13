@@ -50,45 +50,49 @@ final class WebimInternalLogger {
     // MARK: - Methods
     
     class func setup(webimLogger: WebimLogger?,
-                     verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?) {
+                     verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?,
+                     availableLogTypes: [SessionBuilder.WebimLogType]) {
         WebimInternalLogger.setup.webimLogger = webimLogger
         WebimInternalLogger.setup.verbosityLevel = verbosityLevel
+        WebimInternalLogger.setup.availableTypes = availableLogTypes
     }
     
     func log(entry: String,
-             verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel = .error) {
-        if !AbstractRequestLoop.logRequestData {
+             verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel = .error,
+             logType: SessionBuilder.WebimLogType = .undefined) {
+        guard canLog(type: logType) else { return }
+        if !AbstractRequestLoop.logRequestData && logType == .networkRequest {
             return
         }
-        let logEntry = "WEBIM LOG. " + Date().debugDescription + " " + entry
+        let logEntry = "WEBIM LOG. \(currentDate()) \(entry)"
         switch verbosityLevel {
         case .verbose:
             if isVerbose() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
-            
+
             break
         case .debug:
             if isDebug() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
-            
+
             break
         case .info:
             if isInfo() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
-            
+
             break
         case .warning:
             if isWarning() {
                 WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
             }
-            
+
             break
         case .error:
             WebimInternalLogger.setup.webimLogger?.log(entry: logEntry)
-            
+
             break
         }
     }
@@ -116,6 +120,18 @@ final class WebimInternalLogger {
             || (WebimInternalLogger.setup.verbosityLevel == .info)
             || (WebimInternalLogger.setup.verbosityLevel == .warning))
     }
+
+    private func currentDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .long
+        dateFormatter.timeZone = .current
+        return dateFormatter.string(from: Date())
+    }
+
+    private func canLog(type: SessionBuilder.WebimLogType) -> Bool {
+        return WebimInternalLogger.setup.availableTypes?.contains(type) == true
+    }
     
 }
 
@@ -132,6 +148,7 @@ final class WebimInternalLoggerParametersHelper {
     
     // MARK: - Properties
     var verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?
+    var availableTypes: [SessionBuilder.WebimLogType]?
     weak var webimLogger: WebimLogger?
     
 }

@@ -29,21 +29,33 @@ import Foundation
 import XCTest
 
 class WebimClientTests: XCTestCase {
+
+    var webimClient: WebimClient!
+    var deltaRequestLoop: DeltaRequestLoop!
+    var actionRequestLoop: ActionRequestLoopForTests!
+    var webimActions: WebimActionsImpl!
     
     // MARK: - Constants
     private static let userDefaultsKey = "userDefaultsKey"
-    
-    // MARK: - Tests
-    func testGetDeltaRequestLoop() {
+    private let urlString = "http://webim.ru"
+
+    //MARK: Methods
+    override func setUp() {
+        super.setUp()
+
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: WebimClientTests.userDefaultsKey),
                                                                                   queue: DispatchQueue.main)
         let internalErrorListener = InternalErrorListenerForTests()
-        let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+
+        let deltaCallback = DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString),
+                                          historyMessageMapper: HistoryMessageMapper(withServerURLString: urlString),
+                                          userDefaultsKey: WebimClientTests.userDefaultsKey)
+
+        actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                           internalErrorListener: internalErrorListener)
-        let urlString = "http://webim.ru"
-        let deltaRequestLoop = DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString),
-                                                historyMessageMapper: HistoryMessageMapper(withServerURLString: urlString),
-                                                userDefaultsKey: WebimClientTests.userDefaultsKey),
+
+
+        deltaRequestLoop = DeltaRequestLoop(deltaCallback: deltaCallback,
                                                 completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
                                                 sessionParametersListener: nil,
                                                 internalErrorListener: internalErrorListener,
@@ -61,48 +73,63 @@ class WebimClientTests: XCTestCase {
                                                 sessionID: nil,
                                                 prechat: nil,
                                                 authorizationData: nil)
-        
-        let webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
+
+        webimActions = WebimActionsImpl(baseURL: urlString,
+                                        actionRequestLoop: actionRequestLoop)
+
+        webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
                                       deltaRequestLoop: deltaRequestLoop,
-                                      webimActions: WebimActionsImpl(baseURL: urlString,
-                                                                     actionRequestLoop: actionRequestLoop))
-        
+                                      webimActions: webimActions)
+    }
+    
+    // MARK: - Tests
+    func testGetDeltaRequestLoop() {
         XCTAssertTrue(deltaRequestLoop === webimClient.getDeltaRequestLoop())
     }
     
     func testGetActions() {
-        let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: WebimClientTests.userDefaultsKey),
-                                                                                  queue: DispatchQueue.main)
-        let internalErrorListener = InternalErrorListenerForTests()
-        let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                          internalErrorListener: internalErrorListener)
-        let urlString = "http://webim.ru"
-        let webimActions = WebimActionsImpl(baseURL: urlString,
-                                            actionRequestLoop: actionRequestLoop)
-        
-        let webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
-                                      deltaRequestLoop: DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: urlString),
-                                                                         historyMessageMapper: HistoryMessageMapper(withServerURLString: urlString),
-                                                                         userDefaultsKey: WebimClientTests.userDefaultsKey),
-                                                                         completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                                         sessionParametersListener: nil,
-                                                                         internalErrorListener: internalErrorListener,
-                                                                         baseURL: urlString,
-                                                                         title: "title",
-                                                                         location: "location",
-                                                                         appVersion: nil,
-                                                                         visitorFieldsJSONString: nil,
-                                                                         providedAuthenticationTokenStateListener: nil,
-                                                                         providedAuthenticationToken: nil,
-                                                                         deviceID: "id",
-                                                                         deviceToken: nil,
-                                                                         remoteNotificationSystem: nil,
-                                                                         visitorJSONString: nil,
-                                                                         sessionID: nil,
-                                                                         prechat: nil,
-                                                                         authorizationData: nil),
-                                      webimActions: webimActions)
-        
         XCTAssertTrue(webimActions === webimClient.getActions())
     }
+
+    func testResume() {
+        webimClient.resume()
+        webimClient.pause()
+
+        webimClient.resume()
+
+        XCTAssertFalse(actionRequestLoop.paused)
+        XCTAssertFalse(deltaRequestLoop.paused)
+    }
+
+    func testPause() {
+        webimClient.resume()
+
+        webimClient.pause()
+
+        XCTAssertTrue(actionRequestLoop.paused)
+        XCTAssertTrue(deltaRequestLoop.paused)
+    }
+
+    func testStop() {
+        webimClient.resume()
+
+        webimClient.stop()
+
+        XCTAssertFalse(actionRequestLoop.isRunning())
+        XCTAssertFalse(actionRequestLoop.paused)
+        XCTAssertFalse(deltaRequestLoop.isRunning())
+        XCTAssertFalse(deltaRequestLoop.paused)
+    }
+
+    func testSetDeviceToken() {
+        actionRequestLoop.webimRequest = nil
+        actionRequestLoop.enqueueCalled = false
+
+        webimClient.set(deviceToken: "expectedDeviceToken")
+        let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
+
+        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "set_push_token")
+        XCTAssertEqual(primaryData?[Parameter.deviceToken.rawValue] as? String, "expectedDeviceToken")
+    }
+
 }

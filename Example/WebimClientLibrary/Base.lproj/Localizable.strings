@@ -1,16 +1,20 @@
-//WMSettingsViewController.xib
+//WMSettingsViewController.swift,WMSettingsViewController.xib
 "* Account name can't be empty." = "* Account name can't be empty.";
-//WMSettingsViewController.xib
+//WMSettingsViewController.swift,WMSettingsViewController.xib
 "* Location can't be empty." = "* Location can't be empty.";
+//ScrollButtonView.xib
+"0" = "0";
 //WMOperatorFileCell.xib,WMVisitorFileCell.xib
 "25%" = "25%";
-//Main.storyboard
+//WMStartViewController.xib
 "99" = "99";
+//WMQuoteView.xib
+"<?>Autor" = "<?>Autor";
 //WMOperatorFileCell.xib,WMVisitorFileCell.xib
 "<?>Description" = "<?>Description";
 //WMOperatorFileCell.xib,WMVisitorFileCell.xib
 "<?>File name.pdf" = "<?>File name.pdf";
-//WMInfoCell.xib,WMOperatorMessageCell.xib,WMOperatorQuoteFileCell.xib,WMOperatorQuoteImageCell.xib,WMOperatorQuoteMessageCell.xib,WMVisitorMessageCell.xib,WMVisitorQuoteFileCell.xib,WMVisitorQuoteImageCell.xib,WMVisitorQuoteMessageCell.xib
+//WMBotButtonsTableViewCell.xib,WMInfoCell.xib,WMOperatorMessageCell.xib,WMOperatorQuoteFileCell.xib,WMOperatorQuoteImageCell.xib,WMOperatorQuoteMessageCell.xib,WMQuoteView.xib,WMVisitorMessageCell.xib,WMVisitorQuoteFileCell.xib,WMVisitorQuoteImageCell.xib,WMVisitorQuoteMessageCell.xib
 "<?>Message" = "<?>Message";
 //WMOperatorQuoteFileCell.xib,WMOperatorQuoteImageCell.xib,WMOperatorQuoteMessageCell.xib,WMVisitorQuoteFileCell.xib,WMVisitorQuoteImageCell.xib,WMVisitorQuoteMessageCell.xib
 "<?>Name " = "<?>Name ";
@@ -18,12 +22,12 @@
 "<?>Operator name" = "<?>Operator name";
 //WMOperatorQuoteFileCell.xib,WMOperatorQuoteImageCell.xib,WMOperatorQuoteMessageCell.xib,WMVisitorQuoteFileCell.xib,WMVisitorQuoteImageCell.xib,WMVisitorQuoteMessageCell.xib
 "<?>Quote Message" = "<?>Quote Message";
-//WMInfoCell.xib,WMOperatorFileCell.xib,WMOperatorImageCell.xib,WMOperatorMessageCell.xib,WMOperatorQuoteFileCell.xib,WMOperatorQuoteImageCell.xib,WMOperatorQuoteMessageCell.xib,WMVisitorFileCell.xib,WMVisitorImageCell.xib,WMVisitorMessageCell.xib,WMVisitorQuoteFileCell.xib,WMVisitorQuoteImageCell.xib,WMVisitorQuoteMessageCell.xib
+//WMBotButtonsTableViewCell.xib,WMInfoCell.xib,WMOperatorFileCell.xib,WMOperatorImageCell.xib,WMOperatorMessageCell.xib,WMOperatorQuoteFileCell.xib,WMOperatorQuoteImageCell.xib,WMOperatorQuoteMessageCell.xib,WMVisitorFileCell.xib,WMVisitorImageCell.xib,WMVisitorMessageCell.xib,WMVisitorQuoteFileCell.xib,WMVisitorQuoteImageCell.xib,WMVisitorQuoteMessageCell.xib
 "<?>Time" = "<?>Time";
 //SurveyCommentViewController.xib,SurveyRadioButtonViewController.xib,SurveyTableViewCell.xib
 "<this text will be replaced>" = "<this text will be replaced>";
-//WMSettingsViewController.swift
-"Account name can't be empty" = "Account name can't be empty";
+//UIAlertHandler.swift
+"Account" = "Account";
 //WMSettingsViewController.swift
 "Account name has invalid characters" = "Account name has invalid characters.";
 //WMSettingsViewController.xib
@@ -36,133 +40,129 @@
 "Additional information" = "Additional information";
 //ChatTestView.swift
 "Agent title" = "Agent title";
-//Main.storyboard
-"Back" = "Back";
+//UIAlertHandler.swift
+"Alert account name" = "Webim account name or full server address (for example, \"demo\" or \"https://demo.webim.ru\")";
 //FilePicker.swift
 "Camera" = "Camera";
 //FilePicker.swift
 "Camera is not available" = "Camera is not available";
 //FilePicker.swift,UIAlertHandler.swift
 "Cancel" = "Cancel";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Chat does not exist" = "Chat does not exist";
 //UIAlertHandler.swift
 "Chat finished." = "Chat finished.";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Comment is too long" = "Comment is too long";
 //ConnectionErrorView.xib
 "Connection error" = "Connection error";
 //UIAlertHandler.swift
-"Contact topic" = "Contact topic";
+"Choose department" = "Choose department";
 //StringConstants.swift
 "Copy" = "Copy";
-//FlexibleTableViewCell.swift
-"Counting" = "Counting";
 //StringConstants.swift
 "Delete" = "Delete";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Delete message unknown error" = "Delete message unknown error";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Deleting messages is turned off on the server" = "Deleting messages is turned off on the server";
 //StringConstants.swift
 "Edit" = "Edit";
-//ChatViewController.swift
-"Edit Message" = "Edit Message";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Edit message unknown error" = "Edit message unknown error";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Editing message is empty" = "Editing message is empty";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Editing messages is turned off on the server" = "Editing messages is turned off on the server";
+//WMNewMessageView.xib
+"Enter message" = "Enter message";
 //SurveyCommentViewController.swift
 "Enter your comment" = "Enter your comment";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Failed to send survey answer" = "Failed to send survey answer";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Failed to upload file: visitor is not logged in" = "Failed to upload file: visitor is not logged in";
-//ChatTableViewController.swift
+//ChatViewController+Setup.swift
 "Fetching more messages..." = "Fetching more messages...";
 //FilePicker.swift
 "File" = "File";
-//FlexibleTableViewCell.swift
-"File is being sent" = "File is being sent by agent";
-//ChatTableViewController.swift
+//WMFileTableViewCell.swift
+"File is being sent" = "File is being sent";
+//ChatViewController+CompletionHandler.swift
 "File is too large." = "File is too large.";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "File is too small" = "File is too small";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "File sending failed" = "File sending failed";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "File type is not supported" = "File type is not supported";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Find sending unknown error" = "Find sending unknown error";
 //UIAlertHandler.swift
 "Go to Settings" = "Go to Settings";
-//Main.storyboard
+//WMStartViewController.xib
 "Greeting title" = "Greeting title";
-//Main.storyboard
+//WMStartViewController.xib
 "Greeting words" = "Greeting words";
-//ChatViewController.swift,FlexibleTableViewCell.swift
-"HardcodedVisitorMessageName" = "You";
 //WMSettingsViewController.xib
 "If you are registered in Webim service you can use your own account name and location." = "If you are registered in Webim service you can use your own account name and location.";
-//ChatTableViewController+Surveys.swift
+//WMQuoteImageCell.swift,WMQuoteView.swift
+"Image" = "Image";
+//ChatViewController+Surveys.swift
 "Incorrect radio value" = "Incorrect radio value";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Incorrect stars value" = "Incorrect stars value";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Incorrect survey ID" = "Incorrect survey ID";
 //UIAlertHandler.swift
 "InvalidSettings" = "Invalid Account Settings";
 //UIAlertHandler.swift
 "LoadError" = "Load error";
-//WMFileViewController.swift
+//UIAlertHandler.swift
+"LoadFileErrorText" = "Try upload another file";
+//WMFileViewController.swift,WMFileViewController.xib
 "Loading File..." = "Loading the file...";
 //WMSettingsViewController.swift
-"Location can't be empty" = "Location can't be empty";
+"Location has invalid characters" = "Location has invalid characters.";
 //WMSettingsViewController.xib
 "Location text field" = "Location text field";
 //WMSettingsViewController.xib
 "Location*" = "Location*";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "MaxFilesCountExceeded" = "Files count per message limit exceeded";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "MaxMessageLengthExceeded" = "Max message lenght exceeded";
-//ChatViewController+UIView.swift
-"Message" = "Message";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Message deleting failed" = "Message deleting failed";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Message editing failed" = "Message editing failed";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Message not found" = "Message not found";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Message not owned by visitor" = "Message not owned by visitor";
 //FilePicker.swift
 "Need camera access" = "Need camera access";
 //FilePicker.swift
 "Need photo access" = "App needs access to your photo library. Please go to your device's settings > Privacy > Photos and set to ON";
-//FilePicker.swift
-"Not Now" = "Not Now";
-//FilePicker.swift
-"Please Allow Access" = "Please Allow Access";
-//ChatViewController+UIView.swift,ChatViewController.swift
+//ChatViewController+Setup.swift,ChatViewController.swift
 "No agent" = "No agent";
 //UIAlertHandler.swift
 "No agents available" = "No agents available";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "No current survey" = "No current survey";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Note for rate is too long" = "Note for rate is too long";
 //FilePicker.swift,UIAlertHandler.swift
 "OK" = "OK";
-//ChatTableViewController.swift,ChatViewController.swift
+//ChatViewController+CompletionHandler.swift
+"Ok" = "Ok";
+//ChatViewController+Listener.swift,ChatViewController.swift
 "Online" = "Online";
 //FilePicker.swift
 "Open app settings" = "Open app settings";
 //UIAlertHandler.swift
 "Operator Info" = "Info about Agent";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Operator rating failed" = "Agent cannot be rated";
 //AdditionalKeys.swift
 "P.CR" = "An agent requested your contact data.";
@@ -180,15 +180,17 @@
 "Page title text field" = "Page title text field";
 //FilePicker.swift
 "Photo Library" = "Photo Library";
+//FilePicker.swift
+"Please Allow Access" = "Please Allow Access";
 //RateStarsViewController.swift,RateStarsViewController.xib
 "Please rate the overall impression of the consultation" = "Please rate the overall impression of the consultation.";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Question not found" = "Question not found";
 //RateStarsViewController.xib
 "Rate Operator" = "Rate Agent";
 //StringConstants.swift
 "Reply" = "Reply";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Response cannot be created for this request" = "Response cannot be created for this request";
 //ChatTestView.xib
 "Run autotest" = "Run autotest";
@@ -208,83 +210,73 @@
 "Saves current settings and shows start screen." = "Saves current settings and shows start screen.";
 //RateStarsViewController.xib,SurveyCommentViewController.xib,SurveyRadioButtonViewController.xib
 "Send" = "Send";
-//ChatTableViewController+UITableView.swift
+//ChatViewController+UITableView.swift
 "Send first message to start chat." = "Send first message to start chat.";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Send keyboard request failed" = "Send keyboard request failed";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Send keyboard request unknown error" = "Send keyboard request unknown error";
 //WMQuoteFileCell.swift
 "Sending" = "Sending";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Sending files in body is not supported" = "Sending files in body is not supported";
-//UIAlertHandler.swift
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
 "Session creation failed" = "Session creation failed";
-//Main.storyboard
+//FilePicker.swift,WMStartViewController.xib
 "Settings" = "Settings";
-//Main.storyboard
+//WMStartViewController.xib
 "Shows settings." = "Shows settings.";
-//Main.storyboard
+//WMStartViewController.xib
 "Start chat" = "Start chat";
-//Main.storyboard
+//WMStartViewController.xib
 "Starts chat." = "Starts chat.";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "Survey disabled" = "Survey disabled";
 //WMThanksAlertView.xib
 "Thanks!" = "Thanks!";
 //UIAlertHandler.swift
-"The file has been saved to your device in Files App" = "The file has been saved to your device in Files App";
-//UIAlertHandler.swift
 "The image has been saved to your photos" = "The image has been saved to your photos";
-//UIAlertHandler.swift
+//ChatViewController+Surveys.swift,UIAlertHandler.swift
 "There is no current agent to rate" = "There is no agent to rate.";
-//ChatTableViewController+Surveys.swift
+//ChatViewController+Surveys.swift
 "This agent not in the current chat" = "This agent not in the current chat";
-//ChatTableViewController+Surveys.swift
-"This chat does not exist" = "This chat does not exist.";
-//Main.storyboard
-"To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "Tap the button bellow to start chatting.\nSing in as an agent to answer this chat at:\nhttps://demo.webim.ru\n\nLogin: o@webim.ru\nPassword: password\n\nSource code of this app can be found at:\nhttps://github.com/webim/webim-client-sdk-ios";
-//FlexibleTableViewCell.swift
-"Today" = "Today";
-//ChatTableViewController+Surveys.swift
+//WMStartViewController.xib
+"To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios" = "To start a chat tap on the button below.\n\nOperator can answer to your chat at:\nhttps://demo.webim.ru/\nLogin: o@webim.ru\nPassword: password\n\nThis app source code can be found at:\nhttps://github.com/webim/webim-client-sdk-ios";
+//ChatViewController+Surveys.swift
 "Unknown error" = "Unknown error";
-//FlexibleTableViewCell.swift
+//WMFileTableViewCell.swift
 "Uploading file" = "Uploading file";
+//WMSettingsViewController.xib
+"User data json (optional)" = "User data json (optional)";
+//ChatViewController+Setup.swift,ChatViewController.swift
+"Webim chat" = "Webim chat";
 //FilePicker.swift
-"Webim Demo needs permission to access your camera so you can send photos to chat." = "Webim Demo needs permission to access your camera so you can send photos to chat.";
-//ChatTableViewController.swift,ChatViewController+UIView.swift,ChatViewController.swift
-"Webim demo-chat" = "Webim demo-chat";
-//Main.storyboard
-"Welcome to the WebimClientLibrary demo app!" = "Welcome to the Demo App of Webim Mobile SDK!";
-//ChatTableViewController.swift
+"Webim needs permission to access your camera so you can send photos to chat." = "Webim needs permission to access your camera so you can send photos to chat.";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Welcome to the WebimClientLibrary app!";
+//ChatViewController+CompletionHandler.swift
 "Wrong button ID in request" = "Wrong button ID in request";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Wrong message ID in request" = "Wrong message ID in request";
-//ChatTableViewController.swift
+//ChatViewController+CompletionHandler.swift
 "Wrong message kind (not text)" = "Wrong message kind (not text)";
-//FlexibleTableViewCell.swift
-"Yesterday" = "Yesterday";
 //WMThanksAlertView.xib
 "Your feedback will help us become better." = "Your feedback will help us become better.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Your visitor account is in the black list.";
 //SurveyCommentViewController.xib
 "comment" = "comment";
-//FlexibleTableViewCell.swift
+//WMMessageTableCell.swift
 "edited" = "edited";
 //WMSettingsViewController.xib
-"iOS demo app" = "iOS demo app";
+"iOS app" = "iOS app";
 //WMSettingsViewController.xib
 "mobile" = "mobile";
-//ChatTableViewController.swift,ChatViewController.swift
+//ChatViewController+Listener.swift
 "typing" = "typing";
 //WMSettingsViewController.xib
 "wmtest" = "wmtest";
+//WMSettingsViewController.xib
+"{\"id\":\"123\",\"name\":\"test12\",\"crc\":\"567\"}" = "{\"id\":\"123\",\"name\":\"test12\",\"crc\":\"567\"}";
 //LaunchScreen.storyboard,LaunchScreenController.storyboard
-"© 2021 Webim.ru Inc. All rights reserved." = "© 2021 Webim.ru Inc. All rights reserved.";
-//WMMessageTableCell.swift
-"edited" = "edited";
-//UIAlertHandler.swift
-"Alert account name" = "Webim account name or full server address (for example, \"demo\" or \"https://demo.webim.ru\")";
-//UIAlertHandler.swift
-"Account" = "Account";
+"© 2022 Webim.ru Inc. All rights reserved." = "© 2022 Webim.ru Inc. All rights reserved.";

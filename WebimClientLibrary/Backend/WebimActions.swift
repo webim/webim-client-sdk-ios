@@ -122,8 +122,14 @@ protocol WebimActions {
     
     func clearHistory()
     
-    func getRawConfig(forLocation: String,
-                      completion: @escaping (_ data: Data?) throws -> ())
+    func getServerSettings(forLocation: String,
+                          completion: @escaping (_ data: Data?) throws -> ())
+    
+    func autocomplete(forText: String,
+                      url: String,
+                      completion: AutocompleteCompletionHandler?)
+
+    func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?)
     
     func sendGeolocation(latitude: Double,
                          longitude: Double,

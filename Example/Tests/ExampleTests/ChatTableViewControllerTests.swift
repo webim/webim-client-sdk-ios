@@ -40,19 +40,6 @@ class ChatViewControllerTests: XCTestCase {
     }
     
     // MARK: - Tests
-    
-    func testBackgroundViewEmpty() {
-        // When: Table view is empty.
-        chatTableViewController.chatMessages = [Message]()
-        chatTableViewController.searchMessages = [Message]()
-        chatTableViewController.chatTableView.reloadData()
-    
-        
-        // Then: Table view background has the message.
-        let label = chatTableViewController.chatTableView.backgroundView as? UILabel
-        XCTAssertEqual(label?.attributedText?.string, "Send first message to start chat.")
-    }
-    
     func testBackgroundViewNotEmpty() {
         // MARK: Set up
         var messages = [Message]()

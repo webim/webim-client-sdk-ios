@@ -45,14 +45,18 @@ extension ChatViewController: MessageListener {
                     }
                 }
             }
-            
+
             if !inserted {
                 self.chatMessages.append(newMessage)
             }
-            
-            self.chatTableView?.reloadData()
-            self.scrollToBottom(animated: true)
-            WebimServiceController.currentSession.setChatRead()
+
+            self.reloadTableWithNewData()
+
+            if (!newMessage.isOperatorType() && !newMessage.isSystemType()) ||
+                self.isLastCellVisible() {
+                self.scrollToBottom(animated: true)
+            }
+            self.messageCounter.set(lastMessageIndex: self.chatMessages.count - 1)
         }
     }
     
@@ -75,8 +79,8 @@ extension ChatViewController: MessageListener {
             }
             
             if toUpdate {
-                self.chatTableView?.reloadData()
-                self.scrollToBottom(animated: true)
+                self.reloadTableWithNewData()
+                self.messageCounter.set(lastMessageIndex: self.chatMessages.count - 1)
             }
         }
     }
@@ -85,7 +89,7 @@ extension ChatViewController: MessageListener {
         DispatchQueue.main.async {
             self.chatMessages.removeAll()
             self.cellHeights.removeAll()
-            self.chatTableView?.reloadData()
+            self.reloadTableWithNewData()
         }
     }
     
@@ -97,7 +101,7 @@ extension ChatViewController: MessageListener {
                     self.chatMessages[messageIndex] = newVersion
                 }
             }
-            self.chatTableView.reloadData()
+            self.reloadTableWithNewData()
         }
     }
 }
@@ -112,9 +116,10 @@ extension ChatViewController: HelloMessageListener {
 extension ChatViewController: OperatorTypingListener {
     func onOperatorTypingStateChanged(isTyping: Bool) {
         guard WebimServiceController.currentSession.getCurrentOperator() != nil else { return }
-        
+        guard isCurrentOperatorRated() == false else { return }
+
         if isTyping {
-            self.updateOperatorStatus(typing: true, operatorStatus: "typing".localized)
+            self.updateOperatorStatus(typing: true, operatorStatus: "Typing".localized)
         } else {
             self.updateOperatorStatus(typing: false, operatorStatus: "Online".localized)
         }
@@ -133,6 +138,12 @@ extension ChatViewController: ChatStateListener {
     func changed(state previousState: ChatState, to newState: ChatState) {
         if (newState == .closedByVisitor || newState == .closedByOperator ) && (WebimServiceController.currentSession.sessionState() == .chatting || WebimServiceController.currentSession.sessionState() == .queue) {
             self.showRateOperatorDialog(operatorId: currentOperatorId())
+        }
+
+        if newState == .invitation || newState == .chatting || newState == .queue {
+            guard let currentId = currentOperatorId() else { return }
+            alreadyRatedOperators[currentId] = false
+            updateCurrentOperatorInfo(to: WebimServiceController.currentSession.getCurrentOperator())
         }
     }
 }

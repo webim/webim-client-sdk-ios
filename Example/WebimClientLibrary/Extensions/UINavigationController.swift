@@ -46,8 +46,8 @@ extension UINavigationController {
             } else {
                 // Fallback on earlier versions
                 navigationBar.barTintColor = backgroundColor
-                navigationBar.tintColor = barTintColor
                 navigationBar.isTranslucent = isTranslucent
             }
+            navigationBar.tintColor = barTintColor
         }
 }

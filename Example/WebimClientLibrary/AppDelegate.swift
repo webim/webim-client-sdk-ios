@@ -35,16 +35,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Properties
     var window: UIWindow?
     static var shared: AppDelegate!
+    lazy var isApplicationConnected: Bool = false
+    
+    private var notificationUserInfo: [AnyHashable: Any]?
     
     // MARK: - Methods
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         AppDelegate.shared = self
+        UNUserNotificationCenter.current().delegate = self
         FirebaseApp.configure()
-        let rootVC = WMStartViewController.loadViewControllerFromXib()
-        let navigationController = UINavigationController(rootViewController: rootVC)
-        AppDelegate.shared.window?.rootViewController = navigationController
         Crashlytics.crashlytics().setCustomValue(Settings.shared.accountName, forKey: "AccountName")
         // Remote notifications configuration
         let notificationTypes: UNAuthorizationOptions = [.alert,
@@ -61,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error ?? "Error with remote notification")
             }
         }
-        
+
         return true
     }
     
@@ -77,26 +78,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Remote notification support is unavailable due to error: \(error.localizedDescription)")
     }
-    
+
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         print(userInfo)
-        
-        // WEBIM: Remote notification handling.
-        if Webim.isWebim(remoteNotification: userInfo) {
-            _ = Webim.parse(remoteNotification: userInfo)
-            // Handle Webim remote notification.
-            if UIApplication.shared.applicationState != .active {
-                if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-                    navigationController.popToRootViewController(animated: false)
-                    if let startViewController = navigationController.viewControllers.first as? WMStartViewController {
-                        startViewController.startChatButton.sendActions(for: .touchUpInside)
-                    }
-                }
-            }
-        } else {
-            // Handle another type of remote notification.
-        }
     }
     
     static var keyboardWindow: UIWindow? {
@@ -122,5 +107,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Not main thread error")
 #endif
         }
+    }
+
+    private func openChatFromNotification(_ notificationUserInfo: [AnyHashable: Any]) {
+        // WEBIM: Remote notification handling.
+        if Webim.isWebim(remoteNotification: notificationUserInfo) {
+            _ = Webim.parse(remoteNotification: notificationUserInfo)
+            // Handle Webim remote notification.
+            
+            guard !isChatIsTopViewController() else { return }
+
+            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                navigationController.popToRootViewController(animated: false)
+                guard let startViewController = navigationController.viewControllers.first as? WMStartViewController else { return }
+                startViewController.startChatButton.sendActions(for: .touchUpInside)
+            }
+        } else {
+            // Handle another type of remote notification.
+        }
+    }
+
+    private func isChatIsTopViewController() -> Bool {
+        guard let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return false }
+        return navigationController.viewControllers.last is ChatViewController
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
+        notificationUserInfo = notification.request.content.userInfo
+
+        guard !isChatIsTopViewController() else {
+            completionHandler([])
+            return
+        }
+
+        completionHandler([.alert, .badge, .sound])
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        if let notificationUserInfo = notificationUserInfo {
+            openChatFromNotification(notificationUserInfo)
+        }
+        
+        completionHandler()
     }
 }

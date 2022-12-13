@@ -516,7 +516,7 @@ extension WebimActionsImpl: WebimActions {
                                                         baseURLString: urlString))
     }
     
-    func getRawConfig(forLocation location: String, completion: @escaping (Data?) throws -> ()) {
+    func getServerSettings(forLocation location: String, completion: @escaping (Data?) throws -> ()) {
         let dataToPost = [String: Any]()
 
         let urlString = baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)"
@@ -526,6 +526,27 @@ extension WebimActionsImpl: WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         locationSettingsCompletionHandler: completion))
+    }
+    
+    func autocomplete(forText text: String, url: String, completion: AutocompleteCompletionHandler?) {
+        let dataToPost = ["text": text]
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: url,
+                                                        autocompleteCompletionHandler: completion),
+                                                        withAuthData: false)
+    }
+
+
+    func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?) {
+        let urlString = baseURL + ServerPathSuffix.getServerSideSettings.rawValue
+
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
+                                                        primaryData: [:],
+                                                        baseURLString: urlString,
+                                                        serverSideSettingsCompletionHandler: completionHandler))
     }
     
     func sendGeolocation(latitude: Double, longitude: Double, completionHandler: GeolocationCompletionHandler?) {
@@ -541,5 +562,5 @@ extension WebimActionsImpl: WebimActions {
                                                         baseURLString: urlString,
                                                         geolocationCompletionHandler: completionHandler))
     }
-    
+
 }

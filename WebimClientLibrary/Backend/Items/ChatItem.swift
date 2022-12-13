@@ -93,13 +93,13 @@ final class ChatItem {
         } else {
             id = Int(-creationTimestamp)
         }
-        
+
         if let unreadByVisitorMessageCount = jsonDictionary[JSONField.unreadByVisitorMessageCount.rawValue] as? Int {
             self.unreadByVisitorMessageCount = unreadByVisitorMessageCount
         } else {
             self.unreadByVisitorMessageCount = 0
         }
-        
+
         if let messagesValue = jsonDictionary[JSONField.messages.rawValue] as? [Any] {
             for message in messagesValue {
                 if let messageValue = message as? [String: Any?] {
@@ -253,7 +253,7 @@ final class ChatItem {
     }
     
     func set(unreadByVisitorMessageCount: Int) {
-        self.unreadByVisitorMessageCount = unreadByVisitorMessageCount
+        self.unreadByVisitorMessageCount = unreadByVisitorMessageCount >= 0 ? unreadByVisitorMessageCount : 0
     }
     
     func getUnreadByVisitorTimestamp() -> Double? {
@@ -269,7 +269,11 @@ final class ChatItem {
     }
     
     func set(unreadByVisitorTimestamp: Double?) {
-        self.unreadByVisitorTimestamp = unreadByVisitorTimestamp
+        guard let unreadByVisitorTimestamp = unreadByVisitorTimestamp else {
+            self.unreadByVisitorTimestamp = nil
+            return
+        }
+        self.unreadByVisitorTimestamp = unreadByVisitorTimestamp >= 0 ? unreadByVisitorTimestamp : 0
     }
     
     

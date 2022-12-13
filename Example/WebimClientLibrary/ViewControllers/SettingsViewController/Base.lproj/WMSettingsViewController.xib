@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,13 +17,17 @@
                 <outlet property="accountNameInfoButton" destination="q4y-jc-mRG" id="pT5-KO-XiY"/>
                 <outlet property="accountNameTextField" destination="tcc-FO-XDY" id="HLr-MT-ZcO"/>
                 <outlet property="accountNameView" destination="j8q-LS-EPH" id="QUV-7k-VLi"/>
+                <outlet property="accountNameViewHeightContsraint" destination="TAT-hf-rKP" id="Uzz-ay-2ug"/>
                 <outlet property="bottomConstraint" destination="J7Z-7C-LNs" id="aGo-5G-JkA"/>
                 <outlet property="locationCell" destination="WtH-rk-vva" id="GhY-ZW-vRJ"/>
                 <outlet property="locationHintLabel" destination="ohi-9E-ylR" id="1ai-pS-Z4V"/>
                 <outlet property="locationTextField" destination="0cS-HU-Nd5" id="GaR-Qb-pvd"/>
                 <outlet property="locationView" destination="w9h-7W-MjC" id="BwS-nh-z7h"/>
+                <outlet property="locationViewHeightContsraint" destination="amE-Qu-pUB" id="0t4-Ts-Vyk"/>
                 <outlet property="pageTitleCell" destination="wcH-Ut-1Pj" id="K8f-8a-nMB"/>
                 <outlet property="pageTitleTextField" destination="5kC-9w-Cf1" id="lzy-X7-5WT"/>
+                <outlet property="pageTitleView" destination="tEH-N5-IJX" id="M4g-gr-h2o"/>
+                <outlet property="pageTitleViewHeightContsraint" destination="lmO-sq-pqY" id="BdB-IW-gxc"/>
                 <outlet property="saveButton" destination="YPf-5C-0ns" id="pz0-PG-Yvx"/>
                 <outlet property="tableView" destination="uyK-Gj-BRo" id="To7-7g-sr7"/>
                 <outlet property="userDataJsonCell" destination="zmu-s1-vTs" id="dm5-J0-P62"/>
@@ -147,7 +151,7 @@
                             <constraint firstAttribute="width" constant="25" id="jI8-6w-DRX"/>
                         </constraints>
                         <color key="tintColor" red="0.023529411760000001" green="0.54117647059999996" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <state key="normal" backgroundImage="FileDownloadError"/>
+                        <state key="normal" backgroundImage="info-button"/>
                         <connections>
                             <action selector="showAlertForAccountName:" destination="-1" eventType="touchUpInside" id="S1H-ZK-0Gt"/>
                         </connections>
@@ -175,11 +179,11 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <point key="canvasLocation" x="-468.84057971014494" y="-186.16071428571428"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="wcH-Ut-1Pj" userLabel="Page title Cell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="69" id="wcH-Ut-1Pj" userLabel="Page title Cell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wcH-Ut-1Pj" id="F3J-ei-3rR">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Page title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bag-jA-HXf">
@@ -188,14 +192,14 @@
                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="iOS demo app" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5kC-9w-Cf1">
+                    <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="iOS app" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5kC-9w-Cf1">
                         <rect key="frame" x="16" y="33" width="288" height="23"/>
                         <accessibility key="accessibilityConfiguration" label="Page title text field"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tEH-N5-IJX">
-                        <rect key="frame" x="16" y="64" width="288" height="1"/>
+                        <rect key="frame" x="16" y="60" width="288" height="1"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="lmO-sq-pqY"/>
@@ -205,18 +209,18 @@
                 <constraints>
                     <constraint firstItem="5kC-9w-Cf1" firstAttribute="top" secondItem="bag-jA-HXf" secondAttribute="bottom" constant="8" id="0xm-oI-KPc"/>
                     <constraint firstItem="tEH-N5-IJX" firstAttribute="trailing" secondItem="bag-jA-HXf" secondAttribute="trailing" id="2sT-wc-nXE"/>
-                    <constraint firstAttribute="bottom" secondItem="tEH-N5-IJX" secondAttribute="bottom" constant="5" id="7nC-13-vqj"/>
                     <constraint firstItem="bag-jA-HXf" firstAttribute="leading" secondItem="F3J-ei-3rR" secondAttribute="leading" constant="16" id="TSt-Vr-c1E"/>
                     <constraint firstItem="tEH-N5-IJX" firstAttribute="leading" secondItem="bag-jA-HXf" secondAttribute="leading" id="bwY-sB-zrX"/>
                     <constraint firstItem="5kC-9w-Cf1" firstAttribute="leading" secondItem="bag-jA-HXf" secondAttribute="leading" id="gMw-tr-Rko"/>
                     <constraint firstItem="tEH-N5-IJX" firstAttribute="top" secondItem="5kC-9w-Cf1" secondAttribute="bottom" constant="8" id="on5-eC-OBD"/>
+                    <constraint firstAttribute="bottom" secondItem="tEH-N5-IJX" secondAttribute="bottom" constant="8" id="qVA-EW-oyK"/>
                     <constraint firstItem="5kC-9w-Cf1" firstAttribute="trailing" secondItem="bag-jA-HXf" secondAttribute="trailing" id="tz4-0R-cg7"/>
                     <constraint firstAttribute="trailing" secondItem="bag-jA-HXf" secondAttribute="trailing" constant="16" id="wTe-GB-Lav"/>
                     <constraint firstItem="bag-jA-HXf" firstAttribute="top" secondItem="F3J-ei-3rR" secondAttribute="top" constant="8" id="y8f-ps-Gcf"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <point key="canvasLocation" x="762" y="-60"/>
+            <point key="canvasLocation" x="760.86956521739137" y="-58.59375"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="229" id="zmu-s1-vTs" userLabel="Page title Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="229"/>
@@ -289,9 +293,6 @@
                     <state key="normal" title="Save">
                         <color key="titleColor" red="0.26418037129999999" green="0.26418037129999999" blue="0.26418037129999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
-                    <connections>
-                        <action selector="onBackButtonClickWithSender:" destination="-1" eventType="touchUpInside" id="RfT-lO-cku"/>
-                    </connections>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="uyK-Gj-BRo">
                     <rect key="frame" x="0.0" y="44" width="414" height="748"/>
@@ -317,7 +318,7 @@
         </view>
     </objects>
     <resources>
-        <image name="FileDownloadError" width="40" height="40"/>
+        <image name="info-button" width="40" height="40"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

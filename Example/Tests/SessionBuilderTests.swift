@@ -91,6 +91,80 @@ class SessionBuilderTests: XCTestCase {
             .set(isVisitorDataClearingEnabled: false)
             .set(webimLogger: self)
             .build())
+
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(multivisitorSection: "multivisitorSection")
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
+
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(multivisitorSection: "multivisitorSection")
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
+
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(onlineStatusRequestFrequencyInMillis: 1512)
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
+
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(onlineStatusRequestFrequencyInMillis: 1512)
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
+    }
+
+    func test_Build_WithStringPrechat() {
+        let prechat = "12:34\\n56:78"
+
+        XCTAssertNoThrow(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(prechat: prechat)
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
+    }
+
+    func test_Build_WrongPrechat() {
+        let firstPrechat = "erdtfyguhijokwadghavowhdahwbdaajwbdkjawb"
+        let secondPrechat = "FFAACC"
+        let thirdPrechat = "123"
+
+        XCTAssertThrowsError(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(prechat: firstPrechat)
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
+
+        XCTAssertThrowsError(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(prechat: secondPrechat)
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
+
+        XCTAssertThrowsError(try Webim
+            .newSessionBuilder()
+            .set(accountName: "account")
+            .set(location: "location")
+            .set(prechat: thirdPrechat)
+            .set(providedAuthorizationTokenStateListener: self)
+            .build())
     }
     
 }

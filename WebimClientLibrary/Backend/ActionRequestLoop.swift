@@ -82,18 +82,20 @@ class ActionRequestLoop: AbstractRequestLoop {
         self.authorizationData = authorizationData
     }
     
-    func enqueue(request: WebimRequest) {
+    func enqueue(request: WebimRequest, withAuthData: Bool = true) {
         let operationQueue = request.getCompletionHandler() != nil ? historyRequestOperationQueue : actionOperationQueue
         operationQueue?.addOperation { [weak self] in
             guard let `self` = self else {
                 return
             }
             
-            let urlRequest = self.createUrlRequest(request: request)
+            let urlRequest = self.createUrlRequest(request: request, withAuthData: withAuthData)
             
             do {
                 guard let urlRequest = urlRequest else {
-                    WebimInternalLogger.shared.log(entry: "Unwrapping url request failure in ActionRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Unwrapping url request failure in ActionRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 let data = try self.perform(request: urlRequest)
@@ -117,15 +119,23 @@ class ActionRequestLoop: AbstractRequestLoop {
                     self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
                         self.parseWebimRequest(request: request, data: data, dataJSON: dataJSON)
                     })
+                } else if let _ = try? JSONSerialization.jsonObject(with: self.prepareServerSideData(rawData: data),options: []) as? [String : Any] {
+                    self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                        self.executeServerSideSettingsRequest(request: request, data: data)
+                    })
                 } else {
-                    WebimInternalLogger.shared.log(entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
-                        verbosityLevel: .warning)
+                    WebimInternalLogger.shared.log(
+                        entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
+                        verbosityLevel: .warning,
+                        logType: .networkRequest)
                 }
             } catch let sendFileError as SendFileError {
                 // SendFileErrors are generated from HTTP code.
                 if let sendFileCompletionHandler = request.getSendFileCompletionHandler() {
                     guard let messageID = request.getMessageID() else {
-                        WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
+                        WebimInternalLogger.shared.log(
+                            entry: "Request has not message ID in ActionRequestLoop.\(#function)",
+                            logType: .networkRequest)
                         return
                     }
                     self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
@@ -137,13 +147,15 @@ class ActionRequestLoop: AbstractRequestLoop {
             } catch let unknownError as UnknownError {
                 self.handleRequestLoop(error: unknownError)
             } catch {
-                WebimInternalLogger.shared.log(entry: "Request failed with unknown error: \(request.getBaseURLString()).",
-                    verbosityLevel: .warning)
+                WebimInternalLogger.shared.log(
+                    entry: "Request failed with unknown error: \(request.getBaseURLString()).",
+                    verbosityLevel: .warning,
+                    logType: .networkRequest)
             }
         }
     }
     
-    private func createUrlRequest(request: WebimRequest) -> URLRequest? {
+    private func createUrlRequest(request: WebimRequest, withAuthData: Bool) -> URLRequest? {
         if self.authorizationData == nil {
             do {
                 try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil) // wtf
@@ -153,7 +165,8 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
         
         guard let usedAuthorizationData = self.authorizationData else {
-            WebimInternalLogger.shared.log(entry: "Authorization Data is nil in ActionRequestLoop.\(#function)")
+            WebimInternalLogger.shared.log(
+                entry: "Authorization Data is nil in ActionRequestLoop.\(#function)")
             return nil
         }
         
@@ -162,8 +175,10 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
         
         var parameterDictionary = request.getPrimaryData()
-        parameterDictionary[Parameter.pageID.rawValue] = usedAuthorizationData.getPageID()
-        parameterDictionary[Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
+        if withAuthData {
+            parameterDictionary[Parameter.pageID.rawValue] = usedAuthorizationData.getPageID()
+            parameterDictionary[Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
+        }
         let parametersString = parameterDictionary.stringFromHTTPParameters()
         
         var urlRequest: URLRequest?
@@ -310,8 +325,10 @@ class ActionRequestLoop: AbstractRequestLoop {
                 do {
                     try completionHandler(data)
                 } catch {
-                    WebimInternalLogger.shared.log(entry: "Error executing search messages callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                        verbosityLevel: .warning)
+                    WebimInternalLogger.shared.log(
+                        entry: "Error executing search messages callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                        verbosityLevel: .warning,
+                        logType: .networkRequest)
                 }
             })
         }
@@ -321,8 +338,10 @@ class ActionRequestLoop: AbstractRequestLoop {
                 do {
                     try completionHandler(data)
                 } catch {
-                    WebimInternalLogger.shared.log(entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                        verbosityLevel: .warning)
+                    WebimInternalLogger.shared.log(
+                        entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                        verbosityLevel: .warning,
+                        logType: .networkRequest)
                 }
                 
             })
@@ -333,8 +352,10 @@ class ActionRequestLoop: AbstractRequestLoop {
                 do {
                     try completionHandler(data)
                 } catch {
-                    WebimInternalLogger.shared.log(entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                        verbosityLevel: .warning)
+                    WebimInternalLogger.shared.log(
+                        entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                        verbosityLevel: .warning,
+                        logType: .networkRequest)
                 }
                 
             })
@@ -345,15 +366,50 @@ class ActionRequestLoop: AbstractRequestLoop {
                 do {
                     try completionHandler(data)
                 } catch {
-                    WebimInternalLogger.shared.log(entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
-                        verbosityLevel: .warning)
+                    WebimInternalLogger.shared.log(
+                        entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                        verbosityLevel: .warning,
+                        logType: .networkRequest)
                 }
                 
             })
         }
         
+        if let completionHandler = request.getAutocompleteCompletionHandler() {
+            if let suggestions = dataJSON["suggestions"] as? [[String: Any?]] {
+                var suggestuionTexts = [String]()
+                for suggestion in suggestions {
+                    if let text = suggestion["text"] as? String {
+                        suggestuionTexts.append(text)
+                    }
+                }
+                completionHandler.onSuccess(text: suggestuionTexts)
+            } else {
+                completionHandler.onFailure(error: .hintApiInvalid)
+            }
+        }
+        
         self.handleClientCompletionHandlerOf(request: request, dataJSON: dataJSON[AbstractRequestLoop.ResponseFields.data.rawValue] as? [String : Any?])
     }
+
+    private func executeServerSideSettingsRequest(request: WebimRequest,
+                                                  data: Data) {
+        if let completionHandler = request.getServerSideCompletionHandler() {
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                do {
+                    let webimServerSideSettings = try self.decodeToServerSideSettings(data: data)
+                    completionHandler.onSuccess(webimServerSideSettings: webimServerSideSettings)
+                } catch {
+                    completionHandler.onFailure()
+                    WebimInternalLogger.shared.log(
+                        entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                        verbosityLevel: .warning,
+                        logType: .networkRequest)
+                }
+            })
+        }
+    }
+
     
     // MARK: Private methods
     
@@ -418,7 +474,9 @@ class ActionRequestLoop: AbstractRequestLoop {
         if let dataMessageCompletionHandler = webimRequest.getDataMessageCompletionHandler() {
             completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 guard let messageID = webimRequest.getMessageID() else {
-                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 dataMessageCompletionHandler.onFailure(messageID: messageID,
@@ -472,7 +530,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                 }
                 
                 guard let messageID = webimRequest.getMessageID() else {
-                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 editMessageCompletionHandler.onFailure(messageID: messageID,
@@ -501,7 +561,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                 }
                 
                 guard let messageID = webimRequest.getMessageID() else {
-                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 deleteMessageCompletionHandler.onFailure(messageID: messageID,
@@ -537,7 +599,9 @@ class ActionRequestLoop: AbstractRequestLoop {
             }
                 
             guard let messageID = webimRequest.getMessageID() else {
-                WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)",
+                    logType: .networkRequest)
                 return
             }
             sendFileCompletionHandler?.onFailure(messageID: messageID,
@@ -625,7 +689,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                 }
                 
                 guard let messageID = webimRequest.getMessageID() else {
-                    WebimInternalLogger.shared.log(entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)")
+                    WebimInternalLogger.shared.log(
+                        entry: "Webim Request has not message ID in ActionRequestLoop.\(#function)",
+                        logType: .networkRequest)
                     return
                 }
                 keyboardResponseCompletionHandler.onFailure(messageID: messageID, error: keyboardResponseError)
@@ -727,8 +793,10 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
-        WebimInternalLogger.shared.log(entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
-            verbosityLevel: .warning)
+        WebimInternalLogger.shared.log(
+            entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
+            verbosityLevel: .warning,
+            logType: .networkRequest)
     }
     
     private func handleClientCompletionHandlerOf(request: WebimRequest, dataJSON: [String: Any?]?) {
@@ -753,7 +821,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                     request.getUploadFileToServerCompletionHandler()?.onSuccess(id: messageID, uploadedFile: self.getUploadedFileFrom(dataJSON: dataJSON))
                 }
             } else {
-                WebimInternalLogger.shared.log(entry: "Request has not message ID in ActionRequestLoop.\(#function)")
+                WebimInternalLogger.shared.log(
+                    entry: "Request has not message ID in ActionRequestLoop.\(#function)",
+                    logType: .networkRequest)
             }
         })
     }

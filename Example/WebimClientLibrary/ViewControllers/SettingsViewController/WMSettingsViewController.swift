@@ -51,11 +51,30 @@ class WMSettingsViewController: UIViewController {
     @IBOutlet var pageTitleCell: UITableViewCell!
     @IBOutlet var accountFooterCell: UITableViewCell!
     @IBOutlet var userDataJsonCell: UITableViewCell!
+
+    //constraints
+    @IBOutlet var accountNameViewHeightContsraint: NSLayoutConstraint!
+    @IBOutlet var locationViewHeightContsraint: NSLayoutConstraint!
+    @IBOutlet var pageTitleViewHeightContsraint: NSLayoutConstraint!
     
     // MARK: - Private Properties
     var rotationDuration: TimeInterval = 0.0
     
     lazy var alertDialogHandler = UIAlertHandler(delegate: self)
+    lazy var navigationControllerManager = NavigationControllerManager()
+
+    fileprivate lazy var validCharactersForTextfields: Set<Character> = [
+        "A", "a", "B", "b", "C", "c", "D", "d",
+        "E", "e", "F", "f", "G", "g", "H", "h",
+        "I", "i", "J", "j", "K", "k", "L", "l",
+        "M", "m", "N", "n", "O", "o", "P", "p",
+        "Q", "q", "R", "r", "S", "s", "T", "t",
+        "U", "u", "V", "v", "W", "w", "X", "x",
+        "Y", "y", "Z", "z",
+        "1", "2", "3", "4", "5", "6", "7", "8",
+        "9", "0",
+        ":", "/", ".", "-", "_"
+    ]
     
     // MARK: - Outlets
     @IBOutlet var saveButton: UIButton!
@@ -74,9 +93,7 @@ class WMSettingsViewController: UIViewController {
         locationTextField.placeholder = Settings.shared.location
         
         setupLabels()
-        setupTextFields()
-        
-        setupNavigationItem()
+        setupTextFieldsDelegate()
         setupSaveButton()
         
         hideKeyboardOnTap()
@@ -91,6 +108,9 @@ class WMSettingsViewController: UIViewController {
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil
         )
+
+        setupNavigationBar()
+        setupNavigationItem()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -105,6 +125,11 @@ class WMSettingsViewController: UIViewController {
                 startViewController.startChatButton.isHidden = false
             }
         }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetNavigationControllerManager()
     }
     
     override func viewWillTransition(
@@ -146,7 +171,7 @@ class WMSettingsViewController: UIViewController {
         
         if textField == pageTitleTextField {
             if let text = textField.text?.trimWhitespacesIn(), text.isEmpty {
-                textField.text = "iOS demo app"
+                textField.text = "iOS app"
             }
         }
     }
@@ -160,9 +185,17 @@ class WMSettingsViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction @objc
+    @objc
     private func onBackButtonClick(sender: UIButton) {
-        if settingsValidated() {
+        let isAccountNameValid = validateTextField(accountNameTextField)
+        let islocationValid = validateTextField(locationTextField)
+
+        if isAccountNameValid &&
+            islocationValid {
+            saveSettings(accountName: accountNameTextField.text ?? "",
+                         location: locationTextField.text ?? "",
+                         pageTitle: pageTitleTextField.text,
+                         userDataJson: userDataJsonTextView.text)
             navigationController?.popViewController(animated: true)
         }
     }
@@ -175,65 +208,78 @@ class WMSettingsViewController: UIViewController {
                     as? NSValue
             else { return }
 
-        var animationDuration: TimeInterval = keyboardDurationEmergenceAnimation
-        var keyboardHeight: CGFloat = view.frame.maxY - keyboardFrame.cgRectValue.minY
-        
-        if animationDuration == 0 {
-            if keyboardHeight == 0 {
-                return
+        let animationDuration: TimeInterval = keyboardDurationEmergenceAnimation
+        let keyboardHeight: CGFloat = view.frame.maxY - keyboardFrame.cgRectValue.minY
+
+        keyboardWillStartAnimate(animationDuration: animationDuration, keyboardHeight: keyboardHeight)
+    }
+    
+    private func validateTextField(_ textField: UITextField) -> Bool {
+        if let currentText = textField.text, !currentText.isEmpty {
+            if !isTextContainsInvalidChar(currentText) {
+                updateHint(
+                    for: textField,
+                    hintState: .common)
+                return true
+            } else {
+                updateHint(
+                    for: textField,
+                    hintLabelTextType: .invalidChar,
+                    hintState: .error)
+                return false
             }
-            keyboardHeight = 0
-            animationDuration = rotationDuration
+        } else {
+            updateHint(
+                for: textField,
+                hintLabelTextType: .empty,
+                hintState: .error)
+            return false
         }
-        
+    }
+
+    private func isTextContainsInvalidChar(_ currentText: String) -> Bool {
+        for currentChar in currentText {
+            if !validCharactersForTextfields.contains(currentChar) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private func updateHint(
+        for textField: UITextField,
+        hintLabelTextType type: HintLabelTextType? = nil,
+        hintState: TextFieldHintState
+    ) {
+        updateHintText(type: type, for: textField)
+
         UIView.animate(
-            withDuration: animationDuration,
+            withDuration: 0.2,
             animations: {
-                if keyboardHeight > 0 {
-                    // Keyboard is visible
-                    self.bottomConstraint.constant = 8.0 + keyboardHeight
-                } else {
-                    // Keyboard is hidden
-                    self.bottomConstraint.constant = 8.0
-                }
-                
-                self.view.layoutIfNeeded()
-                if keyboardHeight > 0 && self.userDataJsonTextView.isFirstResponder {
-                    self.scrollToBottom(animated: false)
-                }
+                self.changeHintState(textField: textField, to: hintState)
             }
         )
     }
-    
-    private func settingsValidated() -> Bool {
-        guard let accountName = accountNameTextField.text?
-            .trimmingCharacters(in: .whitespacesAndNewlines),
-            !accountName.isEmpty else {
-                alertDialogHandler.showSettingsAlertDialog(
-                    withMessage: "Account name can't be empty".localized
-                )
-                return false
+
+    private func updateHintText(type: HintLabelTextType?, for textField: UITextField) {
+        guard let type = type else {
+            return
         }
-        guard let location = locationTextField.text?
-            .trimmingCharacters(in: .whitespacesAndNewlines),
-            !location.isEmpty else {
-                alertDialogHandler.showSettingsAlertDialog(
-                    withMessage: "Location can't be empty".localized
-                )
-                return false
+        if textField == accountNameTextField {
+            switch type {
+            case .empty:
+                accountNameHintLabel.text = "* Account name can't be empty.".localized
+            case .invalidChar:
+                accountNameHintLabel.text = "Account name has invalid characters".localized
+            }
+        } else if textField == locationTextField {
+            switch type {
+            case .empty:
+                locationHintLabel.text = "* Location can't be empty.".localized
+            case .invalidChar:
+                locationHintLabel.text = "Location has invalid characters".localized
+            }
         }
-        if !accountName.validateURLString() {
-            alertDialogHandler.showSettingsAlertDialog(
-                withMessage: "Account name has invalid characters".localized
-            )
-            return false
-        }
-        saveSettings(accountName: accountName,
-                     location: location,
-                     pageTitle: pageTitleTextField.text,
-                     userDataJson: userDataJsonTextView.text)
-        
-        return true
     }
     
     private func saveSettings(
@@ -245,8 +291,7 @@ class WMSettingsViewController: UIViewController {
         Settings.shared.accountName = accountName
         Settings.shared.location = location
         Settings.shared.userDataJson = userDataJson ?? ""
-        if let pageTitle = pageTitle,
-            !pageTitle.isEmpty {
+        if let pageTitle = pageTitle {
             Settings.shared.pageTitle = pageTitle
         }
         Settings.shared.save()
@@ -256,8 +301,51 @@ class WMSettingsViewController: UIViewController {
         saveButton.layer.borderWidth = 0
         saveButton.layer.borderColor = saveButtonBorderColour
         saveButton.layer.cornerRadius = 8.0
+        setupSaveButtonGesture()
     }
-    
+
+    private func setupSaveButtonGesture() {
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(onBackButtonClick)
+        )
+        saveButton.addGestureRecognizer(tapGesture)
+    }
+
+    private func resetNavigationControllerManager() {
+        navigationControllerManager.reset()
+        if #available(iOS 11.0, *) {
+            additionalSafeAreaInsets = .zero
+        }
+    }
+
+    private func setupNavigationBar() {
+        navigationControllerManager.set(isNavigationBarVisible: true)
+        navigationControllerManager.update(with: .defaultStyle)
+        navigationControllerManager.setAdditionalHeight()
+        navigationControllerManager.removeOriginBorder()
+        configureNavigationAdditionalView()
+    }
+
+    private func configureNavigationAdditionalView() {
+        let label = UILabel()
+        let additionalView = navigationControllerManager.getAdditionalView()
+        additionalView.addSubview(label)
+        setupTitleLabelView(label: label)
+        label.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+
+    private func setupTitleLabelView(label: UILabel) {
+        label.textColor = versionLabelFontColor
+        label.font = UIFont.systemFont(ofSize: 12.69, weight: .regular)
+        label.textAlignment = .center
+        if let buildVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
+           let releaseVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            label.text = "v. \(releaseVersion) (\(buildVersion))"
+        }
+    }
 }
 
 extension WMSettingsViewController: UITextFieldDelegate {
@@ -266,43 +354,76 @@ extension WMSettingsViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        let newText = self.accountNameTextField.text ?? ""
-        let filtred = newText.filter { !"|{}%^\\<>&?*".contains($0) }
-        if newText != filtred {
-            self.accountNameTextField.text = filtred
-        }
-        showHint(textField)
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        changeHintState(textField: textField, to: .editing)
     }
-    
-    func showHint(_ textField: UITextField) {
-        var hintLabel: UILabel?
-        var editView: UIView?
-        
+
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        changeHintState(textField: textField, to: .common)
+    }
+
+    private func changeHintState(textField: UITextField, to type: TextFieldHintState) {
+        var currentView: UIView?
+        var currentHintLabel: UILabel?
+        var currentHeightConstraint: NSLayoutConstraint?
         if textField == accountNameTextField {
-            editView = accountNameView
-            hintLabel = accountNameHintLabel
+            currentView = accountNameView
+            currentHintLabel = accountNameHintLabel
+            currentHeightConstraint = accountNameViewHeightContsraint
         } else if textField == locationTextField {
-            editView = locationView
-            hintLabel = locationHintLabel
-        } else {
-            return
+            currentView = locationView
+            currentHintLabel = locationHintLabel
+            currentHeightConstraint = locationViewHeightContsraint
+        } else if textField == pageTitleTextField {
+            currentView = pageTitleView
+            currentHeightConstraint = pageTitleViewHeightContsraint
         }
-        
+        switch type {
+        case .common:
+            currentView?.backgroundColor = editViewBackgroundColourDefault
+            currentHintLabel?.alpha = 0.0
+            currentHeightConstraint?.constant = 1
+        case .editing:
+            currentView?.backgroundColor = editViewBackgroundColourEditing
+            currentHintLabel?.alpha = 0.0
+            currentHeightConstraint?.constant = 2
+        case .error:
+            currentView?.backgroundColor = editViewBackgroundColourError
+            currentHintLabel?.alpha = 1.0
+            currentHeightConstraint?.constant = 2
+        }
+    }
+
+    private func keyboardWillStartAnimate(animationDuration: TimeInterval, keyboardHeight: CGFloat) {
         UIView.animate(
-            withDuration: 0.2,
-            animations: {
-                if let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-                    text.isEmpty {
-                    hintLabel?.alpha = 1.0
-                    editView?.backgroundColor = editViewBackgroundColourError
+            withDuration: animationDuration,
+            animations: { [weak self] in
+                guard let self = self else { return }
+                if keyboardHeight > 0 {
+                    // Keyboard is visible
+                    self.bottomConstraint.constant = 8.0 + keyboardHeight
                 } else {
-                    hintLabel?.alpha = 0.0
-                    editView?.backgroundColor = editViewBackgroundColourDefault
+                    // Keyboard is hidden
+                    self.bottomConstraint.constant = 8.0
+                }
+
+                self.view.layoutIfNeeded()
+                if keyboardHeight > 0 && self.userDataJsonTextView.isFirstResponder {
+                    self.scrollToBottom(animated: false)
                 }
             }
         )
     }
-    
+}
+
+enum HintLabelTextType {
+    case empty
+    case invalidChar
+}
+
+enum TextFieldHintState {
+    case common
+    case editing
+    case error
 }

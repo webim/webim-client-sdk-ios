@@ -44,9 +44,11 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     var selectedMessage: Message?
     var scrollButtonIsHidden = true
     var surveyCounter = -1
+    var shouldAdjustForKeyboard: Bool = false
+    var canReloadRows = false
     // MARK: - Private properties
     
-    private var alreadyRatedOperators = [String: Bool]()
+    var alreadyRatedOperators = [String: Bool]()
     var cellHeights = [IndexPath: CGFloat]()
     private var overlayWindow: UIWindow?
     private var visibleRows = [IndexPath]()
@@ -56,7 +58,14 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     var surveyCommentViewController: SurveyCommentViewController?
     var surveyRadioButtonViewController: SurveyRadioButtonViewController?
     
-    var chatMessages = [Message]()
+    var chatMessages = [Message]() {
+        willSet {
+            if newValue.count != chatMessages.count {
+                canReloadRows = false
+            }
+        }
+    }
+    
     var searchMessages = [Message]()
     var showSearchResult = false
     
@@ -65,6 +74,10 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     var delayedSurvayQuestion: SurveyQuestion?
     
     private lazy var filePicker = FilePicker(presentationController: self, delegate: self)
+
+    let webimServerSideSettingsManager = WebimServerSideSettingsManager()
+    lazy var messageCounter = MessageCounter(delegate: self)
+    lazy var navigationControllerManager = NavigationControllerManager()
     
     // MARK: - Constraints
     let buttonWidthHeight: CGFloat = 20
@@ -76,9 +89,13 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     @IBOutlet var toolbarBackgroundView: WMToolbarBackgroundView!
     @IBOutlet var toolbarView: WMToolbarView!
     @IBOutlet var messagesTableViewHeightConstraint: NSLayoutConstraint!
+
+    // MARK: - Constants
+    lazy var keychainKeyRatedOperators = "alreadyRatedOperators"
+
     // MARK: - Subviews
     // Scroll button
-    lazy var scrollButton: UIButton = createUIButton(type: .system)
+    lazy var scrollButtonView: ScrollButtonView = ScrollButtonView.loadXibView()
     
     // Top bar (top navigation bar)
     lazy var titleViewOperatorAvatarImageView: UIImageView = createUIImageView(contentMode: .scaleAspectFit)
@@ -88,17 +105,20 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     var titleViewOperatorTitle: String?
     
     lazy var titleViewTypingIndicator: TypingIndicator = createTypingIndicator()
+
+    lazy var thanksView = WMThanksAlertView.loadXibView()
+    lazy var connectionErrorView = ConnectionErrorView.loadXibView()
+    lazy var chatTestView = ChatTestView.loadXibView()
     
-    var connectionErrorView: UIView!
-    var thanksView: WMThanksAlertView!
-    var chatTestView = ChatTestView.loadXibView()
+
+    // HelpersViews
+    weak var cellWithSelection: WMMessageTableCell?
     
-    var didLoad = false
     // Bottom bar
     lazy var fileButton: UIButton = createCustomUIButton(type: .system)
     
     override var inputAccessoryView: UIView? {
-        return toolbarBackgroundView
+        return presentedViewController?.isBeingDismissed != false ? toolbarBackgroundView : nil
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -110,7 +130,26 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     }
     
     func showToolbarWithHeight(_ height: CGFloat) {}
+
     // MARK: - View Life Cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureNetworkErrorView()
+        configureThanksView()
+        configureToolbarView()
+        setupScrollButton()
+        setupAlreadyRatedOperators()
+        setupWebimSession()
+        addTapGesture()
+
+        setupRefreshControl()
+
+        if true {
+            setupTestView()
+        }
+        configureNotifications()
+        setupServerSideSettingsManager()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -118,35 +157,38 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
         WebimServiceController.shared.departmentListHandlerDelegate = self
         WebimServiceController.shared.fatalErrorHandlerDelegate = self
         updateCurrentOperatorInfo(to: WebimServiceController.currentSession.getCurrentOperator())
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         setupNavigationBar()
-        configureThanksView()
-        configureToolbarView()
-        setupScrollButton()
-        setupWebimSession()
-        self.addDismissKeyboardGesture()
-        
-        setupRefreshControl()
-        
-        if true {
-            setupTestView()
-        }
-        configureNotifications()
+        setupNavigationControllerManager()
+        updateNavigationBar(AppDelegate.shared.isApplicationConnected)
+        shouldAdjustForKeyboard = true
+        showDepartmensIfNeeded()
     }
-    override func viewDidLayoutSubviews() {
-        if !didLoad {
-            recountTableSize()
-        }
-        didLoad = true
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        chatTableView.scrollToRowSafe(at: IndexPath(row: messageCounter.lastReadMessageIndex, section: 0),
+                                      at: .bottom,
+                                      animated: true)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         WMTestManager.testDialogModeEnabled = false
         updateTestModeState()
+        WMKeychainWrapper.standard.setDictionary(
+            alreadyRatedOperators, forKey: keychainKeyRatedOperators)
+        shouldAdjustForKeyboard = false
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetNavigationControllerManager()
+    }
+
+    @available(iOS 11, *)
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        recountNetworkErrorViewFrame()
     }
     
     deinit {
@@ -188,6 +230,12 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     @objc func dismissViewKeyboard() {
         self.toolbarView.messageView.resignMessageViewFirstResponder()
     }
+
+    @objc func clearTextViewSelection() {
+        guard let cellWithSelection = cellWithSelection else { return }
+        cellWithSelection.resignTextViewFirstResponder()
+        self.cellWithSelection = nil
+    }
     
     // MARK: - Private methods
     
@@ -200,7 +248,9 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     
     @objc
     func titleViewTapAction(_ sender: UITapGestureRecognizer) {
-        self.showRateOperatorDialog()
+        if isCurrentOperatorRated() == false {
+            self.showRateOperatorDialog()
+        }
     }
     
     @objc
@@ -209,20 +259,14 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
             if typing {
                 let offsetX = self.titleViewTypingIndicator.frame.width / 2
                 self.titleViewTypingIndicator.addAllAnimations()
-                self.titleViewOperatorStatusLabel.snp.remakeConstraints { (make) -> Void in
-                    make.bottom.equalToSuperview()
-                    make.centerX.equalToSuperview()
-                        .inset(offsetX)
-                    make.top.equalTo(self.titleViewOperatorNameLabel.snp.bottom)
-                        .offset(2)
+                self.titleViewOperatorStatusLabel.snp.remakeConstraints { make in
+                    make.bottom.top.equalToSuperview()
+                    make.centerX.equalToSuperview().inset(offsetX)
                 }
             } else {
                 self.titleViewTypingIndicator.removeAllAnimations()
-                self.titleViewOperatorStatusLabel.snp.remakeConstraints { (make) -> Void in
-                    make.bottom.equalToSuperview()
-                    make.centerX.equalToSuperview()
-                    make.top.equalTo(self.titleViewOperatorNameLabel.snp.bottom)
-                        .offset(2)
+                self.titleViewOperatorStatusLabel.snp.remakeConstraints { make in
+                    make.edges.equalToSuperview()
                 }
             }
             self.titleViewOperatorStatusLabel.text = operatorStatus
@@ -235,7 +279,7 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
         DispatchQueue.main.async {
             self.titleViewOperatorNameLabel.text = operatorName
             
-            if operatorName == "Webim demo-chat".localized {
+            if operatorName == "Webim chat".localized {
                 self.titleViewOperatorStatusLabel.text = "No agent".localized
             } else {
                 self.titleViewOperatorStatusLabel.text = "Online".localized
@@ -308,7 +352,20 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     func scrollTableView(_ sender: UIButton) {
         self.scrollToBottom(animated: true)
     }
-    
+
+    @objc
+    func scrollToUnreadMessage(_ sender: UIButton) {
+        let lastReadMessageIndexPath = IndexPath(row: messageCounter.lastReadMessageIndex, section: 0)
+        let firstUnreadMessageIndexPath = IndexPath(row: messageCounter.firstUnreadMessageIndex(), section: 0)
+        if messageCounter.hasNewMessages() && lastReadMessageIndexPath != lastVisibleCellIndexPath() {
+            chatTableView.scrollToRowSafe(at: firstUnreadMessageIndexPath,
+                                          at: .bottom,
+                                          animated: true)
+        } else {
+            self.scrollToBottom(animated: true)
+        }
+    }
+
     private func hidePlaceholderIfVisible() {
 //        if !(self.textInputTextViewPlaceholderLabel.alpha == 0.0) {
 //            UIView.animate(withDuration: 0.1) {
@@ -319,12 +376,9 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     
     public func setConnectionStatus(connected: Bool) {
         DispatchQueue.main.async {
-            if connected {
-                self.navigationController?.setTopBar(isEnabled: false, isTranslucent: false, barTintColor: navigationBarTintColour, backgroundColor: navigationBarBarTintColour)
-            } else {
-                self.navigationController?.setTopBar(isEnabled: false, isTranslucent: false, barTintColor: navigationBarNoConnectionColour, backgroundColor: navigationBarNoConnectionColour)
-            }
-            self.connectionErrorView?.alpha = connected ? 0 : 1
+            AppDelegate.shared.isApplicationConnected = connected
+            self.updateNavigationBar(connected)
+            self.connectionErrorView.alpha = connected ? 0 : 1
         }
     }
     
@@ -337,7 +391,6 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     }
     
     func sendImage(image: UIImage, imageURL: URL?) {
-        dismissViewKeyboard()
         
         var imageData = Data()
         var imageName = String()
@@ -385,25 +438,27 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
             mimeType: mimeType.value,
             completionHandler: self
         )
+        scrollAfterSendFile()
     }
     
+    
     func sendFile(file: Data, fileURL: URL?) {
-        if let fileURL = fileURL {
-            WebimServiceController.currentSession.send(
-                file: file,
-                fileName: fileURL.lastPathComponent,
-                mimeType: MimeType(url: fileURL as URL).value,
-                completionHandler: self
-            )
-        } else {
-            let url = URL(fileURLWithPath: "document.pdf")
-            WebimServiceController.currentSession.send(
-                file: file,
-                fileName: url.lastPathComponent,
-                mimeType: MimeType(url: url).value,
-                completionHandler: self
-            )
+        var url = fileURL ?? URL(fileURLWithPath: "document.pdf")
+        WebimServiceController.currentSession.send(
+            file: file,
+            fileName: url.lastPathComponent,
+            mimeType: MimeType(url: url).value,
+            completionHandler: self
+        )
+    }
+    
+    func scrollAfterSendFile() {
+        var safeAreaInsets = 0.0
+        if #available(iOS 11.0, *) {
+            safeAreaInsets = view.safeAreaInsets.bottom
         }
+        self.scrollToBottom(animated: true)
+        self.chatTableView.contentInset.bottom = safeAreaInsets + toolbarBackgroundView.frame.height
     }
     
     func replyToMessage(_ message: String) {
@@ -471,22 +526,23 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
         let indexPath = IndexPath(row: 0, section: 0)
         self.chatTableView?.scrollToRowSafe(at: indexPath, at: .top, animated: animated)
     }
-    
-    // MARK: - Private methods
-    
-    private func reloadTableWithNewData() {
+
+    func reloadTableWithNewData() {
         self.chatTableView?.reloadData()
-        WebimServiceController.currentSession.setChatRead()
+        canReloadRows = true
     }
-    
+
+    // MARK: - Private methods
     @objc
     func requestMessages() {
         WebimServiceController.currentSession.getNextMessages { [weak self] messages in
             DispatchQueue.main.async {
                 self?.chatMessages.insert(contentsOf: messages, at: 0)
+                self?.messageCounter.increaseLastReadMessageIndex(with: messages.count)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self?.reloadTableWithNewData()
+                self?.chatTableView.layoutIfNeeded()
                 if self?.scrollToBottom == true {
                     self?.scrollToBottom(animated: false)
                     self?.scrollToBottom = false
@@ -524,7 +580,7 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
         }
     }
     
-    func shoowPopover(cell: UITableViewCell, message: Message, cellHeight: CGFloat) {
+    func showPopover(cell: UITableViewCell, message: Message, cellHeight: CGFloat) {
         
         let viewController = PopupActionsViewController()
         self.popupActionsViewController = viewController
@@ -544,23 +600,18 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
         } else if message.isVisitorType() {
             viewController.originalCellAlignment = .trailing
         }
-        
-        if message.canBeReplied() {
-            viewController.actions.append(.reply)
+
+        if webimServerSideSettingsManager.isGlobalReplyEnabled() && message.canBeReplied() {
+             viewController.actions.append(.reply)
         }
         
         if message.canBeCopied() {
             viewController.actions.append(.copy)
         }
-        
-        if message.canBeEdited() && message.getData()?.getAttachment() == nil {
-            viewController.actions.append(.edit)
-            
-            // If image hide show edit action
-            if let contentType = message.getData()?.getAttachment()?.getFileInfo().getContentType() {
-                if MimeType.isImage(contentType: contentType) {
-                    viewController.actions.removeLast()
-                }
+
+        if webimServerSideSettingsManager.isMessageEditEnabled() && message.canBeEdited() {
+            if message.getData()?.getAttachment() == nil {
+                viewController.actions.append(.edit)
             }
             viewController.actions.append(.delete)
         }
@@ -624,8 +675,9 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
         WebimServiceController.currentSession.set(currentOperatorChangeListener: self)
         WebimServiceController.currentSession.set(chatStateListener: self)
         WebimServiceController.currentSession.set(surveyListener: self)
+        WebimServiceController.currentSession.set(unreadByVisitorMessageCountChangeListener: messageCounter)
         WebimServiceController.currentSession.getLastMessages { [weak self] messages in
-            
+
             DispatchQueue.main.async {
                 self?.chatMessages.insert(contentsOf: messages, at: 0)
                 self?.reloadTableWithNewData()
@@ -639,18 +691,40 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
     }
     
     func updateCurrentOperatorInfo(to newOperator: Operator?) {
-        if let currentOperator = newOperator {
+
+        if let currentOperator = newOperator, isCurrentOperatorRated() == false {
+
             let operatorURLString = currentOperator.getAvatarURL()?.absoluteString ?? OperatorAvatar.placeholder.rawValue
             updateOperatorInfo(operatorName: currentOperator.getName(),
                                operatorAvatarURL: operatorURLString,
                                titleViewOperatorInfo: currentOperator.getInfo() ?? "",
                                titleViewOperatorTitle: currentOperator.getTitle() ?? "")
-            
         } else {
-            updateOperatorInfo(operatorName: "Webim demo-chat".localized,
+            updateOperatorInfo(operatorName: "Webim chat".localized,
                                operatorAvatarURL: OperatorAvatar.empty.rawValue,
                                titleViewOperatorInfo: "",
                                titleViewOperatorTitle: "")
+        }
+    }
+
+    func updateNavigationBar(_ isConnected: Bool) {
+        guard navigationController?.topViewController is ChatViewController else { return }
+        navigationControllerManager.update(with: isConnected ? .connected : .disconnected, removeOriginBorder: true)
+    }
+
+    private func resetNavigationControllerManager() {
+        if #available(iOS 11.0, *) {
+            additionalSafeAreaInsets = .zero
+        }
+        navigationControllerManager.reset()
+    }
+
+    private func showDepartmensIfNeeded() {
+        if let departmentList = WebimServiceController.currentSession.departmentList(),
+           WebimServiceController.currentSession.shouldShowDepartmentSelection() {
+            showDepartmentsList(departmentList) { departmentKey in
+                WebimServiceController.currentSession.startChat(departmentKey: departmentKey, message: nil)
+            }
         }
     }
     
@@ -659,86 +733,80 @@ class ChatViewController: UIViewController, WMToolbarBackgroundViewDelegate, Dep
         alertDialogHandler.showDepartmentListDialog(
             withDepartmentList: departaments,
             action: action,
-            senderButton: self.toolbarView.messageView.sendButton,
+            sourceView: toolbarView,
             cancelAction: { }
         )
     }
+
+    func updateScrollButtonConstraints(_ inset: CGFloat) {
+        scrollButtonView.snp.updateConstraints { make in
+            make.bottom.equalToSuperview().inset(inset)
+        }
+        scrollButtonView.layoutIfNeeded()
+    }
+
+    private func updateScrollButtonView() {
+        messageCounter.set(lastReadMessageIndex: lastVisibleCellIndexPath()?.row ?? 0)
+        let state: ScrollButtonViewState = messageCounter.hasNewMessages() ?
+            .newMessage : isLastCellVisible() || chatMessages.isEmpty ? .hidden : .visible
+        scrollButtonView.setScrollButtonViewState(state)
+    }
 }
 
-// MARK: - FilePickerDelegate methods
-extension ChatViewController: FilePickerDelegate {
-    
-    func didSelect(image: UIImage?, imageURL: URL?) {
-        print("didSelect(image: \(String(describing: imageURL?.lastPathComponent)), imageURL: \(String(describing: imageURL)))")
-        
-        guard let imageToSend = image else { return }
-        
-        self.sendImage(
-            image: imageToSend,
-            imageURL: imageURL
-        )
+extension ChatViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateScrollButtonView()
     }
-    
-    func didSelect(file: Data?, fileURL: URL?) {
-        print("didSelect(file: \(fileURL?.lastPathComponent ?? "nil")), fileURL: \(fileURL?.path ?? "nil"))")
-        
-        guard let fileToSend = file else { return }
-        
-        self.sendFile(
-            file: fileToSend,
-            fileURL: fileURL
-        )
-    }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if toolbarView.messageView.messageText.isFirstResponder && hideKeyboardOnScrollEnabled {
-//            self.toolbarView.messageView.messageText.resignFirstResponder()
-//        }
-//        if chatTableView.numberOfSections <= 0 { return }
-//
-//        let lastCellIndexPath = IndexPath(
-//            row: chatTableView.numberOfRows(inSection: 0) - 1,
-//            section: 0
-//        )
-//
-//        if chatTableView.indexPathsForVisibleRows?.contains(lastCellIndexPath) == false {
-//            if scrollButtonIsHidden {
-//                scrollButtonIsHidden = false
-//                scrollButton.fadeIn()
-//            }
-//        } else {
-//            if !scrollButtonIsHidden {
-//                scrollButtonIsHidden = true
-//                scrollButton.fadeOut()
-//            }
-//        }
-//    }
-    
+
     func recountChatTableFrame(keyboardHeight: CGFloat) -> CGRect {
-        
+
         let offset = max(keyboardHeight, self.toolbarView.frame.height )
         let height = self.view.frame.height - self.chatTableView.frame.origin.y - offset
         var newFrame = self.chatTableView.frame
         newFrame.size.height = height
         return newFrame
     }
-    
+
     func recountTableSize() {
         let newFrame = recountChatTableFrame(keyboardHeight: 0)
         self.chatTableView.frame = newFrame
-        var scrollButtonFrame = self.scrollButton.frame
+        var scrollButtonFrame = self.scrollButtonView.frame
         scrollButtonFrame.origin.y = newFrame.size.height - 50
-        self.scrollButton.frame = scrollButtonFrame
+        self.scrollButtonView.frame = scrollButtonFrame
         self.view.setNeedsDisplay()
         self.view.setNeedsLayout()
     }
+
+    func isLastCellVisible() -> Bool {
+        guard let lastVisibleCell = chatTableView.visibleCells.last else { return false }
+        let lastIndexPath = chatTableView.indexPath(for: lastVisibleCell)
+        return lastIndexPath?.row == messages().count - 1
+    }
+
+    func lastVisibleCellIndexPath() -> IndexPath? {
+        guard let lastVisibleCell = chatTableView.visibleCells.last else { return nil }
+        let lastIndexPath = chatTableView.indexPath(for: lastVisibleCell)
+        return lastIndexPath
+    }
+}
+
+// MARK: - FilePickerDelegate methods
+extension ChatViewController: FilePickerDelegate {
     
-    @objc func keyboardWillChange(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            let offset = max(keyboardHeight, self.toolbarView.frame.height)
-            scrollView.contentOffset = CGPoint(x: 0, y: offset)
+    func didSelect(images: [ImageToSend]) {
+        for image in images {
+            print("didSelect(image: \(String(describing: image.url?.lastPathComponent)), imageURL: \(String(describing: image.url)))")
+            guard let imageToSend = image.image else { return }
+            self.sendImage(image: imageToSend, imageURL: image.url)
+        }
+    }
+    
+    func didSelect(files: [FileToSend]) {
+        for file in files {
+            print("didSelect(file: \(file.url?.lastPathComponent ?? "nil")), fileURL: \(file.url?.path ?? "nil"))")
+            guard let fileToSend = file.file else { return }
+            self.sendFile(file: fileToSend,fileURL: file.url)
         }
     }
 }
@@ -794,5 +862,30 @@ extension ChatViewController: WMNewMessageViewDelegate {
     
     func showSendFileMenu(_ sender: UIButton) { // Send file button pressed
         filePicker.showSendFileMenu(from: sender)
+    }
+}
+
+extension ChatViewController: MessageCounterDelegate {
+    func changed(newMessageCount: Int) {
+        var state: ScrollButtonViewState
+
+        if newMessageCount > 0 && !isLastCellVisible() {
+            state = .newMessage
+            scrollButtonView.setNewMessageCount(newMessageCount)
+        } else if newMessageCount == 0 && !isLastCellVisible() {
+            state = .visible
+        } else {
+            state = .hidden
+            WebimServiceController.currentSession.setChatRead()
+        }
+        scrollButtonView.setScrollButtonViewState(state)
+    }
+
+    func updateLastMessageIndex(completionHandler: ((Int) -> ())?) {
+        completionHandler?(messages().count - 1)
+    }
+
+    func updateLastReadMessageIndex(completionHandler: ((Int) -> ())?) {
+        completionHandler?(lastVisibleCellIndexPath()?.row ?? 0)
     }
 }

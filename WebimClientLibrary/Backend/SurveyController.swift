@@ -59,7 +59,8 @@ final class SurveyController {
 
     func getCurrentFormID() -> Int {
         let forms = survey?.getConfig().getDescriptor().getForms()
-        return forms?[currentFormPointer].getID() ?? 0
+        let indexInsideBounds = forms?.count ?? 0 > currentFormPointer
+        return indexInsideBounds ? forms?[currentFormPointer].getID() ?? 0 : 0
     }
 
     func getCurrentQuestionPointer() -> Int {

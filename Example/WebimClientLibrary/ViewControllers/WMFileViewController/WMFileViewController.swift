@@ -39,7 +39,8 @@ class WMFileViewController: UIViewController, WKUIDelegate, WKNavigationDelegate
     private var contentWebView = WKWebView()
     
     private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
-    
+    private lazy var navigationControllerManager = NavigationControllerManager()
+
     // MARK: - Outlets
     @IBOutlet var contentWebViewContainer: UIView!
     @IBOutlet var loadingStatusLabel: UILabel!
@@ -49,13 +50,21 @@ class WMFileViewController: UIViewController, WKUIDelegate, WKNavigationDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupNavigationItem()
         setupLoadingSubiews()
         setupContentWebView()
         loadData()
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationItem()
+        setupNavigationControllerManager()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetNavigationControllerManager()
+    }
     
     @IBAction func saveFile(_ sender: Any) {
         guard let fileToSave = fileDestinationURL else { return }
@@ -115,7 +124,7 @@ class WMFileViewController: UIViewController, WKUIDelegate, WKNavigationDelegate
 
         let rightButton = UIButton(type: .system)
         rightButton.frame = CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0)
-        rightButton.setBackgroundImage(saveImageButtonImage, for: .normal)
+        rightButton.setBackgroundImage(fileShare, for: .normal)
         rightButton.addTarget(
             self,
             action: #selector(saveFile),
@@ -133,6 +142,18 @@ class WMFileViewController: UIViewController, WKUIDelegate, WKNavigationDelegate
     private func setupLoadingSubiews() {
         loadingStatusLabel.text = "Loading File...".localized
         loadingStatusIndicator.startAnimating()
+    }
+
+    private func setupNavigationControllerManager() {
+        navigationControllerManager.setAdditionalHeight()
+        navigationControllerManager.update(with: .defaultStyle, removeOriginBorder: true)
+    }
+
+    private func resetNavigationControllerManager() {
+        if #available(iOS 11.0, *) {
+            additionalSafeAreaInsets = .zero
+        }
+        navigationControllerManager.reset()
     }
     
     /// Workaround for iOS < 11.0
@@ -155,8 +176,12 @@ class WMFileViewController: UIViewController, WKUIDelegate, WKNavigationDelegate
     
     private func configureConstraints() {
         contentWebView.translatesAutoresizingMaskIntoConstraints = false
-        contentWebView.snp.makeConstraints { (make) in
-            make.leading.top.trailing.bottom.equalToSuperview()
+        contentWebView.snp.makeConstraints { make in
+            if #available(iOS 11.0, *) {
+                make.edges.equalTo(view.safeAreaLayoutGuide)
+            } else {
+                make.edges.equalToSuperview()
+            }
         }
     }
     

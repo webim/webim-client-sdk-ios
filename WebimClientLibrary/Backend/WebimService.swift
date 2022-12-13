@@ -102,6 +102,7 @@ enum ServerPathSuffix: String {
     case uploadFile = "/l/v/m/upload"
     case search = "/l/v/m/search-messages"
     case getConfig = "/api/visitor/v1/configs"
+    case getServerSideSettings = "/x/js/v/all-settings-mobile.js"
 }
 
 enum MultipartBody: String {
