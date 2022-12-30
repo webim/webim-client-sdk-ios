@@ -85,7 +85,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     
     // MARK: - Properties
-    private static let queryQueue = DispatchQueue(label: "SQLiteHistoryStorageQueryQueue", qos: .background)
+    private static let queryQueue = DispatchQueue(label: "SQLiteHistoryStorageQueryQueue", qos: .utility)
     private let completionHandlerQueue: DispatchQueue
     private let serverURLString: String
     private let fileUrlCreator: FileUrlCreator
