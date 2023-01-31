@@ -233,6 +233,11 @@ final class MessageTrackerImpl {
                 return
         }
         
+        let currentChatMessagesWithMessageID = messageHolder.getCurrentChatMessages().filter { $0.getID() == message.getID() }
+        guard currentChatMessagesWithMessageID.isEmpty else {
+            return
+        }
+        
         let previousMessage: MessageImpl? = idToHistoryMessageMap[messageHistoryID.getDBid()]
         if let previousMessage = previousMessage {
             idToHistoryMessageMap[messageHistoryID.getDBid()] = message
