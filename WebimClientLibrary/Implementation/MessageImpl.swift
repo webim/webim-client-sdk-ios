@@ -434,17 +434,20 @@ extension MessageImpl: Equatable {
     
     static func == (lhs: MessageImpl,
                     rhs: MessageImpl) -> Bool {
-        return ((((((((lhs.id == rhs.id)
-            && (lhs.operatorID == rhs.operatorID))
-            && (lhs.rawText == rhs.rawText))
-            && (lhs.senderAvatarURLString == rhs.senderAvatarURLString))
-            && (lhs.senderName == rhs.senderName))
-            && (lhs.text == rhs.text))
-            && (lhs.timeInMicrosecond == rhs.timeInMicrosecond))
-            && (lhs.type == rhs.type))
-            && (lhs.isReadByOperator() == rhs.isReadByOperator()
-            && (lhs.canBeEdited() == rhs.canBeEdited()
-            && (lhs.isEdited() == rhs.isEdited())))
+        return lhs.id == rhs.id
+            && lhs.operatorID == rhs.operatorID
+            && lhs.rawText == rhs.rawText
+            && lhs.senderAvatarURLString == rhs.senderAvatarURLString
+            && lhs.senderName == rhs.senderName
+            && lhs.text == rhs.text
+            && lhs.timeInMicrosecond == rhs.timeInMicrosecond
+            && lhs.type == rhs.type
+            && lhs.isReadByOperator() == rhs.isReadByOperator()
+            && lhs.canBeEdited() == rhs.canBeEdited()
+            && lhs.isEdited() == rhs.isEdited()
+            && lhs.visitorCanReact == rhs.visitorCanReact
+            && lhs.canVisitorReact() == lhs.canVisitorReact()
+            && lhs.canVisitorChangeReaction() == lhs.canVisitorChangeReaction()
     }
     
 }
