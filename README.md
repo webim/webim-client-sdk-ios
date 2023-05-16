@@ -2,6 +2,8 @@
 
 This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobile-sdk/ios-sdk-howto/) – a way to integrate _Webim_ service into your _iOS_ app.
 
+Mimimum Webim server version supported – **10.5.30**.
+
 ## Installation
 
 > Minimum iOS version supported – 9.0.
@@ -10,7 +12,7 @@ This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobil
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.38.3'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.39.0'
 ```
 `use_frameworks!` must be specified.
 
@@ -18,7 +20,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.38.3
+github "webim/webim-client-sdk-ios" ~> 3.39.0
 ```
 
 ### Swift Package Manager
@@ -39,7 +41,10 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Fix `changed(message: , to: )`.
+* Message deleting fixed.
+* Protocol `Params` for `KeyboardButton` added.
+* Support for new `KeyboardResponseError.canNotCreateResponse` from server added.
+* New initialization request endpoint. **Important**: mimimum Webim server version supported – **10.5.30**.
 
 ## Example
 

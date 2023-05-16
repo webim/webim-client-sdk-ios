@@ -142,7 +142,6 @@ class ActionRequestLoop: AbstractRequestLoop {
                         sendFileCompletionHandler.onFailure(messageID: messageID,
                                                             error: sendFileError)
                     })
-                    
                 }
             } catch let unknownError as UnknownError {
                 self.handleRequestLoop(error: unknownError)
@@ -242,12 +241,14 @@ class ActionRequestLoop: AbstractRequestLoop {
              WebimInternalError.fileSizeTooSmall.rawValue:
             self.handleSendFile(error: error,
                                 ofRequest: request)
+            WebimInternalAlert.shared.present(title: .visitorActionError, message: .fileSendingError)
             
             break
         case WebimInternalError.fileNotFound.rawValue,
              WebimInternalError.fileHasBeenSent.rawValue:
             self.handleDeleteUploadedFile(error: error,
                                   ofRequest: request)
+            WebimInternalAlert.shared.present(title: .visitorActionError, message: .fileDeletingError)
             
             break
         case WebimInternalError.wrongArgumentValue.rawValue:
@@ -258,6 +259,7 @@ class ActionRequestLoop: AbstractRequestLoop {
              WebimInternalError.operatorNotInChat.rawValue:
             self.handleRateOperator(error: error,
                                     ofRequest: request)
+            WebimInternalAlert.shared.present(title: .visitorActionError, message: .operatorRatingError)
             
             break
         case WebimInternalError.messageNotFound.rawValue,
@@ -271,7 +273,8 @@ class ActionRequestLoop: AbstractRequestLoop {
             break
         case WebimInternalError.buttonIdNotSet.rawValue,
              WebimInternalError.requestMessageIdNotSet.rawValue,
-             WebimInternalError.canNotCreateResponse.rawValue:
+             WebimInternalError.canNotCreateResponse.rawValue,
+             WebimInternalError.canNotCreateResponseOld.rawValue:
             self.handleKeyboardResponse(error: error,
                                         ofRequest: request)
             break
@@ -303,6 +306,7 @@ class ActionRequestLoop: AbstractRequestLoop {
              WebimInternalError.wrongProvidedVisitorFieldsHashValue.rawValue:
              self.internalErrorListener?.on(error: error)
              self.internalErrorListener?.connectionStateChanged(connected: false)
+            WebimInternalAlert.shared.present(title: .accountError, message: .accountConnectionError)
              break
         case WebimInternalError.invalidCoordinatesReceived.rawValue:
             self.handleGeolocationCompletionHandler(error: error, ofRequest: request)
@@ -707,6 +711,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                 switch errorString {
                 case WebimInternalError.sentTooManyTimes.rawValue:
                     sendDialogResponseError = .sentTooManyTimes
+                    break
+                case WebimInternalError.noChat.rawValue:
+                    sendDialogResponseError = .noChat
                     break
                 default:
                     sendDialogResponseError = .unknown

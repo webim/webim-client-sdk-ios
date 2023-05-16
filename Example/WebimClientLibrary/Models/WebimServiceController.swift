@@ -59,6 +59,10 @@ class WebimServiceController {
         return WebimServiceController.shared.currentSession()
     }
     
+    static var currentSessionShare: WebimService {
+        return WebimServiceController.shared.createSession()
+    }
+    
     func currentSession() -> WebimService {
         return self.webimService ?? createSession()
     }

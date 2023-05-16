@@ -27,7 +27,7 @@
 import Foundation
 import WebimClientLibrary
 // MARK: - Global constants
-let USER_DEFAULTS_NAME = "settings"
+let USER_DEFAULTS_NAME = "settings_demo"
 enum WMSettingsKeychainKey: String {
     case accountName = "account_name"
     case location = "location"

@@ -20,6 +20,7 @@ DerivedData
 *.ipa
 
 Example/Pods/*
+Example/Podfile.lock
 
 # Bundler
 .bundle

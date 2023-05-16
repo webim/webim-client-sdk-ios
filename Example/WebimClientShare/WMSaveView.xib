@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WMSaveView" customModule="WebimClientShare" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ajP-r0-Nav" customClass="WMSaveView" customModule="WebimClientShare" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="66" height="66"/>
+            <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Lmp-uy-erV">
+                    <rect key="frame" x="23" y="52.666666666666664" width="20" height="19.999999999999993"/>
+                </activityIndicatorView>
+                <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yRC-AP-g75">
+                    <rect key="frame" x="13" y="13" width="40" height="40"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IMg-L5-7Kc" customClass="CheckmarkView" customModule="WebimClientShare" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
+                    </subviews>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" notEnabled="YES"/>
+                    </accessibility>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="IMg-L5-7Kc" secondAttribute="trailing" id="NPZ-Hj-sJx"/>
+                        <constraint firstItem="IMg-L5-7Kc" firstAttribute="leading" secondItem="yRC-AP-g75" secondAttribute="leading" id="Tdy-VE-DJf"/>
+                        <constraint firstItem="IMg-L5-7Kc" firstAttribute="top" secondItem="yRC-AP-g75" secondAttribute="top" id="XEc-EH-WUO"/>
+                        <constraint firstAttribute="bottom" secondItem="IMg-L5-7Kc" secondAttribute="bottom" id="slK-dK-xyL"/>
+                        <constraint firstAttribute="width" secondItem="yRC-AP-g75" secondAttribute="height" multiplier="1:1" id="tca-97-7Fz"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="7Ju-VS-2lJ"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="width" secondItem="ajP-r0-Nav" secondAttribute="height" multiplier="1:1" id="Hvh-C4-E66"/>
+                <constraint firstAttribute="trailing" secondItem="yRC-AP-g75" secondAttribute="trailing" constant="13" id="NfU-Ox-lqi"/>
+                <constraint firstItem="yRC-AP-g75" firstAttribute="top" secondItem="ajP-r0-Nav" secondAttribute="top" constant="13" id="PWd-QH-FY1"/>
+                <constraint firstItem="Lmp-uy-erV" firstAttribute="centerY" secondItem="7Ju-VS-2lJ" secondAttribute="centerY" id="QKq-re-WLu"/>
+                <constraint firstAttribute="height" constant="66" id="YHf-XH-Jku"/>
+                <constraint firstItem="Lmp-uy-erV" firstAttribute="centerX" secondItem="7Ju-VS-2lJ" secondAttribute="centerX" id="h1H-Wd-EnY"/>
+                <constraint firstItem="yRC-AP-g75" firstAttribute="leading" secondItem="ajP-r0-Nav" secondAttribute="leading" constant="13" id="ihG-ot-j1u"/>
+                <constraint firstAttribute="width" constant="66" id="qIH-rE-2kJ"/>
+                <constraint firstAttribute="bottom" secondItem="yRC-AP-g75" secondAttribute="bottom" constant="13" id="yhy-5w-vID"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="activityIndicator" destination="Lmp-uy-erV" id="UyA-sZ-HrH"/>
+                <outlet property="checkmark" destination="IMg-L5-7Kc" id="a1S-46-2kS"/>
+                <outlet property="circleView" destination="yRC-AP-g75" id="gxD-Ks-oN7"/>
+            </connections>
+            <point key="canvasLocation" x="-1033.5877862595419" y="-687.32394366197184"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

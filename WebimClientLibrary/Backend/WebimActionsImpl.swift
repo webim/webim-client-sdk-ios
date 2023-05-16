@@ -59,11 +59,13 @@ final class WebimActionsImpl {
         case sendSticker = "sticker"
         case clearHistory = "chat.clear_history"
         case reaction = "chat.react_message"
+        case uploadFileProgress = "file_upload_progress"
     }
     
     // MARK: - Properties
     private let baseURL: String
     let actionRequestLoop: ActionRequestLoop
+    private var sendingFiles = [String: SendingFile]()
     
     // MARK: - Initialization
     init(baseURL: String,
@@ -71,6 +73,18 @@ final class WebimActionsImpl {
     ) {
         self.baseURL = baseURL
         self.actionRequestLoop = actionRequestLoop
+    }
+    
+    func getSendingFiles() -> [String: SendingFile] {
+        return sendingFiles
+    }
+    
+    func getSendingFile(id: String) -> SendingFile? {
+        return sendingFiles[id] ?? nil
+    }
+    
+    func deleteSendingFile(id: String) {
+        sendingFiles[id] = nil
     }
 }
 
@@ -119,6 +133,12 @@ extension WebimActionsImpl: WebimActions {
         
         let boundaryString = NSUUID().uuidString
         
+        let sendingFile = SendingFile(
+            fileName: filename,
+            clientSideId: clientSideID,
+            fileSize: Int(file.count)
+        )
+        sendingFiles[clientSideID] = sendingFile
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
                                                         messageID: clientSideID,
@@ -127,6 +147,69 @@ extension WebimActionsImpl: WebimActions {
                                                         fileData: file,
                                                         boundaryString: boundaryString,
                                                         contentType: (ContentType.multipartBody.rawValue + boundaryString),
+                                                        baseURLString: urlString,
+                                                        sendFileCompletionHandler: completionHandler,
+                                                        uploadFileToServerCompletionHandler: uploadFileToServerCompletionHandler))
+    }
+    
+    func sendFileProgress(fileSize: Int,
+                          filename: String,
+                          mimeType: String,
+                          clientSideID: String,
+                          error: SendFileError?,
+                          progress: Int?,
+                          state: SendFileProgressState,
+                          completionHandler: SendFileCompletionHandler? = nil,
+                          uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler? = nil) {
+        let pageId = self.actionRequestLoop.authorizationData?.getPageID() ?? ""
+        var dataToPost = [Parameter.actionn.rawValue: Action.uploadFileProgress.rawValue,
+                          Parameter.clientSideID.rawValue: clientSideID,
+                          Parameter.fileName.rawValue: filename,
+                          Parameter.fileSize.rawValue: fileSize.description,
+                          Parameter.fileState.rawValue: state.rawValue,
+                          Parameter.pageID.rawValue: pageId] as [String: Any]
+        var sendFileError: WebimInternalError? = nil
+        switch error {
+        case .fileSizeExceeded:
+            sendFileError = .fileSizeExceeded
+            break
+        case .fileSizeTooSmall:
+            sendFileError = .fileSizeTooSmall
+            break
+        case .fileTypeNotAllowed:
+            sendFileError = .fileTypeNotAllowed
+            break
+        case .maxFilesCountPerChatExceeded:
+            sendFileError = .uploadedFileNotFound
+            break
+        case .uploadedFileNotFound:
+            sendFileError = .unauthorized
+            break
+        default:
+            break
+        }
+        if let error = sendFileError {
+            dataToPost[Parameter.fileError.rawValue] = error.rawValue
+        }
+        
+        if let progress = progress {
+            dataToPost[Parameter.fileProgress.rawValue] = progress.description
+        }
+        
+        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        
+        let sendingFile = SendingFile(
+            fileName: filename,
+            clientSideId: clientSideID,
+            fileSize: fileSize
+        )
+        sendingFiles[clientSideID] = sendingFile
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        messageID: clientSideID,
+                                                        mimeType: mimeType,
+                                                        contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         sendFileCompletionHandler: completionHandler,
                                                         uploadFileToServerCompletionHandler: uploadFileToServerCompletionHandler))

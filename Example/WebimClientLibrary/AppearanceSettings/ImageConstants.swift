@@ -30,10 +30,15 @@ import UIKit
 // ChatViewController.swift
 let closeButtonImage = #imageLiteral(resourceName: "CloseButton")
 let fileButtonImage = #imageLiteral(resourceName: "AttachmentButton")
-let loadingPlaceholderImage: UIImage! = UIImage(named: "ImagePlaceholder")
+let loadingPlaceholderImage = UIImage(named: "ImagePlaceholder")
 let navigationBarTitleImageViewImage = #imageLiteral(resourceName: "LogoWebimNavigationBar_dark")
 let scrollButtonImage = #imageLiteral(resourceName: "SendMessageButton").flipImage(.vertically)
 let textInputButtonImage = #imageLiteral(resourceName: "SendMessageButton")
+let networkErrorView = UIImage(named: "ConnectionImage")!
+let uploadFileImage = UIImage(named: "FileUploadButtonVisitor")!
+let readyFileImage = UIImage(named: "FileDownloadSuccess")!
+let downloadFileImage = UIImage(named: "FileDownloadButton")!
+let errorFileImage = UIImage(named: "FileDownloadError")!
 
 // ChatTableViewController.swift
 let documentFileStatusImageViewImage = #imageLiteral(resourceName: "FileDownloadError")
@@ -47,7 +52,7 @@ let trailingSwipeActionImage =
         #imageLiteral(resourceName: "ReplyCircleToTheLeft")
 
 // ImageViewController.swift
-let saveImageButtonImage = #imageLiteral(resourceName: "ImageDownload")
+let saveImageButton = #imageLiteral(resourceName: "ImageDownload")
 let fileShare = #imageLiteral(resourceName: "FileShare")
 
 
@@ -66,7 +71,7 @@ let messageStatusImageViewImageRead = #imageLiteral(resourceName: "ReadByOperato
 let replyImage = #imageLiteral(resourceName: "ActionReply")
 let copyImage = #imageLiteral(resourceName: "ActionCopy")
 let editImage = #imageLiteral(resourceName: "ActionEdit")
-let deleteImage = #imageLiteral(resourceName: "ActionDelete").colour(actionColourDelete)
+let deleteImage = #imageLiteral(resourceName: "ActionDelete")
 
 // SurveyRadioButtonViewController.swift
 let selectedSurveyPoint = #imageLiteral(resourceName: "selectedSurveyPoint")

@@ -61,7 +61,6 @@ class WMSettingsViewController: UIViewController {
     var rotationDuration: TimeInterval = 0.0
     
     lazy var alertDialogHandler = UIAlertHandler(delegate: self)
-    lazy var navigationControllerManager = NavigationControllerManager()
 
     fileprivate lazy var validCharactersForTextfields: Set<Character> = [
         "A", "a", "B", "b", "C", "c", "D", "d",
@@ -89,11 +88,11 @@ class WMSettingsViewController: UIViewController {
         locationTextField.text = Settings.shared.location
         pageTitleTextField.text = Settings.shared.pageTitle
         userDataJsonTextView.text = Settings.shared.userDataJson
-        accountNameTextField.placeholder = Settings.shared.accountName
-        locationTextField.placeholder = Settings.shared.location
         
         setupLabels()
         setupTextFieldsDelegate()
+        
+        setupNavigationItem()
         setupSaveButton()
         
         hideKeyboardOnTap()
@@ -108,9 +107,7 @@ class WMSettingsViewController: UIViewController {
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil
         )
-
-        setupNavigationBar()
-        setupNavigationItem()
+        updateNavigationBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -125,11 +122,6 @@ class WMSettingsViewController: UIViewController {
                 startViewController.startChatButton.isHidden = false
             }
         }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        resetNavigationControllerManager()
     }
     
     override func viewWillTransition(
@@ -311,41 +303,6 @@ class WMSettingsViewController: UIViewController {
         )
         saveButton.addGestureRecognizer(tapGesture)
     }
-
-    private func resetNavigationControllerManager() {
-        navigationControllerManager.reset()
-        if #available(iOS 11.0, *) {
-            additionalSafeAreaInsets = .zero
-        }
-    }
-
-    private func setupNavigationBar() {
-        navigationControllerManager.set(isNavigationBarVisible: true)
-        navigationControllerManager.update(with: .defaultStyle)
-        navigationControllerManager.setAdditionalHeight()
-        navigationControllerManager.removeOriginBorder()
-        configureNavigationAdditionalView()
-    }
-
-    private func configureNavigationAdditionalView() {
-        let label = UILabel()
-        let additionalView = navigationControllerManager.getAdditionalView()
-        additionalView.addSubview(label)
-        setupTitleLabelView(label: label)
-        label.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-
-    private func setupTitleLabelView(label: UILabel) {
-        label.textColor = versionLabelFontColor
-        label.font = UIFont.systemFont(ofSize: 12.69, weight: .regular)
-        label.textAlignment = .center
-        if let buildVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
-           let releaseVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            label.text = "v. \(releaseVersion) (\(buildVersion))"
-        }
-    }
 }
 
 extension WMSettingsViewController: UITextFieldDelegate {
@@ -414,6 +371,11 @@ extension WMSettingsViewController: UITextFieldDelegate {
                 }
             }
         )
+    }
+
+    private func updateNavigationBar() {
+        NavigationBarUpdater.shared.update(with: .defaultStyle)
+        NavigationBarUpdater.shared.set(isNavigationBarVisible: true)
     }
 }
 

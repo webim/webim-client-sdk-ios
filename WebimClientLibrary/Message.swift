@@ -752,6 +752,16 @@ public protocol KeyboardButton {
      2021 Webim
      */
     func getConfiguration() -> Configuration?
+    
+    /**
+     - returns:
+     Params of a button.
+     - author:
+     Anna Frolova
+     - copyright:
+     2023 Webim
+     */
+    func getParams() -> Params?
 }
 
 /**
@@ -802,6 +812,40 @@ public protocol Configuration {
      2021 Webim
      */
     func getState() -> ButtonState
+}
+
+/**
+ Keyboard button params.
+ - author:
+ Anna Frolova
+ - copyright:
+ 2021 Webim
+ */
+public protocol Params {
+    
+    /**
+     - author:
+        Anna Frolova
+     - copyright:
+     2023 Webim
+     */
+    func getAction() -> String?
+    
+    /**
+     - author:
+     Anna Frolova
+     - copyright:
+     2023 Webim
+     */
+    func getType() -> ParamsButtonType?
+    
+    /**
+     - author:
+     Anna Frolova
+     - copyright:
+     2023 Webim
+     */
+    func getColor() -> String?
 }
 
 
@@ -1265,5 +1309,13 @@ public enum ButtonState {
     case showingSelected
     
     case hidden
+    
+}
+
+public enum ParamsButtonType {
+    
+    case url
+    
+    case action
     
 }

@@ -43,6 +43,16 @@ protocol WebimActions {
               completionHandler: SendFileCompletionHandler?,
               uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler?)
     
+    func sendFileProgress(fileSize: Int,
+                          filename: String,
+                          mimeType: String,
+                          clientSideID: String,
+                          error: SendFileError?,
+                          progress: Int?,
+                          state: SendFileProgressState,
+                          completionHandler: SendFileCompletionHandler?,
+                          uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler?)
+    
     func sendFiles(message: String,
                    clientSideID: String,
                    isHintQuestion: Bool?,

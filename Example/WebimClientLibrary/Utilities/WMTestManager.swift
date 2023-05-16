@@ -71,112 +71,112 @@ class WMTestManager: NSObject {
     static var testTimer: Timer?
 }
 
-extension ChatViewController {
-    func runRandomAction() {
-        if WMTestManager.testDialogModeEnabled {
-            DispatchQueue.main.async {
-                guard let message = self.randomMessage() else { return }
-                
-                switch WMTestManager.testDialogActionsArray.randomElement() {
-                case .sendMessage:
-                    self.sendMessage(self.randomMessageText())
-                case .editMessage:
-                    WebimServiceController.currentSession.edit(
-                        message: message,
-                        text: "edit" + self.randomMessageText(),
-                        completionHandler: self
-                    )
-                case .deleteMessage:
-                    WebimServiceController.currentSession.delete(
-                        message: message,
-                        completionHandler: self
-                    )
-                case .replyToMessage:
-                    WebimServiceController.currentSession.reply(
-                        message: self.randomMessageText(),
-                        repliedMessage: message,
-                        completion: { }
-                    )
-                case .sendTyping:
-                    WebimServiceController.currentSession.setVisitorTyping(draft: "setVisitorTyping text")
-                case .sendRandomImage:
-                    self.sendRandomImage()
-                case .sendRandomFile:
-                    self.sendRandomFile()
-                case .reactToMessage:
-                    break
-                case .noActinon:
-                    break
-                default:
-                    break
-                }
-            }
-        }
-    }
-    
-    @objc func fireTestTimer() {
-        runRandomAction()
-    }
-    
-    func stopDialogTest() {
-        WMTestManager.testTimer?.invalidate()
-    }
-
-    func sendRandomFile() {
-        guard let file = "test file text".data(using: .utf8) else { return }
-        WebimServiceController.currentSession.send(
-            file: file,
-            fileName: "testFile.txt",
-            mimeType: "text/plain",
-            completionHandler: self
-        )
-    }
-    
-    func replyToMessage() {
-        guard let messageToReact = self.randomMessage() else { return }
-        guard let reaction = [ReactionString.dislike, ReactionString.like].randomElement() else { return }
-        
-        WebimServiceController.currentSession.react(
-            reaction: reaction,
-            message: messageToReact,
-            completionHandler: self
-        )
-    }
-
-    private func sendRandomImage() {
-        let image = UIImage(named: "AppIcon")
-        let data = image!.jpegData(compressionQuality: 1.0)
-        
-        WebimServiceController.currentSession.send(
-            file: data!,
-            fileName: "testImage.jpg",
-            mimeType: "image/jpeg",
-            completionHandler: self
-        )
-    }
-
-    func toggleAutotest() -> Bool {
-        WMTestManager.testDialogModeEnabled.toggle()
-        updateTestModeState()
-        return WMTestManager.testDialogModeEnabled
-    }
-    
-    func updateTestModeState() {
-        if WMTestManager.testDialogModeEnabled {
-            WMTestManager.testTimer = Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(fireTestTimer), userInfo: nil, repeats: true)
-        } else {
-            WMTestManager.testTimer?.invalidate()
-        }
-    }
-
-    private func randomMessageText() -> String {
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy hh.mm.ss"
-        return "test ios visitor " + formatter.string(from: date)
-    }
-
-    private func randomMessage() -> Message? {
-        return self.messages().randomElement()
-    }
-}
+//extension ChatViewController {
+//    func runRandomAction() {
+//        if WMTestManager.testDialogModeEnabled {
+//            DispatchQueue.main.async {
+//                guard let message = self.randomMessage() else { return }
+//
+//                switch WMTestManager.testDialogActionsArray.randomElement() {
+//                case .sendMessage:
+//                    self.sendMessage(self.randomMessageText())
+//                case .editMessage:
+//                    WebimServiceController.currentSession.edit(
+//                        message: message,
+//                        text: "edit" + self.randomMessageText(),
+//                        completionHandler: self
+//                    )
+//                case .deleteMessage:
+//                    WebimServiceController.currentSession.delete(
+//                        message: message,
+//                        completionHandler: self
+//                    )
+//                case .replyToMessage:
+//                    WebimServiceController.currentSession.reply(
+//                        message: self.randomMessageText(),
+//                        repliedMessage: message,
+//                        completion: { }
+//                    )
+//                case .sendTyping:
+//                    WebimServiceController.currentSession.setVisitorTyping(draft: "setVisitorTyping text")
+//                case .sendRandomImage:
+//                    self.sendRandomImage()
+//                case .sendRandomFile:
+//                    self.sendRandomFile()
+//                case .reactToMessage:
+//                    break
+//                case .noActinon:
+//                    break
+//                default:
+//                    break
+//                }
+//            }
+//        }
+//    }
+//
+//    @objc func fireTestTimer() {
+//        runRandomAction()
+//    }
+//
+//    func stopDialogTest() {
+//        WMTestManager.testTimer?.invalidate()
+//    }
+//
+//    func sendRandomFile() {
+//        guard let file = "test file text".data(using: .utf8) else { return }
+//        WebimServiceController.currentSession.send(
+//            file: file,
+//            fileName: "testFile.txt",
+//            mimeType: "text/plain",
+//            completionHandler: self
+//        )
+//    }
+//
+//    func replyToMessage() {
+//        guard let messageToReact = self.randomMessage() else { return }
+//        guard let reaction = [ReactionString.dislike, ReactionString.like].randomElement() else { return }
+//
+//        WebimServiceController.currentSession.react(
+//            reaction: reaction,
+//            message: messageToReact,
+//            completionHandler: self
+//        )
+//    }
+//
+//    private func sendRandomImage() {
+//        let image = UIImage(named: "AppIcon")
+//        let data = image!.jpegData(compressionQuality: 1.0)
+//
+//        WebimServiceController.currentSession.send(
+//            file: data!,
+//            fileName: "testImage.jpg",
+//            mimeType: "image/jpeg",
+//            completionHandler: self
+//        )
+//    }
+//
+//    func toggleAutotest() -> Bool {
+//        WMTestManager.testDialogModeEnabled.toggle()
+//        updateTestModeState()
+//        return WMTestManager.testDialogModeEnabled
+//    }
+//
+//    func updateTestModeState() {
+//        if WMTestManager.testDialogModeEnabled {
+//            WMTestManager.testTimer = Timer.scheduledTimer(timeInterval: 1.1, target: self, selector: #selector(fireTestTimer), userInfo: nil, repeats: true)
+//        } else {
+//            WMTestManager.testTimer?.invalidate()
+//        }
+//    }
+//
+//    private func randomMessageText() -> String {
+//        let date = Date()
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "dd.MM.yyyy hh.mm.ss"
+//        return "test ios visitor " + formatter.string(from: date)
+//    }
+//
+//    private func randomMessage() -> Message? {
+//        return self.messages().randomElement()
+//    }
+//}

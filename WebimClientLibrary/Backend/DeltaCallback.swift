@@ -223,7 +223,7 @@ final class DeltaCallback {
             
             messageHolder?.deletedMessageWith(id: deltaID)
             if let historyMessage = historyMessage {
-                historyPoller?.deleteMessageFromDB(message: historyMessage.getID())
+                historyPoller?.deleteMessageFromDB(message: historyMessage.getServerSideID() ?? historyMessage.getID())
             }
         } else {
             guard let deltaData = delta.getData() as? [String : Any] else {

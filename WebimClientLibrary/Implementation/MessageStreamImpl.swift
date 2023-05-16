@@ -663,7 +663,9 @@ extension MessageStreamImpl: MessageStream {
                           mimeType: mimeType,
                           clientSideID: messageID,
                           completionHandler: SendFileCompletionHandlerWrapper(sendFileCompletionHandler: completionHandler,
-                                                                              messageHolder: messageHolder),
+                                                                              messageHolder: messageHolder,
+                                                                              webimActions: webimActions,
+                                                                              sendingMessageFactory: sendingMessageFactory),
                           uploadFileToServerCompletionHandler: nil)
 
         WebimInternalLogger.shared.log(
@@ -1016,19 +1018,12 @@ extension MessageStreamImpl: MessageStream {
     func sendDialogTo(emailAddress: String,
                       completionHandler: SendDialogToEmailAddressCompletionHandler?) throws {
         try accessChecker.checkAccess()
-        if !lastChatState.isClosed() {
-            webimActions.sendDialogTo(emailAddress: emailAddress, completionHandler: completionHandler)
-            WebimInternalLogger.shared.log(
-                entry: "Request send dialog to email in MessageStreamImpl- \(#function)",
-                verbosityLevel: .verbose,
-                logType: .networkRequest)
-        } else {
-            completionHandler?.onFailure(error: .noChat)
-            WebimInternalLogger.shared.log(
-                entry: "Failure send dialog to mail.\nNo chat in MessageStreamImpl- \(#function)",
-                verbosityLevel: .verbose,
-                logType: .networkRequest)
-        }
+       
+        webimActions.sendDialogTo(emailAddress: emailAddress, completionHandler: completionHandler)
+        WebimInternalLogger.shared.log(
+            entry: "Request send dialog to email in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
     }
     
     func set(prechatFields: String) throws {
@@ -1200,13 +1195,78 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
     
     // MARK: - Properties
     private let messageHolder: MessageHolder
+    private let webimActions: WebimActionsImpl
+    private let sendingMessageFactory: SendingFactory
     private weak var sendFileCompletionHandler: SendFileCompletionHandler?
     
     // MARK: - Initialization
     init(sendFileCompletionHandler: SendFileCompletionHandler?,
-         messageHolder: MessageHolder) {
+         messageHolder: MessageHolder,
+         webimActions: WebimActionsImpl,
+         sendingMessageFactory: SendingFactory) {
         self.sendFileCompletionHandler = sendFileCompletionHandler
         self.messageHolder = messageHolder
+        self.webimActions = webimActions
+        self.sendingMessageFactory = sendingMessageFactory
+    }
+    
+    // MARK: - Methods
+    
+    func onSuccess(messageID: String) {
+        webimActions.deleteSendingFile(id: messageID)
+        sendFileCompletionHandler?.onSuccess(messageID: messageID)
+        WebimInternalLogger.shared.log(
+            entry: "File success sended with ID - \(messageID) in MessageStream",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+    
+    func onFailure(messageID: String,
+                   error: SendFileError) {
+        WebimInternalLogger.shared.log(
+            entry: "File send failure with ID - \(messageID) in MessageStream",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+        
+        guard let sendingFile = webimActions.getSendingFile(id: messageID) else {
+            messageHolder.sendingCancelledWith(messageID: messageID)
+            sendFileCompletionHandler?.onFailure(messageID: messageID, error: error)
+            return
+        }
+        let data = MessageDataImpl(attachment: MessageAttachmentImpl(fileInfo: FileInfoImpl(urlString: nil,
+                                                                                            size: Int64(sendingFile.fileSize),
+                                                                                            filename: sendingFile.fileName,
+                                                                                            contentType: nil,
+                                                                                            guid: nil,
+                                                                                            fileUrlCreator: nil),
+                                                                     filesInfo: [],
+                                                                     state: .error))
+    
+        messageHolder.changed(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data))
+        webimActions.sendFileProgress(fileSize: sendingFile.fileSize,
+                                      filename: sendingFile.fileName,
+                                      mimeType: sendingFile.clientSideId,
+                                      clientSideID: sendingFile.clientSideId,
+                                      error: error,
+                                      progress: nil,
+                                      state: .error,
+                                      completionHandler: SendFileProgressCompletionHandlerWrapper(messageHolder: messageHolder,
+                                                                                                  sendFileCompletionHandler: sendFileCompletionHandler))
+        webimActions.deleteSendingFile(id: messageID)
+    }
+}
+
+fileprivate final class SendFileProgressCompletionHandlerWrapper: SendFileCompletionHandler {
+    
+    // MARK: - Properties
+    private let messageHolder: MessageHolder
+    private weak var sendFileCompletionHandler: SendFileCompletionHandler?
+    
+    // MARK: - Initialization
+    init(messageHolder: MessageHolder,
+         sendFileCompletionHandler: SendFileCompletionHandler?) {
+        self.messageHolder = messageHolder
+        self.sendFileCompletionHandler = sendFileCompletionHandler
     }
     
     // MARK: - Methods
@@ -1231,6 +1291,7 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
     }
     
 }
+
 
 fileprivate final class DataMessageCompletionHandlerWrapper: DataMessageCompletionHandler {
     
@@ -1322,7 +1383,7 @@ fileprivate final class DeleteMessageCompletionHandlerWrapper: DeleteMessageComp
     // MARK: - Methods
     
     func onSuccess(messageID: String) {
-        deleteMessageCompletionHandler?.onSuccess(messageID : messageID)
+        deleteMessageCompletionHandler?.onSuccess(messageID: messageID)
         WebimInternalLogger.shared.log(
             entry: "Success delete message with ID \(messageID)",
             verbosityLevel: .verbose,

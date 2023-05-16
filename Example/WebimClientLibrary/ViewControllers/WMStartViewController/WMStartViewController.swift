@@ -25,33 +25,37 @@
 //
 
 import UIKit
+import WebimWidget
 import WebimClientLibrary
 
 final class WMStartViewController: UIViewController {
-    
+
     // MARK: - Private Properties
     private var unreadMessageCounter: Int = 0
-    
+
     private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
-    private lazy var navigationControllerManager = NavigationControllerManager()
-    
+
     // MARK: - Outlets
+    @IBOutlet var logoImageView: UIImageView!
+    @IBOutlet var appVersion: UILabel!
+    @IBOutlet var welcomeLabel: UILabel!
+    @IBOutlet var welcomeTextView: UITextView!
     @IBOutlet var startChatButton: UIButton!
     @IBOutlet var settingsButton: UIButton!
-    @IBOutlet var welcomeTextView: UITextView!
-    @IBOutlet var welcomeLabel: UILabel!
-    @IBOutlet var logoImageView: UIImageView!
     @IBOutlet var unreadMessageCounterView: UIView!
     @IBOutlet var unreadMessageCounterLabel: UILabel!
     @IBOutlet var unreadMessageCounterActivity: UIActivityIndicatorView!
-    
+
+    @IBOutlet var startConstraint: NSLayoutConstraint!
+
     // MARK: - View Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkOrientation()
         setupStartChatButton()
         setupSettingsButton()
         setupLogoTapGestureRecognizer()
+        setupNavigationBarUpdater()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,22 +63,29 @@ final class WMStartViewController: UIViewController {
         // Workaround for displaying correctly the position of the text inside weclomeTextView
         welcomeTextView.text = NSLocalizedString("xS6-J8-Sm9.text", tableName: "WMStartViewController", comment: "")
         welcomeTextView.sizeToFit()
-        setupColorScheme()
-        setupNavigationBar()
         startWebimSession()
+        setupColorScheme()
+        updateNavigationBar()
+        welcomeTextView.textContainer.lineFragmentPadding = 5
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = 1.17
+        let stringAttributes = [NSAttributedString.Key.paragraphStyle: style]
+        welcomeLabel.attributedText = NSAttributedString(string: "Welcome to the WebimClientLibrary app!".localized, attributes: stringAttributes)
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String, let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            self.appVersion.text = "v. " + version
+        }
+
     }
 
-    // MARK: - IBAction Methods
-
-    @IBAction func startChat(_ sender: Any) {
-        presentChatViewController()
+    @IBAction func startChat(_ sender: Any? = nil) {
+        presentChatViewController(openFromNotification: sender == nil)
     }
 
     @IBAction func openSettings() {
         let settingsVc = WMSettingsViewController.loadViewControllerFromXib()
         navigationController?.pushViewController(settingsVc, animated: true)
     }
-    
+
     // MARK: - Private methods
     @objc private func presentWMLogsViewController(_ gesture: UIGestureRecognizer) {
         if WMTestManager.testModeEnabled() {
@@ -83,12 +94,23 @@ final class WMStartViewController: UIViewController {
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        self.checkOrientation()
+    }
+
+    private func checkOrientation() {
+        DispatchQueue.main.async {
+            self.startConstraint.constant = UIApplication.shared.statusBarOrientation.isLandscape ? 20 : 50
+        }
+    }
+
     private func setupStartChatButton() {
         startChatButton.layer.cornerRadius = 8.0
         startChatButton.layer.borderWidth = 1.0
         startChatButton.layer.borderColor = startChatButtonBorderColour
     }
-    
+
     private func setupSettingsButton() {
         settingsButton.layer.cornerRadius = 8.0
         settingsButton.layer.borderWidth = 1.0
@@ -100,7 +122,7 @@ final class WMStartViewController: UIViewController {
             action: #selector(presentWMLogsViewController(_:)))
         logoImageView.addGestureRecognizer(gesture)
     }
-    
+
     private func setupColorScheme() {
         view.backgroundColor = startViewBackgroundColour
 
@@ -113,12 +135,12 @@ final class WMStartViewController: UIViewController {
 
         startChatButton.backgroundColor = startChatButtonBackgroundColour
         startChatButton.setTitleColor(startChatTitleColour, for: .normal)
-        
+
         settingsButton.setTitleColor(settingsButtonTitleColour, for: .normal)
-        
+
         settingsButton.layer.borderColor = settingButtonBorderColour
     }
-    
+
     private func updateMessageCounter() {
         DispatchQueue.main.async {
             if self.unreadMessageCounter > 0 {
@@ -131,7 +153,21 @@ final class WMStartViewController: UIViewController {
             }
         }
     }
-    
+
+    private func setupNavigationBarUpdater() {
+        NavigationBarUpdater.shared.set(navigationController: navigationController)
+    }
+
+    private func updateNavigationBar() {
+        NavigationBarUpdater.shared.set(isNavigationBarVisible: false)
+    }
+
+    private func presentChatViewController(openFromNotification: Bool) {
+        WebimServiceController.shared.stopSession()
+        let widget = ExternalWidgetBuilder().buildDefaultWidget(openFromNotification)
+        self.navigationController?.pushViewController(widget, animated: true)
+    }
+
     private func startWebimSession() {
         WebimServiceController.currentSession.set(unreadByVisitorMessageCountChangeListener: self)
         WebimServiceController.shared.fatalErrorHandlerDelegate = self
@@ -139,19 +175,11 @@ final class WMStartViewController: UIViewController {
         updateMessageCounter()
     }
 
-    private func setupNavigationBar() {
-        navigationControllerManager.set(isNavigationBarVisible: false)
-    }
-
-    private func presentChatViewController() {
-        let dialogVC = ChatViewController.loadViewControllerFromXib()
-        self.navigationController?.pushViewController(dialogVC, animated: true)
-    }
 }
 
 // MARK: - WEBIM: MessageListener
 extension WMStartViewController: UnreadByVisitorMessageCountChangeListener {
-    
+
     // MARK: - Methods
     func changedUnreadByVisitorMessageCountTo(newValue: Int) {
         if unreadMessageCounter == 0 {
@@ -162,16 +190,17 @@ extension WMStartViewController: UnreadByVisitorMessageCountChangeListener {
         unreadMessageCounter = newValue
         updateMessageCounter()
     }
-    
 }
+
+
 
 // MARK: - FatalErrorHandler
 extension WMStartViewController: FatalErrorHandlerDelegate {
-    
+
     // MARK: - Methods
     func showErrorDialog(withMessage message: String) {
         alertDialogHandler.showCreatingSessionFailureDialog(withMessage: message)
         startChatButton.isHidden = true
     }
-    
+
 }

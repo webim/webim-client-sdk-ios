@@ -35,29 +35,37 @@ public class WMKeychainWrapper: NSObject {
     public static let deviceTokenKey = "device-token"
     public static let webimKeyPrefix = "ru.webim."
     let webimUserDefaultsFirstRunKey = "ru.webim.userDefaultsFirstRunKey"
+    public static var keychainAccessGroupName = ""
+    public var userDefaults = UserDefaults.standard
+    private var inited = false
+    
     override init() {
         super.init()
         cleanUserDefaults()
     }
     
-    private var inited = false
+    public func setAppGroupName(userDefaults: UserDefaults, keychainAccessGroup: String) {
+        WMKeychainWrapper.keychainAccessGroupName = keychainAccessGroup
+        self.userDefaults = userDefaults
+    }
+    
     private func cleanUserDefaults() {
         if inited {
             return
         }
         inited = true
-        UserDefaults.standard.removeObject(forKey: "fileGuidURLDictionaryKey")
-        UserDefaults.standard.removeObject(forKey: "ru.webim.WebimClientSDKiOS.guid")
-        UserDefaults.standard.removeObject(forKey: "settings")
-        UserDefaults.standard.removeObject(forKey: "previous_account")
-        UserDefaults.standard.removeObject(forKey: "device-token")
-        for key in UserDefaults.standard.dictionaryRepresentation().keys {
+        
+        userDefaults.removeObject(forKey: "fileGuidURLDictionaryKey")
+        userDefaults.removeObject(forKey: "ru.webim.WebimClientSDKiOS.guid")
+        userDefaults.removeObject(forKey: "settings")
+        userDefaults.removeObject(forKey: "previous_account")
+        userDefaults.removeObject(forKey: "device-token")
+        for key in userDefaults.dictionaryRepresentation().keys {
             if key.starts(with: "ru.webim.WebimClientSDKiOS") {
-                UserDefaults.standard.removeObject(forKey: key)
+                userDefaults.removeObject(forKey: key)
             }
         }
         
-        let userDefaults = UserDefaults.standard
         if !userDefaults.bool(forKey: webimUserDefaultsFirstRunKey) {
             userDefaults.set(true, forKey: webimUserDefaultsFirstRunKey)
             
@@ -118,7 +126,8 @@ public class WMKeychainWrapper: NSObject {
 
     static func removeObject(key: String) -> OSStatus{
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: key]
+                                    kSecAttrAccount as String: key,
+                                    kSecAttrAccessGroup as String: keychainAccessGroupName as AnyObject]
         return SecItemDelete(query as CFDictionary)
     }
     
@@ -141,7 +150,8 @@ public class WMKeychainWrapper: NSObject {
         let query = [
             kSecClass as String       : kSecClassGenericPassword as String,
             kSecAttrAccount as String : secureStringKey,
-            kSecValueData as String   : data as Any] as [String : Any]
+            kSecValueData as String   : data as Any,
+            kSecAttrAccessGroup as String: keychainAccessGroupName as AnyObject] as [String : Any]
         
         SecItemDelete(query as CFDictionary)
         
@@ -155,7 +165,8 @@ public class WMKeychainWrapper: NSObject {
             kSecClass as String       : kSecClassGenericPassword,
             kSecAttrAccount as String : secureStringKey,
             kSecReturnData as String  : kCFBooleanTrue!,
-            kSecMatchLimit as String  : kSecMatchLimitOne ] as [String : Any]
+            kSecMatchLimit as String  : kSecMatchLimitOne,
+            kSecAttrAccessGroup as String: keychainAccessGroupName as AnyObject] as [String : Any]
         
         var dataTypeRef: AnyObject? = nil
         
@@ -172,7 +183,8 @@ public class WMKeychainWrapper: NSObject {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
                                     kSecReturnAttributes as String: true,
-                                    kSecReturnRef as String: true]
+                                    kSecReturnRef as String: true,
+                                    kSecAttrAccessGroup as String: WMKeychainWrapper.keychainAccessGroupName as AnyObject]
         var items_ref: CFTypeRef?
         _ = SecItemCopyMatching(query as CFDictionary, &items_ref)
         let items = items_ref as? Array<Dictionary<String, Any>> ?? []

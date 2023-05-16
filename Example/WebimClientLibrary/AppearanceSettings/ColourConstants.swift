@@ -84,12 +84,16 @@ let buttonDefaultTitleColour = #colorLiteral(red: 0.2235294118, green: 0.2470588
 let buttonChoosenTitleColour = WHITE
 let buttonCanceledTitleColour = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
 let buttonBorderColor = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
+let networkErrorViewBackgroundColour = #colorLiteral(red: 0.4, green: 0.4156862745, blue: 0.5058823529, alpha: 1)
 
 // RateStarsViewController.swift
 let cosmosViewFilledColour = WEBIM_CYAN
 let cosmosViewFilledBorderColour = WEBIM_CYAN
 let cosmosViewEmptyColour = LIGHT_GREY
 let cosmosViewEmptyBorderColour = LIGHT_GREY
+let rateOperatorTitleColour = #colorLiteral(red: 0.2875037193, green: 0.322668016, blue: 0.495077312, alpha: 1)
+let rateOperatorSubtitleColour = #colorLiteral(red: 0.2125798464, green: 0.2511789203, blue: 0.4327814877, alpha: 0.54)
+let rateOperatorButtonColour = #colorLiteral(red: 0, green: 0.6823465228, blue: 0.8372455239, alpha: 1)
 
 // PopupActionTableViewCell.swift
 let actionColourCommon = WHITE
@@ -101,7 +105,8 @@ let bottomBarSeparatorColour = TRANSLUCENT_GREY
 /// Bottom bar
 let bottomBarBackgroundViewColour = WHITE
 let bottomBarQuoteLineViewColour = WEBIM_CYAN
-let textInputBackgroundViewBorderColour = LIGHT_GREY.cgColor
+let emptyBackgroundViewBorderColour = LIGHT_GREY
+let filledBackgroundViewBorderColour = WEBIM_PUPRLE
 /// Bottom bar for edit/reply
 let textInputViewPlaceholderLabelTextColour = GREY
 let textInputViewPlaceholderLabelBackgroundColour = CLEAR
@@ -110,18 +115,36 @@ let wmCoral = #colorLiteral(red: 0.7882352941, green: 0.3411764706, blue: 0.2196
 let linkColor = #colorLiteral(red: 0.1977989972, green: 0.5007162094, blue: 0.9563334584, alpha: 1)
 /// WMQuoteView
 let rawQuoteViewLabelColour = GREY
+let quoteMessageTextColour = #colorLiteral(red: 0.15, green: 0.16, blue: 0.32, alpha: 0.6)
+let quoteAuthorNameColour = #colorLiteral(red: 0.15, green: 0.16, blue: 0.32, alpha: 1)
+let quoteLineColour = #colorLiteral(red: 0.08, green: 0.67, blue: 0.82, alpha: 1)
 /// ScrollButtonView
 let unreadMessagesBorderColour = LIGHT_GREY
+
+// Cell
+/// WMVisitorMessageCell
+let visitorMessageBubbleColour = #colorLiteral(red: 0, green: 0.7294117647, blue: 0.8588235294, alpha: 1)
+let visitorMessageTextColour = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+/// WMOperatorMessageCell
+let operatorMessageBubbleColour = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+let operatorMessageTextColour = #colorLiteral(red: 0.1490196078, green: 0.1607843137, blue: 0.3215686275, alpha: 1)
+/// WMBotButtonsMessageCell
+let botMessageBubbleColour = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+let botMessageTextColour = #colorLiteral(red: 0.2196078431, green: 0.2509803922, blue: 0.4196078431, alpha: 1)
+/// FileMessage
+let errorFileImageColor = #colorLiteral(red: 0.7882352941, green: 0.3411764706, blue: 0.2196078431, alpha: 1)
+let visitorFileMessageTextColour = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.6958971088)
 
 // ChatTableViewController.swift
 let refreshControlTextColour = WEBIM_DARK_PUPRLE
 let refreshControlTintColour = WEBIM_DARK_PUPRLE
+let chatTableViewBackgroundColour = #colorLiteral(red: 0.92, green: 0.93, blue: 0.95, alpha: 1)
 
 // ImageViewController.swift
 // FileViewController.swift
 let topBarTintColourDefault = WEBIM_DARK_PUPRLE
 let topBarTintColourClear = CLEAR
-let webimCyan = WEBIM_CYAN.cgColor
+let webimCyan = WEBIM_CYAN
 
 // PopupActionViewController.swift
 let popupBackgroundColour = CLEAR

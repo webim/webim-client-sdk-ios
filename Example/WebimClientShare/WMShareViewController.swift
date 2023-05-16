@@ -36,42 +36,55 @@ import Foundation
 class WMShareViewController: UIViewController, SendFileCompletionHandler {
     
     private var alertController: UIAlertController!
+    var sendFileError: SendFileError? = nil
+    let saveView = WMSaveView.loadXibView()
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        WebimServiceController.currentSession.createSession()
+        WMKeychainWrapper.standard.setAppGroupName(userDefaults: UserDefaults(suiteName: "group.WebimClient.Share") ?? UserDefaults.standard, keychainAccessGroup: Bundle.main.infoDictionary!["keychainAppIdentifier"] as! String)
+
+        WebimServiceController.currentSessionShare.createSession()
+
         alertController = UIAlertController(title: "Отправить файл".localized,
                                             message: "Вы уверены что хотите отправить файл?",
                                             preferredStyle: .alert)
-
+        
         let okAction = UIAlertAction(title: "OK".localized,
-                                 style: .default,
-                                 handler: { _ in self.getFilesExtensionContext() })
-    
+                                     style: .default,
+                                     handler: { _ in self.getFilesExtensionContext() })
+        
         alertController.addAction(okAction)
         self.present(alertController, animated: true)
     }
+    
     func getFilesExtensionContext() {
-            guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem],
-                  inputItems.isNotEmpty()
-            else {
-                close()
-                return
-            }
-            inputItems.forEach { item in
-                if let attachments = item.attachments,
-                   !attachments.isEmpty {
-                    attachments.forEach { attachment in
-                        if attachment.isImage {
-                            handleImageAttachment(attachment)
-                        } else if attachment.isFile {
-                            handleFileAttachment(attachment)
-                        }
+        guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem], inputItems.isNotEmpty() else {
+            close()
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.view.addSubview(self.saveView)
+            self.saveView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+            self.saveView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        }
+        self.saveView.animateActivity()
+        inputItems.forEach { item in
+            if let attachments = item.attachments,
+               !attachments.isEmpty {
+                attachments.forEach { attachment in
+                    if attachment.isImage {
+                        handleImageAttachment(attachment)
+                    } else if attachment.isFile {
+                        handleFileAttachment(attachment)
                     }
                 }
             }
- 
+        }
+        checkErrorAfterSend()
     }
+    
     func showDialog(
         withMessage message: String,
         title: String?,
@@ -103,6 +116,44 @@ class WMShareViewController: UIViewController, SendFileCompletionHandler {
         
         self.present(alertController, animated: true)
     }
+    
+    func checkErrorAfterSend() {
+        guard sendFileError != nil else {
+            self.saveView.stopAnimateActivity()
+            self.saveView.animateImage()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.close()
+            }
+            return
+        }
+        DispatchQueue.main.async {
+            var message = "Find sending unknown error".localized
+            switch self.sendFileError {
+            case .fileSizeExceeded:
+                message = "File is too large.".localized
+            case .fileTypeNotAllowed:
+                message = "File type is not supported".localized
+            case .unknown:
+                message = "Find sending unknown error".localized
+            case .uploadedFileNotFound:
+                message = "Sending files in body is not supported".localized
+            case .unauthorized:
+                message = "Failed to upload file: visitor is not logged in".localized
+            case .maxFilesCountPerChatExceeded:
+                message = "MaxFilesCountExceeded".localized
+            case .fileSizeTooSmall:
+                message = "File is too small".localized
+            default:
+                break
+            }
+            self.showDialog(
+                withMessage: message,
+                title: "File sending failed".localized,
+                buttonTitle: "OK".localized
+            )
+        }
+    }
+    
 
 }
 
@@ -172,52 +223,21 @@ extension WMShareViewController {
                 mimeType = MimeType(url: fileURL as URL)
                 fileName = fileURL.lastPathComponent
             }
+            
             DispatchQueue.main.sync {
                 WebimServiceController.currentSession.sendFile(data: fileData,
                                                                fileName: fileName,
                                                                mimeType: mimeType.value,
                                                                completionHandler: self)
             }
-        
         }
     }
     
-    
-    
     func onSuccess(messageID: String) {
-        self.showDialog(
-            withMessage: "Файл отправлен",
-            title: "".localized,
-            buttonTitle: "OK".localized
-        )
     }
     
     func onFailure(messageID: String, error: SendFileError) {
-        DispatchQueue.main.async {
-            var message = "Find sending unknown error".localized
-            switch error {
-            case .fileSizeExceeded:
-                message = "File is too large.".localized
-            case .fileTypeNotAllowed:
-                message = "File type is not supported".localized
-            case .unknown:
-                message = "Find sending unknown error".localized
-            case .uploadedFileNotFound:
-                message = "Sending files in body is not supported".localized
-            case .unauthorized:
-                message = "Failed to upload file: visitor is not logged in".localized
-            case .maxFilesCountPerChatExceeded:
-                message = "MaxFilesCountExceeded".localized
-            case .fileSizeTooSmall:
-                message = "File is too small".localized
-            }
-            
-            self.showDialog(
-                withMessage: message,
-                title: "File sending failed".localized,
-                buttonTitle: "OK".localized
-            )
-        }
+        sendFileError = error
     }
 }
 
@@ -225,7 +245,7 @@ extension NSItemProvider {
     var isImage: Bool {
         return hasItemConformingToTypeIdentifier(kUTTypeImage as String)
     }
-
+    
     var isFile: Bool {
         return hasItemConformingToTypeIdentifier(kUTTypeFileURL as String)
     }

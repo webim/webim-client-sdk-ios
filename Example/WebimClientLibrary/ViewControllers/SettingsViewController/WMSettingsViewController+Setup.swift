@@ -59,28 +59,37 @@ extension WMSettingsViewController {
     }
     
     private func getTitleView() -> UIView {
-        let titleView = UIImageView()
-        setupTitleView(titleView)
-        setupTitleViewConstraints(titleView: titleView)
+        let label = UILabel()
+        let imageView = UIImageView()
+        let titleView = UIView()
+
+        titleView.addSubview(imageView)
+
+        setupTitleImageView(imageView)
+
+        setupTitleViewConstraints(imageView: imageView)
         return titleView
     }
 
 
-    private func setupTitleView(_ imageView: UIImageView) {
-//        let toogleTestModeGestureRecognizer = UITapGestureRecognizer(
-//            target: self,
-//            action: #selector(toogleTestMode)
-//        )
+    private func setupTitleImageView(_ imageView: UIImageView) {
+        let toogleTestModeGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(toogleTestMode)
+        )
         imageView.image = navigationBarTitleImageViewImage
         imageView.contentMode = .scaleAspectFill
     }
 
 
-    private func setupTitleViewConstraints(titleView: UIView) {
-        let navigationBarHeight = navigationController?.navigationBar.frame.height ?? 44
-
-        titleView.snp.makeConstraints { make in
-            make.width.equalTo(navigationBarHeight).multipliedBy(2)
+    private func setupTitleViewConstraints(
+        imageView: UIView
+    ) {
+        imageView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalToSuperview().dividedBy(1.5)
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview()
         }
     }
 }

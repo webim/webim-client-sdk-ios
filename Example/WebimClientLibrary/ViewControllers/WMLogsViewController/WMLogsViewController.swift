@@ -25,14 +25,12 @@
 //
 
 import UIKit
-import WebimClientLibrary
+import WebimWidget
 
 class WMLogsViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollButton: UIButton!
-
-    lazy var navigationControllerManager = NavigationControllerManager()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -43,11 +41,6 @@ class WMLogsViewController: UIViewController {
         super.viewDidLoad()
         setupTextView()
         setupScrollButtonImage()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        resetNavigationControllerManager()
     }
 
     @IBAction private func scrollToBottom() {
@@ -75,16 +68,8 @@ class WMLogsViewController: UIViewController {
     }
 
     private func updateNavigationBar() {
-        navigationControllerManager.set(isNavigationBarVisible: true)
-        navigationControllerManager.setAdditionalHeight()
-        navigationControllerManager.update(with: .defaultStyle, removeOriginBorder: true)
-    }
-
-    private func resetNavigationControllerManager() {
-        if #available(iOS 11.0, *) {
-            additionalSafeAreaInsets = .zero
-        }
-        navigationControllerManager.reset()
+        NavigationBarUpdater.shared.set(isNavigationBarVisible: true)
+        NavigationBarUpdater.shared.update(with: .defaultStyle)
     }
 }
 

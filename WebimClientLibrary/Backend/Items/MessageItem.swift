@@ -599,3 +599,11 @@ final class FileItem {
         }
     }
 }
+
+struct SendingFile {
+    
+    var fileName: String
+    var clientSideId: String
+    var fileSize: Int
+    
+}

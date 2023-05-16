@@ -159,6 +159,7 @@ public final class SessionBuilder  {
     private weak var webimLogger: WebimLogger?
     private var webimLoggerVerbosityLevel: WebimLoggerVerbosityLevel?
     private var availableLogTypes = [WebimLogType]()
+    private weak var webimAlert: WebimAlert?
     private var prechat: String?
     private var onlineStatusRequestFrequencyInMillis: Int64?
 
@@ -492,6 +493,25 @@ public final class SessionBuilder  {
 
         return self
     }
+    
+    /**
+     Method to pass WebimLogger object.
+     - parameter webimLogger:
+     `WebimLogger` object.
+     - returns:
+     `SessionBuilder` object with `WebimLogger` object set.
+     - seealso:
+     `WebimLogger`
+     - author:
+     Nikita Lazarev-Zubov
+     - copyright:
+     2017 Webim
+     */
+    public func set(webimAlert: WebimAlert) -> SessionBuilder {
+        self.webimAlert = webimAlert
+
+        return self
+    }
 
     /**
      Builds new `WebimSession` object.
@@ -595,6 +615,7 @@ public final class SessionBuilder  {
                                                 webimLogger: webimLogger,
                                                 verbosityLevel: webimLoggerVerbosityLevel,
                                                 availableLogTypes: availableLogTypes,
+                                                webimAlert: webimAlert,
                                                 prechat: prechat,
                                                 multivisitorSection: multivisitorSection,
                                                 onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis) as WebimSession

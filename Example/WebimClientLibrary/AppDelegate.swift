@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         AppDelegate.shared = self
+        WMKeychainWrapper.standard.setAppGroupName(userDefaults: UserDefaults(suiteName: "group.WebimClient.Share") ?? UserDefaults.standard, keychainAccessGroup: Bundle.main.infoDictionary!["keychainAppIdentifier"] as! String)
         UNUserNotificationCenter.current().delegate = self
         FirebaseApp.configure()
         Crashlytics.crashlytics().setCustomValue(Settings.shared.accountName, forKey: "AccountName")
@@ -51,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let notificationTypes: UNAuthorizationOptions = [.alert,
                                                          .badge,
                                                          .sound]
+        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
         UNUserNotificationCenter.current().requestAuthorization(options: notificationTypes) { (granted, error) in
             if granted {
                 // application.registerUserNotificationSettings(remoteNotificationSettings)
@@ -83,22 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         print(userInfo)
     }
-    
-    static var keyboardWindow: UIWindow? {
-        
-        let windows = UIApplication.shared.windows
-        if let keyboardWindow = windows.first(where: { NSStringFromClass($0.classForCoder) == "UIRemoteKeyboardWindow" }) {
-          return keyboardWindow
-        }
-        return nil
-    }
-    
-    static func keyboardHidden(_ hidden: Bool) {
-        DispatchQueue.main.async {
-            AppDelegate.keyboardWindow?.isHidden = hidden
-        }
-    }
-    
+
     static func checkMainThread() {
         if !Thread.isMainThread {
 #if DEBUG
@@ -120,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
                 navigationController.popToRootViewController(animated: false)
                 guard let startViewController = navigationController.viewControllers.first as? WMStartViewController else { return }
-                startViewController.startChatButton.sendActions(for: .touchUpInside)
+                startViewController.startChat()
             }
         } else {
             // Handle another type of remote notification.
@@ -129,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func isChatIsTopViewController() -> Bool {
         guard let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return false }
-        return navigationController.viewControllers.last is ChatViewController
+        return navigationController.viewControllers.last?.isChatViewController == true
     }
 }
 

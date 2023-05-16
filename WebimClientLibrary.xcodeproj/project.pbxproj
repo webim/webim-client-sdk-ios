@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		113057D6256E8088004BB13E /* StickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057D5256E8088004BB13E /* StickerItem.swift */; };
 		113057A9256D209D004BB13E /* UploadedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057A8256D209D004BB13E /* UploadedFile.swift */; };
 		113057AC256D22DE004BB13E /* UploadedFileImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057AB256D22DE004BB13E /* UploadedFileImpl.swift */; };
 		1134DD5A234A3FF5008FA6F0 /* NotFatalErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */; };
@@ -25,6 +24,8 @@
 		11B3B133291DD3C000BA2C96 /* AccountConfigItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3B132291DD3C000BA2C96 /* AccountConfigItem.swift */; };
 		11D5A33326D45E4A00AE290C /* LocationSettingsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
+		11E5C3B428FED8E100389B07 /* WebimAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E5C3B328FED8E100389B07 /* WebimAlert.swift */; };
+		11E5C3BB2900193E00389B07 /* WebimInternalAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E5C3BA2900193E00389B07 /* WebimInternalAlert.swift */; };
 		123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */; };
 		1289E9752695BB3A007C15BF /* WMDataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9742695BB39007C15BF /* WMDataEncryptor.swift */; };
 		1289E9772695BBBC007C15BF /* WMKeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */; };
@@ -127,7 +128,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		113057D5256E8088004BB13E /* StickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerItem.swift; sourceTree = "<group>"; };
 		113057A8256D209D004BB13E /* UploadedFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFile.swift; sourceTree = "<group>"; };
 		113057AB256D22DE004BB13E /* UploadedFileImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFileImpl.swift; sourceTree = "<group>"; };
 		1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFatalErrorHandler.swift; sourceTree = "<group>"; };
@@ -145,6 +145,8 @@
 		11B3B132291DD3C000BA2C96 /* AccountConfigItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfigItem.swift; sourceTree = "<group>"; };
 		11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
+		11E5C3B328FED8E100389B07 /* WebimAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimAlert.swift; sourceTree = "<group>"; };
+		11E5C3BA2900193E00389B07 /* WebimInternalAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimInternalAlert.swift; sourceTree = "<group>"; };
 		123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSynchronizedObject.swift; sourceTree = "<group>"; };
 		1289E9742695BB39007C15BF /* WMDataEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMDataEncryptor.swift; sourceTree = "<group>"; };
 		1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMKeychainWrapper.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */,
 				113C581B24EDE32F006A08C2 /* Survey.swift */,
 				113057A8256D209D004BB13E /* UploadedFile.swift */,
+				11E5C3B328FED8E100389B07 /* WebimAlert.swift */,
 			);
 			path = WebimClientLibrary;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */,
 				113C582224EF24D9006A08C2 /* SurveyController.swift */,
 				11474E6125F2A5AD00D560FB /* FileUrlCreator.swift */,
+				11E5C3BA2900193E00389B07 /* WebimInternalAlert.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -397,7 +401,6 @@
 		8FD24482200CE25A007EB9CB /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				113057D5256E8088004BB13E /* StickerItem.swift */,
 				8FD24483200CE25A007EB9CB /* OperatorItem.swift */,
 				8FD24484200CE25A007EB9CB /* DepartmentItem.swift */,
 				8FD24485200CE25A007EB9CB /* RatingItem.swift */,
@@ -557,6 +560,7 @@
 				8FD244BD200CE25C007EB9CB /* RemoteHistoryProvider.swift in Sources */,
 				8FD244AF200CE25C007EB9CB /* MessageTracker.swift in Sources */,
 				CEF33876221C74C700A7EA27 /* FAQCategoryInfoItem.swift in Sources */,
+				11E5C3BB2900193E00389B07 /* WebimInternalAlert.swift in Sources */,
 				113C581E24EE5892006A08C2 /* SurveyImpl.swift in Sources */,
 				8FD244E9200CE25C007EB9CB /* FatalErrorHandler.swift in Sources */,
 				8FD244C6200CE25C007EB9CB /* SessionDestroyer.swift in Sources */,
@@ -590,7 +594,6 @@
 				8FD244D6200CE25C007EB9CB /* ChatItem.swift in Sources */,
 				8FD244E3200CE25C007EB9CB /* WebimRemoteNotificationImpl.swift in Sources */,
 				1134DD5C234A4BC8008FA6F0 /* WebimNotFatalError.swift in Sources */,
-				113057D6256E8088004BB13E /* StickerItem.swift in Sources */,
 				8FD244CA200CE25C007EB9CB /* DeltaRequestLoop.swift in Sources */,
 				CE6A6984220C9BBB00B11E29 /* FAQDestroyer.swift in Sources */,
 				CE6A697E220C7F3000B11E29 /* FAQClient.swift in Sources */,
@@ -602,6 +605,7 @@
 				8FD244DF200CE25C007EB9CB /* MessageHolder.swift in Sources */,
 				113C582324EF24D9006A08C2 /* SurveyController.swift in Sources */,
 				8FD244AC200CE25C007EB9CB /* Operator.swift in Sources */,
+				11E5C3B428FED8E100389B07 /* WebimAlert.swift in Sources */,
 				8FD244E1200CE25C007EB9CB /* OperatorImpl.swift in Sources */,
 				CEBF03962211D5EE001658D8 /* FAQStructureItem.swift in Sources */,
 				113C582524F5A11C006A08C2 /* SurveyFactory.swift in Sources */,

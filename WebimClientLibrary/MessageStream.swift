@@ -3162,3 +3162,9 @@ public enum ReactionString {
     case dislike
     
 }
+
+public enum SendFileProgressState: String {
+    case upload
+    
+    case error
+}

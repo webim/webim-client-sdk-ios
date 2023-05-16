@@ -100,18 +100,20 @@ final class WebimService {
     func createSession() {
         
         let deviceToken: String? = WMKeychainWrapper.standard.string(forKey: WMKeychainWrapper.deviceTokenKey)
+        let dictionary = WMKeychainWrapper.standard.dictionary(forKey: "settings_demo")
+        let accountName = dictionary?["account_name"] as? String ?? Settings.shared.accountName
+        let location = dictionary?["location"] as? String ?? Settings.shared.location
+        let pageTitle = dictionary?["page_title"] as? String ?? Settings.shared.pageTitle
         
         let sessionBuilder = Webim.newSessionBuilder()
-            .set(accountName: Settings.shared.accountName)
-            .set(location: Settings.shared.location)
-            .set(pageTitle: Settings.shared.pageTitle)
+            .set(accountName: accountName)
+            .set(location: location)
+            .set(pageTitle: pageTitle)
             .set(fatalErrorHandler: self)
             .set(remoteNotificationSystem: ((deviceToken != nil) ? .apns : .none))
             .set(deviceToken: deviceToken)
             .set(isVisitorDataClearingEnabled: false)
-            .set(webimLogger: WebimLogManager.shared,
-                 verbosityLevel: .verbose,
-                 availableLogTypes: [.networkRequest, .messageHistory, .manualCall, .undefined])
+    
         
         if let notFatalErrorHandler = notFatalErrorHandler {
             _ = sessionBuilder.set(notFatalErrorHandler: notFatalErrorHandler)

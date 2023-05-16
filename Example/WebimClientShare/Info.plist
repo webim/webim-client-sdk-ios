@@ -27,5 +27,7 @@
     </dict>
     <key>UIFileSharingEnabled</key>
     <true/>
+    <key>keychainAppIdentifier</key>
+    <string>$(AppIdentifierPrefix)ru.webim.Webim-Client.Share</string>
 </dict>
 </plist>

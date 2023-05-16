@@ -102,7 +102,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUserAgent = request
-        requestWithUserAgent.setValue("iOS: Webim-Client 3.38.3; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUserAgent.setValue("iOS: Webim-Client 3.39.0; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
         var lastHTTPCode = -1
@@ -141,6 +141,7 @@ class AbstractRequestLoop {
                     WebimInternalLogger.shared.log(
                         entry: webimLoggerEntry,
                         logType: .networkRequest)
+                    WebimInternalAlert.shared.present(title: .networkError, message: .noNetworkConnection)
                     
                     if let error = error as NSError?,
                         !(error.domain == NSURLErrorDomain && error.code == NSURLErrorNotConnectedToInternet) {
@@ -184,7 +185,7 @@ class AbstractRequestLoop {
             }
             
             if let receivedData = receivedData,
-                (httpCode == 200 || httpCode == 403 || httpCode == 413 || httpCode == 415) {
+               (httpCode == 200 || httpCode == 400 || httpCode == 403 || httpCode == 413 || httpCode == 415) {
                 self.internalErrorListener?.connectionStateChanged(connected: true)
                 return receivedData
             }

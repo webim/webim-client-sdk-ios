@@ -33,6 +33,7 @@ class LaunchScreenController: UIViewController {
     @IBOutlet var progressBarView: UIProgressView!
     @IBOutlet var bottomTextLabel: UILabel!
     @IBOutlet var webimLogoImageView: UIImageView!
+    @IBOutlet var appVersion: UILabel!
     
     // MARK: - Properties
     private let progress = Progress(totalUnitCount: 100)
@@ -49,7 +50,9 @@ class LaunchScreenController: UIViewController {
             userInfo: nil,
             repeats: true
         )
-        
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String, let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            self.appVersion.text = "v. " + version
+        }
         animateView()
     }
     
@@ -76,6 +79,7 @@ class LaunchScreenController: UIViewController {
                 self.progressBarView.alpha = 0
                 self.webimLogoImageView.alpha = 0
                 self.bottomTextLabel.alpha = 0
+                self.appVersion.alpha = 0
             },
             completion: { _ in
                 let rootVC = WMStartViewController.loadViewControllerFromXib()

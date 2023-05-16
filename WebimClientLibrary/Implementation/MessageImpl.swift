@@ -880,6 +880,10 @@ final class KeyboardButtonImpl: KeyboardButton {
     func getConfiguration() -> Configuration? {
         return ConfigurationImpl(data: buttonItem.getConfiguration())
     }
+    
+    func getParams() -> Params? {
+        return ParamsImpl(data: buttonItem.getParams())
+    }
 }
 
 // MARK: -
@@ -985,6 +989,37 @@ final class ConfigurationImpl: Configuration {
     
     func getState() -> ButtonState {
         return configurationItem.getState()
+    }
+ 
+}
+
+// MARK: -
+/**
+ - seealso:
+ `KeyboardButton`
+ - author:
+ Anna Frolova
+ - copyright:
+ 2023 Webim
+ */
+final class ParamsImpl: Params {
+    
+    private let paramsItem: ParamsItem?
+    
+    init(data: ParamsItem?) {
+        self.paramsItem = data
+    }
+    
+    func getType() -> ParamsButtonType? {
+        return paramsItem?.getType()
+    }
+    
+    func getAction() -> String? {
+        return paramsItem?.getAction()
+    }
+    
+    func getColor() -> String? {
+        return paramsItem?.getColor()
     }
  
 }

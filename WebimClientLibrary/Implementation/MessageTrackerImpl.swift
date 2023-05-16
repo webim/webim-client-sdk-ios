@@ -426,7 +426,6 @@ final class MessageTrackerImpl {
                         
                         if message.getSource().isHistoryMessage() {
                             let messageTime = message.getTime()
-                            let headMessageTime = headMessage?.getTime() ?? messageTime
                             if (messageTime >= first.getTime())
                                 && (messageTime <= last.getTime())
                                 && messageHolder.getCurrentChatMessagesWereReceived() {

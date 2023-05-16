@@ -106,12 +106,14 @@ final class WebimSessionImpl {
                                 webimLogger: WebimLogger?,
                                 verbosityLevel: SessionBuilder.WebimLoggerVerbosityLevel?,
                                 availableLogTypes: [SessionBuilder.WebimLogType],
+                                webimAlert: WebimAlert?,
                                 prechat: String?,
                                 multivisitorSection: String,
                                 onlineStatusRequestFrequencyInMillis: Int64?) -> WebimSessionImpl {
         WebimInternalLogger.setup(webimLogger: webimLogger,
                                   verbosityLevel: verbosityLevel,
                                   availableLogTypes: availableLogTypes)
+        WebimInternalAlert.setup(webimAlert: webimAlert)
         let webimSdkQueue = DispatchQueue.current!
         
         
@@ -211,6 +213,7 @@ final class WebimSessionImpl {
                 WMKeychainWrapper.standard.setDictionary(userDefaults,
                                           forKey: userDefaultsKey)
             }
+            
             guard let dbName = userDefaults?[WMKeychainWrapperMainPrefix.historyDBname.rawValue] as? String else {
                 WebimInternalLogger.shared.log(
                     entry: "Can not find or write DB Name to WMKeychainWrapper in WebimSessionImpl.\(#function)")

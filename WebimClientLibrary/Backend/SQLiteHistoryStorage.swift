@@ -117,7 +117,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     // MARK: HistoryStorage protocol methods
     
     static func getMajorVersion() -> Int {
-        return 10
+        return 11
     }
     
     func getMajorVersion() -> Int {
@@ -300,6 +300,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     
                     let query: String = "INSERT OR FAIL INTO history ("
                         + "\(SQLiteHistoryStorage.ColumnName.id.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.clientSideID.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.timestamp.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.senderID.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.senderName.rawValue), "
@@ -311,9 +312,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorReact.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorChangeReaction.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                        + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                     let statement = try db.prepare(query)
-                    try statement.run(message.getID(),
+                    try statement.run(messageHistorID.getDBid(),
+                                      message.getID(),
                                       messageHistorID.getTimeInMicrosecond(),
                                       message.getOperatorID(),
                                       message.getSenderName(),
@@ -779,7 +781,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         let reaction = row[SQLiteHistoryStorage.reaction] ?? nil
         
         return MessageImpl(serverURLString: serverURLString,
-                           id: (clientSideID ?? id),
+                           id: clientSideID ?? id,
                            serverSideID: id,
                            keyboard: keyboard,
                            keyboardRequest: keyboardRequest,
