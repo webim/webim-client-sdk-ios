@@ -11,8 +11,7 @@ target 'WebimClientLibrary_Example' do
     pod 'WebimClientLibrary', :path => '../'
     pod 'Firebase/Crashlytics'
     pod 'Firebase/Analytics'
-    pod 'WebimWidget', :git => 
-'https://github.com/webim/webim-mobile-ui-ios.git', :tag => '1.0.0'
+    pod 'WebimWidget', :git => 'https://github.com/webim/webim-mobile-ui-ios.git', :tag => '1.0.0'
 
     target 'WebimClientLibrary_Tests' do
         inherit! :search_paths

@@ -549,6 +549,10 @@ final class MessageHolder {
                         if currentChatMessage != historyMessage {
                             messageTracker?.messageListener?.changed(message: currentChatMessage,
                                                                      to: historyMessage)
+                            WebimInternalLogger.shared.log(
+                                entry: "Changing success.\nMessage \(currentChatMessage.getText()) changed to \(historyMessage.getText()) in MessageHolder - \(#function)",
+                                verbosityLevel: .verbose,
+                                logType: .messageHistory)
                         } else {
                             messageTracker?.idToHistoryMessageMap[id] = currentChatMessage
                         }
@@ -559,6 +563,10 @@ final class MessageHolder {
                 if currentChatMessage.canBeEdited() {
                     currentChatMessage.setMessageCanBeEdited(messageCanBeEdited: false)
                     messageTracker?.messageListener?.changed(message: currentChatMessage, to: currentChatMessage)
+                    WebimInternalLogger.shared.log(
+                        entry: "Changing success.\nMessage \(currentChatMessage.getText()) changed to \(currentChatMessage.getText()) in MessageHolder - \(#function)",
+                        verbosityLevel: .verbose,
+                        logType: .messageHistory)
                 }
             }
         }
@@ -712,6 +720,10 @@ final class MessageHolder {
                 if replacementMessage != currentChatMessage {
                     messageTracker?.messageListener?.changed(message: currentChatMessage,
                                                              to: replacementMessage)
+                    WebimInternalLogger.shared.log(
+                        entry: "Changing success.\nMessage \(currentChatMessage.getText()) changed to \(replacementMessage.getText()) in MessageHolder - \(#function)",
+                        verbosityLevel: .verbose,
+                        logType: .messageHistory)
                 }
                 
                 currentChatMessages.remove(at: currentChatMessageIndex)

@@ -136,6 +136,9 @@ final class DeltaCallback {
         }
         
         currentChat = fullUpdate.getChat()
+        for message in currentChat?.getMessages() ?? [] {
+            WebimInternalLogger.shared.log(entry: "Delta chat: \'\(message.getText() ?? "")\'", verbosityLevel: .debug, logType: .messageHistory)
+        }
         
         var isCurrentChatEmpty = true
         if let currentChat = currentChat,
@@ -198,7 +201,9 @@ final class DeltaCallback {
         default:
             break
         }
-        
+        for message in currentChat?.getMessages() ?? [] {
+            WebimInternalLogger.shared.log(entry: "Delta chat: \'\(message.getText() ?? "")\'", verbosityLevel: .debug, logType: .messageHistory)
+        }
         messageStream?.changingChatStateOf(chat: currentChat)
     }
     
@@ -232,6 +237,7 @@ final class DeltaCallback {
             
             let messageItem = MessageItem(jsonDictionary: deltaData)
             let message = currentChatMessageMapper.map(message: messageItem)
+            WebimInternalLogger.shared.log(entry: "Delta message: \'\(message?.getText() ?? "")\'", verbosityLevel: .debug, logType: .messageHistory)
             if deltaEvent == .add {
                 var isNewMessage = false
                 if let currentChat = currentChat,

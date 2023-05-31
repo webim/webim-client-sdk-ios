@@ -274,11 +274,19 @@ final class MessageTrackerImpl {
             if let beforeMessage = idToHistoryMessageMap[beforeID.getDBid()] {
                 messageListener?.added(message: message,
                                        after: beforeMessage)
+                WebimInternalLogger.shared.log(
+                    entry: "History. Adding message \'\(message.getText())\' after \'\(beforeMessage.getText())\'",
+                    verbosityLevel: .verbose,
+                    logType: .messageHistory)
             }
         } else {
             let currentChatMessages = messageHolder.getCurrentChatMessages()
             messageListener?.added(message: message,
                                    after: (currentChatMessages.isEmpty ? nil : currentChatMessages.last))
+            WebimInternalLogger.shared.log(
+                entry: "History. Adding message \'\(message.getText())\' after \'\(currentChatMessages.isEmpty ? "" : currentChatMessages.last?.getText() ?? "")\'",
+                verbosityLevel: .verbose,
+                logType: .messageHistory)
         }
         
         idToHistoryMessageMap[messageHistoryID.getDBid()] = message
@@ -357,8 +365,16 @@ final class MessageTrackerImpl {
                     let firstMessage = messagesToSend.first {
                     messageListener?.added(message: message,
                                             after: firstMessage)
+                    WebimInternalLogger.shared.log(
+                        entry: "Current chat. Adding message \'\(message.getText())\' after \'\(firstMessage.getText())\'",
+                        verbosityLevel: .verbose,
+                        logType: .messageHistory)
                 } else {
                     messageListener?.added(message: message, after: nil)
+                    WebimInternalLogger.shared.log(
+                        entry: "Current chat. Adding message \'\(message.getText())\'",
+                        verbosityLevel: .verbose,
+                        logType: .messageHistory)
                 }
             }
         }

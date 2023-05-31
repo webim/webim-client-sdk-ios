@@ -12,7 +12,7 @@ Mimimum Webim server version supported – **10.5.30**.
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.39.0'
+pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.39.1'
 ```
 `use_frameworks!` must be specified.
 
@@ -20,7 +20,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.39.0
+github "webim/webim-client-sdk-ios" ~> 3.39.1
 ```
 
 ### Swift Package Manager
@@ -41,10 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Message deleting fixed.
-* Protocol `Params` for `KeyboardButton` added.
-* Support for new `KeyboardResponseError.canNotCreateResponse` from server added.
-* New initialization request endpoint. **Important**: mimimum Webim server version supported – **10.5.30**.
+* New logs for WebimLogger.
 
 ## Example
 
