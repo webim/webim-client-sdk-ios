@@ -102,9 +102,10 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUserAgent = request
-        requestWithUserAgent.setValue("iOS: Webim-Client 3.39.1; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUserAgent.setValue("iOS: Webim-Client 3.39.2; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         var errorCounter = 0
+        var connectionErrorCounter = 0
         var lastHTTPCode = -1
         
         while isRunning() {
@@ -177,7 +178,10 @@ class AbstractRequestLoop {
                         self.internalErrorListener?.onNotFatal(error: .noNetworkConnection)
                         self.internalErrorListener?.connectionStateChanged(connected: false)
                     })
-                    usleep(useconds_t(10_000_000.0))
+                    usleep(useconds_t(1_000_000 * (connectionErrorCounter / 5)))
+                    if connectionErrorCounter < 24 {
+                        connectionErrorCounter += 1
+                    }
                 } else {
                     throw UnknownError.serverError
                 }
