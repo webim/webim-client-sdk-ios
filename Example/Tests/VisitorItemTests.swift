@@ -25,7 +25,7 @@
 //
 
 import UIKit
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 import XCTest
 
 class VisitorItemTests: XCTestCase {

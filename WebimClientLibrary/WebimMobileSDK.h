@@ -26,10 +26,10 @@
 #import <UIKit/UIKit.h>
 
 //! Project version number for WebimClientLibrary.
-FOUNDATION_EXPORT double WebimClientLibraryVersionNumber;
+FOUNDATION_EXPORT double WebimMobileSDKVersionNumber;
 
 //! Project version string for WebimClientLibrary.
-FOUNDATION_EXPORT const unsigned char WebimClientLibraryVersionString[];
+FOUNDATION_EXPORT const unsigned char WebimMobileSDKVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <WebimClientLibrary/PublicHeader.h>
 

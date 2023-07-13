@@ -29,7 +29,7 @@
 		123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */; };
 		1289E9752695BB3A007C15BF /* WMDataEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9742695BB39007C15BF /* WMDataEncryptor.swift */; };
 		1289E9772695BBBC007C15BF /* WMKeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */; };
-		8FD2428B200CDB18007EB9CB /* WebimClientLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8FD2428B200CDB18007EB9CB /* WebimMobileSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD2427D200CDB18007EB9CB /* WebimMobileSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445C200CE258007EB9CB /* WebimLogger.swift */; };
 		8FD244A9200CE25C007EB9CB /* MessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445D200CE258007EB9CB /* MessageListener.swift */; };
 		8FD244AA200CE25C007EB9CB /* WebimRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2445E200CE259007EB9CB /* WebimRemoteNotification.swift */; };
@@ -150,8 +150,8 @@
 		123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSynchronizedObject.swift; sourceTree = "<group>"; };
 		1289E9742695BB39007C15BF /* WMDataEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMDataEncryptor.swift; sourceTree = "<group>"; };
 		1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMKeychainWrapper.swift; sourceTree = "<group>"; };
-		8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WebimClientLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebimClientLibrary.h; sourceTree = "<group>"; };
+		8FD2427A200CDB18007EB9CB /* WebimMobileSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WebimMobileSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FD2427D200CDB18007EB9CB /* WebimMobileSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebimMobileSDK.h; sourceTree = "<group>"; };
 		8FD2445C200CE258007EB9CB /* WebimLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimLogger.swift; sourceTree = "<group>"; };
 		8FD2445D200CE258007EB9CB /* MessageListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageListener.swift; sourceTree = "<group>"; };
 		8FD2445E200CE259007EB9CB /* WebimRemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimRemoteNotification.swift; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 		8FD2427B200CDB18007EB9CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */,
+				8FD2427A200CDB18007EB9CB /* WebimMobileSDK.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -283,7 +283,7 @@
 			children = (
 				8FD24465200CE25A007EB9CB /* Backend */,
 				8FD2449A200CE25B007EB9CB /* Implementation */,
-				8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */,
+				8FD2427D200CDB18007EB9CB /* WebimMobileSDK.h */,
 				8FD24461200CE259007EB9CB /* Department.swift */,
 				8FD244A4200CE25B007EB9CB /* FatalErrorHandler.swift */,
 				CE6A6979220C731600B11E29 /* FAQ.swift */,
@@ -474,16 +474,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8FD2428B200CDB18007EB9CB /* WebimClientLibrary.h in Headers */,
+				8FD2428B200CDB18007EB9CB /* WebimMobileSDK.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8FD24279200CDB18007EB9CB /* WebimClientLibrary */ = {
+		8FD24279200CDB18007EB9CB /* WebimMobileSDK */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FD2428E200CDB18007EB9CB /* Build configuration list for PBXNativeTarget "WebimClientLibrary" */;
+			buildConfigurationList = 8FD2428E200CDB18007EB9CB /* Build configuration list for PBXNativeTarget "WebimMobileSDK" */;
 			buildPhases = (
 				8FD24275200CDB18007EB9CB /* Sources */,
 				8FD24276200CDB18007EB9CB /* Frameworks */,
@@ -494,9 +494,9 @@
 			);
 			dependencies = (
 			);
-			name = WebimClientLibrary;
+			name = WebimMobileSDK;
 			productName = WebimClientLibrary;
-			productReference = 8FD2427A200CDB18007EB9CB /* WebimClientLibrary.framework */;
+			productReference = 8FD2427A200CDB18007EB9CB /* WebimMobileSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -516,7 +516,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8FD24274200CDB18007EB9CB /* Build configuration list for PBXProject "WebimClientLibrary" */;
+			buildConfigurationList = 8FD24274200CDB18007EB9CB /* Build configuration list for PBXProject "WebimMobileSDK" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -528,7 +528,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8FD24279200CDB18007EB9CB /* WebimClientLibrary */,
+				8FD24279200CDB18007EB9CB /* WebimMobileSDK */,
 			);
 		};
 /* End PBXProject section */
@@ -804,7 +804,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ru.webim.WebimClientLibrary;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.webim.WebimMobileSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -834,7 +834,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ru.webim.WebimClientLibrary;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.webim.WebimMobileSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -846,7 +846,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8FD24274200CDB18007EB9CB /* Build configuration list for PBXProject "WebimClientLibrary" */ = {
+		8FD24274200CDB18007EB9CB /* Build configuration list for PBXProject "WebimMobileSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FD2428C200CDB18007EB9CB /* Debug */,
@@ -855,7 +855,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FD2428E200CDB18007EB9CB /* Build configuration list for PBXNativeTarget "WebimClientLibrary" */ = {
+		8FD2428E200CDB18007EB9CB /* Build configuration list for PBXNativeTarget "WebimMobileSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FD2428F200CDB18007EB9CB /* Debug */,

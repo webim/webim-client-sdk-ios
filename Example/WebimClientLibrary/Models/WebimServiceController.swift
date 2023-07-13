@@ -25,7 +25,7 @@
 //
 
 import UIKit
-import WebimClientLibrary
+import WebimMobileSDK
 
 class WebimServiceController {
     

@@ -24,7 +24,7 @@
 //  SOFTWARE.
 //
 import Foundation
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 
 // MARK: - Mocking RemoteHistoryProvider
 final class RemoteHistoryProviderMock: RemoteHistoryProvider {

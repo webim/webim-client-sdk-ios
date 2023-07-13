@@ -25,7 +25,7 @@
 //
 
 import Foundation
-import WebimClientLibrary
+import WebimMobileSDK
 import XCTest
 
 class WebimTests: XCTestCase {

@@ -26,7 +26,7 @@
 
 import UIKit
 import XCTest
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 @testable import WebimClientLibrary_Example
 
 class ChatViewControllerTests: XCTestCase {

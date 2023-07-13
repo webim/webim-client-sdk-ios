@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 import XCTest
 
 // MARK: - Global constants

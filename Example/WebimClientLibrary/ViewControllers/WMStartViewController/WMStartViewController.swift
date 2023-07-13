@@ -26,7 +26,7 @@
 
 import UIKit
 import WebimWidget
-import WebimClientLibrary
+import WebimMobileSDK
 
 final class WMStartViewController: UIViewController {
 

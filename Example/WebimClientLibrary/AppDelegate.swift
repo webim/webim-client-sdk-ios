@@ -26,7 +26,7 @@
 
 import Firebase
 import UIKit
-import WebimClientLibrary
+import WebimMobileSDK
 import UserNotifications
 
 @UIApplicationMain

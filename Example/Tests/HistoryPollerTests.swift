@@ -26,7 +26,7 @@
 
 import Foundation
 import XCTest
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 
 class HistoryPollerTests: XCTestCase {
     var sut: HistoryPoller!

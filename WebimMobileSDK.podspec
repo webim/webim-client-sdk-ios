@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
 
-  s.name = 'WebimClientLibrary'
-  s.version = '3.39.2'
+  s.name = 'WebimMobileSDK'
+  s.version = '3.39.3'
   
-  s.author = { 'Webim.ru Ltd.' => 'n.lazarev-zubov@webim.ru' }
+  s.author = { 'Webim.ru Ltd.' => 'webimdev@gmail.com' }
   s.homepage = 'https://webim.ru/integration/mobile-sdk/ios-sdk-howto/'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
-  s.summary = 'Webim.ru client SDK for iOS.'
+  s.summary = 'Webim.ru mobile SDK for iOS.'
   
   s.ios.deployment_target = '9.0'
   s.swift_version = '5.0'

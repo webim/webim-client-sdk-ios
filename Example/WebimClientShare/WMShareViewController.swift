@@ -26,7 +26,7 @@
 
 import UIKit
 import Social
-import WebimClientLibrary
+import WebimMobileSDK
 import MobileCoreServices
 import UniformTypeIdentifiers
 import Foundation

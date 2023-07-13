@@ -25,7 +25,7 @@
 //
 
 import Foundation
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 import XCTest
 
 @available(iOS 10.0, *)

@@ -25,7 +25,7 @@
 //
 
 import Foundation
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 import XCTest
 
 class LocationSettingsHolderTests: XCTestCase {

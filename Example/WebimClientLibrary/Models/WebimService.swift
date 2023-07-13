@@ -25,7 +25,7 @@
 //
 
 import Foundation
-import WebimClientLibrary
+import WebimMobileSDK
 
 final class WebimService {
     

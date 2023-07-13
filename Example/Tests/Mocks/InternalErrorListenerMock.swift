@@ -25,7 +25,7 @@
 //
 
 import Foundation
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 
 final class InternalErrorListenerForTests: InternalErrorListener {
     func onNotFatal(error: NotFatalErrorType) {

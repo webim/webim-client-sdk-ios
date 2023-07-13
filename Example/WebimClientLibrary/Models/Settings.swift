@@ -25,7 +25,7 @@
 //
 
 import Foundation
-import WebimClientLibrary
+import WebimMobileSDK
 // MARK: - Global constants
 let USER_DEFAULTS_NAME = "settings_demo"
 enum WMSettingsKeychainKey: String {

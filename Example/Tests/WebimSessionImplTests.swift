@@ -27,7 +27,7 @@
 import Foundation
 import XCTest
 import Security
-@testable import WebimClientLibrary
+@testable import WebimMobileSDK
 
 
 class WebimSessionImplTests: XCTestCase {
