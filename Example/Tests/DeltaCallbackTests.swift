@@ -622,7 +622,7 @@ class MessageMapperForTests: MessageMapper {
 
     override func map(message: MessageItem) -> MessageImpl? {
         return MessageImpl(serverURLString: "Some",
-                                  id: "Some",
+                                  clientSideID: "Some",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,

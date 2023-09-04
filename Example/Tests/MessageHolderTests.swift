@@ -49,7 +49,7 @@ class MessageHolderTests: XCTestCase {
         
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             history.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                                       id: String(index),
+                                       clientSideID: String(index),
                                        serverSideID: nil,
                                        keyboard: nil,
                                        keyboardRequest: nil,
@@ -85,7 +85,7 @@ class MessageHolderTests: XCTestCase {
         
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             currentChat.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                                           id: String(index),
+                                           clientSideID: String(index),
                                            serverSideID: nil,
                                            keyboard: nil,
                                            keyboardRequest: nil,
@@ -121,7 +121,7 @@ class MessageHolderTests: XCTestCase {
         
         for message in currentChat {
             let newMessage = MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                                         id: message.getID(),
+                                         clientSideID: message.getID(),
                                          serverSideID: message.getServerSideID(),
                                          keyboard: message.getKeyboard(),
                                          keyboardRequest: message.getKeyboardRequest(),
@@ -155,7 +155,7 @@ class MessageHolderTests: XCTestCase {
         messagesCount = messagesCount + messagesCount
         
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                           id: String(messagesCount),
+                           clientSideID: String(messagesCount),
                            serverSideID: nil,
                            keyboard: nil,
                            keyboardRequest: nil,
@@ -183,7 +183,7 @@ class MessageHolderTests: XCTestCase {
     
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                           id: currentChatMessage.getID(),
+                           clientSideID: currentChatMessage.getID(),
                            serverSideID: nil,
                            keyboard: currentChatMessage.getKeyboard(),
                            keyboardRequest: currentChatMessage.getKeyboardRequest(),
@@ -211,7 +211,7 @@ class MessageHolderTests: XCTestCase {
     
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                           id: historyMessage.getID(),
+                           clientSideID: historyMessage.getID(),
                            serverSideID: nil,
                            keyboard: historyMessage.getKeyboard(),
                            keyboardRequest: historyMessage.getKeyboardRequest(),
@@ -1659,7 +1659,7 @@ class MessageHolderTests: XCTestCase {
     
     func testSetMessagesToSend() {
         let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
-                                          id: "1",
+                                          clientSideID: "1",
                                           senderName: "Sender",
                                           type: .operatorMessage,
                                           text: "Text",
@@ -1673,7 +1673,7 @@ class MessageHolderTests: XCTestCase {
     
     func testSendingMessage() {
         let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
-                                          id: "1",
+                                          clientSideID: "1",
                                           senderName: "Sender",
                                           type: .operatorMessage,
                                           text: "Text",
@@ -1688,7 +1688,7 @@ class MessageHolderTests: XCTestCase {
     func testSendingCancelled() {
         let messageID = "1"
         let messageToSend = MessageToSend(serverURLString: "http://demo.webim.ru",
-                                          id: messageID,
+                                          clientSideID: messageID,
                                           senderName: "Sender",
                                           type: .operatorMessage,
                                           text: "Text",

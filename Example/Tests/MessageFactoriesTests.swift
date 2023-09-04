@@ -143,7 +143,7 @@ class SendingFactoryTests: XCTestCase {
 
     func testCreateTextMessageToSendWithQuoteWith() {
         let message = MessageImpl(serverURLString: "Some",
-                                  id: "Some",
+                                  clientSideID: "Some",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,

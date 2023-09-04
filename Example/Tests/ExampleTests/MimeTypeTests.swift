@@ -24,7 +24,7 @@
 //  SOFTWARE.
 //
 
-@testable import WebimClientLibrary_Example
+@testable import WebimMobileSDK_Example
 import Foundation
 import XCTest
 

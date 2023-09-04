@@ -127,14 +127,14 @@ class WMShareViewController: UIViewController, SendFileCompletionHandler {
             return
         }
         DispatchQueue.main.async {
-            var message = "Find sending unknown error".localized
+            var message = "File sending unknown error".localized
             switch self.sendFileError {
             case .fileSizeExceeded:
                 message = "File is too large.".localized
             case .fileTypeNotAllowed:
                 message = "File type is not supported".localized
             case .unknown:
-                message = "Find sending unknown error".localized
+                message = "File sending unknown error".localized
             case .uploadedFileNotFound:
                 message = "Sending files in body is not supported".localized
             case .unauthorized:

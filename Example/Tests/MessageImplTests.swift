@@ -264,7 +264,7 @@ class MessageImplTests: XCTestCase {
     // MARK: - Tests
     func testToString() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -314,7 +314,7 @@ MessageImpl {
     
     func testGetSenderAvatarURL() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -345,7 +345,7 @@ MessageImpl {
     
     func testGetSendStatus() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -377,7 +377,7 @@ MessageImpl {
     
     func testIsEqual() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -404,7 +404,7 @@ MessageImpl {
                                   visitorChangeReaction: nil)
         
         let message1 = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id1",
+                                  clientSideID: "id1",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -430,7 +430,7 @@ MessageImpl {
                                   visitorCanReact: nil,
                                   visitorChangeReaction: nil)
         let message2 = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                   id: "id",
+                                   clientSideID: "id",
                                    serverSideID: nil,
                                    keyboard: nil,
                                    keyboardRequest: nil,
@@ -456,7 +456,7 @@ MessageImpl {
                                    visitorCanReact: nil,
                                    visitorChangeReaction: nil)
         let message3 = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                   id: "id",
+                                   clientSideID: "id",
                                    serverSideID: nil,
                                    keyboard: nil,
                                    keyboardRequest: nil,
@@ -482,7 +482,7 @@ MessageImpl {
                                    visitorCanReact: nil,
                                    visitorChangeReaction: nil)
         let message4 = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                   id: "id",
+                                   clientSideID: "id",
                                    serverSideID: nil,
                                    keyboard: nil,
                                    keyboardRequest: nil,
@@ -508,7 +508,7 @@ MessageImpl {
                                    visitorCanReact: nil,
                                    visitorChangeReaction: nil)
         let message5 = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                   id: "id",
+                                   clientSideID: "id",
                                    serverSideID: nil,
                                    keyboard: nil,
                                    keyboardRequest: nil,
@@ -534,7 +534,7 @@ MessageImpl {
                                    visitorCanReact: nil,
                                    visitorChangeReaction: nil)
         let message6 = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                   id: "id",
+                                   clientSideID: "id",
                                    serverSideID: nil,
                                    keyboard: nil,
                                    keyboardRequest: nil,
@@ -572,7 +572,7 @@ MessageImpl {
     
     func testAssertIsCurrentChat() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -603,7 +603,7 @@ MessageImpl {
     
     func testAssertIsHistory() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -634,7 +634,7 @@ MessageImpl {
     
     func testGetHistoryID() {
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -666,7 +666,7 @@ MessageImpl {
     func testGetCurrentChatID() {
         let currentChatID = "id"
         let message = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -700,7 +700,7 @@ MessageImpl {
         let baseURLString = "http://demo.webim.ru"
         let avatarURLString = "/image.jpg"
         let message = MessageImpl(serverURLString: baseURLString,
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: nil,
                                   keyboardRequest: nil,
@@ -734,7 +734,7 @@ MessageImpl {
         let baseURLString = "http://demo.webim.ru"
         let keyboardImpl = KeyboardImpl(data: convertToDict(keyboardJsonPendingState))
         let message = MessageImpl(serverURLString: baseURLString,
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: keyboardImpl,
                                   keyboardRequest: nil,
@@ -767,7 +767,7 @@ MessageImpl {
         let baseURLString = "http://demo.webim.ru"
         let keyboardImpl = KeyboardImpl(data: convertToDict(keyboardJsonCancelledState))
         let message = MessageImpl(serverURLString: baseURLString,
-                                  id: "id",
+                                  clientSideID: "id",
                                   serverSideID: nil,
                                   keyboard: keyboardImpl,
                                   keyboardRequest: nil,
@@ -1289,7 +1289,7 @@ fileprivate func resetMessageAttachmentsProperties() {
 
 //MARK: Properties
 let defaultMessage = MessageImpl(serverURLString: "https://demo.webim.ru",
-                                 id: "id",
+                                 clientSideID: "id",
                                  serverSideID: nil,
                                  keyboard: nil,
                                  keyboardRequest: nil,
@@ -1316,7 +1316,7 @@ let defaultMessage = MessageImpl(serverURLString: "https://demo.webim.ru",
                                  visitorChangeReaction: nil)
 
 let defaultMessage_2 = MessageImpl(serverURLString: "https://demo.webim.ru",
-                                    id: "id",
+                                    clientSideID: "id",
                                     serverSideID: nil,
                                     keyboard: nil,
                                     keyboardRequest: nil,

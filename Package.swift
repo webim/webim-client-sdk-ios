@@ -4,14 +4,14 @@ import PackageDescription
 let package = Package(
     name: "webim-client-sdk-ios",
     products: [
-        .library(name: "WebimMobileSDK", targets: ["WebimMobileSDK"])
+        .library(name: "WebimClientLibrary", targets: ["WebimClientLibrary"])
     ],
     dependencies: [
         .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.13.3")
     ],
     targets: [
         .target(
-            name: "WebimMobileSDK",
+            name: "WebimClientLibrary",
             dependencies: ["SQLite"],
             path: "WebimClientLibrary"
         )

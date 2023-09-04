@@ -1,37 +1,33 @@
 platform :ios, '11.0'
-workspace 'WebimClientLibrary'
+workspace 'WebimMobileSDK'
 use_frameworks!
 
-target 'WebimClientLibrary_Example' do
+install! 'cocoapods', :deterministic_uuids => false
+
+target 'WebimMobileSDK_Example' do
+    pod 'WebimMobileSDK', :path => '../'
+    pod 'WebimMobileWidget', '1.1.0'
+    pod 'WebimKeyboard', '1.0.2'
+    
+    pod 'Firebase/Crashlytics'
+    pod 'Firebase/Analytics'
+    
     target 'WebimClientShare' do
         use_frameworks!
         pod 'WebimMobileSDK', :path => '../'
-        project 'WebimClientLibrary.xcodeproj'
-    end   
-    pod 'WebimMobileSDK', :path => '../'
-    pod 'Firebase/Crashlytics'
-    pod 'Firebase/Analytics'
-    pod 'WebimMobileWidget', '1.0.1'
+        project 'WebimMobileSDK.xcodeproj'
+    end
 
-    target 'WebimClientLibrary_Tests' do
+    target 'WebimMobileSDK_Tests' do
         inherit! :search_paths
     end
     
     post_install do |installer|
       installer.pods_project.targets.each do |target|
-        if target.name == 'WebimMobileSDK' || target.name == 
-'SQLite.swift' || target.name == 'Cosmos' || target.name == 'Nuke'
-          target.build_configurations.each do |config|
-            config.build_settings['SWIFT_VERSION'] = '5.0'
-          end
-        else
-          target.build_configurations.each do |config|
-            config.build_settings['SWIFT_VERSION'] = '4.2'
-          end
-        end
 
        target.build_configurations.each do |config|
           config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+          config.build_settings['SWIFT_VERSION'] = '5.0'
        end
 
         target.build_configurations.each do |config|
@@ -41,8 +37,7 @@ target 'WebimClientLibrary_Example' do
           end
         end
 
-        if target.name == 'SlackTextViewController' || target.name == 
-'WebimMobileWidget'
+        if target.name == 'SlackTextViewController' || target.name == 'WebimMobileWidget'
           target.build_configurations.each do |config|
             config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
           end

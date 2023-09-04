@@ -40,7 +40,7 @@ class MemoryHistoryStorageTests: XCTestCase {
         
         for index in 1 ... numberOfMessages {
             messages.append(MessageImpl(serverURLString: MemoryHistoryStorageTests.SERVER_URL_STRING,
-                                        id: String(index),
+                                        clientSideID: String(index),
                                         serverSideID: nil,
                                         keyboard: nil,
                                         keyboardRequest: nil,

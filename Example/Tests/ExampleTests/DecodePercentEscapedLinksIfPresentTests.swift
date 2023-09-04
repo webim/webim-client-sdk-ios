@@ -25,7 +25,7 @@
 //
 
 import Foundation
-import WebimClientLibrary_Example
+import WebimMobileSDK_Example
 import XCTest
 
 class DecodePercentEscapedLinksIfPresentTests: XCTestCase {

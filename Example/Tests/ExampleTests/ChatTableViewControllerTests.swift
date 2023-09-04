@@ -27,7 +27,7 @@
 import UIKit
 import XCTest
 @testable import WebimMobileSDK
-@testable import WebimClientLibrary_Example
+@testable import WebimMobileSDK_Example
 
 class ChatViewControllerTests: XCTestCase {
     
@@ -45,7 +45,7 @@ class ChatViewControllerTests: XCTestCase {
         var messages = [Message]()
         for index in 0 ... 2 {
             let message = MessageImpl(serverURLString: "http://demo.webim.ru/",
-                                      id: String(index),
+                                      clientSideID: String(index),
                                       serverSideID: nil,
                                       keyboard: nil,
                                       keyboardRequest: nil,

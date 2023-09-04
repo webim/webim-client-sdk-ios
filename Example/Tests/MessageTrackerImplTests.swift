@@ -51,7 +51,7 @@ class MessageTrackerImplTests: XCTestCase {
 
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             history.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                                       id: String(index),
+                                       clientSideID: String(index),
                                        serverSideID: nil,
                                        keyboard: nil,
                                        keyboardRequest: nil,
@@ -87,7 +87,7 @@ class MessageTrackerImplTests: XCTestCase {
 
         for index in messagesCount ..< (messagesCount + numberOfMessages) {
             currentChat.append(MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                                           id: String(index),
+                                           clientSideID: String(index),
                                            serverSideID: nil,
                                            keyboard: nil,
                                            keyboardRequest: nil,
@@ -123,7 +123,7 @@ class MessageTrackerImplTests: XCTestCase {
 
         for message in currentChat {
             let newMessage = MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                                         id: message.getID(),
+                                         clientSideID: message.getID(),
                                          serverSideID: message.getServerSideID(),
                                          keyboard: message.getKeyboard(),
                                          keyboardRequest: message.getKeyboardRequest(),
@@ -157,7 +157,7 @@ class MessageTrackerImplTests: XCTestCase {
         messagesCount = messagesCount + messagesCount
 
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                           id: String(messagesCount),
+                           clientSideID: String(messagesCount),
                            serverSideID: nil,
                            keyboard: nil,
                            keyboardRequest: nil,
@@ -185,7 +185,7 @@ class MessageTrackerImplTests: XCTestCase {
 
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                           id: currentChatMessage.getID(),
+                           clientSideID: currentChatMessage.getID(),
                            serverSideID: nil,
                            keyboard: currentChatMessage.getKeyboard(),
                            keyboardRequest: currentChatMessage.getKeyboardRequest(),
@@ -213,7 +213,7 @@ class MessageTrackerImplTests: XCTestCase {
 
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
-                           id: historyMessage.getID(),
+                           clientSideID: historyMessage.getID(),
                            serverSideID: nil,
                            keyboard: historyMessage.getKeyboard(),
                            keyboardRequest: historyMessage.getKeyboardRequest(),
