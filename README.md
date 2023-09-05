@@ -12,7 +12,7 @@ Mimimum Webim server version supported – **10.5.30**.
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', '3.40.1'
+pod 'WebimClientLibrary', '3.40.2'
 ```
 `use_frameworks!` must be specified.
 
@@ -20,7 +20,7 @@ pod 'WebimClientLibrary', '3.40.1'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.40.1
+github "webim/webim-client-sdk-ios" ~> 3.40.2
 ```
 
 ### Swift Package Manager
