@@ -12,7 +12,7 @@ Mimimum Webim server version supported – **10.5.30**.
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios.git', :tag => '3.40.0'
+pod 'WebimClientLibrary', '3.40.1'
 ```
 `use_frameworks!` must be specified.
 
@@ -20,7 +20,7 @@ pod 'WebimClientLibrary', :git => 'https://github.com/webim/webim-client-sdk-ios
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.40.0
+github "webim/webim-client-sdk-ios" ~> 3.40.1
 ```
 
 ### Swift Package Manager
@@ -41,8 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Delete old Keychain data after app reinstalling.
-* Check reply and editing message ability from config.
+* SPM fix.
 
 ## Example
 
