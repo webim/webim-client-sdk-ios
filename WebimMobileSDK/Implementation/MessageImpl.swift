@@ -994,20 +994,24 @@ final class ConfigurationImpl: Configuration {
         }
     }
     
-    func isActive() -> Bool {
+    func isActive() -> Bool? {
         return configurationItem.isActive()
     }
     
-    func getButtonType() -> ButtonType {
+    func getButtonType() -> ButtonType? {
         return configurationItem.getButtonType()
     }
     
-    func getData() -> String {
+    func getData() -> String? {
         return configurationItem.getData()
     }
     
-    func getState() -> ButtonState {
+    func getState() -> ButtonState? {
         return configurationItem.getState()
+    }
+    
+    func getHideAfter() -> Bool? {
+        return configurationItem.getHideAfter()
     }
  
 }

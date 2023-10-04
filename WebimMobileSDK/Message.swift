@@ -781,7 +781,7 @@ public protocol Configuration {
      - copyright:
      2021 Webim
      */
-    func isActive() -> Bool
+    func isActive() -> Bool?
     
     /**
      - returns:
@@ -791,7 +791,7 @@ public protocol Configuration {
      - copyright:
      2021 Webim
      */
-    func getButtonType() -> ButtonType
+    func getButtonType() -> ButtonType?
     
     /**
      - returns:
@@ -801,7 +801,7 @@ public protocol Configuration {
      - copyright:
      2021 Webim
      */
-    func getData() -> String
+    func getData() -> String?
     
     /**
      - returns:
@@ -811,7 +811,17 @@ public protocol Configuration {
      - copyright:
      2021 Webim
      */
-    func getState() -> ButtonState
+    func getState() -> ButtonState?
+    
+    /**
+     - returns:
+     Hide button after response.
+     - author:
+     Anna Frolova
+     - copyright:
+     2023 Webim
+     */
+    func getHideAfter() -> Bool?
 }
 
 /**

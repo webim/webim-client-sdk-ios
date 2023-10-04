@@ -297,21 +297,20 @@ struct ConfigurationItem {
         case link = "link"
         case textToInsert = "text_to_insert"
         case state = "state"
+        case hideAfterResponse = "hide_after_response"
     }
     
     // MARK: - Properties
-    private var active: Bool
-    private var data: String
-    private var state: ButtonState
-    private var type: ButtonType
+    private var active: Bool?
+    private var data: String?
+    private var state: ButtonState?
+    private var type: ButtonType?
+    private var hideAfter: Bool?
     
     // MARK: - Initialization
-    init?(jsonDictionary: [String: Any?]) {
-        if let active = jsonDictionary[JSONField.active.rawValue] as? Bool {
-            self.active = active
-        } else {
-            return nil
-        }
+    init(jsonDictionary: [String: Any?]) {
+        self.active = jsonDictionary[JSONField.active.rawValue] as? Bool
+        self.hideAfter = jsonDictionary[JSONField.hideAfterResponse.rawValue] as? Bool
         
         if let data = jsonDictionary[JSONField.link.rawValue] as? String {
             self.data = data
@@ -319,8 +318,6 @@ struct ConfigurationItem {
         } else if let data = jsonDictionary[JSONField.textToInsert.rawValue] as? String {
             self.data = data
             self.type = ButtonType.insert
-        } else {
-            return nil
         }
         
         if let state = jsonDictionary[JSONField.state.rawValue] as? String {
@@ -336,29 +333,30 @@ struct ConfigurationItem {
             default:
                 self.state = .hidden
             }
-        } else {
-            return nil
         }
     }
     
     // MARK: - Methods
     
-    func isActive() -> Bool {
+    func isActive() -> Bool? {
         return active
     }
     
-    func getData() -> String {
+    func getData() -> String? {
         return data
     }
     
-    func getState() -> ButtonState {
+    func getState() -> ButtonState? {
         return state
     }
     
-    func getButtonType() -> ButtonType {
+    func getButtonType() -> ButtonType? {
         return type
     }
     
+    func getHideAfter() -> Bool? {
+        return hideAfter
+    }
 }
 
 /**

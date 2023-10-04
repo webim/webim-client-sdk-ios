@@ -12,7 +12,7 @@ Mimimum Webim server version supported – **10.5.30**.
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', '3.40.2'
+pod 'WebimClientLibrary', '3.40.3'
 ```
 `use_frameworks!` must be specified.
 
@@ -20,7 +20,7 @@ pod 'WebimClientLibrary', '3.40.2'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.40.2
+github "webim/webim-client-sdk-ios" ~> 3.40.3
 ```
 
 ### Swift Package Manager
@@ -41,7 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* SPM fix.
+* New method `getHideAfter()` for keyboard button configutaion.
 
 ## Example
 
