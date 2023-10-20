@@ -402,6 +402,8 @@ public protocol MessageAttachment {
      */
     func getErrorMessage() -> String?
     
+    func isEqual(to messageAttachment: MessageAttachment) -> Bool
+    
 }
 
 /**
@@ -529,6 +531,8 @@ public protocol FileInfo {
      */
     func getURL() -> URL?
     
+    func isEqual(to fileInfo: FileInfo) -> Bool
+    
 }
 
 /**
@@ -588,6 +592,8 @@ public protocol ImageInfo {
      2017 Webim
      */
     func getWidth() -> Int?
+    
+    func isEqual(to imageInfo: ImageInfo) -> Bool
 }
 
 /**
@@ -630,6 +636,8 @@ public protocol Keyboard {
      2019 Webim
      */
     func getResponse() -> KeyboardResponse?
+    
+    func isEqual(to keyboard: Keyboard) -> Bool
 }
 
 /**
@@ -710,6 +718,8 @@ public protocol KeyboardResponse {
      2019 Webim
      */
     func getMessageID() -> String
+    
+    func isEqual(to keyboardResponse: KeyboardResponse) -> Bool
 }
 
 /**
@@ -762,6 +772,8 @@ public protocol KeyboardButton {
      2023 Webim
      */
     func getParams() -> Params?
+    
+    func isEqual(to keyboardButton: KeyboardButton) -> Bool
 }
 
 /**
@@ -822,6 +834,8 @@ public protocol Configuration {
      2023 Webim
      */
     func getHideAfter() -> Bool?
+    
+    func isEqual(to configuration: Configuration) -> Bool
 }
 
 /**
@@ -856,6 +870,8 @@ public protocol Params {
      2023 Webim
      */
     func getColor() -> String?
+    
+    func isEqual(to params: Params) -> Bool
 }
 
 
@@ -889,6 +905,8 @@ public protocol KeyboardRequest {
      2019 Webim
      */
     func getMessageID() -> String
+    
+    func isEqual(to keyboardRequest: KeyboardRequest) -> Bool
 }
 
 /**
@@ -980,6 +998,19 @@ public protocol Quote {
      2019 Webim
      */
     func getState() -> QuoteState
+    
+    /**
+     Method which can be used to compare if two Quote objects have identical contents.
+     - parameter quote:
+     Second `Quote` object.
+     - returns:
+     True if two `Quote` objects are identical and false otherwise.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2023 Webim
+     */
+    func isEqual(to quote: Quote) -> Bool
 }
 
 /**
@@ -1004,6 +1035,19 @@ public protocol Sticker {
      2020 Webim
      */
     func getStickerId() -> Int
+    
+    /**
+     Method which can be used to compare if two Sticker objects have identical contents.
+     - parameter sticker:
+     Second `Sticker` object.
+     - returns:
+     True if two `Sticker` objects are identical and false otherwise.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2023 Webim
+     */
+    func isEqual(to sticker: Sticker) -> Bool
 }
 
 // MARK: -

@@ -242,6 +242,7 @@ final class DeltaCallback {
             
             let messageItem = MessageItem(jsonDictionary: deltaData)
             let message = currentChatMessageMapper.map(message: messageItem)
+            let historyMessage = historyMessageMapper.map(message: messageItem)
             WebimInternalLogger.shared.log(entry: "Delta message: \'\(message?.getText() ?? "")\'", verbosityLevel: .debug, logType: .messageHistory)
             if deltaEvent == .add {
                 var isNewMessage = false
@@ -254,6 +255,9 @@ final class DeltaCallback {
                 if isNewMessage,
                     let message = message {
                     messageHolder?.receive(newMessage: message)
+                    if let historyMessage = historyMessage {
+                        historyPoller?.insertMessageInDB(message: historyMessage)
+                    }
                 }
                 
                 
@@ -272,6 +276,9 @@ final class DeltaCallback {
                 
                 if let message = message {
                     messageHolder?.changed(message: message)
+                    if let historyMessage = historyMessage {
+                        historyPoller?.insertMessageInDB(message: historyMessage)
+                    }
                 }
             }
         }
