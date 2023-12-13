@@ -1,0 +1,18 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "Webim Chat се нуждае от разрешение за достъп до вашата библиотека със снимки, за да можете да запазвате изображения от чата.";
+
+"NSCameraUsageDescription" = "Webim Chat се нуждае от разрешение за достъп до вашата камера, за да можете да изпращате снимки в чата.";
+
+"NSFileProviderDomainUsageDescription" = "Webim Chat се нуждае от разрешение за достъп до папката ви с документи, за да можете да изпращате файлове в чата.";
+
+"NSFileProviderPresenceUsageDescription" = "Webim Chat се нуждае от разрешение за достъп до папката ви с документи, за да можете да изпращате файлове в чата.";
+
+"NSPhotoLibraryUsageDescription" = "Webim Chat се нуждае от разрешение за достъп до вашата библиотека със снимки, за да можете да изпращате изображения в чата.";
+

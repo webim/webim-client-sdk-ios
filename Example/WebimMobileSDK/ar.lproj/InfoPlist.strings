@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "تحتاج دردشة ويبيم إلى إذن للوصول إلى مكتبة الصور الخاصة بك حتى تتمكن من حفظ الصور من الدردشة.";
+
+"NSCameraUsageDescription" = "تحتاج دردشة ويبيم إلى إذن للوصول إلى الكاميرا الخاصة بك حتى تتمكن من إرسال الصور إلى الدردشة.";
+
+"NSFileProviderDomainUsageDescription" = "تحتاج دردشة ويبيم إلى إذن للوصول إلى مجلد المستندات الخاص بك حتى تتمكن من إرسال الملفات إلى الدردشة.";
+
+"NSFileProviderPresenceUsageDescription" = "تحتاج دردشة ويبيم إلى إذن للوصول إلى مجلد المستندات الخاص بك حتى تتمكن من إرسال الملفات إلى الدردشة.";
+
+"NSPhotoLibraryUsageDescription" = "تحتاج دردشة ويبيم إلى إذن للوصول إلى مكتبة الصور الخاصة بك حتى تتمكن من إرسال الصور إلى الدردشة.";

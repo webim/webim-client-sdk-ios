@@ -44,9 +44,9 @@ class WMLogsViewController: UIViewController {
     }
 
     @IBAction private func scrollToBottom() {
-        if textView.text.count > 0 {
+        if !textView.text.isEmpty {
             let location = textView.text.count - 1
-            let bottom = NSMakeRange(location, 1)
+            let bottom = NSRange(location: location, length: 1)
             textView.scrollRangeToVisible(bottom)
         }
     }

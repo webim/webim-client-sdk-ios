@@ -311,7 +311,6 @@ struct ConfigurationItem {
     init(jsonDictionary: [String: Any?]) {
         self.active = jsonDictionary[JSONField.active.rawValue] as? Bool
         self.hideAfter = jsonDictionary[JSONField.hideAfterResponse.rawValue] as? Bool
-        
         if let data = jsonDictionary[JSONField.link.rawValue] as? String {
             self.data = data
             self.type = ButtonType.url
@@ -357,6 +356,7 @@ struct ConfigurationItem {
     func getHideAfter() -> Bool? {
         return hideAfter
     }
+    
 }
 
 /**

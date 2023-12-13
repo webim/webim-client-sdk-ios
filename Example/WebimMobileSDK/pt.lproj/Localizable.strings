@@ -1,0 +1,46 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* O nome da conta não pode estar vazio.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* A localização não pode estar vazia.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Erro";
+//UIAlertHandler.swift
+"Account" = "Conta";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "O nome da conta contém caracteres inválidos.";
+//WebimService.swift
+"AccountBlocked" = "A conta usada para criar a sessão está bloqueada. Entre em contato com o suporte da Webim ou use outra conta.";
+//UIAlertHandler.swift
+"Alert account name" = "Nome da conta do Webim ou endereço completo do servidor (por exemplo, \"demo\" ou \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Cancelar";
+//ConnectionErrorView.xib
+"Connection error" = "Erro de conexão";
+//UIAlertHandler.swift
+"InvalidSettings" = "Configurações de conta inválidas";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "A localização contém caracteres inválidos.";
+//AdditionalKeys.swift
+"P.CR" = "Um agente solicitou seus dados de contato.";
+//AdditionalKeys.swift
+"P.OA" = "O agente %@ foi atribuído ao seu pedido.";
+//AdditionalKeys.swift
+"P.OF" = "%@ enviou um arquivo: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%%@ escreveu uma mensagem: %@";
+//AdditionalKeys.swift
+"P.RO" = "Avalie o agente.";
+//StringConstants.swift
+"Copy" = "Copiar";
+//StringConstants.swift
+"Delete" = "Excluir";
+//StringConstants.swift
+"Reply" = "Responder";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Bem-vindo ao aplicativo WebimClientLibrary!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Seu feedback nos ajudará a melhorar.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Sua conta de visitante está na lista negra.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Erro ao analisar o visitante de demonstração.";

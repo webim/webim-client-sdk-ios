@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "נידרשת רשות מ-Webim Chat ליכולת לגשת אל ספריית התמונות שלך כדי שתוכל לשמור תמונות מהצ'אט.";
+
+"NSCameraUsageDescription" = "נידרשת רשות מ-Webim Chat ליכולת לגשת אל המצלמה שלך כדי שתוכל לשלוח תמונות לצ'אט.";
+
+"NSFileProviderDomainUsageDescription" = "נידרשת רשות מ-Webim Chat ליכולת לגשת אל תיקיית המסמכים שלך כדי שתוכל לשלוח קבצים לצ'אט.";
+
+"NSFileProviderPresenceUsageDescription" = "נידרשת רשות מ-Webim Chat ליכולת לגשת אל תיקיית המסמכים שלך כדי שתוכל לשלוח קבצים לצ'אט";
+
+"NSPhotoLibraryUsageDescription" = "נידרשת רשות מ-Webim Chat ליכולת לגשת אל ספריית התמונות שלך כדי שתוכל לשלוח תמונות לצ'אט.";

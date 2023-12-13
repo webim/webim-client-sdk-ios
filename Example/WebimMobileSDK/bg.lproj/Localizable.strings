@@ -1,0 +1,46 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Името на акаунта не може да бъде празно.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Местоположението не може да бъде празно.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Грешка";
+//UIAlertHandler.swift
+"Account" = "Акаунт";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Името на акаунта съдържа невалидни символи.";
+//WebimService.swift
+"AccountBlocked" = "Акаунтът, използван за създаване на сесия, е блокиран. Моля, свържете се с поддръжката на Webim или използвайте друг.";
+//UIAlertHandler.swift
+"Alert account name" = "Името на акаунта на Webim или пълният адрес на сървъра (например \"demo\" или \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Отказ";
+//ConnectionErrorView.xib
+"Connection error" = "Грешка във връзката";
+//UIAlertHandler.swift
+"InvalidSettings" = "Невалидни настройки на акаунта";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Местоположението съдържа невалидни символи.";
+//AdditionalKeys.swift
+"P.CR" = "Агентът поиска вашите контактни данни.";
+//AdditionalKeys.swift
+"P.OA" = "Агент %@ беше определен за вашия заявка.";
+//AdditionalKeys.swift
+"P.OF" = "%@ изпрати файл: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ написа съобщение: %@";
+//AdditionalKeys.swift
+"P.RO" = "Оценете агента.";
+//StringConstants.swift
+"Copy" = "Копиране";
+//StringConstants.swift
+"Delete" = "Изтриване";
+//StringConstants.swift
+"Reply" = "Отговор";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Добре дошли в приложението за чат на Webim!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Вашият отзив ще ни помогне да станем по-добри.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Вашият акаунт на посетител е в черния списък.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Грешка при анализа на демонстрационен посетител.";

@@ -1,0 +1,46 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* اسم الحساب لا يمكن أن يكون فارغًا.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* لا يمكن أن يكون الموقع فارغًا.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "خطأ";
+//UIAlertHandler.swift
+"Account" = "حساب";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "اسم الحساب يحتوي على أحرف غير صالحة.";
+//WebimService.swift
+"AccountBlocked" =  "الحساب الذي يتم استخدامه لإنشاء الجلسة محظور. يرجى الاتصال بدعم Webim أو استخدام حساب آخر.";
+//UIAlertHandler.swift
+"Alert account name" = "اسم حساب Webim أو عنوان الخادم الكامل (على سبيل المثال، \"demo\" أو \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "إلغاء";
+//ConnectionErrorView.xib
+"Connection error" =  "خطأ في الاتصال";
+//UIAlertHandler.swift
+"InvalidSettings" =  "إعدادات الحساب غير صالحة";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "الموقع يحتوي على أحرف غير صالحة.";
+//AdditionalKeys.swift
+"P.CR" = "طلب الوكيل بيانات الاتصال الخاصة بك.";
+//AdditionalKeys.swift
+"P.OA" = "تم تعيين الوكيل %@ لطلبك.";
+//AdditionalKeys.swift
+"P.OF" = "%@ أرسل ملف: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ كتب رسالة: %@";
+//AdditionalKeys.swift
+"P.RO" = "قيّم الوكيل.";
+//StringConstants.swift
+"Copy" = "نسخ";
+//StringConstants.swift
+"Delete" = "حذف";
+//StringConstants.swift
+"Reply" = "الرد";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "مرحبًا بك في تطبيق دردشة Webim!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "ستساعدنا ملاحظاتك في أن نصبح أفضل.";
+//WebimService.swift
+"Your visitor account is in the black list." = "حساب الزائر الخاص بك في قائمة الحظر.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "خطأ في تحليل زائر الديمو.";

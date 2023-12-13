@@ -33,7 +33,8 @@ extension WMSettingsViewController: SelectUserDelegate {
         vc.initialSetup()
         vc.set(delegate: self)
         vc.set(sourceView: selectVisitorCell.accessoryImageView)
-        vc.setArrowDirection(arrowDirection: .up)
+        let arrowDirection: UIPopoverArrowDirection = (UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .unknown) ? .up : .down
+        vc.setArrowDirection(arrowDirection: arrowDirection)
         rotateArrow()
         present(vc, animated: true)
     }

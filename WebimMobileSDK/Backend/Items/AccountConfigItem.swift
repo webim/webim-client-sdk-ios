@@ -40,12 +40,16 @@ final class AccountConfigItem {
         case hintsEndpoint = "visitor_hints_api_endpoint"
         case webAndMobileQuoting = "web_and_mobile_quoting"
         case visitorMessageEditing = "visitor_message_editing"
+        case maxVisitorUploadFileSize = "max_visitor_upload_file_size"
+        case allowedUploadFileTypes = "allowed_upload_file_types"
     }
     
     // MARK: - Properties
     private var hintsEndpoint: String?
     private var webAndMobileQuoting: Bool?
     private var visitorMessageEditing: Bool?
+    private var maxVisitorUploadFileSize: Int?
+    private var allowedUploadFileTypes: [String]?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -57,6 +61,18 @@ final class AccountConfigItem {
         }
         if let visitorMessageEditing = jsonDictionary[JSONField.visitorMessageEditing.rawValue] as? Bool {
             self.visitorMessageEditing = visitorMessageEditing
+        }
+        
+        if let maxVisitorUploadFileSize = jsonDictionary[JSONField.maxVisitorUploadFileSize.rawValue] as? Int {
+            if maxVisitorUploadFileSize != 0 {
+                self.maxVisitorUploadFileSize = maxVisitorUploadFileSize
+            } else {
+                self.maxVisitorUploadFileSize = 10
+            }
+        }
+        
+        if let allowedUploadFileTypes = jsonDictionary[JSONField.allowedUploadFileTypes.rawValue] as? String {
+            self.allowedUploadFileTypes = allowedUploadFileTypes.components(separatedBy: ", ")
         }
     }
     
@@ -71,5 +87,13 @@ final class AccountConfigItem {
     
     func getVisitorMessageEditing() -> Bool {
         return visitorMessageEditing ?? true
+    }
+    
+    func getMaxVisitorUploadFileSize() -> Int? {
+        return maxVisitorUploadFileSize
+    }
+    
+    func getAllowedUploadFileTypes() -> [String] {
+        return allowedUploadFileTypes ?? []
     }
 }

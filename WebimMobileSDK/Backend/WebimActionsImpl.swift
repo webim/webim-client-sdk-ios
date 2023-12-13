@@ -126,6 +126,11 @@ extension WebimActionsImpl: WebimActions {
               clientSideID: String,
               completionHandler: SendFileCompletionHandler? = nil,
               uploadFileToServerCompletionHandler: UploadFileToServerCompletionHandler? = nil) {
+        let max = (actionRequestLoop.getWebimServerSideSettings()?.accountConfig.maxVisitorUploadFileSize ?? 10) * 1024 * 1024
+        guard max > file.count else {
+            completionHandler?.onFailure(messageID: clientSideID, error: SendFileError.fileSizeExceeded)
+            return
+        }
         let dataToPost = [Parameter.chatMode.rawValue: ChatMode.online.rawValue,
                           Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
         

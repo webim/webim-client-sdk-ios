@@ -58,7 +58,9 @@ public class WMKeychainWrapper: NSObject {
             for key in getAllKeychainItems() {
                 if let key = key {
                     if key.starts(with: WMKeychainWrapper.webimKeyPrefix) {
-                        _ = WMKeychainWrapper.removeObject(key: key)
+                        if !key.contains(WMKeychainWrapper.deviceTokenKey) {
+                            _ = WMKeychainWrapper.removeObject(key: key)
+                        }
                     }
                 }
             }

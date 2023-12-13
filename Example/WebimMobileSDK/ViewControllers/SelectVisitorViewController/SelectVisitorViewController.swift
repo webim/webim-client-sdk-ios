@@ -45,16 +45,18 @@ class SelectVisitorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorStyle = .none
+        subscribeToOrientationChange()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        unsubscribeFromOrientationChange()
         delegate?.controllerWillDisappear()
     }
     
     func initialSetup() {
         modalPresentationStyle = .popover
-        preferredContentSize = CGSize(width: view.bounds.width, height: 180)
+        preferredContentSize = CGSize(width: view.bounds.width, height: 135)
         presentationController?.delegate = self
     }
     
@@ -71,6 +73,29 @@ class SelectVisitorViewController: UIViewController {
     func setArrowDirection(arrowDirection: UIPopoverArrowDirection) {
         popoverPresentationController?.permittedArrowDirections = arrowDirection
     }
+    
+    @objc
+    private func orientationChanged() {
+        dismiss(animated: true)
+    }
+    
+    private func subscribeToOrientationChange() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(orientationChanged),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
+    }
+    
+    private func unsubscribeFromOrientationChange() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
+    }
+    
 }
 
 extension SelectVisitorViewController: UITableViewDataSource {

@@ -38,6 +38,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     // MARK: - Properties
     var actionOperationQueue: OperationQueue?
     var historyRequestOperationQueue: OperationQueue?
+    private var webimServerSideSettings: WebimServerSideSettings?
     @WMSynchronized var authorizationData: AuthorizationData?
     
     
@@ -80,6 +81,10 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     func set(authorizationData: AuthorizationData?) {
         self.authorizationData = authorizationData
+    }
+    
+    func getWebimServerSideSettings() -> WebimServerSideSettings? {
+        return webimServerSideSettings
     }
     
     func enqueue(request: WebimRequest, withAuthData: Bool = true) {
@@ -414,6 +419,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
                 do {
                     let webimServerSideSettings = try self.decodeToServerSideSettings(data: data)
+                    self.webimServerSideSettings = webimServerSideSettings
                     completionHandler.onSuccess(webimServerSideSettings: webimServerSideSettings)
                 } catch {
                     completionHandler.onFailure()

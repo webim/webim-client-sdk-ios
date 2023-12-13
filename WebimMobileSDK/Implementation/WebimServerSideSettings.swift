@@ -38,6 +38,8 @@ public struct WebimServerSideSettings: Codable {
 public struct AccountConfig: Codable {
     public let webAndMobileQuoting: Bool
     public let visitorMessageEditing: Bool
+    public let maxVisitorUploadFileSize: Int
+    public let allowedUploadFileTypes: String
 //    let multilang, chattingTimer, googleAnalytics: Bool
 //    let yandexMetrikaCounterID: JSONNull?
 //    let teleport: Bool
@@ -46,18 +48,18 @@ public struct AccountConfig: Codable {
 //    let visitorEnablingProbability: Int
 //    let defaultLang: String
 //    let rateOperator: Bool
-//    let allowedUploadFileTypes: String
 //    let showProcessingPersonalDataCheckbox, visitorWebsockets, visitorUploadFile: Bool
 //    let operatorCheckStatusOnline: Int
 //    let visitorHintsAPIEndpoint: JSONNull?
 //    let fileURLExpiringTimeout: Int
 //    let checkVisitorAuth, operatorStatusTimer, ,
 //    let offlineChatProcessing, openChatInNewTabForMobile: Bool
-//    let maxVisitorUploadFileSize: Int
 
     enum CodingKeys: String, CodingKey {
         case webAndMobileQuoting = "web_and_mobile_quoting"
         case visitorMessageEditing = "visitor_message_editing"
+        case maxVisitorUploadFileSize = "max_visitor_upload_file_size"
+        case allowedUploadFileTypes = "allowed_upload_file_types"
 //        case multilang
 //        case chattingTimer = "chatting_timer"
 //        case googleAnalytics = "google_analytics"
@@ -71,7 +73,6 @@ public struct AccountConfig: Codable {
 //        case visitorEnablingProbability = "visitor_enabling_probability"
 //        case defaultLang = "default_lang"
 //        case rateOperator = "rate_operator"
-//        case allowedUploadFileTypes = "allowed_upload_file_types"
 //        case showProcessingPersonalDataCheckbox = "show_processing_personal_data_checkbox"
 //        case visitorWebsockets = "visitor_websockets"
 //        case visitorUploadFile = "visitor_upload_file"
@@ -82,6 +83,5 @@ public struct AccountConfig: Codable {
 //        case operatorStatusTimer = "operator_status_timer"
 //        case offlineChatProcessing = "offline_chat_processing"
 //        case openChatInNewTabForMobile = "open_chat_in_new_tab_for_mobile"
-//        case maxVisitorUploadFileSize = "max_visitor_upload_file_size"
     }
 }

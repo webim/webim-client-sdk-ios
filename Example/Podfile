@@ -5,7 +5,7 @@ use_frameworks!
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'WebimMobileSDK_Example' do
-    pod 'WebimMobileSDK', :path => '../'
+    pod 'WebimMobileSDK'
     pod 'WebimMobileWidget', '1.1.0'
     pod 'WebimKeyboard', '1.0.2'
     
@@ -14,7 +14,7 @@ target 'WebimMobileSDK_Example' do
     
     target 'WebimClientShare' do
         use_frameworks!
-        pod 'WebimMobileSDK', :path => '../'
+        pod 'WebimMobileSDK'
         project 'WebimMobileSDK.xcodeproj'
     end
 

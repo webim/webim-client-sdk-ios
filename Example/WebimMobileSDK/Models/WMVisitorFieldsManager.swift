@@ -77,6 +77,11 @@ class WMVisitorFieldsManager {
         currentVisitor = selectedVisitor
     }
     
+    func updateVisitorsData() {
+        update(demoVisitor: .fedor)
+        update(demoVisitor: .semion)
+    }
+    
     private func initialSetup() {
         visitorFieldsParser.set(completion: self)
         updateVisitorIfNeeded(visitor: .fedor)

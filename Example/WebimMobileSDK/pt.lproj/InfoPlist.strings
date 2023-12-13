@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "O Webim Chat precisa de permissão para acessar sua biblioteca de fotos para que você possa salvar imagens do chat.";
+
+"NSCameraUsageDescription" = "O Webim Chat precisa de permissão para acessar sua câmera para que você possa enviar fotos para o chat.";
+
+"NSFileProviderDomainUsageDescription" = "O Webim Chat precisa de permissão para acessar sua pasta de documentos para que você possa enviar arquivos para o chat.";
+
+"NSFileProviderPresenceUsageDescription" = "O Webim Chat precisa de permissão para acessar sua pasta de documentos para que você possa enviar arquivos para o chat.";
+
+"NSPhotoLibraryUsageDescription" = "O Webim Chat precisa de permissão para acessar sua biblioteca de fotos para que você possa enviar imagens para o chat.";

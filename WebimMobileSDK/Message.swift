@@ -826,13 +826,13 @@ public protocol Configuration {
     func getState() -> ButtonState?
     
     /**
-     - returns:
-     Hide button after response.
-     - author:
-     Anna Frolova
-     - copyright:
-     2023 Webim
-     */
+    - returns:
+    Hide button after response.
+    - author:
+    Anna Frolova
+    - copyright:
+    2023 Webim
+    */
     func getHideAfter() -> Bool?
     
     func isEqual(to configuration: Configuration) -> Bool

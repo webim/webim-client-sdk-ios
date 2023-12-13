@@ -1,0 +1,46 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* שם החשבון לא יכול להיות ריק.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* המיקום לא יכול להיות ריק.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "שגיאה";
+//UIAlertHandler.swift
+"Account" = "חשבון";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "שם החשבון מכיל תווים לא חוקיים.";
+//WebimService.swift
+"AccountBlocked" = "החשבון שמשמש ליצירת הסשן חסום. יש ליצור קשר עם תמיכת Webim או להשתמש בחשבון אחר.";
+//UIAlertHandler.swift
+"Alert account name" = "שם החשבון של Webim או כתובת השרת המלאה (לדוגמה, \"demo\" או \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "ביטול";
+//ConnectionErrorView.xib
+"Connection error" = "שגיאת חיבור";
+//UIAlertHandler.swift
+"InvalidSettings" = "הגדרות חשבון לא חוקיות";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "המיקום מכיל תווים לא חוקיים.";
+//AdditionalKeys.swift
+"P.CR" = "סוכן ביקש את פרטי הקשר שלך.";
+//AdditionalKeys.swift
+"P.OA" = "הסוכן %@ הוקצה לבקשתך.";
+//AdditionalKeys.swift
+"P.OF" = "%@ שלח קובץ: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ כתב הודעה: %@";
+//AdditionalKeys.swift
+"P.RO" = "דרג את הסוכן.";
+//StringConstants.swift
+"Copy" = "העתק";
+//StringConstants.swift
+"Delete" = "מחק";
+//StringConstants.swift
+"Reply" = "השב";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "ברוך הבא לאפליקציית צ'אט של Webim!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "המשוב שלך יעזור לנו להיות טובים יותר.";
+//WebimService.swift
+"Your visitor account is in the black list." = "חשבון המבקר שלך נמצא ברשימה השחורה.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "שגיאה בניתוח מבקר דמו.";

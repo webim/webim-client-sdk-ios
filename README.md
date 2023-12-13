@@ -1,4 +1,4 @@
-# WebimClientLibrary
+# WebimMobileSDK
 
 This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobile-sdk/ios-sdk-howto/) – a way to integrate _Webim_ service into your _iOS_ app.
 
@@ -12,7 +12,7 @@ Mimimum Webim server version supported – **10.5.30**.
 
 Add following line for your target in your **Podfile**:
 ```
-pod 'WebimClientLibrary', '3.40.4'
+pod 'WebimMobileSDK'
 ```
 `use_frameworks!` must be specified.
 
@@ -20,7 +20,7 @@ pod 'WebimClientLibrary', '3.40.4'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.40.4
+github "webim/webim-client-sdk-ios" ~> 3.41.0
 ```
 
 ### Swift Package Manager
@@ -41,8 +41,8 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Message `isEqual(to: )` method updated.
-* Message saving improved.
+* File size too big error added.
+* Use old deviceID for init request after app reinstallation.
 
 ## Example
 
@@ -168,7 +168,7 @@ Every single class, protocol, method etc. description provided inside [documenta
 
 ## Additional information
 
-_WebimClientLibrary_ uses [_SQLite.swift_](https://github.com/stephencelis/SQLite.swift). (There's no need to add this depencies into Podfile.)
+_WebimMobileSDK_ uses [_SQLite.swift_](https://github.com/stephencelis/SQLite.swift). (There's no need to add this depencies into Podfile.)
 
 In the sake of ease of several functionalities implementation Example app uses (in alphabetical order):
 * [_Cosmos_](https://github.com/evgenyneu/Cosmos) – for visual implementation of operator rating mechanism.
@@ -180,4 +180,4 @@ In the sake of ease of several functionalities implementation Example app uses (
 
 ## License
 
-_WebimClientLibrary_ is available under the MIT license. See the LICENSE file for more info.
+_WebimMobileSDK_ is available under the MIT license. See the LICENSE file for more info.

@@ -61,6 +61,13 @@ final class ServerSettingsResponse {
     }
     
     func getLocationSettings() -> [String: Any?] {
+        if let accountConfig = accountConfig {
+            if locationSettings == nil {
+                locationSettings = [:]
+            }
+            locationSettings?["max_visitor_upload_file_size"] = accountConfig.getMaxVisitorUploadFileSize()
+            locationSettings?["allowed_upload_file_types"] = accountConfig.getAllowedUploadFileTypes()
+        }
         return locationSettings ?? [:]
     }
     

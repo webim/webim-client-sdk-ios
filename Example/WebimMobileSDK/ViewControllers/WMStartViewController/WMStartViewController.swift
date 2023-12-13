@@ -53,13 +53,13 @@ final class WMStartViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateNavigationBar()
         checkOrientation()
         setupStartChatButton()
         setupSettingsButton()
         setupLogoTapGestureRecognizer()
         setupNavigationBarUpdater()
         updateMessageCounter()
+        updateNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -171,7 +171,7 @@ final class WMStartViewController: UIViewController {
 
     private func updateNavigationBar() {
         NavigationBarUpdater.shared.update(with: .defaultStyle)
-        NavigationBarUpdater.shared.set(isNavigationBarVisible: false)
+        NavigationBarUpdater.shared.set(isNavigationBarVisible: true)
     }
 
     private func presentChatViewController(openFromNotification: Bool, visitorData: Data? = nil) {

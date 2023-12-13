@@ -1,0 +1,46 @@
+//WMSettingsViewController.swift, WMSettingsViewController.xib
+"* Account name can't be empty." = "* Назва облікового запису не може бути порожньою.";
+//WMSettingsViewController.swift, WMSettingsViewController.xib
+"* Location can't be empty." = "* Місцезнаходження не може бути порожнім.";
+//WMSettingsViewController.swift, WMSettingsViewController.xib
+"Error" = "Помилка";
+//UIAlertHandler.swift
+"Account" = "Обліковий запис";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Назва облікового запису містить недійсні символи.";
+//WebimService.swift
+"AccountBlocked" = "Обліковий запис, який використовується для створення сесії, заблоковано. Будь ласка, зв'яжіться з підтримкою Webim або використовуйте інший.";
+//UIAlertHandler.swift
+"Alert account name" = "Назва облікового запису Webim або повна адреса сервера (наприклад, \"demo\" або \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Скасувати";
+//ConnectionErrorView.xib
+"Connection error" = "Помилка з'єднання";
+//UIAlertHandler.swift
+"InvalidSettings" = "Недійсні налаштування облікового запису";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Місцезнаходження містить недійсні символи.";
+//AdditionalKeys.swift
+"P.CR" = "Агент запросив ваші контактні дані.";
+//AdditionalKeys.swift
+"P.OA" = "Агент %@ був призначений для вашого запиту.";
+//AdditionalKeys.swift
+"P.OF" = "%@ відправив файл: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ написав повідомлення: %@";
+//AdditionalKeys.swift
+"P.RO" = "Оцініть агента.";
+//StringConstants.swift
+"Copy" = "Копіювати";
+//StringConstants.swift
+"Delete" = "Видалити";
+//StringConstants.swift
+"Reply" = "Відповісти";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Ласкаво просимо до додатку чату Webim!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Ваш відгук допоможе нам стати кращими.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Ваш обліковий запис відвідувача перебуває в чорному списку.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Помилка розбору демонстраційного відвідувача.";

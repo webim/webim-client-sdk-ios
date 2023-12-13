@@ -176,6 +176,9 @@ class WMSettingsViewController: UIViewController {
         let isVisitorValid = visitorFieldsManager.isSelectedVisitorValid
 
         if isAccountNameValid && islocationValid && isVisitorValid {
+            if Settings.shared.accountName != accountNameTextField.text {
+                visitorFieldsManager.updateVisitorsData()
+            }
             saveSettings(
                 accountName: accountNameTextField.text ?? "",
                 location: locationTextField.text ?? ""
