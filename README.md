@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.41.0
+github "webim/webim-client-sdk-ios" ~> 3.41.1
 ```
 
 ### Swift Package Manager
@@ -41,8 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* File size too big error added.
-* Use old deviceID for init request after app reinstallation.
+* `send(message:compleionHandler)` fixed.
 
 ## Example
 

@@ -836,6 +836,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             
             if let messageID = request.getMessageID() {
                 request.getDataMessageCompletionHandler()?.onSuccess(messageID: messageID)
+                request.getSendMessageCompletionHandler()?.onSuccess(messageID: messageID)
                 request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
                 request.getDeleteMessageCompletionHandler()?.onSuccess(messageID: messageID)
                 request.getEditMessageCompletionHandler()?.onSuccess(messageID: messageID)
