@@ -44,13 +44,14 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     // MARK: - Initialization
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
-         internalErrorListener: InternalErrorListener, notFatalErrorHandler: NotFatalErrorHandler?) {
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener)
+         internalErrorListener: InternalErrorListener, notFatalErrorHandler: NotFatalErrorHandler?, requestHeader: [String: String]?) {
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader)
     }
     
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
-         internalErrorListener: InternalErrorListener) {
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener)
+         internalErrorListener: InternalErrorListener,
+         requestHeader: [String: String]?) {
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader)
     }
     
     // MARK: - Methods

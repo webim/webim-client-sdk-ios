@@ -113,7 +113,8 @@ final class WebimSessionImpl {
                                 webimAlert: WebimAlert?,
                                 prechat: String?,
                                 multivisitorSection: String,
-                                onlineStatusRequestFrequencyInMillis: Int64?) -> WebimSessionImpl {
+                                onlineStatusRequestFrequencyInMillis: Int64?,
+                                requestHeader: [String: String]?) -> WebimSessionImpl {
         
         let visitorName = visitorFields?.getID() ?? "anonymous"
         let mobileChatInstance = mobileChatInstance ?? "default"
@@ -149,7 +150,8 @@ final class WebimSessionImpl {
                     webimAlert: webimAlert,
                     prechat: prechat,
                     multivisitorSection: multivisitorSection,
-                    onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis
+                    onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis,
+                    requestHeader: requestHeader
                 )
             }
             return session
@@ -229,6 +231,7 @@ final class WebimSessionImpl {
             .set(visitorJSONString: visitorJSON)
             .set(providedAuthenticationTokenStateListener: providedAuthorizationTokenStateListener,
                  providedAuthenticationToken: providedAuthorizationToken)
+            .set(requestHeader: requestHeader)
             .set(sessionID: sessionID)
             .set(authorizationData: authorizationData)
             .set(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,

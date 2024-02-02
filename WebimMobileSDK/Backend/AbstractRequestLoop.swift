@@ -61,11 +61,14 @@ class AbstractRequestLoop {
     private var currentDataTask: URLSessionDataTask?
     let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?
     let internalErrorListener: InternalErrorListener?
+    let requestHeader: [String: String]?
     
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?,
-         internalErrorListener: InternalErrorListener?) {
+         internalErrorListener: InternalErrorListener?,
+         requestHeader: [String: String]?) {
         self.completionHandlerExecutor = completionHandlerExecutor
         self.internalErrorListener = internalErrorListener
+        self.requestHeader = requestHeader
     }
     
     // MARK: - Methods
@@ -102,7 +105,11 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUserAgent = request
-        requestWithUserAgent.setValue("iOS: Webim-Client 3.41.1; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUserAgent.setValue("iOS: Webim-Client 3.41.2; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        
+        for (key, value) in requestHeader ?? [:] {
+            requestWithUserAgent.setValue(value, forHTTPHeaderField: key)
+        }
         
         var errorCounter = 0
         var connectionErrorCounter = 0

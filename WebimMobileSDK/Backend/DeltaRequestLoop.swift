@@ -80,7 +80,8 @@ class DeltaRequestLoop: AbstractRequestLoop {
          visitorJSONString: String?,
          sessionID: String?,
          prechat:String?,
-         authorizationData: AuthorizationData?) {
+         authorizationData: AuthorizationData?,
+         requestHeader: [String: String]?) {
         self.deltaCallback = deltaCallback
         self.sessionParametersListener = sessionParametersListener
         self.baseURL = baseURL
@@ -97,7 +98,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
         self.prechat = prechat
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener)
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader)
     }
     
     // MARK: - Methods
@@ -191,7 +192,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestInitialization() {
         let url = URL(string: baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.41.1", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.41.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {

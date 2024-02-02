@@ -163,6 +163,7 @@ public final class SessionBuilder  {
     private weak var webimAlert: WebimAlert?
     private var prechat: String?
     private var onlineStatusRequestFrequencyInMillis: Int64?
+    private var requestHeader: [String: String]?
 
     // MARK: - Methods
 
@@ -492,6 +493,23 @@ public final class SessionBuilder  {
         
         return self
     }
+    
+    /**
+     Adds header to network requests.
+     - parameter requestHeader:
+     Request header.
+     - returns:
+     `SessionBuilder` object with requestLocationFrequencyInMs parameter set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2024 Webim
+     */
+    public func set(requestHeader: [String: String]) -> SessionBuilder {
+        self.requestHeader = requestHeader
+        
+        return self
+    }
 
     /**
      Method to pass WebimLogger object.
@@ -641,7 +659,8 @@ public final class SessionBuilder  {
                                                 webimAlert: webimAlert,
                                                 prechat: prechat,
                                                 multivisitorSection: multivisitorSection,
-                                                onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis) as WebimSession
+                                                onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis,
+                                                requestHeader: requestHeader) as WebimSession
     }
     
     /**

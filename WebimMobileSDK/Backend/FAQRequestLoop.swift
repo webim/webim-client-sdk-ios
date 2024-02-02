@@ -43,7 +43,7 @@ class FAQRequestLoop: AbstractRequestLoop {
     // MARK: - Initialization
     init(completionHandlerExecutor: ExecIfNotDestroyedFAQHandlerExecutor) {
         self.completionFAQHandlerExecutor = completionHandlerExecutor
-        super.init(completionHandlerExecutor: nil, internalErrorListener: nil)
+        super.init(completionHandlerExecutor: nil, internalErrorListener: nil, requestHeader: nil)
     }
     
     // MARK: - Methods

@@ -49,6 +49,7 @@ final class WebimClientBuilder {
     private var location: String?
     private var providedAuthenticationToken: String?
     private weak var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
+    private var requestHeader: [String: String]?
     private var sessionID: String?
     private var sessionParametersListener: SessionParametersListener?
     private var title: String?
@@ -109,6 +110,12 @@ final class WebimClientBuilder {
              providedAuthenticationToken: String? = nil) -> WebimClientBuilder {
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
+        
+        return self
+    }
+    
+    func set(requestHeader: [String: String]?) -> WebimClientBuilder {
+        self.requestHeader = requestHeader
         
         return self
     }
@@ -178,7 +185,8 @@ final class WebimClientBuilder {
         
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: completionHandlerExecutor,
                                                   internalErrorListener: internalErrorListener,
-                                                  notFatalErrorHandler: notFatalErrorHandler)
+                                                  notFatalErrorHandler: notFatalErrorHandler,
+                                                  requestHeader: requestHeader)
         
         actionRequestLoop.set(authorizationData: authorizationData)
         
@@ -221,7 +229,8 @@ final class WebimClientBuilder {
                                                 visitorJSONString: visitorJSONString,
                                                 sessionID: sessionID,
                                                 prechat: prechat,
-                                                authorizationData: authorizationData
+                                                authorizationData: authorizationData,
+                                                requestHeader: requestHeader
                                                 )
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
