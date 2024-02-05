@@ -600,6 +600,12 @@ extension WebimSessionImpl: WebimSession {
         webimClient.set(deviceToken: deviceToken)
     }
     
+    func setRequestHeader(key: String, value: String) throws {
+        try checkAccess()
+        
+        webimClient.setRequestHeader(key: key, value: value)
+    }
+    
     
     // MARK: Private methods
     private func checkAccess() throws {

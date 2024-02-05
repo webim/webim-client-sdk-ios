@@ -61,7 +61,7 @@ class AbstractRequestLoop {
     private var currentDataTask: URLSessionDataTask?
     let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?
     let internalErrorListener: InternalErrorListener?
-    let requestHeader: [String: String]?
+    var requestHeader: [String: String]?
     
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?,
          internalErrorListener: InternalErrorListener?,
@@ -105,7 +105,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUserAgent = request
-        requestWithUserAgent.setValue("iOS: Webim-Client 3.41.2; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUserAgent.setValue("iOS: Webim-Client 3.41.3; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         for (key, value) in requestHeader ?? [:] {
             requestWithUserAgent.setValue(value, forHTTPHeaderField: key)
@@ -274,6 +274,14 @@ class AbstractRequestLoop {
             return Data()
         }
         return newData
+    }
+    
+    func setRequestHeader(key: String, value: String) {
+        if requestHeader != nil {
+            requestHeader?[key] = value
+        } else {
+            requestHeader = [key: value]
+        }
     }
     
     // MARK: Private methods

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name = 'WebimMobileSDK'
-  s.version = '3.41.2'
+  s.version = '3.41.3'
   
   s.author = { 'Webim.ru Ltd.' => 'n.lazarev-zubov@webim.ru' }
   s.homepage = 'https://webim.ru/integration/mobile-sdk/ios-sdk-howto/'

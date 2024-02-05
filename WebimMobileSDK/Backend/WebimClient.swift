@@ -301,6 +301,11 @@ final class WebimClient {
         return webimActions
     }
     
+    func setRequestHeader(key: String, value: String) {
+        deltaRequestLoop.setRequestHeader(key: key, value: value)
+        actionRequestLoop.setRequestHeader(key: key, value: value)
+    }
+    
 }
 
 // MARK: -
