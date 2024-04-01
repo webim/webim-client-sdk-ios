@@ -42,6 +42,7 @@ final class AccountConfigItem {
         case visitorMessageEditing = "visitor_message_editing"
         case maxVisitorUploadFileSize = "max_visitor_upload_file_size"
         case allowedUploadFileTypes = "allowed_upload_file_types"
+        case disablingMessageInputField = "disabling_message_input_field"
     }
     
     // MARK: - Properties
@@ -50,6 +51,7 @@ final class AccountConfigItem {
     private var visitorMessageEditing: Bool?
     private var maxVisitorUploadFileSize: Int?
     private var allowedUploadFileTypes: [String]?
+    private var disablingMessageInputField: Bool?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -74,6 +76,10 @@ final class AccountConfigItem {
         if let allowedUploadFileTypes = jsonDictionary[JSONField.allowedUploadFileTypes.rawValue] as? String {
             self.allowedUploadFileTypes = allowedUploadFileTypes.components(separatedBy: ", ")
         }
+        
+        if let disablingMessageInputField = jsonDictionary[JSONField.disablingMessageInputField.rawValue] as? Bool {
+            self.disablingMessageInputField = disablingMessageInputField
+        }
     }
     
     // MARK: - Methods
@@ -95,5 +101,9 @@ final class AccountConfigItem {
     
     func getAllowedUploadFileTypes() -> [String] {
         return allowedUploadFileTypes ?? []
+    }
+    
+    func getDisablingMessageInputField() -> Bool {
+        return disablingMessageInputField ?? false
     }
 }

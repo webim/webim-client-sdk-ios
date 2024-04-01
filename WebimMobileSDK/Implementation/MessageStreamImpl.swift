@@ -1008,6 +1008,8 @@ extension MessageStreamImpl: MessageStream {
         try accessChecker.checkAccess()
         
         webimActions.setChatRead()
+        set(unreadByVisitorMessageCount: 0)
+        set(unreadByVisitorTimestamp: nil)
 
         WebimInternalLogger.shared.log(
             entry: "Request read chat in MessageStreamImpl- \(#function)",

@@ -40,6 +40,9 @@ public struct AccountConfig: Codable {
     public let visitorMessageEditing: Bool
     public let maxVisitorUploadFileSize: Int
     public let allowedUploadFileTypes: String
+    public let rateOperator: Bool
+    public let showRateOperator: Bool?
+    public let disablingMessageInputField: Bool?
 //    let multilang, chattingTimer, googleAnalytics: Bool
 //    let yandexMetrikaCounterID: JSONNull?
 //    let teleport: Bool
@@ -47,19 +50,20 @@ public struct AccountConfig: Codable {
 //    let hideReferrer, forceVisitorHTTPS, visitorTracking, forceVisitorDisable: Bool
 //    let visitorEnablingProbability: Int
 //    let defaultLang: String
-//    let rateOperator: Bool
 //    let showProcessingPersonalDataCheckbox, visitorWebsockets, visitorUploadFile: Bool
 //    let operatorCheckStatusOnline: Int
 //    let visitorHintsAPIEndpoint: JSONNull?
 //    let fileURLExpiringTimeout: Int
 //    let checkVisitorAuth, operatorStatusTimer, ,
 //    let offlineChatProcessing, openChatInNewTabForMobile: Bool
-
     enum CodingKeys: String, CodingKey {
         case webAndMobileQuoting = "web_and_mobile_quoting"
         case visitorMessageEditing = "visitor_message_editing"
         case maxVisitorUploadFileSize = "max_visitor_upload_file_size"
         case allowedUploadFileTypes = "allowed_upload_file_types"
+        case rateOperator = "rate_operator"
+        case showRateOperator = "show_visitor_rate_operator_button"
+        case disablingMessageInputField = "disabling_message_input_field"
 //        case multilang
 //        case chattingTimer = "chatting_timer"
 //        case googleAnalytics = "google_analytics"
@@ -72,7 +76,6 @@ public struct AccountConfig: Codable {
 //        case forceVisitorDisable = "force_visitor_disable"
 //        case visitorEnablingProbability = "visitor_enabling_probability"
 //        case defaultLang = "default_lang"
-//        case rateOperator = "rate_operator"
 //        case showProcessingPersonalDataCheckbox = "show_processing_personal_data_checkbox"
 //        case visitorWebsockets = "visitor_websockets"
 //        case visitorUploadFile = "visitor_upload_file"
