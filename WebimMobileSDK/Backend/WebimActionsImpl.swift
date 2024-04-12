@@ -187,6 +187,9 @@ extension WebimActionsImpl: WebimActions {
         case .maxFilesCountPerChatExceeded:
             sendFileError = .uploadedFileNotFound
             break
+        case .maliciousFileDetected:
+            sendFileError = .maliciousFileDetected
+            break
         case .uploadedFileNotFound:
             sendFileError = .unauthorized
             break

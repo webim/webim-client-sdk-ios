@@ -63,6 +63,7 @@ class MessageImpl {
     private var visitorReactionInfo: String?
     private var visitorCanReact: Bool?
     private var visitorChangeReaction: Bool?
+    private var group: Group?
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -90,7 +91,8 @@ class MessageImpl {
          messageIsEdited: Bool,
          visitorReactionInfo: String?,
          visitorCanReact: Bool?,
-         visitorChangeReaction: Bool?) {
+         visitorChangeReaction: Bool?,
+         group: Group?) {
         self.data = data
         self.clientSideID = clientSideID
         self.serverSideID = serverSideID
@@ -115,6 +117,7 @@ class MessageImpl {
         self.visitorReactionInfo = visitorReactionInfo
         self.visitorCanReact = visitorCanReact
         self.visitorChangeReaction = visitorChangeReaction
+        self.group = group
         
         self.historyMessage = historyMessage
         if historyMessage {
@@ -427,6 +430,9 @@ extension MessageImpl: Message {
         return visitorChangeReaction ?? false
     }
     
+    func getGroup() -> Group? {
+        return group
+    }
 }
 
 // MARK: - Equatable
@@ -1492,5 +1498,31 @@ extension QuoteImpl: Equatable {
             return true
         }
         return lhs!.isEqual(to: rhs!)
+    }
+}
+
+class GroupImpl {
+    private let id: String
+    private let messageCount: Int
+    private let messageNumber: Int
+    
+    init(id: String, messageCount: Int, messageNumber: Int) {
+        self.id = id
+        self.messageCount = messageCount
+        self.messageNumber = messageNumber
+    }
+}
+
+extension GroupImpl: Group {
+    func getID() -> String {
+        return id
+    }
+    
+    func getMessageCount() -> Int {
+        return messageCount
+    }
+    
+    func getMessageNumber() -> Int {
+        return messageNumber
     }
 }

@@ -40,6 +40,7 @@ enum WebimInternalError: String, Error {
     case domainNotFromWhitelist = "domain-not-from-whitelist"
     case fileSizeExceeded = "max_file_size_exceeded"
     case fileSizeTooSmall = "file_size_too_small"
+    case maliciousFileDetected = "malicious_file_detected"
     case fileTypeNotAllowed = "not_allowed_file_type"
     case notAllowedMimeType = "not_allowed_mime_type"
     case noPreviousChats = "no_previous_chats"

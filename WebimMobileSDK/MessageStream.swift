@@ -2703,6 +2703,15 @@ public enum SendFileError: Error {
     */
     case uploadCanceled
     
+    /**
+     Sent file was detected as malicious
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    case maliciousFileDetected
+    
 }
 
 public enum SendFilesError: Error {

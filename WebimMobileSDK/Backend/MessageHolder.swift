@@ -415,7 +415,8 @@ final class MessageHolder {
                                      messageIsEdited: messageImpl.isEdited(),
                                      visitorReactionInfo: messageImpl.getVisitorReaction(),
                                      visitorCanReact: messageImpl.canVisitorReact(),
-                                     visitorChangeReaction: messageImpl.canVisitorChangeReaction())
+                                     visitorChangeReaction: messageImpl.canVisitorChangeReaction(),
+                                     group: messageImpl.getGroup())
         messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
         WebimInternalLogger.shared.log(
             entry: "Changing success.\nMessage \(messageImpl.getText()) changed to \(newMessage.getText()) in MessageHolder - \(#function)",
@@ -473,7 +474,8 @@ final class MessageHolder {
                                      messageIsEdited: messageImpl.isEdited(),
                                      visitorReactionInfo: messageImpl.getVisitorReaction(),
                                      visitorCanReact: messageImpl.canVisitorReact(),
-                                     visitorChangeReaction: messageImpl.canVisitorChangeReaction())
+                                     visitorChangeReaction: messageImpl.canVisitorChangeReaction(),
+                                     group: messageImpl.getGroup())
         messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
 
         WebimInternalLogger.shared.log(

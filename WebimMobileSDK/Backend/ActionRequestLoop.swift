@@ -256,7 +256,8 @@ class ActionRequestLoop: AbstractRequestLoop {
              WebimInternalError.notMatchingMagicNumbers.rawValue,
              WebimInternalError.unauthorized.rawValue,
              WebimInternalError.maxFilesCountPerChatExceeded.rawValue,
-             WebimInternalError.fileSizeTooSmall.rawValue:
+             WebimInternalError.fileSizeTooSmall.rawValue,
+             WebimInternalError.maliciousFileDetected.rawValue:
             self.handleSendFile(error: error,
                                 ofRequest: request)
             WebimInternalAlert.shared.present(title: .visitorActionError, message: .fileSendingError)
@@ -616,6 +617,9 @@ class ActionRequestLoop: AbstractRequestLoop {
                 break
             case WebimInternalError.unauthorized.rawValue:
                 sendFileError = .unauthorized
+                break
+            case WebimInternalError.maliciousFileDetected.rawValue:
+                sendFileError = .maliciousFileDetected
                 break
             default:
                 sendFileError = .unknown

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11C0FDF22BC9415600A771EE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 11C0FDF12BC9415600A771EE /* PrivacyInfo.xcprivacy */; };
 		11EFE7D3231AC33500B64EFA /* FAQ methods documentation.md in Resources */ = {isa = PBXBuildFile; fileRef = 11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */; };
 		122DD62127918C0700093609 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122DD62027918C0700093609 /* UINavigationController.swift */; };
 		1239B898277F0E2E00D0CC2E /* WMSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1239B896277F0E2E00D0CC2E /* WMSettingsViewController.swift */; };
@@ -23,13 +24,13 @@
 		129360672614C20C008F8EF1 /* AdditionalKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129360662614C20C008F8EF1 /* AdditionalKeys.swift */; };
 		1295C6AF2602BB5200F7BE80 /* WebimServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */; };
 		12ADB880278D753900EC2B1F /* WMSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12ADB882278D753900EC2B1F /* WMSettingsViewController.xib */; };
-		25FA89DC75C14D1692E5E741 /* Pods_WebimMobileSDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0923AF283DE6AC8FC911F127 /* Pods_WebimMobileSDK_Example.framework */; };
-		4880E43D692DA808DA865AEB /* Pods_WebimMobileSDK_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A2385FAF9084295FE6B371 /* Pods_WebimMobileSDK_Tests.framework */; };
+		4C653D2CDA2BAEB07F2CC844 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E59887F0998D10578881C93 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* WMStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* WMStartViewController.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
-		72000299E67957A1324133B3 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D248BF1E47981EC16C60C521 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework */; };
+		6F580BCF9267AE6E9BC87088 /* Pods_WebimMobileSDK_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D8FB54DCF97367628EE1991 /* Pods_WebimMobileSDK_Tests.framework */; };
+		7A9ED53C368D1607C1A4933A /* Pods_WebimMobileSDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 789A2E6B871777C866D5F778 /* Pods_WebimMobileSDK_Example.framework */; };
 		906CBADB28D9DC7100CE86DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906CBADD28D9DC7100CE86DF /* InfoPlist.strings */; };
 		906CBB2028DA471300CE86DF /* WMLogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB2228DA471300CE86DF /* WMLogsViewController.xib */; };
 		909D76CB28F54F380018E54C /* WMShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909D76CA28F54F380018E54C /* WMShareViewController.swift */; };
@@ -192,8 +193,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		03A2385FAF9084295FE6B371 /* Pods_WebimMobileSDK_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimMobileSDK_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0923AF283DE6AC8FC911F127 /* Pods_WebimMobileSDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimMobileSDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		11C0FDF12BC9415600A771EE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "FAQ methods documentation.md"; sourceTree = "<group>"; };
 		122DD62027918C0700093609 /* UINavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		1239B896277F0E2E00D0CC2E /* WMSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSettingsViewController.swift; sourceTree = "<group>"; };
@@ -216,7 +216,11 @@
 		12ADB87B278D749D00EC2B1F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		12ADB881278D753900EC2B1F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMSettingsViewController.xib; sourceTree = "<group>"; };
 		12ADB886278D756B00EC2B1F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
-		3D4083B4333A82D6138841A7 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example-WebimClientShare/Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig"; sourceTree = "<group>"; };
+		18EFB50E2E06DDBD48B29C40 /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example-WebimClientShare/Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig"; sourceTree = "<group>"; };
+		475CA95610ABD040CAEA2E09 /* Pods-WebimMobileSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		4E59887F0998D10578881C93 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimMobileSDK_Example_WebimClientShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		55CD1AEA73D029FB130A9E40 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example-WebimClientShare/Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig"; sourceTree = "<group>"; };
+		5D8FB54DCF97367628EE1991 /* Pods_WebimMobileSDK_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimMobileSDK_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* WebimMobileSDK_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebimMobileSDK_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -225,7 +229,7 @@
 		607FACE51AFB9204008FA782 /* WebimMobileSDK_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebimMobileSDK_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHolderTests.swift; sourceTree = "<group>"; };
-		721A5C30F464EED8CD7C06AB /* Pods-WebimMobileSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
+		789A2E6B871777C866D5F778 /* Pods_WebimMobileSDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimMobileSDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		906CBADC28D9DC7100CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		906CBADE28D9DC7E00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		906CBB2128DA471300CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMLogsViewController.xib; sourceTree = "<group>"; };
@@ -283,8 +287,8 @@
 		90DC110D2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = pt; path = pt.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		90DC110E2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90DC110F2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A2E8362F6B30D904A2655EFD /* Pods-WebimMobileSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Tests/Pods-WebimMobileSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		AB52E1C1E0F009A386DC1C6C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		B245B23919CFD976FED79B92 /* Pods-WebimMobileSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Tests/Pods-WebimMobileSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		BE17D41C285B7DCD00DB606D /* WMLogsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMLogsViewController.swift; sourceTree = "<group>"; };
 		BE24022828B4BA4700697F21 /* FAQActionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQActionsTests.swift; sourceTree = "<group>"; };
 		BE24022A28B4BE2100697F21 /* FAQRequestLoopMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQRequestLoopMock.swift; sourceTree = "<group>"; };
@@ -316,6 +320,7 @@
 		BEFFCF6E28C0CA0C00B886AC /* WebimClientBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimClientBuilderTests.swift; sourceTree = "<group>"; };
 		BEFFCF7028C0D75D00B886AC /* WebimNotFatalErrorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalErrorImpl.swift; sourceTree = "<group>"; };
 		BEFFCF7228C0D88C00B886AC /* WebimRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimRequestTests.swift; sourceTree = "<group>"; };
+		C3C87E09DE04468C69E37BC8 /* Pods-WebimMobileSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Tests/Pods-WebimMobileSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4CD65CA48F80B5A4AD826B3 /* WebimMobileSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimMobileSDK.podspec; path = ../WebimMobileSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CC1F8E9E2A13A77E002494E1 /* DemoVisitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoVisitor.swift; sourceTree = "<group>"; };
 		CC529D2E29EFF57300295C4A /* WMVisitorFieldsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMVisitorFieldsParser.swift; sourceTree = "<group>"; };
@@ -332,7 +337,6 @@
 		CCF69DA52A13AA4D00E1FBA8 /* CompletionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionHandler.swift; sourceTree = "<group>"; };
 		CCF69DAB2A14ABA800E1FBA8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CCF69DAD2A14C9B400E1FBA8 /* NetworkUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
-		CD7DD4E13B894ACB8835D9B6 /* Pods-WebimMobileSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Tests/Pods-WebimMobileSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		CE07E993204972C600E0A0D3 /* SessionBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBuilderTests.swift; sourceTree = "<group>"; };
 		CE0AD26F1F96477500EA9148 /* WebimClientLibrary_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebimClientLibrary_Example.entitlements; sourceTree = "<group>"; };
 		CE0CD758202338EE00719DBE /* HistoryIDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryIDTests.swift; sourceTree = "<group>"; };
@@ -399,16 +403,14 @@
 		CED72594200E20E500CD1623 /* ChatTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewControllerTests.swift; sourceTree = "<group>"; };
 		CED72597200E5B1C00CD1623 /* WebimInternalLoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimInternalLoggerTests.swift; sourceTree = "<group>"; };
 		CEE382C12035D544006C809E /* WebimTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimTests.swift; sourceTree = "<group>"; };
-		D248BF1E47981EC16C60C521 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimMobileSDK_Example_WebimClientShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D599F8B153971D0047EA1151 /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example-WebimClientShare/Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig"; sourceTree = "<group>"; };
 		DD71AD04234DAFDC00A32FB6 /* UIAlertHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertHandler.swift; sourceTree = "<group>"; };
 		DD8A8D2C232A3E200011D275 /* LaunchScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenController.swift; sourceTree = "<group>"; };
 		DDC7924B23573D8700AF424F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDC7924C23573D9300AF424F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		DDCC52572356333400D39F8A /* ImageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConstants.swift; sourceTree = "<group>"; };
 		DDCC52592356360F00D39F8A /* ColourConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourConstants.swift; sourceTree = "<group>"; };
-		E10647B6C37C52E0428A8748 /* Pods-WebimMobileSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		EB8C258A78F3730770936414 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		EC1676D646E1C2549F3DAEED /* Pods-WebimMobileSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -423,7 +425,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25FA89DC75C14D1692E5E741 /* Pods_WebimMobileSDK_Example.framework in Frameworks */,
+				7A9ED53C368D1607C1A4933A /* Pods_WebimMobileSDK_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,7 +433,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4880E43D692DA808DA865AEB /* Pods_WebimMobileSDK_Tests.framework in Frameworks */,
+				6F580BCF9267AE6E9BC87088 /* Pods_WebimMobileSDK_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,7 +441,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72000299E67957A1324133B3 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework in Frameworks */,
+				4C653D2CDA2BAEB07F2CC844 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,15 +515,25 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		1F8789149F87012EDC40B6F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				789A2E6B871777C866D5F778 /* Pods_WebimMobileSDK_Example.framework */,
+				4E59887F0998D10578881C93 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework */,
+				5D8FB54DCF97367628EE1991 /* Pods_WebimMobileSDK_Tests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E10647B6C37C52E0428A8748 /* Pods-WebimMobileSDK_Example.debug.xcconfig */,
-				721A5C30F464EED8CD7C06AB /* Pods-WebimMobileSDK_Example.release.xcconfig */,
-				D599F8B153971D0047EA1151 /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */,
-				3D4083B4333A82D6138841A7 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */,
-				A2E8362F6B30D904A2655EFD /* Pods-WebimMobileSDK_Tests.debug.xcconfig */,
-				CD7DD4E13B894ACB8835D9B6 /* Pods-WebimMobileSDK_Tests.release.xcconfig */,
+				475CA95610ABD040CAEA2E09 /* Pods-WebimMobileSDK_Example.debug.xcconfig */,
+				EC1676D646E1C2549F3DAEED /* Pods-WebimMobileSDK_Example.release.xcconfig */,
+				18EFB50E2E06DDBD48B29C40 /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */,
+				55CD1AEA73D029FB130A9E40 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */,
+				C3C87E09DE04468C69E37BC8 /* Pods-WebimMobileSDK_Tests.debug.xcconfig */,
+				B245B23919CFD976FED79B92 /* Pods-WebimMobileSDK_Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -529,6 +541,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				11C0FDF12BC9415600A771EE /* PrivacyInfo.xcprivacy */,
 				1268F4F325E917BB00AA6F5D /* .swiftlint.yml */,
 				CE54B2501FC45274009C05BD /* Documentation */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
@@ -540,7 +553,7 @@
 				607FACD11AFB9204008FA782 /* Products */,
 				3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */,
 				12A45C2626023BBD004B077F /* Recovered References */,
-				F6714F8D63A6BB78A5EE8988 /* Frameworks */,
+				1F8789149F87012EDC40B6F9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -834,16 +847,6 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
-		F6714F8D63A6BB78A5EE8988 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0923AF283DE6AC8FC911F127 /* Pods_WebimMobileSDK_Example.framework */,
-				D248BF1E47981EC16C60C521 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework */,
-				03A2385FAF9084295FE6B371 /* Pods_WebimMobileSDK_Tests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -868,7 +871,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimMobileSDK_Example" */;
 			buildPhases = (
-				907AC255EA3E020298C61715 /* [CP] Check Pods Manifest.lock */,
+				AB5DFAB4D24167C30421C8C8 /* [CP] Check Pods Manifest.lock */,
 				8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
@@ -876,7 +879,7 @@
 				909D76D328F54F380018E54C /* Embed Foundation Extensions */,
 				129C626425E83D60009D4328 /* ShellScript */,
 				90A3704C2A1BDE9D000CC592 /* Upload DSYM */,
-				02EF2B77CBBA2AFFB267C948 /* [CP] Embed Pods Frameworks */,
+				34074CB2931BA5C35040A396 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -892,7 +895,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimMobileSDK_Tests" */;
 			buildPhases = (
-				0B34931CA17D00D26B763645 /* [CP] Check Pods Manifest.lock */,
+				A4514B3867DF216993FEB5E9 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
@@ -911,7 +914,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 909D76D628F54F380018E54C /* Build configuration list for PBXNativeTarget "WebimClientShare" */;
 			buildPhases = (
-				A24CF829BD333C5AB0281071 /* [CP] Check Pods Manifest.lock */,
+				40A0E2AF8EEA238A9F10393B /* [CP] Check Pods Manifest.lock */,
 				909D76C428F54F380018E54C /* Sources */,
 				909D76C528F54F380018E54C /* Frameworks */,
 				909D76C628F54F380018E54C /* Resources */,
@@ -1004,6 +1007,7 @@
 				DDC7924123573CB500AF424F /* LaunchScreenController.storyboard in Resources */,
 				CCEEB4F229F66A4D000923DF /* SelectVisitorTableViewCell.xib in Resources */,
 				12887177269D8DCA0080159A /* Localizable.strings in Resources */,
+				11C0FDF22BC9415600A771EE /* PrivacyInfo.xcprivacy in Resources */,
 				12ADB880278D753900EC2B1F /* WMSettingsViewController.xib in Resources */,
 				90BC04C2279A51C60081A75F /* logo_webim.png in Resources */,
 				90BC0495279A040B0081A75F /* WMStartViewController.xib in Resources */,
@@ -1031,7 +1035,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02EF2B77CBBA2AFFB267C948 /* [CP] Embed Pods Frameworks */ = {
+		129C626425E83D60009D4328 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\n#else\n  #echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		34074CB2931BA5C35040A396 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1041,14 +1062,17 @@
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
 				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseSessions/FirebaseSessions.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Nuke/Nuke.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/WebimKeyboard/WebimKeyboard.framework",
@@ -1061,14 +1085,17 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreDiagnostics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseRemoteConfigInterop.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseSessions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nuke.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebimKeyboard.framework",
@@ -1081,7 +1108,61 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0B34931CA17D00D26B763645 /* [CP] Check Pods Manifest.lock */ = {
+		40A0E2AF8EEA238A9F10393B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WebimMobileSDK_Example-WebimClientShare-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[Amimono] Create filelist per architecture";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
+		};
+		90A3704C2A1BDE9D000CC592 /* Upload DSYM */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Upload DSYM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"Symbols Directory\"\necho \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n\n\"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/WebimMobileSDK/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n";
+		};
+		A4514B3867DF216993FEB5E9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1103,38 +1184,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		129C626425E83D60009D4328 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\n#else\n  #echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[Amimono] Create filelist per architecture";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
-		};
-		907AC255EA3E020298C61715 /* [CP] Check Pods Manifest.lock */ = {
+		AB5DFAB4D24167C30421C8C8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1150,46 +1200,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-WebimMobileSDK_Example-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		90A3704C2A1BDE9D000CC592 /* Upload DSYM */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Upload DSYM";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"Symbols Directory\"\necho \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n\n\"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/WebimMobileSDK/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n";
-		};
-		A24CF829BD333C5AB0281071 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WebimMobileSDK_Example-WebimClientShare-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1634,7 +1644,7 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E10647B6C37C52E0428A8748 /* Pods-WebimMobileSDK_Example.debug.xcconfig */;
+			baseConfigurationReference = 475CA95610ABD040CAEA2E09 /* Pods-WebimMobileSDK_Example.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1663,7 +1673,7 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 721A5C30F464EED8CD7C06AB /* Pods-WebimMobileSDK_Example.release.xcconfig */;
+			baseConfigurationReference = EC1676D646E1C2549F3DAEED /* Pods-WebimMobileSDK_Example.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1691,7 +1701,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2E8362F6B30D904A2655EFD /* Pods-WebimMobileSDK_Tests.debug.xcconfig */;
+			baseConfigurationReference = C3C87E09DE04468C69E37BC8 /* Pods-WebimMobileSDK_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1713,7 +1723,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD7DD4E13B894ACB8835D9B6 /* Pods-WebimMobileSDK_Tests.release.xcconfig */;
+			baseConfigurationReference = B245B23919CFD976FED79B92 /* Pods-WebimMobileSDK_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = "";
@@ -1730,7 +1740,7 @@
 		};
 		909D76D428F54F380018E54C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D599F8B153971D0047EA1151 /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */;
+			baseConfigurationReference = 18EFB50E2E06DDBD48B29C40 /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1775,7 +1785,7 @@
 		};
 		909D76D528F54F380018E54C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D4083B4333A82D6138841A7 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */;
+			baseConfigurationReference = 55CD1AEA73D029FB130A9E40 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

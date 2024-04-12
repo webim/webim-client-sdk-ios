@@ -716,8 +716,13 @@ final class SQLiteHistoryStorage: HistoryStorage {
         }
         
         var rawData: [String: Any?]?
+        var group: Group?
         if let dataValue = row[SQLiteHistoryStorage.data] {
             rawData = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(dataValue)) as? [String: Any?]
+            if let groupDictionary = rawData?["group"] as? [String: Any] {
+                let groupItem = GroupItem(jsonDictionary: groupDictionary)
+                group = GroupImpl(id: groupItem.getID(), messageCount: groupItem.getMessageCount(), messageNumber: groupItem.getMessageNumber())
+            }
         }
         
         var attachment: FileInfo? = nil
@@ -811,7 +816,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            messageIsEdited: false,
                            visitorReactionInfo: reaction,
                            visitorCanReact: canVisitorReact,
-                           visitorChangeReaction: canVisitorChangeReact)
+                           visitorChangeReaction: canVisitorChangeReact,
+                           group: group)
     }
     
     private func insert(message: MessageImpl) throws {

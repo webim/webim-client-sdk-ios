@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		112106F52BBA0DD8000D6FC1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 112106F42BBA0DD8000D6FC1 /* PrivacyInfo.xcprivacy */; };
 		113057A9256D209D004BB13E /* UploadedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057A8256D209D004BB13E /* UploadedFile.swift */; };
 		113057AC256D22DE004BB13E /* UploadedFileImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113057AB256D22DE004BB13E /* UploadedFileImpl.swift */; };
 		1134DD5A234A3FF5008FA6F0 /* NotFatalErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */; };
@@ -128,6 +129,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		112106F42BBA0DD8000D6FC1 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		113057A8256D209D004BB13E /* UploadedFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFile.swift; sourceTree = "<group>"; };
 		113057AB256D22DE004BB13E /* UploadedFileImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadedFileImpl.swift; sourceTree = "<group>"; };
 		1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFatalErrorHandler.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				8FD2445E200CE259007EB9CB /* WebimRemoteNotification.swift */,
 				8FD2445F200CE259007EB9CB /* WebimSession.swift */,
 				8FD244ED200CE3E4007EB9CB /* Info.plist */,
+				112106F42BBA0DD8000D6FC1 /* PrivacyInfo.xcprivacy */,
 				CE76D6202210A6DC006A5BF0 /* FAQStructure.swift */,
 				CE76D6222210A6F3006A5BF0 /* FAQCategory.swift */,
 				CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */,
@@ -538,6 +541,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				112106F52BBA0DD8000D6FC1 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

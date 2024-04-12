@@ -300,6 +300,16 @@ public protocol Message {
      2021 Webim
      */
     func canVisitorChangeReaction() -> Bool
+    
+    /**
+     - returns:
+     Group if message is part of group.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2024 Webim
+     */
+    func getGroup() -> Group?
 }
 
 /**
@@ -1372,4 +1382,41 @@ public enum ParamsButtonType {
     
     case action
     
+}
+
+// MARK: -
+/**
+ Information about group of messages.
+ - author:
+ Nikita Kaberov
+ - copyright:
+ 2024 Webim
+ */
+public protocol Group {
+    /**
+     Group id.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2024 Webim
+     */
+    func getID() -> String
+    
+    /**
+     Count of messages in group.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2024 Webim
+     */
+    func getMessageCount() -> Int
+    
+    /**
+     Message number in group.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2024 Webim
+     */
+    func getMessageNumber() -> Int
 }

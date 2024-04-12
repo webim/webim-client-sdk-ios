@@ -242,6 +242,15 @@ class MessageMapper {
             return nil
         }
         
+        let group: Group?
+        if let groupItem = messageItem.getGroup() {
+            group = GroupImpl(id: groupItem.getID(),
+                              messageCount: groupItem.getMessageCount(),
+                              messageNumber: groupItem.getMessageNumber())
+        } else {
+            group = nil
+        }
+        
         return MessageImpl(serverURLString: serverURLString,
                            clientSideID: clientSideID,
                            serverSideID: messageItem.getServerSideID(),
@@ -266,7 +275,8 @@ class MessageMapper {
                            messageIsEdited: messageItem.getIsEdited(),
                            visitorReactionInfo: messageItem.getReaction(),
                            visitorCanReact: messageItem.getCanVisitorReact(),
-                           visitorChangeReaction: messageItem.getCanVisitorChangeReaction())
+                           visitorChangeReaction: messageItem.getCanVisitorChangeReaction(),
+                           group: group)
     }
     
     func set(fileUrlCreator: FileUrlCreator) {

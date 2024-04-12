@@ -70,7 +70,8 @@ final class MessageToSend: MessageImpl {
                    messageIsEdited: false,
                    visitorReactionInfo: nil,
                    visitorCanReact: false,
-                   visitorChangeReaction: false)
+                   visitorChangeReaction: false,
+                   group: nil)
     }
     
 }
