@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
@@ -12,9 +12,9 @@ let package = Package(
     targets: [
         .target(
             name: "WebimMobileSDK",
-            dependencies: ["SQLite"],
+            dependencies: [.product(name: "SQLite", package: "SQLite.swift")],
             path: "WebimMobileSDK",
-            resources: [.copy("WebimMobileSDK/PrivacyInfo.xcprivacy")]
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         )
     ]
 )

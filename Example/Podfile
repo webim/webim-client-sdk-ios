@@ -9,7 +9,6 @@ target 'WebimMobileSDK_Example' do
     pod 'WebimMobileWidget', '1.2.1'
     pod 'WebimKeyboard', '1.0.2'
 
-    pod 'SQLite.swift', :git => 'https://github.com/stephencelis/SQLite.swift.git', :tag => '0.15.0'    
     pod 'Firebase/Crashlytics'
     pod 'Firebase/Analytics'
     

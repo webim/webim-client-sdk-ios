@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.41.5
+github "webim/webim-client-sdk-ios" ~> 3.41.6
 ```
 
 ### Swift Package Manager
@@ -41,9 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Privacy Manifest added.
-* Group of messages support.
-* `SendFileError.maliciousFileDetected` added.
+* SPM error fixed.
 
 ## Example
 
