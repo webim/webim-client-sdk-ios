@@ -624,7 +624,7 @@ extension WebimActionsImpl: WebimActions {
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
-                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        contentType: ContentType.jsonEncoded.rawValue,
                                                         baseURLString: url,
                                                         autocompleteCompletionHandler: completion),
                                                         withAuthData: false)

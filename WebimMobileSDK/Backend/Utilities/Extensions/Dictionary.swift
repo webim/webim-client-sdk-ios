@@ -56,7 +56,20 @@ extension Dictionary {
         return parameterArray.joined(separator: "&")
     }
     
-    private func getPercentEscapedString<T>(forKey key: String, value: T?) -> String {
+    func jsonFromHTTPParameters() -> String {
+        let parameterArray = map { (key, value) -> String in
+            guard let key = key as? String else {
+                    WebimInternalLogger.shared.log(entry: "Key has incorrect type or nil in extension Dictionary.\(#function)")
+                    return String()
+            }
+                
+            return getPercentEscapedString(forKey: key, value: value, isPartOfJSON: true)
+        }
+            
+        return "{" + parameterArray.joined(separator: ",") + "}"
+    }
+    
+    private func getPercentEscapedString<T>(forKey key: String, value: T?, isPartOfJSON: Bool = false) -> String {
         guard let value = value else {
             WebimInternalLogger.shared.log(entry: "Value is nil in extension Dictionary.\(#function)")
             return String()
@@ -79,6 +92,10 @@ extension Dictionary {
         guard let percentEscapedKey = key.addingPercentEncodingForURLQueryValue() else {
             WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Key failure in Extension Dictionary.\(#function)")
             return "\(key)=\(stringValue)"
+        }
+        if isPartOfJSON {
+            stringValue = stringValue.replacingOccurrences(of: "\"", with: "\\\"")
+            return "\"\(key)\"=\"\(stringValue)\""
         }
         
         guard let percentEscapedValue = stringValue.addingPercentEncodingForURLQueryValue() else {

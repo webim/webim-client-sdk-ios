@@ -28,6 +28,7 @@ import Foundation
 enum ContentType: String {
     case multipartBody = "multipart/form-data; boundary=" // + boundary string
     case urlEncoded = "application/x-www-form-urlencoded"
+    case jsonEncoded = "application/json"
 }
 
 enum Event: String {

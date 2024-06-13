@@ -196,7 +196,8 @@ class ActionRequestLoop: AbstractRequestLoop {
             parameterDictionary[Parameter.pageID.rawValue] = usedAuthorizationData.getPageID()
             parameterDictionary[Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
         }
-        let parametersString = parameterDictionary.stringFromHTTPParameters()
+        let parametersString = request.getContentType() == ContentType.jsonEncoded.rawValue ? parameterDictionary.jsonFromHTTPParameters() : parameterDictionary.stringFromHTTPParameters()
+                
         
         var urlRequest: URLRequest?
         let httpMethod = request.getHTTPMethod()

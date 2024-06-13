@@ -1103,7 +1103,7 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
     
     // MARK: - Properties
     private let internalErrorListener: InternalErrorListener?
-    private let notFatalErrorHandler: NotFatalErrorHandler?
+    private weak var notFatalErrorHandler: NotFatalErrorHandler?
     private var sessionDestroyer: SessionDestroyer
     
     // MARK: - Initialization
