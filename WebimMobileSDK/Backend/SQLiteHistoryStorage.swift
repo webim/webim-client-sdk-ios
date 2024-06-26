@@ -67,21 +67,21 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static let history = Table(TableName.history.rawValue)
     
     // In DB columns order.
-    private static let serverSideID = Expression<String>(ColumnName.serverSideID.rawValue)
-    private static let clientSideID = Expression<String?>(ColumnName.clientSideID.rawValue)
-    private static let timestamp = Expression<Int64>(ColumnName.timestamp.rawValue)
-    private static let senderID = Expression<String?>(ColumnName.senderID.rawValue)
-    private static let senderName = Expression<String>(ColumnName.senderName.rawValue)
-    private static let avatarURLString = Expression<String?>(ColumnName.avatarURLString.rawValue)
-    private static let type = Expression<String>(ColumnName.type.rawValue)
-    private static let text = Expression<String>(ColumnName.text.rawValue)
-    private static let data = Expression<Blob?>(ColumnName.data.rawValue)
-    private static let canBeReplied = Expression<Bool?>(ColumnName.canBeReplied.rawValue)
-    private static let quote = Expression<Blob?>(ColumnName.quote.rawValue)
+    private static let serverSideID = SQLite.Expression<String>(ColumnName.serverSideID.rawValue)
+    private static let clientSideID = SQLite.Expression<String?>(ColumnName.clientSideID.rawValue)
+    private static let timestamp = SQLite.Expression<Int64>(ColumnName.timestamp.rawValue)
+    private static let senderID = SQLite.Expression<String?>(ColumnName.senderID.rawValue)
+    private static let senderName = SQLite.Expression<String>(ColumnName.senderName.rawValue)
+    private static let avatarURLString = SQLite.Expression<String?>(ColumnName.avatarURLString.rawValue)
+    private static let type = SQLite.Expression<String>(ColumnName.type.rawValue)
+    private static let text = SQLite.Expression<String>(ColumnName.text.rawValue)
+    private static let data = SQLite.Expression<Blob?>(ColumnName.data.rawValue)
+    private static let canBeReplied = SQLite.Expression<Bool?>(ColumnName.canBeReplied.rawValue)
+    private static let quote = SQLite.Expression<Blob?>(ColumnName.quote.rawValue)
     private static let SQLITE_CONSTRAINT: Int = 19
-    private static let canVisitorReact = Expression<Bool?>(ColumnName.canVisitorReact.rawValue)
-    private static let canVisitorChangeReaction = Expression<Bool?>(ColumnName.canVisitorChangeReaction.rawValue)
-    private static let reaction = Expression<String?>(ColumnName.reaction.rawValue)
+    private static let canVisitorReact = SQLite.Expression<Bool?>(ColumnName.canVisitorReact.rawValue)
+    private static let canVisitorChangeReaction = SQLite.Expression<Bool?>(ColumnName.canVisitorChangeReaction.rawValue)
+    private static let reaction = SQLite.Expression<String?>(ColumnName.reaction.rawValue)
     
     
     // MARK: - Properties

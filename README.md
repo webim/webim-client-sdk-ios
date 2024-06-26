@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.41.7
+github "webim/webim-client-sdk-ios" ~> 3.41.8
 ```
 
 ### Swift Package Manager
@@ -41,7 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Autocomplete method fixed.
+* Xcode 16 supported.
 
 ## Example
 
