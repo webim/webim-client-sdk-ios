@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.41.8
+github "webim/webim-client-sdk-ios" ~> 3.41.9
 ```
 
 ### Swift Package Manager

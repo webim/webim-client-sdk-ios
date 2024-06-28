@@ -59,8 +59,8 @@ final class FAQSQLiteHistoryStorage {
     private static let items = Table(TableName.items.rawValue)
     
     // In DB columns order.
-    private static let id = Expression<String>(ColumnName.id.rawValue)
-    private static let data = Expression<Blob?>(ColumnName.data.rawValue)
+    private static let id = SQLite.Expression<String>(ColumnName.id.rawValue)
+    private static let data = SQLite.Expression<Blob?>(ColumnName.data.rawValue)
     
     
     // MARK: - Properties
