@@ -52,10 +52,10 @@ final class SurveyFactory {
     private func createConfigFrom(configItem: ConfigItem) -> SurveyConfig? {
         guard let descriptorItem = configItem.getDescriptor(),
             let descriptor = createDescriptorFrom(descriptorItem: descriptorItem),
-            let id = configItem.getID(),
-            let version = configItem.getVersion() else {
+            let id = configItem.getID() else {
                 return nil
         }
+        let version = configItem.getVersion() ?? ""
         return ConfigImpl(id: id,
                           descriptor: descriptor,
                           version: version)

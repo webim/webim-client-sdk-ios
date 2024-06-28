@@ -41,7 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Xcode 16 supported.
+* Survey fixed.
 
 ## Example
 
