@@ -581,7 +581,7 @@ public protocol ImageInfo {
      - copyright:
      2017 Webim
      */
-    func getThumbURL() -> URL
+    func getThumbURL() -> URL?
     
     /**
      - returns:

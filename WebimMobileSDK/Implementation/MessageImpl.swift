@@ -890,12 +890,12 @@ final class ImageInfoImpl: ImageInfo {
     // MARK: - Methods
     // MARK: ImageInfo protocol methods
     
-    func getThumbURL() -> URL {
+    func getThumbURL() -> URL? {
         guard let guid = guid,
               let currentURLString = fileUrlCreator?.createFileURL(byFilename: filename, guid: guid, isThumb: true),
               let thumbURL = URL(string: currentURLString) else {
             WebimInternalLogger.shared.log(entry: "Getting Thumb URL from String failure in MessageImpl.\(#function)")
-            fatalError("Getting Thumb URL from String failure in MessageImpl.\(#function)")
+            return nil
         }
         return thumbURL
     }
