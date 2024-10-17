@@ -37,6 +37,7 @@ final class MessageHolder {
     // MARK: - Properties
     private let accessChecker: AccessChecker
     private let historyStorage: HistoryStorage
+    private weak var messageStream: MessageStream?
     private let remoteHistoryProvider: RemoteHistoryProvider
     private lazy var currentChatMessages = [MessageImpl]()
     private var lastChatMessageIndex = 0
@@ -75,8 +76,19 @@ final class MessageHolder {
         return messagesToSend
     }
     
+    func set(messageStream: MessageStream) {
+        self.messageStream = messageStream
+    }
+    
+    func getMessageStram() -> MessageStream? {
+        return messageStream
+    }
+    
     func removeFromMessagesToSendAt(index: Int) {
         weak var removedMessage = messagesToSend.remove(at: index)
+        if let message = removedMessage {
+            cancelResendWith(message: message)
+        }
         WebimInternalLogger.shared.log(
             entry: "Message \(removedMessage?.getText() ?? "") removed from messages to send.\nMessages to send count - \(messagesToSend.count) in MessageHolder",
             verbosityLevel: .verbose,
@@ -347,6 +359,17 @@ final class MessageHolder {
             logType: .messageHistory)
         messageTracker?.messageListener?.added(message: message,
                                                after: nil)
+        var messages = [MessageImpl]()
+        messages.append(message)
+        receiveHistoryUpdateWith(messages: messages, deleted: Set<String>()) { }
+    }
+            
+    func resending(message: MessageToSend) {
+        messagesToSend.append(message)
+        WebimInternalLogger.shared.log(
+            entry: "Message text to send - \(message.getText()).\nMessages to send count - \(messagesToSend.count)",
+            verbosityLevel: .verbose,
+            logType: .messageHistory)
     }
     
     func sendingCancelledWith(messageID: String) {
@@ -360,8 +383,19 @@ final class MessageHolder {
                 messagesToSend.remove(at: index)
                 
                 messageTracker?.messageListener?.removed(message: message)
+                cancelResendWith(message: message)
                 
                 return
+            }
+        }
+    }
+    
+    func cancelResendWith(message: Message, deleteFromChat: Bool = false) {
+        var messages = Set<String>()
+        messages.insert(message.getID())
+        receiveHistoryUpdateWith(messages: [MessageImpl](), deleted: messages) {
+            if deleteFromChat == true {
+                self.messageTracker?.messageListener?.removed(message: message)
             }
         }
     }
@@ -422,6 +456,9 @@ final class MessageHolder {
             entry: "Changing success.\nMessage \(messageImpl.getText()) changed to \(newMessage.getText()) in MessageHolder - \(#function)",
             verbosityLevel: .verbose,
             logType: .messageHistory)
+        var messages = [MessageImpl]()
+        messages.append(newMessage)
+        receiveHistoryUpdateWith(messages: messages, deleted: Set<String>()) { }
 
         return messageImpl.getText()
     }

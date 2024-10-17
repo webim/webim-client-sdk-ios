@@ -38,51 +38,39 @@ class WMShareViewController: UIViewController, SendFileCompletionHandler {
     private var alertController: UIAlertController!
     var sendFileError: SendFileError? = nil
     let saveView = WMSaveView.loadXibView()
+    lazy var shareProgressViewController = WMShareProgressViewController.loadViewControllerFromXib()
+    var sendedFilesCount = 0
+    var countOfAttachments = 0
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         WMKeychainWrapper.standard.setAppGroupName(userDefaults: UserDefaults(suiteName: "group.WebimClient.Share") ?? UserDefaults.standard, keychainAccessGroup: Bundle.main.infoDictionary!["keychainAppIdentifier"] as! String)
-
         WebimServiceController.currentSessionShare.createSession()
-
-        alertController = UIAlertController(title: "Отправить файл".localized,
-                                            message: "Вы уверены что хотите отправить файл?",
-                                            preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "OK".localized,
-                                     style: .default,
-                                     handler: { _ in self.getFilesExtensionContext() })
-        
-        alertController.addAction(okAction)
-        self.present(alertController, animated: true)
+        WebimServiceController.currentSession.setMessageTracker(withMessageListener: self)
+        getFilesExtensionContext()
     }
+    
     
     func getFilesExtensionContext() {
         guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem], inputItems.isNotEmpty() else {
             close()
             return
         }
-        
-        DispatchQueue.main.async {
-            self.view.addSubview(self.saveView)
-            self.saveView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-            self.saveView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        }
-        self.saveView.animateActivity()
+       
         inputItems.forEach { item in
-            if let attachments = item.attachments,
-               !attachments.isEmpty {
-                attachments.forEach { attachment in
-                    if attachment.isImage {
-                        handleImageAttachment(attachment)
-                    } else if attachment.isFile {
-                        handleFileAttachment(attachment)
-                    }
-                }
+            item.attachments?.forEach { attachment in
+                handleAttachment(attachment)
+                countOfAttachments += 1
             }
         }
-        checkErrorAfterSend()
+        
+        showShareProgressView()
+    }
+    
+    private func showShareProgressView() {
+        shareProgressViewController.modalPresentationStyle = .overCurrentContext
+        present(shareProgressViewController, animated: true)
     }
     
     func showDialog(
@@ -116,6 +104,7 @@ class WMShareViewController: UIViewController, SendFileCompletionHandler {
         
         self.present(alertController, animated: true)
     }
+    
     
     func checkErrorAfterSend() {
         guard sendFileError != nil else {
@@ -164,6 +153,16 @@ extension WMShareViewController {
         extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
     
+    func handleAttachment(_ attachment: NSItemProvider) {
+        if attachment.isImage {
+            handleImageAttachment(attachment)
+        } else if attachment.isFile {
+            handleFileAttachment(attachment, (kUTTypeFileURL as String))
+        } else if let type = attachment.isVideo {
+            handleFileAttachment(attachment, type)
+        }
+    }
+    
     func handleImageAttachment(_ attachment: NSItemProvider) {
         attachment.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil) { [weak self] item, error in
             guard let self = self else { return }
@@ -208,8 +207,8 @@ extension WMShareViewController {
         }
     }
     
-    func handleFileAttachment(_ attachment: NSItemProvider) {
-        attachment.loadItem(forTypeIdentifier: kUTTypeFileURL as String, options: nil) { [weak self] item, error in
+    func handleFileAttachment(_ attachment: NSItemProvider, _ typeIdentifier: String) {
+        attachment.loadItem(forTypeIdentifier: typeIdentifier, options: nil) { [weak self] item, error in
             guard let self = self else { return }
             guard error == nil else {
                 self.close()
@@ -245,14 +244,49 @@ extension NSItemProvider {
     var isImage: Bool {
         return hasItemConformingToTypeIdentifier(kUTTypeImage as String)
     }
-    
+
     var isFile: Bool {
         return hasItemConformingToTypeIdentifier(kUTTypeFileURL as String)
+    }
+
+    var isVideo: String? {
+        if hasItemConformingToTypeIdentifier(kUTTypeVideo as String) {
+            return (kUTTypeVideo as String)
+        } else if hasItemConformingToTypeIdentifier(kUTTypeMPEG as String) {
+            return (kUTTypeMPEG as String)
+        } else if hasItemConformingToTypeIdentifier(kUTTypeMPEG4 as String) {
+            return (kUTTypeMPEG4 as String)
+        } else {
+            return ""
+        }
     }
 }
 
 extension Array {
     func isNotEmpty() -> Bool {
         return !isEmpty
+    }
+}
+
+extension WMShareViewController: MessageListener {
+    func removed(message: any WebimMobileSDK.Message) {
+    }
+    
+    func removedAllMessages() {
+    }
+    
+    func added(message newMessage: Message,
+               after previousMessage: Message?) {
+        if let fileData = newMessage.getData()?.getAttachment()?.getFileInfo() {
+            self.shareProgressViewController.startProgress(for: SendingFile(fileName: fileData.getFileName(), fileID: newMessage.getID()))
+        }
+        
+    }
+    
+    func changed(message oldVersion: Message,
+                 to newVersion: Message) {
+        if let fileData = newVersion.getData()?.getAttachment()?.getFileInfo() {
+            self.shareProgressViewController.stateChanged(for: SendingFile(fileName: fileData.getFileName(), fileID: oldVersion.getID()), with: newVersion.getSendStatus())
+        }
     }
 }

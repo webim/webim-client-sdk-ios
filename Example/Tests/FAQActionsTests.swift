@@ -33,7 +33,7 @@ class FAQActionsTests: XCTestCase {
 
     let faqDestroyer = FAQDestroyer()
     let queue = DispatchQueue.global()
-    let baseURL = "https://wmtest6.webim.ru/"
+    let baseURL = "https://wmtest6.webim.ru"
     var completionHandlerExecutor: ExecIfNotDestroyedFAQHandlerExecutor!
     var faqRequestLoopMock: FAQRequestLoopMock!
     var sut: FAQActions!
@@ -42,8 +42,8 @@ class FAQActionsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         completionHandlerExecutor = ExecIfNotDestroyedFAQHandlerExecutor(faqDestroyer: faqDestroyer, queue: queue)
-        faqRequestLoopMock = FAQRequestLoopMock(completionHandlerExecutor: completionHandlerExecutor)
-        sut = FAQActions(baseURL: baseURL, faqRequestLoop: faqRequestLoopMock)
+        faqRequestLoopMock = FAQRequestLoopMock(completionHandlerExecutor: completionHandlerExecutor, baseURL: baseURL)
+        sut = FAQActions(faqRequestLoop: faqRequestLoopMock)
     }
 
     override func tearDown() {

@@ -676,6 +676,53 @@ extension MessageStreamImpl: MessageStream {
         return messageID
     }
     
+    func resend(message: Message,
+                completionHandler: ResendMessageCompletionHandler?) throws {
+        try accessChecker.checkAccess()
+                
+        if message.getSendStatus() != .sending {
+            return
+        }
+                
+        try startChat()
+        WebimInternalLogger.shared.log(entry: "Request resend message - \(message.getText()) in MessageStream - \(#function)", verbosityLevel: .verbose, logType: .networkRequest)
+        switch message.getType() {
+        case .stickerVisitor:
+            if let sticker = message.getSticker() {
+                messageHolder.resending(message: sendingMessageFactory.createStickerMessageToSendWith(id: message.getID(), stickerId: sticker.getStickerId()))
+                webimActions.sendSticker(stickerId: sticker.getStickerId(), clientSideId: message.getID())
+            }
+        case .visitorMessage:
+            messageHolder.resending(message: sendingMessageFactory.createTextMessageToSendWith(id: message.getID(),
+                                                                    text: message.getText()))
+            if let quote = message.getQuote() {
+                webimActions.replay(message: message.getText(),
+                                    clientSideID: message.getID(),
+                                    quotedMessageID: quote.getMessageID() ?? "")
+            } else {
+                webimActions.send(message: message.getText(),
+                                  clientSideID: message.getID(),
+                                  dataJSONString: nil,
+                                  isHintQuestion: false,
+                                  dataMessageCompletionHandler: nil,
+                                  editMessageCompletionHandler: nil,
+                                  sendMessageCompletionHandler: nil)
+            }
+        default:
+            return
+        }
+    }
+    
+    func cancelResend(message: Message) throws {
+        try accessChecker.checkAccess()
+        
+        if message.getSendStatus() != .sending {
+            return
+        }
+            
+        messageHolder.cancelResendWith(message: message, deleteFromChat: true)
+    }
+    
     func send(uploadedFiles: [UploadedFile],
               completionHandler: SendFilesCompletionHandler?) throws -> String {
         try accessChecker.checkAccess()

@@ -63,15 +63,13 @@ final class WebimActionsImpl {
     }
     
     // MARK: - Properties
-    private let baseURL: String
+    //private let baseURL: String
     let actionRequestLoop: ActionRequestLoop
     private var sendingFiles = [String: SendingFile]()
     
     // MARK: - Initialization
-    init(baseURL: String,
-         actionRequestLoop: ActionRequestLoop
+    init(actionRequestLoop: ActionRequestLoop
     ) {
-        self.baseURL = baseURL
         self.actionRequestLoop = actionRequestLoop
     }
     
@@ -108,7 +106,7 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.data.rawValue] = dataJSONString
         }
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -134,7 +132,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.chatMode.rawValue: ChatMode.online.rawValue,
                           Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.uploadFile.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.uploadFile.rawValue
         
         let boundaryString = NSUUID().uuidString
         
@@ -204,7 +202,7 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.fileProgress.rawValue] = progress.description
         }
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         let sendingFile = SendingFile(
             fileName: filename,
@@ -235,7 +233,7 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.hintQuestion.rawValue] = isHintQuestion
         }
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -254,7 +252,7 @@ extension WebimActionsImpl: WebimActions {
                           Parameter.message.rawValue: message,
                           Parameter.quote.rawValue: getQuotedMessage(repliedMessageId: quotedMessageID)] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -272,7 +270,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.actionn.rawValue: Action.deleteMessage.rawValue,
                           Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -286,7 +284,7 @@ extension WebimActionsImpl: WebimActions {
                             completionHandler: DeleteUploadedFileCompletionHandler?) {
         let dataToPost = [Parameter.guid.rawValue: fileGuid] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.fileDelete.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.fileDelete.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: dataToPost,
@@ -312,7 +310,7 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.customFields.rawValue] = custom_fields
         }
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -323,7 +321,7 @@ extension WebimActionsImpl: WebimActions {
     func closeChat() {
         let dataToPost = [Parameter.actionn.rawValue: Action.closeChat.rawValue] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -341,7 +339,7 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.draft.rawValue] = draft
         }
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -353,7 +351,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.actionn.rawValue: Action.setPrechat.rawValue,
                           Parameter.prechat.rawValue: prechatFields] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -368,7 +366,7 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.since.rawValue] = since
         }
         
-        let urlString = baseURL + ServerPathSuffix.getHistory.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.getHistory.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: dataToPost,
@@ -380,7 +378,7 @@ extension WebimActionsImpl: WebimActions {
                         completion: @escaping (_ data: Data?) throws -> ()) {
         let dataToPost = [Parameter.beforeTimestamp.rawValue: beforeMessageTimestamp] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.getHistory.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.getHistory.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: dataToPost,
@@ -401,7 +399,7 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.visitorNote.rawValue] = visitorNote
         }
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -414,7 +412,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.actionn.rawValue: Action.respondSentryCall.rawValue,
                           Parameter.clientSideID.rawValue: id] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -427,7 +425,7 @@ extension WebimActionsImpl: WebimActions {
         let authToken = self.actionRequestLoop.authorizationData?.getAuthorizationToken() ?? ""
         
         let parameterDictionary: [String: String] = [Parameter.pageID.rawValue: pageId, Parameter.query.rawValue: query, Parameter.authorizationToken.rawValue:authToken]
-        let urlString = baseURL + ServerPathSuffix.search.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.search.rawValue
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: parameterDictionary,
                                                         baseURLString: urlString,
@@ -438,7 +436,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.actionn.rawValue: Action.setDeviceToken.rawValue,
                           Parameter.deviceToken.rawValue: deviceToken] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -449,7 +447,7 @@ extension WebimActionsImpl: WebimActions {
     func setChatRead() {
         let dataToPost = [Parameter.actionn.rawValue: Action.chatRead.rawValue] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -461,7 +459,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.actionn.rawValue: Action.widgetUpdate.rawValue,
                           Parameter.data.rawValue: data] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -476,7 +474,7 @@ extension WebimActionsImpl: WebimActions {
                           Parameter.buttonId.rawValue: buttonId,
                           Parameter.requestMessageId.rawValue: messageId] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -491,7 +489,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.actionn.rawValue: Action.sendChatHistory.rawValue,
                           Parameter.email.rawValue: emailAddress] as [String: Any]
 
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
 
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -510,7 +508,7 @@ extension WebimActionsImpl: WebimActions {
             Parameter.clientSideID.rawValue: clientSideId
         ] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(
             httpMethod: .post,
@@ -537,7 +535,7 @@ extension WebimActionsImpl: WebimActions {
             Parameter.clientSideID.rawValue: clientSideId
         ] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(
             httpMethod: .post,
@@ -560,7 +558,7 @@ extension WebimActionsImpl: WebimActions {
                           Parameter.surveyQuestionID.rawValue: questionID,
                           Parameter.surveyAnswer.rawValue: surveyAnswer] as [String: Any]
 
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
 
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -574,7 +572,7 @@ extension WebimActionsImpl: WebimActions {
         let dataToPost = [Parameter.actionn.rawValue: Action.surveyAnswer.rawValue,
                           Parameter.surveyID.rawValue: surveyID] as [String: Any]
 
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
 
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -587,7 +585,7 @@ extension WebimActionsImpl: WebimActions {
                          completion: @escaping (_ data: Data?) throws -> ()) {
         let dataToPost = [Parameter.location.rawValue: location] as [String: Any]
 
-        let urlString = baseURL + ServerPathSuffix.getOnlineStatus.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.getOnlineStatus.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: dataToPost,
@@ -599,7 +597,7 @@ extension WebimActionsImpl: WebimActions {
     func clearHistory() {
         let dataToPost = [Parameter.actionn.rawValue: Action.clearHistory.rawValue] as [String: Any]
         
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
@@ -610,7 +608,7 @@ extension WebimActionsImpl: WebimActions {
     func getServerSettings(forLocation location: String, completion: @escaping (Data?) throws -> ()) {
         let dataToPost = [String: Any]()
 
-        let urlString = baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)"
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)"
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: dataToPost,
@@ -632,7 +630,7 @@ extension WebimActionsImpl: WebimActions {
 
 
     func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?) {
-        let urlString = baseURL + ServerPathSuffix.getServerSideSettings.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.getServerSideSettings.rawValue
 
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .get,
                                                         primaryData: [:],
@@ -645,7 +643,7 @@ extension WebimActionsImpl: WebimActions {
                           Parameter.latitude.rawValue: latitude,
                           Parameter.longitude.rawValue: longitude] as [String: Any]
 
-        let urlString = baseURL + ServerPathSuffix.doAction.rawValue
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,

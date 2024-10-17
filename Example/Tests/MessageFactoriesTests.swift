@@ -167,7 +167,8 @@ class SendingFactoryTests: XCTestCase {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
 
         let messageToSend = sendingFactory.createTextMessageToSendWithQuoteWith(
             id: "someMessageID",

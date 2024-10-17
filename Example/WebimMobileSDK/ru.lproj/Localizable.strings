@@ -35,12 +35,22 @@
 //StringConstants.swift
 "Delete" = "Удалить";
 //StringConstants.swift
-"Reply" = "Редактировать";
+"Reply" = "Ответить";
 //WMStartViewController.xib
-"Welcome to the WebimClientLibrary app!" = "Добро пожаловать в приложение Webim Chat!";
+"Welcome to the WebimClientLibrary app!" = "Добро пожаловать в приложение Webim SDK App!";
 //WMThanksAlertView.xib
 "Your feedback will help us become better." = "Ваш отзыв поможет нам стать лучше.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Ваша учетная запись посетителя находится в черном списке.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "Ошибка получения данных о пользователе.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Неудачная попытка создания сессии";
+//ChatViewController+Listener.swift
+"typing" = "печатает";
+//StringConstants.swift
+"Edit" = "Редактировать";
+"Enter message" = "Введите сообщение";
+"Please rate the overall impression of the consultation" = "Пожалуйста, оцените общие впечатления от консультации.";
+"Rate Operator" = "Оценить оператора";
+"Send" = "Отправить";

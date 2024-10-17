@@ -91,6 +91,9 @@ extension WMSettingsViewController {
         )
         imageView.image = navigationBarTitleImageViewImage
         imageView.contentMode = .scaleAspectFill
+        toogleTestModeGestureRecognizer.numberOfTapsRequired = 5
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(toogleTestModeGestureRecognizer)
     }
 
 

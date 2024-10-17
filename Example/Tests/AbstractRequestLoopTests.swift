@@ -32,7 +32,9 @@ class AbstractRequestLoopTests: XCTestCase {
     
     // MARK: - Properties
     private let abstractRequestLoop = AbstractRequestLoopForTests(completionHandlerExecutor: nil,
-                                                                  internalErrorListener: nil)
+                                                                  internalErrorListener: nil,
+                                                                  requestHeader: nil,
+                                                                  baseURL: MessageImplMockData.serverURLString.rawValue)
 
     private let webimServerSideSettingsResponse = """
 webimApplyServerSideSettings({

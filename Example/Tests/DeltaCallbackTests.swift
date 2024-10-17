@@ -54,7 +54,7 @@ class DeltaCallbackTests: XCTestCase {
         let queue = DispatchQueue.main
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer, queue: queue)
         let listener = InternalErrorListenerForTests()
-        actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor, internalErrorListener: listener)
+        actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor, internalErrorListener: listener, requestHeader: nil, baseURL: MessageImplMockData.serverURLString.rawValue)
         let currentChatMessageMapper = CurrentChatMessageMapper(withServerURLString: serverURLString)
         let sendingFactory = SendingFactory(withServerURLString: serverURLString)
         let operatorFactory = OperatorFactory(withServerURLString: serverURLString)
@@ -64,8 +64,7 @@ class DeltaCallbackTests: XCTestCase {
         let memHistoryMetaInfo = MemoryHistoryMetaInformationStorage()
         let locationSettingsHolder = LocationSettingsHolder(userDefaultsKey: locationSettingsHolderUserDefaultsKey)
 
-        webimActions = WebimActionsImpl(baseURL: serverURLString,
-                                        actionRequestLoop: actionRequestLoop)
+        webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
 
         let messageComposingHandler = MessageComposingHandler(webimActions: webimActions!, queue: queue)
         let remoteHistoryProvider = RemoteHistoryProvider(webimActions: webimActions!,
@@ -77,6 +76,7 @@ class DeltaCallbackTests: XCTestCase {
                                       reachedEndOfRemoteHistory: true)
 
         messageStream = MessageStreamImpl(serverURLString: serverURLString,
+                                          location: "mobile",
                                           currentChatMessageFactoriesMapper: currentChatMessageMapper,
                                           sendingMessageFactory: sendingFactory,
                                           operatorFactory: operatorFactory,
@@ -622,31 +622,32 @@ class MessageMapperForTests: MessageMapper {
 
     override func map(message: MessageItem) -> MessageImpl? {
         return MessageImpl(serverURLString: "Some",
-                                  clientSideID: "Some",
-                                  serverSideID: nil,
-                                  keyboard: nil,
-                                  keyboardRequest: nil,
-                                  operatorID: nil,
-                                  quote: nil,
-                                  senderAvatarURLString: "Some",
-                                  senderName: "Some",
-                                  sendStatus: .sent,
-                                  sticker: nil,
-                                  type: .visitorMessage,
-                                  rawData: nil,
-                                  data: nil,
-                                  text: "Some",
-                                  timeInMicrosecond: 12,
-                                  historyMessage: false,
-                                  internalID: nil,
-                                  rawText: nil,
-                                  read: false,
-                                  messageCanBeEdited: false,
-                                  messageCanBeReplied: false,
-                                  messageIsEdited: false,
-                                  visitorReactionInfo: nil,
-                                  visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                           clientSideID: "Some",
+                           serverSideID: nil,
+                           keyboard: nil,
+                           keyboardRequest: nil,
+                           operatorID: nil,
+                           quote: nil,
+                           senderAvatarURLString: "Some",
+                           senderName: "Some",
+                           sendStatus: .sent,
+                           sticker: nil,
+                           type: .visitorMessage,
+                           rawData: nil,
+                           data: nil,
+                           text: "Some",
+                           timeInMicrosecond: 12,
+                           historyMessage: false,
+                           internalID: nil,
+                           rawText: nil,
+                           read: false,
+                           messageCanBeEdited: false,
+                           messageCanBeReplied: false,
+                           messageIsEdited: false,
+                           visitorReactionInfo: nil,
+                           visitorCanReact: nil,
+                           visitorChangeReaction: nil,
+                           group: nil)
     }
 }
 

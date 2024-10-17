@@ -33,7 +33,7 @@ class DeltaResponseTests: XCTestCase {
     // MARK: - Constants
     private static let DELTA_RESPONSE_JSON_STRING = """
 {
-    "revision" : 12,
+    "revision" : "12",
     "deltaList" : [
         {
             "id" : "80a332f6fced40f290a5e8ace4a6d11c",
@@ -76,7 +76,7 @@ class DeltaResponseTests: XCTestCase {
         let deltaResponseItem = DeltaResponse(jsonDictionary: deltaResponseDictionary)
         
         XCTAssertEqual(deltaResponseItem.getRevision(),
-                       12)
+                       "12")
         XCTAssertNil(deltaResponseItem.getFullUpdate())
         XCTAssertEqual(deltaResponseItem.getDeltaList()!.count,
                        3)

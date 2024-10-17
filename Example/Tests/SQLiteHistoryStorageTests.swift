@@ -48,7 +48,9 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                                                                  queue: queue)
         let internalErrorListener = InternalErrorListenerForTests()
         let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: exeIfNotDestroyedHandlerExecutor,
-                                                          internalErrorListener: internalErrorListener)
+                                                          internalErrorListener: internalErrorListener,
+                                                          requestHeader: nil,
+                                                          baseURL: MessageImplMockData.serverURLString.rawValue)
         sqLiteHistoryStorage = SQLiteHistoryStorage(dbName: SQLiteHistoryStorageTests.DB_NAME,
                                                     serverURL: SQLiteHistoryStorageTests.DB_NAME,
                                                     fileUrlCreator: FileUrlCreator(webimClient: WebimClient(withActionRequestLoop:  actionRequestLoop,
@@ -69,9 +71,9 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                                                                                                 visitorJSONString: nil,
                                                                                                                 sessionID: nil,
                                                                                                                 prechat: nil,
-                                                                                                                authorizationData: nil),
-                                                                             webimActions: WebimActionsImpl(baseURL: SQLiteHistoryStorageTests.SERVER_URL_STRING,
-                                                                                                            actionRequestLoop: actionRequestLoop)), serverURL: SQLiteHistoryStorageTests.SERVER_URL_STRING),
+                                                                                                                authorizationData: nil,
+                                                                                                                  requestHeader: nil),
+                                                                             webimActions: WebimActionsImpl(actionRequestLoop: actionRequestLoop)), serverURL: SQLiteHistoryStorageTests.SERVER_URL_STRING),
                                                     reachedHistoryEnd: true,
                                                     queue: queue,
                                                     readBeforeTimestamp: -1)
@@ -123,7 +125,8 @@ class SQLiteHistoryStorageTests: XCTestCase {
                                         messageIsEdited: false,
                                         visitorReactionInfo: nil,
                                         visitorCanReact: nil,
-                                        visitorChangeReaction: nil))
+                                        visitorChangeReaction: nil,
+                                        group: nil))
         }
         
         return messages

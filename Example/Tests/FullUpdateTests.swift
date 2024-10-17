@@ -142,7 +142,7 @@ class FullUpdateTests: XCTestCase {
             ],
             "offline" : false,
             "visitorMessageDraft" : null,
-            "id" : "5123124",
+            "id" : 5123124,
             "unreadByVisitorSinceTs" : null,
             "operatorIdToRate" : { },
             "creationTs" : 1519040829.056129,
@@ -198,7 +198,7 @@ class FullUpdateTests: XCTestCase {
     func testInitChat() {
         let chatItemJson = """
         {
-            "id" : "5123124",
+            "id" : 5123124,
             "clientSideId" : "0134e9d90e0eb95884d880860382c8ab"
 
         }

@@ -36,7 +36,9 @@ class ActionRequestLoopTests: XCTestCase {
     // MARK: - Properties
     private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: ActionRequestLoopTests.userDefaultsKey),
                                                                                                                            queue: DispatchQueue.global()),
-                                                              internalErrorListener: InternalErrorListenerForTests() as InternalErrorListener)
+                                                              internalErrorListener: InternalErrorListenerForTests() as InternalErrorListener,
+                                                              requestHeader: nil,
+                                                              baseURL: MessageImplMockData.serverURLString.rawValue)
     
     // MARK: - Tests
     func testStart() {

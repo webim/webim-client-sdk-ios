@@ -34,8 +34,18 @@ import Foundation
  2017 Webim
  */
 final class InternalUtils {
+    static let domains = ["webim.ru", "webim2.ru", "webim.chat"]
     
     // MARK: - Methods
+    
+    static func changeDomainFor(url: String) -> String {
+        for (index, domain) in domains.enumerated() {
+            if url.contains(domain) {
+                return url.replacingOccurrences(of: domains[index], with: domains[(index + 1) % domains.count])
+            }
+        }
+        return url
+    }
     
     static func createServerURLStringBy(accountName: String) -> String {
         var serverURLstring = accountName
@@ -48,7 +58,7 @@ final class InternalUtils {
             return serverURLstring
         }
         
-        return "https://\(serverURLstring).webim.ru"
+        return "https://\(serverURLstring).\(domains[0])"
     }
     
     static func getCurrentTimeInMicrosecond() -> Int64 {

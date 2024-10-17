@@ -42,6 +42,8 @@ final class AccountConfigItem {
         case visitorMessageEditing = "visitor_message_editing"
         case maxVisitorUploadFileSize = "max_visitor_upload_file_size"
         case allowedUploadFileTypes = "allowed_upload_file_types"
+        case rateOperator = "rate_operator"
+        case showRateOperator = "show_visitor_rate_operator_button"
         case disablingMessageInputField = "disabling_message_input_field"
     }
     
@@ -51,6 +53,8 @@ final class AccountConfigItem {
     private var visitorMessageEditing: Bool?
     private var maxVisitorUploadFileSize: Int?
     private var allowedUploadFileTypes: [String]?
+    private var rateOperator: Bool?
+    private var showRateOperator: Bool?
     private var disablingMessageInputField: Bool?
     
     // MARK: - Initialization
@@ -63,6 +67,14 @@ final class AccountConfigItem {
         }
         if let visitorMessageEditing = jsonDictionary[JSONField.visitorMessageEditing.rawValue] as? Bool {
             self.visitorMessageEditing = visitorMessageEditing
+        }
+        
+        if let rateOperator = jsonDictionary[JSONField.rateOperator.rawValue] as? Bool {
+            self.rateOperator = rateOperator
+        }
+        
+        if let showRateOperator = jsonDictionary[JSONField.showRateOperator.rawValue] as? Bool {
+            self.showRateOperator = showRateOperator
         }
         
         if let maxVisitorUploadFileSize = jsonDictionary[JSONField.maxVisitorUploadFileSize.rawValue] as? Int {
@@ -101,6 +113,14 @@ final class AccountConfigItem {
     
     func getAllowedUploadFileTypes() -> [String] {
         return allowedUploadFileTypes ?? []
+    }
+    
+    func getAllowedRateOperator() -> Bool {
+        return rateOperator ?? true
+    }
+    
+    func getShowRateOperator() -> Bool {
+        return showRateOperator ?? true
     }
     
     func getDisablingMessageInputField() -> Bool {

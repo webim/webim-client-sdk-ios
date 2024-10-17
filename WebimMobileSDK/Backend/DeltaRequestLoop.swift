@@ -41,7 +41,6 @@ class DeltaRequestLoop: AbstractRequestLoop {
     // MARK: - Properties
     private static var providedAuthenticationTokenErrorCount = 0
     private let appVersion: String?
-    private let baseURL: String
     private let deltaCallback: DeltaCallback
     private let deviceID: String
     
@@ -49,7 +48,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     @WMSynchronized var authorizationData: AuthorizationData?
     @WMSynchronized private var providedAuthenticationToken: String?
     @WMSynchronized var queue: DispatchQueue?
-    @WMSynchronized var since: Int64 = 0
+    @WMSynchronized var since: String = "0"
     @WMSynchronized private var deviceToken: String?
     @WMSynchronized private var remoteNotificationSystem: Webim.RemoteNotificationSystem?
     @WMSynchronized private var location: String
@@ -84,7 +83,6 @@ class DeltaRequestLoop: AbstractRequestLoop {
          requestHeader: [String: String]?) {
         self.deltaCallback = deltaCallback
         self.sessionParametersListener = sessionParametersListener
-        self.baseURL = baseURL
         self.title = title
         self.location = location
         self.appVersion = appVersion
@@ -98,7 +96,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
         self.prechat = prechat
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader)
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader, baseURL: baseURL)
     }
     
     // MARK: - Methods
@@ -132,7 +130,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.location = location
         
         authorizationData = nil
-        since = 0
+        since = "0"
         
         requestInitialization()
     }
@@ -143,7 +141,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     
     func run() {
         while isRunning() {
-            if authorizationData != nil && since != 0 {
+            if authorizationData != nil && since != "0" {
                 requestDelta()
             } else {
                 requestAccountConfig()
@@ -190,9 +188,9 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     func requestInitialization() {
-        let url = URL(string: baseURL + ServerPathSuffix.getDelta.rawValue + "?" + getInitializationParameterString())
+        let url = URL(string: baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.41.11", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.42.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -213,7 +211,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestAccountConfig() {
         let url = URL(string: baseURL + ServerPathSuffix.getServerSideSettings.rawValue + "?" + "location=" + location)
         var request = URLRequest(url: url!)
-        request.setValue("3.41.11", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.42.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -362,7 +360,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     
     private func sleepBetweenInitializationAttempts() {
         authorizationData = nil
-        since = 0
+        since = "0"
         
         usleep(1_000_000)  // 1s
     }
@@ -409,7 +407,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     
     private func handleReinitializationRequiredError() {
         authorizationData = nil
-        since = 0
+        since = "0"
     }
     
     private func handleProvidedAuthenticationTokenNotFoundError() {

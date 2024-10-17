@@ -45,8 +45,8 @@ class FAQClientTests: XCTestCase {
         let queue = DispatchQueue.global()
         let completionHandlerExecutor = ExecIfNotDestroyedFAQHandlerExecutor(faqDestroyer: destroyer, queue: queue)
         baseURL = "https://wmtest6.webim.ru/"
-        faqRequestLoop = FAQRequestLoopMock(completionHandlerExecutor: completionHandlerExecutor)
-        faqActions = FAQActions(baseURL: baseURL, faqRequestLoop: faqRequestLoop)
+        faqRequestLoop = FAQRequestLoopMock(completionHandlerExecutor: completionHandlerExecutor, baseURL: baseURL)
+        faqActions = FAQActions(faqRequestLoop: faqRequestLoop)
 
 
         sut = FAQClient(withFAQRequestLoop: faqRequestLoop,

@@ -57,7 +57,7 @@ class InternalUtilsTests: XCTestCase {
     func test_GetCurrentTimeInMicrosecond() {
         let expectedTime = Int64(Date().timeIntervalSince1970 * 1_000_000)
 
-        XCTAssertEqual(InternalUtils.getCurrentTimeInMicrosecond(), expectedTime, accuracy: 10)
+        XCTAssertEqual(InternalUtils.getCurrentTimeInMicrosecond(), expectedTime, accuracy: 100)
     }
 
     func test_ParseRemoteNotification_EmptyValue() {

@@ -44,14 +44,15 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     // MARK: - Initialization
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
-         internalErrorListener: InternalErrorListener, notFatalErrorHandler: NotFatalErrorHandler?, requestHeader: [String: String]?) {
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader)
+         internalErrorListener: InternalErrorListener, notFatalErrorHandler: NotFatalErrorHandler?, requestHeader: [String: String]?, baseURL: String) {
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader, baseURL: baseURL)
     }
     
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
          internalErrorListener: InternalErrorListener,
-         requestHeader: [String: String]?) {
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader)
+         requestHeader: [String: String]?,
+         baseURL: String) {
+        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader, baseURL: baseURL)
     }
     
     // MARK: - Methods
@@ -197,7 +198,6 @@ class ActionRequestLoop: AbstractRequestLoop {
             parameterDictionary[Parameter.authorizationToken.rawValue] = usedAuthorizationData.getAuthorizationToken()
         }
         let parametersString = request.getContentType() == ContentType.jsonEncoded.rawValue ? parameterDictionary.jsonFromHTTPParameters() : parameterDictionary.stringFromHTTPParameters()
-                
         
         var urlRequest: URLRequest?
         let httpMethod = request.getHTTPMethod()

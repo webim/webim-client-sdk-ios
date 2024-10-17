@@ -288,7 +288,8 @@ class MessageImplTests: XCTestCase {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         let expectedString = """
 MessageImpl {
     serverURLString = http://demo.webim.ru,
@@ -338,7 +339,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         XCTAssertNil(message.getSenderAvatarFullURL())
     }
@@ -369,7 +371,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         XCTAssertEqual(message.getSendStatus(),
                        MessageSendStatus.sent)
@@ -401,34 +404,36 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         let message1 = MessageImpl(serverURLString: "http://demo.webim.ru",
-                                  clientSideID: "id1",
-                                  serverSideID: nil,
-                                  keyboard: nil,
-                                  keyboardRequest: nil,
-                                  operatorID: nil,
-                                  quote: nil,
-                                  senderAvatarURLString: nil,
-                                  senderName: "Name",
-                                  sendStatus: .sent,
-                                  sticker: nil,
-                                  type: .visitorMessage,
-                                  rawData: nil,
-                                  data: nil,
-                                  text: "Text",
-                                  timeInMicrosecond: 0,
-                                  historyMessage: false,
-                                  internalID: nil,
-                                  rawText: nil,
-                                  read: false,
-                                  messageCanBeEdited: false,
-                                  messageCanBeReplied: false,
-                                  messageIsEdited: false,
-                                  visitorReactionInfo: nil,
-                                  visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                   clientSideID: "id1",
+                                   serverSideID: nil,
+                                   keyboard: nil,
+                                   keyboardRequest: nil,
+                                   operatorID: nil,
+                                   quote: nil,
+                                   senderAvatarURLString: nil,
+                                   senderName: "Name",
+                                   sendStatus: .sent,
+                                   sticker: nil,
+                                   type: .visitorMessage,
+                                   rawData: nil,
+                                   data: nil,
+                                   text: "Text",
+                                   timeInMicrosecond: 0,
+                                   historyMessage: false,
+                                   internalID: nil,
+                                   rawText: nil,
+                                   read: false,
+                                   messageCanBeEdited: false,
+                                   messageCanBeReplied: false,
+                                   messageIsEdited: false,
+                                   visitorReactionInfo: nil,
+                                   visitorCanReact: nil,
+                                   visitorChangeReaction: nil,
+                                   group: nil)
         let message2 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    clientSideID: "id",
                                    serverSideID: nil,
@@ -454,7 +459,8 @@ MessageImpl {
                                    messageIsEdited: false,
                                    visitorReactionInfo: nil,
                                    visitorCanReact: nil,
-                                   visitorChangeReaction: nil)
+                                   visitorChangeReaction: nil,
+                                   group: nil)
         let message3 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    clientSideID: "id",
                                    serverSideID: nil,
@@ -480,7 +486,8 @@ MessageImpl {
                                    messageIsEdited: false,
                                    visitorReactionInfo: nil,
                                    visitorCanReact: nil,
-                                   visitorChangeReaction: nil)
+                                   visitorChangeReaction: nil,
+                                   group: nil)
         let message4 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    clientSideID: "id",
                                    serverSideID: nil,
@@ -506,7 +513,8 @@ MessageImpl {
                                    messageIsEdited: false,
                                    visitorReactionInfo: nil,
                                    visitorCanReact: nil,
-                                   visitorChangeReaction: nil)
+                                   visitorChangeReaction: nil,
+                                   group: nil)
         let message5 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    clientSideID: "id",
                                    serverSideID: nil,
@@ -532,7 +540,8 @@ MessageImpl {
                                    messageIsEdited: false,
                                    visitorReactionInfo: nil,
                                    visitorCanReact: nil,
-                                   visitorChangeReaction: nil)
+                                   visitorChangeReaction: nil,
+                                   group: nil)
         let message6 = MessageImpl(serverURLString: "http://demo.webim.ru",
                                    clientSideID: "id",
                                    serverSideID: nil,
@@ -558,7 +567,8 @@ MessageImpl {
                                    messageIsEdited: true,
                                    visitorReactionInfo: nil,
                                    visitorCanReact: nil,
-                                   visitorChangeReaction: nil)
+                                   visitorChangeReaction: nil,
+                                   group: nil)
         
         XCTAssertFalse(message.isEqual(to: message1))
         XCTAssertFalse(message.isEqual(to: message2))
@@ -596,7 +606,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         XCTAssertNoThrow(try message.getSource().assertIsCurrentChat())
     }
@@ -627,7 +638,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         XCTAssertThrowsError(try message.getSource().assertIsHistory())
     }
@@ -658,7 +670,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         XCTAssertNil(message.getHistoryID())
     }
@@ -690,7 +703,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         XCTAssertEqual(currentChatID,
                        message.getCurrentChatID())
@@ -724,7 +738,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
         
         XCTAssertEqual(URL(string: (baseURLString + avatarURLString)),
                        message.getSenderAvatarFullURL())
@@ -758,7 +773,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
 
         XCTAssertTrue(message.disableBotButtons())
     }
@@ -791,7 +807,8 @@ MessageImpl {
                                   messageIsEdited: false,
                                   visitorReactionInfo: nil,
                                   visitorCanReact: nil,
-                                  visitorChangeReaction: nil)
+                                  visitorChangeReaction: nil,
+                                  group: nil)
 
         XCTAssertFalse(message.disableBotButtons())
     }
@@ -1226,7 +1243,9 @@ fileprivate func fillMessageAttachmentsProperties() {
     execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: userDefaultsKey), queue: DispatchQueue.main)
 
     actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                      internalErrorListener: internalErrorListener)
+                                                      internalErrorListener: internalErrorListener,
+                                                  requestHeader: nil,
+                                                  baseURL: MessageImplMockData.serverURLString.rawValue)
     deltaRequestLoop = DeltaRequestLoop(deltaCallback: DeltaCallback(currentChatMessageMapper: CurrentChatMessageMapper(withServerURLString: SERVER_URL_STRING),
                                             historyMessageMapper: HistoryMessageMapper(withServerURLString: SERVER_URL_STRING),
                                             userDefaultsKey: userDefaultsKey),
@@ -1246,12 +1265,12 @@ fileprivate func fillMessageAttachmentsProperties() {
                                             visitorJSONString: nil,
                                             sessionID: nil,
                                             prechat: nil,
-                                            authorizationData: authorizationData)
+                                            authorizationData: authorizationData,
+                                            requestHeader: nil)
 
     webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
                                   deltaRequestLoop: deltaRequestLoop,
-                                  webimActions: WebimActionsImpl(baseURL: SERVER_URL_STRING,
-                                                                 actionRequestLoop: actionRequestLoop))
+                                  webimActions: WebimActionsImpl(actionRequestLoop: actionRequestLoop))
     fileUrlCreator =  FileUrlCreator(webimClient: webimClient, serverURL: SERVER_URL_STRING)
     imageInfo = ImageInfoImpl(withThumbURLString: "https://demo.webim.ru/thumb.jpg",
                                   fileUrlCreator: fileUrlCreator,
@@ -1313,31 +1332,33 @@ let defaultMessage = MessageImpl(serverURLString: "https://demo.webim.ru",
                                  messageIsEdited: false,
                                  visitorReactionInfo: nil,
                                  visitorCanReact: true,
-                                 visitorChangeReaction: nil)
+                                 visitorChangeReaction: nil,
+                                 group: nil)
 
 let defaultMessage_2 = MessageImpl(serverURLString: "https://demo.webim.ru",
-                                    clientSideID: "id",
-                                    serverSideID: nil,
-                                    keyboard: nil,
-                                    keyboardRequest: nil,
-                                    operatorID: nil,
-                                    quote: nil,
-                                    senderAvatarURLString: nil,
-                                    senderName: "Name",
-                                    sendStatus: .sent,
-                                    sticker: nil,
-                                    type: .visitorMessage,
-                                    rawData: nil,
-                                    data: nil,
-                                    text: "Text",
-                                    timeInMicrosecond: 0,
-                                    historyMessage: true,
-                                    internalID: "internalId",
-                                    rawText: nil,
-                                    read: false,
-                                    messageCanBeEdited: true,
-                                    messageCanBeReplied: true,
-                                    messageIsEdited: false,
-                                    visitorReactionInfo: nil,
-                                    visitorCanReact: false,
-                                    visitorChangeReaction: false)
+                                   clientSideID: "id",
+                                   serverSideID: nil,
+                                   keyboard: nil,
+                                   keyboardRequest: nil,
+                                   operatorID: nil,
+                                   quote: nil,
+                                   senderAvatarURLString: nil,
+                                   senderName: "Name",
+                                   sendStatus: .sent,
+                                   sticker: nil,
+                                   type: .visitorMessage,
+                                   rawData: nil,
+                                   data: nil,
+                                   text: "Text",
+                                   timeInMicrosecond: 0,
+                                   historyMessage: true,
+                                   internalID: "internalId",
+                                   rawText: nil,
+                                   read: false,
+                                   messageCanBeEdited: true,
+                                   messageCanBeReplied: true,
+                                   messageIsEdited: false,
+                                   visitorReactionInfo: nil,
+                                   visitorCanReact: false,
+                                   visitorChangeReaction: false,
+                                   group: nil)

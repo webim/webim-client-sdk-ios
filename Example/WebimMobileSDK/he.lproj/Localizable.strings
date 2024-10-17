@@ -11,7 +11,8 @@
 //WebimService.swift
 "AccountBlocked" = "החשבון שמשמש ליצירת הסשן חסום. יש ליצור קשר עם תמיכת Webim או להשתמש בחשבון אחר.";
 //UIAlertHandler.swift
-"Alert account name" = "שם החשבון של Webim או כתובת השרת המלאה (לדוגמה, \"demo\" או \"https://demo.webim.ru\")";
+
+"Alert account name" = "שם חשבון Webim או כתובת מלאה של השרת \n (for example, \"demo\" or \"https://demo.webim.ru\") ";
 //UIAlertHandler.swift
 "Cancel" = "ביטול";
 //ConnectionErrorView.xib
@@ -44,3 +45,13 @@
 "Your visitor account is in the black list." = "חשבון המבקר שלך נמצא ברשימה השחורה.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "שגיאה בניתוח מבקר דמו.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "נכשל ביצירת הסשן";
+//ChatViewController+Listener.swift
+"typing" = "מקליד";
+//StringConstants.swift
+"Edit" = "ערוך";
+"Enter message" = "הזן הודעה";
+"Please rate the overall impression of the consultation" = "נא לדרג את הרושם הכללי של הייעוץ.";
+"Rate Operator" = "דרג את הסוכן";
+"Send" = "שלח";

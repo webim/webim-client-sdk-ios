@@ -49,7 +49,7 @@ class MessageStreamImplTests: XCTestCase {
         let queue = DispatchQueue.main
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer, queue: queue)
         let listener = InternalErrorListenerForTests()
-        actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor, internalErrorListener: listener)
+        actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor, internalErrorListener: listener, requestHeader: nil, baseURL: MessageImplMockData.serverURLString.rawValue)
         let currentChatMessageMapper = CurrentChatMessageMapper(withServerURLString: serverURLString)
         let sendingFactory = SendingFactory(withServerURLString: serverURLString)
         let operatorFactory = OperatorFactory(withServerURLString: serverURLString)
@@ -59,8 +59,7 @@ class MessageStreamImplTests: XCTestCase {
         let memHistoryMetaInfo = MemoryHistoryMetaInformationStorage()
         let locationSettingsHolder = LocationSettingsHolder(userDefaultsKey: locationSettingsHolderUserDefaultsKey)
 
-        webimActions = WebimActionsImpl(baseURL: serverURLString,
-                                        actionRequestLoop: actionRequestLoop)
+        webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
 
         let messageComposingHandler = MessageComposingHandler(webimActions: webimActions!, queue: queue)
         let remoteHistoryProvider = RemoteHistoryProvider(webimActions: webimActions!,
@@ -72,6 +71,7 @@ class MessageStreamImplTests: XCTestCase {
                                       reachedEndOfRemoteHistory: true)
 
         messageStream = MessageStreamImpl(serverURLString: serverURLString,
+                                          location: "mobile",
                                           currentChatMessageFactoriesMapper: currentChatMessageMapper,
                                           sendingMessageFactory: sendingFactory,
                                           operatorFactory: operatorFactory,
@@ -827,7 +827,7 @@ class MessageStreamImplTests: XCTestCase {
 
         try messageStream?.sendDialogTo(emailAddress: emailAdress, completionHandler: nil)
 
-        XCTAssertFalse(actionRequestLoop.enqueueCalled)
+        XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
     func testSetPrechatFields() throws {

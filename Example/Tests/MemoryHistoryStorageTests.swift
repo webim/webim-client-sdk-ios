@@ -63,7 +63,8 @@ class MemoryHistoryStorageTests: XCTestCase {
                                         messageIsEdited: false,
                                         visitorReactionInfo: nil,
                                         visitorCanReact: nil,
-                                        visitorChangeReaction: nil))
+                                        visitorChangeReaction: nil,
+                                        group: nil))
         }
         
         return messages

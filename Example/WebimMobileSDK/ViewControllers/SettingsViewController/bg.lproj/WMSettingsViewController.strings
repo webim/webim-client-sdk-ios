@@ -1,6 +1,6 @@
 "0cS-HU-Nd5.accessibilityLabel" = "Текстово поле за местоположение";
-"0cS-HU-Nd5.placeholder" = "мобилен";
-"0cS-HU-Nd5.text" = "мобилен";
+"0cS-HU-Nd5.placeholder" = "mobile";
+"0cS-HU-Nd5.text" = "mobile";
 "5kC-9w-Cf1.accessibilityLabel" = "Текстово поле за заглавие на страница";
 "5kC-9w-Cf1.text" = "Приложение за iOS";
 "DAx-o8-RLt.text" = "Данни за потребителя в JSON формат (по избор)";

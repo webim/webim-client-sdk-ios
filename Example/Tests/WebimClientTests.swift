@@ -52,30 +52,32 @@ class WebimClientTests: XCTestCase {
                                           userDefaultsKey: WebimClientTests.userDefaultsKey)
 
         actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                          internalErrorListener: internalErrorListener)
+                                                          internalErrorListener: internalErrorListener,
+                                                      requestHeader: nil,
+                                                      baseURL: MessageImplMockData.serverURLString.rawValue)
 
 
         deltaRequestLoop = DeltaRequestLoop(deltaCallback: deltaCallback,
-                                                completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                sessionParametersListener: nil,
-                                                internalErrorListener: internalErrorListener,
-                                                baseURL: urlString,
-                                                title: "title",
-                                                location: "location",
-                                                appVersion: nil,
-                                                visitorFieldsJSONString: nil,
-                                                providedAuthenticationTokenStateListener: nil,
-                                                providedAuthenticationToken: nil,
-                                                deviceID: "id",
-                                                deviceToken: nil,
-                                                remoteNotificationSystem: nil,
-                                                visitorJSONString: nil,
-                                                sessionID: nil,
-                                                prechat: nil,
-                                                authorizationData: nil)
+                                            completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
+                                            sessionParametersListener: nil,
+                                            internalErrorListener: internalErrorListener,
+                                            baseURL: urlString,
+                                            title: "title",
+                                            location: "location",
+                                            appVersion: nil,
+                                            visitorFieldsJSONString: nil,
+                                            providedAuthenticationTokenStateListener: nil,
+                                            providedAuthenticationToken: nil,
+                                            deviceID: "id",
+                                            deviceToken: nil,
+                                            remoteNotificationSystem: nil,
+                                            visitorJSONString: nil,
+                                            sessionID: nil,
+                                            prechat: nil,
+                                            authorizationData: nil,
+                                            requestHeader: nil)
 
-        webimActions = WebimActionsImpl(baseURL: urlString,
-                                        actionRequestLoop: actionRequestLoop)
+        webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
 
         webimClient = WebimClient(withActionRequestLoop: actionRequestLoop,
                                       deltaRequestLoop: deltaRequestLoop,

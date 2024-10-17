@@ -41,9 +41,10 @@ class RemoteHistoryProviderTests: XCTestCase {
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                   queue: DispatchQueue.main)
         actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                  internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
-                                            actionRequestLoop: actionRequestLoop)
+                                                  internalErrorListener: InternalErrorListenerForTests(),
+                                                      requestHeader: nil,
+                                                      baseURL: MessageImplMockData.serverURLString.rawValue)
+        let webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
         let messageMapper = MessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue)
         let historyMetaInformationStorage = MemoryHistoryMetaInformationStorage()
 

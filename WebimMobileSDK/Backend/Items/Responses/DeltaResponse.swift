@@ -46,12 +46,15 @@ final class DeltaResponse {
     // MARK: - Properties
     private lazy var deltaList = [DeltaItem]()
     private var fullUpdate: FullUpdate?
-    private var revision: Int64?
+    private var revision: String?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
-        if let revision = jsonDictionary[JSONField.revision.rawValue] as? Int64 {
+        let revision = jsonDictionary[JSONField.revision.rawValue] 
+        if let revision = revision as? String {
             self.revision = revision
+        } else if let revision = revision as? Int {
+            self.revision = String(revision)
         }
         
         if let fullUpdateValue = jsonDictionary[JSONField.fullUpdate.rawValue] as? [String: Any?] {
@@ -71,7 +74,7 @@ final class DeltaResponse {
     
     // MARK: - Methods
     
-    func getRevision() -> Int64? {
+    func getRevision() -> String? {
         return revision
     }
     

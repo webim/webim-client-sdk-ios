@@ -56,6 +56,7 @@ public struct AccountConfig: Codable {
 //    let fileURLExpiringTimeout: Int
 //    let checkVisitorAuth, operatorStatusTimer, ,
 //    let offlineChatProcessing, openChatInNewTabForMobile: Bool
+
     enum CodingKeys: String, CodingKey {
         case webAndMobileQuoting = "web_and_mobile_quoting"
         case visitorMessageEditing = "visitor_message_editing"

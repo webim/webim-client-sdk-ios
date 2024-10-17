@@ -1,4 +1,4 @@
-platform :ios, '11.0'
+platform :ios, '13.0'
 workspace 'WebimMobileSDK'
 use_frameworks!
 
@@ -6,9 +6,9 @@ install! 'cocoapods', :deterministic_uuids => false
 
 target 'WebimMobileSDK_Example' do
     pod 'WebimMobileSDK'
-    pod 'WebimMobileWidget', '1.2.1'
+    pod 'WebimMobileWidget', '1.2.4'
     pod 'WebimKeyboard', '1.0.2'
-
+    
     pod 'Firebase/Crashlytics'
     pod 'Firebase/Analytics'
     
@@ -26,7 +26,7 @@ target 'WebimMobileSDK_Example' do
       installer.pods_project.targets.each do |target|
 
        target.build_configurations.each do |config|
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
           config.build_settings['SWIFT_VERSION'] = '5.0'
        end
 

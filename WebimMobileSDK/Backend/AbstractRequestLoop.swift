@@ -61,14 +61,17 @@ class AbstractRequestLoop {
     private var currentDataTask: URLSessionDataTask?
     let completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?
     let internalErrorListener: InternalErrorListener?
+    var baseURL: String
     var requestHeader: [String: String]?
     
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor?,
          internalErrorListener: InternalErrorListener?,
-         requestHeader: [String: String]?) {
+         requestHeader: [String: String]?,
+         baseURL: String) {
         self.completionHandlerExecutor = completionHandlerExecutor
         self.internalErrorListener = internalErrorListener
         self.requestHeader = requestHeader
+        self.baseURL = baseURL
     }
     
     // MARK: - Methods
@@ -105,7 +108,7 @@ class AbstractRequestLoop {
     
     func perform(request: URLRequest) throws -> Data {
         var requestWithUserAgent = request
-        requestWithUserAgent.setValue("iOS: Webim-Client 3.41.11; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
+        requestWithUserAgent.setValue("iOS: Webim-Client 3.42.0; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")", forHTTPHeaderField: "User-Agent")
         
         for (key, value) in requestHeader ?? [:] {
             requestWithUserAgent.setValue(value, forHTTPHeaderField: key)
@@ -144,6 +147,16 @@ class AbstractRequestLoop {
                 )
                 
                 if let error = error {
+                    if let error = error as NSError?,
+                       error.domain == NSURLErrorDomain && error.code == NSURLErrorCannotFindHost,
+                       var url = requestWithUserAgent.url?.absoluteString {
+                        if (url.starts(with: baseURL)) {
+                            baseURL = InternalUtils.changeDomainFor(url: baseURL)
+                        }
+                        url = InternalUtils.changeDomainFor(url: url)
+                        requestWithUserAgent.url = URL(string: url)
+                    }
+                    
                     semaphore.signal()
                     
                     WebimInternalLogger.shared.log(

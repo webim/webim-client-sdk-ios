@@ -1398,7 +1398,7 @@ public protocol Group {
      - author:
      Nikita Kaberov
      - copyright:
-     2024 Webim
+     2014 Webim
      */
     func getID() -> String
     
@@ -1407,7 +1407,7 @@ public protocol Group {
      - author:
      Nikita Kaberov
      - copyright:
-     2024 Webim
+     2014 Webim
      */
     func getMessageCount() -> Int
     
@@ -1416,7 +1416,7 @@ public protocol Group {
      - author:
      Nikita Kaberov
      - copyright:
-     2024 Webim
+     2014 Webim
      */
     func getMessageNumber() -> Int
 }

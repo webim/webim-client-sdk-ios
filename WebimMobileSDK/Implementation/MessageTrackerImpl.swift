@@ -537,6 +537,7 @@ extension MessageTrackerImpl: MessageTracker {
         
         let wrappedCompletion: ([Message]) -> () = { [weak self] messages in
             (self?.destroyed != false) ? completion(messages) : completion([Message]())
+            self?.resend(messages: messages)
         }
         
         allMessageSourcesEnded = false
@@ -557,6 +558,7 @@ extension MessageTrackerImpl: MessageTracker {
             wrappedCompletion(result)
             firstHistoryUpdateReceived = true
             messagesLoading = false
+            resend(messages: result)
         }
     }
     
@@ -569,6 +571,7 @@ extension MessageTrackerImpl: MessageTracker {
         
         let wrappedCompletion: ([Message]) -> () = { [weak self] messages in
             (self?.destroyed != false) ? completion(messages) : completion([Message]())
+            self?.resend(messages: messages)
         }
         
         messagesLoading = true
@@ -638,6 +641,17 @@ extension MessageTrackerImpl: MessageTracker {
             messageHolder.set(messagesToSend: [MessageToSend]())
             
             messageHolder.set(messageTracker: nil)
+        }
+    }
+    
+    private func resend(messages: [Message]) {
+        for message in messages {
+            if message.getSendStatus() == .sending {
+                do {
+                    try messageHolder.getMessageStram()?.resend(message: message, completionHandler: nil)
+                } catch {
+                }
+            }
         }
     }
     

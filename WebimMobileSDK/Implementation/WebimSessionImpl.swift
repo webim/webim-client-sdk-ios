@@ -328,6 +328,7 @@ final class WebimSessionImpl {
                                               messageComposingHandler: MessageComposingHandler(webimActions: webimActions,
                                                                                                queue: webimSdkQueue),
                                               locationSettingsHolder: LocationSettingsHolder(userDefaultsKey: userDefaultsKey))
+        messageHolder.set(messageStream: messageStream)
         
         let historyPoller = HistoryPoller(withSessionDestroyer: sessionDestroyer,
                                           queue: webimSdkQueue,
@@ -1103,7 +1104,7 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
     
     // MARK: - Properties
     private let internalErrorListener: InternalErrorListener?
-    private weak var notFatalErrorHandler: NotFatalErrorHandler?
+    private let notFatalErrorHandler: NotFatalErrorHandler?
     private var sessionDestroyer: SessionDestroyer
     
     // MARK: - Initialization

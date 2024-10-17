@@ -53,7 +53,7 @@ class FileUrlCreatorTests: XCTestCase {
         globalQueue = DispatchQueue.global()
         execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer, queue: globalQueue)
         internalErrorListener = InternalErrorListenerForTests()
-        actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor, internalErrorListener: internalErrorListener)
+        actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: nil, baseURL: MessageImplMockData.serverURLString.rawValue)
         authData = AuthorizationData(pageID: expectedPageID, authorizationToken: expectedAuthorizationToken)
 
         deltaRequestLoop = DeltaRequestLoop(
@@ -77,14 +77,13 @@ class FileUrlCreatorTests: XCTestCase {
             visitorJSONString: nil,
             sessionID: nil,
             prechat: nil,
-            authorizationData: authData)
+            authorizationData: authData,
+            requestHeader: nil)
 
         webimClient = WebimClient(
             withActionRequestLoop: actionRequestLoop,
             deltaRequestLoop: deltaRequestLoop,
-            webimActions: WebimActionsImpl(
-                baseURL: urlString,
-                actionRequestLoop: actionRequestLoop))
+            webimActions: WebimActionsImpl(actionRequestLoop: actionRequestLoop))
     }
 
     override func tearDown() {
@@ -157,14 +156,13 @@ class FileUrlCreatorTests: XCTestCase {
             visitorJSONString: nil,
             sessionID: nil,
             prechat: nil,
-            authorizationData: nil)
+            authorizationData: nil,
+            requestHeader: nil)
 
         webimClient = WebimClient(
             withActionRequestLoop: actionRequestLoop,
             deltaRequestLoop: deltaRequestLoop,
-            webimActions: WebimActionsImpl(
-                baseURL: urlString,
-                actionRequestLoop: actionRequestLoop))
+            webimActions: WebimActionsImpl(actionRequestLoop: actionRequestLoop))
 
         let sut = FileUrlCreator(webimClient: webimClient, serverURL: urlString)
 

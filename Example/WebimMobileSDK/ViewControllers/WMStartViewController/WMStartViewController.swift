@@ -58,8 +58,8 @@ final class WMStartViewController: UIViewController {
         setupSettingsButton()
         setupLogoTapGestureRecognizer()
         setupNavigationBarUpdater()
-        updateMessageCounter()
         updateNavigationBar()
+        self.unreadMessageCounterLabel.layer.masksToBounds = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +81,7 @@ final class WMStartViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         startWebimSession()
+        updateMessageCounter()
     }
 
     @IBAction func startChat(_ sender: Any? = nil) {
@@ -132,6 +133,7 @@ final class WMStartViewController: UIViewController {
             target: self,
             action: #selector(presentWMLogsViewController(_:)))
         logoImageView.addGestureRecognizer(gesture)
+        logoImageView.isUserInteractionEnabled = true
     }
 
     private func setupColorScheme() {
@@ -224,6 +226,7 @@ extension WMStartViewController: FatalErrorHandlerDelegate {
     func showErrorDialog(withMessage message: String) {
         alertDialogHandler.showCreatingSessionFailureDialog(withMessage: message)
         startChatButton.isHidden = true
+        unreadMessageCounterView.isHidden = true
     }
 
 }

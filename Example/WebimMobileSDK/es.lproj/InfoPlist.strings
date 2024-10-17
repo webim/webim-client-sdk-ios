@@ -6,12 +6,12 @@
   Copyright © 2022 Webim. All rights reserved.
 */
 
-"NSPhotoLibraryAddUsageDescription" = "Webim Chat necesita permiso para acceder a tu biblioteca de fotos para que puedas guardar imágenes del chat.";
+"NSPhotoLibraryAddUsageDescription" = "Webim SDK App necesita permiso para acceder a tu biblioteca de fotos para que puedas guardar imágenes del chat.";
 
-"NSCameraUsageDescription" = "Webim Chat necesita permiso para acceder a tu cámara para que puedas enviar fotos al chat.";
+"NSCameraUsageDescription" = "Webim SDK App necesita permiso para acceder a tu cámara para que puedas enviar fotos al chat.";
 
-"NSFileProviderDomainUsageDescription" = "Webim Chat necesita permiso para acceder a tu carpeta de documentos para que puedas enviar archivos al chat.";
+"NSFileProviderDomainUsageDescription" = "Webim SDK App necesita permiso para acceder a tu carpeta de documentos para que puedas enviar archivos al chat.";
 
-"NSFileProviderPresenceUsageDescription" = "Webim Chat necesita permiso para acceder a tu carpeta de documentos para que puedas enviar archivos al chat.";
+"NSFileProviderPresenceUsageDescription" = "Webim SDK App necesita permiso para acceder a tu carpeta de documentos para que puedas enviar archivos al chat.";
 
-"NSPhotoLibraryUsageDescription" = "Webim Chat necesita permiso para acceder a tu biblioteca de fotos para que puedas enviar imágenes al chat.";
+"NSPhotoLibraryUsageDescription" = "Webim SDK App necesita permiso para acceder a tu biblioteca de fotos para que puedas enviar imágenes al chat.";

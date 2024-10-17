@@ -74,7 +74,8 @@ class MessageTrackerImplTests: XCTestCase {
                                        messageIsEdited: false,
                                        visitorReactionInfo: nil,
                                        visitorCanReact: nil,
-                                       visitorChangeReaction: nil))
+                                       visitorChangeReaction: nil,
+                                       group: nil))
         }
 
         messagesCount = messagesCount + numberOfMessages
@@ -110,7 +111,8 @@ class MessageTrackerImplTests: XCTestCase {
                                            messageIsEdited: false,
                                            visitorReactionInfo: nil,
                                            visitorCanReact: nil,
-                                           visitorChangeReaction: nil))
+                                           visitorChangeReaction: nil,
+                                           group: nil))
         }
 
         messagesCount = messagesCount + numberOfMessages
@@ -146,7 +148,8 @@ class MessageTrackerImplTests: XCTestCase {
                                          messageIsEdited: false,
                                          visitorReactionInfo: message.getVisitorReaction(),
                                          visitorCanReact: message.canVisitorReact(),
-                                         visitorChangeReaction: message.canVisitorChangeReaction())
+                                         visitorChangeReaction: message.canVisitorChangeReaction(),
+                                         group: nil)
             result.append(newMessage)
         }
 
@@ -180,7 +183,8 @@ class MessageTrackerImplTests: XCTestCase {
                            messageIsEdited: false,
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
-                           visitorChangeReaction: nil)
+                           visitorChangeReaction: nil,
+                           group: nil)
     }
 
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
@@ -208,7 +212,8 @@ class MessageTrackerImplTests: XCTestCase {
                            messageIsEdited: false,
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
-                           visitorChangeReaction: nil)
+                           visitorChangeReaction: nil,
+                           group: nil)
     }
 
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
@@ -236,7 +241,8 @@ class MessageTrackerImplTests: XCTestCase {
                            messageIsEdited: false,
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
-                           visitorChangeReaction: nil)
+                           visitorChangeReaction: nil,
+                           group: nil)
     }
 
     private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {
@@ -246,9 +252,10 @@ class MessageTrackerImplTests: XCTestCase {
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                  internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
-                                            actionRequestLoop: actionRequestLoop)
+                                                  internalErrorListener: InternalErrorListenerForTests(),
+                                                  requestHeader: nil,
+                                                  baseURL: MessageImplMockData.serverURLString.rawValue)
+        let webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderMock(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
@@ -268,9 +275,10 @@ class MessageTrackerImplTests: XCTestCase {
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                  internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
-                                            actionRequestLoop: actionRequestLoop)
+                                                  internalErrorListener: InternalErrorListenerForTests(),
+                                                  requestHeader: nil,
+                                                  baseURL: MessageImplMockData.serverURLString.rawValue)
+        let webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderMock(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
@@ -520,7 +528,7 @@ class MessageTrackerImplTests: XCTestCase {
 
     func test_ResetTo_MessageTrackerDestroyed() throws {
         webimLogger.reset()
-        let expectedLog = "MessageTracker object was destroyed. Unable to perform a request to reset to a message."
+        let expectedLog = "MessageTracker object is destroyed. Unable to perform request to get new messages."
 
         try sut.destroy()
         try sut.resetTo(message: defaultMessage)
@@ -530,7 +538,7 @@ class MessageTrackerImplTests: XCTestCase {
 
     func test_ResetTo_MessageLoading() throws {
         webimLogger.reset()
-        let expectedLog = "Messages is loading. Unable to perform a simultaneous request to reset to a message."
+        let expectedLog = "Messages are already loading. Unable to perform a second request to get new messages."
 
         sut.set(messagesLoading: true)
         try sut.resetTo(message: defaultMessage)

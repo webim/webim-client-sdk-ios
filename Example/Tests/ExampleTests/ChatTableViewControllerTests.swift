@@ -28,11 +28,12 @@ import UIKit
 import XCTest
 @testable import WebimMobileSDK
 @testable import WebimMobileSDK_Example
+@testable import WebimMobileWidget
 
 class ChatViewControllerTests: XCTestCase {
     
     // MARK: - Properties
-    var chatTableViewController = ChatViewController.loadViewControllerFromXib()
+    var chatTableViewController = ChatViewController()
     
     // MARK: - Methods
     override func setUp() {
@@ -68,7 +69,8 @@ class ChatViewControllerTests: XCTestCase {
                                       messageIsEdited: false,
                                       visitorReactionInfo: nil,
                                       visitorCanReact: nil,
-                                      visitorChangeReaction: nil)
+                                      visitorChangeReaction: nil,
+                                      group: nil)
             messages.append(message as Message)
         }
         

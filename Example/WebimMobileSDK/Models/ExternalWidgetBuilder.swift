@@ -72,7 +72,7 @@ class ExternalWidgetBuilder {
         let chatControllerConfig = chatViewControllerConfig(openFromNotification)
         let imageControllerConfig = imageViewControllerConfig()
         let fileControllerConfig = fileViewControllerConfig()
-
+        
         let widget = WMWidgetBuilder()
             .set(sessionBuilder: sessionBuilder)
             .set(chatViewControllerConfig: chatControllerConfig)
@@ -153,11 +153,16 @@ class ExternalWidgetBuilder {
             .font : UIFont.systemFont(ofSize: 16, weight: .regular),
             .foregroundColor : visitorMessageTextColour
         ]
+        let visitorConfigCorners: CACornerMask = !WMLocaleManager.isRightOrientationLocale() ?
+                                                [.layerMinXMinYCorner,
+                                                 .layerMaxXMinYCorner,
+                                                 .layerMinXMaxYCorner] :
+                                                [.layerMinXMinYCorner,
+                                                 .layerMaxXMinYCorner,
+                                                 .layerMaxXMaxYCorner]
         let textCellConfig = WMTextCellConfigBuilder()
             .set(backgroundColor: visitorMessageBubbleColour)
-            .set(roundCorners: [.layerMinXMinYCorner,
-                                .layerMaxXMinYCorner,
-                                .layerMinXMaxYCorner])
+            .set(roundCorners: visitorConfigCorners)
             .set(cornerRadius: 10)
             .set(subtitleAttributes: textCellSubtitleAttributes)
             .set(strokeWidth: 0)
@@ -194,9 +199,7 @@ class ExternalWidgetBuilder {
         ]
         let fileCellConfig = WMFileCellConfigBuilder()
             .set(backgroundColor: visitorMessageBubbleColour)
-            .set(roundCorners: [.layerMinXMinYCorner,
-                                .layerMaxXMinYCorner,
-                                .layerMinXMaxYCorner])
+            .set(roundCorners: visitorConfigCorners)
             .set(cornerRadius: 10)
             .set(titleAttributes: fileCellTitleAttributes)
             .set(subtitleAttributes: fileCellSubtitleAttributes)
@@ -240,11 +243,16 @@ class ExternalWidgetBuilder {
             .font : UIFont.systemFont(ofSize: 16, weight: .regular),
             .foregroundColor : operatorMessageTextColour
         ]
+        let operatorConfigCorners: CACornerMask = !WMLocaleManager.isRightOrientationLocale() ?
+                                                [.layerMinXMinYCorner,
+                                                 .layerMaxXMinYCorner,
+                                                 .layerMaxXMaxYCorner] :
+                                                [.layerMinXMinYCorner,
+                                                 .layerMaxXMinYCorner,
+                                                 .layerMinXMaxYCorner]
         let textCellConfig = WMTextCellConfigBuilder()
             .set(backgroundColor: operatorMessageBubbleColour)
-            .set(roundCorners: [.layerMinXMinYCorner,
-                                .layerMaxXMinYCorner,
-                                .layerMaxXMaxYCorner])
+            .set(roundCorners: operatorConfigCorners)
             .set(cornerRadius: 10)
             .set(titleAttributes: cellTitleAttributes)
             .set(subtitleAttributes: textCellSubtitleAttributes)
@@ -273,9 +281,7 @@ class ExternalWidgetBuilder {
         ]
         let fileCellConfig = WMFileCellConfigBuilder()
             .set(backgroundColor: operatorMessageBubbleColour)
-            .set(roundCorners: [.layerMinXMinYCorner,
-                                .layerMaxXMinYCorner,
-                                .layerMaxXMaxYCorner])
+            .set(roundCorners: operatorConfigCorners)
             .set(cornerRadius: 10)
             .set(titleAttributes: cellTitleAttributes)
             .set(subtitleAttributes: fileCellSubtitleAttribute)
@@ -299,7 +305,7 @@ class ExternalWidgetBuilder {
         
         return operatorCellsConfig
     }
-
+    
     private func chatViewControllerConfig(_ openFromNotification: Bool = false) -> WMViewControllerConfig {
         let visitorCellsConfig = buildVisitorCellsConfig()
         let operatorCellsConfig = buildOperatorCellsConfig()
@@ -326,6 +332,7 @@ class ExternalWidgetBuilder {
             .build()
         let toolBarConfig = WMToolbarConfigBuilder()
             .set(sendButtonImage: textInputButtonImage)
+            .set(inactiveSendButtonImage: textInputInactiveButtonImage)
             .set(addAttachmentImage: fileButtonImage)
             .set(placeholderText: "Enter message".localized)
             .set(textViewFont: .systemFont(ofSize: 16, weight: .regular))
@@ -396,6 +403,7 @@ class ExternalWidgetBuilder {
             .set(buttonTitle: rateOperatorButtonTitle)
             .set(buttonColor: rateOperatorButtonColour)
             .set(buttonCornerRadius: 8)
+            .set(changeRateEnabled: true)
             .build()
         let chatNavigationBarConfig = WMChatNavigationBarConfigBuilder()
             .set(backgroundColorOnlineState: navigationBarBarTintColour)
@@ -404,9 +412,9 @@ class ExternalWidgetBuilder {
             .set(textColorOfflineState: navigationBarTintColour)
             .set(logoImage: navigationBarTitleImageViewImage)
             .set(canShowTypingIndicator: true)
-            .set(typingLabelText: "typing")
+            .set(typingLabelText: "typing".localized)
             .build()
-
+        
         let chatConfig = WMChatViewControllerConfigBuilder()
             .set(showScrollButtonView: true)
             .set(scrollButtonImage: scrollButtonImage)
@@ -428,7 +436,7 @@ class ExternalWidgetBuilder {
             .build()
         return chatConfig
     }
-
+    
     private func imageViewControllerConfig() -> WMViewControllerConfig {
         let navigationConfig = WMImageNavigationBarConfigBuilder()
             .set(backgroundColorOnlineState: .clear)
@@ -437,7 +445,7 @@ class ExternalWidgetBuilder {
             .set(textColorOfflineState: .white)
             .set(rightBarButtonImage: saveImageButton)
             .build()
-
+        
         let imageViewControllerConfig = WMImageViewControllerConfigBuilder()
             .set(saveViewColor: webimCyan)
             .set(backgroundColor: .black)
@@ -445,7 +453,7 @@ class ExternalWidgetBuilder {
             .build()
         return imageViewControllerConfig
     }
-
+    
     private func fileViewControllerConfig() -> WMViewControllerConfig {
         let navigationConfig = WMFileNavigationBarConfigBuilder()
             .set(backgroundColorOnlineState: navigationBarBarTintColour)
@@ -454,7 +462,7 @@ class ExternalWidgetBuilder {
             .set(textColorOfflineState: navigationBarTintColour)
             .set(rightBarButtonImage: fileShare)
             .build()
-
+        
         let fileViewControllerConfig = WMFileViewControllerConfigBuilder()
             .set(backgroundColor: .clear)
             .set(loadingLabelText: loadingFileTitle)
@@ -486,7 +494,7 @@ extension ExternalWidgetBuilder {
             .set(strokeColor: .clear)
         return popupCellConfig
     }
-
+    
     private func defaultCosmosSettings() -> CosmosSettings {
         var settings = CosmosSettings()
         settings.fillMode = .full

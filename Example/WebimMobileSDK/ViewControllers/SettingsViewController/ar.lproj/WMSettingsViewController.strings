@@ -1,6 +1,6 @@
 "0cS-HU-Nd5.accessibilityLabel" = "حقل نص الموقع";
-"0cS-HU-Nd5.placeholder" = "الجوال";
-"0cS-HU-Nd5.text" = "الجوال";
+"0cS-HU-Nd5.placeholder" = "mobile";
+"0cS-HU-Nd5.text" = "mobile";
 "5kC-9w-Cf1.accessibilityLabel" = "حقل نص عنوان الصفحة";
 "5kC-9w-Cf1.text" = "تطبيق iOS";
 "DAx-o8-RLt.text" = "بيانات المستخدم json (اختياري)";

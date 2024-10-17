@@ -473,7 +473,7 @@ class ConfigurationItemTests: XCTestCase {
 
         let sut = ConfigurationItem(jsonDictionary: convertToDict(nullIsActiveJson))
 
-        XCTAssertNil(sut)
+        XCTAssertNil(sut.isActive())
     }
 
     func test_Init_DataLink() {
@@ -497,8 +497,8 @@ class ConfigurationItemTests: XCTestCase {
 
         let sut = ConfigurationItem(jsonDictionary: convertToDict(nullDataJson))
 
-        XCTAssertEqual(sut?.getData(), expectedData)
-        XCTAssertEqual(sut?.getButtonType(), expectedType)
+        XCTAssertEqual(sut.getData(), expectedData)
+        XCTAssertEqual(sut.getButtonType(), expectedType)
     }
 
     func test_Init_DataNullLinkValue() {
@@ -512,7 +512,7 @@ class ConfigurationItemTests: XCTestCase {
 
         let sut = ConfigurationItem(jsonDictionary: convertToDict(nullIsDataJson))
 
-        XCTAssertNil(sut)
+        XCTAssertNil(sut.getButtonType())
     }
 
     func test_Init_DataNullTextValue() {
@@ -526,7 +526,7 @@ class ConfigurationItemTests: XCTestCase {
 
         let sut = ConfigurationItem(jsonDictionary: convertToDict(nullDataJson))
 
-        XCTAssertNil(sut)
+        XCTAssertNil(sut.getButtonType())
     }
 
     func test_Init_StateShowing() {
@@ -547,7 +547,7 @@ class ConfigurationItemTests: XCTestCase {
 
         let sut = ConfigurationItem(jsonDictionary: convertToDict(showingSelectedStateJson))
 
-        XCTAssertEqual(sut?.getState(), expectedValue)
+        XCTAssertEqual(sut.getState(), expectedValue)
     }
 
     func test_Init_StateWrongValue() {
@@ -562,7 +562,7 @@ class ConfigurationItemTests: XCTestCase {
 
         let sut = ConfigurationItem(jsonDictionary: convertToDict(wrongStateJson))
 
-        XCTAssertEqual(sut?.getState(), expectedValue)
+        XCTAssertEqual(sut.getState(), expectedValue)
     }
 
     func test_Init_StateNullValue() {
@@ -576,7 +576,7 @@ class ConfigurationItemTests: XCTestCase {
 
         let sut = ConfigurationItem(jsonDictionary: convertToDict(nullStateJson))
 
-        XCTAssertNil(sut)
+        XCTAssertNil(sut.getState())
     }
 }
 

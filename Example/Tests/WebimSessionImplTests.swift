@@ -102,7 +102,7 @@ class WebimSessionImplTests: XCTestCase {
                 "crc" : "ffadeb6aa3c788200824e311b9aa44cb"
             }
         """
-        let expectedLog = "Clear visitor data in WebimSessionImpl - clearVisitorDataFor"
+        let expectedLog = "Clear visitor data in WebimSessionImpl - clearVisitorDataFor(userDefaultsKey:)"
         let providedVisitorFields = ProvidedVisitorFields(withJSONString: visitorJson)
         let sut = produceWebimSession(providedFields: providedVisitorFields)
         let expectation = XCTestExpectation()
@@ -149,24 +149,26 @@ class WebimSessionImplTests: XCTestCase {
 
     private func produceWebimSession(providedFields: ProvidedVisitorFields? = nil) -> WebimSessionImpl {
         WebimSessionImpl.newInstanceWith(accountName: "accountName",
-                                               location: "location",
-                                               appVersion: "appVersion",
-                                               visitorFields: providedFields,
-                                               providedAuthorizationTokenStateListener: nil,
-                                               providedAuthorizationToken:  "providedAuthorizationToken",
-                                               pageTitle: "pageTitle",
-                                               fatalErrorHandler: nil,
-                                               notFatalErrorHandler: nil,
-                                               deviceToken: "deviceToken",
-                                               remoteNotificationSystem: .apns,
-                                               isLocalHistoryStoragingEnabled: true,
-                                               isVisitorDataClearingEnabled: true,
-                                               webimLogger: webimLogger,
-                                               verbosityLevel: .verbose,
-                                               availableLogTypes: [.manualCall,.messageHistory,.networkRequest,.undefined],
-                                               prechat: nil,
-                                               multivisitorSection: "multivisitorSection",
-                                               onlineStatusRequestFrequencyInMillis: 12376123)
+                                         location: "location",
+                                         appVersion: "appVersion",
+                                         visitorFields: providedFields,
+                                         providedAuthorizationTokenStateListener: nil,
+                                         providedAuthorizationToken:  "providedAuthorizationToken",
+                                         pageTitle: "pageTitle",
+                                         fatalErrorHandler: nil,
+                                         notFatalErrorHandler: nil,
+                                         deviceToken: "deviceToken",
+                                         remoteNotificationSystem: .apns,
+                                         isLocalHistoryStoragingEnabled: true,
+                                         isVisitorDataClearingEnabled: true,
+                                         webimLogger: webimLogger,
+                                         verbosityLevel: .verbose,
+                                         availableLogTypes: [.manualCall,.messageHistory,.networkRequest,.undefined],
+                                         webimAlert: nil,
+                                         prechat: nil,
+                                         multivisitorSection: "multivisitorSection",
+                                         onlineStatusRequestFrequencyInMillis: 12376123,
+                                         requestHeader: nil)
     }
 }
 

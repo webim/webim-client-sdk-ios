@@ -34,10 +34,10 @@ final class ActionRequestLoopForTests: ActionRequestLoop {
     var enqueueCalled = false
     
     // MARK: - Methods
-    override func enqueue(request: WebimRequest) {
+    override func enqueue(request: WebimRequest, withAuthData: Bool) {
         webimRequest = request
         enqueueCalled = true
-        super.enqueue(request: request)
+        super.enqueue(request: request, withAuthData: withAuthData)
     }
     
 }

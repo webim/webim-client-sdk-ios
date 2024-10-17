@@ -48,14 +48,14 @@ class LocationSettingsResponseTests: XCTestCase {
         }
         """
 
-        let sut = LocationSettingsResponse(jsonDictionary: convertToDict(defaultLocationSettingsResponseJson))
+        let sut = ServerSettingsResponse(jsonDictionary: convertToDict(defaultLocationSettingsResponseJson))
 
         XCTAssertEqual(sut.getLocationSettings()[firstKey] as? Int, 12)
         XCTAssertEqual(sut.getLocationSettings()[secondKey] as? String, "someValue")
     }
 
     func test_Init_LocationSettingNullValue() {
-        let sut = LocationSettingsResponse(jsonDictionary: [:])
+        let sut = ServerSettingsResponse(jsonDictionary: [:])
 
         XCTAssertNotNil(sut)
         XCTAssertTrue(sut.getLocationSettings().isEmpty)

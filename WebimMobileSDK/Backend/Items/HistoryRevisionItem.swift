@@ -41,14 +41,17 @@ final class HistoryRevisionItem {
     }
     
     // MARK: - Properties
-    private var revision: Int64
+    private var revision: String
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
-        if let revision = jsonDictionary[JSONField.revision.rawValue] as? Int64 {
+        let revision = jsonDictionary[JSONField.revision.rawValue]
+        if let revision = revision as? String {
             self.revision = revision
+        } else if let revision = revision as? Int {
+            self.revision = String(revision)
         } else {
-            self.revision = 0
+            self.revision = "0"
         }
     }
     

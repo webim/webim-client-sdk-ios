@@ -44,3 +44,13 @@
 "Your visitor account is in the black list." = "Tu cuenta de visitante está en la lista negra.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "Error al analizar el visitante de demostración.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Fallo al crear la sesión";
+//ChatViewController+Listener.swift
+"typing" = "escribiendo";
+//StringConstants.swift
+"Edit" = "Editar";
+"Enter message" = "Escribe un mensaje";
+"Please rate the overall impression of the consultation" = "Por favor califica la impresión general de la consulta.";
+"Rate Operator" = "Calificar agente";
+"Send" = "Enviar";

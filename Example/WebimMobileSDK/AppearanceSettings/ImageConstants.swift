@@ -34,6 +34,7 @@ let loadingPlaceholderImage = UIImage(named: "ImagePlaceholder")
 let navigationBarTitleImageViewImage = #imageLiteral(resourceName: "LogoWebimNavigationBar_dark")
 let scrollButtonImage = #imageLiteral(resourceName: "SendMessageButton").flipImage(.vertically)
 let textInputButtonImage = #imageLiteral(resourceName: "SendMessageButton")
+let textInputInactiveButtonImage = #imageLiteral(resourceName: "sendButton")
 let networkErrorView = UIImage(named: "ConnectionImage")!
 let uploadFileImage = UIImage(named: "FileUploadButtonVisitor")!
 let readyFileImage = UIImage(named: "FileDownloadSuccess")!

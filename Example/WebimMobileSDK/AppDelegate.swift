@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     static var shared: AppDelegate!
     lazy var isApplicationConnected: Bool = false
+    var hasRemoteNotification = false
     
     private var notificationUserInfo: [AnyHashable: Any]?
     
@@ -138,6 +139,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 
+        hasRemoteNotification = true
         if let notificationUserInfo = notificationUserInfo {
             openChatFromNotification(notificationUserInfo)
         }

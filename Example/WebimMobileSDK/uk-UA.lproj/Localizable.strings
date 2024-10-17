@@ -44,3 +44,13 @@
 "Your visitor account is in the black list." = "Ваш обліковий запис відвідувача перебуває в чорному списку.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "Помилка розбору демонстраційного відвідувача.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Створення сесії не вдалося";
+//ChatViewController+Listener.swift
+"typing" = "печатання";
+//StringConstants.swift
+"Edit" = "Редагувати";
+"Enter message" = "Введіть повідомлення";
+"Please rate the overall impression of the consultation" = "Будь ласка, оцініть загальне враження від консультації.";
+"Rate Operator" = "Оцінити агента";
+"Send" = "Надіслати";

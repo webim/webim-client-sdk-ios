@@ -60,10 +60,12 @@ final class SQLiteHistoryStorage: HistoryStorage {
         case canVisitorReact = "can_visitor_react"
         case canVisitorChangeReaction = "can_visitor_change_reaction"
         case reaction = "reaction"
+        case status = "status"
     }
     
     // MARK: SQLite.swift abstractions
     
+    private static let SQLITE_CONSTRAINT: Int = 19
     private static let history = Table(TableName.history.rawValue)
     
     // In DB columns order.
@@ -78,10 +80,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static let data = SQLite.Expression<Blob?>(ColumnName.data.rawValue)
     private static let canBeReplied = SQLite.Expression<Bool?>(ColumnName.canBeReplied.rawValue)
     private static let quote = SQLite.Expression<Blob?>(ColumnName.quote.rawValue)
-    private static let SQLITE_CONSTRAINT: Int = 19
     private static let canVisitorReact = SQLite.Expression<Bool?>(ColumnName.canVisitorReact.rawValue)
     private static let canVisitorChangeReaction = SQLite.Expression<Bool?>(ColumnName.canVisitorChangeReaction.rawValue)
     private static let reaction = SQLite.Expression<String?>(ColumnName.reaction.rawValue)
+    private static let status = SQLite.Expression<String>(ColumnName.status.rawValue)
     
     
     // MARK: - Properties
@@ -117,7 +119,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     // MARK: HistoryStorage protocol methods
     
     static func getMajorVersion() -> Int {
-        return 11
+        return 12
     }
     
     func getMajorVersion() -> Int {
@@ -312,7 +314,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.quote.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorReact.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorChangeReaction.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                        + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.status.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                     let statement = try db.prepare(query)
                     try statement.run(messageHistoryID.getDBid(),
                                       message.getID(),
@@ -327,7 +330,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                       SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
                                       message.canVisitorReact(),
                                       message.canVisitorChangeReaction(),
-                                      message.getVisitorReaction())
+                                      message.getVisitorReaction(),
+                                      message.getSendStatus() == .sent ? "sent" : "sending")
                     // Raw SQLite statement constructed because there's no way to implement INSERT OR FAIL query with SQLite.swift methods. Appropriate INSERT query can look like this:
                     /*try db.run(SQLiteHistoryStorage
                      .history
@@ -375,8 +379,16 @@ final class SQLiteHistoryStorage: HistoryStorage {
             var newFirstKnownTimestamp = Int64.max
             
             for message in messages {
-                guard let messageHistoryID = message.getHistoryID() else {
-                    continue
+                let messageHistoryID: HistoryID
+                if message.getSendStatus() == .sending {
+                    messageHistoryID = HistoryID(dbID: message.getID(),
+                                                     timeInMicrosecond: message.getTimeInMicrosecond())
+                } else {
+                    if let historyID = message.getHistoryID() {
+                        messageHistoryID = historyID
+                    } else {
+                        continue
+                    }
                 }
                 
                 if ((self.firstKnownTimestamp != -1)
@@ -562,7 +574,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             let dbPath = "\(libraryPath)/\(name)"
             do  {
                 let db = try Connection(dbPath)
-                db.userVersion = 5
+                db.userVersion = Int32(getMajorVersion())
                 db.busyTimeout = 1.0
                 db.busyHandler() { tries in
                     if tries >= 3 {
@@ -618,6 +630,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             t.column(SQLiteHistoryStorage.canVisitorReact)
             t.column(SQLiteHistoryStorage.canVisitorChangeReaction)
             t.column(SQLiteHistoryStorage.reaction)
+            t.column(SQLiteHistoryStorage.status)
         })
         db.trace {
             WebimInternalLogger.shared.log(
@@ -715,6 +728,22 @@ final class SQLiteHistoryStorage: HistoryStorage {
             text = ""
         }
         
+        var quote: Quote?
+        if let quoteValue = row[SQLiteHistoryStorage.quote],
+            let data = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(quoteValue)) as? [String : Any?] {
+                quote = QuoteImpl.getQuote(quoteItem: QuoteItem(jsonDictionary: data), messageAttachment: nil, fileUrlCreator: fileUrlCreator)
+        }
+        
+        if row[SQLiteHistoryStorage.status] == "sending" {
+            return MessageToSend(serverURLString: serverURLString,
+                                 clientSideID: clientSideID ?? "",
+                                 senderName: row[SQLiteHistoryStorage.senderName],
+                                 type: type,
+                                 text: text,
+                                 timeInMicrosecond: row[SQLiteHistoryStorage.timestamp],
+            quote: quote)
+        }
+        
         var rawData: [String: Any?]?
         var group: Group?
         if let dataValue = row[SQLiteHistoryStorage.data] {
@@ -782,12 +811,6 @@ final class SQLiteHistoryStorage: HistoryStorage {
         }
         
         let canBeReplied = row[SQLiteHistoryStorage.canBeReplied] ?? false
-        
-        var quote: Quote?
-        if let quoteValue = row[SQLiteHistoryStorage.quote],
-            let data = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(quoteValue)) as? [String : Any?] {
-                quote = QuoteImpl.getQuote(quoteItem: QuoteItem(jsonDictionary: data), messageAttachment: nil, fileUrlCreator: fileUrlCreator)
-        }
         let canVisitorReact = row[SQLiteHistoryStorage.canVisitorReact] ?? false
         let canVisitorChangeReact = row[SQLiteHistoryStorage.canVisitorChangeReaction] ?? false
         let reaction = row[SQLiteHistoryStorage.reaction] ?? nil
@@ -821,9 +844,20 @@ final class SQLiteHistoryStorage: HistoryStorage {
     }
     
     private func insert(message: MessageImpl) throws {
-        guard let db = db,
-            let messageHistoryID = message.getHistoryID() else {
+        guard let db = db else {
                 return
+        }
+        
+        let messageHistoryID: HistoryID
+        if message.getSendStatus() == .sending {
+            messageHistoryID = HistoryID(dbID: message.getID(),
+                                             timeInMicrosecond: message.getTimeInMicrosecond())
+        } else {
+            if let historyID = message.getHistoryID() {
+                messageHistoryID = historyID
+            } else {
+                return
+            }
         }
         
         /*
@@ -863,7 +897,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
                     SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
                     SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
-                    SQLiteHistoryStorage.reaction <- message.getVisitorReaction()))
+                    SQLiteHistoryStorage.reaction <- message.getVisitorReaction(),
+                    SQLiteHistoryStorage.status <- message.getSendStatus() == .sent ? "sent" : "sending"))
         
         db.trace {
             WebimInternalLogger.shared.log(

@@ -27,7 +27,7 @@
 //AdditionalKeys.swift
 "P.OF" = "%@ enviou um arquivo: %@.";
 //AdditionalKeys.swift
-"P.OM" = "%%@ escreveu uma mensagem: %@";
+"P.OM" = "%@ escreveu uma mensagem: %@";
 //AdditionalKeys.swift
 "P.RO" = "Avalie o agente.";
 //StringConstants.swift
@@ -37,10 +37,20 @@
 //StringConstants.swift
 "Reply" = "Responder";
 //WMStartViewController.xib
-"Welcome to the WebimClientLibrary app!" = "Bem-vindo ao aplicativo WebimClientLibrary!";
+"Welcome to the WebimClientLibrary app!" = "Bem-vindo ao aplicativo de bate-papo Webim!";
 //WMThanksAlertView.xib
 "Your feedback will help us become better." = "Seu feedback nos ajudará a melhorar.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Sua conta de visitante está na lista negra.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "Erro ao analisar o visitante de demonstração.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Falha na criação da sessão";
+//ChatViewController+Listener.swift
+"typing" = "digitando";
+//StringConstants.swift
+"Edit" = "Editar";
+"Enter message" = "Inserir mensagem";
+"Please rate the overall impression of the consultation" = "Por favor, avalie a impressão geral da consulta.";
+"Rate Operator" = "Avaliar Agente";
+"Send" = "Enviar";

@@ -71,8 +71,9 @@ class MessageHolderTests: XCTestCase {
                                        messageCanBeReplied: false,
                                        messageIsEdited: false,
                                        visitorReactionInfo: nil,
-                                       visitorCanReact: nil,
-                                       visitorChangeReaction: nil))
+                                       visitorCanReact: false,
+                                       visitorChangeReaction: false,
+                                       group: nil))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -108,7 +109,8 @@ class MessageHolderTests: XCTestCase {
                                            messageIsEdited: false,
                                            visitorReactionInfo: nil,
                                            visitorCanReact: nil,
-                                           visitorChangeReaction: nil))
+                                           visitorChangeReaction: nil,
+                                           group: nil))
         }
         
         messagesCount = messagesCount + numberOfMessages
@@ -144,7 +146,8 @@ class MessageHolderTests: XCTestCase {
                                          messageIsEdited: false,
                                          visitorReactionInfo: message.getVisitorReaction(),
                                          visitorCanReact: message.canVisitorReact(),
-                                         visitorChangeReaction: message.canVisitorChangeReaction())
+                                         visitorChangeReaction: message.canVisitorChangeReaction(),
+                                         group: nil)
             result.append(newMessage)
         }
         
@@ -178,7 +181,8 @@ class MessageHolderTests: XCTestCase {
                            messageIsEdited: false,
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
-                           visitorChangeReaction: nil)
+                           visitorChangeReaction: nil,
+                           group: nil)
     }
     
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
@@ -206,7 +210,8 @@ class MessageHolderTests: XCTestCase {
                            messageIsEdited: false,
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
-                           visitorChangeReaction: nil)
+                           visitorChangeReaction: nil,
+                           group: nil)
     }
     
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
@@ -234,7 +239,8 @@ class MessageHolderTests: XCTestCase {
                            messageIsEdited: false,
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
-                           visitorChangeReaction: nil)
+                           visitorChangeReaction: nil,
+                           group: nil)
     }
     
     private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {
@@ -244,9 +250,10 @@ class MessageHolderTests: XCTestCase {
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                  internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
-                                            actionRequestLoop: actionRequestLoop)
+                                                  internalErrorListener: InternalErrorListenerForTests(),
+                                                  requestHeader: nil,
+                                                  baseURL: MessageImplMockData.serverURLString.rawValue)
+        let webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderMock(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
@@ -266,9 +273,10 @@ class MessageHolderTests: XCTestCase {
         let execIfNotDestroyedHandlerExecutor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer,
                                                                                   queue: DispatchQueue.global(qos: .userInteractive))
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: execIfNotDestroyedHandlerExecutor,
-                                                  internalErrorListener: InternalErrorListenerForTests())
-        let webimActions = WebimActionsImpl(baseURL: MessageImplMockData.serverURLString.rawValue,
-                                            actionRequestLoop: actionRequestLoop)
+                                                  internalErrorListener: InternalErrorListenerForTests(),
+                                                  requestHeader: nil,
+                                                  baseURL: MessageImplMockData.serverURLString.rawValue)
+        let webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderMock(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),
@@ -843,7 +851,8 @@ class MessageHolderTests: XCTestCase {
             completionHandlerMessages = messages as? [MessageImpl]
         }
         // Then: Completion handler should be called on last history part message.
-        XCTAssertEqual(completionHandlerMessages!, [currentChat[0]])
+        XCTAssertEqual(completionHandlerMessages!.count, 1)
+        XCTAssertEqual(completionHandlerMessages![0].getID(), currentChat[0].getID())
     }
     
     func testMergeChat() throws {
@@ -908,8 +917,8 @@ class MessageHolderTests: XCTestCase {
         // MARK: Model set up
         let messageHolder = newMessageHolder()
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        let firstChat = ChatItem(id: "1")
-        let secondChat = ChatItem(id: "2")
+        let firstChat = ChatItem(id: 1)
+        let secondChat = ChatItem(id: 2)
         let messages = generateCurrentChat(ofCount: 10)
         
         // MARK: Test 1
@@ -975,8 +984,8 @@ class MessageHolderTests: XCTestCase {
         let history2 = generateHistoryFrom(currentChat: messages)
         let messageHolder = newMessageHolder(withHistory: (history1 + history2))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        let firstChat = ChatItem(id: "1")
-        let secondChat = ChatItem(id: "2")
+        let firstChat = ChatItem(id: 1)
+        let secondChat = ChatItem(id: 2)
         
         // MARK: Test 1
         // When: Requesting messages.
@@ -1076,8 +1085,8 @@ class MessageHolderTests: XCTestCase {
         let messageHolder = newMessageHolder(withHistory: (history1 + history2),
                                              localHistory: Array(history2[0 ... 1]))
         let messageTracker = try messageHolder.newMessageTracker(withMessageListener: self)
-        let firstChat = ChatItem(id: "1")
-        let secondChat = ChatItem(id: "2")
+        let firstChat = ChatItem(id: 1)
+        let secondChat = ChatItem(id: 2)
         
         // MARK: Test 1
         // When: Requesting messages.

@@ -78,16 +78,15 @@ final class FAQClientBuilder {
             WebimInternalLogger.shared.log(entry: "Completion Handler Executor is nil in FAQClient.\(#function)")
             fatalError("Completion Handler Executor is nil in FAQClient.\(#function)")
         }
-        let faqRequestLoop = FAQRequestLoop(completionHandlerExecutor: handler)
         
         guard let baseURL = baseURL else {
             WebimInternalLogger.shared.log(entry: "Base URL is nil in FAQClient.\(#function)")
             fatalError("Base URL is nil in FAQClient.\(#function)")
         }
+        let faqRequestLoop = FAQRequestLoop(completionHandlerExecutor: handler, baseURL: baseURL)
         
         return FAQClient(withFAQRequestLoop: faqRequestLoop,
-                         faqActions: FAQActions(baseURL: baseURL,
-                                                faqRequestLoop: faqRequestLoop),
+                         faqActions: FAQActions(faqRequestLoop: faqRequestLoop),
                          application: application,
                          departmentKey: departmentKey,
                          language: language)

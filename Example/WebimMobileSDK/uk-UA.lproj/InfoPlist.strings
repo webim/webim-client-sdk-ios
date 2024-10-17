@@ -6,11 +6,11 @@
   Copyright © 2022 Webim. All rights reserved.
 */
 
-"NSPhotoLibraryAddUsageDescription" = "Webim Chat потребує дозволу на доступ до вашої фотокінотеки, щоб ви могли зберігати зображення з чату.";
+"NSPhotoLibraryAddUsageDescription" = "Webim SDK App потребує дозволу на доступ до вашої фотокінотеки, щоб ви могли зберігати зображення з чату.";
 
-"NSCameraUsageDescription" = "Webim Chat потребує дозволу на доступ до вашої камери, щоб ви могли надсилати фотографії в чат.";
+"NSCameraUsageDescription" = "Webim SDK App потребує дозволу на доступ до вашої камери, щоб ви могли надсилати фотографії в чат.";
 
-"NSFileProviderDomainUsageDescription" = "Webim Chat потребує дозволу на доступ до вашої папки з документами, щоб ви могли надсилати файли в чат.";
+"NSFileProviderDomainUsageDescription" = "Webim SDK App потребує дозволу на доступ до вашої папки з документами, щоб ви могли надсилати файли в чат.";
 
-"NSFileProviderPresenceUsageDescription" = "Webim Chat потребує дозволу на доступ до вашої папки з документами, щоб ви могли надсилати файли в чат.";
+"NSFileProviderPresenceUsageDescription" = "Webim SDK App потребує дозволу на доступ до вашої папки з документами, щоб ви могли надсилати файли в чат.";
 

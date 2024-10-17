@@ -49,11 +49,12 @@ class HistoryPollerTests: XCTestCase {
         let executor = ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: sessionDestroyer, queue: queue)
         let internalErrorListener = InternalErrorListenerForTests()
         actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: executor,
-                                                          internalErrorListener: internalErrorListener)
+                                                          internalErrorListener: internalErrorListener,
+                                                      requestHeader: nil,
+                                                      baseURL: MessageImplMockData.serverURLString.rawValue)
         let accessChecker = AccessChecker(thread: Thread.current, sessionDestroyer: sessionDestroyer)
 
-        let webimActions = WebimActionsImpl(baseURL: serverURLString,
-                                            actionRequestLoop: actionRequestLoop)
+        let webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
         let remoteHistoryProvider = RemoteHistoryProviderMock(withWebimActions: webimActions,
                                                                   historyMessageMapper: HistoryMessageMapper(withServerURLString: MessageImplMockData.serverURLString.rawValue),
                                                                   historyMetaInformation: MemoryHistoryMetaInformationStorage(),

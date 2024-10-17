@@ -37,10 +37,20 @@
 //StringConstants.swift
 "Reply" = "Reply";
 //WMStartViewController.xib
-"Welcome to the WebimClientLibrary app!" = "Welcome to the Webim Chat App!";
+"Welcome to the WebimClientLibrary app!" = "Welcome to the Webim SDK App!";
 //WMThanksAlertView.xib
 "Your feedback will help us become better." = "Your feedback will help us become better.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Your visitor account is in the black list.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "Parse demo visitor error.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Session creation failed";
+//ChatViewController+Listener.swift
+"typing" = "typing";
+//StringConstants.swift
+"Edit" = "Edit";
+"Enter message" = "Enter message";
+"Please rate the overall impression of the consultation" = "Please rate the overall impression of the consultation.";
+"Rate Operator" = "Rate Agent";
+"Send" = "Send";

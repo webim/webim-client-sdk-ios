@@ -62,10 +62,10 @@ extension Dictionary {
                     WebimInternalLogger.shared.log(entry: "Key has incorrect type or nil in extension Dictionary.\(#function)")
                     return String()
             }
-                
+            
             return getPercentEscapedString(forKey: key, value: value, isPartOfJSON: true)
         }
-            
+        
         return "{" + parameterArray.joined(separator: ",") + "}"
     }
     
@@ -88,14 +88,14 @@ extension Dictionary {
             WebimInternalLogger.shared.log(entry: "Value has incorrect type in extension Dictionary.\(#function)")
             return String()
         }
+        if isPartOfJSON {
+            stringValue = stringValue.replacingOccurrences(of: "\"", with: "\\\"")
+            return "\"\(key)\"=\"\(stringValue)\""
+        }
         
         guard let percentEscapedKey = key.addingPercentEncodingForURLQueryValue() else {
             WebimInternalLogger.shared.log(entry: "Adding Percent Encoding For URL Query Value to Key failure in Extension Dictionary.\(#function)")
             return "\(key)=\(stringValue)"
-        }
-        if isPartOfJSON {
-            stringValue = stringValue.replacingOccurrences(of: "\"", with: "\\\"")
-            return "\"\(key)\"=\"\(stringValue)\""
         }
         
         guard let percentEscapedValue = stringValue.addingPercentEncodingForURLQueryValue() else {

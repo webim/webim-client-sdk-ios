@@ -36,7 +36,9 @@ class WebimActionsTests: XCTestCase {
     // MARK: - Properties
     private let actionRequestLoop = ActionRequestLoopForTests(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor(sessionDestroyer: SessionDestroyer(userDefaultsKey: WebimActionsTests.userDefaultsKey),
                                                                                                                            queue: DispatchQueue.global()),
-                                                              internalErrorListener: InternalErrorListenerForTests() as InternalErrorListener)
+                                                              internalErrorListener: InternalErrorListenerForTests() as InternalErrorListener,
+                                                              requestHeader: nil,
+                                                              baseURL: MessageImplMockData.serverURLString.rawValue)
     private var webimActions: WebimActions?
     
     // MARK: - Methods
@@ -44,8 +46,7 @@ class WebimActionsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        webimActions = WebimActionsImpl(baseURL: "https://demo.webim.ru",
-                                    actionRequestLoop: actionRequestLoop)
+        webimActions = WebimActionsImpl(actionRequestLoop: actionRequestLoop)
     }
     
     override func tearDown() {

@@ -520,6 +520,43 @@ public protocol MessageStream: class {
               isHintQuestion: Bool?) throws -> String
     
     /**
+     Resends a message, if it wasn't sent.
+     - parameter message:
+     Message with sending status.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - returns:
+     ID of the message.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2024 Webim
+     */
+    func resend(message: Message,
+                completionHandler: ResendMessageCompletionHandler?) throws
+    
+    /**
+     Delete a message with sending status, if message wasn't sent.
+     - parameter message:
+     Message with sending status.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - returns:
+     ID of the message.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2024 Webim
+     */
+    func cancelResend(message: Message) throws
+    
+    /**
      Sends a message with uploaded files.
      When calling this method, if there is an active `MessageTracker` object (see `newMessageTracker(messageListener:)` method). `MessageListener.added(message:after:)`) with a message `MessageSendStatus.sending` in the status is also called.
      - seealso:
@@ -1250,6 +1287,12 @@ Yury Vozleev
 */
 public protocol SendMessageCompletionHandler: class {
     func onSuccess(messageID: String)
+}
+
+public protocol ResendMessageCompletionHandler: class {
+    func onSuccess(messageID: String)
+    
+    func onFailure()
 }
 
 /**
@@ -2703,13 +2746,6 @@ public enum SendFileError: Error {
     */
     case uploadCanceled
     
-    /**
-     Sent file was detected as malicious
-     - author:
-     Anna Frolova
-     - copyright:
-     2024 Webim
-     */
     case maliciousFileDetected
     
 }

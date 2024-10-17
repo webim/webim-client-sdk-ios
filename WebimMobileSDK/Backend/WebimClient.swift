@@ -183,20 +183,22 @@ final class WebimClientBuilder {
             fatalError("Building Webim client failure because Internal Error Listener is nil in WebimClient.\(#function)")
         }
         
+        guard let baseURL = baseURL else {
+            WebimInternalLogger.shared.log(entry: "Building Webim client failure because Base URL is nil in WebimClient.\(#function)")
+            fatalError("Building Webim client failure because Base URL is nil in WebimClient.\(#function)")
+        }
+        
         let actionRequestLoop = ActionRequestLoop(completionHandlerExecutor: completionHandlerExecutor,
                                                   internalErrorListener: internalErrorListener,
                                                   notFatalErrorHandler: notFatalErrorHandler,
-                                                  requestHeader: requestHeader)
+                                                  requestHeader: requestHeader,
+                                                  baseURL: baseURL)
         
         actionRequestLoop.set(authorizationData: authorizationData)
         
         guard let deltaCallback = deltaCallback else {
             WebimInternalLogger.shared.log(entry: "Building Webim client failure because Delta Callback is nil in WebimClient.\(#function)")
             fatalError("Building Webim client failure because Delta Callback is nil in WebimClient.\(#function)")
-        }
-        guard let baseURL = baseURL else {
-            WebimInternalLogger.shared.log(entry: "Building Webim client failure because Base URL is nil in WebimClient.\(#function)")
-            fatalError("Building Webim client failure because Base URL is nil in WebimClient.\(#function)")
         }
         guard let title = title else {
             WebimInternalLogger.shared.log(entry: "Building Webim client failure because Title is nil in WebimClient.\(#function)")
@@ -235,8 +237,7 @@ final class WebimClientBuilder {
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
-                           webimActions: WebimActionsImpl(baseURL: baseURL,
-                                                      actionRequestLoop: actionRequestLoop))
+                           webimActions: WebimActionsImpl(actionRequestLoop: actionRequestLoop))
     }
     
 }

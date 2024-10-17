@@ -61,7 +61,8 @@ class DeltaRequestLoopTests: XCTestCase {
                                                     visitorJSONString: nil,
                                                     sessionID: nil,
                                                     prechat: nil,
-                                                    authorizationData: nil)
+                                                    authorizationData: nil,
+                                                    requestHeader: nil)
     }
     
     override func tearDown() {
@@ -104,7 +105,7 @@ class DeltaRequestLoopTests: XCTestCase {
         
         XCTAssertNil(deltaRequestLoop?.getAuthorizationData())
         XCTAssertEqual(deltaRequestLoop!.since,
-                       0)
+                       "0")
         XCTAssertTrue(deltaRequestLoop!.initializationRunned)
     }
     
@@ -113,7 +114,8 @@ class DeltaRequestLoopTests: XCTestCase {
         
         // When: DeltaRequestLoop started without AuthorizationData.
         deltaRequestLoop?.start()
-        usleep(1_000_000)
+        deltaRequestLoop?.resume()
+        usleep(5_000_000)
         
         // Then: Initialization should be requested, but delta should not.
         XCTAssertNil(deltaRequestLoop?.getAuthorizationData())

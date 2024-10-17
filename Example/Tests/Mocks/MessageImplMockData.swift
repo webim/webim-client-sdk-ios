@@ -27,7 +27,7 @@
 import Foundation
 
 enum MessageImplMockData: String {
-    case serverURLString = "https://demo.webim.ru/"
+    case serverURLString = "https://demo.webim.ru"
     case operatorID = "operatorID"
     case avatarURLString = "image.jpg"
     case senderName = "Sender Name"

@@ -127,6 +127,7 @@ class WMSettingsViewController: UIViewController {
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             if let startViewController = navigationController.viewControllers.first as? WMStartViewController {
                 startViewController.startChatButton.isHidden = false
+                startViewController.unreadMessageCounterView.isHidden = false
             }
         }
     }

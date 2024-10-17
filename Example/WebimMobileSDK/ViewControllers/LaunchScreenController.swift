@@ -85,6 +85,9 @@ class LaunchScreenController: UIViewController {
                 let rootVC = WMStartViewController.loadViewControllerFromXib()
                 let navigationController = UINavigationController(rootViewController: rootVC)
                 AppDelegate.shared.window?.rootViewController = navigationController
+                if AppDelegate.shared.hasRemoteNotification {
+                    rootVC.startChat(self)
+                }
             }
         )
     }

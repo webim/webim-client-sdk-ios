@@ -11,7 +11,7 @@
 //WebimService.swift
 "AccountBlocked" =  "الحساب الذي يتم استخدامه لإنشاء الجلسة محظور. يرجى الاتصال بدعم Webim أو استخدام حساب آخر.";
 //UIAlertHandler.swift
-"Alert account name" = "اسم حساب Webim أو عنوان الخادم الكامل (على سبيل المثال، \"demo\" أو \"https://demo.webim.ru\")";
+"Alert account name" = "اسم حساب Webim أو عنوان الخادم الكامل \n (for example, \"demo\" or \"https://demo.webim.ru\")";
 //UIAlertHandler.swift
 "Cancel" = "إلغاء";
 //ConnectionErrorView.xib
@@ -44,3 +44,15 @@
 "Your visitor account is in the black list." = "حساب الزائر الخاص بك في قائمة الحظر.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "خطأ في تحليل زائر الديمو.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "فشل إنشاء الجلسة";
+//ChatViewController+Listener.swift
+"typing" = "يكتب";
+//StringConstants.swift
+"Edit" = "تحرير";
+"Enter message" = "أدخل رسالة";
+//RateStarsViewController.swift,RateStarsViewController.xib
+"Please rate the overall impression of the consultation" = "الرجاء تقييم الانطباع العام للاستشارة.";
+//RateStarsViewController.xib
+"Rate Operator" = "تقييم الوكيل";
+"Send" = "إرسال";
