@@ -273,11 +273,11 @@ final class WebimSessionImpl {
                 fatalError("Wrong readBeforeTimestamp type in WebimSessionImpl.\(#function)")
             }
             let sqlhistoryStorage = SQLiteHistoryStorage(dbName: dbName,
-                                                  serverURL: serverURLString,
-                                                  fileUrlCreator: fileUrlCreator,
-                                                  reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
-                                                  queue: webimSdkQueue,
-                                                  readBeforeTimestamp: readBeforeTimestamp ?? Int64(-1))
+                                                         serverURL: serverURLString,
+                                                         fileUrlCreator: fileUrlCreator,
+                                                         reachedHistoryEnd: historyMetaInformationStoragePreferences.isHistoryEnded(),
+                                                         queue: webimSdkQueue,
+                                                         readBeforeTimestamp: readBeforeTimestamp ?? Int64(-1))
             historyStorage = sqlhistoryStorage
             
             let historyMajorVersion = historyStorage.getMajorVersion()
@@ -1182,6 +1182,8 @@ final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
             return .wrongProvidedVisitorHash
         case WebimInternalError.providedVisitorFieldsExpired.rawValue:
             return .providedVisitorFieldsExpired
+        case WebimInternalError.wrongInit.rawValue:
+            return .initializationFailed
         default:
             return .unknown
         }

@@ -12,6 +12,7 @@ import UIKit
 class CircleProgressIndicator: UIView {
     
     // MARK: - Properties
+    
     var lineWidth: CGFloat = 2 {
         didSet {
             circleLayer.lineWidth = lineWidth
@@ -27,6 +28,7 @@ class CircleProgressIndicator: UIView {
     }
     
     // MARK: - Private properties
+    
     private var startValue: Float = 0
     private let backgrondCircleLayer = CAShapeLayer()
     private let circleLayer = CAShapeLayer()
@@ -41,6 +43,7 @@ class CircleProgressIndicator: UIView {
     }()
     
     // MARK: - Methods
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -110,6 +113,7 @@ class CircleProgressIndicator: UIView {
     }
     
     // MARK: - Private methods
+    
     private func setup() {
         backgrondCircleLayer.lineWidth = lineWidth
         backgrondCircleLayer.fillColor = nil

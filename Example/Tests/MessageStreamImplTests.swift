@@ -31,17 +31,20 @@ import XCTest
 class MessageStreamImplTests: XCTestCase {
     
     // MARK: - Constants
+    
     let serverURLString = "https://demo.webim.ru"
     private static let userDefaultsKey = "userDefaultsKey"
     private let locationSettingsHolderUserDefaultsKey = "MessageStreamImplTests_LocationSettingsHolder"
     
     // MARK: - Properties
+    
     var messageHolder: MessageHolder!
     var messageStream: MessageStreamImpl?
     var webimActions: WebimActionsImpl?
     var actionRequestLoop: ActionRequestLoopForTests!
     
     // MARK: - Methods
+    
     override func setUp() {
         super.setUp()
         let sessionDestroyer = SessionDestroyer(userDefaultsKey: MessageStreamImplTests.userDefaultsKey)

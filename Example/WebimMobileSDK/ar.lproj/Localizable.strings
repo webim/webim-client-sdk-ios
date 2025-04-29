@@ -42,6 +42,8 @@
 "Your feedback will help us become better." = "ستساعدنا ملاحظاتك في أن نصبح أفضل.";
 //WebimService.swift
 "Your visitor account is in the black list." = "حساب الزائر الخاص بك في قائمة الحظر.";
+//WebimSerivce.swift
+"Session initialization failed." = "ملف تهيئة الجلسة.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "خطأ في تحليل زائر الديمو.";
 //ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
@@ -56,3 +58,6 @@
 //RateStarsViewController.xib
 "Rate Operator" = "تقييم الوكيل";
 "Send" = "إرسال";
+"New messages" = "رسائل جديدة";
+"Settings" = "إعدادات";
+"Invalid account name" = "لم يتم العثور على حساب بهذا الاسم. يرجى التحقق من البيانات المدخلة.";

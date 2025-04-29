@@ -12,7 +12,9 @@ let package = Package(
     targets: [
         .target(
             name: "WebimMobileSDK",
-            dependencies: [.product(name: "SQLite", package: "SQLite.swift")],
+            dependencies:  [
+                .product(name: "SQLite", package: "SQLite.swift")
+            ],
             path: "WebimMobileSDK",
             resources: [.copy("PrivacyInfo.xcprivacy")]
         )

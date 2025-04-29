@@ -35,6 +35,7 @@ let navigationBarTitleImageViewImage = #imageLiteral(resourceName: "LogoWebimNav
 let scrollButtonImage = #imageLiteral(resourceName: "SendMessageButton").flipImage(.vertically)
 let textInputButtonImage = #imageLiteral(resourceName: "SendMessageButton")
 let textInputInactiveButtonImage = #imageLiteral(resourceName: "sendButton")
+let textInputEditButtonImage = #imageLiteral(resourceName: "EditMessageButton")
 let networkErrorView = UIImage(named: "ConnectionImage")!
 let uploadFileImage = UIImage(named: "FileUploadButtonVisitor")!
 let readyFileImage = UIImage(named: "FileDownloadSuccess")!
@@ -55,7 +56,6 @@ let trailingSwipeActionImage =
 // ImageViewController.swift
 let saveImageButton = #imageLiteral(resourceName: "ImageDownload")
 let fileShare = #imageLiteral(resourceName: "FileShare")
-
 
 // FlexibleTableViewCell.swift
 let documentFileStatusButtonDownloadOperator = #imageLiteral(resourceName: "FileDownloadButtonOperator")

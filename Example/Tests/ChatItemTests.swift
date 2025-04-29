@@ -154,10 +154,12 @@ class ChatItemTests: XCTestCase {
 """
     
     // MARK: - Properties
-    private let chatItemDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.CHAT_ITEM_JSON_STRING.data(using: .utf8)!,
+    private let chatItemDictionary = try! JSONSerialization.jsonObject(with:
+                                                                        ChatItemTests.CHAT_ITEM_JSON_STRING.data(using: .utf8)!,
                                                                        options: []) as! [String : Any?]
 
-    private let chatItemNullValuesDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.CHAT_ITEM_JSON_STRING_NULL_VALUES.data(using: .utf8)!,
+    private let chatItemNullValuesDictionary = try! JSONSerialization.jsonObject(with:
+                                                                                    ChatItemTests.CHAT_ITEM_JSON_STRING_NULL_VALUES.data(using: .utf8)!,
                                                                                  options: []) as! [String : Any?]
     
     // MARK: - Tests
@@ -194,7 +196,8 @@ class ChatItemTests: XCTestCase {
     func testGetSetMessages() {
         let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
         
-        let messageDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.MESSAGE_JSON_STRING.data(using: .utf8)!,
+        let messageDictionary = try! JSONSerialization.jsonObject(with:
+                                                                    ChatItemTests.MESSAGE_JSON_STRING.data(using: .utf8)!,
                                                                   options: []) as! [String: Any?]
         let message = MessageItem(jsonDictionary: messageDictionary)
         chatItem.set(messages: [message])
@@ -205,7 +208,8 @@ class ChatItemTests: XCTestCase {
     
     func testAddMessage() {
         let chatItem = ChatItem(jsonDictionary: chatItemDictionary)
-        let messageDictionary = try! JSONSerialization.jsonObject(with: ChatItemTests.MESSAGE_JSON_STRING.data(using: .utf8)!,
+        let messageDictionary = try! JSONSerialization.jsonObject(with:
+                                                                    ChatItemTests.MESSAGE_JSON_STRING.data(using: .utf8)!,
                                                                   options: []) as! [String: Any?]
         let message = MessageItem(jsonDictionary: messageDictionary)
         

@@ -68,10 +68,12 @@ class DeltaResponseTests: XCTestCase {
 """
     
     // MARK: - Properties
+    
     private let deltaResponseDictionary = try! JSONSerialization.jsonObject(with: DeltaResponseTests.DELTA_RESPONSE_JSON_STRING.data(using: .utf8)!,
                                                                             options: []) as! [String : Any?]
     
     // MARK: - Tests
+    
     func testInit() {
         let deltaResponseItem = DeltaResponse(jsonDictionary: deltaResponseDictionary)
         

@@ -64,6 +64,7 @@ class MessageImpl {
     private var visitorCanReact: Bool?
     private var visitorChangeReaction: Bool?
     private var group: Group?
+    private var deleted: Bool?
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -92,7 +93,8 @@ class MessageImpl {
          visitorReactionInfo: String?,
          visitorCanReact: Bool?,
          visitorChangeReaction: Bool?,
-         group: Group?) {
+         group: Group?,
+         deleted: Bool?) {
         self.data = data
         self.clientSideID = clientSideID
         self.serverSideID = serverSideID
@@ -118,7 +120,7 @@ class MessageImpl {
         self.visitorCanReact = visitorCanReact
         self.visitorChangeReaction = visitorChangeReaction
         self.group = group
-        
+        self.deleted = deleted
         self.historyMessage = historyMessage
         if historyMessage {
             guard let internalID = internalID else {
@@ -278,6 +280,8 @@ MessageImpl {
     historyID = \(historyID?.getDBid() ?? "nil"),
     rawText = \(rawText ?? "nil"),
     read = \(read)
+    status = \(sendStatus)
+    deleted = \(deleted)
 }
 """
     }
@@ -433,6 +437,10 @@ extension MessageImpl: Message {
     func getGroup() -> Group? {
         return group
     }
+    
+    func isDeleted() -> Bool? {
+        return deleted
+    }
 }
 
 // MARK: - Equatable
@@ -560,6 +568,7 @@ final class MessageAttachmentImpl: MessageAttachment {
     private var downloadProgress: Int64?
     private var errorType: String?
     private var errorMessage: String?
+    private var visitorErrorMessage: String?
     
     // MARK: - Initialization
     init(fileInfo: FileInfo,
@@ -567,13 +576,15 @@ final class MessageAttachmentImpl: MessageAttachment {
          state: AttachmentState,
          downloadProgress: Int64? = nil,
          errorType: String? = nil,
-         errorMessage: String? = nil) {
+         errorMessage: String? = nil,
+         visitorErrorMessage: String? = nil) {
         self.fileInfo = fileInfo
         self.filesInfo = filesInfo
         self.state = state
         self.downloadProgress = downloadProgress
         self.errorType = errorType
         self.errorMessage = errorMessage
+        self.visitorErrorMessage = visitorErrorMessage
     }
     
     // MARK: - Methods
@@ -602,6 +613,10 @@ final class MessageAttachmentImpl: MessageAttachment {
         return errorMessage
     }
     
+    func getVisitorErrorMessage() -> String? {
+        return visitorErrorMessage
+    }
+    
     func isEqual(to messageAttachment: MessageAttachment) -> Bool {
         guard let messageAttachment = messageAttachment as? MessageAttachmentImpl else {
             return false
@@ -618,6 +633,7 @@ extension MessageAttachmentImpl: Equatable {
             && lhs.getDownloadProgress() == rhs.getDownloadProgress()
             && lhs.getErrorType() == rhs.getErrorType()
             && lhs.getErrorMessage() == rhs.getErrorMessage()
+            && lhs.getVisitorErrorMessage() == rhs.getVisitorErrorMessage()
     }
     
     private static func areEqualFilesInfo(lhs: [FileInfo], rhs: [FileInfo]) -> Bool {

@@ -30,7 +30,6 @@ import Foundation
 
 // MARK: - WebimServerSideSettings
 public struct WebimServerSideSettings: Codable {
-//    let accountBlocked: Bool
     public let accountConfig: AccountConfig
 }
 
@@ -43,6 +42,9 @@ public struct AccountConfig: Codable {
     public let rateOperator: Bool
     public let showRateOperator: Bool?
     public let disablingMessageInputField: Bool?
+    public let rateForm: String?
+    public let ratedEntity: String?
+    public let visitorSegment: String?
 //    let multilang, chattingTimer, googleAnalytics: Bool
 //    let yandexMetrikaCounterID: JSONNull?
 //    let teleport: Bool
@@ -65,6 +67,9 @@ public struct AccountConfig: Codable {
         case rateOperator = "rate_operator"
         case showRateOperator = "show_visitor_rate_operator_button"
         case disablingMessageInputField = "disabling_message_input_field"
+        case rateForm = "rate_form"
+        case ratedEntity = "rated_entity"
+        case visitorSegment = "visitor_segment"
 //        case multilang
 //        case chattingTimer = "chatting_timer"
 //        case googleAnalytics = "google_analytics"

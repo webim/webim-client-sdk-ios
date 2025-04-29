@@ -36,7 +36,7 @@ import Foundation
  - copyright:
  2017 Webim
  */
-public protocol ProvidedAuthorizationTokenStateListener: class {
+public protocol ProvidedAuthorizationTokenStateListener: AnyObject {
     
     /**
      Method is called in two cases:

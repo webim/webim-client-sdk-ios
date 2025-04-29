@@ -61,6 +61,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         case canVisitorChangeReaction = "can_visitor_change_reaction"
         case reaction = "reaction"
         case status = "status"
+        case deleted = "deleted"
     }
     
     // MARK: SQLite.swift abstractions
@@ -84,6 +85,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static let canVisitorChangeReaction = SQLite.Expression<Bool?>(ColumnName.canVisitorChangeReaction.rawValue)
     private static let reaction = SQLite.Expression<String?>(ColumnName.reaction.rawValue)
     private static let status = SQLite.Expression<String>(ColumnName.status.rawValue)
+    private static let deleted = SQLite.Expression<Bool?>(ColumnName.deleted.rawValue)
     
     
     // MARK: - Properties
@@ -119,7 +121,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
     // MARK: HistoryStorage protocol methods
     
     static func getMajorVersion() -> Int {
-        return 12
+        return 13
     }
     
     func getMajorVersion() -> Int {
@@ -315,7 +317,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorReact.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorChangeReaction.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.status.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                        + "\(SQLiteHistoryStorage.ColumnName.status.rawValue), "
+                        + "\(SQLiteHistoryStorage.ColumnName.deleted.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                     let statement = try db.prepare(query)
                     try statement.run(messageHistoryID.getDBid(),
                                       message.getID(),
@@ -331,7 +334,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                       message.canVisitorReact(),
                                       message.canVisitorChangeReaction(),
                                       message.getVisitorReaction(),
-                                      message.getSendStatus() == .sent ? "sent" : "sending")
+                                      message.getSendStatus() == .sent ? "sent" : "sending",
+                                      message.isDeleted())
                     // Raw SQLite statement constructed because there's no way to implement INSERT OR FAIL query with SQLite.swift methods. Appropriate INSERT query can look like this:
                     /*try db.run(SQLiteHistoryStorage
                      .history
@@ -377,7 +381,6 @@ final class SQLiteHistoryStorage: HistoryStorage {
             self.prepare()
             
             var newFirstKnownTimestamp = Int64.max
-            
             for message in messages {
                 let messageHistoryID: HistoryID
                 if message.getSendStatus() == .sending {
@@ -527,9 +530,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
     
     private static func convertToBlob(dictionary: [String: Any?]?) -> Blob? {
         if let dictionary = dictionary {
-            let data = NSKeyedArchiver.archivedData(withRootObject: dictionary)
+            let data = try? NSKeyedArchiver.archivedData(withRootObject: dictionary, requiringSecureCoding: true)
             
-            return data.datatypeValue
+            return data?.datatypeValue
         }
         
         return nil
@@ -538,9 +541,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
     private static func convertToBlob(quote: Quote?) -> Blob? {
         if let quote = quote {
             let dictionary = QuoteItem.toDictionary(quote: quote)
-            let data = NSKeyedArchiver.archivedData(withRootObject: dictionary)
+            let data = try? NSKeyedArchiver.archivedData(withRootObject: dictionary, requiringSecureCoding: true)
             
-            return data.datatypeValue
+            return data?.datatypeValue
         }
         
         return nil
@@ -631,6 +634,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
             t.column(SQLiteHistoryStorage.canVisitorChangeReaction)
             t.column(SQLiteHistoryStorage.reaction)
             t.column(SQLiteHistoryStorage.status)
+            t.column(SQLiteHistoryStorage.deleted)
         })
         db.trace {
             WebimInternalLogger.shared.log(
@@ -722,26 +726,39 @@ final class SQLiteHistoryStorage: HistoryStorage {
                     logType: .messageHistory)
             fatalError("Getting Message type from row failure in SQLiteHistoryStorage.\(#function). Can not create MessageImpl object without type")
         }
-        if (type == .fileFromOperator)
-            || (type == .fileFromVisitor) {
+        let sendStatus = row[SQLiteHistoryStorage.status]
+        if (type == .fileFromOperator || type == .fileFromVisitor) && sendStatus == "sent" {
             rawText = text
             text = ""
         }
         
         var quote: Quote?
-        if let quoteValue = row[SQLiteHistoryStorage.quote],
-            let data = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(quoteValue)) as? [String : Any?] {
-                quote = QuoteImpl.getQuote(quoteItem: QuoteItem(jsonDictionary: data), messageAttachment: nil, fileUrlCreator: fileUrlCreator)
+        
+        if let quoteValue = row[SQLiteHistoryStorage.quote] {
+           let data = Data.fromDatatypeValue(quoteValue)
+            if let unarchivedData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSDictionary.self, from: data) as? [String: Any?] {
+                quote = QuoteImpl.getQuote(quoteItem: QuoteItem(jsonDictionary: unarchivedData), messageAttachment: nil, fileUrlCreator: fileUrlCreator)
+            }
         }
         
         if row[SQLiteHistoryStorage.status] == "sending" {
+            if row[SQLiteHistoryStorage.deleted] == true {
+                return MessageToSend(serverURLString: serverURLString,
+                                     clientSideID: clientSideID ?? "",
+                                     senderName: row[SQLiteHistoryStorage.senderName],
+                                     type: type,
+                                     text: text,
+                                     timeInMicrosecond: row[SQLiteHistoryStorage.timestamp],
+                                     quote: quote,
+                                     deleted: true)
+            }
             return MessageToSend(serverURLString: serverURLString,
                                  clientSideID: clientSideID ?? "",
                                  senderName: row[SQLiteHistoryStorage.senderName],
                                  type: type,
                                  text: text,
                                  timeInMicrosecond: row[SQLiteHistoryStorage.timestamp],
-            quote: quote)
+                                 quote: quote)
         }
         
         var rawData: [String: Any?]?
@@ -798,7 +815,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                                      filesInfo: attachments,
                                                                      state: state,
                                                                      errorType: file?.getErrorType(),
-                                                                     errorMessage: file?.getErrorMessage()))
+                                                                     errorMessage: file?.getErrorMessage(),
+                                                                     visitorErrorMessage: file?.getVisitorErrorMessage()))
         }
         
         var keyboard: Keyboard? = nil
@@ -814,7 +832,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
         let canVisitorReact = row[SQLiteHistoryStorage.canVisitorReact] ?? false
         let canVisitorChangeReact = row[SQLiteHistoryStorage.canVisitorChangeReaction] ?? false
         let reaction = row[SQLiteHistoryStorage.reaction] ?? nil
-        
+        let deleted = row[SQLiteHistoryStorage.deleted] ?? nil
+
         return MessageImpl(serverURLString: serverURLString,
                            clientSideID: clientSideID ?? id,
                            serverSideID: id,
@@ -824,6 +843,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            quote: quote,
                            senderAvatarURLString: row[SQLiteHistoryStorage.avatarURLString],
                            senderName: row[SQLiteHistoryStorage.senderName],
+                           sendStatus: MessageSendStatus(rawValue: sendStatus) ?? .sent,
                            sticker: sticker,
                            type: type,
                            rawData: rawData,
@@ -840,7 +860,8 @@ final class SQLiteHistoryStorage: HistoryStorage {
                            visitorReactionInfo: reaction,
                            visitorCanReact: canVisitorReact,
                            visitorChangeReaction: canVisitorChangeReact,
-                           group: group)
+                           group: group,
+                           deleted: deleted)
     }
     
     private func insert(message: MessageImpl) throws {
@@ -882,23 +903,51 @@ final class SQLiteHistoryStorage: HistoryStorage {
          SQLiteHistoryStorage.convertToBlob(dictionary: message.getData())))
          */
         let text = WMDataEncryptor.shared?.encryptToBase64String(text: (message.getRawText() ?? message.getText())) ?? "no data"
-        try db.run(SQLiteHistoryStorage
-            .history
-            .insert(SQLiteHistoryStorage.serverSideID <- messageHistoryID.getDBid(),
-                    SQLiteHistoryStorage.clientSideID <- message.getID(),
-                    SQLiteHistoryStorage.timestamp <- messageHistoryID.getTimeInMicrosecond(),
-                    SQLiteHistoryStorage.senderID <- message.getOperatorID(),
-                    SQLiteHistoryStorage.senderName <- message.getSenderName(),
-                    SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                    SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
-                    SQLiteHistoryStorage.text <- text,
-                    SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
-                    SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
-                    SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
-                    SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
-                    SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
-                    SQLiteHistoryStorage.reaction <- message.getVisitorReaction(),
-                    SQLiteHistoryStorage.status <- message.getSendStatus() == .sent ? "sent" : "sending"))
+        let oldMessage = SQLiteHistoryStorage
+                                        .history
+                                        .where(SQLiteHistoryStorage.clientSideID == message.getID())
+        let count = try db.scalar(oldMessage.count)
+        
+        if count > 0 {
+            try db.run(SQLiteHistoryStorage
+                  .history
+                  .where(SQLiteHistoryStorage.clientSideID == message.getID())
+                  .update(SQLiteHistoryStorage.serverSideID <- messageHistoryID.getDBid(),
+                          SQLiteHistoryStorage.timestamp <- messageHistoryID.getTimeInMicrosecond(),
+                          SQLiteHistoryStorage.senderID <- message.getOperatorID(),
+                          SQLiteHistoryStorage.senderName <- message.getSenderName(),
+                          SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
+                          SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
+                          SQLiteHistoryStorage.text <- text,
+                          SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
+                          SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
+                          SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
+                          SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
+                          SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
+                          SQLiteHistoryStorage.status <- message.getSendStatus().rawValue,
+                          SQLiteHistoryStorage.reaction <- message.getVisitorReaction(),
+                          SQLiteHistoryStorage.deleted <- message.isDeleted()))
+        } else {
+            try db.run(SQLiteHistoryStorage
+                .history
+                .insert(SQLiteHistoryStorage.serverSideID <- messageHistoryID.getDBid(),
+                        SQLiteHistoryStorage.clientSideID <- message.getID(),
+                        SQLiteHistoryStorage.timestamp <- messageHistoryID.getTimeInMicrosecond(),
+                        SQLiteHistoryStorage.senderID <- message.getOperatorID(),
+                        SQLiteHistoryStorage.senderName <- message.getSenderName(),
+                        SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
+                        SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
+                        SQLiteHistoryStorage.text <- text,
+                        SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
+                        SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
+                        SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
+                        SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
+                        SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
+                        SQLiteHistoryStorage.reaction <- message.getVisitorReaction(),
+                        SQLiteHistoryStorage.status <- message.getSendStatus().rawValue,
+                        SQLiteHistoryStorage.deleted <- message.isDeleted()))
+            
+        }
         
         db.trace {
             WebimInternalLogger.shared.log(
@@ -909,9 +958,52 @@ final class SQLiteHistoryStorage: HistoryStorage {
     }
     
     private func update(message: MessageImpl) throws {
-        guard let db = db,
-            let messageHistoryID = message.getHistoryID() else {
+        guard let db = db else {
                 return
+        }
+       
+        let messageHistoryID: HistoryID
+        let text = WMDataEncryptor.shared?.encryptToBase64String(text: (message.getRawText() ?? message.getText())) ?? "no data"
+        if message.getSendStatus() == .sending {
+            try db.run(SQLiteHistoryStorage
+                .history
+                .where(SQLiteHistoryStorage.clientSideID == message.getID())
+                .update(SQLiteHistoryStorage.clientSideID <- message.getID(),
+                        SQLiteHistoryStorage.senderID <- message.getOperatorID(),
+                        SQLiteHistoryStorage.senderName <- message.getSenderName(),
+                        SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
+                        SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
+                        SQLiteHistoryStorage.text <- text,
+                        SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
+                        SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
+                        SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
+                        SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
+                        SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
+                        SQLiteHistoryStorage.reaction <- message.getVisitorReaction(),
+                        SQLiteHistoryStorage.deleted <- message.isDeleted()))
+        } else {
+            if let historyID = message.getHistoryID() {
+                messageHistoryID = historyID
+                try db.run(SQLiteHistoryStorage
+                    .history
+                    .where(SQLiteHistoryStorage.serverSideID == messageHistoryID.getDBid())
+                    .update(SQLiteHistoryStorage.clientSideID <- message.getID(),
+                            SQLiteHistoryStorage.timestamp <- messageHistoryID.getTimeInMicrosecond(),
+                            SQLiteHistoryStorage.senderID <- message.getOperatorID(),
+                            SQLiteHistoryStorage.senderName <- message.getSenderName(),
+                            SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
+                            SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
+                            SQLiteHistoryStorage.text <- text,
+                            SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
+                            SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
+                            SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
+                            SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
+                            SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
+                            SQLiteHistoryStorage.reaction <- message.getVisitorReaction(),
+                            SQLiteHistoryStorage.deleted <- message.isDeleted()))
+            } else {
+                return
+            }
         }
         
         /*
@@ -927,24 +1019,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
          data = SQLiteHistoryStorage.convertToBlob(dictionary: message.getData()))
          WHERE id = messageHistoryID.getDBid()
          */
-        let text = WMDataEncryptor.shared?.encryptToBase64String(text: (message.getRawText() ?? message.getText())) ?? "no data"
-        try db.run(SQLiteHistoryStorage
-            .history
-            .where(SQLiteHistoryStorage.serverSideID == messageHistoryID.getDBid())
-            .update(SQLiteHistoryStorage.clientSideID <- message.getID(),
-                    SQLiteHistoryStorage.timestamp <- messageHistoryID.getTimeInMicrosecond(),
-                    SQLiteHistoryStorage.senderID <- message.getOperatorID(),
-                    SQLiteHistoryStorage.senderName <- message.getSenderName(),
-                    SQLiteHistoryStorage.avatarURLString <- message.getSenderAvatarURLString(),
-                    SQLiteHistoryStorage.type <- MessageItem.MessageKind(messageType: message.getType()).rawValue,
-                    SQLiteHistoryStorage.text <- text,
-                    SQLiteHistoryStorage.data <- SQLiteHistoryStorage.convertToBlob(dictionary: message.getRawData()),
-                    SQLiteHistoryStorage.canBeReplied <- message.canBeReplied(),
-                    SQLiteHistoryStorage.quote <- SQLiteHistoryStorage.convertToBlob(quote: message.getQuote()),
-                    SQLiteHistoryStorage.canVisitorReact <- message.canVisitorReact(),
-                    SQLiteHistoryStorage.canVisitorChangeReaction <- message.canVisitorChangeReaction(),
-                    SQLiteHistoryStorage.reaction <- message.getVisitorReaction()))
-        
+  
         db.trace {
             WebimInternalLogger.shared.log(
                 entry: "\($0)",

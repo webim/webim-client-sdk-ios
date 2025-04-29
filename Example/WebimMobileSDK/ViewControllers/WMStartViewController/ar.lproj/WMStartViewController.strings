@@ -1,11 +1,33 @@
-"XiB-ag-Lpg.text" = "99";
-"fgX-wy-ZIA.accessibilityLabel" = "عنوان الترحيب";
+
+/* Class = "UILabel"; text = "Новых сообщений: 5"; ObjectID = "N3o-tY-Q3j"; */
+"N3o-tY-Q3j.text" = "رسائل جديدة: 5";
+
+/* Class = "UILabel"; accessibilityLabel = "Greeting title"; ObjectID = "fgX-wy-ZIA"; */
+"fgX-wy-ZIA.accessibilityLabel" = "Greeting title";
+
+/* Class = "UILabel"; text = "Добро пожаловать в приложение\nWebim SDK App!"; ObjectID = "fgX-wy-ZIA"; */
 "fgX-wy-ZIA.text" = "مرحبًا بك في تطبيق Webim SDK App!";
-"htJ-b1-n8p.accessibilityHint" = "يعرض الإعدادات.";
-"htJ-b1-n8p.accessibilityLabel" = "الإعدادات";
-"htJ-b1-n8p.normalTitle" = "الإعدادات";
-"wAh-BG-LeG.accessibilityHint" = "يبدأ الدردشة.";
-"wAh-BG-LeG.accessibilityLabel" = "بدء الدردشة";
-"wAh-BG-LeG.normalTitle" = "بدء الدردشة";
-"xS6-J8-Sm9.accessibilityLabel" = "كلمات الترحيب";
-"xS6-J8-Sm9.text" = "لبدء الدردشة، انقر على الزر أدناه.";
+
+/* Class = "UIButton"; accessibilityHint = "Shows settings."; ObjectID = "htJ-b1-n8p"; */
+"htJ-b1-n8p.accessibilityHint" = "Shows settings.";
+
+/* Class = "UIButton"; accessibilityLabel = "Settings"; ObjectID = "htJ-b1-n8p"; */
+"htJ-b1-n8p.accessibilityLabel" = "Settings";
+
+/* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "htJ-b1-n8p"; */
+"htJ-b1-n8p.normalTitle" = "إعدادات";
+
+/* Class = "UIButton"; accessibilityHint = "Starts chat."; ObjectID = "wAh-BG-LeG"; */
+"wAh-BG-LeG.accessibilityHint" = "Starts chat.";
+
+/* Class = "UIButton"; accessibilityLabel = "Start chat"; ObjectID = "wAh-BG-LeG"; */
+"wAh-BG-LeG.accessibilityLabel" = "Start chat";
+
+/* Class = "UIButton"; normalTitle = "Start chat"; ObjectID = "wAh-BG-LeG"; */
+"wAh-BG-LeG.normalTitle" = "ابدأ الدردشة";
+
+/* Class = "UITextView"; accessibilityLabel = "Greeting words"; ObjectID = "xS6-J8-Sm9"; */
+"xS6-J8-Sm9.accessibilityLabel" = "Greeting words";
+
+/* Class = "UITextView"; text = "Для того, чтобы начать чат, \nнажмите на кнопку ниже"; ObjectID = "xS6-J8-Sm9"; */
+"xS6-J8-Sm9.text" = "لبدء الدردشة، انقر على الزر أدناه";

@@ -79,9 +79,9 @@ class NetworkManager: NetworkManagerProtocol {
     }
     
     private func demoVisitorRequest(request: URLRequest, value: Int) {
-        urlSession.dataTask(with: request) { [weak self] data, response, error in
+        urlSession.dataTask(with: request) { [weak self] data, _, error in
             guard let self = self else { return }
-            if let _ = error {
+            if error != nil {
                 self.demoVisitorCompletion?.onFailure(error: .unknown)
                 return
             }
@@ -103,7 +103,7 @@ class NetworkManager: NetworkManagerProtocol {
     @available(iOS 13.0, *)
     private func demoVisitorAsyncRequest(request: URLRequest, value: Int) async throws -> Any {
         return try await withCheckedThrowingContinuation { continuation in
-            urlSession.dataTask(with: request) { data, response, error in
+            urlSession.dataTask(with: request) { data, _, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                     return
@@ -125,7 +125,8 @@ class NetworkManager: NetworkManagerProtocol {
     }
 }
 
-// MARK: Conform to CompletionHandlerSettable
+// MARK: - Conform to CompletionHandlerSettable
+
 extension NetworkManager: CompletionHandlerSettable {
     func set(completion: (any WMVisitorFieldsParserCompletionHandler)?) {
         self.demoVisitorCompletion = completion

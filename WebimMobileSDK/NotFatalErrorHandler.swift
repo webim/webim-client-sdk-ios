@@ -37,7 +37,7 @@ import Foundation
  - copyright:
  2019 Webim
  */
-public protocol NotFatalErrorHandler: class {
+public protocol NotFatalErrorHandler: AnyObject {
     
     /**
      This method is to be called when Webim service error is received.

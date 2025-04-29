@@ -31,12 +31,11 @@ import MobileCoreServices
 import UniformTypeIdentifiers
 import Foundation
 
-
 @objc(WMShareViewController)
 class WMShareViewController: UIViewController, SendFileCompletionHandler {
     
     private var alertController: UIAlertController!
-    var sendFileError: SendFileError? = nil
+    var sendFileError: SendFileError?
     let saveView = WMSaveView.loadXibView()
     lazy var shareProgressViewController = WMShareProgressViewController.loadViewControllerFromXib()
     var sendedFilesCount = 0
@@ -45,12 +44,12 @@ class WMShareViewController: UIViewController, SendFileCompletionHandler {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        WMKeychainWrapper.standard.setAppGroupName(userDefaults: UserDefaults(suiteName: "group.WebimClient.Share") ?? UserDefaults.standard, keychainAccessGroup: Bundle.main.infoDictionary!["keychainAppIdentifier"] as! String)
+        WMKeychainWrapper.standard.setAppGroupName(userDefaults: UserDefaults(suiteName: "group.WebimClient.Share") ?? UserDefaults.standard,
+                                                   keychainAccessGroup: Bundle.main.infoDictionary!["keychainAppIdentifier"] as! String)
         WebimServiceController.currentSessionShare.createSession()
         WebimServiceController.currentSession.setMessageTracker(withMessageListener: self)
         getFilesExtensionContext()
     }
-    
     
     func getFilesExtensionContext() {
         guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem], inputItems.isNotEmpty() else {
@@ -105,7 +104,6 @@ class WMShareViewController: UIViewController, SendFileCompletionHandler {
         self.present(alertController, animated: true)
     }
     
-    
     func checkErrorAfterSend() {
         guard sendFileError != nil else {
             self.saveView.stopAnimateActivity()
@@ -142,10 +140,7 @@ class WMShareViewController: UIViewController, SendFileCompletionHandler {
             )
         }
     }
-    
-
 }
-
 
 extension WMShareViewController {
     
@@ -157,14 +152,15 @@ extension WMShareViewController {
         if attachment.isImage {
             handleImageAttachment(attachment)
         } else if attachment.isFile {
-            handleFileAttachment(attachment, (kUTTypeFileURL as String))
+            handleFileAttachment(attachment, UTType.fileURL.identifier)
         } else if let type = attachment.isVideo {
             handleFileAttachment(attachment, type)
         }
     }
     
     func handleImageAttachment(_ attachment: NSItemProvider) {
-        attachment.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil) { [weak self] item, error in
+        attachment.loadItem(forTypeIdentifier: UTType.image.identifier,
+                            options: nil) { [weak self] item, error in
             guard let self = self else { return }
             guard error == nil else {
                 self.close()
@@ -242,20 +238,20 @@ extension WMShareViewController {
 
 extension NSItemProvider {
     var isImage: Bool {
-        return hasItemConformingToTypeIdentifier(kUTTypeImage as String)
+        return hasItemConformingToTypeIdentifier(UTType.image.identifier)
     }
 
     var isFile: Bool {
-        return hasItemConformingToTypeIdentifier(kUTTypeFileURL as String)
+        return hasItemConformingToTypeIdentifier(UTType.fileURL.identifier)
     }
 
     var isVideo: String? {
-        if hasItemConformingToTypeIdentifier(kUTTypeVideo as String) {
-            return (kUTTypeVideo as String)
-        } else if hasItemConformingToTypeIdentifier(kUTTypeMPEG as String) {
-            return (kUTTypeMPEG as String)
-        } else if hasItemConformingToTypeIdentifier(kUTTypeMPEG4 as String) {
-            return (kUTTypeMPEG4 as String)
+        if hasItemConformingToTypeIdentifier(UTType.video.identifier) {
+            return (UTType.video.identifier)
+        } else if hasItemConformingToTypeIdentifier(UTType.mpeg.identifier) {
+            return (UTType.mpeg.identifier)
+        } else if hasItemConformingToTypeIdentifier(UTType.mpeg4Movie.identifier) {
+            return (UTType.mpeg4Movie.identifier)
         } else {
             return ""
         }
@@ -278,7 +274,8 @@ extension WMShareViewController: MessageListener {
     func added(message newMessage: Message,
                after previousMessage: Message?) {
         if let fileData = newMessage.getData()?.getAttachment()?.getFileInfo() {
-            self.shareProgressViewController.startProgress(for: SendingFile(fileName: fileData.getFileName(), fileID: newMessage.getID()))
+            self.shareProgressViewController.startProgress(for: SendingFile(fileName: fileData.getFileName(),
+                                                                            fileID: newMessage.getID()))
         }
         
     }
@@ -286,7 +283,9 @@ extension WMShareViewController: MessageListener {
     func changed(message oldVersion: Message,
                  to newVersion: Message) {
         if let fileData = newVersion.getData()?.getAttachment()?.getFileInfo() {
-            self.shareProgressViewController.stateChanged(for: SendingFile(fileName: fileData.getFileName(), fileID: oldVersion.getID()), with: newVersion.getSendStatus())
+            self.shareProgressViewController.stateChanged(for: SendingFile(fileName: fileData.getFileName(),
+                                                                           fileID: oldVersion.getID()),
+                                                          with: newVersion.getSendStatus())
         }
     }
 }

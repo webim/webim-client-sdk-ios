@@ -42,6 +42,8 @@
 "Your feedback will help us become better." = "Ваш відгук допоможе нам стати кращими.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Ваш обліковий запис відвідувача перебуває в чорному списку.";
+//WebimSerivce.swift
+"Session initialization failed." = "Помилка ініціалізації сеансу.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "Помилка розбору демонстраційного відвідувача.";
 //ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
@@ -54,3 +56,6 @@
 "Please rate the overall impression of the consultation" = "Будь ласка, оцініть загальне враження від консультації.";
 "Rate Operator" = "Оцінити агента";
 "Send" = "Надіслати";
+"New messages" = "Нові повідомлення";
+"Settings" = "Налаштування";
+"Invalid account name" = "Обліковий запис з такою назвою не знайдено. Перевірте введені дані.";

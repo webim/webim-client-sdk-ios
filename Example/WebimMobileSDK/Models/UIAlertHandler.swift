@@ -30,15 +30,18 @@ import WebimMobileSDK
 final class UIAlertHandler {
     
     // MARK: - Properties
+    
     private weak var delegate: UIViewController?
     private var alertController: UIAlertController!
     
     // MARK: - Initializer
+    
     init(delegate: UIViewController) {
         self.delegate = delegate
     }
     
     // MARK: - Methods
+    
     func showDialog(
         withMessage message: String,
         title: String?,
@@ -95,7 +98,16 @@ final class UIAlertHandler {
         )
     }
     
+    func showAlertForInvalidAccountName() {
+        showDialog(
+            withMessage: "Invalid account name".localized,
+            title: "Account".localized,
+            buttonTitle: "OK".localized
+        )
+    }
+    
     // MARK: - Private methods
+    
     private func getGoToSettingsAction() -> (() -> Void) {
         return {
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {

@@ -310,6 +310,16 @@ public protocol Message {
      2024 Webim
      */
     func getGroup() -> Group?
+    
+    /**
+     - returns:
+     True if visitor delete message.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    func isDeleted() -> Bool?
 }
 
 /**
@@ -411,6 +421,16 @@ public protocol MessageAttachment {
      2020 Webim
      */
     func getErrorMessage() -> String?
+    
+    /**
+     - returns:
+     A message with the reason for the error during loading verificator.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getVisitorErrorMessage() -> String?
     
     func isEqual(to messageAttachment: MessageAttachment) -> Bool
     
@@ -1156,6 +1176,15 @@ public enum FileState {
      2021 Webim
      */
     case externalChecks
+    
+    /**
+     The file is checked by verificator.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case externalVerification
 }
 
 // MARK: -
@@ -1330,7 +1359,7 @@ public enum MessageType {
  - copyright:
  2017 Webim
  */
-public enum MessageSendStatus {
+public enum MessageSendStatus: String {
     
     /**
      A message is being sent.

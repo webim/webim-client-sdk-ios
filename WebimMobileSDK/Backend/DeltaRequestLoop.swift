@@ -184,13 +184,16 @@ class DeltaRequestLoop: AbstractRequestLoop {
                 entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
                 verbosityLevel: .warning,
                 logType: .networkRequest)
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.internalErrorListener?.on(error: "wrong-init")
+            })
         }
     }
     
     func requestInitialization() {
         let url = URL(string: baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.42.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.43.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -211,7 +214,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestAccountConfig() {
         let url = URL(string: baseURL + ServerPathSuffix.getServerSideSettings.rawValue + "?" + "location=" + location)
         var request = URLRequest(url: url!)
-        request.setValue("3.42.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.39.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {

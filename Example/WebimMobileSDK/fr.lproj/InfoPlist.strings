@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "L'application Webim SDK a besoin d'une autorisation pour accéder à votre photothèque afin que vous puissiez enregistrer des images à partir du chat.";
+
+"NSCameraUsageDescription" = "L'application Webim SDK a besoin d'une autorisation pour accéder à votre appareil photo afin que vous puissiez envoyer des photos pour discuter.";
+
+"NSFileProviderDomainUsageDescription" = "L'application Webim SDK a besoin d'une autorisation pour accéder à votre dossier de documents afin que vous puissiez envoyer des fichiers au chat.";
+
+"NSFileProviderPresenceUsageDescription" = "L'application Webim SDK a besoin d'une autorisation pour accéder à votre dossier de documents afin que vous puissiez envoyer des fichiers au chat.";
+
+"NSPhotoLibraryUsageDescription" = "L'application Webim SDK a besoin d'une autorisation pour accéder à votre photothèque afin que vous puissiez envoyer des images au chat.";

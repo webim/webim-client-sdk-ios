@@ -534,6 +534,7 @@ final class FileItem {
         case properties = "desc"
         case errorType = "error"
         case errorMessage = "error_message"
+        case visitorErrorMessage = "visitor_error_message"
     }
     
     private var downloadProgress: Int64?
@@ -541,6 +542,7 @@ final class FileItem {
     private var properties: FileParametersItem?
     private var errorType: String?
     private var errorMessage: String?
+    private var visitorErrorMessage: String?
     
     
     init(jsonDictionary: [String: Any?]) {
@@ -558,6 +560,9 @@ final class FileItem {
         }
         if let errorMessage = jsonDictionary[JSONField.errorMessage.rawValue] as? String {
             self.errorMessage = errorMessage
+        }
+        if let visitorErrorMessage = jsonDictionary[JSONField.visitorErrorMessage.rawValue] as? String {
+            self.visitorErrorMessage = visitorErrorMessage
         }
     }
     
@@ -581,29 +586,34 @@ final class FileItem {
         return errorMessage
     }
     
+    func getVisitorErrorMessage() -> String? {
+        return visitorErrorMessage
+    }
+    
     enum FileStateItem: String {
         // Raw values equal to field names received in responses from server.
         case error = "error"
         case ready = "ready"
         case upload = "upload"
         case externalChecks = "external_checks"
+        case externalVerification = "external_verification"
         
         init(fileState: FileState) {
             switch fileState {
             case .error:
                 self = .error
-                
                 break
             case .ready:
                 self = .ready
-                
                 break
             case .upload:
                 self = .upload
-                
                 break
             case .externalChecks:
                 self = .externalChecks
+                break
+            case .externalVerification:
+                self = .externalVerification
             }
         }
     }

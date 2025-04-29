@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -57,7 +57,7 @@
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w9h-7W-MjC">
                                 <rect key="frame" x="0.0" y="52" width="296" height="1"/>
-                                <color key="backgroundColor" red="0.22352941176470587" green="0.24705882352941178" blue="0.41960784313725491" alpha="0.30269557119205298" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.22352941176470587" green="0.24705882352941178" blue="0.41960784313725491" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="amE-Qu-pUB"/>
                                 </constraints>
@@ -112,6 +112,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="5oo-kb-qG9"/>
                                             <constraint firstAttribute="width" constant="25" id="jI8-6w-DRX"/>
+                                            <constraint firstAttribute="width" secondItem="q4y-jc-mRG" secondAttribute="height" multiplier="1:1" id="m2W-Ii-tTX"/>
                                         </constraints>
                                         <color key="tintColor" red="0.023529411760000001" green="0.54117647059999996" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" backgroundImage="InfoButton"/>
@@ -120,13 +121,10 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="q4y-jc-mRG" firstAttribute="width" secondItem="q4y-jc-mRG" secondAttribute="height" multiplier="1:1" id="m2W-Ii-tTX"/>
-                                </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j8q-LS-EPH">
                                 <rect key="frame" x="0.0" y="69" width="339" height="1"/>
-                                <color key="backgroundColor" red="0.22352941176470587" green="0.24705882352941178" blue="0.41960784313725491" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.22352941176470587" green="0.24705882352941178" blue="0.41960784313725491" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="TAT-hf-rKP"/>
                                 </constraints>
@@ -192,7 +190,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N3V-0h-q3d">
-                    <rect key="frame" x="15" y="0.0" width="384" height="67"/>
+                    <rect key="frame" x="15" y="0.0" width="384" height="33"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                     <color key="textColor" red="0.36078431370000003" green="0.37254901959999998" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -214,7 +212,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Authorized User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t12-07-dH3">
-                    <rect key="frame" x="15" y="0.0" width="384" height="67"/>
+                    <rect key="frame" x="15" y="0.0" width="384" height="33"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                     <color key="textColor" red="0.36078431372549019" green="0.37254901960784315" blue="0.54117647058823526" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>

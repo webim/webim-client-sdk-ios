@@ -7,7 +7,6 @@
 
 import Cocoa
 
-// swiftlint:disable force_unwrapping
 class StringsFileParser: NSObject {
     
     static func getKeysFromStringsFile(text: String) -> [String: String] {
@@ -15,17 +14,15 @@ class StringsFileParser: NSObject {
         let lines = text.split(whereSeparator: \.isNewline)
         
         var dict = [String: String]()
-        for line in lines {
-            if line.starts(with: "\"") {
-                var quotesIndexes = String(line).indicesOf(string: "\"")
-                let escapedQuotesIndexes = String(line).indicesOf(string: "\\\"")
+        for line in lines where line.starts(with: "\"") {
+            var quotesIndexes = String(line).indicesOf(string: "\"")
+            let escapedQuotesIndexes = String(line).indicesOf(string: "\\\"")
                 
-                quotesIndexes = quotesIndexes.filter { !escapedQuotesIndexes.contains($0 - 1) }
-                if quotesIndexes.count >= 4 {
-                    let key = String(line).substring(quotesIndexes[0] + 1, to: quotesIndexes[1])
-                    let value = String(line).substring(quotesIndexes[2] + 1, to: quotesIndexes[3])
-                    dict[key] = value
-                }
+            quotesIndexes = quotesIndexes.filter { !escapedQuotesIndexes.contains($0 - 1) }
+            if quotesIndexes.count >= 4 {
+                let key = String(line).substring(quotesIndexes[0] + 1, to: quotesIndexes[1])
+                let value = String(line).substring(quotesIndexes[2] + 1, to: quotesIndexes[3])
+                dict[key] = value
             }
         }
         return dict
@@ -40,27 +37,22 @@ class StringsFileParser: NSObject {
         var keys = [String]()
         let fileText = ShellWrapper.readUTF8File(filePath)
         let lines = fileText.split(whereSeparator: \.isNewline)
-        for line in lines.reversed() { // only single line values
-            if line.contains(".localized") {
+        for line in lines.reversed() where line.contains(".localized") { // only single line values
                 
-                let localizedIndexes = String(line).indicesOf(string: "\".localized")
-                var quotesIndexes = String(line).indicesOf(string: "\"")
-                let escapedQuotesIndexes = String(line).indicesOf(string: "\\\"")
+            let localizedIndexes = String(line).indicesOf(string: "\".localized")
+            var quotesIndexes = String(line).indicesOf(string: "\"")
+            let escapedQuotesIndexes = String(line).indicesOf(string: "\\\"")
                 
-                quotesIndexes = quotesIndexes.filter { !escapedQuotesIndexes.contains($0 - 1) }
+            quotesIndexes = quotesIndexes.filter { !escapedQuotesIndexes.contains($0 - 1) }
 
-                for localizedIndex in localizedIndexes {
-                    if quotesIndexes.contains(localizedIndex) {
-                        let arrayIndex = quotesIndexes.firstIndex(of: localizedIndex)
-                        if let arrayIndex = arrayIndex {
-                            if arrayIndex > 0 {
-                                let startIndex = quotesIndexes[arrayIndex - 1]
-                                let localizedValue = String(line).substring(startIndex + 1, to: localizedIndex)
-                                if !localizedValue.isEmpty {
-                                    keys.append(localizedValue)
-                                }
-                                
-                            }
+            for localizedIndex in localizedIndexes where quotesIndexes.contains(localizedIndex) {
+                let arrayIndex = quotesIndexes.firstIndex(of: localizedIndex)
+                if let arrayIndex = arrayIndex {
+                    if arrayIndex > 0 {
+                        let startIndex = quotesIndexes[arrayIndex - 1]
+                        let localizedValue = String(line).substring(startIndex + 1, to: localizedIndex)
+                        if !localizedValue.isEmpty {
+                            keys.append(localizedValue)
                         }
                     }
                 }
@@ -74,7 +66,9 @@ class StringsFileParser: NSObject {
         
         let folderUrl = URL(fileURLWithPath: folder)
         var files = [String]()
-        if let enumerator = FileManager.default.enumerator(at: folderUrl, includingPropertiesForKeys: [.isRegularFileKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
+        if let enumerator = FileManager.default.enumerator(at: folderUrl,
+                                                           includingPropertiesForKeys: [.isRegularFileKey],
+                                                           options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
             for case let fileURL as URL in enumerator {
                 do {
                     let fileAttributes = try fileURL.resourceValues(forKeys: [.isRegularFileKey])
@@ -90,4 +84,3 @@ class StringsFileParser: NSObject {
         
     }
 }
-// swiftlint:enable force_unwrapping

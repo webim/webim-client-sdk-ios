@@ -1,0 +1,45 @@
+
+/* Class = "UITextField"; accessibilityLabel = "Location text field"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.accessibilityLabel" = "Campo di testo della posizione";
+
+/* Class = "UITextField"; placeholder = "mobile"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.placeholder" = "mobile";
+
+/* Class = "UITextField"; text = "mobile"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.text" = "mobile";
+
+/* Class = "UILabel"; text = "Account"; ObjectID = "N3V-0h-q3d"; */
+"N3V-0h-q3d.text" = "Account";
+
+/* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityHint" = "Salva le impostazioni correnti e mostra la schermata iniziale.";
+
+/* Class = "UIButton"; accessibilityLabel = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityLabel" = "Salva";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.normalTitle" = "Salva";
+
+/* Class = "UILabel"; text = "Location*"; ObjectID = "dMJ-Tc-E7B"; */
+"dMJ-Tc-E7B.text" = "Posizione*";
+
+/* Class = "UILabel"; text = "Account name*"; ObjectID = "fbE-AI-B9x"; */
+"fbE-AI-B9x.text" = "Nome account*";
+
+/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "ohi-9E-ylR"; */
+"ohi-9E-ylR.text" = "* La posizione non può essere vuota.";
+
+/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "pro-Zu-Qq2"; */
+"pro-Zu-Qq2.text" = "* Il nome dell'account non può essere vuoto.";
+
+/* Class = "UILabel"; text = "Authorized User"; ObjectID = "t12-07-dH3"; */
+"t12-07-dH3.text" = "Utente Autorizzato";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name text field"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.accessibilityLabel" = "Campo di testo del nome dell'account";
+
+/* Class = "UITextField"; placeholder = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.placeholder" = "wmtest";
+
+/* Class = "UITextField"; text = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.text" = "wmtest";

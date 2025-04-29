@@ -31,9 +31,11 @@ import XCTest
 class DepartmentFactoryTests: XCTestCase {
     
     // MARK: - Constants
+    
     private static let SERVER_URL_STRING = "https://demo.webim.ru"
     
     // MARK: - Properties
+    
     private let departmentFactory = DepartmentFactory(serverURLString: DepartmentFactoryTests.SERVER_URL_STRING)
     private let departmentItemDictionary = try! JSONSerialization.jsonObject(with: DEPARTMENT_ITEM_JSON_STRING.data(using: .utf8)!,
                                                                      options: []) as! [String : Any?]

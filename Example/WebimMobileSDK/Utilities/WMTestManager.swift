@@ -71,7 +71,7 @@ class WMTestManager: NSObject {
     static var testTimer: Timer?
 }
 
-//extension ChatViewController {
+// extension ChatViewController {
 //    func runRandomAction() {
 //        if WMTestManager.testDialogModeEnabled {
 //            DispatchQueue.main.async {
@@ -179,4 +179,4 @@ class WMTestManager: NSObject {
 //    private func randomMessage() -> Message? {
 //        return self.messages().randomElement()
 //    }
-//}
+// }

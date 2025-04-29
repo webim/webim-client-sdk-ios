@@ -43,6 +43,7 @@ final class WebimActionsImpl {
         case closeChat = "chat.close"
         case geoResponse = "geo_response"
         case rateOperator = "chat.operator_rate_select"
+        case resolutionSurvey = "chat.resolution_survey_select"
         case respondSentryCall = "chat.action_request.call_sentry_action_request"
         case sendMessage = "chat.message"
         case deleteMessage = "chat.delete_message"
@@ -142,6 +143,12 @@ extension WebimActionsImpl: WebimActions {
             fileSize: Int(file.count)
         )
         sendingFiles[clientSideID] = sendingFile
+        
+        let progressRequest = sendFileProgressRequest(fileSize: file.count,
+                                                      filename: filename,
+                                                      mimeType: mimeType,
+                                                      clientSideID: clientSideID,
+                                                      state: .upload)
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
                                                         primaryData: dataToPost,
                                                         messageID: clientSideID,
@@ -152,7 +159,31 @@ extension WebimActionsImpl: WebimActions {
                                                         contentType: (ContentType.multipartBody.rawValue + boundaryString),
                                                         baseURLString: urlString,
                                                         sendFileCompletionHandler: completionHandler,
-                                                        uploadFileToServerCompletionHandler: uploadFileToServerCompletionHandler))
+                                                        uploadFileToServerCompletionHandler: uploadFileToServerCompletionHandler),
+                                                        progressRequest: progressRequest)
+    }
+    
+    func sendFileProgressRequest(fileSize: Int,
+                                 filename: String,
+                                 mimeType: String,
+                                 clientSideID: String,
+                                 state: SendFileProgressState) -> WebimRequest {
+        let pageId = self.actionRequestLoop.authorizationData?.getPageID() ?? ""
+        let dataToPost = [Parameter.actionn.rawValue: Action.uploadFileProgress.rawValue,
+                          Parameter.clientSideID.rawValue: clientSideID,
+                          Parameter.fileName.rawValue: filename,
+                          Parameter.fileSize.rawValue: fileSize.description,
+                          Parameter.fileState.rawValue: state.rawValue,
+                          Parameter.pageID.rawValue: pageId] as [String: Any]
+        
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
+        
+        return WebimRequest(httpMethod: .post,
+                            primaryData: dataToPost,
+                            messageID: clientSideID,
+                            mimeType: mimeType,
+                            contentType: ContentType.urlEncoded.rawValue,
+                            baseURLString: urlString)
     }
     
     func sendFileProgress(fileSize: Int,
@@ -389,6 +420,7 @@ extension WebimActionsImpl: WebimActions {
     func rateOperatorWith(id: String?,
                           rating: Int,
                           visitorNote: String?,
+                          threadId: Int?,
                           completionHandler: RateOperatorCompletionHandler?) {
         var dataToPost = [Parameter.actionn.rawValue: Action.rateOperator.rawValue,
                           Parameter.rating.rawValue: String(rating)] as [String: Any]
@@ -399,6 +431,10 @@ extension WebimActionsImpl: WebimActions {
             dataToPost[Parameter.visitorNote.rawValue] = visitorNote
         }
         
+        if let threadId = threadId {
+            dataToPost[Parameter.threadId.rawValue] = String(threadId)
+        }
+        
         let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
         actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
@@ -406,6 +442,27 @@ extension WebimActionsImpl: WebimActions {
                                                         contentType: ContentType.urlEncoded.rawValue,
                                                         baseURLString: urlString,
                                                         rateOperatorCompletionHandler: completionHandler))
+    }
+    
+    func sendResolutionSurvey(id: String,
+                              answer: Int,
+                              threadId: Int?,
+                              completionHandler: SendResolutionCompletionHandler?) {
+        var dataToPost = [Parameter.actionn.rawValue: Action.resolutionSurvey.rawValue,
+                          Parameter.surveyAnswer.rawValue: String(answer),
+                          Parameter.operatorID.rawValue: id] as [String: Any]
+        
+        if let threadId = threadId {
+            dataToPost[Parameter.threadId.rawValue] = String(threadId)
+        }
+
+        let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
+        
+        actionRequestLoop.enqueue(request: WebimRequest(httpMethod: .post,
+                                                        primaryData: dataToPost,
+                                                        contentType: ContentType.urlEncoded.rawValue,
+                                                        baseURLString: urlString,
+                                                        sendResolutionCompletionHandler: completionHandler))
     }
     
     func respondSentryCall(id: String) {
@@ -444,8 +501,11 @@ extension WebimActionsImpl: WebimActions {
                                                         baseURLString: urlString))
     }
     
-    func setChatRead() {
-        let dataToPost = [Parameter.actionn.rawValue: Action.chatRead.rawValue] as [String: Any]
+    func setChatOrMessageRead(messageID: String?) {
+        var dataToPost = [Parameter.actionn.rawValue: Action.chatRead.rawValue] as [String: Any]
+        if let messageID = messageID {
+            dataToPost[Parameter.messageID.rawValue] = messageID
+        }
         
         let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
         
@@ -569,7 +629,7 @@ extension WebimActionsImpl: WebimActions {
     
     func closeSurvey(surveyID: String,
                      surveyCloseCompletionHandler: SurveyCloseCompletionHandler?) {
-        let dataToPost = [Parameter.actionn.rawValue: Action.surveyAnswer.rawValue,
+        let dataToPost = [Parameter.actionn.rawValue: Action.surveyCancel.rawValue,
                           Parameter.surveyID.rawValue: surveyID] as [String: Any]
 
         let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue
@@ -627,7 +687,6 @@ extension WebimActionsImpl: WebimActions {
                                                         autocompleteCompletionHandler: completion),
                                                         withAuthData: false)
     }
-
 
     func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?) {
         let urlString = actionRequestLoop.baseURL + ServerPathSuffix.getServerSideSettings.rawValue

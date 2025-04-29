@@ -55,14 +55,16 @@ class WMSettingsViewController: UIViewController {
     @IBOutlet var accountHeaderView: UIView!
     @IBOutlet var userHeaderView: UIView!
 
-    //constraints
+    // constraints
     @IBOutlet var accountNameViewHeightContsraint: NSLayoutConstraint!
     @IBOutlet var locationViewHeightContsraint: NSLayoutConstraint!
     
     // VisitorFields
     lazy var visitorFieldsManager = WMVisitorFieldsManager()
+    lazy var navigationBarUpdater = NavigationBarUpdater()
     
     // MARK: - Private Properties
+    
     var rotationDuration: TimeInterval = 0.0
     
     lazy var alertDialogHandler = UIAlertHandler(delegate: self)
@@ -85,6 +87,7 @@ class WMSettingsViewController: UIViewController {
     @IBOutlet var bottomConstraint: NSLayoutConstraint!
     
     // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         selectVisitorCell.delegate = self
@@ -92,7 +95,7 @@ class WMSettingsViewController: UIViewController {
         dataSource[.user] = [selectVisitorCell]
         
         WebimServiceController.shared.stopSession()
-        accountNameTextField.text = Settings.shared.accountName
+        accountNameTextField.text = Settings.shared.getAccountName()
         locationTextField.text = Settings.shared.location
         
         setupLabels()
@@ -127,7 +130,6 @@ class WMSettingsViewController: UIViewController {
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
             if let startViewController = navigationController.viewControllers.first as? WMStartViewController {
                 startViewController.startChatButton.isHidden = false
-                startViewController.unreadMessageCounterView.isHidden = false
             }
         }
     }
@@ -177,15 +179,7 @@ class WMSettingsViewController: UIViewController {
         let isVisitorValid = visitorFieldsManager.isSelectedVisitorValid
 
         if isAccountNameValid && islocationValid && isVisitorValid {
-            if Settings.shared.accountName != accountNameTextField.text {
-                visitorFieldsManager.updateVisitorsData()
-            }
-            saveSettings(
-                accountName: accountNameTextField.text ?? "",
-                location: locationTextField.text ?? ""
-            )
-            visitorFieldsManager.updateCurrentVisitor()
-            navigationController?.popViewController(animated: true)
+            pingAccount()
         }
         
         if !isVisitorValid {
@@ -205,6 +199,40 @@ class WMSettingsViewController: UIViewController {
         let keyboardHeight: CGFloat = view.frame.maxY - keyboardFrame.cgRectValue.minY
 
         keyboardWillStartAnimate(animationDuration: animationDuration, keyboardHeight: keyboardHeight)
+    }
+    
+    private func pingAccount() {
+        let accountName = accountNameTextField.text ?? ""
+        var url = accountName
+        if !accountName.contains("https://") {
+            url = "https://" + accountName + ".webim.ru"
+        }
+        
+        let pingManager = WebimPingManager(serverURL: url)
+
+        pingManager.sendPing { error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.alertDialogHandler.showAlertForInvalidAccountName()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.saveAndContinue()
+                }
+            }
+        }
+    }
+    
+    private func saveAndContinue() {
+        if Settings.shared.accountName != accountNameTextField.text {
+            visitorFieldsManager.updateVisitorsData()
+        }
+        saveSettings(
+            accountName: accountNameTextField.text ?? "",
+            location: locationTextField.text ?? ""
+        )
+        visitorFieldsManager.updateCurrentVisitor()
+        navigationController?.popViewController(animated: true)
     }
     
     private func validateTextField(_ textField: UITextField) -> Bool {
@@ -263,10 +291,8 @@ class WMSettingsViewController: UIViewController {
     }
 
     private func isTextContainsInvalidChar(_ currentText: String) -> Bool {
-        for currentChar in currentText {
-            if !validCharactersForTextfields.contains(currentChar) {
-                return true
-            }
+        for currentChar in currentText where !validCharactersForTextfields.contains(currentChar) {
+           return true
         }
         return false
     }
@@ -428,8 +454,9 @@ extension WMSettingsViewController: UITextFieldDelegate {
     }
 
     private func updateNavigationBar() {
-        NavigationBarUpdater.shared.update(with: .defaultStyle)
-        NavigationBarUpdater.shared.set(isNavigationBarVisible: true)
+        navigationBarUpdater.set(navigationController: navigationController)
+        navigationBarUpdater.update(with: .defaultStyle)
+        navigationBarUpdater.set(isNavigationBarVisible: true)
     }
 }
 

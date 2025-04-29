@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,8 +28,23 @@
 		607FACD81AFB9204008FA782 /* WMStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* WMStartViewController.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACEC1AFB9204008FA782 /* MessageHolderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */; };
+		900796502D65F42D00DAE7D8 /* WebimService+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906C385A2D65E2C500C8C543 /* WebimService+Delegate.swift */; };
+		900796512D65F43200DAE7D8 /* WebimService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90909A902D4A70F300975093 /* WebimService+Extension.swift */; };
+		902CA02A2D64A62F008E91FF /* WebimMobileWidget in Frameworks */ = {isa = PBXBuildFile; productRef = 902CA0292D64A62F008E91FF /* WebimMobileWidget */; };
+		902CA02C2D64A634008E91FF /* WebimMobileWidget in Frameworks */ = {isa = PBXBuildFile; productRef = 902CA02B2D64A634008E91FF /* WebimMobileWidget */; };
+		902CA02F2D64A746008E91FF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 902CA02E2D64A746008E91FF /* FirebaseAnalytics */; };
+		902CA0312D64A746008E91FF /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 902CA0302D64A746008E91FF /* FirebaseAnalyticsOnDeviceConversion */; };
+		902CA0332D64A746008E91FF /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 902CA0322D64A746008E91FF /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		902CA0352D64A746008E91FF /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 902CA0342D64A746008E91FF /* FirebaseAppCheck */; };
+		902CA0372D64A746008E91FF /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 902CA0362D64A746008E91FF /* FirebaseAppDistribution-Beta */; };
+		9046C4E02D3E899B0062E0B5 /* SelectVisitorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9046C4DF2D3E899B0062E0B5 /* SelectVisitorViewController.xib */; };
+		906C385B2D65E2D200C8C543 /* WebimService+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906C385A2D65E2C500C8C543 /* WebimService+Delegate.swift */; };
 		906CBADB28D9DC7100CE86DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906CBADD28D9DC7100CE86DF /* InfoPlist.strings */; };
 		906CBB2028DA471300CE86DF /* WMLogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906CBB2228DA471300CE86DF /* WMLogsViewController.xib */; };
+		90711C0E2D56206300B1F66C /* WebimPingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90711C0D2D56204700B1F66C /* WebimPingManager.swift */; };
+		9083A8772D3E92B0002E62F5 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9083A8762D3E92A8002E62F5 /* CustomButton.swift */; };
+		90909A8F2D4A57E100975093 /* UIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90909A8E2D4A57D800975093 /* UIWindow.swift */; };
+		90909A912D4A70FA00975093 /* WebimService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90909A902D4A70F300975093 /* WebimService+Extension.swift */; };
 		909D76CB28F54F380018E54C /* WMShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909D76CA28F54F380018E54C /* WMShareViewController.swift */; };
 		909D76D228F54F380018E54C /* WebimClientShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 909D76C828F54F380018E54C /* WebimClientShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		909D76D828F552820018E54C /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45EDDF1F95F95C00F56319 /* MimeType.swift */; };
@@ -48,10 +63,14 @@
 		90A432662BA0678800628253 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A432652BA0678800628253 /* URLRequest.swift */; };
 		90A432672BA0679D00628253 /* URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A432652BA0678800628253 /* URLRequest.swift */; };
 		90A432682BA06C1700628253 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD848902A73E2A0005CDE5A /* UIViewController.swift */; };
+		90B518CB2D367AAC00231C1C /* WMSelectAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90B518CA2D367AAC00231C1C /* WMSelectAccountViewController.xib */; };
 		90BC0495279A040B0081A75F /* WMStartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90BC0497279A040B0081A75F /* WMStartViewController.xib */; };
 		90BC04C2279A51C60081A75F /* logo_webim.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A0D8D525FF467B003AF10E /* logo_webim.png */; };
 		90C5059229B493E200FAD33D /* WMSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C5059129B493E200FAD33D /* WMSaveView.swift */; };
 		90C5059629B497F300FAD33D /* WMSaveView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90C5059529B497F300FAD33D /* WMSaveView.xib */; };
+		90CFD7CF2D367A4300ADB570 /* WMLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90CFD7CE2D367A4300ADB570 /* WMLoginViewController.xib */; };
+		90EC22912D3508840097EC16 /* WMSelectAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EC22902D3508840097EC16 /* WMSelectAccountViewController.swift */; };
+		90EC22942D35093A0097EC16 /* WMLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EC22932D35092E0097EC16 /* WMLoginViewController.swift */; };
 		90F56C9C2C4ED0F300357A6A /* ShareProgressTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90A432572B9F51A400628253 /* ShareProgressTableViewCell.xib */; };
 		90F56C9E2C4ED1E600357A6A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F56C9D2C4ED1E600357A6A /* Extensions.swift */; };
 		BE17D41E285B7DCD00DB606D /* WMLogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE17D41C285B7DCD00DB606D /* WMLogsViewController.swift */; };
@@ -92,7 +111,6 @@
 		CC9BD1A829F797C900DAF0CC /* WMVisitorFieldsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9BD1A729F797C900DAF0CC /* WMVisitorFieldsManager.swift */; };
 		CC9BD1AA29F7989600DAF0CC /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9BD1A929F7989600DAF0CC /* UserDefaultsManager.swift */; };
 		CCB7EC2929F6768C003E3C0B /* SelectVisitorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB7EC2729F6768C003E3C0B /* SelectVisitorViewController.swift */; };
-		CCB7EC2A29F6768C003E3C0B /* SelectVisitorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCB7EC2829F6768C003E3C0B /* SelectVisitorViewController.xib */; };
 		CCD848922A73E2A0005CDE5A /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD848902A73E2A0005CDE5A /* UIViewController.swift */; };
 		CCD848932A73E2A0005CDE5A /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD848912A73E2A0005CDE5A /* UIView.swift */; };
 		CCEEB4F129F66A4D000923DF /* SelectVisitorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEEB4EF29F66A4D000923DF /* SelectVisitorTableViewCell.swift */; };
@@ -160,9 +178,7 @@
 		DDC7924623573CFF00AF424F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDC7924823573CFF00AF424F /* LaunchScreen.storyboard */; };
 		DDCC52582356333400D39F8A /* ImageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCC52572356333400D39F8A /* ImageConstants.swift */; };
 		DDCC525A2356360F00D39F8A /* ColourConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCC52592356360F00D39F8A /* ColourConstants.swift */; };
-		DDCF0821AB2A6131C8917358 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA97A57A2CABAE3333F729F /* Pods_WebimMobileSDK_Example_WebimClientShare.framework */; };
 		F22E2E5217BCBA11F9A8D6BD /* Pods_WebimMobileSDK_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F92C486FA5262A337DD867 /* Pods_WebimMobileSDK_Tests.framework */; };
-		F787C9DCFD38DB35FDF830B1 /* Pods_WebimMobileSDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6173D665D0C02E615C30F0DD /* Pods_WebimMobileSDK_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -206,13 +222,41 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08EF987CCABD336CB294220E /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example-WebimClientShare/Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig"; sourceTree = "<group>"; };
+		115A27EE2D790B890069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		115A27EF2D790B890069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		115A27F02D790B890069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		115A27F12D790B890069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
+		115A27F22D790B890069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
+		115A27F32D790B8A0069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		115A27F42D790B8A0069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
+		115A27F52D790B8A0069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		115A27F62D790B8A0069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		115A27F72D790B8A0069BC00 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		115A27F82D790B960069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		115A27F92D790B960069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		115A27FA2D790B960069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		115A27FB2D790B970069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
+		115A27FC2D790B970069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
+		115A27FD2D790B970069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		115A27FE2D790B970069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
+		115A27FF2D790B970069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		115A28002D790B970069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		115A28012D790B980069BC00 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		115A28022D790BA50069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		115A28032D790BA50069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		115A28042D790BA60069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		115A28052D790BA60069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
+		115A28062D790BA60069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
+		115A28072D790BA60069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		115A28082D790BA70069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
+		115A28092D790BA70069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = it; path = it.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		115A280A2D790BA70069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		115A280B2D790BA70069BC00 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		11C0FDF12BC9415600A771EE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		11EFE7D2231AC33500B64EFA /* FAQ methods documentation.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "FAQ methods documentation.md"; sourceTree = "<group>"; };
 		122DD62027918C0700093609 /* UINavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		1239B896277F0E2E00D0CC2E /* WMSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSettingsViewController.swift; sourceTree = "<group>"; };
 		1239B89A277F189200D0CC2E /* WMSettingsViewController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WMSettingsViewController+UITableView.swift"; sourceTree = "<group>"; };
-		1252F7A725E5F2BD00F16DBB /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		12620C6F260C0DBF00F6E397 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1268F4F325E917BB00AA6F5D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		1278071B261400380080B46B /* Localizer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Localizer; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,13 +284,26 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* MessageHolderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHolderTests.swift; sourceTree = "<group>"; };
 		6173D665D0C02E615C30F0DD /* Pods_WebimMobileSDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebimMobileSDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		832A61587957BD696F7D9267 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example-WebimClientShare/Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig"; sourceTree = "<group>"; };
+		9046C4DE2D3E899B0062E0B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SelectVisitorViewController.xib; sourceTree = "<group>"; };
+		9046C4E22D3E899D0062E0B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		906C385A2D65E2C500C8C543 /* WebimService+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebimService+Delegate.swift"; sourceTree = "<group>"; };
 		906CBADC28D9DC7100CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		906CBADE28D9DC7E00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		906CBB2128DA471300CE86DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMLogsViewController.xib; sourceTree = "<group>"; };
 		906CBB2728DA471C00CE86DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
 		906CBB2928DA471C00CE86DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
+		90711C0D2D56204700B1F66C /* WebimPingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimPingManager.swift; sourceTree = "<group>"; };
 		9083159427F1AC2400774EE0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
+		9083A8692D3E89B3002E62F5 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		9083A86B2D3E89B4002E62F5 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		9083A86D2D3E89B4002E62F5 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		9083A86F2D3E89B5002E62F5 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		9083A8712D3E89B6002E62F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		9083A8732D3E89B7002E62F5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SelectVisitorViewController.strings; sourceTree = "<group>"; };
+		9083A8752D3E89B8002E62F5 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/SelectVisitorViewController.strings"; sourceTree = "<group>"; };
+		9083A8762D3E92A8002E62F5 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		90909A8E2D4A57D800975093 /* UIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindow.swift; sourceTree = "<group>"; };
+		90909A902D4A70F300975093 /* WebimService+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebimService+Extension.swift"; sourceTree = "<group>"; };
 		909D76C828F54F380018E54C /* WebimClientShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WebimClientShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		909D76CA28F54F380018E54C /* WMShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMShareViewController.swift; sourceTree = "<group>"; };
 		909D76CF28F54F380018E54C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -258,55 +315,77 @@
 		90A4325D2B9F529D00628253 /* WMShareProgressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WMShareProgressViewController.xib; sourceTree = "<group>"; };
 		90A432612B9F54B100628253 /* SendFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFileManager.swift; sourceTree = "<group>"; };
 		90A432652BA0678800628253 /* URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequest.swift; sourceTree = "<group>"; };
+		90A9AE752D367A64005E9A92 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		90A9AE772D367A65005E9A92 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		90B518C92D367AAC00231C1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMSelectAccountViewController.xib; sourceTree = "<group>"; };
+		90B518CD2D367AAE00231C1C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		90B518D52D367AB100231C1C /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		90B518D72D367AB200231C1C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
 		90BC0496279A040B0081A75F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMStartViewController.xib; sourceTree = "<group>"; };
 		90BC0499279A045F0081A75F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
 		90BC049B279A045F0081A75F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
 		90C5059129B493E200FAD33D /* WMSaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSaveView.swift; sourceTree = "<group>"; };
 		90C5059529B497F300FAD33D /* WMSaveView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WMSaveView.xib; sourceTree = "<group>"; };
+		90CFD7CD2D367A4300ADB570 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/WMLoginViewController.xib; sourceTree = "<group>"; };
+		90CFD7D12D367A4700ADB570 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		90CFD7D32D367A4700ADB570 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		90CFD7D52D367A4800ADB570 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
 		90DC10E62AF3D3AA00438D98 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
 		90DC10E72AF3D3AA00438D98 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
 		90DC10E82AF3D3AA00438D98 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
 		90DC10E92AF3D3AA00438D98 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ar; path = ar.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		90DC10EA2AF3D3AA00438D98 /* ar */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ar; path = ar.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		90DC10EB2AF3D3AB00438D98 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90DC10EC2AF3D3AB00438D98 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		90DC10ED2AF3D3C300438D98 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
 		90DC10EE2AF3D3C300438D98 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
 		90DC10EF2AF3D3C300438D98 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
 		90DC10F02AF3D3C300438D98 /* he */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = he; path = he.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		90DC10F12AF3D3C400438D98 /* he */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = he; path = he.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		90DC10F22AF3D3C400438D98 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90DC10F32AF3D3C400438D98 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
 		90DC10F42AF3D3DB00438D98 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
 		90DC10F52AF3D3DB00438D98 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
 		90DC10F62AF3D3DB00438D98 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
 		90DC10F72AF3D3DC00438D98 /* bg */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = bg; path = bg.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		90DC10F82AF3D3DC00438D98 /* bg */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = bg; path = bg.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		90DC10F92AF3D3DC00438D98 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90DC10FA2AF3D3DC00438D98 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
 		90DC10FB2AF3D3F700438D98 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/WMLogsViewController.strings"; sourceTree = "<group>"; };
 		90DC10FC2AF3D3F800438D98 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/WMStartViewController.strings"; sourceTree = "<group>"; };
 		90DC10FD2AF3D3F800438D98 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/WMSettingsViewController.strings"; sourceTree = "<group>"; };
 		90DC10FE2AF3D3F800438D98 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "uk-UA"; path = "uk-UA.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
-		90DC10FF2AF3D3F800438D98 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "uk-UA"; path = "uk-UA.lproj/LaunchScreenController.storyboard"; sourceTree = "<group>"; };
 		90DC11002AF3D3F800438D98 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		90DC11012AF3D3F800438D98 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		90DC11022AF3D40800438D98 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
 		90DC11032AF3D40900438D98 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
 		90DC11042AF3D40900438D98 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
 		90DC11052AF3D40900438D98 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		90DC11062AF3D40900438D98 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		90DC11072AF3D40900438D98 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90DC11082AF3D40900438D98 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		90DC11092AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/WMLogsViewController.strings; sourceTree = "<group>"; };
 		90DC110A2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/WMStartViewController.strings; sourceTree = "<group>"; };
 		90DC110B2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/WMSettingsViewController.strings; sourceTree = "<group>"; };
 		90DC110C2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = pt; path = pt.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		90DC110D2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = pt; path = pt.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		90DC110E2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		90DC110F2AF3D41C00438D98 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		90E21BA02D3E51D8003191E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
+		90E21BA12D3E51E0003191E8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		90E21BA22D3E51E3003191E8 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		90E21BA32D3E51E9003191E8 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		90E21BA42D3E51ED003191E8 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		90E21BA52D3E51F2003191E8 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		90E21BA62D3E51F8003191E8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		90E21BA72D3E5203003191E8 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/LaunchScreenController.strings"; sourceTree = "<group>"; };
+		90E21BA92D3E520C003191E8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreenController.strings; sourceTree = "<group>"; };
+		90E21BAB2D3E5759003191E8 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		90E21BAD2D3E575A003191E8 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		90E21BAF2D3E575B003191E8 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		90E21BB12D3E575C003191E8 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WMSelectAccountViewController.strings; sourceTree = "<group>"; };
+		90E21BB32D3E575E003191E8 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/WMSelectAccountViewController.strings"; sourceTree = "<group>"; };
+		90E21BB52D3E577B003191E8 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		90E21BB72D3E577C003191E8 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/WMLoginViewController.strings; sourceTree = "<group>"; };
+		90E21BB92D3E577D003191E8 /* uk-UA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "uk-UA"; path = "uk-UA.lproj/WMLoginViewController.strings"; sourceTree = "<group>"; };
+		90EC22902D3508840097EC16 /* WMSelectAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSelectAccountViewController.swift; sourceTree = "<group>"; };
+		90EC22932D35092E0097EC16 /* WMLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMLoginViewController.swift; sourceTree = "<group>"; };
 		90F56C9D2C4ED1E600357A6A /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		A89133BECF3D2A05742A161C /* Pods-WebimMobileSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Tests/Pods-WebimMobileSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		AB52E1C1E0F009A386DC1C6C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		BE17D41C285B7DCD00DB606D /* WMLogsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMLogsViewController.swift; sourceTree = "<group>"; };
 		BE24022828B4BA4700697F21 /* FAQActionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQActionsTests.swift; sourceTree = "<group>"; };
@@ -339,14 +418,13 @@
 		BEFFCF6E28C0CA0C00B886AC /* WebimClientBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimClientBuilderTests.swift; sourceTree = "<group>"; };
 		BEFFCF7028C0D75D00B886AC /* WebimNotFatalErrorImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimNotFatalErrorImpl.swift; sourceTree = "<group>"; };
 		BEFFCF7228C0D88C00B886AC /* WebimRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimRequestTests.swift; sourceTree = "<group>"; };
-		C4CD65CA48F80B5A4AD826B3 /* WebimMobileSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimMobileSDK.podspec; path = ../WebimMobileSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C4CD65CA48F80B5A4AD826B3 /* WebimMobileSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = WebimMobileSDK.podspec; path = ../WebimMobileSDK.podspec; sourceTree = "<group>"; };
 		CC1F8E9E2A13A77E002494E1 /* DemoVisitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoVisitor.swift; sourceTree = "<group>"; };
 		CC529D2E29EFF57300295C4A /* WMVisitorFieldsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMVisitorFieldsParser.swift; sourceTree = "<group>"; };
 		CC93530B2A011CA300C7B59F /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		CC9BD1A729F797C900DAF0CC /* WMVisitorFieldsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMVisitorFieldsManager.swift; sourceTree = "<group>"; };
 		CC9BD1A929F7989600DAF0CC /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		CCB7EC2729F6768C003E3C0B /* SelectVisitorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectVisitorViewController.swift; sourceTree = "<group>"; };
-		CCB7EC2829F6768C003E3C0B /* SelectVisitorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectVisitorViewController.xib; sourceTree = "<group>"; };
 		CCD848902A73E2A0005CDE5A /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		CCD848912A73E2A0005CDE5A /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		CCEEB4EF29F66A4D000923DF /* SelectVisitorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectVisitorTableViewCell.swift; sourceTree = "<group>"; };
@@ -425,13 +503,9 @@
 		DD71AD04234DAFDC00A32FB6 /* UIAlertHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertHandler.swift; sourceTree = "<group>"; };
 		DD8A8D2C232A3E200011D275 /* LaunchScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenController.swift; sourceTree = "<group>"; };
 		DDC7924B23573D8700AF424F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		DDC7924C23573D9300AF424F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreenController.storyboard; sourceTree = "<group>"; };
 		DDCC52572356333400D39F8A /* ImageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConstants.swift; sourceTree = "<group>"; };
 		DDCC52592356360F00D39F8A /* ColourConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourConstants.swift; sourceTree = "<group>"; };
-		E7677A9313FBC0C91D073A75 /* Pods-WebimMobileSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Tests/Pods-WebimMobileSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		EB8C258A78F3730770936414 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		F6C4511557995D99EA2FB9F8 /* Pods-WebimMobileSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
-		F977A2214FA33837D47DAE8F /* Pods-WebimMobileSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebimMobileSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -446,7 +520,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F787C9DCFD38DB35FDF830B1 /* Pods_WebimMobileSDK_Example.framework in Frameworks */,
+				902CA02F2D64A746008E91FF /* FirebaseAnalytics in Frameworks */,
+				902CA0312D64A746008E91FF /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				902CA02A2D64A62F008E91FF /* WebimMobileWidget in Frameworks */,
+				902CA0352D64A746008E91FF /* FirebaseAppCheck in Frameworks */,
+				902CA0332D64A746008E91FF /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				902CA0372D64A746008E91FF /* FirebaseAppDistribution-Beta in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,11 +537,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		909D76C528F54F380018E54C /* Frameworks */ = {
+		902CA0122D649F5D008E91FF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDCF0821AB2A6131C8917358 /* Pods_WebimMobileSDK_Example_WebimClientShare.framework in Frameworks */,
+				902CA02C2D64A634008E91FF /* WebimMobileWidget in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,6 +564,8 @@
 		127F7850264A78790084836E /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				90EC22922D3509190097EC16 /* WMLoginViewController */,
+				90EC228D2D3508420097EC16 /* WMSelectAccountViewController */,
 				BE17D417285B7D7E00DB606D /* WMLogsViewController */,
 				90BC04832796F4BE0081A75F /* WMStartViewController */,
 				CCB7EC2629F67673003E3C0B /* SelectVisitorViewController */,
@@ -497,6 +578,7 @@
 		127F7854264A78840084836E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				90909A8E2D4A57D800975093 /* UIWindow.swift */,
 				CCD848912A73E2A0005CDE5A /* UIView.swift */,
 				CCD848902A73E2A0005CDE5A /* UIViewController.swift */,
 				122DD62027918C0700093609 /* UINavigationController.swift */,
@@ -528,27 +610,6 @@
 			path = SettingsViewController;
 			sourceTree = "<group>";
 		};
-		12A45C2626023BBD004B077F /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				1252F7A725E5F2BD00F16DBB /* UITextView.swift */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F977A2214FA33837D47DAE8F /* Pods-WebimMobileSDK_Example.debug.xcconfig */,
-				F6C4511557995D99EA2FB9F8 /* Pods-WebimMobileSDK_Example.release.xcconfig */,
-				08EF987CCABD336CB294220E /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */,
-				832A61587957BD696F7D9267 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */,
-				A89133BECF3D2A05742A161C /* Pods-WebimMobileSDK_Tests.debug.xcconfig */,
-				E7677A9313FBC0C91D073A75 /* Pods-WebimMobileSDK_Tests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -562,8 +623,6 @@
 				1278071C261400380080B46B /* Localizer */,
 				909D76C928F54F380018E54C /* WebimClientShare */,
 				607FACD11AFB9204008FA782 /* Products */,
-				3C3DB6CF3A0FDD8E0CD44FD9 /* Pods */,
-				12A45C2626023BBD004B077F /* Recovered References */,
 				DBF187A1B4EC4E3E80CF1178 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -703,6 +762,17 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		906C385C2D65E2FC00C8C543 /* WebimService */ = {
+			isa = PBXGroup;
+			children = (
+				1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */,
+				CE591A421FC2F31E004C95EE /* WebimService.swift */,
+				90909A902D4A70F300975093 /* WebimService+Extension.swift */,
+				906C385A2D65E2C500C8C543 /* WebimService+Delegate.swift */,
+			);
+			path = WebimService;
+			sourceTree = "<group>";
+		};
 		909D76C928F54F380018E54C /* WebimClientShare */ = {
 			isa = PBXGroup;
 			children = (
@@ -747,6 +817,24 @@
 			path = WMStartViewController;
 			sourceTree = "<group>";
 		};
+		90EC228D2D3508420097EC16 /* WMSelectAccountViewController */ = {
+			isa = PBXGroup;
+			children = (
+				90B518CA2D367AAC00231C1C /* WMSelectAccountViewController.xib */,
+				90EC22902D3508840097EC16 /* WMSelectAccountViewController.swift */,
+			);
+			path = WMSelectAccountViewController;
+			sourceTree = "<group>";
+		};
+		90EC22922D3509190097EC16 /* WMLoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				90EC22932D35092E0097EC16 /* WMLoginViewController.swift */,
+				90CFD7CE2D367A4300ADB570 /* WMLoginViewController.xib */,
+			);
+			path = WMLoginViewController;
+			sourceTree = "<group>";
+		};
 		BE17D417285B7D7E00DB606D /* WMLogsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -769,7 +857,7 @@
 			isa = PBXGroup;
 			children = (
 				CCB7EC2729F6768C003E3C0B /* SelectVisitorViewController.swift */,
-				CCB7EC2829F6768C003E3C0B /* SelectVisitorViewController.xib */,
+				9046C4DF2D3E899B0062E0B5 /* SelectVisitorViewController.xib */,
 			);
 			path = SelectVisitorViewController;
 			sourceTree = "<group>";
@@ -805,6 +893,7 @@
 		CE45EDDE1F95F94200F56319 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				9083A8762D3E92A8002E62F5 /* CustomButton.swift */,
 				CC1F8E9E2A13A77E002494E1 /* DemoVisitor.swift */,
 				CE45EDDF1F95F95C00F56319 /* MimeType.swift */,
 				127D2AEB26E6018100FD60DF /* WMTestManager.swift */,
@@ -854,9 +943,9 @@
 		CEC2787A2031A0110043899C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CE591A421FC2F31E004C95EE /* WebimService.swift */,
+				906C385C2D65E2FC00C8C543 /* WebimService */,
+				90711C0D2D56204700B1F66C /* WebimPingManager.swift */,
 				DD71AD04234DAFDC00A32FB6 /* UIAlertHandler.swift */,
-				1295C6AE2602BB5200F7BE80 /* WebimServiceController.swift */,
 				CE88BCD21FCD88EA00A4FA2E /* Settings.swift */,
 				BE385E0B286EB8FA00BCEB7A /* NavigationBarUpdater.swift */,
 				BE868AAC29B1CFAB00B77BDD /* ExternalWidgetBuilder.swift */,
@@ -916,15 +1005,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "WebimMobileSDK_Example" */;
 			buildPhases = (
-				34E8460D11FB0EC00615B957 /* [CP] Check Pods Manifest.lock */,
-				8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */,
-				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
+				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				909D76D328F54F380018E54C /* Embed Foundation Extensions */,
 				129C626425E83D60009D4328 /* ShellScript */,
-				BE8775A141F6564CD64C643A /* [CP] Embed Pods Frameworks */,
-				90A3704C2A1BDE9D000CC592 /* Upload DSYM */,
 			);
 			buildRules = (
 			);
@@ -959,10 +1044,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 909D76D628F54F380018E54C /* Build configuration list for PBXNativeTarget "WebimClientShare" */;
 			buildPhases = (
-				A22AF9CB0950E4D3D2C5A478 /* [CP] Check Pods Manifest.lock */,
 				909D76C428F54F380018E54C /* Sources */,
-				909D76C528F54F380018E54C /* Frameworks */,
 				909D76C628F54F380018E54C /* Resources */,
+				902CA0122D649F5D008E91FF /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1012,7 +1096,7 @@
 				};
 			};
 			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "WebimMobileSDK" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1025,8 +1109,15 @@
 				"uk-UA",
 				es,
 				pt,
+				de,
+				fr,
+				it,
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
+			packageReferences = (
+				902CA0282D64A604008E91FF /* XCLocalSwiftPackageReference "../../webim-mobile-ui-ios" */,
+				902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1050,13 +1141,15 @@
 				906CBB2028DA471300CE86DF /* WMLogsViewController.xib in Resources */,
 				DDC7924623573CFF00AF424F /* LaunchScreen.storyboard in Resources */,
 				DDC7924123573CB500AF424F /* LaunchScreenController.storyboard in Resources */,
+				90CFD7CF2D367A4300ADB570 /* WMLoginViewController.xib in Resources */,
 				CCEEB4F229F66A4D000923DF /* SelectVisitorTableViewCell.xib in Resources */,
 				12887177269D8DCA0080159A /* Localizable.strings in Resources */,
 				11C0FDF22BC9415600A771EE /* PrivacyInfo.xcprivacy in Resources */,
 				12ADB880278D753900EC2B1F /* WMSettingsViewController.xib in Resources */,
+				90B518CB2D367AAC00231C1C /* WMSelectAccountViewController.xib in Resources */,
 				90BC04C2279A51C60081A75F /* logo_webim.png in Resources */,
 				90BC0495279A040B0081A75F /* WMStartViewController.xib in Resources */,
-				CCB7EC2A29F6768C003E3C0B /* SelectVisitorViewController.xib in Resources */,
+				9046C4E02D3E899B0062E0B5 /* SelectVisitorViewController.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1098,29 +1191,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\n#else\n  #echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		34E8460D11FB0EC00615B957 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WebimMobileSDK_Example-WebimClientShare-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		5AA293043EE48503F61D82A7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1142,114 +1213,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8CC584B88D331C1B48D729CB /* [Amimono] Create filelist per architecture */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[Amimono] Create filelist per architecture";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "declare -a DEPENDENCIES=('Cosmos' 'PopupDialog' 'SQLite.swift' 'SlackTextViewController' 'SnapKit' 'WebimClientLibrary');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
-		};
-		90A3704C2A1BDE9D000CC592 /* Upload DSYM */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Upload DSYM";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"Symbols Directory\"\necho \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n\n\"${PODS_ROOT}/FirebaseCrashlytics/upload-symbols\" -gsp \"${PROJECT_DIR}/WebimMobileSDK/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\n";
-		};
-		A22AF9CB0950E4D3D2C5A478 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WebimMobileSDK_Example-WebimClientShare-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BE8775A141F6564CD64C643A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
-				"${BUILT_PRODUCTS_DIR}/FirebaseSessions/FirebaseSessions.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/Nuke/Nuke.framework",
-				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
-				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
-				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/WebimKeyboard/WebimKeyboard.framework",
-				"${BUILT_PRODUCTS_DIR}/WebimMobileSDK/WebimMobileSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/WebimMobileWidget/WebimMobileWidget.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreExtension.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseSessions.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nuke.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebimKeyboard.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebimMobileSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebimMobileWidget.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WebimMobileSDK_Example/Pods-WebimMobileSDK_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1274,6 +1237,7 @@
 			files = (
 				CE591A431FC2F31E004C95EE /* WebimService.swift in Sources */,
 				DD71AD05234DAFDC00A32FB6 /* UIAlertHandler.swift in Sources */,
+				90711C0E2D56206300B1F66C /* WebimPingManager.swift in Sources */,
 				CEBFB67F2018CB0F00D9E5F6 /* String.swift in Sources */,
 				CCB7EC2929F6768C003E3C0B /* SelectVisitorViewController.swift in Sources */,
 				DDCC52582356333400D39F8A /* ImageConstants.swift in Sources */,
@@ -1288,10 +1252,12 @@
 				CCEEB4F429F66ECF000923DF /* WMSettingsViewController+SelectUser.swift in Sources */,
 				CCD848932A73E2A0005CDE5A /* UIView.swift in Sources */,
 				BE17D41E285B7DCD00DB606D /* WMLogsViewController.swift in Sources */,
+				906C385B2D65E2D200C8C543 /* WebimService+Delegate.swift in Sources */,
 				CCD848922A73E2A0005CDE5A /* UIViewController.swift in Sources */,
 				DD8A8D2D232A3E200011D275 /* LaunchScreenController.swift in Sources */,
 				CC93530C2A011CA300C7B59F /* Parser.swift in Sources */,
 				1295C6AF2602BB5200F7BE80 /* WebimServiceController.swift in Sources */,
+				9083A8772D3E92B0002E62F5 /* CustomButton.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				CCF69DAC2A14ABA800E1FBA8 /* NetworkManager.swift in Sources */,
 				BE385E0C286EB8FA00BCEB7A /* NavigationBarUpdater.swift in Sources */,
@@ -1301,9 +1267,13 @@
 				BE868AAD29B1CFAB00B77BDD /* ExternalWidgetBuilder.swift in Sources */,
 				CC9BD1AA29F7989600DAF0CC /* UserDefaultsManager.swift in Sources */,
 				CC9BD1A829F797C900DAF0CC /* WMVisitorFieldsManager.swift in Sources */,
+				90909A8F2D4A57E100975093 /* UIWindow.swift in Sources */,
 				90A432662BA0678800628253 /* URLRequest.swift in Sources */,
+				90EC22912D3508840097EC16 /* WMSelectAccountViewController.swift in Sources */,
+				90909A912D4A70FA00975093 /* WebimService+Extension.swift in Sources */,
 				CCF69DAE2A14C9B400E1FBA8 /* NetworkUtils.swift in Sources */,
 				1239B89B277F189200D0CC2E /* WMSettingsViewController+UITableView.swift in Sources */,
+				90EC22942D35093A0097EC16 /* WMLoginViewController.swift in Sources */,
 				122DD62127918C0700093609 /* UINavigationController.swift in Sources */,
 				1239B898277F0E2E00D0CC2E /* WMSettingsViewController.swift in Sources */,
 				12925813278BF98D003C3BB2 /* WMSettingsViewController+Setup.swift in Sources */,
@@ -1399,6 +1369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90A432682BA06C1700628253 /* UIViewController.swift in Sources */,
+				900796502D65F42D00DAE7D8 /* WebimService+Delegate.swift in Sources */,
 				909D76DD28F56B000018E54C /* Settings.swift in Sources */,
 				909D76DA28F55BEA0018E54C /* String.swift in Sources */,
 				90A432632BA05BD900628253 /* ColourConstants.swift in Sources */,
@@ -1412,6 +1383,7 @@
 				909D76D828F552820018E54C /* MimeType.swift in Sources */,
 				90A4325A2B9F522600628253 /* CircleProgressIndicator.swift in Sources */,
 				CC5E2B022A8A377E001EEC27 /* WebimServiceController.swift in Sources */,
+				900796512D65F43200DAE7D8 /* WebimService+Extension.swift in Sources */,
 				90A4325C2B9F527500628253 /* WMShareProgressViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1444,8 +1416,30 @@
 				90DC10FD2AF3D3F800438D98 /* uk-UA */,
 				90DC11042AF3D40900438D98 /* es */,
 				90DC110B2AF3D41C00438D98 /* pt */,
+				115A27F42D790B8A0069BC00 /* de */,
+				115A27FE2D790B970069BC00 /* fr */,
+				115A28082D790BA70069BC00 /* it */,
 			);
 			name = WMSettingsViewController.xib;
+			sourceTree = "<group>";
+		};
+		9046C4DF2D3E899B0062E0B5 /* SelectVisitorViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9046C4DE2D3E899B0062E0B5 /* Base */,
+				9046C4E22D3E899D0062E0B5 /* en */,
+				9083A8692D3E89B3002E62F5 /* ar */,
+				9083A86B2D3E89B4002E62F5 /* bg */,
+				9083A86D2D3E89B4002E62F5 /* he */,
+				9083A86F2D3E89B5002E62F5 /* pt */,
+				9083A8712D3E89B6002E62F5 /* ru */,
+				9083A8732D3E89B7002E62F5 /* es */,
+				9083A8752D3E89B8002E62F5 /* uk-UA */,
+				115A27F32D790B8A0069BC00 /* de */,
+				115A27FD2D790B970069BC00 /* fr */,
+				115A28072D790BA60069BC00 /* it */,
+			);
+			name = SelectVisitorViewController.xib;
 			sourceTree = "<group>";
 		};
 		906CBADD28D9DC7100CE86DF /* InfoPlist.strings */ = {
@@ -1459,6 +1453,9 @@
 				90DC11002AF3D3F800438D98 /* uk-UA */,
 				90DC11072AF3D40900438D98 /* es */,
 				90DC110E2AF3D41C00438D98 /* pt */,
+				115A27F62D790B8A0069BC00 /* de */,
+				115A28002D790B970069BC00 /* fr */,
+				115A280A2D790BA70069BC00 /* it */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1475,8 +1472,30 @@
 				90DC10FB2AF3D3F700438D98 /* uk-UA */,
 				90DC11022AF3D40800438D98 /* es */,
 				90DC11092AF3D41C00438D98 /* pt */,
+				115A27F12D790B890069BC00 /* de */,
+				115A27FB2D790B970069BC00 /* fr */,
+				115A28052D790BA60069BC00 /* it */,
 			);
 			name = WMLogsViewController.xib;
+			sourceTree = "<group>";
+		};
+		90B518CA2D367AAC00231C1C /* WMSelectAccountViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				90B518C92D367AAC00231C1C /* Base */,
+				90B518CD2D367AAE00231C1C /* en */,
+				90B518D52D367AB100231C1C /* pt */,
+				90B518D72D367AB200231C1C /* ru */,
+				90E21BAB2D3E5759003191E8 /* ar */,
+				90E21BAD2D3E575A003191E8 /* bg */,
+				90E21BAF2D3E575B003191E8 /* he */,
+				90E21BB12D3E575C003191E8 /* es */,
+				90E21BB32D3E575E003191E8 /* uk-UA */,
+				115A27F02D790B890069BC00 /* de */,
+				115A27FA2D790B960069BC00 /* fr */,
+				115A28042D790BA60069BC00 /* it */,
+			);
+			name = WMSelectAccountViewController.xib;
 			sourceTree = "<group>";
 		};
 		90BC0497279A040B0081A75F /* WMStartViewController.xib */ = {
@@ -1491,8 +1510,30 @@
 				90DC10FC2AF3D3F800438D98 /* uk-UA */,
 				90DC11032AF3D40900438D98 /* es */,
 				90DC110A2AF3D41C00438D98 /* pt */,
+				115A27F22D790B890069BC00 /* de */,
+				115A27FC2D790B970069BC00 /* fr */,
+				115A28062D790BA60069BC00 /* it */,
 			);
 			name = WMStartViewController.xib;
+			sourceTree = "<group>";
+		};
+		90CFD7CE2D367A4300ADB570 /* WMLoginViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				90CFD7CD2D367A4300ADB570 /* Base */,
+				90CFD7D12D367A4700ADB570 /* en */,
+				90CFD7D32D367A4700ADB570 /* ar */,
+				90CFD7D52D367A4800ADB570 /* bg */,
+				90A9AE752D367A64005E9A92 /* pt */,
+				90A9AE772D367A65005E9A92 /* ru */,
+				90E21BB52D3E577B003191E8 /* he */,
+				90E21BB72D3E577C003191E8 /* es */,
+				90E21BB92D3E577D003191E8 /* uk-UA */,
+				115A27EF2D790B890069BC00 /* de */,
+				115A27F92D790B960069BC00 /* fr */,
+				115A28032D790BA50069BC00 /* it */,
+			);
+			name = WMLoginViewController.xib;
 			sourceTree = "<group>";
 		};
 		CE5A03BC1FDEB756009D320A /* Localizable.strings */ = {
@@ -1507,6 +1548,9 @@
 				90DC11012AF3D3F800438D98 /* uk-UA */,
 				90DC11082AF3D40900438D98 /* es */,
 				90DC110F2AF3D41C00438D98 /* pt */,
+				115A27F72D790B8A0069BC00 /* de */,
+				115A28012D790B980069BC00 /* fr */,
+				115A280B2D790BA70069BC00 /* it */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1514,13 +1558,18 @@
 		DDC7924323573CB500AF424F /* LaunchScreenController.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DDC7924C23573D9300AF424F /* en */,
-				90DC10EA2AF3D3AA00438D98 /* ar */,
-				90DC10F12AF3D3C400438D98 /* he */,
-				90DC10F82AF3D3DC00438D98 /* bg */,
-				90DC10FF2AF3D3F800438D98 /* uk-UA */,
-				90DC11062AF3D40900438D98 /* es */,
-				90DC110D2AF3D41C00438D98 /* pt */,
+				90E21BA02D3E51D8003191E8 /* Base */,
+				90E21BA12D3E51E0003191E8 /* en */,
+				90E21BA22D3E51E3003191E8 /* ar */,
+				90E21BA32D3E51E9003191E8 /* bg */,
+				90E21BA42D3E51ED003191E8 /* he */,
+				90E21BA52D3E51F2003191E8 /* es */,
+				90E21BA62D3E51F8003191E8 /* pt */,
+				90E21BA72D3E5203003191E8 /* uk-UA */,
+				90E21BA92D3E520C003191E8 /* ru */,
+				115A27EE2D790B890069BC00 /* de */,
+				115A27F82D790B960069BC00 /* fr */,
+				115A28022D790BA50069BC00 /* it */,
 			);
 			name = LaunchScreenController.storyboard;
 			sourceTree = "<group>";
@@ -1535,6 +1584,9 @@
 				90DC10FE2AF3D3F800438D98 /* uk-UA */,
 				90DC11052AF3D40900438D98 /* es */,
 				90DC110C2AF3D41C00438D98 /* pt */,
+				115A27F52D790B8A0069BC00 /* de */,
+				115A27FF2D790B970069BC00 /* fr */,
+				115A28092D790BA70069BC00 /* it */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1692,7 +1744,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1700,7 +1753,6 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F977A2214FA33837D47DAE8F /* Pods-WebimMobileSDK_Example.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1710,11 +1762,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = 574GE9X9L7;
-				FRAMEWORK_SEARCH_PATHS = " $(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = WebimMobileSDK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 4.0.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 4.0.8;
 				MODULE_NAME = ExampleApp;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -warn-long-expression-type-checking=400 -Xfrontend -warn-long-function-bodies=400 -Onone";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client";
@@ -1729,7 +1784,6 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6C4511557995D99EA2FB9F8 /* Pods-WebimMobileSDK_Example.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1739,11 +1793,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = 574GE9X9L7;
-				FRAMEWORK_SEARCH_PATHS = " $(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = WebimMobileSDK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 4.0.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 4.0.8;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1757,7 +1814,6 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A89133BECF3D2A05742A161C /* Pods-WebimMobileSDK_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1768,7 +1824,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1779,13 +1839,16 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7677A9313FBC0C91D073A75 /* Pods-WebimMobileSDK_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1796,7 +1859,6 @@
 		};
 		909D76D428F54F380018E54C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 08EF987CCABD336CB294220E /* Pods-WebimMobileSDK_Example-WebimClientShare.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1825,7 +1887,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = WebimClientShare;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Webim. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1841,7 +1907,6 @@
 		};
 		909D76D528F54F380018E54C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 832A61587957BD696F7D9267 /* Pods-WebimMobileSDK_Example-WebimClientShare.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1869,7 +1934,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = WebimClientShare;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Webim. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client.WebimClientShare";
@@ -1930,6 +1999,62 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		902CA0282D64A604008E91FF /* XCLocalSwiftPackageReference "../../webim-mobile-ui-ios" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../webim-mobile-ui-ios";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		902CA0292D64A62F008E91FF /* WebimMobileWidget */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 902CA0282D64A604008E91FF /* XCLocalSwiftPackageReference "../../webim-mobile-ui-ios" */;
+			productName = WebimMobileWidget;
+		};
+		902CA02B2D64A634008E91FF /* WebimMobileWidget */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 902CA0282D64A604008E91FF /* XCLocalSwiftPackageReference "../../webim-mobile-ui-ios" */;
+			productName = WebimMobileWidget;
+		};
+		902CA02E2D64A746008E91FF /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		902CA0302D64A746008E91FF /* FirebaseAnalyticsOnDeviceConversion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsOnDeviceConversion;
+		};
+		902CA0322D64A746008E91FF /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		902CA0342D64A746008E91FF /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		902CA0362D64A746008E91FF /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }

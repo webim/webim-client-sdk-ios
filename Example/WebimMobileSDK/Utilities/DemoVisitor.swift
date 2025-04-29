@@ -26,7 +26,6 @@
 
 import Foundation
 
-
 struct DemoVisitor: RawRepresentable {
     static let fedor = DemoVisitor(rawValue: 1)
     static let semion = DemoVisitor(rawValue: 2)

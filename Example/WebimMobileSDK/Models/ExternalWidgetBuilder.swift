@@ -28,8 +28,10 @@ import Cosmos
 import Foundation
 import WebimMobileWidget
 import WebimMobileSDK
+import UIKit
 
 class ExternalWidgetBuilder {
+    
     func buildDefaultWidget(
         accountName: String = Settings.shared.accountName,
         location: String = Settings.shared.location,
@@ -113,7 +115,8 @@ class ExternalWidgetBuilder {
             sessionBuilder = sessionBuilder.set(pageTitle: pageTitle)
         }
         if let providedAuthorizationTokenStateListener = providedAuthorizationTokenStateListener {
-            sessionBuilder = sessionBuilder.set(providedAuthorizationTokenStateListener: providedAuthorizationTokenStateListener, providedAuthorizationToken: providedAuthorizationToken)
+            sessionBuilder = sessionBuilder.set(providedAuthorizationTokenStateListener: providedAuthorizationTokenStateListener,
+                                                providedAuthorizationToken: providedAuthorizationToken)
         }
         if remoteNotificationSystem != .none {
             sessionBuilder = sessionBuilder.set(remoteNotificationSystem: remoteNotificationSystem)
@@ -128,7 +131,9 @@ class ExternalWidgetBuilder {
             sessionBuilder = sessionBuilder.set(visitorFieldsJSONData: visitorFieldsData)
         }
         if let webimLogger = webimLogger {
-            sessionBuilder = sessionBuilder.set(webimLogger: webimLogger, verbosityLevel: webimLoggerVerbosityLevel ?? .warning, availableLogTypes: availableLogTypes)
+            sessionBuilder = sessionBuilder.set(webimLogger: webimLogger,
+                                                verbosityLevel: webimLoggerVerbosityLevel ?? .warning,
+                                                availableLogTypes: availableLogTypes)
         }
         if let webimAlert = webimAlert {
             sessionBuilder = sessionBuilder.set(webimAlert: webimAlert)
@@ -142,16 +147,15 @@ class ExternalWidgetBuilder {
         return sessionBuilder
     }
     
-    
     private func buildVisitorCellsConfig() -> WMCellsConfig {
-        let textCellSubtitleAttributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let textCellSubtitleAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .left
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 16, weight: .regular),
-            .foregroundColor : visitorMessageTextColour
+            .font: UIFont.systemFont(ofSize: 16, weight: .regular),
+            .foregroundColor: visitorMessageTextColour
         ]
         let visitorConfigCorners: CACornerMask = !WMLocaleManager.isRightOrientationLocale() ?
                                                 [.layerMinXMinYCorner,
@@ -179,23 +183,23 @@ class ExternalWidgetBuilder {
             .set(strokeColor: .clear)
             .build()
         
-        let fileCellTitleAttributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let fileCellTitleAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .left
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 14, weight: .regular),
-            .foregroundColor : UIColor.white
+            .font: UIFont.systemFont(ofSize: 14, weight: .regular),
+            .foregroundColor: UIColor.white
         ]
-        let fileCellSubtitleAttributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let fileCellSubtitleAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .left
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 13, weight: .regular),
-            .foregroundColor : visitorFileMessageTextColour
+            .font: UIFont.systemFont(ofSize: 13, weight: .regular),
+            .foregroundColor: visitorFileMessageTextColour
         ]
         let fileCellConfig = WMFileCellConfigBuilder()
             .set(backgroundColor: visitorMessageBubbleColour)
@@ -225,23 +229,23 @@ class ExternalWidgetBuilder {
     }
     
     private func buildOperatorCellsConfig() -> WMCellsConfig {
-        let cellTitleAttributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let cellTitleAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .left
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 13, weight: .regular),
-            .foregroundColor : webimCyan
+            .font: UIFont.systemFont(ofSize: 13, weight: .regular),
+            .foregroundColor: webimCyan
         ]
-        let textCellSubtitleAttributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let textCellSubtitleAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .left
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 16, weight: .regular),
-            .foregroundColor : operatorMessageTextColour
+            .font: UIFont.systemFont(ofSize: 16, weight: .regular),
+            .foregroundColor: operatorMessageTextColour
         ]
         let operatorConfigCorners: CACornerMask = !WMLocaleManager.isRightOrientationLocale() ?
                                                 [.layerMinXMinYCorner,
@@ -270,14 +274,14 @@ class ExternalWidgetBuilder {
             .set(strokeColor: .clear)
             .build()
         
-        let fileCellSubtitleAttribute: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let fileCellSubtitleAttribute: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .left
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 13, weight: .regular),
-            .foregroundColor : operatorFileMessageTextColour
+            .font: UIFont.systemFont(ofSize: 13, weight: .regular),
+            .foregroundColor: operatorFileMessageTextColour
         ]
         let fileCellConfig = WMFileCellConfigBuilder()
             .set(backgroundColor: operatorMessageBubbleColour)
@@ -310,14 +314,14 @@ class ExternalWidgetBuilder {
         let visitorCellsConfig = buildVisitorCellsConfig()
         let operatorCellsConfig = buildOperatorCellsConfig()
         
-        let botButtonLabelAttributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let botButtonLabelAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .center
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 13, weight: .regular),
-            .foregroundColor : botMessageTextColour
+            .font: UIFont.systemFont(ofSize: 13, weight: .regular),
+            .foregroundColor: botMessageTextColour
         ]
         let botButtonCellConfig = WMAbstractCellConfigBuilder()
             .set(backgroundColor: botMessageBubbleColour)
@@ -333,6 +337,7 @@ class ExternalWidgetBuilder {
         let toolBarConfig = WMToolbarConfigBuilder()
             .set(sendButtonImage: textInputButtonImage)
             .set(inactiveSendButtonImage: textInputInactiveButtonImage)
+            .set(editButtonImage: textInputEditButtonImage)
             .set(addAttachmentImage: fileButtonImage)
             .set(placeholderText: "Enter message".localized)
             .set(textViewFont: .systemFont(ofSize: 16, weight: .regular))
@@ -473,17 +478,18 @@ class ExternalWidgetBuilder {
     }
 }
 
-//MARK: Helper Methods
+// MARK: - Helper Methods
+
 extension ExternalWidgetBuilder {
     private func defaultPopupCellConfigBuilder() -> WMPopupActionCellConfigBuilder {
-        let subtitleAttributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle : {
+        let subtitleAttributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.alignment = .natural
                 return paragraphStyle
             }(),
-            .font : UIFont.systemFont(ofSize: 17, weight: .regular),
-            .foregroundColor : UIColor.white
+            .font: UIFont.systemFont(ofSize: 17, weight: .regular),
+            .foregroundColor: UIColor.white
         ]
         let popupCellConfig = WMPopupActionCellConfigBuilder()
             .set(backgroundColor: .clear)
@@ -508,37 +514,38 @@ extension ExternalWidgetBuilder {
     }
 }
 
-//MARK: Helper Fileprivate Properties
-fileprivate let centerAligmentParagraphStyle = {
+// MARK: - Helper Fileprivate Properties
+
+private let centerAligmentParagraphStyle = {
     let style = NSMutableParagraphStyle()
     style.alignment = .center
     return style
 }()
 
-fileprivate let refreshControlAttributedTitle = NSAttributedString(
+private let refreshControlAttributedTitle = NSAttributedString(
     string: "Fetching more messages...".localized,
     attributes: [NSAttributedString.Key.foregroundColor: refreshControlTextColour])
 
-fileprivate let rateOperatorTitle = NSAttributedString(
+private let rateOperatorTitle = NSAttributedString(
     string: "Rate Operator".localized,
-    attributes: [.font : UIFont.systemFont(ofSize: 16, weight: .semibold),
-                 .foregroundColor : rateOperatorTitleColour,
-                 .paragraphStyle : centerAligmentParagraphStyle])
+    attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .semibold),
+                 .foregroundColor: rateOperatorTitleColour,
+                 .paragraphStyle: centerAligmentParagraphStyle])
 
-fileprivate let rateOperatorSubtitle = NSAttributedString(
+private let rateOperatorSubtitle = NSAttributedString(
     string: "Please rate the overall impression of the consultation".localized,
-    attributes: [.font : UIFont.systemFont(ofSize: 15, weight: .regular),
-                 .foregroundColor : rateOperatorSubtitleColour,
-                 .paragraphStyle : centerAligmentParagraphStyle])
+    attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .regular),
+                 .foregroundColor: rateOperatorSubtitleColour,
+                 .paragraphStyle: centerAligmentParagraphStyle])
 
-fileprivate let rateOperatorButtonTitle = NSAttributedString(
+private let rateOperatorButtonTitle = NSAttributedString(
     string: "Send".localized,
-    attributes: [.font : UIFont.systemFont(ofSize: 20, weight: .semibold),
-                 .foregroundColor : UIColor.white,
-                 .paragraphStyle : centerAligmentParagraphStyle])
+    attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold),
+                 .foregroundColor: UIColor.white,
+                 .paragraphStyle: centerAligmentParagraphStyle])
 
-fileprivate let loadingFileTitle = NSAttributedString(
+private let loadingFileTitle = NSAttributedString(
     string: "Loading File...".localized,
-    attributes: [.font : UIFont.systemFont(ofSize: 17, weight: .regular),
-                 .foregroundColor : UIColor.black,
-                 .paragraphStyle : centerAligmentParagraphStyle])
+    attributes: [.font: UIFont.systemFont(ofSize: 17, weight: .regular),
+                 .foregroundColor: UIColor.black,
+                 .paragraphStyle: centerAligmentParagraphStyle])

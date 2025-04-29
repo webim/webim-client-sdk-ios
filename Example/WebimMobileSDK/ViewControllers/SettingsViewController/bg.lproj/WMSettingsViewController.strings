@@ -1,21 +1,45 @@
-"0cS-HU-Nd5.accessibilityLabel" = "Текстово поле за местоположение";
+
+/* Class = "UITextField"; accessibilityLabel = "Location text field"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.accessibilityLabel" = "Location text field";
+
+/* Class = "UITextField"; placeholder = "mobile"; ObjectID = "0cS-HU-Nd5"; */
 "0cS-HU-Nd5.placeholder" = "mobile";
+
+/* Class = "UITextField"; text = "mobile"; ObjectID = "0cS-HU-Nd5"; */
 "0cS-HU-Nd5.text" = "mobile";
-"5kC-9w-Cf1.accessibilityLabel" = "Текстово поле за заглавие на страница";
-"5kC-9w-Cf1.text" = "Приложение за iOS";
-"DAx-o8-RLt.text" = "Данни за потребителя в JSON формат (по избор)";
-"HKU-eN-lVD.text" = "{\"id\":\"123\",\"name\":\"test12\",\"crc\":\"567\"}";
-"Sjf-nR-MxD.text" = "Ако сте регистрирани в услугата на Webim, можете да използвате вашето собствено потребителско име и местоположение.";
-"YPf-5C-0ns.accessibilityHint" = "Запазва текущите настройки и показва началния екран.";
-"YPf-5C-0ns.accessibilityLabel" = "Запазване";
+
+/* Class = "UILabel"; text = "Account"; ObjectID = "N3V-0h-q3d"; */
+"N3V-0h-q3d.text" = "Акаунт";
+
+/* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityHint" = "Saves current settings and shows start screen.";
+
+/* Class = "UIButton"; accessibilityLabel = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityLabel" = "Save";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "YPf-5C-0ns"; */
 "YPf-5C-0ns.normalTitle" = "Запазване";
-"bag-jA-HXf.text" = "Заглавие на страницата";
-"dMJ-Tc-E7B.text" = "Местоположение*";
-"fbE-AI-B9x.text" = "Потребителско име*";
-"ohi-9E-ylR.text" = "* Местоположението не може да бъде празно.";
-"pro-Zu-Qq2.text" = "* Потребителското име не може да бъде празно.";
-"tcc-FO-XDY.accessibilityLabel" = "Текстово поле за потребителско име";
+
+/* Class = "UILabel"; text = "Location*"; ObjectID = "dMJ-Tc-E7B"; */
+"dMJ-Tc-E7B.text" = "Разположение*";
+
+/* Class = "UILabel"; text = "Account name*"; ObjectID = "fbE-AI-B9x"; */
+"fbE-AI-B9x.text" = "Име на акаунта*";
+
+/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "ohi-9E-ylR"; */
+"ohi-9E-ylR.text" = "* Името на разположението не може да бъде празно";
+
+/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "pro-Zu-Qq2"; */
+"pro-Zu-Qq2.text" = "* Името на акаунта не може да бъде празно";
+
+/* Class = "UILabel"; text = "Authorized User"; ObjectID = "t12-07-dH3"; */
+"t12-07-dH3.text" = "Оторизиран потребител";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name text field"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.accessibilityLabel" = "Account name text field";
+
+/* Class = "UITextField"; placeholder = "wmtest"; ObjectID = "tcc-FO-XDY"; */
 "tcc-FO-XDY.placeholder" = "wmtest";
+
+/* Class = "UITextField"; text = "wmtest"; ObjectID = "tcc-FO-XDY"; */
 "tcc-FO-XDY.text" = "wmtest";
-"N3V-0h-q3d.text" = "Потребител";
-"t12-07-dH3.text" = "Упълномощен потребител";

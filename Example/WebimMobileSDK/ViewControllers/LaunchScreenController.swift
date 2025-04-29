@@ -25,8 +25,10 @@
 //
 
 import UIKit
+import WebimMobileSDK
 
-// MARK: -
+// MARK: - LaunchScreenController
+
 class LaunchScreenController: UIViewController {
     
     // MARK: - Outlets
@@ -36,10 +38,12 @@ class LaunchScreenController: UIViewController {
     @IBOutlet var appVersion: UILabel!
     
     // MARK: - Properties
+    
     private let progress = Progress(totalUnitCount: 100)
     private var timer = Timer()
     
     // MARK: - View Life Cycle
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -50,7 +54,7 @@ class LaunchScreenController: UIViewController {
             userInfo: nil,
             repeats: true
         )
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String, let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             self.appVersion.text = "v. " + version
         }
         animateView()
@@ -82,11 +86,17 @@ class LaunchScreenController: UIViewController {
                 self.appVersion.alpha = 0
             },
             completion: { _ in
-                let rootVC = WMStartViewController.loadViewControllerFromXib()
-                let navigationController = UINavigationController(rootViewController: rootVC)
-                AppDelegate.shared.window?.rootViewController = navigationController
-                if AppDelegate.shared.hasRemoteNotification {
-                    rootVC.startChat(self)
+                if Settings.shared.getAccountName() == "" {
+                    let rootVC = WMLoginViewController.loadViewControllerFromXib()
+                    let navigationController = UINavigationController(rootViewController: rootVC)
+                    AppDelegate.shared.window?.rootViewController = navigationController
+                } else {
+                    let rootVC = WMStartViewController.loadViewControllerFromXib()
+                    let navigationController = UINavigationController(rootViewController: rootVC)
+                    AppDelegate.shared.window?.rootViewController = navigationController
+                    if AppDelegate.shared.hasRemoteNotification {
+                        rootVC.startChat(self)
+                    }
                 }
             }
         )

@@ -10,6 +10,7 @@ import Cocoa
 extension String {
     
     // MARK: - Properties
+    
     var localized: String {
         return NSLocalizedString(self, comment: "")
     }
@@ -80,10 +81,8 @@ extension String {
     }
     
     func presentAsSuffixInArray(_ strings: [String]) -> Bool {
-        for string in strings {
-            if string.hasSuffix(self) {
-                return true
-            }
+        for string in strings where string.hasSuffix(self) {
+           return true
         }
         return false
     }

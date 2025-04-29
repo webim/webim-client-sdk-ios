@@ -34,7 +34,7 @@ import Foundation
  - copyright:
  2017 Webim
  */
-public protocol WebimLogger: class {
+public protocol WebimLogger: AnyObject {
     
     /**
      Method which is called after new WebimClientLibrary network request log entry came out.

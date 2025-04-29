@@ -1,0 +1,24 @@
+/* Class = "UILabel"; text = "Авторизация"; ObjectID = "2Vo-Fd-JbN"; */
+"2Vo-Fd-JbN.text" = "Авторизация";
+
+/* Class = "UIButton"; configuration.title = "Продолжить"; ObjectID = "Exx-vL-8RS"; */
+"Exx-vL-8RS.normalTitle" = "Продължи";
+
+"w6x-BP-LCU.text" = "Потребителско име*";
+
+"UML-4Z-gGo.configuration.title" = "";
+
+/* Class = "UILabel"; text = "Версия приложения:"; ObjectID = "16W-1A-jCm"; */
+"16W-1A-jCm.text" = "Версия на приложението:";
+
+/* Class = "UILabel"; text = "Авторизация"; ObjectID = "2Vo-Fd-JbN"; */
+"2Vo-Fd-JbN.text" = "Авторизация";
+
+/* Class = "UIButton"; normalTitle = "Продолжить"; ObjectID = "Exx-vL-8RS"; */
+"Exx-vL-8RS.normalTitle" = "Продължи";
+
+/* Class = "UILabel"; text = "Аккаунт с таким названием не найден"; ObjectID = "qQG-j0-IK6"; */
+"qQG-j0-IK6.text" = "Акаунт с това име не беше намерен";
+
+/* Class = "UILabel"; text = "Название аккаунта*"; ObjectID = "w6x-BP-LCU"; */
+"w6x-BP-LCU.text" = "Потребителско име*";

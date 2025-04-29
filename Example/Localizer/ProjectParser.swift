@@ -15,7 +15,6 @@ typealias XibFileData = [FileName: [CodeKey: Value]]
 typealias Translations = [Locale: [CodeKey: Value]]
 typealias XibTranslations = [Locale: [CodeKey: Value]]
 
-// swiftlint:disable force_unwrapping
 class ProjectParser: NSObject {
     
     static func run(_ projectFolderPath: String) {
@@ -198,6 +197,4 @@ class ProjectParser: NSObject {
         }
         
     }
-    
 }
-// swiftlint:enable force_unwrapping

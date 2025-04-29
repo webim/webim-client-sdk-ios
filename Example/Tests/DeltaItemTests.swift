@@ -55,10 +55,10 @@ class DeltaItemTests: XCTestCase {
         let deltaItemDictionary = try! JSONSerialization.jsonObject(with: deltaItemDefaultJSONString.data(using: .utf8)!,
                                                                     options: []) as! [String : Any?]
 
-        //When
+        // When
         let deltaItem = DeltaItem(jsonDictionary: deltaItemDictionary)!
 
-        //Then
+        // Then
         XCTAssertEqual(deltaItem.getDeltaType(),
                        DeltaItem.DeltaType.chatMessage)
         XCTAssertEqual(deltaItem.getEvent(),
@@ -91,15 +91,19 @@ class DeltaItemTests: XCTestCase {
         let deltaItemDictionary = try! JSONSerialization.jsonObject(with: deltaItemNullEventJSONString.data(using: .utf8)!,
                                                                     options: []) as! [String : Any?]
 
-        //When
+        // When
+        
         let deltaItem = DeltaItem(jsonDictionary: deltaItemDictionary)
 
-        //Then
+        // Then
+        
         XCTAssertNil(deltaItem)
     }
 
     func testInitWithNullID() {
-        //Given
+        
+        // Given
+        
         let deltaItemNullIDJSONString = """
     {
     "id" : null,

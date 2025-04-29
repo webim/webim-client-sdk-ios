@@ -648,7 +648,7 @@ extension MessageTrackerImpl: MessageTracker {
         for message in messages {
             if message.getSendStatus() == .sending {
                 do {
-                    try messageHolder.getMessageStram()?.resend(message: message, completionHandler: nil)
+                    try messageHolder.getMessageStream()?.resend(message: message, completionHandler: nil)
                 } catch {
                 }
             }

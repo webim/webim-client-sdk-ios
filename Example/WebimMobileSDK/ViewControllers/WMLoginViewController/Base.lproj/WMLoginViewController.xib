@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WMLoginViewController" customModule="WebimMobileSDK_Example" customModuleProvider="target">
+            <connections>
+                <outlet property="logoConstraint" destination="MpZ-H4-1Kw" id="RfR-8L-3os"/>
+                <outlet property="startButton" destination="0FB-QW-9sx" id="i9T-dK-g9F"/>
+                <outlet property="view" destination="2Xw-rU-li8" id="UMh-zZ-PxG"/>
+                <outlet property="webimLogo" destination="Nfv-bV-axx" id="cEA-Ao-MxC"/>
+                <outlet property="welcomeConstraint" destination="gNA-7d-TEP" id="eKL-ag-wN0"/>
+                <outlet property="welcomeLabel" destination="6df-Ek-NDW" id="d3F-Ww-hdg"/>
+                <outlet property="welcomeTextView" destination="gOI-iJ-5sM" id="GY4-h8-vrS"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2Xw-rU-li8">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0FB-QW-9sx">
+                    <rect key="frame" x="16" y="753" width="361" height="50"/>
+                    <color key="backgroundColor" red="0.31284677979999997" green="0.66377866269999997" blue="0.80786448720000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <accessibility key="accessibilityConfiguration" hint="Starts chat." label="Start chat"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="5tz-2u-CUf"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <state key="normal" title="Начать">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="startWork:" destination="-1" eventType="touchUpInside" id="KnK-jN-uAU"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6df-Ek-NDW">
+                    <rect key="frame" x="16" y="255" width="361" height="48"/>
+                    <accessibility key="accessibilityConfiguration" label="Greeting title"/>
+                    <string key="text">Добро пожаловать в приложение
+Webim SDK App!</string>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gOI-iJ-5sM">
+                    <rect key="frame" x="13" y="319" width="364" height="111.66666666666669"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <accessibility key="accessibilityConfiguration" label="Greeting words">
+                        <accessibilityTraits key="traits" link="YES" staticText="YES"/>
+                    </accessibility>
+                    <string key="text">Начните работу Webim SDK с авторизации.
+
+Для этого нажмите кнопку “Начать” и введите название аккаунта, отправленное вам на почту, при регистрации через сайт Webim.</string>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoWebim" translatesAutoresizingMaskIntoConstraints="NO" id="Nfv-bV-axx">
+                    <rect key="frame" x="115" y="167" width="163" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="DXS-4P-NqY"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="kQV-Rg-w21"/>
+            <color key="backgroundColor" red="0.15450590850000001" green="0.16108739380000001" blue="0.30589711670000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <constraints>
+                <constraint firstItem="6df-Ek-NDW" firstAttribute="leading" secondItem="kQV-Rg-w21" secondAttribute="leading" constant="16" id="6Md-CW-kL9"/>
+                <constraint firstItem="kQV-Rg-w21" firstAttribute="trailing" secondItem="0FB-QW-9sx" secondAttribute="trailing" constant="16" id="7Bn-Ca-vZ7"/>
+                <constraint firstItem="gOI-iJ-5sM" firstAttribute="top" secondItem="6df-Ek-NDW" secondAttribute="bottom" constant="16" id="LyU-uk-fbr"/>
+                <constraint firstItem="Nfv-bV-axx" firstAttribute="top" secondItem="kQV-Rg-w21" secondAttribute="top" constant="108" id="MpZ-H4-1Kw"/>
+                <constraint firstItem="kQV-Rg-w21" firstAttribute="trailing" secondItem="gOI-iJ-5sM" secondAttribute="trailing" constant="16" id="PyI-BP-xPQ"/>
+                <constraint firstAttribute="trailing" secondItem="6df-Ek-NDW" secondAttribute="trailing" constant="16" id="Ysv-f1-39g"/>
+                <constraint firstItem="kQV-Rg-w21" firstAttribute="bottom" secondItem="0FB-QW-9sx" secondAttribute="bottom" constant="15" id="cpo-bb-jOF"/>
+                <constraint firstItem="6df-Ek-NDW" firstAttribute="top" secondItem="Nfv-bV-axx" secondAttribute="bottom" constant="48" id="gNA-7d-TEP"/>
+                <constraint firstItem="0FB-QW-9sx" firstAttribute="leading" secondItem="kQV-Rg-w21" secondAttribute="leading" constant="16" id="iVZ-6T-eiI"/>
+                <constraint firstItem="gOI-iJ-5sM" firstAttribute="leading" secondItem="kQV-Rg-w21" secondAttribute="leading" constant="13" id="paf-F2-p73"/>
+                <constraint firstItem="Nfv-bV-axx" firstAttribute="centerX" secondItem="kQV-Rg-w21" secondAttribute="centerX" id="rgM-KD-rsC"/>
+                <constraint firstItem="0FB-QW-9sx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gOI-iJ-5sM" secondAttribute="bottom" constant="10" id="sZs-hL-SoN"/>
+            </constraints>
+            <point key="canvasLocation" x="228.98550724637684" y="18.75"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="LogoWebim" width="163" height="40"/>
+    </resources>
+</document>

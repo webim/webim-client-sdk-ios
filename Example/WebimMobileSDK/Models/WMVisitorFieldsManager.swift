@@ -174,7 +174,7 @@ extension DemoVisitor {
     }
 }
 
-fileprivate enum UserDefaultsKeys {
+private enum UserDefaultsKeys {
     static let fedor = "DemoVisitor_Fedor"
     static let semion = "DemoVisitor_Semion"
     static let selectedVisitor = "DemoVisitor_selectedVisitor"

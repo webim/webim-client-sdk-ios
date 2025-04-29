@@ -89,7 +89,7 @@ class ActionRequestLoop: AbstractRequestLoop {
         return webimServerSideSettings
     }
     
-    func enqueue(request: WebimRequest, withAuthData: Bool = true) {
+    func enqueue(request: WebimRequest, withAuthData: Bool = true, progressRequest: WebimRequest? = nil) {
         let operationQueue = request.getCompletionHandler() != nil ? historyRequestOperationQueue : actionOperationQueue
         operationQueue?.addOperation { [weak self] in
             guard let `self` = self else {
@@ -97,6 +97,10 @@ class ActionRequestLoop: AbstractRequestLoop {
             }
             
             let urlRequest = self.createUrlRequest(request: request, withAuthData: withAuthData)
+            var urlProgressRequest: URLRequest?
+            if let progressRequest = progressRequest {
+                urlProgressRequest = self.createUrlRequest(request: progressRequest, withAuthData: withAuthData)
+            }
             
             do {
                 guard let urlRequest = urlRequest else {
@@ -105,7 +109,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                         logType: .networkRequest)
                     return
                 }
-                let data = try self.perform(request: urlRequest)
+                let data = try self.perform(request: urlRequest, progressRequest: urlProgressRequest)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     
                     if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
@@ -275,11 +279,35 @@ class ActionRequestLoop: AbstractRequestLoop {
             self.handleWrongArgumentValueError(ofRequest: request)
             
             break
-        case WebimInternalError.noChat.rawValue,
-             WebimInternalError.operatorNotInChat.rawValue:
+            
+        case WebimInternalError.noteIsTooLong.rawValue,
+             WebimInternalError.rateValueIncorrect.rawValue,
+             WebimInternalError.wrongOperatorId.rawValue:
             self.handleRateOperator(error: error,
                                     ofRequest: request)
+           
             WebimInternalAlert.shared.present(title: .visitorActionError, message: .operatorRatingError)
+            
+            break
+            
+        case WebimInternalError.noChat.rawValue,
+             WebimInternalError.operatorNotInChat.rawValue,
+             WebimInternalError.rateDisabled.rawValue:
+            self.handleRateOperator(error: error,
+                                    ofRequest: request)
+            self.handleResolutionSurvey(error: error,
+                                        ofRequest: request)
+            WebimInternalAlert.shared.present(title: .visitorActionError, message: .operatorRatingError)
+            
+            break
+            
+        case WebimInternalError.resolutionSurveyValueIncorrect.rawValue,
+             WebimInternalError.ratedEntityMismatch.rawValue,
+             WebimInternalError.visitorSegmentMismatch.rawValue,
+             WebimInternalError.rateFormMismatch.rawValue:
+            
+            self.handleResolutionSurvey(error: error,
+                                        ofRequest: request)
             
             break
         case WebimInternalError.messageNotFound.rawValue,
@@ -518,13 +546,50 @@ class ActionRequestLoop: AbstractRequestLoop {
                 switch errorString {
                 case WebimInternalError.noChat.rawValue:
                     rateOperatorError = .noChat
+                case WebimInternalError.wrongOperatorId.rawValue:
+                    rateOperatorError = .wrongOperatorId
                 case WebimInternalError.noteIsTooLong.rawValue:
                     rateOperatorError = .noteIsTooLong
+                case WebimInternalError.rateDisabled.rawValue:
+                    rateOperatorError = .rateDisabled
+                case WebimInternalError.operatorNotInChat.rawValue:
+                    rateOperatorError = .operatorNotInChat
+                case WebimInternalError.rateValueIncorrect.rawValue:
+                    rateOperatorError = .rateValueIncorrect
                 default:
-                    rateOperatorError = .wrongOperatorId
+                    rateOperatorError = .unknown
                 }
                 
                 rateOperatorCompletionhandler.onFailure(error: rateOperatorError)
+            })
+        }
+    }
+    
+    private func handleResolutionSurvey(error errorString: String,
+                                        ofRequest webimRequest: WebimRequest) {
+        if let resolutionCompletionhandler = webimRequest.getSendResolutionCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let resolutionError: SendResolutionError
+                switch errorString {
+                case WebimInternalError.noChat.rawValue:
+                    resolutionError = .noChat
+                case WebimInternalError.rateDisabled.rawValue:
+                    resolutionError = .rateDisabled
+                case WebimInternalError.operatorNotInChat.rawValue:
+                    resolutionError = .operatorNotInChat
+                case WebimInternalError.resolutionSurveyValueIncorrect.rawValue:
+                    resolutionError = .resolutionSurveyValueIncorrect
+                case WebimInternalError.ratedEntityMismatch.rawValue:
+                    resolutionError = .ratedEntityMismatch
+                case WebimInternalError.visitorSegmentMismatch.rawValue:
+                    resolutionError = .visitorSegmentMismatch
+                case WebimInternalError.rateFormMismatch.rawValue:
+                    resolutionError = .rateFormMismatch
+                default:
+                    resolutionError = .unknown
+                }
+                
+                resolutionCompletionhandler.onFailure(error: resolutionError)
             })
         }
     }
@@ -836,6 +901,7 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSendSurveyAnswerCompletionHandler()?.onSuccess()
             request.getSurveyCloseCompletionHandler()?.onSuccess()
             request.getRateOperatorCompletionHandler()?.onSuccess()
+            request.getSendResolutionCompletionHandler()?.onSuccess()
             request.getSendStickerCompletionHandler()?.onSuccess()
             request.getDeleteUploadedFileCompletionHandler()?.onSuccess()
             request.getGeolocationCompletionHandler()?.onSuccess()

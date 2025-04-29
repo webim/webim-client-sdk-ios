@@ -45,6 +45,9 @@ final class AccountConfigItem {
         case rateOperator = "rate_operator"
         case showRateOperator = "show_visitor_rate_operator_button"
         case disablingMessageInputField = "disabling_message_input_field"
+        case rateForm = "rate_form"
+        case ratedEntity = "rated_entity"
+        case visitorSegment = "visitor_segment"
     }
     
     // MARK: - Properties
@@ -56,6 +59,9 @@ final class AccountConfigItem {
     private var rateOperator: Bool?
     private var showRateOperator: Bool?
     private var disablingMessageInputField: Bool?
+    private var rateForm: String?
+    private var ratedEntity: String?
+    private var visitorSegment: String?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -92,6 +98,18 @@ final class AccountConfigItem {
         if let disablingMessageInputField = jsonDictionary[JSONField.disablingMessageInputField.rawValue] as? Bool {
             self.disablingMessageInputField = disablingMessageInputField
         }
+        
+        if let rateForm = jsonDictionary[JSONField.rateForm.rawValue] as? String {
+            self.rateForm = rateForm
+        }
+        
+        if let ratedEntity = jsonDictionary[JSONField.ratedEntity.rawValue] as? String {
+            self.ratedEntity = ratedEntity
+        }
+        
+        if let visitorSegment = jsonDictionary[JSONField.visitorSegment.rawValue] as? String {
+            self.visitorSegment = visitorSegment
+        }
     }
     
     // MARK: - Methods
@@ -125,5 +143,17 @@ final class AccountConfigItem {
     
     func getDisablingMessageInputField() -> Bool {
         return disablingMessageInputField ?? false
+    }
+    
+    func getRateForm() -> String? {
+        return rateForm
+    }
+    
+    func getRatedEntity() -> String? {
+        return ratedEntity
+    }
+    
+    func getVisitorSegment() -> String? {
+        return visitorSegment
     }
 }

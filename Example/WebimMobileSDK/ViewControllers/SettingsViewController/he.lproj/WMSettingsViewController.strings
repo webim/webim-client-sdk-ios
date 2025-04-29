@@ -1,21 +1,45 @@
-"0cS-HU-Nd5.accessibilityLabel" = "שדה טקסט מיקום";
+
+/* Class = "UITextField"; accessibilityLabel = "Location text field"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.accessibilityLabel" = "Location text field";
+
+/* Class = "UITextField"; placeholder = "mobile"; ObjectID = "0cS-HU-Nd5"; */
 "0cS-HU-Nd5.placeholder" = "mobile";
+
+/* Class = "UITextField"; text = "mobile"; ObjectID = "0cS-HU-Nd5"; */
 "0cS-HU-Nd5.text" = "mobile";
-"5kC-9w-Cf1.accessibilityLabel" = "שדה טקסט כותרת הדף";
-"5kC-9w-Cf1.text" = "אפליקציית iOS";
-"DAx-o8-RLt.text" = "מידע משתמש בפורמט JSON (אופציונלי)";
-"HKU-eN-lVD.text" = "{\"id\":\"123\",\"name\":\"test12\",\"crc\":\"567\"}";
-"Sjf-nR-MxD.text" = "אם אתה רשום לשירות של Webim תוכל להשתמש בשם חשבון ומיקום עצמאיים.";
-"YPf-5C-0ns.accessibilityHint" = "שומר הגדרות נוכחיות ומציג מסך התחלה.";
-"YPf-5C-0ns.accessibilityLabel" = "שמירה";
-"YPf-5C-0ns.normalTitle" = "שמירה";
-"bag-jA-HXf.text" = "כותרת הדף";
-"dMJ-Tc-E7B.text" = "מיקום*";
+
+/* Class = "UILabel"; text = "Account"; ObjectID = "N3V-0h-q3d"; */
+"N3V-0h-q3d.text" = "חֶשְׁבּוֹן";
+
+/* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityHint" = "Saves current settings and shows start screen.";
+
+/* Class = "UIButton"; accessibilityLabel = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityLabel" = "Save";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.normalTitle" = "לְהַצִיל";
+
+/* Class = "UILabel"; text = "Location*"; ObjectID = "dMJ-Tc-E7B"; */
+"dMJ-Tc-E7B.text" = "מִקוּם*";
+
+/* Class = "UILabel"; text = "Account name*"; ObjectID = "fbE-AI-B9x"; */
 "fbE-AI-B9x.text" = "שם חשבון*";
-"ohi-9E-ylR.text" = "* מיקום לא יכול להיות ריק.";
-"pro-Zu-Qq2.text" = "* שם חשבון לא יכול להיות ריק.";
-"tcc-FO-XDY.accessibilityLabel" = "שדה טקסט שם החשבון";
-"tcc-FO-XDY.placeholder" = "wmtest";
-"tcc-FO-XDY.text" = "wmtest";
-"N3V-0h-q3d.text" = "חשבון";
+
+/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "ohi-9E-ylR"; */
+"ohi-9E-ylR.text" = "המיקום לא יכול להיות ריק.";
+
+/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "pro-Zu-Qq2"; */
+"pro-Zu-Qq2.text" = "שם החשבון לא יכול להיות ריק.";
+
+/* Class = "UILabel"; text = "Authorized User"; ObjectID = "t12-07-dH3"; */
 "t12-07-dH3.text" = "משתמש מורשה";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name text field"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.accessibilityLabel" = "Account name text field";
+
+/* Class = "UITextField"; placeholder = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.placeholder" = "wmtest";
+
+/* Class = "UITextField"; text = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.text" = "wmtest";

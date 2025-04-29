@@ -56,7 +56,7 @@ class WMShareProgressViewController: UIViewController {
     }
 
     private func indexForSendingFile(_ sendingFile: SendingFile) -> Int {
-        return sendingFiles.firstIndex(where: { $0.fileID == sendingFile.fileID}) ?? 0
+        return sendingFiles.firstIndex(where: { $0.fileID == sendingFile.fileID }) ?? 0
     }
 
     private func indexPathForSendingFile(_ sendingFile: SendingFile) -> IndexPath {
@@ -65,7 +65,7 @@ class WMShareProgressViewController: UIViewController {
     }
 
     private func sendingFileExist(_ sendingFile: SendingFile) -> Bool {
-        sendingFiles.first(where: { $0.fileID == sendingFile.fileID}) != nil
+        sendingFiles.first(where: { $0.fileID == sendingFile.fileID }) != nil
     }
 
     private func generateProgressInfo(for sendingFile: SendingFile) -> String {

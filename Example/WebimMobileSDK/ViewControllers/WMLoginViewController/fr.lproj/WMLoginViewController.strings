@@ -1,0 +1,21 @@
+
+/* Class = "UIButton"; accessibilityHint = "Starts chat."; ObjectID = "0FB-QW-9sx"; */
+"0FB-QW-9sx.accessibilityHint" = "Starts chat.";
+
+/* Class = "UIButton"; accessibilityLabel = "Start chat"; ObjectID = "0FB-QW-9sx"; */
+"0FB-QW-9sx.accessibilityLabel" = "Start chat";
+
+/* Class = "UIButton"; normalTitle = "Начать"; ObjectID = "0FB-QW-9sx"; */
+"0FB-QW-9sx.normalTitle" = "Commencer";
+
+/* Class = "UILabel"; accessibilityLabel = "Greeting title"; ObjectID = "6df-Ek-NDW"; */
+"6df-Ek-NDW.accessibilityLabel" = "Greeting title";
+
+/* Class = "UILabel"; text = "Добро пожаловать в приложение\nWebim SDK App!"; ObjectID = "6df-Ek-NDW"; */
+"6df-Ek-NDW.text" = "Bienvenue sur l'application\nWebim SDK App!";
+
+/* Class = "UITextView"; accessibilityLabel = "Greeting words"; ObjectID = "gOI-iJ-5sM"; */
+"gOI-iJ-5sM.accessibilityLabel" = "Greeting words";
+
+/* Class = "UITextView"; text = "Начните работу Webim SDK с авторизации.\n\nДля этого нажмите кнопку “Начать” и введите название аккаунта, отправленное вам на почту, при регистрации через сайт Webim."; ObjectID = "gOI-iJ-5sM"; */
+"gOI-iJ-5sM.text" = "Démarrez le SDK Webim en vous connectant.\n\nPour ce faire, cliquez sur le bouton « Démarrer » et saisissez le nom du compte qui vous a été envoyé par e-mail lors de votre inscription via le site Web Webim";

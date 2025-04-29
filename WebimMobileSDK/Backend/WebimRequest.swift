@@ -68,6 +68,7 @@ final class WebimRequest {
     private var geolocationCompletionHandler: GeolocationCompletionHandler?
     private var serverSideSettingsCompletionHandler: ServerSideSettingsCompletionHandler?
     private var autocompleteCompletionHandler: AutocompleteCompletionHandler?
+    private var sendResolutionCompletionHandler: SendResolutionCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
@@ -101,7 +102,8 @@ final class WebimRequest {
          reacionCompletionHandler: ReactionCompletionHandler? = nil,
          geolocationCompletionHandler: GeolocationCompletionHandler? = nil,
          serverSideSettingsCompletionHandler: ServerSideSettingsCompletionHandler? = nil,
-         autocompleteCompletionHandler: AutocompleteCompletionHandler? = nil) {
+         autocompleteCompletionHandler: AutocompleteCompletionHandler? = nil,
+         sendResolutionCompletionHandler: SendResolutionCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -134,6 +136,7 @@ final class WebimRequest {
         self.geolocationCompletionHandler = geolocationCompletionHandler
         self.serverSideSettingsCompletionHandler = serverSideSettingsCompletionHandler
         self.autocompleteCompletionHandler = autocompleteCompletionHandler
+        self.sendResolutionCompletionHandler = sendResolutionCompletionHandler
     }
     
     
@@ -201,6 +204,10 @@ final class WebimRequest {
     
     func getRateOperatorCompletionHandler() -> RateOperatorCompletionHandler? {
         return rateOperatorCompletionHandler
+    }
+    
+    func getSendResolutionCompletionHandler() -> SendResolutionCompletionHandler? {
+        return sendResolutionCompletionHandler
     }
     
     func getSendMessageCompletionHandler() -> SendMessageCompletionHandler? {

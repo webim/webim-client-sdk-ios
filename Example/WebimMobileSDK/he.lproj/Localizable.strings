@@ -43,6 +43,8 @@
 "Your feedback will help us become better." = "המשוב שלך יעזור לנו להיות טובים יותר.";
 //WebimService.swift
 "Your visitor account is in the black list." = "חשבון המבקר שלך נמצא ברשימה השחורה.";
+//WebimSerivce.swift
+"Session initialization failed." = "אתחול ההפעלה נכשל.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "שגיאה בניתוח מבקר דמו.";
 //ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
@@ -55,3 +57,6 @@
 "Please rate the overall impression of the consultation" = "נא לדרג את הרושם הכללי של הייעוץ.";
 "Rate Operator" = "דרג את הסוכן";
 "Send" = "שלח";
+"New messages" = "הודעות חדשות";
+"Settings" = "הגדרות";
+"Invalid account name" = "לא נמצא חשבון בשם זה. אנא בדוק את הנתונים שהזנת.";

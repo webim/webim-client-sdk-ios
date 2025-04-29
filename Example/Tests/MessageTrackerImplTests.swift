@@ -75,7 +75,8 @@ class MessageTrackerImplTests: XCTestCase {
                                        visitorReactionInfo: nil,
                                        visitorCanReact: nil,
                                        visitorChangeReaction: nil,
-                                       group: nil))
+                                       group: nil,
+                                       deleted: nil))
         }
 
         messagesCount = messagesCount + numberOfMessages
@@ -115,7 +116,7 @@ class MessageTrackerImplTests: XCTestCase {
                                            group: nil))
         }
 
-        messagesCount = messagesCount + numberOfMessages
+        messagesCount += numberOfMessages
 
         return currentChat
     }
@@ -149,7 +150,8 @@ class MessageTrackerImplTests: XCTestCase {
                                          visitorReactionInfo: message.getVisitorReaction(),
                                          visitorCanReact: message.canVisitorReact(),
                                          visitorChangeReaction: message.canVisitorChangeReaction(),
-                                         group: nil)
+                                         group: nil,
+                                         deleted: nil)
             result.append(newMessage)
         }
 
@@ -157,7 +159,7 @@ class MessageTrackerImplTests: XCTestCase {
     }
 
     private func newCurrentChat() -> MessageImpl {
-        messagesCount = messagesCount + messagesCount
+        messagesCount += messagesCount
 
         return MessageImpl(serverURLString: MessageImplMockData.serverURLString.rawValue,
                            clientSideID: String(messagesCount),
@@ -184,7 +186,8 @@ class MessageTrackerImplTests: XCTestCase {
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
                            visitorChangeReaction: nil,
-                           group: nil)
+                           group: nil,
+                           deleted: nil)
     }
 
     private func newEdited(currentChatMessage: MessageImpl) -> MessageImpl {
@@ -213,7 +216,8 @@ class MessageTrackerImplTests: XCTestCase {
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
                            visitorChangeReaction: nil,
-                           group: nil)
+                           group: nil,
+                           deleted: nil)
     }
 
     private func newEdited(historyMessage: MessageImpl) -> MessageImpl {
@@ -242,7 +246,8 @@ class MessageTrackerImplTests: XCTestCase {
                            visitorReactionInfo: nil,
                            visitorCanReact: nil,
                            visitorChangeReaction: nil,
-                           group: nil)
+                           group: nil,
+                           deleted: nil)
     }
 
     private func newMessageHolder(withHistory history: [MessageImpl] = [MessageImpl]()) -> MessageHolder {

@@ -431,6 +431,12 @@ extension MessageStreamImpl: MessageStream {
         return (rating?.getRating() ?? -3) + 3
     }
     
+    func getLastResolutionSurveyWith(operatorId: String) -> Int? {
+        let resolution = chat?.getOperatorIDToResolutionSurvey()?[operatorId]
+        
+        return resolution?.getAnswer()
+    }
+    
     func rateOperatorWith(id: String?, byRating rating: Int, completionHandler: RateOperatorCompletionHandler?) throws {
         try rateOperatorWith(id: id, note: nil, byRating: rating, completionHandler: completionHandler)
     }
@@ -454,10 +460,36 @@ extension MessageStreamImpl: MessageStream {
         webimActions.rateOperatorWith(id: id,
                                       rating: (rating - 3), // Accepted range: (-2, -1, 0, 1, 2).
                                       visitorNote: note,
+                                      threadId: getChatId(),
                                       completionHandler: completionHandler)
 
         WebimInternalLogger.shared.log(
             entry: "Request rate operator with rating \(rating) in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+    
+    func sendResolutionSurvey(id: String,
+                              answer: Int,
+                              completionHandler: SendResolutionCompletionHandler?) throws {
+        guard answer == 1 || answer == 0 else {
+            WebimInternalLogger.shared.log(
+                entry: "Answer must be 0 or 1. Passed value: \(answer)",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
+            
+            return
+        }
+        
+        try accessChecker.checkAccess()
+        
+        webimActions.sendResolutionSurvey(id: id,
+                                          answer: answer,
+                                          threadId: getChatId(),
+                                          completionHandler: completionHandler)
+
+        WebimInternalLogger.shared.log(
+            entry: "Request resolution survey with answer \(answer) in MessageStreamImpl - \(#function)",
             verbosityLevel: .verbose,
             logType: .networkRequest)
     }
@@ -656,7 +688,8 @@ extension MessageStreamImpl: MessageStream {
                                                                                             fileUrlCreator: nil),
                                                                      filesInfo: [],
                                                                      state: .upload))
-        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data))
+        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data, filenameWithType: filename + "*" + mimeType))
+        cache(file: file, messageID: messageID)
         
         webimActions.send(file: file,
                           filename: filename,
@@ -676,10 +709,18 @@ extension MessageStreamImpl: MessageStream {
         return messageID
     }
     
+    private func cache(file: Data, messageID: String) {
+        let fileManager = FileManager.default
+        let cachesDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first
+        if let filePath = cachesDirectory?.appendingPathComponent(messageID).path,
+           !fileManager.fileExists(atPath: filePath) {
+            fileManager.createFile(atPath: filePath, contents: file)
+        }
+    }
+    
     func resend(message: Message,
                 completionHandler: ResendMessageCompletionHandler?) throws {
         try accessChecker.checkAccess()
-                
         if message.getSendStatus() != .sending {
             return
         }
@@ -693,20 +734,47 @@ extension MessageStreamImpl: MessageStream {
                 webimActions.sendSticker(stickerId: sticker.getStickerId(), clientSideId: message.getID())
             }
         case .visitorMessage:
-            messageHolder.resending(message: sendingMessageFactory.createTextMessageToSendWith(id: message.getID(),
-                                                                    text: message.getText()))
-            if let quote = message.getQuote() {
-                webimActions.replay(message: message.getText(),
-                                    clientSideID: message.getID(),
-                                    quotedMessageID: quote.getMessageID() ?? "")
+            if message.isDeleted() != true {
+                messageHolder.resending(message: sendingMessageFactory.createTextMessageToSendWith(id: message.getID(),
+                                                                                                   text: message.getText()))
+                if let quote = message.getQuote() {
+                    webimActions.replay(message: message.getText(),
+                                        clientSideID: message.getID(),
+                                        quotedMessageID: quote.getMessageID() ?? "")
+                } else {
+                    webimActions.send(message: message.getText(),
+                                      clientSideID: message.getID(),
+                                      dataJSONString: nil,
+                                      isHintQuestion: false,
+                                      dataMessageCompletionHandler: nil,
+                                      editMessageCompletionHandler: nil,
+                                      sendMessageCompletionHandler: nil)
+                }
             } else {
-                webimActions.send(message: message.getText(),
+                messageHolder.resending(message: sendingMessageFactory.createDeleteMessageToSendWith(id: message.getID()))
+                webimActions.delete(clientSideID: message.getID(), completionHandler: nil)
+            }
+        case .fileFromVisitor:
+            do {
+                var text = message.getText()
+                messageHolder.resending(message: sendingMessageFactory.createFileMessageToSendWith(id: message.getID(), filenameWithType: text))
+                guard let newURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent(message.getID()) else { return }
+                let data = try Data(contentsOf: newURL)
+                let index = text.lastIndex(of: "*") ?? text.endIndex
+                text.remove(at: index)
+                let filename = String(text[..<index])
+                let mimeType = String(text[index...])
+                webimActions.send(file: data,
+                                  filename: filename,
+                                  mimeType: mimeType,
                                   clientSideID: message.getID(),
-                                  dataJSONString: nil,
-                                  isHintQuestion: false,
-                                  dataMessageCompletionHandler: nil,
-                                  editMessageCompletionHandler: nil,
-                                  sendMessageCompletionHandler: nil)
+                                  completionHandler: SendFileCompletionHandlerWrapper(sendFileCompletionHandler: nil,
+                                                                                      messageHolder: messageHolder,
+                                                                                      webimActions: webimActions,
+                                                                                      sendingMessageFactory: sendingMessageFactory))
+            } catch {
+                messageHolder.deleteFromSending(message: sendingMessageFactory.createDeleteMessageToSendWith(id: message.getID()))
+                completionHandler?.onFailure()
             }
         default:
             return
@@ -751,7 +819,7 @@ extension MessageStreamImpl: MessageStream {
             message += ", \(uploadFile.description)"
         }
         message += "]"
-        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID))
+        messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, filenameWithType: ""))
         
         webimActions.sendFiles(message: message,
                                clientSideID: messageID,
@@ -1031,8 +1099,7 @@ extension MessageStreamImpl: MessageStream {
             return false
         }
         let id = message.getID()
-        let oldMessage = messageHolder.changing(messageID: id, message: nil)
-        
+        let oldMessage = messageHolder.changing(messageID: id, message: nil, isDeleted: true)
         if let oldMessage = oldMessage {
             webimActions.delete(clientSideID: id,
                                 completionHandler: DeleteMessageCompletionHandlerWrapper(deleteMessageCompletionHandler: completionHandler,
@@ -1054,12 +1121,22 @@ extension MessageStreamImpl: MessageStream {
     func setChatRead() throws {
         try accessChecker.checkAccess()
         
-        webimActions.setChatRead()
+        webimActions.setChatOrMessageRead(messageID: nil)
         set(unreadByVisitorMessageCount: 0)
         set(unreadByVisitorTimestamp: nil)
 
         WebimInternalLogger.shared.log(
             entry: "Request read chat in MessageStreamImpl- \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+    
+    func setChatRead(before message: Message) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.setChatOrMessageRead(messageID: message.getServerSideID())
+        WebimInternalLogger.shared.log(
+            entry: "Request read message in MessageStreamImpl- \(#function)",
             verbosityLevel: .verbose,
             logType: .networkRequest)
     }
@@ -1264,6 +1341,7 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
     func onSuccess(messageID: String) {
         webimActions.deleteSendingFile(id: messageID)
         sendFileCompletionHandler?.onSuccess(messageID: messageID)
+        deleteFromCache(filename: messageID)
         WebimInternalLogger.shared.log(
             entry: "File success sended with ID - \(messageID) in MessageStream",
             verbosityLevel: .verbose,
@@ -1277,11 +1355,13 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
             verbosityLevel: .verbose,
             logType: .networkRequest)
         
+        sendFileCompletionHandler?.onFailure(messageID: messageID, error: error)
+        deleteFromCache(filename: messageID)
         guard let sendingFile = webimActions.getSendingFile(id: messageID) else {
             messageHolder.sendingCancelledWith(messageID: messageID)
-            sendFileCompletionHandler?.onFailure(messageID: messageID, error: error)
             return
         }
+        
         let data = MessageDataImpl(attachment: MessageAttachmentImpl(fileInfo: FileInfoImpl(urlString: nil,
                                                                                             size: Int64(sendingFile.fileSize),
                                                                                             filename: sendingFile.fileName,
@@ -1291,7 +1371,7 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
                                                                      filesInfo: [],
                                                                      state: .error))
     
-        messageHolder.changed(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data))
+        messageHolder.changed(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data, filenameWithType: ""))
         webimActions.sendFileProgress(fileSize: sendingFile.fileSize,
                                       filename: sendingFile.fileName,
                                       mimeType: sendingFile.clientSideId,
@@ -1302,6 +1382,20 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
                                       completionHandler: SendFileProgressCompletionHandlerWrapper(messageHolder: messageHolder,
                                                                                                   sendFileCompletionHandler: sendFileCompletionHandler))
         webimActions.deleteSendingFile(id: messageID)
+    }
+    
+    private func deleteFromCache(filename: String) {
+        let fileManager = FileManager.default
+        let cachesDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first
+        let fileUrl = cachesDirectory?.appendingPathComponent(filename)
+        let filePath = fileUrl?.path ?? ""
+        if fileManager.fileExists(atPath: filePath) {
+            do {
+                try fileManager.removeItem(atPath: filePath)
+            } catch {
+                print("error cahce delete")
+            }
+        }
     }
 }
 

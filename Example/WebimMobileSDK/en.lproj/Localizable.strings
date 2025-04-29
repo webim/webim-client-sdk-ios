@@ -42,6 +42,8 @@
 "Your feedback will help us become better." = "Your feedback will help us become better.";
 //WebimService.swift
 "Your visitor account is in the black list." = "Your visitor account is in the black list.";
+//WebimService.swift
+"Session initialization failed." = "Session initialization failed.";
 //WMSettingsViewController.swift
 "Parse demo visitor error." = "Parse demo visitor error.";
 //ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
@@ -54,3 +56,6 @@
 "Please rate the overall impression of the consultation" = "Please rate the overall impression of the consultation.";
 "Rate Operator" = "Rate Agent";
 "Send" = "Send";
+"New messages" = "New messages";
+"Settings" = "Settings";
+"Invalid account name" = "Account with that name not found. Please check the entered information.";

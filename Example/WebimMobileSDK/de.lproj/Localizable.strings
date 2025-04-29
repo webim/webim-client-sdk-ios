@@ -1,0 +1,61 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Der Kontoname darf nicht leer sein.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Der Standort darf nicht leer sein.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Fehler";
+//UIAlertHandler.swift
+"Account" = "Konto";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Der Kontoname enthält ungültige Zeichen.";
+//WebimService.swift
+"AccountBlocked" = "Das zum Erstellen der Sitzung verwendete Konto ist gesperrt. Wenden Sie sich an den Webim-Support oder verwenden Sie ein anderes Konto.";
+//UIAlertHandler.swift
+"Alert account name" = "Webim-Kontoname oder vollständige Serveradresse (zum Beispiel \"demo\" oder \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Stornieren";
+//ConnectionErrorView.xib
+"Connection error" = "Verbindungsfehler";
+//UIAlertHandler.swift
+"InvalidSettings" = "Ungültige Kontoeinstellungen";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Der Standort enthält ungültige Zeichen.";
+//AdditionalKeys.swift
+"P.CR" = "Ein Agent hat Ihre Kontaktdaten angefordert.";
+//AdditionalKeys.swift
+"P.OA" = "Ihrer Anfrage wurde Agent %@ zugewiesen.";
+//AdditionalKeys.swift
+"P.OF" = "%@ hat eine Datei gesendet: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ hat eine Nachricht geschrieben: %@";
+//AdditionalKeys.swift
+"P.RO" = "Bewerten Sie den Agenten.";
+//StringConstants.swift
+"Copy" = "Kopie";
+//StringConstants.swift
+"Delete" = "Löschen";
+//StringConstants.swift
+"Reply" = "Antwort";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Willkommen bei der Webim SDK App!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Ihr Feedback hilft uns, besser zu werden.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Ihr Besucherkonto steht auf der schwarzen Liste.";
+//WebimService.swift
+"Session initialization failed." = "Die Sitzungsinitialisierung ist fehlgeschlagen.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Fehler beim Parsen des Demo-Besuchers.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Die Sitzungserstellung ist fehlgeschlagen";
+//ChatViewController+Listener.swift
+"typing" = "tippen";
+//StringConstants.swift
+"Edit" = "Bearbeiten";
+"Enter message" = "Nachricht eingeben";
+"Please rate the overall impression of the consultation" = "Bitte bewerten Sie den Gesamteindruck der Beratung.";
+"Rate Operator" = "Tarifagent";
+"Send" = "Schicken";
+"New messages" = "Neue Nachrichten";
+"Settings" = "Einstellungen";
+"Invalid account name" = "Konto mit diesem Namen wurde nicht gefunden. Bitte überprüfen Sie die eingegebenen Informationen.";

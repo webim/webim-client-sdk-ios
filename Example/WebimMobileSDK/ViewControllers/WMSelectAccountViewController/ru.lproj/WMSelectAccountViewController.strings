@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "Версия приложения:"; ObjectID = "16W-1A-jCm"; */
+"16W-1A-jCm.text" = "Версия приложения:";
+
+/* Class = "UILabel"; text = "Авторизация"; ObjectID = "2Vo-Fd-JbN"; */
+"2Vo-Fd-JbN.text" = "Авторизация";
+
+/* Class = "UIButton"; normalTitle = "Продолжить"; ObjectID = "Exx-vL-8RS"; */
+"Exx-vL-8RS.normalTitle" = "Продолжить";
+
+/* Class = "UILabel"; text = "Аккаунт с таким названием не найден"; ObjectID = "qQG-j0-IK6"; */
+"qQG-j0-IK6.text" = "Аккаунт с таким названием не найден";
+
+/* Class = "UILabel"; text = "Название аккаунта*"; ObjectID = "w6x-BP-LCU"; */
+"w6x-BP-LCU.text" = "Название аккаунта*";

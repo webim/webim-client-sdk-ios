@@ -119,6 +119,9 @@ final class DeltaCallback {
             case .chatMessageRead:
                 handleMessageRead(delta: delta)
                 
+            case .chatId:
+                handleChatId(delta: delta)
+                
             default:
                 // Not supported delta type.
                 
@@ -207,6 +210,9 @@ final class DeltaCallback {
             break
         }
         for message in currentChat?.getMessages() ?? [] {
+            if let messageItem = historyMessageMapper.map(message: message) {
+                historyPoller?.insertMessageInDB(message: messageItem)
+            }
             WebimInternalLogger.shared.log(entry: "Delta chat: \'\(message.getText() ?? "")\'", verbosityLevel: .debug, logType: .messageHistory)
         }
         messageStream?.changingChatStateOf(chat: currentChat)
@@ -470,5 +476,14 @@ final class DeltaCallback {
     private func handleClosedChat() {
         currentChat?.set(operator: nil)
         currentChat?.set(operatorTyping: false)
+    }
+    
+    private func handleChatId(delta: DeltaItem) {
+        guard delta.getEvent() == .update,
+            let id = delta.getData() as? Int else {
+                return
+        }
+        
+        currentChat?.set(id: id)
     }
 }

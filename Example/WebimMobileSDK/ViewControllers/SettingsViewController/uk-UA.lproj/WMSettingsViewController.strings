@@ -1,21 +1,45 @@
-"0cS-HU-Nd5.accessibilityLabel" = "Текстове поле для введення місцезнаходження";
+
+/* Class = "UITextField"; accessibilityLabel = "Location text field"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.accessibilityLabel" = "Location text field";
+
+/* Class = "UITextField"; placeholder = "mobile"; ObjectID = "0cS-HU-Nd5"; */
 "0cS-HU-Nd5.placeholder" = "mobile";
+
+/* Class = "UITextField"; text = "mobile"; ObjectID = "0cS-HU-Nd5"; */
 "0cS-HU-Nd5.text" = "mobile";
-"5kC-9w-Cf1.accessibilityLabel" = "Текстове поле заголовка сторінки";
-"5kC-9w-Cf1.text" = "Додаток для iOS";
-"DAx-o8-RLt.text" = "Дані користувача json (необов'язково)";
-"HKU-eN-lVD.text" = "{\"id\":\"123\",\"name\":\"test12\",\"crc\":\"567\"}";
-"Sjf-nR-MxD.text" = "Якщо ви зареєстровані в сервісі Webim, ви можете використовувати своє власне ім'я облікового запису та місцезнаходження.";
-"YPf-5C-0ns.accessibilityHint" = "Зберігає поточні налаштування та показує початковий екран.";
-"YPf-5C-0ns.accessibilityLabel" = "Зберегти";
-"YPf-5C-0ns.normalTitle" = "Зберегти";
-"bag-jA-HXf.text" = "Заголовок сторінки";
-"dMJ-Tc-E7B.text" = "Місцезнаходження*";
-"fbE-AI-B9x.text" = "Ім'я облікового запису*";
-"ohi-9E-ylR.text" = "* Місцезнаходження не може бути порожнім.";
-"pro-Zu-Qq2.text" = "* Ім'я облікового запису не може бути порожнім.";
-"tcc-FO-XDY.accessibilityLabel" = "Текстове поле для введення імені облікового запису";
-"tcc-FO-XDY.placeholder" = "wmtest";
-"tcc-FO-XDY.text" = "wmtest";
+
+/* Class = "UILabel"; text = "Account"; ObjectID = "N3V-0h-q3d"; */
 "N3V-0h-q3d.text" = "Обліковий запис";
+
+/* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityHint" = "Saves current settings and shows start screen.";
+
+/* Class = "UIButton"; accessibilityLabel = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityLabel" = "Save";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.normalTitle" = "Зберегти";
+
+/* Class = "UILabel"; text = "Location*"; ObjectID = "dMJ-Tc-E7B"; */
+"dMJ-Tc-E7B.text" = "Розміщення*";
+
+/* Class = "UILabel"; text = "Account name*"; ObjectID = "fbE-AI-B9x"; */
+"fbE-AI-B9x.text" = "Назва облікового запису*";
+
+/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "ohi-9E-ylR"; */
+"ohi-9E-ylR.text" = "* Розміщення не може бути пустою..";
+
+/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "pro-Zu-Qq2"; */
+"pro-Zu-Qq2.text" = "* Назва облікового запису не може бути пустою.";
+
+/* Class = "UILabel"; text = "Authorized User"; ObjectID = "t12-07-dH3"; */
 "t12-07-dH3.text" = "Авторизований користувач";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name text field"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.accessibilityLabel" = "Account name text field";
+
+/* Class = "UITextField"; placeholder = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.placeholder" = "wmtest";
+
+/* Class = "UITextField"; text = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.text" = "wmtest";

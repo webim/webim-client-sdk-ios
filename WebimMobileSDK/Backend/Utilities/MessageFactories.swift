@@ -140,6 +140,9 @@ class MessageMapper {
                     case .externalChecks:
                         state = .externalChecks
                         break
+                    case .upload:
+                        state = .upload
+                        break
                     default:
                         state = .ready
                     }
@@ -148,7 +151,8 @@ class MessageMapper {
                                                           filesInfo: attachments,
                                                           state: state,
                                                           errorType: file?.getErrorType(),
-                                                          errorMessage: file?.getErrorMessage())
+                                                          errorMessage: file?.getErrorMessage(),
+                                                          visitorErrorMessage: file?.getVisitorErrorMessage())
                     )
                 } else {
                     if let rawData = messageItem.getRawData(),
@@ -160,6 +164,9 @@ class MessageMapper {
                             break
                         case .externalChecks:
                             state = .externalChecks
+                            break
+                        case .upload:
+                            state = .upload
                             break
                         default:
                             state = .ready
@@ -178,7 +185,8 @@ class MessageMapper {
                                                               state: state,
                                                               downloadProgress: file.getDownloadProgress(),
                                                               errorType: file.getErrorType(),
-                                                              errorMessage: file.getErrorMessage()))
+                                                              errorMessage: file.getErrorMessage(),
+                                                              visitorErrorMessage: file.getVisitorErrorMessage()))
                     }
                 }
             }
@@ -276,7 +284,8 @@ class MessageMapper {
                            visitorReactionInfo: messageItem.getReaction(),
                            visitorCanReact: messageItem.getCanVisitorReact(),
                            visitorChangeReaction: messageItem.getCanVisitorChangeReaction(),
-                           group: group)
+                           group: group,
+                           deleted: messageItem.isDeleted())
     }
     
     func set(fileUrlCreator: FileUrlCreator) {
@@ -386,12 +395,12 @@ final class SendingFactory {
     }
 
     
-    func createFileMessageToSendWith(id: String, data: MessageData? = nil) -> MessageToSend {
+    func createFileMessageToSendWith(id: String, data: MessageData? = nil, filenameWithType: String) -> MessageToSend {
         return MessageToSend(serverURLString: serverURLString,
                              clientSideID: id,
                              senderName: "",
                              type: .fileFromVisitor,
-                             text: "",
+                             text: filenameWithType,
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
                              data: data)
     }
@@ -404,6 +413,16 @@ final class SendingFactory {
                              text: "",
                              timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
                              sticker: StickerImpl(stickerId: stickerId))
+    }
+    
+    func createDeleteMessageToSendWith(id: String) -> MessageToSend {
+        return MessageToSend(serverURLString: serverURLString,
+                             clientSideID: id,
+                             senderName: "",
+                             type: .visitorMessage,
+                             text: "",
+                             timeInMicrosecond: InternalUtils.getCurrentTimeInMicrosecond(),
+                             deleted: true)
     }
     
 }

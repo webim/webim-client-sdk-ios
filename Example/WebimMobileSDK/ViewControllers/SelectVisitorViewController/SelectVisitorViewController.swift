@@ -28,10 +28,12 @@ import UIKit
 
 protocol SelectVisitorDelegate: AnyObject {
     func didSelect(visitor: SelectVisitorViewController.VisitorRows)
-    func controllerWillDisappear()
 }
 
 class SelectVisitorViewController: UIViewController {
+    
+    lazy var navigationBarUpdater = NavigationBarUpdater()
+    lazy var visitorFieldsManager = WMVisitorFieldsManager()
     
     @IBOutlet var tableView: UITableView!
     weak var delegate: SelectVisitorDelegate?
@@ -46,18 +48,9 @@ class SelectVisitorViewController: UIViewController {
         super.viewDidLoad()
         tableView.separatorStyle = .none
         subscribeToOrientationChange()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unsubscribeFromOrientationChange()
-        delegate?.controllerWillDisappear()
-    }
-    
-    func initialSetup() {
-        modalPresentationStyle = .popover
-        preferredContentSize = CGSize(width: view.bounds.width, height: 135)
-        presentationController?.delegate = self
+        updateNavigationBar()
+        
+        visitorFieldsManager.updateVisitorsData()
     }
     
     func set(delegate: SelectVisitorDelegate) {
@@ -121,8 +114,8 @@ extension SelectVisitorViewController: UITableViewDataSource {
         return 45
     }
     
-    private func configureCell(cell: UITableViewCell ,for indexPath: IndexPath) {
-        let backgroundColor: UIColor = (indexPath.row % 2).isMultiple(of: 2) ? evenUserTableViewCellColor : oddUserTableViewCellColor
+    private func configureCell(cell: UITableViewCell, for indexPath: IndexPath) {
+        let backgroundColor = oddUserTableViewCellColor
         
         cell.textLabel?.text = dataSource[indexPath.row].rawValue.localized
         cell.textLabel?.textColor = userTextLabelColor
@@ -136,24 +129,17 @@ extension SelectVisitorViewController: UITableViewDataSource {
         case fedor = "Fedor"
         case semion = "Semion"
     }
+    
+    private func updateNavigationBar() {
+        navigationBarUpdater.set(navigationController: navigationController)
+        navigationBarUpdater.update(with: .defaultStyle)
+        navigationBarUpdater.set(isNavigationBarVisible: true)
+    }
 }
 
 extension SelectVisitorViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didSelect(visitor: dataSource[indexPath.row])
-        dismiss(animated: true)
-    }
-}
-
-extension SelectVisitorViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
-    }
-
-    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        popoverPresentationController.containerView?.layer.shadowColor = UIColor.black.cgColor
-        popoverPresentationController.containerView?.layer.shadowRadius = 7
-        popoverPresentationController.containerView?.layer.shadowOpacity = 0.6
-        popoverPresentationController.containerView?.layer.shadowOffset = CGSize(width: 0, height: 1)
+        navigationController?.popViewController(animated: true)
+        self.delegate?.didSelect(visitor: dataSource[indexPath.row])
     }
 }

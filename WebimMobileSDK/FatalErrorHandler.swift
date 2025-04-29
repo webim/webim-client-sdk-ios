@@ -37,7 +37,7 @@ import Foundation
  - copyright:
  2017 Webim
  */
-public protocol FatalErrorHandler: class {
+public protocol FatalErrorHandler: AnyObject {
     
     /**
      This method is to be called when Webim service error is received.

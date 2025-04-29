@@ -28,6 +28,8 @@ import UIKit
 import WebimMobileWidget
 
 class WMLogsViewController: UIViewController {
+    
+    lazy var navigationBarUpdater = NavigationBarUpdater()
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollButton: UIButton!
@@ -68,8 +70,9 @@ class WMLogsViewController: UIViewController {
     }
 
     private func updateNavigationBar() {
-        NavigationBarUpdater.shared.set(isNavigationBarVisible: true)
-        NavigationBarUpdater.shared.update(with: .defaultStyle)
+        navigationBarUpdater.set(navigationController: navigationController)
+        navigationBarUpdater.set(isNavigationBarVisible: true)
+        navigationBarUpdater.update(with: .defaultStyle)
     }
 }
 

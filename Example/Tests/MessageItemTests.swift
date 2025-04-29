@@ -298,6 +298,7 @@ class FileItemTests: XCTestCase {
     }
 }
 
-fileprivate func convertToDict(_ json: String) -> [String: Any?] {
-    return try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!, options: []) as! [String : Any?]
+private func convertToDict(_ json: String) -> [String: Any?] {
+    return try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!,
+                                             options: []) as! [String : Any?]
 }

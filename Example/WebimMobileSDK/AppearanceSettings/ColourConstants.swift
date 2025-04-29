@@ -28,23 +28,25 @@ import Foundation
 import UIKit
 
 // MARK: - Colours
-fileprivate let CLEAR = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-fileprivate let WHITE = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
-fileprivate let BLACK = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-fileprivate let LIGHT_GREY = #colorLiteral(red: 0.8823529412, green: 0.8901960784, blue: 0.9176470588, alpha: 1)
-fileprivate let GREY = #colorLiteral(red: 0.4901960784, green: 0.4980392157, blue: 0.5843137255, alpha: 1)
-fileprivate let NO_CONNECTION_GREY = #colorLiteral(red: 0.4784313725, green: 0.4941176471, blue: 0.5803921569, alpha: 1)
-fileprivate let TRANSLUCENT_GREY = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
-fileprivate let WEBIM_CYAN = #colorLiteral(red: 0.08675732464, green: 0.6737991571, blue: 0.8237424493, alpha: 1)
-fileprivate let WEBIM_PUPRLE = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
-fileprivate let WEBIM_DARK_PUPRLE = #colorLiteral(red: 0.1529411765, green: 0.1647058824, blue: 0.3058823529, alpha: 1)
-fileprivate let WEBIM_LIGHT_PURPLE = #colorLiteral(red: 0.4117647059, green: 0.4235294118, blue: 0.568627451, alpha: 1)
-fileprivate let WEBIM_RED = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
-fileprivate let WEBIM_GREY = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
-fileprivate let WEBIM_LIGHT_BLUE = #colorLiteral(red: 0.9411764706, green: 0.9725490196, blue: 0.9843137255, alpha: 1)
-fileprivate let WEBIM_LIGHT_CYAN = #colorLiteral(red: 0.02352941176, green: 0.5411764706, blue: 0.7058823529, alpha: 0.15)
+
+private let CLEAR = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+private let WHITE = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
+private let BLACK = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+private let LIGHT_GREY = #colorLiteral(red: 0.8823529412, green: 0.8901960784, blue: 0.9176470588, alpha: 1)
+private let GREY = #colorLiteral(red: 0.4901960784, green: 0.4980392157, blue: 0.5843137255, alpha: 1)
+private let NO_CONNECTION_GREY = #colorLiteral(red: 0.4784313725, green: 0.4941176471, blue: 0.5803921569, alpha: 1)
+private let TRANSLUCENT_GREY = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
+private let WEBIM_CYAN = #colorLiteral(red: 0.08675732464, green: 0.6737991571, blue: 0.8237424493, alpha: 1)
+private let WEBIM_PUPRLE = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
+private let WEBIM_DARK_PUPRLE = #colorLiteral(red: 0.1529411765, green: 0.1647058824, blue: 0.3058823529, alpha: 1)
+private let WEBIM_LIGHT_PURPLE = #colorLiteral(red: 0.4117647059, green: 0.4235294118, blue: 0.568627451, alpha: 1)
+private let WEBIM_RED = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+private let WEBIM_GREY = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
+private let WEBIM_LIGHT_BLUE = #colorLiteral(red: 0.9411764706, green: 0.9725490196, blue: 0.9843137255, alpha: 1)
+private let WEBIM_LIGHT_CYAN = #colorLiteral(red: 0.02352941176, green: 0.5411764706, blue: 0.7058823529, alpha: 0.15)
 
 // MARK: - Views' colour properties
+
 // FlexibleTableViewCell.swift
 let flexibleTableViewCellBackgroundColour = CLEAR
 /// System
@@ -141,7 +143,6 @@ let evenUserTableViewCellColor = #colorLiteral(red: 0.9411764706, green: 0.95294
 let oddUserTableViewCellColor = UIColor.white
 let userTextLabelColor = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 0.8)
 
-
 // ChatTableViewController.swift
 let refreshControlTextColour = WEBIM_DARK_PUPRLE
 let refreshControlTintColour = WEBIM_DARK_PUPRLE
@@ -187,7 +188,7 @@ let startChatButtonBackgroundColour = WEBIM_CYAN
 let startChatButtonBorderColour = WEBIM_CYAN.cgColor
 let startChatTitleColour = WHITE
 let settingsButtonTitleColour = WHITE
-let settingButtonBorderColour = GREY.cgColor
+let settingButtonBorderColour = WHITE
 
 // UITableView extension
 let textMainColour = WEBIM_DARK_PUPRLE

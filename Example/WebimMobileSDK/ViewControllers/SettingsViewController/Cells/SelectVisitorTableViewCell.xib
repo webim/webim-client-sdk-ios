@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,29 +17,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="oeD-cT-YJM">
-                        <rect key="frame" x="16" y="8" width="284" height="40"/>
+                        <rect key="frame" x="16" y="8" width="284" height="25"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgN-YJ-Dl9">
-                                <rect key="frame" x="0.0" y="0.0" width="284" height="31"/>
+                                <rect key="frame" x="0.0" y="0.0" width="284" height="16"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oTC-aM-pq5">
-                                        <rect key="frame" x="0.0" y="0.0" width="242.66666666666666" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="268" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" red="0.22352941176470587" green="0.24705882352941178" blue="0.41960784313725491" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="chevron.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="I0T-wX-Ltg">
-                                        <rect key="frame" x="242.66666666666671" y="5.3333333333333321" width="41.333333333333343" height="21"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="arrowSettings" translatesAutoresizingMaskIntoConstraints="NO" id="I0T-wX-Ltg">
+                                        <rect key="frame" x="268" y="0.0" width="16" height="16"/>
                                         <color key="tintColor" red="0.36078431370000003" green="0.37254901959999998" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="I0T-wX-Ltg" secondAttribute="height" multiplier="4:3" id="4yT-C1-ZWo"/>
+                                            <constraint firstAttribute="height" constant="16" id="KBX-LF-FtS"/>
+                                            <constraint firstAttribute="width" constant="16" id="qtB-pA-k4s"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H7Y-bZ-d2n">
-                                <rect key="frame" x="0.0" y="39" width="284" height="1"/>
-                                <color key="backgroundColor" red="0.22352941179999999" green="0.2470588235" blue="0.41960784309999999" alpha="0.30269557120000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="24" width="284" height="1"/>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.2470588235" blue="0.41960784309999999" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="54t-XK-53A"/>
                                 </constraints>
@@ -63,6 +64,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="chevron.down" catalog="system" width="128" height="70"/>
+        <image name="arrowSettings" width="16" height="16"/>
     </resources>
 </document>

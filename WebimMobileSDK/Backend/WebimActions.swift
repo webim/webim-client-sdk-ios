@@ -90,13 +90,19 @@ protocol WebimActions {
     func rateOperatorWith(id: String?,
                           rating: Int,
                           visitorNote: String?,
+                          threadId: Int?,
                           completionHandler: RateOperatorCompletionHandler?)
+    
+    func sendResolutionSurvey(id: String,
+                              answer: Int,
+                              threadId: Int?,
+                              completionHandler: SendResolutionCompletionHandler?)
     
     func respondSentryCall(id: String)
     
     func update(deviceToken: String)
     
-    func setChatRead()
+    func setChatOrMessageRead(messageID: String?)
     
     func updateWidgetStatusWith(data: String)
     

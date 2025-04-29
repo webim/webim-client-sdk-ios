@@ -30,23 +30,10 @@ import WebimMobileSDK
 extension WMSettingsViewController: SelectUserDelegate {
     func showUserList() {
         let vc = SelectVisitorViewController.loadViewControllerFromXib()
-        vc.initialSetup()
         vc.set(delegate: self)
-        vc.set(sourceView: selectVisitorCell.accessoryImageView)
-        let arrowDirection: UIPopoverArrowDirection = (UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .unknown) ? .up : .down
-        vc.setArrowDirection(arrowDirection: arrowDirection)
-        rotateArrow()
-        present(vc, animated: true)
-    }
-    
-    private func rotateArrow() {
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
-            let rotateTransform = CGAffineTransformRotate(.identity, .pi)
-            self.selectVisitorCell.accessoryImageView.transform = rotateTransform
-        }
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
-
 
 extension WMSettingsViewController: SelectVisitorDelegate {
     func didSelect(visitor: SelectVisitorViewController.VisitorRows) {
@@ -63,10 +50,5 @@ extension WMSettingsViewController: SelectVisitorDelegate {
         visitorFieldsManager.set(selectedVisitor: demoVisitor)
         selectVisitorCell.usernameLabel.text = visitor.rawValue.localized
     }
-    
-    func controllerWillDisappear() {
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn) {
-            self.selectVisitorCell.accessoryImageView.transform = .identity
-        }
-    }
+
 }

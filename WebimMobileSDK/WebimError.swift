@@ -156,4 +156,6 @@ public enum FatalErrorType {
     @available(*, unavailable, renamed: "wrongProvidedVisitorHash")
     case WRONG_PROVIDED_VISITOR_HASH
     
+    case initializationFailed
+    
 }

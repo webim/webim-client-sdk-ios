@@ -53,23 +53,23 @@ class WMSaveView: UIView {
     func animateImage() {
         WMSaveView.animate(withDuration: 0.15, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
             self.circleView.alpha = 1.0
-        }) { _ in
+        }, completion: { _ in
             self.checkmark.animateCheckmark()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
                 WMSaveView.animate(withDuration: 0.15, delay: 0, options: UIView.AnimationOptions.curveEaseIn, animations: {
                     self.circleView.alpha = 0
-                }) { _ in
+                }, completion: { _ in
                     self.removeFromSuperview()
-                }
+                })
             }
-        }
+        })
     }
 }
 
 class CheckmarkView: UIView {
 
     @objc override dynamic class var layerClass: AnyClass {
-        get { return CAShapeLayer.self }
+        return CAShapeLayer.self
     }
 
     public func animateCheckmark() {

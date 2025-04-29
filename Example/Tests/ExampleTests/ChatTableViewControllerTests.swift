@@ -70,7 +70,8 @@ class ChatViewControllerTests: XCTestCase {
                                       visitorReactionInfo: nil,
                                       visitorCanReact: nil,
                                       visitorChangeReaction: nil,
-                                      group: nil)
+                                      group: nil,
+                                      deleted: false)
             messages.append(message as Message)
         }
         

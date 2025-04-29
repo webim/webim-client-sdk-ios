@@ -31,6 +31,7 @@ import WebimMobileSDK
 final class WMStartViewController: UIViewController {
 
     // MARK: - Private Properties
+    
     private var unreadMessageCounter: Int = 0
 
     private lazy var alertDialogHandler = UIAlertHandler(delegate: self)
@@ -38,28 +39,23 @@ final class WMStartViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet var logoImageView: UIImageView!
-    @IBOutlet var appVersion: UILabel!
     @IBOutlet var welcomeLabel: UILabel!
     @IBOutlet var welcomeTextView: UITextView!
     @IBOutlet var startChatButton: UIButton!
     @IBOutlet var settingsButton: UIButton!
-    @IBOutlet var unreadMessageCounterView: UIView!
     @IBOutlet var unreadMessageCounterLabel: UILabel!
-    @IBOutlet var unreadMessageCounterActivity: UIActivityIndicatorView!
 
-    @IBOutlet var startConstraint: NSLayoutConstraint!
     @IBOutlet var logoConstraint: NSLayoutConstraint!
+    @IBOutlet var welcomeConstraint: NSLayoutConstraint!
     
     // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkOrientation()
         setupStartChatButton()
         setupSettingsButton()
         setupLogoTapGestureRecognizer()
-        setupNavigationBarUpdater()
-        updateNavigationBar()
-        self.unreadMessageCounterLabel.layer.masksToBounds = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -73,9 +69,6 @@ final class WMStartViewController: UIViewController {
         style.lineHeightMultiple = 1.17
         let stringAttributes = [NSAttributedString.Key.paragraphStyle: style]
         welcomeLabel.attributedText = NSAttributedString(string: "Welcome to the WebimClientLibrary app!".localized, attributes: stringAttributes)
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String, let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            self.appVersion.text = "v. " + version
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -111,9 +104,9 @@ final class WMStartViewController: UIViewController {
 
     private func checkOrientation() {
         DispatchQueue.main.async {
-            let orientation = UIApplication.shared.statusBarOrientation.isLandscape
-            self.startConstraint.constant = orientation ? 20 : 50
-            self.logoConstraint.constant = orientation ? -10 : 30
+            let orientation = UIWindow.isLandscape
+            self.logoConstraint.constant = orientation ? 0 : 108
+            self.welcomeConstraint.constant = orientation ? 10 : 48
         }
     }
 
@@ -151,29 +144,13 @@ final class WMStartViewController: UIViewController {
 
         settingsButton.setTitleColor(settingsButtonTitleColour, for: .normal)
 
-        settingsButton.layer.borderColor = settingButtonBorderColour
+        settingsButton.layer.borderColor = settingButtonBorderColour.cgColor
     }
 
     private func updateMessageCounter() {
         DispatchQueue.main.async {
-            if self.unreadMessageCounter > 0 {
-                self.unreadMessageCounterView.alpha = 1
-                self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
-                self.unreadMessageCounterActivity.stopAnimating()
-                self.unreadMessageCounterLabel.text = "\(self.unreadMessageCounter)"
-            } else {
-                self.unreadMessageCounterView.alpha = 0
-            }
+            self.unreadMessageCounterLabel.text = "New messages".localized + ": \(self.unreadMessageCounter)"
         }
-    }
-
-    private func setupNavigationBarUpdater() {
-        NavigationBarUpdater.shared.set(navigationController: navigationController)
-    }
-
-    private func updateNavigationBar() {
-        NavigationBarUpdater.shared.update(with: .defaultStyle)
-        NavigationBarUpdater.shared.set(isNavigationBarVisible: true)
     }
 
     private func presentChatViewController(openFromNotification: Bool, visitorData: Data? = nil) {
@@ -184,7 +161,10 @@ final class WMStartViewController: UIViewController {
             visitorFieldsData: visitorData,
             webimLogger: WidgetLogManager.shared,
             webimLoggerVerbosityLevel: .debug,
-            availableLogTypes: [.manualCall,.messageHistory,.networkRequest,.undefined],
+            availableLogTypes: [.manualCall,
+                                .messageHistory,
+                                .networkRequest,
+                                .undefined],
             openFromNotification: openFromNotification
         )
         
@@ -203,30 +183,31 @@ final class WMStartViewController: UIViewController {
 }
 
 // MARK: - WEBIM: MessageListener
+
 extension WMStartViewController: UnreadByVisitorMessageCountChangeListener {
 
     // MARK: - Methods
+    
     func changedUnreadByVisitorMessageCountTo(newValue: Int) {
-        if unreadMessageCounter == 0 {
-            DispatchQueue.main.async {
-                self.unreadMessageCounterActivity.stopAnimating()
-            }
-        }
         unreadMessageCounter = newValue
         updateMessageCounter()
+        if #available(iOS 16.0, *) {
+            UNUserNotificationCenter.current().setBadgeCount(newValue, withCompletionHandler: nil)
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = newValue
+        }
     }
 }
 
-
-
 // MARK: - FatalErrorHandler
+
 extension WMStartViewController: FatalErrorHandlerDelegate {
 
     // MARK: - Methods
+    
     func showErrorDialog(withMessage message: String) {
         alertDialogHandler.showCreatingSessionFailureDialog(withMessage: message)
         startChatButton.isHidden = true
-        unreadMessageCounterView.isHidden = true
     }
 
 }

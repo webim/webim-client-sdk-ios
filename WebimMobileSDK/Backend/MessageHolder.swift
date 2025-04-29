@@ -80,7 +80,7 @@ final class MessageHolder {
         self.messageStream = messageStream
     }
     
-    func getMessageStram() -> MessageStream? {
+    func getMessageStream() -> MessageStream? {
         return messageStream
     }
     
@@ -372,6 +372,12 @@ final class MessageHolder {
             logType: .messageHistory)
     }
     
+    func deleteFromSending(message: MessageToSend) {
+        var set = Set<String>()
+        set.insert(message.getID())
+        receiveHistoryUpdateWith(messages: [], deleted: set) { }
+    }
+    
     func sendingCancelledWith(messageID: String) {
         for (index, message) in messagesToSend.enumerated() {
             if message.getID() == messageID {
@@ -400,7 +406,7 @@ final class MessageHolder {
         }
     }
     
-    func changing(messageID: String, message: String?) -> String? {
+    func changing(messageID: String, message: String?, isDeleted: Bool? = nil) -> String? {
         if messageTracker == nil {
             WebimInternalLogger.shared.log(
                 entry: "Changing cancelled.\nMessage tracker is nil in MessageHolder - \(#function)",
@@ -450,7 +456,8 @@ final class MessageHolder {
                                      visitorReactionInfo: messageImpl.getVisitorReaction(),
                                      visitorCanReact: messageImpl.canVisitorReact(),
                                      visitorChangeReaction: messageImpl.canVisitorChangeReaction(),
-                                     group: messageImpl.getGroup())
+                                     group: messageImpl.getGroup(),
+                                     deleted: isDeleted ?? messageImpl.isDeleted())
         messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
         WebimInternalLogger.shared.log(
             entry: "Changing success.\nMessage \(messageImpl.getText()) changed to \(newMessage.getText()) in MessageHolder - \(#function)",
@@ -512,7 +519,8 @@ final class MessageHolder {
                                      visitorReactionInfo: messageImpl.getVisitorReaction(),
                                      visitorCanReact: messageImpl.canVisitorReact(),
                                      visitorChangeReaction: messageImpl.canVisitorChangeReaction(),
-                                     group: messageImpl.getGroup())
+                                     group: messageImpl.getGroup(),
+                                     deleted: messageImpl.isDeleted())
         messageTracker?.messageListener?.changed(message: messageImpl, to: newMessage)
 
         WebimInternalLogger.shared.log(

@@ -28,7 +28,9 @@ import UIKit
 import WebimMobileSDK
 
 extension WMSettingsViewController {
+    
     // MARK: - Methods
+    
     func setupColorScheme() {
         view.backgroundColor = backgroundViewColour
         
@@ -37,9 +39,19 @@ extension WMSettingsViewController {
     }
     
     // MARK: - Private methods
+    
     func setupNavigationItem() {
-        let titleView = getTitleView()
-        self.navigationItem.titleView = titleView
+        let titleLabel = UILabel()
+        let toogleTestModeGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(toogleTestMode)
+        )
+        toogleTestModeGestureRecognizer.numberOfTapsRequired = 5
+        titleLabel.text = "Settings".localized
+        titleLabel.textColor = .white
+        titleLabel.isUserInteractionEnabled = true
+        titleLabel.addGestureRecognizer(toogleTestModeGestureRecognizer)
+        self.navigationItem.titleView = titleLabel
     }
     
     func setupLabels() {
@@ -69,42 +81,5 @@ extension WMSettingsViewController {
         }
         selectVisitorCell.usernameLabel.text = visitorRow.rawValue.localized
     }
-    
-    private func getTitleView() -> UIView {
-        let label = UILabel()
-        let imageView = UIImageView()
-        let titleView = UIView()
 
-        titleView.addSubview(imageView)
-
-        setupTitleImageView(imageView)
-
-        setupTitleViewConstraints(imageView: imageView)
-        return titleView
-    }
-
-
-    private func setupTitleImageView(_ imageView: UIImageView) {
-        let toogleTestModeGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(toogleTestMode)
-        )
-        imageView.image = navigationBarTitleImageViewImage
-        imageView.contentMode = .scaleAspectFill
-        toogleTestModeGestureRecognizer.numberOfTapsRequired = 5
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(toogleTestModeGestureRecognizer)
-    }
-
-
-    private func setupTitleViewConstraints(
-        imageView: UIView
-    ) {
-        imageView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview().dividedBy(1.5)
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
-        }
-    }
 }
