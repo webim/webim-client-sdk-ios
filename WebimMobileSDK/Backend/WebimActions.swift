@@ -71,7 +71,8 @@ protocol WebimActions {
     func startChat(withClientSideID clientSideID: String,
                    firstQuestion: String?,
                    departmentKey: String?,
-                   customFields: String?)
+                   customFields: String?,
+                   forceStart: Bool)
     
     func closeChat()
     

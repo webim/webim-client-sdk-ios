@@ -327,7 +327,8 @@ extension WebimActionsImpl: WebimActions {
     func startChat(withClientSideID clientSideID: String,
                    firstQuestion: String? = nil,
                    departmentKey: String? = nil,
-                   customFields: String? = nil) {
+                   customFields: String? = nil,
+                   forceStart: Bool) {
         var dataToPost = [Parameter.actionn.rawValue: Action.startChat.rawValue,
                           Parameter.forceOnline.rawValue: true,
                           Parameter.clientSideID.rawValue: clientSideID] as [String: Any]
@@ -339,6 +340,9 @@ extension WebimActionsImpl: WebimActions {
         }
         if let custom_fields = customFields {
             dataToPost[Parameter.customFields.rawValue] = custom_fields
+        }
+        if forceStart {
+            dataToPost[Parameter.forceStartChat.rawValue] = true
         }
         
         let urlString = actionRequestLoop.baseURL + ServerPathSuffix.doAction.rawValue

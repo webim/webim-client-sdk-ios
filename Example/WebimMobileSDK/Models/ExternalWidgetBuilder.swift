@@ -323,15 +323,21 @@ class ExternalWidgetBuilder {
             .font: UIFont.systemFont(ofSize: 13, weight: .regular),
             .foregroundColor: botMessageTextColour
         ]
-        let botButtonCellConfig = WMAbstractCellConfigBuilder()
-            .set(backgroundColor: botMessageBubbleColour)
+        let botButtonCellConfig = WMBotCellConfigBuilder()
+            .set(backgroundColor: buttonsBorderBackgroundColor)
+            .set(buttonChoosenTitleColor: buttonChoosenTitleColor)
+            .set(buttonActiveTitleColor: buttonActiveTitleColor)
+            .set(buttonCanceledTitleColor: buttonCanceledTitleColor)
+            .set(buttonChoosenBackgroundColor: buttonChoosenBackgroundColor)
+            .set(buttonActiveBackgroundColor: buttonActiveBackgroundColor)
+            .set(buttonCanceledBackgroundColor: buttonCanceledBackgroundColor)
             .set(roundCorners: [.layerMinXMinYCorner,
                                 .layerMaxXMinYCorner,
                                 .layerMaxXMaxYCorner,
                                 .layerMinXMaxYCorner])
             .set(cornerRadius: 20)
             .set(subtitleAttributes: botButtonLabelAttributes)
-            .set(strokeWidth: 1)
+            .set(strokeWidth: 0)
             .set(strokeColor: buttonBorderColor)
             .build()
         let toolBarConfig = WMToolbarConfigBuilder()

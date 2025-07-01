@@ -45,6 +45,8 @@ public struct AccountConfig: Codable {
     public let rateForm: String?
     public let ratedEntity: String?
     public let visitorSegment: String?
+    public let showProcessingPersonalDataCheckbox: Bool?
+    public let processingPersonalDataUrl: String?
 //    let multilang, chattingTimer, googleAnalytics: Bool
 //    let yandexMetrikaCounterID: JSONNull?
 //    let teleport: Bool
@@ -70,6 +72,8 @@ public struct AccountConfig: Codable {
         case rateForm = "rate_form"
         case ratedEntity = "rated_entity"
         case visitorSegment = "visitor_segment"
+        case showProcessingPersonalDataCheckbox = "show_processing_personal_data_checkbox"
+        case processingPersonalDataUrl = "processing_personal_data_url"
 //        case multilang
 //        case chattingTimer = "chatting_timer"
 //        case googleAnalytics = "google_analytics"

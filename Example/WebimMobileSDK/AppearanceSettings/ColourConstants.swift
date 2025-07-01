@@ -79,12 +79,12 @@ let dateLabelColour = GREY
 let timeLabelColour = GREY
 let messageStatusIndicatorColour = WEBIM_DARK_PUPRLE.cgColor
 let documentFileStatusPercentageIndicatorColour = WEBIM_CYAN.cgColor
-let buttonDefaultBackgroundColour = WHITE
-let buttonChoosenBackgroundColour = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
-let buttonCanceledBackgroundColour = WHITE
-let buttonDefaultTitleColour = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
-let buttonChoosenTitleColour = WHITE
-let buttonCanceledTitleColour = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
+let buttonActiveBackgroundColor = WHITE
+let buttonChoosenBackgroundColor = #colorLiteral(red: 0.08396101971, green: 0.6745521426, blue: 0.8230951428, alpha: 1)
+let buttonCanceledBackgroundColor = WHITE
+let buttonActiveTitleColor = #colorLiteral(red: 0.08396101971, green: 0.6745521426, blue: 0.8230951428, alpha: 1)
+let buttonChoosenTitleColor = WHITE
+let buttonCanceledTitleColor = #colorLiteral(red: 0.8823529412, green: 0.8901960784, blue: 0.9176470588, alpha: 1)
 let buttonBorderColor = #colorLiteral(red: 0.2235294118, green: 0.2470588235, blue: 0.4196078431, alpha: 1)
 let networkErrorViewBackgroundColour = #colorLiteral(red: 0.4, green: 0.4156862745, blue: 0.5058823529, alpha: 1)
 
@@ -133,6 +133,8 @@ let operatorMessageTextColour = #colorLiteral(red: 0.1490196078, green: 0.160784
 /// WMBotButtonsMessageCell
 let botMessageBubbleColour = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 let botMessageTextColour = #colorLiteral(red: 0.2196078431, green: 0.2509803922, blue: 0.4196078431, alpha: 1)
+let buttonsBorderBackgroundColor = #colorLiteral(red: 0.8745098039, green: 0.8862745098, blue: 0.9137254902, alpha: 1)
+
 /// FileMessage
 let errorFileImageColor = #colorLiteral(red: 0.7882352941, green: 0.3411764706, blue: 0.2196078431, alpha: 1)
 let visitorFileMessageTextColour = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.6958971088)

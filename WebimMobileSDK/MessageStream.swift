@@ -278,7 +278,7 @@ public protocol MessageStream: AnyObject {
     
     /**
      Changes `ChatState` to `ChatState.queue`.
-     Can cause `VisitSessionState.departmentSelection` session state. It means that chat must be started by `startChat(departmentKey:)` method.
+     Can cause `VisitSessionState.departmentSelection` or 'VisitSessionState.firstQuestion` session state. It means that chat must be started by `startChat(departmentKey:)` method or `startChat(firstQuestion:)`.
      - throws:
      `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
      `AccessError.invalidSession` if WebimSession was destroyed.
@@ -288,6 +288,19 @@ public protocol MessageStream: AnyObject {
      2017 Webim
      */
     func startChat() throws
+    
+    /**
+     Changes `ChatState` to `ChatState.queue`.
+     Forces a chat to start regardless of account settings.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2025 Webim
+     */
+    func forceStartChat() throws
     
     /**
      Starts chat and sends first message simultaneously.
@@ -320,6 +333,23 @@ public protocol MessageStream: AnyObject {
      2017 Webim
      */
     func startChat(departmentKey: String?) throws
+    
+    /**
+     Force starts chat with particular department if account settings requires to start a chat with the first question
+     Changes `ChatState` to `ChatState.queue`.
+     - seealso:
+     `Department` protocol.
+     - parameter departmentKey:
+     Department key (see `getKey()` of `Department` protocol). Calling this method without this parameter passed is the same as `startChat()` method is called.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2025 Webim
+     */
+    func forceStartChat(departmentKey: String?) throws
 
     
     /**
@@ -2529,6 +2559,15 @@ public enum VisitSessionState {
     
     @available(*, unavailable, renamed: "unknown")
     case UNKNOWN
+    
+    /**
+     First question state.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case firstQuestion
     
 }
 

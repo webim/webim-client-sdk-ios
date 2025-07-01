@@ -53,6 +53,7 @@ enum Parameter: String {
     case event = "event"
     case firstQuestion = "first-question"
     case forceOnline = "force-online"
+    case forceStartChat = "force-start"
     case guid = "guid"
     case hintQuestion = "hint_question"
     case kind = "kind"

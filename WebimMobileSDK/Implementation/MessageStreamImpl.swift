@@ -375,6 +375,8 @@ final class MessageStreamImpl {
             return .idleAfterChat
         case .offlineMessage:
             return .offlineMessage
+        case .firstQuestion:
+            return .firstQuestion
         default:
             return .unknown
         }
@@ -552,6 +554,13 @@ extension MessageStreamImpl: MessageStream {
                       firstQuestion: nil)
     }
     
+    func forceStartChat() throws {
+        try startChat(departmentKey: nil,
+                      firstQuestion: nil,
+                      customFields: nil,
+                      forceStart: true)
+    }
+    
     func startChat(firstQuestion: String?) throws {
         try startChat(departmentKey: nil,
                       firstQuestion: firstQuestion)
@@ -560,6 +569,13 @@ extension MessageStreamImpl: MessageStream {
     func startChat(departmentKey: String?) throws {
         try startChat(departmentKey: departmentKey,
                       firstQuestion: nil)
+    }
+    
+    func forceStartChat(departmentKey: String?) throws {
+        try startChat(departmentKey: departmentKey,
+                      firstQuestion: nil,
+                      customFields: nil,
+                      forceStart: true)
     }
     
     func startChat(customFields:String?) throws {
@@ -581,6 +597,13 @@ extension MessageStreamImpl: MessageStream {
     func startChat(departmentKey: String?,
                    firstQuestion: String?,
                    customFields: String?) throws {
+        try startChat(departmentKey: departmentKey, firstQuestion: firstQuestion, customFields: customFields, forceStart: false)
+    }
+    
+    func startChat(departmentKey: String?,
+                   firstQuestion: String?,
+                   customFields: String?,
+                   forceStart: Bool) throws {
         try accessChecker.checkAccess()
         
         if (lastChatState.isClosed()
@@ -589,7 +612,8 @@ extension MessageStreamImpl: MessageStream {
             webimActions.startChat(withClientSideID: ClientSideID.generateClientSideID(),
                                    firstQuestion: firstQuestion,
                                    departmentKey: departmentKey,
-                                   customFields: customFields)
+                                   customFields: customFields,
+                                   forceStart: forceStart)
             WebimInternalLogger.shared.log(
                 entry: "Request start chat in MessageStreamImpl - \(#function)",
                 verbosityLevel: .verbose,
