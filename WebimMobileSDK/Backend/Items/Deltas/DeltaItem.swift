@@ -55,6 +55,7 @@ final class DeltaItem {
         case visitSessionState = "VISIT_SESSION_STATE"
         case chatMessageRead = "MESSAGE_READ"
         case chatId = "CHAT_ID"
+        case visitSessionLang = "VISIT_SESSION_LANG"
     }
     enum Event: String {
         case add = "add"

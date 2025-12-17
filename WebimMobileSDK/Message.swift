@@ -348,6 +348,23 @@ public protocol MessageData {
      */
     func getAttachment() -> MessageAttachment?
     
+    /**
+     Messages can contain translation info.
+     - attention:
+     This mechanism can't be used as is. It requires that client server to support this mechanism.
+     - seealso:
+     `TranslationInfo` protocol.
+     - returns:
+     Information about message translation.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getTranslationInfo() -> TranslationInfo?
+    
+    func isEqual(to messageData: MessageData) -> Bool
+    
 }
 
 /**
@@ -1030,6 +1047,21 @@ public protocol Quote {
     func getState() -> QuoteState
     
     /**
+     Quote message can contain translation info.
+     - attention:
+     This mechanism can't be used as is. It requires that client server to support this mechanism.
+     - seealso:
+     `TranslationInfo` protocol.
+     - returns:
+     Information about message translation.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getTranslationInfo() -> TranslationInfo?
+    
+    /**
      Method which can be used to compare if two Quote objects have identical contents.
      - parameter quote:
      Second `Quote` object.
@@ -1448,4 +1480,52 @@ public protocol Group {
      2014 Webim
      */
     func getMessageNumber() -> Int
+}
+
+// MARK: -
+/**
+ Information about message translation.
+ - author:
+ Anna Frolova
+ - copyright:
+ 2025 Webim
+ */
+public protocol TranslationInfo {
+    /**
+     Translated text
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getTranslatedText() -> String?
+    
+    /**
+     Source language.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getSourceLang() -> String?
+    
+    /**
+     Target language.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getTargetLang() -> String?
+    
+    /**
+     Error text.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getError() -> String?
+    
+    func isEqual(to translationInfo: TranslationInfo) -> Bool
 }

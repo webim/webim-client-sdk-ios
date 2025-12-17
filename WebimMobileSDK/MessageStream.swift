@@ -134,6 +134,16 @@ public protocol MessageStream: AnyObject {
     func getCurrentOperator() -> Operator?
     
     /**
+     - returns:
+     Language of the current chat.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getChatLanguage() -> String?
+    
+    /**
      - parameter id:
      ID of the operator.
      - returns:
@@ -1212,6 +1222,19 @@ public protocol MessageStream: AnyObject {
     func set(helloMessageListener: HelloMessageListener)
     
     /**
+     Sets the listener of session language changes.
+     - parameter sessionLanguageListener:
+     `SessionLanguageListener` object.
+     - seealso:
+     `SessionLanguageListener`
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func set(sessionLanguageListener: SessionLanguageListener)
+    
+    /**
      Called when user clear history.
      - attention:
      This method can't be used as is. It requires that client server to support this mechanism.
@@ -2078,6 +2101,30 @@ public protocol OnlineStatusChangeListener: AnyObject {
      */
     func changed(onlineStatus previousOnlineStatus: OnlineStatus,
                  to newOnlineStatus: OnlineStatus)
+    
+}
+
+/**
+ Interface that provides methods for handling changes of session language.
+ - seealso:
+ `MessageStream.set(sessionLanguageListener:)`
+ - author:
+ Anna Frolova
+ - copyright:
+ 2025 Webim
+ */
+public protocol SessionLanguageListener: AnyObject {
+    
+    /**
+     Called when new session language is received.
+     - parameter newLang:
+     New value.`
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func changed(newLang: String?)
     
 }
 

@@ -122,6 +122,9 @@ final class DeltaCallback {
             case .chatId:
                 handleChatId(delta: delta)
                 
+            case .visitSessionLang:
+                handleSessionLang(delta: delta)
+                
             default:
                 // Not supported delta type.
                 
@@ -485,5 +488,10 @@ final class DeltaCallback {
         }
         
         currentChat?.set(id: id)
+    }
+    
+    private func handleSessionLang(delta: DeltaItem) {
+        guard let lang = delta.getData() as? String else { return }
+        messageStream?.set(sessionLang: lang)
     }
 }

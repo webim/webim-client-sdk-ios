@@ -58,6 +58,7 @@ final class ChatItem {
         case unreadByVisitorMessageCount = "unreadByVisitorMsgCnt"
         case unreadByVisitorTimestamp = "unreadByVisitorSinceTs"
         case visitorTyping = "visitorTyping"
+        case translationOptions = "translationOptions"
     }
     
     // MARK: - Properties
@@ -80,6 +81,7 @@ final class ChatItem {
     private var unreadByVisitorMessageCount: Int
     private var unreadByVisitorTimestamp: Double?
     private var visitorTyping: Bool?
+    private var translationOptions: TranslationOptionsItem?
     
     // MARK: - Initialization
     
@@ -260,6 +262,10 @@ final class ChatItem {
     
     func getOperatorIDToResolutionSurvey() -> [String: RatingItem]? {
         return operatorIDToResolutionSurvey
+    }
+    
+    func getTranslationOptions() -> TranslationOptionsItem? {
+        return translationOptions
     }
     
     func set(rating: RatingItem,

@@ -115,7 +115,7 @@ class AbstractRequestLoop {
     func perform(request: URLRequest, progressRequest: URLRequest? = nil) throws -> Data {
         var requestWithUserAgent = request
         var progressRequestWithUserAgent = progressRequest
-        let value = "iOS: Webim-Client 3.43.1; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")"
+        let value = "iOS: Webim-Client 3.43.2; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")"
         requestWithUserAgent.setValue(value, forHTTPHeaderField: "User-Agent")
         progressRequestWithUserAgent?.setValue(value, forHTTPHeaderField: "User-Agent")
         

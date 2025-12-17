@@ -69,7 +69,7 @@ final class MessageItem {
     private var chatID: String?
     private var clientSideID: String?
     private var rawData: [String: Any?]?
-    private var data: MessageData?
+    private var data: MessageDataItem?
     private var deleted: Bool?
     private var isEdited: Bool?
     private var kind: MessageKind?
@@ -122,8 +122,8 @@ final class MessageItem {
             }
         }
             
-        if let data = jsonDictionary[JSONField.data.rawValue] as? MessageData {
-            self.data = data
+        if let data = jsonDictionary[JSONField.data.rawValue] as? [String: Any?] {
+            self.data = MessageDataItem(jsonDictionary: data)
         }
         
         if let deleted = jsonDictionary[JSONField.deleted.rawValue] as? Bool {
@@ -205,7 +205,7 @@ final class MessageItem {
         return rawData
     }
     
-    func getData() -> MessageData? {
+    func getData() -> MessageDataItem? {
         return data
     }
     
@@ -380,6 +380,7 @@ final class QuoteItem {
         case senderName = "name"
         case text = "text"
         case timestamp = "ts"
+        case data = "data"
     }
     
     // MARK: - Properties
@@ -390,6 +391,7 @@ final class QuoteItem {
     private var senderName: String?
     private var text: String?
     private var timestamp: Int64 = -1
+    private var data: MessageDataItem?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -424,6 +426,10 @@ final class QuoteItem {
         if let timestamp = message[JSONField.timestamp.rawValue] as? Int64 {
             self.timestamp = timestamp
         }
+        
+        if let data = jsonDictionary[JSONField.data.rawValue] as? [String: Any?] {
+            self.data = MessageDataItem(jsonDictionary: data)
+        }
     }
     
     static func toDictionary(quote: Quote) -> [String: Any] {
@@ -451,7 +457,13 @@ final class QuoteItem {
         if let senderName = quote.getSenderName() {
             messageDictionary[JSONField.senderName.rawValue] = senderName
         }
-        return [JSONField.state.rawValue: QuoteStateItem(quoteState: quote.getState()).rawValue, JSONField.message.rawValue: messageDictionary]
+        var dictionary = [JSONField.state.rawValue: QuoteStateItem(quoteState: quote.getState()).rawValue,
+                          JSONField.message.rawValue: messageDictionary] as [String : Any]
+        if let data = quote.getTranslationInfo(),
+           let translationInfoItem = TranslationInfoItem.toDictionary(data: data) {
+            dictionary[JSONField.data.rawValue] = translationInfoItem
+        }
+        return dictionary
     }
     
     // MARK: - Methods
@@ -484,6 +496,10 @@ final class QuoteItem {
         return state
     }
     
+    func getData() -> MessageDataItem? {
+        return data
+    }
+    
     // MARK: -
     enum QuoteStateItem: String {
         // Raw values equal to field names received in responses from server.
@@ -511,18 +527,27 @@ final class QuoteItem {
 final public class MessageDataItem {
     private enum JSONField: String {
         case file = "file"
+        case translationInfo = "translation_info"
     }
     
     private var file: FileItem?
+    private var translationInfo: TranslationInfoItem?
     
     init(jsonDictionary: [String: Any?]) {
         if let dataDictonary = jsonDictionary[JSONField.file.rawValue] as? [String: Any?]  {
             self.file = FileItem(jsonDictionary: dataDictonary)
         }
+        if let translationInfo = jsonDictionary[JSONField.translationInfo.rawValue] as? [String: Any?]  {
+            self.translationInfo = TranslationInfoItem(jsonDictionary: translationInfo)
+        }
     }
     
     func getFile() -> FileItem? {
         return file
+    }
+    
+    func getTranslationInfo() -> TranslationInfoItem? {
+        return translationInfo
     }
 }
 
@@ -666,5 +691,73 @@ final class GroupItem {
     
     func getMessageNumber() -> Int {
         return messageNumber
+    }
+}
+
+final class TranslationInfoItem {
+
+    private enum JSONField: String {
+        case sourceLang = "source_lang"
+        case targetLang = "target_lang"
+        case translatedText = "translated_text"
+        case error = "error"
+        case translationInfo = "translation_info"
+    }
+    
+    private var translatedText: String?
+    private var sourceLang: String?
+    private var targetLang: String?
+    private var error: String?
+    
+    init(jsonDictionary: [String: Any?]) {
+        if let translatedText = jsonDictionary[JSONField.translatedText.rawValue] as? String {
+            self.translatedText = translatedText
+        }
+        
+        if let sourceLang = jsonDictionary[JSONField.sourceLang.rawValue] as? String {
+            self.sourceLang = sourceLang
+        }
+        
+        if let targetLang = jsonDictionary[JSONField.targetLang.rawValue] as? String {
+            self.targetLang = targetLang
+        }
+        
+        if let error = jsonDictionary[JSONField.error.rawValue] as? String {
+            self.error = error
+        }
+    }
+    
+    func getTranslatedText() -> String? {
+        return translatedText
+    }
+    
+    func getSourceLang() -> String? {
+        return sourceLang
+    }
+    
+    func getTargetLang() -> String? {
+        return targetLang
+    }
+    
+    func getError() -> String? {
+        return error
+    }
+    
+    static func toDictionary(data: TranslationInfo) -> [String: Any]? {
+        var dictionary: [String: Any] = [:]
+        if let sourceLang = data.getSourceLang() {
+            dictionary[JSONField.sourceLang.rawValue] = sourceLang
+        }
+        if let targetLang = data.getTargetLang() {
+            dictionary[JSONField.targetLang.rawValue] = targetLang
+        }
+        if let translatedText = data.getTranslatedText() {
+            dictionary[JSONField.translatedText.rawValue] = translatedText
+        }
+        if let error = data.getError() {
+            dictionary[JSONField.error.rawValue] = error
+        }
+        
+        return [JSONField.translationInfo.rawValue: dictionary]
     }
 }

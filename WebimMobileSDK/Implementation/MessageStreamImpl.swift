@@ -73,6 +73,8 @@ final class MessageStreamImpl {
     private var surveyController: SurveyController?
     private var helloMessage: String?
     private weak var helloMessageListener: HelloMessageListener?
+    private weak var sessionLanguageListener: SessionLanguageListener?
+    private var lang: String?
     
     // MARK: - Initialization
     init(serverURLString: String,
@@ -193,7 +195,7 @@ final class MessageStreamImpl {
         
         let previousChat = self.chat
         self.chat = chat
-        
+        self.lang = chat.getTranslationOptions()?.getLanguage()
         messageHolder.receiving(newChat: self.chat,
                                 previousChat: previousChat,
                                 newMessages: currentChatMessageFactoriesMapper.mapAll(messages: chat.getMessages()))
@@ -423,6 +425,10 @@ extension MessageStreamImpl: MessageStream {
     
     func getCurrentOperator() -> Operator? {
         return currentOperator
+    }
+    
+    func getChatLanguage() -> String? {
+        return lang
     }
     
     func getLastRatingOfOperatorWith(id: String) -> Int {
@@ -711,7 +717,8 @@ extension MessageStreamImpl: MessageStream {
                                                                                             guid: nil,
                                                                                             fileUrlCreator: nil),
                                                                      filesInfo: [],
-                                                                     state: .upload))
+                                                                     state: .upload),
+                                   translationInfo: nil)
         messageHolder.sending(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data, filenameWithType: filename + "*" + mimeType))
         cache(file: file, messageID: messageID)
         
@@ -1278,6 +1285,10 @@ extension MessageStreamImpl: MessageStream {
         self.surveyController = SurveyController(surveyListener: surveyListener)
     }
     
+    func set(sessionLanguageListener: SessionLanguageListener) {
+        self.sessionLanguageListener = sessionLanguageListener
+    }
+    
     func set(helloMessageListener: HelloMessageListener) {
         self.helloMessageListener = helloMessageListener
     }
@@ -1286,6 +1297,11 @@ extension MessageStreamImpl: MessageStream {
         try accessChecker.checkAccess()
         webimActions.clearHistory()
         messageHolder.clearHistory()
+    }
+    
+    func set(sessionLang: String) {
+        self.lang = sessionLang
+        sessionLanguageListener?.changed(newLang: sessionLang)
     }
     
     // MARK: Private methods
@@ -1393,7 +1409,8 @@ fileprivate final class SendFileCompletionHandlerWrapper: SendFileCompletionHand
                                                                                             guid: nil,
                                                                                             fileUrlCreator: nil),
                                                                      filesInfo: [],
-                                                                     state: .error))
+                                                                     state: .error),
+                                   translationInfo: nil)
     
         messageHolder.changed(message: sendingMessageFactory.createFileMessageToSendWith(id: messageID, data: data, filenameWithType: ""))
         webimActions.sendFileProgress(fileSize: sendingFile.fileSize,

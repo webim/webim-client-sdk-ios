@@ -48,6 +48,7 @@ final class AccountConfigItem {
         case rateForm = "rate_form"
         case ratedEntity = "rated_entity"
         case visitorSegment = "visitor_segment"
+        case messagesTranslator = "messages_translator"
     }
     
     // MARK: - Properties
@@ -62,6 +63,7 @@ final class AccountConfigItem {
     private var rateForm: String?
     private var ratedEntity: String?
     private var visitorSegment: String?
+    private var messagesTranslator: Bool?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -110,6 +112,10 @@ final class AccountConfigItem {
         if let visitorSegment = jsonDictionary[JSONField.visitorSegment.rawValue] as? String {
             self.visitorSegment = visitorSegment
         }
+        
+        if let messagesTranslator = jsonDictionary[JSONField.messagesTranslator.rawValue] as? Bool {
+            self.messagesTranslator = messagesTranslator
+        }
     }
     
     // MARK: - Methods
@@ -155,5 +161,9 @@ final class AccountConfigItem {
     
     func getVisitorSegment() -> String? {
         return visitorSegment
+    }
+    
+    func getMessagesTranslator() -> Bool? {
+        return messagesTranslator
     }
 }

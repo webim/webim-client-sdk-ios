@@ -538,10 +538,13 @@ final class MessageDataImpl: MessageData {
     
     // MARK: - Properties
     private let attachment: MessageAttachment?
+    private let translationInfo: TranslationInfo?
     
     // MARK: - Initialization
-    init(attachment: MessageAttachment?) {
+    init(attachment: MessageAttachment?,
+         translationInfo: TranslationInfo?) {
         self.attachment = attachment
+        self.translationInfo = translationInfo
     }
     
     // MARK: - Methods
@@ -549,6 +552,56 @@ final class MessageDataImpl: MessageData {
         return attachment
     }
     
+    func getTranslationInfo() -> TranslationInfo? {
+        return translationInfo
+    }
+    
+    func isEqual(to messageData: MessageData) -> Bool {
+        guard let messageData = messageData as? MessageDataImpl else {
+            return false
+        }
+        return self == messageData
+    }
+    
+    static private func convert(messageData: MessageDataItem?) -> MessageData {
+        let translationInfo = messageData?.getTranslationInfo()
+        return MessageDataImpl(attachment: nil,
+                               translationInfo: TranslationInfoImpl(translatedText: translationInfo?.getTranslatedText(),
+                                                                    sourceLang: translationInfo?.getSourceLang(),
+                                                                    targetLang: translationInfo?.getTargetLang(),
+                                                                    error: translationInfo?.getError()))
+    }
+}
+
+extension MessageDataImpl: Equatable {
+    static func == (lhs: MessageDataImpl, rhs: MessageDataImpl) -> Bool {
+        return areEqualMessageAttachment(lhs: lhs.getAttachment(), rhs: rhs.getAttachment())
+                && areEqualTranslationInfo(lhs: lhs.getTranslationInfo(), rhs: rhs.getTranslationInfo())
+    }
+    
+    private static func areEqualMessageAttachment(lhs: MessageAttachment?, rhs: MessageAttachment?) -> Bool {
+        if let checkNil = checkNil(lhs: lhs, rhs: rhs) {
+            return checkNil
+        }
+        return lhs!.isEqual(to: rhs!)
+    }
+    
+    private static func areEqualTranslationInfo(lhs: TranslationInfo?, rhs: TranslationInfo?) -> Bool {
+        if let checkNil = checkNil(lhs: lhs, rhs: rhs) {
+            return checkNil
+        }
+        return lhs!.isEqual(to: rhs!)
+    }
+    
+    private static func checkNil<T>(lhs: T?, rhs: T?) -> Bool? {
+        if lhs == nil && rhs != nil || lhs != nil && rhs == nil {
+            return false
+        }
+        if lhs == nil && rhs == nil {
+            return true
+        }
+        return nil
+    }
 }
 
 // MARK: -
@@ -1131,22 +1184,26 @@ extension KeyboardButtonImpl: Equatable {
         && areEqualParams(lhs: lhs.getParams(), rhs: rhs.getParams())
     }
     
-    private static func areEqualConfigurations(lhs: Configuration?, rhs: Configuration?) -> Bool {
+    private static func checkNil<T>(lhs: T?, rhs: T?) -> Bool? {
         if lhs == nil && rhs != nil || lhs != nil && rhs == nil {
             return false
         }
         if lhs == nil && rhs == nil {
             return true
+        }
+        return nil
+    }
+    
+    private static func areEqualConfigurations(lhs: Configuration?, rhs: Configuration?) -> Bool {
+        if let checkNil = checkNil(lhs: lhs, rhs: rhs) {
+            return checkNil
         }
         return lhs!.isEqual(to: rhs!)
     }
     
     private static func areEqualParams(lhs: Params?, rhs: Params?) -> Bool {
-        if lhs == nil && rhs != nil || lhs != nil && rhs == nil {
-            return false
-        }
-        if lhs == nil && rhs == nil {
-            return true
+        if let checkNil = checkNil(lhs: lhs, rhs: rhs) {
+            return checkNil
         }
         return lhs!.isEqual(to: rhs!)
     }
@@ -1373,6 +1430,7 @@ final class QuoteImpl: Quote {
     private let text: String?
     private let rawText: String?
     private let timestamp: Int64?
+    private let translationInfo: TranslationInfo?
     
     init(state: QuoteState,
          authorID: String?,
@@ -1382,7 +1440,8 @@ final class QuoteImpl: Quote {
          senderName: String?,
          text: String?,
          rawText: String?,
-         timestamp: Int64?) {
+         timestamp: Int64?,
+         translationInfo: TranslationInfo?) {
         self.state = state
         self.authorID = authorID
         self.messageAttachment = messageAttachment
@@ -1392,10 +1451,13 @@ final class QuoteImpl: Quote {
         self.text = text
         self.rawText = rawText
         self.timestamp = timestamp
+        self.translationInfo = translationInfo
     }
     
     // MARK: - Methods
-    static func getQuote(quoteItem: QuoteItem?, messageAttachment: FileInfo?, fileUrlCreator: FileUrlCreator? = nil) -> Quote? {
+    static func getQuote(quoteItem: QuoteItem?,
+                         messageAttachment: FileInfo?,
+                         fileUrlCreator: FileUrlCreator? = nil) -> Quote? {
         guard let quoteItem = quoteItem else {
             return nil
         }
@@ -1420,6 +1482,7 @@ final class QuoteImpl: Quote {
             WebimInternalLogger.shared.log(entry: "Quote Item has not State in KeyboardRequestImpl.\(#function)")
             return nil
         }
+        let translationInfo = convert(messageData: quoteItem.getData()?.getTranslationInfo())
         
         return QuoteImpl(state: convert(quoteState: quoteState),
                          authorID: quoteItem.getAuthorID(),
@@ -1429,7 +1492,8 @@ final class QuoteImpl: Quote {
                          senderName: quoteItem.getSenderName(),
                          text: text,
                          rawText: rawText,
-                         timestamp: quoteItem.getTimeInMicrosecond())
+                         timestamp: quoteItem.getTimeInMicrosecond(),
+                         translationInfo: translationInfo)
     }
     
     func getRawText() -> String? {
@@ -1472,11 +1536,23 @@ final class QuoteImpl: Quote {
         return state
     }
     
+    func getTranslationInfo() -> TranslationInfo? {
+        return translationInfo
+    }
+    
     func isEqual(to quote: Quote) -> Bool {
         guard let quote = quote as? QuoteImpl else {
             return false
         }
         return (self == quote)
+    }
+    
+    static private func convert(messageData: TranslationInfoItem?) -> TranslationInfo {
+        
+        return TranslationInfoImpl(translatedText: messageData?.getTranslatedText(),
+                                   sourceLang: messageData?.getSourceLang(),
+                                   targetLang: messageData?.getTargetLang(),
+                                   error: messageData?.getError())
     }
     
     static private func convert(quoteState: QuoteItem.QuoteStateItem) -> QuoteState {
@@ -1540,5 +1616,57 @@ extension GroupImpl: Group {
     
     func getMessageNumber() -> Int {
         return messageNumber
+    }
+}
+
+class TranslationInfoImpl: TranslationInfo {
+    
+    private let translatedText: String?
+    private let sourceLang: String?
+    private let targetLang: String?
+    private let error: String?
+    
+    init(translatedText: String?,
+         sourceLang: String?,
+         targetLang: String?,
+         error: String?) {
+        self.translatedText = translatedText
+        self.sourceLang = sourceLang
+        self.targetLang = targetLang
+        self.error = error
+    }
+    
+    func getTranslatedText() -> String? {
+        return translatedText
+    }
+    
+    func getSourceLang() -> String? {
+        return sourceLang
+    }
+    
+    func getTargetLang() -> String? {
+        return targetLang
+    }
+    
+    func getError() -> String? {
+        return error
+    }
+    
+    func isEqual(to translationInfo: TranslationInfo) -> Bool {
+        guard let translationInfo = translationInfo as? TranslationInfoImpl else {
+            return false
+        }
+        return (self == translationInfo)
+    }
+}
+
+extension TranslationInfoImpl: Equatable {
+    
+    static func == (lhs: TranslationInfoImpl,
+                    rhs: TranslationInfoImpl) -> Bool {
+        return lhs.getTranslatedText() == rhs.getTranslatedText()
+            && lhs.getSourceLang() == rhs.getSourceLang()
+            && lhs.getTargetLang() == rhs.getTargetLang()
+            && lhs.getError() == rhs.getError()
     }
 }

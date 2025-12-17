@@ -152,8 +152,8 @@ class MessageMapper {
                                                           state: state,
                                                           errorType: file?.getErrorType(),
                                                           errorMessage: file?.getErrorMessage(),
-                                                          visitorErrorMessage: file?.getVisitorErrorMessage())
-                    )
+                                                          visitorErrorMessage: file?.getVisitorErrorMessage()),
+                                                          translationInfo: nil)
                 } else {
                     if let rawData = messageItem.getRawData(),
                        let file = MessageDataItem(jsonDictionary: rawData).getFile() {
@@ -186,7 +186,8 @@ class MessageMapper {
                                                               downloadProgress: file.getDownloadProgress(),
                                                               errorType: file.getErrorType(),
                                                               errorMessage: file.getErrorMessage(),
-                                                              visitorErrorMessage: file.getVisitorErrorMessage()))
+                                                              visitorErrorMessage: file.getVisitorErrorMessage()),
+                                                              translationInfo: nil)
                     }
                 }
             }
@@ -197,6 +198,13 @@ class MessageMapper {
             text = attachment.getFileName()
             rawText = messageItemText
         } else {
+            if let translationInfo = messageItem.getData()?.getTranslationInfo() {
+                data = MessageDataImpl(attachment: nil,
+                                       translationInfo: TranslationInfoImpl(translatedText: translationInfo.getTranslatedText(),
+                                                                            sourceLang: translationInfo.getSourceLang(),
+                                                                            targetLang: translationInfo.getTargetLang(),
+                                                                            error: translationInfo.getError()))
+            }
             text = messageItemText
         }
         
@@ -265,7 +273,8 @@ class MessageMapper {
                            keyboard: keyboard,
                            keyboardRequest: keyboardRequest,
                            operatorID: messageItem.getSenderID(),
-                           quote: QuoteImpl.getQuote(quoteItem: quote, messageAttachment: messageAttachmentFromQuote),
+                           quote: QuoteImpl.getQuote(quoteItem: quote,
+                                                     messageAttachment: messageAttachmentFromQuote),
                            senderAvatarURLString: messageItem.getSenderAvatarURLString(),
                            senderName: senderName,
                            sticker: sticker,
@@ -391,7 +400,8 @@ final class SendingFactory {
                                               senderName: repliedMessage.getSenderName(),
                                               text: repliedMessage.getText(),
                                               rawText: repliedMessage.getText(),
-                                              timestamp: Int64(repliedMessage.getTime().timeIntervalSince1970 * 1000)))
+                                              timestamp: Int64(repliedMessage.getTime().timeIntervalSince1970 * 1000),
+                                              translationInfo: repliedMessage.getData()?.getTranslationInfo()))
     }
 
     

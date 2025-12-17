@@ -25,6 +25,7 @@
 		11B3B133291DD3C000BA2C96 /* AccountConfigItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3B132291DD3C000BA2C96 /* AccountConfigItem.swift */; };
 		11D5A33326D45E4A00AE290C /* LocationSettingsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
+		11E394442EF349FF00677426 /* TranslationOptionsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E394432EF349F000677426 /* TranslationOptionsItem.swift */; };
 		11E5C3B428FED8E100389B07 /* WebimAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E5C3B328FED8E100389B07 /* WebimAlert.swift */; };
 		11E5C3BB2900193E00389B07 /* WebimInternalAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E5C3BA2900193E00389B07 /* WebimInternalAlert.swift */; };
 		123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */; };
@@ -147,6 +148,7 @@
 		11B3B132291DD3C000BA2C96 /* AccountConfigItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfigItem.swift; sourceTree = "<group>"; };
 		11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
+		11E394432EF349F000677426 /* TranslationOptionsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationOptionsItem.swift; sourceTree = "<group>"; };
 		11E5C3B328FED8E100389B07 /* WebimAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimAlert.swift; sourceTree = "<group>"; };
 		11E5C3BA2900193E00389B07 /* WebimInternalAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimInternalAlert.swift; sourceTree = "<group>"; };
 		123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSynchronizedObject.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 		8FD24482200CE25A007EB9CB /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				11E394432EF349F000677426 /* TranslationOptionsItem.swift */,
 				8FD24483200CE25A007EB9CB /* OperatorItem.swift */,
 				8FD24484200CE25A007EB9CB /* DepartmentItem.swift */,
 				8FD24485200CE25A007EB9CB /* RatingItem.swift */,
@@ -633,6 +636,7 @@
 				8FD244AA200CE25C007EB9CB /* WebimRemoteNotification.swift in Sources */,
 				8FD244B9200CE25C007EB9CB /* LocationSettingsHolder.swift in Sources */,
 				8FD244B7200CE25C007EB9CB /* MessageComposingHandler.swift in Sources */,
+				11E394442EF349FF00677426 /* TranslationOptionsItem.swift in Sources */,
 				8FD244A9200CE25C007EB9CB /* MessageListener.swift in Sources */,
 				8FD244E0200CE25C007EB9CB /* DepartmentImpl.swift in Sources */,
 				8FD244EC200CE25C007EB9CB /* Webim.swift in Sources */,
