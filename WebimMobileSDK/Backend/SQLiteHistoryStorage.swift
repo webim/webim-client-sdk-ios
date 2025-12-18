@@ -318,7 +318,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                         + "\(SQLiteHistoryStorage.ColumnName.canVisitorChangeReaction.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.reaction.rawValue), "
                         + "\(SQLiteHistoryStorage.ColumnName.status.rawValue), "
-                        + "\(SQLiteHistoryStorage.ColumnName.deleted.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                        + "\(SQLiteHistoryStorage.ColumnName.deleted.rawValue)) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                     let statement = try db.prepare(query)
                     try statement.run(messageHistoryID.getDBid(),
                                       message.getID(),

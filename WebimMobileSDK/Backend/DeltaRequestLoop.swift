@@ -193,7 +193,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestInitialization() {
         let url = URL(string: baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.43.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.43.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -214,7 +214,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestAccountConfig() {
         let url = URL(string: baseURL + ServerPathSuffix.getServerSideSettings.rawValue + "?" + "location=" + location)
         var request = URLRequest(url: url!)
-        request.setValue("3.43.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("3.43.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
