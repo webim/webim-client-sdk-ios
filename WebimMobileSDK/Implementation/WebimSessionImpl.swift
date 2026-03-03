@@ -397,7 +397,7 @@ final class WebimSessionImpl {
             WMKeychainWrapper.standard.setDictionary(userDefaults,
                                       forKey: userDefaultsKey)
         }
-        _ = WMKeychainWrapper.removeObject(key: userDefaultsKey)
+        _ = WMKeychainWrapper.removePreviousVisitorData(key: userDefaultsKey)
         WebimInternalLogger.shared.log(
             entry: "Clear visitor data in WebimSessionImpl - \(#function)",
             verbosityLevel: .verbose)
@@ -484,7 +484,7 @@ final class WebimSessionImpl {
         }
         
         if newVisitorFieldsJSONString != previousVisitorFieldsJSONString {
-            _ = WMKeychainWrapper.removeObject(key: userDefaultsKey)
+            _ = WMKeychainWrapper.removePreviousVisitorData(key: userDefaultsKey)
             
             let newVisitorFieldsDictionary = [WMKeychainWrapperMainPrefix.visitorExt.rawValue: newVisitorFieldsJSONString]
             WMKeychainWrapper.standard.setDictionary(newVisitorFieldsDictionary as [String: Any],

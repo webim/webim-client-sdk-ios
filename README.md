@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.43.3
+github "webim/webim-client-sdk-ios" ~> 3.43.4
 ```
 
 ### Swift Package Manager
@@ -41,7 +41,8 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Chat scroll fix.
+* Fixed data saving in app without keychainAccessGroup.
+* Fixed data leketion after changing visitor or account. 
 
 ## Example
 

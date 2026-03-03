@@ -35,7 +35,7 @@ public class WMKeychainWrapper: NSObject {
     public static let deviceTokenKey = "device-token"
     public static let webimKeyPrefix = "ru.webim."
     let webimUserDefaultsFirstRunKey = "ru.webim.userDefaultsFirstRunKey"
-    public static var keychainAccessGroupName = ""
+    public static var keychainAccessGroupName: String? = nil
     public var userDefaults = UserDefaults.standard
     private var inited = false
     
@@ -132,10 +132,16 @@ public class WMKeychainWrapper: NSObject {
         return WMKeychainWrapper.readString(key: defaultName)
     }
 
+    static func removePreviousVisitorData(key: String) -> OSStatus {
+        return removeObject(key: webimKeyPrefix + key)
+    }
+    
     static func removeObject(key: String) -> OSStatus{
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: key,
-                                    kSecAttrAccessGroup as String: keychainAccessGroupName as AnyObject]
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrAccount as String: key]
+        if let keychainAccessGroupName = keychainAccessGroupName {
+            query[kSecAttrAccessGroup as String] = keychainAccessGroupName as AnyObject
+        }
         return SecItemDelete(query as CFDictionary)
     }
     
@@ -155,11 +161,13 @@ public class WMKeychainWrapper: NSObject {
     class func save(key: String, data: Data?) -> OSStatus {
         let secureStringKey = webimKeyPrefix + key
         
-        let query = [
+        var query = [
             kSecClass as String       : kSecClassGenericPassword as String,
             kSecAttrAccount as String : secureStringKey,
-            kSecValueData as String   : data as Any,
-            kSecAttrAccessGroup as String: keychainAccessGroupName as AnyObject] as [String : Any]
+            kSecValueData as String   : data as Any] as [String : Any]
+        if let keychainAccessGroupName = keychainAccessGroupName {
+            query[kSecAttrAccessGroup as String] = keychainAccessGroupName as AnyObject
+        }
         
         SecItemDelete(query as CFDictionary)
         
@@ -169,12 +177,14 @@ public class WMKeychainWrapper: NSObject {
     class func load(key: String) -> Data? {
         let secureStringKey = webimKeyPrefix + key
         
-        let query = [
+        var query = [
             kSecClass as String       : kSecClassGenericPassword,
             kSecAttrAccount as String : secureStringKey,
             kSecReturnData as String  : kCFBooleanTrue!,
-            kSecMatchLimit as String  : kSecMatchLimitOne,
-            kSecAttrAccessGroup as String: keychainAccessGroupName as AnyObject] as [String : Any]
+            kSecMatchLimit as String  : kSecMatchLimitOne] as [String : Any]
+        if let keychainAccessGroupName = keychainAccessGroupName {
+            query[kSecAttrAccessGroup as String] = keychainAccessGroupName as AnyObject
+        }
         
         var dataTypeRef: AnyObject? = nil
         
@@ -188,11 +198,13 @@ public class WMKeychainWrapper: NSObject {
     }
     
     open func getAllKeychainItems() -> [String?] {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
                                     kSecReturnAttributes as String: true,
-                                    kSecReturnRef as String: true,
-                                    kSecAttrAccessGroup as String: WMKeychainWrapper.keychainAccessGroupName as AnyObject]
+                                    kSecReturnRef as String: true]
+        if let keychainAccessGroupName = WMKeychainWrapper.keychainAccessGroupName {
+            query[kSecAttrAccessGroup as String] = keychainAccessGroupName as AnyObject
+        }
         var items_ref: CFTypeRef?
         _ = SecItemCopyMatching(query as CFDictionary, &items_ref)
         let items = items_ref as? Array<Dictionary<String, Any>> ?? []
