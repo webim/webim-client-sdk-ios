@@ -25,7 +25,6 @@
 		11B3B133291DD3C000BA2C96 /* AccountConfigItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3B132291DD3C000BA2C96 /* AccountConfigItem.swift */; };
 		11D5A33326D45E4A00AE290C /* LocationSettingsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */; };
 		11E2813222F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */; };
-		11E394442EF349FF00677426 /* TranslationOptionsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E394432EF349F000677426 /* TranslationOptionsItem.swift */; };
 		11E5C3B428FED8E100389B07 /* WebimAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E5C3B328FED8E100389B07 /* WebimAlert.swift */; };
 		11E5C3BB2900193E00389B07 /* WebimInternalAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E5C3BA2900193E00389B07 /* WebimInternalAlert.swift */; };
 		123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */; };
@@ -46,7 +45,6 @@
 		8FD244B3200CE25C007EB9CB /* InternalErrorListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD24468200CE25A007EB9CB /* InternalErrorListener.swift */; };
 		8FD244B4200CE25C007EB9CB /* MemoryHistoryMetaInformationStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD24469200CE25A007EB9CB /* MemoryHistoryMetaInformationStorage.swift */; };
 		8FD244B5200CE25C007EB9CB /* ClientSideID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2446A200CE25A007EB9CB /* ClientSideID.swift */; };
-		8FD244B6200CE25C007EB9CB /* WebimActionsImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2446B200CE25A007EB9CB /* WebimActionsImpl.swift */; };
 		8FD244B7200CE25C007EB9CB /* MessageComposingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2446C200CE25A007EB9CB /* MessageComposingHandler.swift */; };
 		8FD244B8200CE25C007EB9CB /* WebimInternalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2446D200CE25A007EB9CB /* WebimInternalError.swift */; };
 		8FD244B9200CE25C007EB9CB /* LocationSettingsHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD2446E200CE25A007EB9CB /* LocationSettingsHolder.swift */; };
@@ -100,6 +98,21 @@
 		8FD244EA200CE25C007EB9CB /* WebimError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD244A5200CE25B007EB9CB /* WebimError.swift */; };
 		8FD244EB200CE25C007EB9CB /* MessageStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD244A6200CE25B007EB9CB /* MessageStream.swift */; };
 		8FD244EC200CE25C007EB9CB /* Webim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD244A7200CE25B007EB9CB /* Webim.swift */; };
+		900853C12E68880F009E0FE6 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900853C02E688804009E0FE6 /* AuthResponse.swift */; };
+		900853C32E68891C009E0FE6 /* GetInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900853C22E688913009E0FE6 /* GetInfoResponse.swift */; };
+		900853C72E789FA3009E0FE6 /* WebimMetaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900853C62E789FA3009E0FE6 /* WebimMetaItem.swift */; };
+		900853C92E789FAC009E0FE6 /* ResourcesConfigItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900853C82E789FAC009E0FE6 /* ResourcesConfigItem.swift */; };
+		900C8FAD2CA158E7009CCBD1 /* StickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900C8FAC2CA158E7009CCBD1 /* StickerItem.swift */; };
+		901715992EC349BC005E7A8C /* RoutingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901715982EC349BC005E7A8C /* RoutingItem.swift */; };
+		903E68022D0C47BA000DDA53 /* WebimInternalLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68012D0C47BA000DDA53 /* WebimInternalLogger.swift */; };
+		903E68042D0C4814000DDA53 /* ChatConfigItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68032D0C4814000DDA53 /* ChatConfigItem.swift */; };
+		903E68062D0C483D000DDA53 /* WMSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68052D0C483D000DDA53 /* WMSessionController.swift */; };
+		903E68082D0C492F000DDA53 /* ServerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68072D0C492F000DDA53 /* ServerSettings.swift */; };
+		903E680A2D0C4BB0000DDA53 /* WeakRefference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68092D0C4BB0000DDA53 /* WeakRefference.swift */; };
+		9069674A2CFA0E24009E19C5 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906967492CFA0E1D009E19C5 /* Visitor.swift */; };
+		909959CF2EF5A26500DB5A03 /* TranslationOptionsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909959CE2EF5A25300DB5A03 /* TranslationOptionsItem.swift */; };
+		90E683BD2E4B406500B8C2AE /* NewMessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E683BC2E4B406500B8C2AE /* NewMessageListener.swift */; };
+		90EBCDD22F164FBF00E561A7 /* WebimActionsImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EBCDD12F164FBF00E561A7 /* WebimActionsImpl.swift */; };
 		959AFDE325D9DD7D0014B721 /* WebimActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959AFDE225D9DD7D0014B721 /* WebimActions.swift */; };
 		95EE8A9E25C3A6E6006F7BFB /* WebimService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EE8A9D25C3A6E6006F7BFB /* WebimService.swift */; };
 		CE2E681120123DB7004E99EA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E681020123DB6004E99EA /* Array.swift */; };
@@ -125,7 +138,6 @@
 		CEBF03962211D5EE001658D8 /* FAQStructureItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF03952211D5EE001658D8 /* FAQStructureItem.swift */; };
 		CEBF03982211D837001658D8 /* FAQCategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF03972211D837001658D8 /* FAQCategoryItem.swift */; };
 		CEBF039A2211F070001658D8 /* FAQCategoryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */; };
-		CED72593200E11D900CD1623 /* WebimInternalLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED72592200E11D900CD1623 /* WebimInternalLogger.swift */; };
 		CEF33876221C74C700A7EA27 /* FAQCategoryInfoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF33875221C74C700A7EA27 /* FAQCategoryInfoItem.swift */; };
 /* End PBXBuildFile section */
 
@@ -148,7 +160,6 @@
 		11B3B132291DD3C000BA2C96 /* AccountConfigItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfigItem.swift; sourceTree = "<group>"; };
 		11D5A33226D45E4A00AE290C /* LocationSettingsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingsResponse.swift; sourceTree = "<group>"; };
 		11E2813122F60987000A1EA6 /* FAQSQLiteHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQSQLiteHistoryStorage.swift; sourceTree = "<group>"; };
-		11E394432EF349F000677426 /* TranslationOptionsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationOptionsItem.swift; sourceTree = "<group>"; };
 		11E5C3B328FED8E100389B07 /* WebimAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimAlert.swift; sourceTree = "<group>"; };
 		11E5C3BA2900193E00389B07 /* WebimInternalAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimInternalAlert.swift; sourceTree = "<group>"; };
 		123D716E26D645F500F78A1E /* WMSynchronizedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WMSynchronizedObject.swift; sourceTree = "<group>"; };
@@ -170,7 +181,6 @@
 		8FD24468200CE25A007EB9CB /* InternalErrorListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InternalErrorListener.swift; sourceTree = "<group>"; };
 		8FD24469200CE25A007EB9CB /* MemoryHistoryMetaInformationStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryHistoryMetaInformationStorage.swift; sourceTree = "<group>"; };
 		8FD2446A200CE25A007EB9CB /* ClientSideID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientSideID.swift; sourceTree = "<group>"; };
-		8FD2446B200CE25A007EB9CB /* WebimActionsImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimActionsImpl.swift; sourceTree = "<group>"; };
 		8FD2446C200CE25A007EB9CB /* MessageComposingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageComposingHandler.swift; sourceTree = "<group>"; };
 		8FD2446D200CE25A007EB9CB /* WebimInternalError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimInternalError.swift; sourceTree = "<group>"; };
 		8FD2446E200CE25A007EB9CB /* LocationSettingsHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSettingsHolder.swift; sourceTree = "<group>"; };
@@ -225,6 +235,21 @@
 		8FD244A6200CE25B007EB9CB /* MessageStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageStream.swift; sourceTree = "<group>"; };
 		8FD244A7200CE25B007EB9CB /* Webim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Webim.swift; sourceTree = "<group>"; };
 		8FD244ED200CE3E4007EB9CB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		900853C02E688804009E0FE6 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
+		900853C22E688913009E0FE6 /* GetInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetInfoResponse.swift; sourceTree = "<group>"; };
+		900853C62E789FA3009E0FE6 /* WebimMetaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimMetaItem.swift; sourceTree = "<group>"; };
+		900853C82E789FAC009E0FE6 /* ResourcesConfigItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesConfigItem.swift; sourceTree = "<group>"; };
+		900C8FAC2CA158E7009CCBD1 /* StickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerItem.swift; sourceTree = "<group>"; };
+		901715982EC349BC005E7A8C /* RoutingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingItem.swift; sourceTree = "<group>"; };
+		903E68012D0C47BA000DDA53 /* WebimInternalLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimInternalLogger.swift; sourceTree = "<group>"; };
+		903E68032D0C4814000DDA53 /* ChatConfigItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConfigItem.swift; sourceTree = "<group>"; };
+		903E68052D0C483D000DDA53 /* WMSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSessionController.swift; sourceTree = "<group>"; };
+		903E68072D0C492F000DDA53 /* ServerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSettings.swift; sourceTree = "<group>"; };
+		903E68092D0C4BB0000DDA53 /* WeakRefference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRefference.swift; sourceTree = "<group>"; };
+		906967492CFA0E1D009E19C5 /* Visitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visitor.swift; sourceTree = "<group>"; };
+		909959CE2EF5A25300DB5A03 /* TranslationOptionsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationOptionsItem.swift; sourceTree = "<group>"; };
+		90E683BC2E4B406500B8C2AE /* NewMessageListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageListener.swift; sourceTree = "<group>"; };
+		90EBCDD12F164FBF00E561A7 /* WebimActionsImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimActionsImpl.swift; sourceTree = "<group>"; };
 		959AFDE225D9DD7D0014B721 /* WebimActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebimActions.swift; sourceTree = "<group>"; };
 		95EE8A9D25C3A6E6006F7BFB /* WebimService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebimService.swift; sourceTree = "<group>"; };
 		CE2E681020123DB6004E99EA /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -250,7 +275,6 @@
 		CEBF03952211D5EE001658D8 /* FAQStructureItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQStructureItem.swift; sourceTree = "<group>"; };
 		CEBF03972211D837001658D8 /* FAQCategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryItem.swift; sourceTree = "<group>"; };
 		CEBF03992211F070001658D8 /* FAQCategoryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryInfo.swift; sourceTree = "<group>"; };
-		CED72592200E11D900CD1623 /* WebimInternalLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebimInternalLogger.swift; path = Backend/WebimInternalLogger.swift; sourceTree = "<group>"; };
 		CEF33875221C74C700A7EA27 /* FAQCategoryInfoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCategoryInfoItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -289,23 +313,25 @@
 				8FD2449A200CE25B007EB9CB /* Implementation */,
 				8FD2427D200CDB18007EB9CB /* WebimClientLibrary.h */,
 				8FD24461200CE259007EB9CB /* Department.swift */,
+				906967492CFA0E1D009E19C5 /* Visitor.swift */,
 				8FD244A4200CE25B007EB9CB /* FatalErrorHandler.swift */,
 				CE6A6979220C731600B11E29 /* FAQ.swift */,
 				CE6A6977220C730F00B11E29 /* FAQItem.swift */,
 				8FD24464200CE25A007EB9CB /* Message.swift */,
 				8FD2445D200CE258007EB9CB /* MessageListener.swift */,
 				8FD244A6200CE25B007EB9CB /* MessageStream.swift */,
-				CED72592200E11D900CD1623 /* WebimInternalLogger.swift */,
 				8FD24463200CE25A007EB9CB /* MessageTracker.swift */,
 				1134DD59234A3FF5008FA6F0 /* NotFatalErrorHandler.swift */,
 				8FD24460200CE259007EB9CB /* Operator.swift */,
 				8FD24462200CE259007EB9CB /* ProvidedAuthorizationTokenStateListener.swift */,
+				90E683BC2E4B406500B8C2AE /* NewMessageListener.swift */,
 				8FD244A7200CE25B007EB9CB /* Webim.swift */,
 				8FD244A5200CE25B007EB9CB /* WebimError.swift */,
 				8FD2445C200CE258007EB9CB /* WebimLogger.swift */,
 				1134DD5B234A4BC8008FA6F0 /* WebimNotFatalError.swift */,
 				8FD2445E200CE259007EB9CB /* WebimRemoteNotification.swift */,
 				8FD2445F200CE259007EB9CB /* WebimSession.swift */,
+				903E68072D0C492F000DDA53 /* ServerSettings.swift */,
 				8FD244ED200CE3E4007EB9CB /* Info.plist */,
 				112106F42BBA0DD8000D6FC1 /* PrivacyInfo.xcprivacy */,
 				CE76D6202210A6DC006A5BF0 /* FAQStructure.swift */,
@@ -335,7 +361,6 @@
 				8FD24468200CE25A007EB9CB /* InternalErrorListener.swift */,
 				8FD24469200CE25A007EB9CB /* MemoryHistoryMetaInformationStorage.swift */,
 				959AFDE225D9DD7D0014B721 /* WebimActions.swift */,
-				8FD2446B200CE25A007EB9CB /* WebimActionsImpl.swift */,
 				95EE8A9D25C3A6E6006F7BFB /* WebimService.swift */,
 				8FD2446A200CE25A007EB9CB /* ClientSideID.swift */,
 				8FD2446C200CE25A007EB9CB /* MessageComposingHandler.swift */,
@@ -362,6 +387,7 @@
 				CE6A697B220C799300B11E29 /* FAQActions.swift */,
 				CE6A697D220C7F3000B11E29 /* FAQClient.swift */,
 				CE6A697F220C83F900B11E29 /* FAQRequestLoop.swift */,
+				903E68012D0C47BA000DDA53 /* WebimInternalLogger.swift */,
 				CE6A6983220C9BBB00B11E29 /* FAQDestroyer.swift */,
 				CE6A6985220C9DE200B11E29 /* FAQAccessChecker.swift */,
 				CE76D61E22108834006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift */,
@@ -406,7 +432,12 @@
 		8FD24482200CE25A007EB9CB /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				11E394432EF349F000677426 /* TranslationOptionsItem.swift */,
+				909959CE2EF5A25300DB5A03 /* TranslationOptionsItem.swift */,
+				901715982EC349BC005E7A8C /* RoutingItem.swift */,
+				900853C82E789FAC009E0FE6 /* ResourcesConfigItem.swift */,
+				900853C62E789FA3009E0FE6 /* WebimMetaItem.swift */,
+				903E68032D0C4814000DDA53 /* ChatConfigItem.swift */,
+				900C8FAC2CA158E7009CCBD1 /* StickerItem.swift */,
 				8FD24483200CE25A007EB9CB /* OperatorItem.swift */,
 				8FD24484200CE25A007EB9CB /* DepartmentItem.swift */,
 				8FD24485200CE25A007EB9CB /* RatingItem.swift */,
@@ -433,6 +464,8 @@
 		8FD24487200CE25A007EB9CB /* Responses */ = {
 			isa = PBXGroup;
 			children = (
+				900853C22E688913009E0FE6 /* GetInfoResponse.swift */,
+				900853C02E688804009E0FE6 /* AuthResponse.swift */,
 				8FD24488200CE25A007EB9CB /* HistoryBeforeResponse.swift */,
 				8FD24489200CE25A007EB9CB /* HistorySinceResponse.swift */,
 				8FD2448A200CE25A007EB9CB /* DeltaResponse.swift */,
@@ -454,6 +487,9 @@
 		8FD2449A200CE25B007EB9CB /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				90EBCDD12F164FBF00E561A7 /* WebimActionsImpl.swift */,
+				903E68092D0C4BB0000DDA53 /* WeakRefference.swift */,
+				903E68052D0C483D000DDA53 /* WMSessionController.swift */,
 				1289E9762695BBBC007C15BF /* WMKeychainWrapper.swift */,
 				1289E9742695BB39007C15BF /* WMDataEncryptor.swift */,
 				8FD2449B200CE25B007EB9CB /* DepartmentImpl.swift */,
@@ -558,7 +594,7 @@
 				CE86FAAB203B2A2600CB9C2D /* OperatorFactory.swift in Sources */,
 				CE6A6988220CA70A00B11E29 /* FAQItemItem.swift in Sources */,
 				8FD244B5200CE25C007EB9CB /* ClientSideID.swift in Sources */,
-				8FD244B6200CE25C007EB9CB /* WebimActionsImpl.swift in Sources */,
+				900853C12E68880F009E0FE6 /* AuthResponse.swift in Sources */,
 				CE86FAAD203B2A4500CB9C2D /* DepartmentFactory.swift in Sources */,
 				113057A9256D209D004BB13E /* UploadedFile.swift in Sources */,
 				8FD244D2200CE25C007EB9CB /* FileParametersItem.swift in Sources */,
@@ -574,6 +610,8 @@
 				8FD244E2200CE25C007EB9CB /* MessageStreamImpl.swift in Sources */,
 				8FD244AE200CE25C007EB9CB /* ProvidedAuthorizationTokenStateListener.swift in Sources */,
 				8FD244CD200CE25C007EB9CB /* RatingItem.swift in Sources */,
+				900853C92E789FAC009E0FE6 /* ResourcesConfigItem.swift in Sources */,
+				909959CF2EF5A26500DB5A03 /* TranslationOptionsItem.swift in Sources */,
 				8FD244C1200CE25C007EB9CB /* InternalUtils.swift in Sources */,
 				8FD244C3200CE25C007EB9CB /* AbstractRequestLoop.swift in Sources */,
 				1134DD5E234A69FF008FA6F0 /* WebimNotFatalErrorImpl.swift in Sources */,
@@ -599,6 +637,8 @@
 				8FD244A8200CE25C007EB9CB /* WebimLogger.swift in Sources */,
 				8FD244B0200CE25C007EB9CB /* Message.swift in Sources */,
 				8FD244D6200CE25C007EB9CB /* ChatItem.swift in Sources */,
+				901715992EC349BC005E7A8C /* RoutingItem.swift in Sources */,
+				903E68062D0C483D000DDA53 /* WMSessionController.swift in Sources */,
 				8FD244E3200CE25C007EB9CB /* WebimRemoteNotificationImpl.swift in Sources */,
 				1134DD5C234A4BC8008FA6F0 /* WebimNotFatalError.swift in Sources */,
 				8FD244CA200CE25C007EB9CB /* DeltaRequestLoop.swift in Sources */,
@@ -616,6 +656,8 @@
 				8FD244E1200CE25C007EB9CB /* OperatorImpl.swift in Sources */,
 				CEBF03962211D5EE001658D8 /* FAQStructureItem.swift in Sources */,
 				113C582524F5A11C006A08C2 /* SurveyFactory.swift in Sources */,
+				903E68022D0C47BA000DDA53 /* WebimInternalLogger.swift in Sources */,
+				903E68082D0C492F000DDA53 /* ServerSettings.swift in Sources */,
 				8FD244B8200CE25C007EB9CB /* WebimInternalError.swift in Sources */,
 				8FD244DA200CE25C007EB9CB /* SessionParametersListener.swift in Sources */,
 				8FD244D0200CE25C007EB9CB /* HistorySinceResponse.swift in Sources */,
@@ -625,10 +667,12 @@
 				8FD244C9200CE25C007EB9CB /* AuthorizationData.swift in Sources */,
 				CE6A6982220C968D00B11E29 /* FAQImpl.swift in Sources */,
 				CE6A6980220C83F900B11E29 /* FAQRequestLoop.swift in Sources */,
+				900C8FAD2CA158E7009CCBD1 /* StickerItem.swift in Sources */,
 				8FD244BE200CE25C007EB9CB /* Dictionary.swift in Sources */,
 				8FD244C8200CE25C007EB9CB /* ExecIfNotDestroyedHandlerExecutor.swift in Sources */,
 				113E5BC524F72434008AB716 /* SendSurveyAnswerCompletionHandlerWrapper.swift in Sources */,
 				CEBF03982211D837001658D8 /* FAQCategoryItem.swift in Sources */,
+				900853C32E68891C009E0FE6 /* GetInfoResponse.swift in Sources */,
 				11B3B133291DD3C000BA2C96 /* AccountConfigItem.swift in Sources */,
 				CEBF039A2211F070001658D8 /* FAQCategoryInfo.swift in Sources */,
 				CE2E681120123DB7004E99EA /* Array.swift in Sources */,
@@ -636,16 +680,16 @@
 				8FD244AA200CE25C007EB9CB /* WebimRemoteNotification.swift in Sources */,
 				8FD244B9200CE25C007EB9CB /* LocationSettingsHolder.swift in Sources */,
 				8FD244B7200CE25C007EB9CB /* MessageComposingHandler.swift in Sources */,
-				11E394442EF349FF00677426 /* TranslationOptionsItem.swift in Sources */,
 				8FD244A9200CE25C007EB9CB /* MessageListener.swift in Sources */,
 				8FD244E0200CE25C007EB9CB /* DepartmentImpl.swift in Sources */,
 				8FD244EC200CE25C007EB9CB /* Webim.swift in Sources */,
 				113C581C24EDE32F006A08C2 /* Survey.swift in Sources */,
 				8FD244BB200CE25C007EB9CB /* WebimRequest.swift in Sources */,
+				90EBCDD22F164FBF00E561A7 /* WebimActionsImpl.swift in Sources */,
+				9069674A2CFA0E24009E19C5 /* Visitor.swift in Sources */,
 				8FD244DE200CE25C007EB9CB /* HistoryStorage.swift in Sources */,
 				8FD244E4200CE25C007EB9CB /* MessageImpl.swift in Sources */,
 				959AFDE325D9DD7D0014B721 /* WebimActions.swift in Sources */,
-				CED72593200E11D900CD1623 /* WebimInternalLogger.swift in Sources */,
 				8FD244CC200CE25C007EB9CB /* DepartmentItem.swift in Sources */,
 				CE76D61F22108835006A5BF0 /* ExecIfNotDestroyedFAQHandlerExecutor.swift in Sources */,
 				8FD244D5200CE25C007EB9CB /* FullUpdate.swift in Sources */,
@@ -666,13 +710,17 @@
 				8FD244E8200CE25C007EB9CB /* LocationSettingsImpl.swift in Sources */,
 				8FD244AD200CE25C007EB9CB /* Department.swift in Sources */,
 				8FD244E5200CE25C007EB9CB /* WebimErrorImpl.swift in Sources */,
+				90E683BD2E4B406500B8C2AE /* NewMessageListener.swift in Sources */,
 				8FD244B3200CE25C007EB9CB /* InternalErrorListener.swift in Sources */,
 				1165DAA525D9F67700FBF72E /* LocationStatusResponse.swift in Sources */,
 				CE6A697A220C731600B11E29 /* FAQ.swift in Sources */,
 				8FD244D9200CE25C007EB9CB /* MessageToSend.swift in Sources */,
+				903E68042D0C4814000DDA53 /* ChatConfigItem.swift in Sources */,
 				123D716F26D645F500F78A1E /* WMSynchronizedObject.swift in Sources */,
+				900853C72E789FA3009E0FE6 /* WebimMetaItem.swift in Sources */,
 				8FD244D1200CE25C007EB9CB /* DeltaResponse.swift in Sources */,
 				CE2E681520123DD0004E99EA /* Int.swift in Sources */,
+				903E680A2D0C4BB0000DDA53 /* WeakRefference.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "A Webim SDK alkalmazásnak engedélyre van szüksége a fotókönyvtár eléréséhez, hogy képeket menthessen a csevegésből.";
+
+"NSCameraUsageDescription" = "A Webim SDK alkalmazásnak engedélyre van szüksége a kamerához való hozzáféréshez, hogy fotókat küldhessen csevegésre.";
+
+"NSFileProviderDomainUsageDescription" = "A Webim SDK alkalmazásnak engedélyre van szüksége a dokumentumok mappájához való hozzáféréshez, hogy fájlokat küldhessen csevegésre.";
+
+"NSFileProviderPresenceUsageDescription" = "A Webim SDK alkalmazásnak engedélyre van szüksége a dokumentumok mappájához való hozzáféréshez, hogy fájlokat küldhessen csevegésre.";
+
+"NSPhotoLibraryUsageDescription" = "A Webim SDK alkalmazásnak engedélyre van szüksége a fotókönyvtár eléréséhez, hogy képeket küldhessen csevegésre.";

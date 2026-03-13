@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Numele contului nu poate fi necompletat.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Locația nu poate fi goală.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Eroare";
+//UIAlertHandler.swift
+"Account" = "Cont";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Numele contului are caractere nevalide.";
+//WebimService.swift
+"AccountBlocked" = "Contul care este folosit pentru a crea sesiunea este blocat. Vă rugăm să contactați asistența Webim sau să utilizați altul.";
+//UIAlertHandler.swift
+"Alert account name" = "Numele contului Webim sau adresa completă a serverului (de exemplu, \"demo\" sau \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Anulează";
+//ConnectionErrorView.xib
+"Connection error" = "Eroare de conectare";
+//UIAlertHandler.swift
+"InvalidSettings" = "Setări nevalide ale contului";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Locația are caractere nevalide.";
+//AdditionalKeys.swift
+"P.CR" = "Un agent a solicitat datele dvs. de contact.";
+//AdditionalKeys.swift
+"P.OA" = "Agentul %@ a fost alocat solicitării dvs.";
+//AdditionalKeys.swift
+"P.OF" = "%@ a trimis un fișier: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ a scris un mesaj: %@";
+//AdditionalKeys.swift
+"P.RO" = "Evaluează agentul.";
+//StringConstants.swift
+"Copy" = "Copie";
+//StringConstants.swift
+"Delete" = "Ștergeți";
+//StringConstants.swift
+"Reply" = "Răspunde";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Bine ați venit la aplicația Webim SDK!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Feedback-ul dumneavoastră ne va ajuta să devenim mai buni.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Contul dvs. de vizitator este în lista neagră.";
+//WebimService.swift
+"Session initialization failed." = "Inițializarea sesiunii a eșuat.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Eroare de analiză a vizitatorului demonstrativ.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Crearea sesiunii a eșuat";
+//ChatViewController+Listener.swift
+"typing" = "tastarea";
+//StringConstants.swift
+"Edit" = "Editați";
+"Enter message" = "Introduceți mesajul";
+"Please rate the overall impression of the consultation" = "Vă rugăm să evaluați impresia generală a consultației.";
+"Fetching more messages..." = "Preluarea mai multor mesaje...";
+"Rate Operator" = "Agent de tarife";
+"Send" = "Trimite";
+"New messages" = "Mesaje noi";
+"Settings" = "Setări";
+"Invalid account name" = "Contul cu acel nume nu a fost găsit. Vă rugăm să verificați informațiile introduse.";
+"Share to Chat" = "Distribuie în chat";

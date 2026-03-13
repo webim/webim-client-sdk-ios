@@ -305,9 +305,6 @@ public enum FAQAccessError: Error {
      */
     case invalidThread
     
-    @available(*, unavailable, renamed: "invalidThread")
-    case INVALID_THREAD
-    
     /**
      Error that is thrown if FAQ was destroyed.
      - author:
@@ -316,9 +313,6 @@ public enum FAQAccessError: Error {
      2019 Webim
      */
     case invalidFaq
-    
-    @available(*, unavailable, renamed: "invalidFaq")
-    case INVALID_FAQ
 }
 
 // MARK: -
@@ -333,9 +327,6 @@ public enum FAQAccessError: Error {
  */
 public enum FAQGetCompletionHandlerError: Error {
     case error
-    
-    @available(*, unavailable, renamed: "error")
-    case ERROR
 }
 
 // MARK: -
@@ -358,9 +349,6 @@ public enum FAQItemSource {
     */
     case search
     
-    @available(*, unavailable, renamed: "search")
-    case SEARCH
-    
     /**
     Item is opened from tree.
     - author:
@@ -369,7 +357,4 @@ public enum FAQItemSource {
     2019 Webim
     */
     case tree
-    
-    @available(*, unavailable, renamed: "tree")
-    case TREE
 }

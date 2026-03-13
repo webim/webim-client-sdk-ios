@@ -43,3 +43,6 @@
 
 /* Class = "UITextField"; text = "wmtest"; ObjectID = "tcc-FO-XDY"; */
 "tcc-FO-XDY.text" = "wmtest";
+
+/* Class = "UILabel"; text = "App version: "; ObjectID = "5PX-Cc-1oz"; */
+"5PX-Cc-1oz.text" = "Версія програми: ";

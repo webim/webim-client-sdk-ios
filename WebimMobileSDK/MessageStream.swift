@@ -114,6 +114,18 @@ public protocol MessageStream: AnyObject {
     func getDepartmentList() -> [Department]?
     
     /**
+     - seealso:
+     `Visitor` protocol.
+     - returns:
+     Visitor infot.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    func getVisitor() -> Visitor?
+    
+    /**
      - returns:
      Current LocationSettings of the MessageStream.
      - author:
@@ -416,7 +428,7 @@ public protocol MessageStream: AnyObject {
      - copyright:
      2018 Webim
      */
-    func startChat(firstQuestion:String?,
+    func startChat(firstQuestion: String?,
                    customFields: String?) throws
     
     /**
@@ -465,19 +477,6 @@ public protocol MessageStream: AnyObject {
     func startChat(departmentKey: String?,
                    firstQuestion: String?,
                    customFields: String?) throws
-    
-    
-    /**
-     Changes `ChatState` to `ChatState.closedByVisitor`.
-     - throws:
-     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
-     `AccessError.invalidSession` if WebimSession was destroyed.
-     - author:
-     Nikita Lazarev-Zubov
-     - copyright:
-     2017 Webim
-     */
-    func closeChat() throws
     
     /**
      This method must be called whenever there is a change of the input field of a message transferring current content of a message as a parameter.
@@ -1057,6 +1056,25 @@ public protocol MessageStream: AnyObject {
     func sendGeolocation(latitude: Double,
                          longitude: Double,
                          completionHandler: GeolocationCompletionHandler?) throws
+    
+    /**
+     Send contacts.
+     - parameter contacts
+     Answer to contacts.
+     - parameter completionHandler
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    func sendContacts(contacts: String,
+                      completionHandler: ContactsCompletionHandler?) throws
 
     /**
      Sets `SurveyListener` object.
@@ -1235,6 +1253,17 @@ public protocol MessageStream: AnyObject {
     func set(sessionLanguageListener: SessionLanguageListener)
     
     /**
+     Sets force online chat value.
+     - parameter forceOnline:
+     Default value is true. Sets false if want offline message form.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func set(forceOnline: Bool)
+    
+    /**
      Called when user clear history.
      - attention:
      This method can't be used as is. It requires that client server to support this mechanism.
@@ -1245,6 +1274,36 @@ public protocol MessageStream: AnyObject {
      */
     func clearHistory() throws
     
+    /**
+     Send offline message when operators busy..
+     - parameter message:
+     Offline message.
+     - parameter fields:
+     Custom fields in JSON format.
+     - parameter file:
+     File data to send
+     - parameter fileName:
+     File name with file extension.
+     - parameter mimeType:
+     MIME type of the file to send.
+     - parameter completionHandler:
+     Completion handler that executes when operation is done.
+     - throws:
+     `AccessError.invalidThread` if the method was called not from the thread the WebimSession was created in.
+     `AccessError.invalidSession` if WebimSession was destroyed.
+     - attention:
+     This method can't be used as is. It requires that client server to support this mechanism.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func sendOfflineMessage(message: String,
+                            fields: String,
+                            file: Data?,
+                            fileName: String?,
+                            mimeType: String?,
+                            completionHandler: OfflineMessageCompletionHandler?) throws
 }
 
 /**
@@ -1810,7 +1869,7 @@ public protocol ServerSideSettingsCompletionHandler: AnyObject {
      - copyright:
      2022 Webim
      */
-    func onSuccess(webimServerSideSettings: WebimServerSideSettings)
+    func onSuccess(webimServerSideSettings: ServerSettings)
 
     /**
      Executed when operation is failed.
@@ -1915,6 +1974,64 @@ public protocol GeolocationCompletionHandler: AnyObject {
      2022 Webim
      */
     func onFailure(error: GeolocationError)
+}
+
+/**
+ - seealso:
+ `MessageStream.sendContacts(contacts:completionHandler:)`.
+ - author:
+ Anna Frolova
+ - copyright:
+ 2024 Webim
+ */
+public protocol ContactsCompletionHandler: class {
+    
+    /**
+     Invoked when when operation is done successfully.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    func onSuccess()
+
+    /**
+     Invoked when an error occurred while contacts sending.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    func onFailure(error: ContactsError)
+}
+
+/**
+ - seealso:
+ `MessageStream.sendOfflineMessage()`.
+ - author:
+ Anna Frolova
+ - copyright:
+ 2025 Webim
+ */
+public protocol OfflineMessageCompletionHandler: class {
+    
+    /**
+     Invoked when when operation is done successfully.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func onSuccess(offlineMessageId: String)
+
+    /**
+     Invoked when an error occurred while offline message sending.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func onFailure(error: OfflineMessageError)
 }
 
 /**
@@ -2313,7 +2430,7 @@ public protocol ReactionCompletionHandler: AnyObject {
  The initial state is `closed`.
  Then if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`), the chat changes it's state to `queue`. The chat can be turned into this state by calling `MessageStream.startChat()`.
  After that, if an operator takes the chat to process, the state changes to `chatting`. The chat is being in this state until the visitor or the operator closes it.
- When closing a chat by the visitor `MessageStream.closeChat()`, it turns into the state `closedByVisitor`, by the operator - `closedByOperator`.
+ It turns into the state  by the operator - `closedByOperator`.
  When both the visitor and the operator close the chat, it's state changes to the initial – `closed`. A chat can also automatically turn into the initial state during long-term absence of activity in it.
  Furthermore, the first message can be sent not only by a visitor but also by an operator. In this case the state will change from the initial to `invitation`, and then, after the first message of the visitor, it changes to `chatting`.
  - author:
@@ -2327,7 +2444,6 @@ public enum ChatState {
      Means that an operator has taken a chat for processing.
      From this state a chat can be turned into:
      * `closedByOperator`, if an operator closes the chat;
-     * `closedByVisitor`, if a visitor closes the chat (`MessageStream.closeChat()`);
      * `closed`, automatically during long-term absence of activity.
      - author:
      Nikita Lazarev-Zubov
@@ -2336,14 +2452,10 @@ public enum ChatState {
      */
     case chatting
     
-    @available(*, unavailable, renamed: "chatting")
-    case CHATTING
-    
     /**
      Means that chat is picked up by a bot.
      From this state a chat can be turned into:
      * `chatting`, if an operator intercepted the chat;
-     * `closedByVisitor`, if a visitor closes the chat (`MessageStream.closeChat()`);
      * `closed`, automatically during long-term absence of activity.
      - author:
      Nikita Lazarev-Zubov
@@ -2352,13 +2464,10 @@ public enum ChatState {
      */
     case chattingWithRobot
     
-    @available(*, unavailable, renamed: "chattingWithRobot")
-    case CHATTING_WITH_ROBOT
-    
     /**
      Means that an operator has closed the chat.
      From this state a chat can be turned into:
-     * `closed`, if the chat is also closed by a visitor (`MessageStream.closeChat()`), or automatically during long-term absence of activity;
+     * `closed`, if the chat is automatically during long-term absence of activity;
      * `queue`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
      - author:
      Nikita Lazarev-Zubov
@@ -2367,38 +2476,17 @@ public enum ChatState {
      */
     case closedByOperator
     
-    @available(*, unavailable, renamed: "closedByOperator")
-    case CLOSED_BY_OPERATOR
-    
-    /**
-     Means that a visitor has closed the chat.
-     From this state a chat can be turned into:
-     * `closed`, if the chat is also closed by an operator or automatically during long-term absence of activity;
-     * `queue`, if a visitor sends a new message (`MessageStream.send(message:isHintQuestion:)`).
-     - author:
-     Nikita Lazarev-Zubov
-     - copyright:
-     2017 Webim
-     */
-    case closedByVisitor
-    
-    @available(*, unavailable, renamed: "closedByVisitor")
-    case CLOSED_BY_VISITOR
-    
     /**
      Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
      From this state a chat can be turned into:
      * `chatting`, if a visitor sends a message (`MessageStream.send(message:isHintQuestion:)`);
-     * `closed`, if an operator or a visitor closes the chat (`MessageStream.closeChat()`).
+     * `closed`, if an operator or closes the chat.
      - author:
      Nikita Lazarev-Zubov
      - copyright:
      2017 Webim
      */
     case invitation
-    
-    @available(*, unavailable, renamed: "invitation")
-    case INVITATION
     
     /**
      Means the absence of a chat as such, e.g. a chat has not been started by a visitor nor by an operator.
@@ -2412,14 +2500,10 @@ public enum ChatState {
      */
     case closed
     
-    @available(*, unavailable, renamed: "closed")
-    case NONE
-    
     /**
      Means that a chat has been started by a visitor and at this moment is being in the queue for processing by an operator.
      From this state a chat can be turned into:
      * `chatting`, if an operator takes the chat for processing;
-     * `closed`, if a visitor closes the chat (by calling (`MessageStream.closeChat()`) before it is taken for processing;
      * `closedByOperator`, if an operator closes the chat without taking it for processing.
      - author:
      Nikita Lazarev-Zubov
@@ -2427,9 +2511,6 @@ public enum ChatState {
      2017 Webim
      */
     case queue
-    
-    @available(*, unavailable, renamed: "queue")
-    case QUEUE
     
     /**
      The state is undefined.
@@ -2441,9 +2522,32 @@ public enum ChatState {
      */
     case unknown
     
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
+    /**
+     Means that a chat has been hold by operator.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case hold
     
+    /**
+     Means that a chat has been deleted.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case deleted
+    
+    /**
+     Means that a chat has been routing.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case routing
 }
 
 /**
@@ -2467,9 +2571,6 @@ public enum OnlineStatus {
      */
     case busyOffline
     
-    @available(*, unavailable, renamed: "busyOffline")
-    case BUSY_OFFLINE
-    
     /**
      Online state with chats' count limit exceeded.
      Visitor is able send offline messages, but the server can reject it.
@@ -2480,9 +2581,6 @@ public enum OnlineStatus {
      */
     case busyOnline
     
-    @available(*, unavailable, renamed: "busyOnline")
-    case BUSY_ONLINE
-    
     /**
      Visitor is able to send offline messages.
      - author:
@@ -2491,9 +2589,6 @@ public enum OnlineStatus {
      2017 Webim
      */
     case offline
-    
-    @available(*, unavailable, renamed: "offline")
-    case OFFLINE
     
     /**
      Visitor is able to send both online and offline messages.
@@ -2504,9 +2599,6 @@ public enum OnlineStatus {
      */
     case online
     
-    @available(*, unavailable, renamed: "online")
-    case ONLINE
-    
     /**
      First status is not recieved yet or status is not supported by this version of the library.
      - author:
@@ -2515,10 +2607,6 @@ public enum OnlineStatus {
      2017 Webim
      */
     case unknown
-    
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
-    
 }
 
 /**
@@ -2542,9 +2630,6 @@ public enum VisitSessionState {
      */
     case chat
     
-    @available(*, unavailable, renamed: "chat")
-    case CHAT
-    
     /**
      Chat must be started with department selected (there was a try to start chat without department selected).
      - seealso:
@@ -2556,8 +2641,16 @@ public enum VisitSessionState {
      */
     case departmentSelection
     
-    @available(*, unavailable, renamed: "departmentSelection")
-    case DEPARTMENT_SELECTION
+    /**
+     Chat must be started with first question.
+     - seealso:
+     `startChat(firstQuestion:)` of `MessageStream` protocol.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    case firstQuestion
     
     /**
      Session is active but no chat is occuring (chat was not started yet).
@@ -2568,9 +2661,6 @@ public enum VisitSessionState {
      */
     case idle
     
-    @available(*, unavailable, renamed: "idle")
-    case IDLE
-    
     /**
      Session is active but no chat is occuring (chat was closed recently).
      - author:
@@ -2579,9 +2669,6 @@ public enum VisitSessionState {
      2017 Webim
      */
     case idleAfterChat
-    
-    @available(*, unavailable, renamed: "idleAfterChat")
-    case IDLE_AFTER_CHAT
     
     /**
      Offline state.
@@ -2592,9 +2679,6 @@ public enum VisitSessionState {
      */
     case offlineMessage
     
-    @available(*, unavailable, renamed: "offlineMessage")
-    case OFFLINE_MESSAGE
-    
     /**
      First status is not received yet or status is not supported by this version of the library.
      - author:
@@ -2603,19 +2687,6 @@ public enum VisitSessionState {
      2017 Webim
      */
     case unknown
-    
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
-    
-    /**
-     First question state.
-     - author:
-     Anna Frolova
-     - copyright:
-     2025 Webim
-     */
-    case firstQuestion
-    
 }
 
 /**
@@ -2637,9 +2708,6 @@ public enum DataMessageError: Error {
      */
     case unknown
     
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
-    
     // MARK: Quoted message errors
     // Note that quoted message mechanism is not a standard feature – it must be implemented by a server. For more information please contact with Webim support service.
     
@@ -2652,9 +2720,6 @@ public enum DataMessageError: Error {
      */
     case quotedMessageCanNotBeReplied
     
-    @available(*, unavailable, renamed: "quotedMessageCanNotBeReplied")
-    case QUOTED_MESSAGE_CANNOT_BE_REPLIED
-    
     /**
      To be raised when quoted message ID belongs to another visitor's chat.
      - author:
@@ -2663,9 +2728,6 @@ public enum DataMessageError: Error {
      2018 Webim
      */
     case quotedMessageFromAnotherVisitor
-    
-    @available(*, unavailable, renamed: "quotedMessageFromAnotherVisitor")
-    case QUOTED_MESSAGE_FROM_ANOTHER_VISITOR
     
     /**
      To be raised when quoted message ID belongs to multiple messages (server DB error).
@@ -2676,9 +2738,6 @@ public enum DataMessageError: Error {
      */
     case quotedMessageMultipleIds
     
-    @available(*, unavailable, renamed: "quotedMessageMultipleIds")
-    case QUOTED_MESSAGE_MULTIPLE_IDS
-    
     /**
      To be raised when one or more required arguments of quoting mechanism are missing.
      - author:
@@ -2688,9 +2747,6 @@ public enum DataMessageError: Error {
      */
     case quotedMessageRequiredArgumentsMissing
     
-    @available(*, unavailable, renamed: "quotedMessageRequiredArgumentsMissing")
-    case QUOTED_MESSAGE_REQUIRED_ARGUMENTS_MISSING
-    
     /**
      To be raised when wrong quoted message ID is sent.
      - author:
@@ -2699,10 +2755,6 @@ public enum DataMessageError: Error {
      2018 Webim
      */
     case quotedMessageWrongId
-    
-    @available(*, unavailable, renamed: "quotedMessageWrongId")
-    case QUOTED_MESSAGE_WRONG_ID
-    
 }
 
 /**
@@ -2722,9 +2774,7 @@ public enum EditMessageError: Error {
      2018 Webim
      */
     case unknown
-    
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
+
     /**
      Editing messages by visitor is turned off on the server.
      - author:
@@ -2734,8 +2784,6 @@ public enum EditMessageError: Error {
      */
     case notAllowed
     
-    @available(*, unavailable, renamed: "notAllowed")
-    case NOT_ALLOWED
     /**
      Editing message is empty.
      - author:
@@ -2745,8 +2793,6 @@ public enum EditMessageError: Error {
      */
     case messageEmpty
     
-    @available(*, unavailable, renamed: "messageEmpty")
-    case MESSAGE_EMPTY
     /**
      Visitor can edit only his messages.
      The specified id belongs to someone else's message.
@@ -2757,8 +2803,6 @@ public enum EditMessageError: Error {
      */
     case messageNotOwned
     
-    @available(*, unavailable, renamed: "messageNotOwned")
-    case MESSAGE_NOT_OWNED
     /**
      The server may deny a request if the message size exceeds a limit.
      The maximum size of a message is configured on the server.
@@ -2769,8 +2813,6 @@ public enum EditMessageError: Error {
      */
     case maxLengthExceeded
     
-    @available(*, unavailable, renamed: "maxLengthExceeded")
-    case MAX_LENGTH_EXCEEDED
     /**
      Visitor can edit only text messages.
      - author:
@@ -2779,9 +2821,6 @@ public enum EditMessageError: Error {
      2018 Webim
      */
     case wrongMesageKind
-    
-    @available(*, unavailable, renamed: "wrongMesageKind")
-    case WRONG_MESSAGE_KIND
 }
 
 /**
@@ -2802,8 +2841,6 @@ public enum DeleteMessageError: Error {
      */
     case unknown
     
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
     /**
      Deleting messages by visitor is turned off on the server.
      - author:
@@ -2813,8 +2850,6 @@ public enum DeleteMessageError: Error {
      */
     case notAllowed
     
-    @available(*, unavailable, renamed: "notAllowed")
-    case NOT_ALLOWED
     /**
      Visitor can delete only his messages.
      The specified id belongs to someone else's message.
@@ -2825,8 +2860,6 @@ public enum DeleteMessageError: Error {
      */
     case messageNotOwned
     
-    @available(*, unavailable, renamed: "messageNotOwned")
-    case MESSAGE_NOT_OWNED
     /**
      Message with the specified id is not found in history.
      - author:
@@ -2835,9 +2868,6 @@ public enum DeleteMessageError: Error {
      2018 Webim
      */
     case messageNotFound
-    
-    @available(*, unavailable, renamed: "messageNotFound")
-    case MESSAGE_NOT_FOUND
 }
 
 /**
@@ -2860,9 +2890,13 @@ public enum SendFileError: Error {
      */
     case fileSizeExceeded
     
-    @available(*, unavailable, renamed: "fileSizeExceeded")
-    case FILE_SIZE_EXCEEDED
-    
+    /**
+     The server may deny a request if the file size is too small.
+     - author:
+     Nikita Lazarev-Zubov
+     - copyright:
+     2017 Webim
+     */
     case fileSizeTooSmall
     
     /**
@@ -2875,9 +2909,6 @@ public enum SendFileError: Error {
      */
     case fileTypeNotAllowed
     
-    @available(*, unavailable, renamed: "fileTypeNotAllowed")
-    case FILE_TYPE_NOT_ALLOWED
-    
     case maxFilesCountPerChatExceeded
     
     /**
@@ -2888,9 +2919,7 @@ public enum SendFileError: Error {
      2018 Webim
      */
     case uploadedFileNotFound
-    
-    @available(*, unavailable, renamed: "uploadedFileNotFound")
-    case UPLOADED_FILE_NOT_FOUND
+
     /**
      Received error is not supported by current WebimClientLibrary version.
      - author:
@@ -2899,9 +2928,6 @@ public enum SendFileError: Error {
      2018 Webim
      */
     case unknown
-    
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
     
     /**
     Visitor authorization error on the server.
@@ -2922,6 +2948,8 @@ public enum SendFileError: Error {
     case uploadCanceled
     
     case maliciousFileDetected
+    
+    case uploadNotAllowed
     
 }
 
@@ -2956,9 +2984,6 @@ public enum KeyboardResponseError: Error {
      */
     case unknown
     
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
-    
     /**
      Arised when trying to response if no chat is exists.
      - author:
@@ -2967,9 +2992,6 @@ public enum KeyboardResponseError: Error {
      2019 Webim
      */
     case noChat
-    
-    @available(*, unavailable, renamed: "noChat")
-    case NO_CHAT
     
     /**
      Arised when trying to response without button id.
@@ -2980,9 +3002,6 @@ public enum KeyboardResponseError: Error {
      */
     case buttonIdNotSet
     
-    @available(*, unavailable, renamed: "buttonIdNotSet")
-    case BUTTON_ID_NOT_SET
-    
     /**
      Arised when trying to response without request message id.
      - author:
@@ -2992,9 +3011,6 @@ public enum KeyboardResponseError: Error {
      */
     case requestMessageIdNotSet
     
-    @available(*, unavailable, renamed: "requestMessageIdNotSet")
-    case REQUEST_MESSAGE_ID_NOT_SET
-    
     /**
      Arised when trying to response with wrong data.
      - author:
@@ -3003,10 +3019,6 @@ public enum KeyboardResponseError: Error {
      2019 Webim
      */
     case canNotCreateResponse
-    
-    @available(*, unavailable, renamed: "canNotCreateResponse")
-    case CAN_NOT_CREATE_RESPONSE
-    
 }
 
 /**
@@ -3028,9 +3040,6 @@ public enum RateOperatorError: Error {
      */
     case noChat
     
-    @available(*, unavailable, renamed: "noChat")
-    case NO_CHAT
-    
     /**
      Arised when trying to send operator rating request if passed operator ID doesn't belong to existing chat operator (or, in the same place, chat doesn't have an operator at all).
      - author:
@@ -3040,9 +3049,6 @@ public enum RateOperatorError: Error {
      */
     case wrongOperatorId
     
-    @available(*, unavailable, renamed: "wrongOperatorId")
-    case WRONG_OPERATOR_ID
-    
     /**
      Note length is more than 2000 characters.
     - author:
@@ -3051,9 +3057,6 @@ public enum RateOperatorError: Error {
     2020 Webim
     */
     case noteIsTooLong
-    
-    @available(*, unavailable, renamed: "noteIsTooLong")
-    case NOTE_IS_TOO_LONG
     
     /**
     Rate function is disabled.
@@ -3195,9 +3198,6 @@ public enum SendDialogToEmailAddressError: Error {
      */
     case noChat
     
-    @available(*, unavailable, renamed: "noChat")
-    case NO_CHAT
-    
     /**
      Exceeded sending attempts.
      - author:
@@ -3206,9 +3206,6 @@ public enum SendDialogToEmailAddressError: Error {
      2020 Webim
      */
     case sentTooManyTimes
-    
-    @available(*, unavailable, renamed: "sentTooManyTimes")
-    case SENT_TOO_MANY_TIMES
 
     /**
      An unexpected error occurred while sending.
@@ -3218,9 +3215,6 @@ public enum SendDialogToEmailAddressError: Error {
      2020 Webim
      */
     case unknown
-    
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
 }
 
 /**
@@ -3481,6 +3475,34 @@ public enum GeolocationError {
     case unknown
 }
 
+/**
+- seealso:
+ContactsCompletionHandler.onFailure(error:)`
+- author:
+Anna Frolova
+- copyright:
+2024 Webim
+*/
+public enum ContactsError {
+    /**
+     Email changed too many times.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    case emailChangedTooManyTimes
+    
+    /**
+     Unknown error.
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    case unknown
+}
+
 // MARK: -
 /**
  Item for set reaction
@@ -3516,4 +3538,52 @@ public enum SendFileProgressState: String {
     case upload
     
     case error
+}
+
+/**
+- seealso:
+OfflineMessageCompletionHandler.onFailure(error:)`
+- author:
+Anna Frolova
+- copyright:
+2025 Webim
+*/
+public enum OfflineMessageError {
+    
+    /**
+     Tariff option disabled.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case noTariffOption
+    
+    /**
+     The server may deny a request if the message size exceeds a limit.
+     The maximum size of a message is configured on the server.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case maxMessageLengthExceeded
+    
+    /**
+     Visitor banned.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case visitorBanned
+    
+    /**
+     Unknown error.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    case unknown
 }

@@ -55,9 +55,11 @@
 "Enter message" = "أدخل رسالة";
 //RateStarsViewController.swift,RateStarsViewController.xib
 "Please rate the overall impression of the consultation" = "الرجاء تقييم الانطباع العام للاستشارة.";
+"Fetching more messages..." = "جاري جلب المزيد من الرسائل...";
 //RateStarsViewController.xib
 "Rate Operator" = "تقييم الوكيل";
 "Send" = "إرسال";
 "New messages" = "رسائل جديدة";
 "Settings" = "إعدادات";
 "Invalid account name" = "لم يتم العثور على حساب بهذا الاسم. يرجى التحقق من البيانات المدخلة.";
+"Share to Chat" = "مشارِك في المحادثة";

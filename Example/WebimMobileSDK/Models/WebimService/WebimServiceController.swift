@@ -35,48 +35,30 @@ class WebimServiceController {
         return WebimServiceController.shared.currentSession()
     }
     
-    static var currentSessionShare: WebimService {
-        return WebimServiceController.shared.createSession()
-    }
-    
     weak var fatalErrorHandlerDelegate: FatalErrorHandlerDelegate?
-    weak var departmentListHandlerDelegate: DepartmentListHandlerDelegate?
     weak var notFatalErrorHandler: NotFatalErrorHandler?
     
     private var webimService: WebimService?
     
-    func createSession(jsonString: String? = nil, jsonData: Data? = nil) -> WebimService {
+    func createSession(jsonString: String? = nil,
+                       jsonData: Data? = nil,
+                       forceOnline: Bool = true,
+                       infoListener: InfoListener? = nil) -> WebimService {
         
         stopSession()
-        print("createSession")
+        print("startSession")
         let service = WebimService(
             fatalErrorHandlerDelegate: self,
-            departmentListHandlerDelegate: self,
             notFatalErrorHandler: self
         )
         
-        service.createSession(jsonString: jsonString, jsonData: jsonData)
+        service.createSession(jsonString: jsonString, jsonData: jsonData, infoListener: infoListener)
         service.resumeSession()
         service.setMessageStream()
+        service.set(forceOnline: forceOnline)
         
         self.webimService = service
         return service
-    }
-    
-    func setCurrentSession(_ session: WebimSession) {
-        stopSession()
-        print("createSession")
-        let webimService = WebimService(
-            fatalErrorHandlerDelegate: self,
-            departmentListHandlerDelegate: self,
-            notFatalErrorHandler: self
-        )
-        
-        webimService.set(session: session)
-        webimService.resumeSession()
-        webimService.setMessageStream()
-        
-        self.webimService = webimService
     }
     
     func currentSession() -> WebimService {
@@ -88,23 +70,12 @@ class WebimServiceController {
         self.webimService?.stopSession()
         self.webimService = nil
     }
-    
-    func sessionState() -> ChatState {
-        return webimService?.sessionState() ?? .unknown
-    }
 }
 
 extension WebimServiceController: FatalErrorHandlerDelegate {
     
     func showErrorDialog(withMessage message: String) {
         self.fatalErrorHandlerDelegate?.showErrorDialog(withMessage: message)
-    }
-}
-
-extension WebimServiceController: DepartmentListHandlerDelegate {
-    
-    func showDepartmentsList(_ departaments: [Department], action: @escaping (String) -> Void ) {
-        self.departmentListHandlerDelegate?.showDepartmentsList(departaments, action: action)
     }
 }
 

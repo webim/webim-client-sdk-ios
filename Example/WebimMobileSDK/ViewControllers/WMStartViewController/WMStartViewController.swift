@@ -155,10 +155,11 @@ final class WMStartViewController: UIViewController {
 
     private func presentChatViewController(openFromNotification: Bool, visitorData: Data? = nil) {
         WebimServiceController.currentSession.stopSession()
-        
+        let currentVisitorFromSettings = Settings.shared.userDataJson.data(using: .utf8)
+        let userDataJson = currentVisitorFromSettings?.isEmpty == false ? currentVisitorFromSettings : visitorFieldsManager.getVisitorData(for: .currentVisitor)
         let widget = ExternalWidgetBuilder().buildDefaultWidget(
             remoteNotificationSystem: .apns,
-            visitorFieldsData: visitorData,
+            visitorFieldsData: userDataJson,
             webimLogger: WidgetLogManager.shared,
             webimLoggerVerbosityLevel: .debug,
             availableLogTypes: [.manualCall,
@@ -173,8 +174,9 @@ final class WMStartViewController: UIViewController {
 
     private func startWebimSession() {
         WebimServiceController.shared.stopSession()
-        let currentVisitorFieldsData = visitorFieldsManager.getVisitorData(for: .currentVisitor)
-        _ = WebimServiceController.shared.createSession(jsonData: currentVisitorFieldsData)
+        let currentVisitorFromSettings = Settings.shared.userDataJson.data(using: .utf8)
+        let currentVisitorFieldsData = currentVisitorFromSettings?.isEmpty == false ? currentVisitorFromSettings : visitorFieldsManager.getVisitorData(for: .currentVisitor)
+        _ = WebimServiceController.shared.createSession(jsonData: currentVisitorFieldsData, forceOnline: false, infoListener: self)
         WebimServiceController.currentSession.set(unreadByVisitorMessageCountChangeListener: self)
         WebimServiceController.shared.fatalErrorHandlerDelegate = self
         unreadMessageCounter = WebimServiceController.currentSession.getUnreadMessagesByVisitor()
@@ -210,4 +212,11 @@ extension WMStartViewController: FatalErrorHandlerDelegate {
         startChatButton.isHidden = true
     }
 
+}
+
+extension WMStartViewController: InfoListener {
+    func update(newMessageCount: Int) {
+        unreadMessageCounter = newMessageCount
+        updateMessageCounter()
+    }
 }

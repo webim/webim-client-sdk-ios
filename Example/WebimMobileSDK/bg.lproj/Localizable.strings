@@ -54,8 +54,10 @@
 "Edit" = "Редактиране";
 "Enter message" = "Въведете съобщение";
 "Please rate the overall impression of the consultation" = "Моля, оценете общия впечатление от консултацията.";
+"Fetching more messages..." = "Извличане на повече съобщения...";
 "Rate Operator" = "Оцени агента";
 "Send" = "Изпращане";
 "New messages" = "Нови съобщения";
 "Settings" = "Настройки";
 "Invalid account name" = "Не е намерен акаунт с това име. Моля, проверете въведените данни.";
+"Share to Chat" = "Споделяне в чат";

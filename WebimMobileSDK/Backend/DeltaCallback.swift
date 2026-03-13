@@ -65,9 +65,13 @@ final class DeltaCallback {
         self.historyPoller = historyPoller
     }
     
-    func set(accountConfig: AccountConfigItem?) {
+    func set(accountConfig: AccountConfig?) {
         self.currentChatMessageMapper.set(accountConfig: accountConfig)
         self.historyMessageMapper.set(accountConfig: accountConfig)
+    }
+    
+    func set(webimMeta: WebimMetaItem?) {
+        self.messageStream?.set(webimMeta: webimMeta)
     }
     
     func process(deltaList: [DeltaItem]) {
@@ -119,12 +123,14 @@ final class DeltaCallback {
             case .chatMessageRead:
                 handleMessageRead(delta: delta)
                 
+            case .visitor:
+                handleChangeVisitorInfo(delta: delta)
+                
             case .chatId:
                 handleChatId(delta: delta)
                 
             case .visitSessionLang:
                 handleSessionLang(delta: delta)
-                
             default:
                 // Not supported delta type.
                 
@@ -144,6 +150,10 @@ final class DeltaCallback {
         
         if let survey = fullUpdate.getSurvey() {
             messageStream?.onReceived(surveyItem: survey)
+        }
+        
+        if let visitor = fullUpdate.getVisitor() {
+            messageStream?.onReceived(visitorItem: visitor)
         }
         
         currentChat = fullUpdate.getChat()
@@ -447,6 +457,18 @@ final class DeltaCallback {
         }
     }
     
+    private func handleChangeVisitorInfo(delta: DeltaItem) {
+        guard let deltaData = delta.getData() as? [String: Any] else {
+            return
+        }
+        
+        if let visitorItem = VisitorItem(jsonDictionary: deltaData) {
+            if delta.getEvent() == .update {
+                messageStream?.onReceived(visitorItem: visitorItem)
+            }
+        }
+    }
+    
     private func handleUnreadByVisitorUpdateBy(delta: DeltaItem) {
         guard delta.getEvent() == .update,
             let unreadByVisitorUpdate = delta.getData() as? [String: Any],
@@ -468,7 +490,6 @@ final class DeltaCallback {
         
         if sessionState == VisitSessionStateItem.offlineMessage.rawValue {
             messageStream?.set(onlineStatus: .offline)
-            messageStream?.getWebimActions().closeChat()
         }
         
         if delta.getEvent() == .update {

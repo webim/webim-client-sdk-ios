@@ -310,7 +310,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.startChat()
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.start")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.start")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -321,7 +321,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.startChat(firstQuestion: "Any")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.start")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.start")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -332,7 +332,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.startChat(departmentKey: "Any")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.start")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.start")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -343,7 +343,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.startChat(customFields: "Any")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.start")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.start")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -354,7 +354,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.startChat(firstQuestion: "Any", customFields: "Any")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.start")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.start")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -365,7 +365,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.startChat(departmentKey: "Any", customFields: "Any")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.start")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.start")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -374,10 +374,9 @@ class MessageStreamImplTests: XCTestCase {
         actionRequestLoop.webimRequest = nil
 
         messageStream?.changingChatStateOf(chat: getDefaultChatItem())
-        try messageStream?.closeChat()
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.close")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.close")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -388,7 +387,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.setVisitorTyping(draftMessage: "Any")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.visitor_typing")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.visitor_typing")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -399,7 +398,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.setVisitorTyping(draftMessage: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.visitor_typing")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.visitor_typing")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -410,7 +409,7 @@ class MessageStreamImplTests: XCTestCase {
         let _ = try messageStream?.send(message: "Any")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -421,7 +420,7 @@ class MessageStreamImplTests: XCTestCase {
         let _ = try messageStream?.send(message: "Any", completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -432,7 +431,7 @@ class MessageStreamImplTests: XCTestCase {
         let _ = try messageStream?.send(message: "Any", data: ["some": 12], completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -443,7 +442,7 @@ class MessageStreamImplTests: XCTestCase {
         let _ = try messageStream?.send(message: "Any", data: nil, completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -454,7 +453,7 @@ class MessageStreamImplTests: XCTestCase {
         let _ = try messageStream?.send(message: "Any", isHintQuestion: true)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -465,7 +464,7 @@ class MessageStreamImplTests: XCTestCase {
         let _ = try messageStream?.send(message: "Any",isHintQuestion: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -526,7 +525,7 @@ class MessageStreamImplTests: XCTestCase {
                                          completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertEqual(primaryData?[Parameter.clientSideID.rawValue] as? String, id)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
@@ -629,7 +628,7 @@ class MessageStreamImplTests: XCTestCase {
                                                completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.keyboard_response")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.keyboard_response")
         XCTAssertEqual(primaryData?[Parameter.buttonId.rawValue] as? String, keyboardButton?.getID())
         XCTAssertEqual(primaryData?[Parameter.requestMessageId.rawValue] as? String, defaultMessage.getCurrentChatID())
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
@@ -646,7 +645,7 @@ class MessageStreamImplTests: XCTestCase {
                                                completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.keyboard_response")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.keyboard_response")
         XCTAssertEqual(primaryData?[Parameter.buttonId.rawValue] as? String, buttonId)
         XCTAssertEqual(primaryData?[Parameter.requestMessageId.rawValue] as? String, messageCurrentChatId)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
@@ -660,7 +659,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.sendSticker(withId: stickerId, completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "sticker")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "sticker")
         XCTAssertEqual(primaryData?[Parameter.stickerId.rawValue] as? Int, stickerId)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
@@ -695,7 +694,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.updateWidgetStatus(data: dataString)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "widget.update")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "widget.update")
         XCTAssertEqual(primaryData?[Parameter.data.rawValue] as? String, dataString)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
@@ -708,7 +707,7 @@ class MessageStreamImplTests: XCTestCase {
         let id = try messageStream?.reply(message: messageText, repliedMessage: defaultMessage)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertEqual(primaryData?[Parameter.clientSideID.rawValue] as? String, id)
         XCTAssertEqual(primaryData?[Parameter.message.rawValue] as? String, messageText)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
@@ -727,7 +726,7 @@ class MessageStreamImplTests: XCTestCase {
 
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.message")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.message")
         XCTAssertEqual(primaryData?[Parameter.message.rawValue] as? String, editedText)
         XCTAssertEqual(isMessageEdited, true)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
@@ -805,7 +804,7 @@ class MessageStreamImplTests: XCTestCase {
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.read_by_visitor")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.read_by_visitor")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 
@@ -818,7 +817,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.sendDialogTo(emailAddress: emailAdress, completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.send_chat_history")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.send_chat_history")
         XCTAssertEqual(primaryData?[Parameter.email.rawValue] as? String, emailAdress)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
@@ -841,7 +840,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.set(prechatFields: prechatFields)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.set_prechat_fields")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.set_prechat_fields")
         XCTAssertEqual(primaryData?[Parameter.prechat.rawValue] as? String, prechatFields)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
@@ -857,7 +856,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.send(surveyAnswer: answer, completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "survey.answer")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "survey.answer")
         XCTAssertEqual(primaryData?[Parameter.surveyAnswer.rawValue] as? String, answer)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
 
@@ -874,7 +873,7 @@ class MessageStreamImplTests: XCTestCase {
         try messageStream?.closeSurvey(completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "survey.answer")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "survey.answer")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
 
         messageStream?.onSurveyCancelled()
@@ -891,7 +890,7 @@ class MessageStreamImplTests: XCTestCase {
                                            completionHandler: nil)
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "geo_response")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "geo_response")
         XCTAssertEqual(primaryData?[Parameter.latitude.rawValue] as? Double, latitude)
         XCTAssertEqual(primaryData?[Parameter.longitude.rawValue] as? Double, longitude)
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
@@ -905,7 +904,7 @@ class MessageStreamImplTests: XCTestCase {
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "chat.clear_history")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "chat.clear_history")
         XCTAssertTrue(actionRequestLoop.enqueueCalled)
     }
 

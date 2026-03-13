@@ -115,16 +115,10 @@ public final class Webim {
      */
     public enum RemoteNotificationSystem {
         case apns
-        
-        @available(*, unavailable, renamed: "apns")
-        case APNS
-        
+
         case fcm
         
         case none
-        
-        @available(*, unavailable, renamed: "none")
-        case NONE
     }
 
 }
@@ -164,6 +158,8 @@ public final class SessionBuilder  {
     private var prechat: String?
     private var onlineStatusRequestFrequencyInMillis: Int64?
     private var requestHeader: [String: String]?
+    private var isLightModeEnabled: Bool = false
+    private var infoListener: InfoListener?
 
     // MARK: - Methods
 
@@ -460,7 +456,7 @@ public final class SessionBuilder  {
     
     /**
      If set to true, different visitors can receive remote notifications on one device.
-     - parameter isMultivisitor:
+     - parameter multivisitorSection:
      Boolean parameter that indicated if an app should receive remote notifications for different visitors.
      - returns:
      `SessionBuilder` object with isVisitorDataClearingEnabled parameter set.
@@ -552,7 +548,45 @@ public final class SessionBuilder  {
 
         return self
     }
+    
+    /**
+     Method to pass isLightModeEnabled.
+     - parameter isLightModeEnabled:
+     Bool.
+     - returns:
+     `SessionBuilder` object with isLightModeEnabled  set.
+     - seealso:
+     `WebimLogger`
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    public func set(isLightModeEnabled: Bool) -> SessionBuilder {
+        self.isLightModeEnabled = isLightModeEnabled
 
+        return self
+    }
+    
+    /**
+     Method to pass info listener.
+     - parameter infoListener:
+     InfoListener type.
+     - returns:
+     `SessionBuilder` object with info listener set.
+     - seealso:
+     `WebimLogger`
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    public func set(infoListener: InfoListener?) -> SessionBuilder {
+        self.infoListener = infoListener
+
+        return self
+    }
+    
     /**
      Builds new `WebimSession` object.
      - important:
@@ -660,7 +694,9 @@ public final class SessionBuilder  {
                                                 prechat: prechat,
                                                 multivisitorSection: multivisitorSection,
                                                 onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis,
-                                                requestHeader: requestHeader) as WebimSession
+                                                requestHeader: requestHeader,
+                                                isLightSessionMode: isLightModeEnabled,
+                                                infoListener: infoListener) as WebimSession
     }
     
     /**
@@ -719,9 +755,6 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case verbose
-        
-        @available(*, unavailable, renamed: "verbose")
-        case VERBOSE
 
         /**
          All information which is useful when debugging will be delivered to `WebimLogger` instance with necessary verbosity level:
@@ -736,9 +769,6 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case debug
-        
-        @available(*, unavailable, renamed: "debug")
-        case DEBUG
 
         /**
          Reference information and all warnings and errors will be delivered to `WebimLogger` instance:
@@ -751,9 +781,6 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case info
-        
-        @available(*, unavailable, renamed: "info")
-        case INFO
 
         /**
          Errors and warnings only will be delivered to `WebimLogger` instance:
@@ -765,9 +792,6 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case warning
-        
-        @available(*, unavailable, renamed: "warning")
-        case WARNING
 
         /**
          Only errors will be delivered to `WebimLogger` instance:
@@ -778,10 +802,6 @@ public final class SessionBuilder  {
          2018 Webim
          */
         case error
-        
-        @available(*, unavailable, renamed: "error")
-        case ERROR
-
     }
 
     /**
@@ -855,9 +875,6 @@ public final class SessionBuilder  {
          2017 Webim
          */
         case invalidAuthentificatorParameters
-        
-        @available(*, unavailable, renamed: "invalidAuthentificatorParameters")
-        case INVALID_AUTHENTICATION_PARAMETERS
 
         /**
          Error that is thrown when trying to create session object with invalid remote notifications configuration.
@@ -870,9 +887,6 @@ public final class SessionBuilder  {
          2017 Webim
          */
         case invalidRemoteNotificationConfiguration
-        
-        @available(*, unavailable, renamed: "invalidRemoteNotificationConfiguration")
-        case INVALID_REMOTE_NOTIFICATION_CONFIGURATION
 
         /**
          Error that is thrown when trying to create session object with `nil` account name.
@@ -884,9 +898,6 @@ public final class SessionBuilder  {
          2017 Webim
          */
         case nilAccountName
-        
-        @available(*, unavailable, renamed: "nilAccountName")
-        case NIL_ACCOUNT_NAME
 
         /**
          Error that is thrown when trying to create session object with `nil` location name.
@@ -899,19 +910,9 @@ public final class SessionBuilder  {
          */
         case nilLocation
         
-        @available(*, unavailable, renamed: "nilLocation")
-        case NIL_LOCATION
-        
         case invalidHex
         
-        @available(*, unavailable, renamed: "invalidHex")
-        case INVALIDE_HEX
-        
         case unknown
-        
-        @available(*, unavailable, renamed: "unknown")
-        case UNKNOWN
-
     }
 
 }
@@ -954,18 +955,51 @@ public final class FAQBuilder  {
         return self
     }
     
+    /**
+     Sets application in FAQ system.
+     - parameter application:
+     Webim application.
+     - returns:
+     `FAQBuilder` object with application set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
     public func set(application: String) -> FAQBuilder {
         self.application = application
         
         return self
     }
     
+    /**
+     Sets department key in FAQ system.
+     - parameter departmentKey:
+     Department key.
+     - returns:
+     `FAQBuilder` object with department key set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
     public func set(departmentKey: String) -> FAQBuilder {
         self.departmentKey = departmentKey
         
         return self
     }
     
+    /**
+     Sets language in FAQ system.
+     - parameter language:
+     Language.
+     - returns:
+     `FAQBuilder` object with language set.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2019 Webim
+     */
     public func set(language: String) -> FAQBuilder {
         self.language = language
         
@@ -1020,9 +1054,6 @@ public final class FAQBuilder  {
          2019 Webim
          */
         case nilAccountName
-        
-        @available(*, unavailable, renamed: "nilAccountName")
-        case NIL_ACCOUNT_NAME
         
     }
     

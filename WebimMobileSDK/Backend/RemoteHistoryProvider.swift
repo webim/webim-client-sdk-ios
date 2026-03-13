@@ -74,6 +74,8 @@ class RemoteHistoryProvider {
                     completion([MessageImpl](), false)
                     self.historyMetaInformationStorage.set(historyEnded: true)
                 }
+            } else {
+                completion([MessageImpl](), false)
             }
         }
     }

@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Номи ҳисоб наметавонад холӣ бошад.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Ҷойгир набояд холӣ бошад.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Хатогӣ";
+//UIAlertHandler.swift
+"Account" = "Ҳисоб";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Номи ҳисоб дорои аломатҳои нодуруст аст.";
+//WebimService.swift
+"AccountBlocked" = "Ҳисобе, ки барои эҷоди сессия истифода мешавад, баста шудааст. Лутфан бо дастгирии Webim тамос гиред ё бо ёрии дигар истифода баред.";
+//UIAlertHandler.swift
+"Alert account name" = "Номи ҳисоби Webim ё суроғаи пурраи сервер (масалан, \"demo\" ё \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Бекор кардан";
+//ConnectionErrorView.xib
+"Connection error" = "Хатогии пайвастшавӣ";
+//UIAlertHandler.swift
+"InvalidSettings" = "Танзимоти ҳисоби нодуруст";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Ҷойгир дорои аломатҳои нодуруст аст.";
+//AdditionalKeys.swift
+"P.CR" = "Агент маълумоти тамосии шуморо дархост кард.";
+//AdditionalKeys.swift
+"P.OA" = "Агенти %@ ба дархости шумо таъин карда шуд.";
+//AdditionalKeys.swift
+"P.OF" = "%@ файл фиристод: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ паём навишт: %@";
+//AdditionalKeys.swift
+"P.RO" = "Ба агент баҳо диҳед.";
+//StringConstants.swift
+"Copy" = "Нусхабардорӣ";
+//StringConstants.swift
+"Delete" = "Нест кардан";
+//StringConstants.swift
+"Reply" = "Ҷавоб диҳед";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Хуш омадед ба Барномаи Webim SDK!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Фикри шумо ба мо кӯмак мекунад, ки беҳтар шавем.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Ҳисоби меҳмонони шумо дар рӯйхати сиёҳ аст.";
+//WebimService.swift
+"Session initialization failed." = "Оғозкунии сессия ноком шуд.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Хатои меҳмонони намоиширо таҳлил кунед.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Эҷоди сессия ноком шуд";
+//ChatViewController+Listener.swift
+"typing" = "чоп кардан";
+//StringConstants.swift
+"Edit" = "Таҳрир";
+"Enter message" = "Паёмро ворид кунед";
+"Please rate the overall impression of the consultation" = "Лутфан таассуроти умумии машваратро баҳо диҳед.";
+"Fetching more messages..." = "Гирифтани паёмҳои бештар...";
+"Rate Operator" = "Агенти тарифӣ";
+"Send" = "Фиристодан";
+"New messages" = "Паёмҳои нав";
+"Settings" = "Танзимот";
+"Invalid account name" = "Ҳисоб бо ин ном ёфт нашуд. Лутфан маълумоти воридшударо тафтиш кунед.";
+"Share to Chat" = "Дар чат мубодила кунед";

@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Το όνομα λογαριασμού δεν μπορεί να είναι κενό.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Η τοποθεσία δεν μπορεί να είναι κενή.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Σφάλμα";
+//UIAlertHandler.swift
+"Account" = "Λογαριασμός";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Το όνομα λογαριασμού έχει μη έγκυρους χαρακτήρες.";
+//WebimService.swift
+"AccountBlocked" = "Ο λογαριασμός που χρησιμοποιείται για τη δημιουργία συνεδρίας είναι αποκλεισμένος. Επικοινωνήστε με την υποστήριξη του Webim ή χρησιμοποιήστε άλλη.";
+//UIAlertHandler.swift
+"Alert account name" = "Όνομα λογαριασμού Webim ή πλήρης διεύθυνση διακομιστή (για παράδειγμα, \"demo\" ή \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Ακύρωση";
+//ConnectionErrorView.xib
+"Connection error" = "Σφάλμα σύνδεσης";
+//UIAlertHandler.swift
+"InvalidSettings" = "Μη έγκυρες ρυθμίσεις λογαριασμού";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Η τοποθεσία έχει μη έγκυρους χαρακτήρες";
+//AdditionalKeys.swift
+"P.CR" = "Ένας πράκτορας ζήτησε τα στοιχεία επικοινωνίας σας.";
+//AdditionalKeys.swift
+"P.OA" = "Ο πράκτορας %@ ανατέθηκε στο αίτημά σας.";
+//AdditionalKeys.swift
+"P.OF" = "%@ έστειλε ένα αρχείο: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ έγραψε ένα μήνυμα: %@";
+//AdditionalKeys.swift
+"P.RO" = "Βαθμολογήστε τον πράκτορα.";
+//StringConstants.swift
+"Copy" = "Αντιγραφή";
+//StringConstants.swift
+"Delete" = "Διαγραφή";
+//StringConstants.swift
+"Reply" = "Απάντηση";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Καλώς ήρθατε στην εφαρμογή Webim SDK!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Τα σχόλιά σας θα μας βοηθήσουν να γίνουμε καλύτεροι.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Ο λογαριασμός επισκέπτη σας βρίσκεται στη μαύρη λίστα.";
+//WebimService.swift
+"Session initialization failed." = "Η προετοιμασία της περιόδου λειτουργίας απέτυχε.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Ανάλυση σφάλματος επισκέπτη επίδειξης.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Η δημιουργία περιόδου σύνδεσης απέτυχε";
+//ChatViewController+Listener.swift
+"typing" = "πληκτρολόγηση";
+//StringConstants.swift
+"Edit" = "Επεξεργασία";
+"Enter message" = "Εισαγάγετε το μήνυμα";
+"Please rate the overall impression of the consultation" = "Αξιολογήστε τη συνολική εντύπωση της διαβούλευσης.";
+"Fetching more messages..." = "Λήψη περισσότερων μηνυμάτων...";
+"Rate Operator" = "Πράκτορας τιμών";
+"Send" = "Αποστολή";
+"New messages" = "Νέα μηνύματα";
+"Settings" = "Ρυθμίσεις";
+"Invalid account name" = "Ο λογαριασμός με αυτό το όνομα δεν βρέθηκε. Ελέγξτε τις πληροφορίες που έχετε εισαγάγει.";
+"Share to Chat" = "Κοινοποίηση στη συνομιλία";

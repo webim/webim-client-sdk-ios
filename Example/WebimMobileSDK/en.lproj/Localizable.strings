@@ -11,7 +11,7 @@
 //WebimService.swift
 "AccountBlocked" = "Account that is used to create session is blocked. Please contact Webim support or use another one.";
 //UIAlertHandler.swift
-"Alert account name" = "שם חשבון Webim או כתובת מלאה של השרת (לדוגמה, \"דמו\" או \"https://demo.webim.ru\")";
+"Alert account name" = "Webim account name or full server address (for example, \"demo\" or \"https://demo.webim.ru\")";
 //UIAlertHandler.swift
 "Cancel" = "Cancel";
 //ConnectionErrorView.xib
@@ -54,8 +54,10 @@
 "Edit" = "Edit";
 "Enter message" = "Enter message";
 "Please rate the overall impression of the consultation" = "Please rate the overall impression of the consultation.";
+"Fetching more messages..." = "Fetching more messages...";
 "Rate Operator" = "Rate Agent";
 "Send" = "Send";
 "New messages" = "New messages";
 "Settings" = "Settings";
 "Invalid account name" = "Account with that name not found. Please check the entered information.";
+"Share to Chat" = "Share to Chat";

@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Hisob nomi boʻsh boʻlishi mumkin emas.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Joylashuv boʻsh boʻlishi mumkin emas.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Xato";
+//UIAlertHandler.swift
+"Account" = "Hisob";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Hisob nomi noto‘g‘ri belgilarga ega.";
+//WebimService.swift
+"AccountBlocked" = "Seans yaratish uchun foydalaniladigan hisob bloklangan. Iltimos, Webim qo‘llab-quvvatlash xizmatiga murojaat qiling yoki boshqasidan foydalaning.";
+//UIAlertHandler.swift
+"Alert account name" = "Webim hisobi nomi yoki toʻliq server manzili (masalan, \"demo\" yoki \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Bekor qilish";
+//ConnectionErrorView.xib
+"Connection error" = "Ulanish xatosi";
+//UIAlertHandler.swift
+"InvalidSettings" = "Yaroqsiz hisob sozlamalari";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Joylashuvda yaroqsiz belgilar mavjud.";
+//AdditionalKeys.swift
+"P.CR" = "Agent kontakt maʼlumotlaringizni soʻradi.";
+//AdditionalKeys.swift
+"P.OA" = "Sizning so'rovingiz bo'yicha agent %@ tayinlangan.";
+//AdditionalKeys.swift
+"P.OF" = "%@ fayl yubordi %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ xabar yozgan: %@";
+//AdditionalKeys.swift
+"P.RO" = "Agentni baholang.";
+//StringConstants.swift
+"Copy" = "Nusxalash";
+//StringConstants.swift
+"Delete" = "Oʻchirish";
+//StringConstants.swift
+"Reply" = "Javob bering";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Webim SDK ilovasiga xush kelibsiz!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Sizning fikr-mulohazalaringiz bizni yaxshilashga yordam beradi.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Sizning tashrif buyuruvchi hisobingiz qora ro'yxatda.";
+//WebimService.swift
+"Session initialization failed." = "Seans ishga tushirilmadi.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Tahlil demo tashrif buyuruvchi xatosi.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Seans yaratilmadi";
+//ChatViewController+Listener.swift
+"typing" = "yozish";
+//StringConstants.swift
+"Edit" = "Tahrirlash";
+"Enter message" = "Xabarni kiriting";
+"Please rate the overall impression of the consultation" = "Iltimos, maslahatning umumiy taassurotini baholang.";
+"Fetching more messages..." = "Koʻproq xabarlar olinmoqda...";
+"Rate Operator" = "Tarif agenti";
+"Send" = "Yuborish";
+"New messages" = "Yangi xabarlar";
+"Settings" = "Sozlamalar";
+"Invalid account name" = "Bunday nomdagi hisob topilmadi. Iltimos, kiritilgan ma'lumotlarni tekshiring.";
+"Share to Chat" = "Chatga ulashish";

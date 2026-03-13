@@ -21,7 +21,7 @@
 "YPf-5C-0ns.normalTitle" = "Save";
 
 /* Class = "UILabel"; text = "Location*"; ObjectID = "dMJ-Tc-E7B"; */
-"dMJ-Tc-E7B.text" = "Locatio*";
+"dMJ-Tc-E7B.text" = "Location*";
 
 /* Class = "UILabel"; text = "Account name*"; ObjectID = "fbE-AI-B9x"; */
 "fbE-AI-B9x.text" = "Account name*";
@@ -43,3 +43,6 @@
 
 /* Class = "UITextField"; text = "wmtest"; ObjectID = "tcc-FO-XDY"; */
 "tcc-FO-XDY.text" = "wmtest";
+
+/* Class = "UILabel"; text = "App version: "; ObjectID = "5PX-Cc-1oz"; */
+"5PX-Cc-1oz.text" = "App version: ";

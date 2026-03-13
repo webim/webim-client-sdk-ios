@@ -37,6 +37,7 @@ enum WMSettingsKeychainKey: String {
     case location = "location"
     case pageTitle = "page_title"
     case userDataJson = "userDataJson"
+    case changedAccountName = "changed_account_name"
 }
 
 // MARK: - Settings
@@ -59,6 +60,7 @@ final class Settings {
     var location: String
     var pageTitle: String
     var userDataJson: String
+    var changedAccountName: String?
     
     // MARK: - Initialization
     
@@ -95,7 +97,8 @@ final class Settings {
         let settings = [
             WMSettingsKeychainKey.accountName.rawValue: accountName,
             WMSettingsKeychainKey.location.rawValue: location,
-            WMSettingsKeychainKey.pageTitle.rawValue: pageTitle
+            WMSettingsKeychainKey.pageTitle.rawValue: pageTitle,
+            WMSettingsKeychainKey.userDataJson.rawValue: userDataJson
         ]
         
         WMKeychainWrapper.standard.setDictionary(settings,

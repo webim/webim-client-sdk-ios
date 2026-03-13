@@ -2,7 +2,7 @@
 //  TranslationOptionsItem.swift
 //  WebimMobileSDK
 //
-//  Created by Anna Frolova on 15.12.2025.
+//  Created by Anna Frolova on 19.12.2025.
 //  Copyright © 2025 Webim. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy

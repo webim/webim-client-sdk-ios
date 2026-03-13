@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Тіркелгі атауы бос болмауы керек.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Орналастыру бос болуы мүмкін емес.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Қате";
+//UIAlertHandler.swift
+"Account" = "Тіркелгі";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Тіркелгі атауында жарамсыз таңбалар бар.";
+//WebimService.swift
+"AccountBlocked" = "Сеанс жасау үшін пайдаланылатын тіркелгі бұғатталған. Webim қолдау қызметіне хабарласыңыз немесе басқасын пайдаланыңыз.";
+//UIAlertHandler.swift
+"Alert account name" = "Webim тіркелгісінің аты немесе толық сервер мекенжайы (мысалы, \"demo\" немесе \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Болдырмау";
+//ConnectionErrorView.xib
+"Connection error" = "Қосылым қатесі";
+//UIAlertHandler.swift
+"InvalidSettings" = "Жарамсыз тіркелгі параметрлері";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Орналасқан жерінде жарамсыз таңбалар бар.";
+//AdditionalKeys.swift
+"P.CR" = "Агент байланыс деректеріңізді сұрады.";
+//AdditionalKeys.swift
+"P.OA" = "Сіздің өтінішіңіз бойынша агент %@ тағайындалды.";
+//AdditionalKeys.swift
+"P.OF" = "%@ файл жіберді: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ хабарлама жазды: %@";
+//AdditionalKeys.swift
+"P.RO" = "Агентті бағалаңыз.";
+//StringConstants.swift
+"Copy" = "Көшіру";
+//StringConstants.swift
+"Delete" = "Жою";
+//StringConstants.swift
+"Reply" = "Жауап";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Қолданбаға қош келдіңіз Webim SDK App!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Сіздің пікіріңіз бізге жақсырақ болуға көмектеседі.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Сіздің келуші тіркелгіңіз қара тізімде.";
+//WebimService.swift
+"Session initialization failed." = "Сеансты инициализациялау сәтсіз аяқталды.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Демонстрациялық келуші қатесін талдау.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Сеанс жасау сәтсіз аяқталды";
+//ChatViewController+Listener.swift
+"typing" = "теру";
+//StringConstants.swift
+"Edit" = "Өңдеу";
+"Enter message" = "Хабарды енгізіңіз";
+"Please rate the overall impression of the consultation" = "Консультацияның жалпы әсерін бағалаңыз.";
+"Fetching more messages..." = "Қосымша хабарлар алынуда...";
+"Rate Operator" = "Бағалау операторы";
+"Send" = "Жіберу";
+"New messages" = "Жаңа хабарламалар";
+"Settings" = "Параметрлер";
+"Invalid account name" = "Бұл атаудағы есептік жазба табылмады. Енгізілген ақпаратты тексеріңіз.";
+"Share to Chat" = "Чатқа бөлісу";

@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "Programu ya Webim SDK inahitaji ruhusa ya kufikia maktaba yako ya picha ili uweze kuhifadhi picha kutoka kwa gumzo.";
+
+"NSCameraUsageDescription" = "Programu ya Webim SDK inahitaji ruhusa ya kufikia kamera yako ili uweze kutuma picha ili kupiga gumzo.";
+
+"NSFileProviderDomainUsageDescription" = "Programu ya Webim SDK inahitaji ruhusa ya kufikia folda yako ya hati ili uweze kutuma faili kupiga gumzo.";
+
+"NSFileProviderPresenceUsageDescription" = "Programu ya Webim SDK inahitaji ruhusa ya kufikia folda yako ya hati ili uweze kutuma faili kupiga gumzo.";
+
+"NSPhotoLibraryUsageDescription" = "Programu ya Webim SDK inahitaji ruhusa ya kufikia maktaba yako ya picha ili uweze kutuma picha kupiga gumzo.";

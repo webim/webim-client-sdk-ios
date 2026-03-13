@@ -182,6 +182,10 @@ final class ChatItem {
         if let visitorTyping = jsonDictionary[JSONField.visitorTyping.rawValue] as? Bool {
             self.visitorTyping = visitorTyping
         }
+        
+        if let translationOptions = jsonDictionary[JSONField.translationOptions.rawValue] as? [String: Any?] {
+            self.translationOptions = TranslationOptionsItem(jsonDictionary: translationOptions)
+        }
     }
     
     // For testing purpoeses.
@@ -264,10 +268,6 @@ final class ChatItem {
         return operatorIDToResolutionSurvey
     }
     
-    func getTranslationOptions() -> TranslationOptionsItem? {
-        return translationOptions
-    }
-    
     func set(rating: RatingItem,
              toOperatorWithId operatorID: String) {
         if rating.getAnswer() != nil {
@@ -275,6 +275,10 @@ final class ChatItem {
         } else {
             operatorIDToRate[operatorID] = rating
         }
+    }
+    
+    func getTranslationOptions() -> TranslationOptionsItem? {
+        return translationOptions
     }
     
     func getUnreadByVisitorMessageCount() -> Int {
@@ -321,6 +325,9 @@ final class ChatItem {
         case invitation = "invitation"
         case queue = "queue"
         case unknown = "unknown"
+        case hold
+        case routing
+        case deleted
         
         // MARK: - Initialization
         init(withType typeValue: String) {

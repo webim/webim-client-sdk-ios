@@ -282,7 +282,6 @@ final class MessageItem {
         case info = "info"
         case keyboard = "keyboard"
         case keyboardResponse = "keyboard_response"
-        @available(*, unavailable, renamed: "keyboardResponse")
         case keyboard_response = ""
         case operatorMessage = "operator"
         case operatorBusy = "operator_busy"
@@ -298,6 +297,10 @@ final class MessageItem {
                 break
             case .contactInformationRequest:
                 self = .contactInformationRequest
+                
+                break
+            case .contacts:
+                self = .contactInformation
                 
                 break
             case .fileFromOperator:
@@ -524,18 +527,23 @@ final class QuoteItem {
     }
 }
 
-final public class MessageDataItem {
+final class MessageDataItem {
     private enum JSONField: String {
         case file = "file"
+        case extraText = "extra_text"
         case translationInfo = "translation_info"
     }
     
     private var file: FileItem?
+    private var extraText: String?
     private var translationInfo: TranslationInfoItem?
     
     init(jsonDictionary: [String: Any?]) {
         if let dataDictonary = jsonDictionary[JSONField.file.rawValue] as? [String: Any?]  {
             self.file = FileItem(jsonDictionary: dataDictonary)
+        }
+        if let extraText = jsonDictionary[JSONField.extraText.rawValue] as? String?  {
+            self.extraText = extraText
         }
         if let translationInfo = jsonDictionary[JSONField.translationInfo.rawValue] as? [String: Any?]  {
             self.translationInfo = TranslationInfoItem(jsonDictionary: translationInfo)
@@ -544,6 +552,10 @@ final public class MessageDataItem {
     
     func getFile() -> FileItem? {
         return file
+    }
+    
+    func getExtraText() -> String? {
+        return extraText
     }
     
     func getTranslationInfo() -> TranslationInfoItem? {
@@ -645,7 +657,7 @@ final class FileItem {
 }
 
 struct SendingFile {
-    
+
     var fileName: String
     var clientSideId: String
     var fileSize: Int

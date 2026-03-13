@@ -99,9 +99,6 @@ public enum RootType {
      */
     case category
     
-    @available(*, unavailable, renamed: "category")
-    case CATEGORY
-    
     /**
      Root is item.
      - author:
@@ -111,9 +108,6 @@ public enum RootType {
      */
     case item
     
-    @available(*, unavailable, renamed: "item")
-    case ITEM
-    
     /**
     Unknown root type.
      - author:
@@ -122,8 +116,5 @@ public enum RootType {
      2019 Webim
      */
     case unknown
-    
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
     
 }

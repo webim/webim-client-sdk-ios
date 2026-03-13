@@ -30,6 +30,7 @@ import WebimMobileWidget
 class WMLogsViewController: UIViewController {
     
     lazy var navigationBarUpdater = NavigationBarUpdater()
+    private let queue: DispatchQueue = DispatchQueue.init(label: "WMLogsManager")
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollButton: UIButton!
@@ -43,6 +44,8 @@ class WMLogsViewController: UIViewController {
         super.viewDidLoad()
         setupTextView()
         setupScrollButtonImage()
+        let doneItem = UIBarButtonItem(title: "Write to file", style: .done, target: self, action: #selector(writeToFile))
+        navigationItem.rightBarButtonItem = doneItem
     }
 
     @IBAction private func scrollToBottom() {
@@ -73,6 +76,30 @@ class WMLogsViewController: UIViewController {
         navigationBarUpdater.set(navigationController: navigationController)
         navigationBarUpdater.set(isNavigationBarVisible: true)
         navigationBarUpdater.update(with: .defaultStyle)
+    }
+    
+    @objc
+    private func writeToFile() {
+        guard let logFile = generateLogFilsUrl() else {
+            return
+        }
+        queue.sync {
+            let text: String
+            if textView.text.count > 10 * 1024 * 1024 {
+                text = String(textView.text.dropFirst(textView.text.count - 10 * 1024 * 1024))
+            } else {
+                text = textView.text
+            }
+            try? text.write(to: logFile, atomically: true, encoding: .utf8)
+            navigationItem.rightBarButtonItem?.title = "Saved!"
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+    }
+    
+    private func generateLogFilsUrl() -> URL? {
+
+        guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        return documentDirectory.appendingPathComponent("WebimDemoAppLog.txt")
     }
 }
 

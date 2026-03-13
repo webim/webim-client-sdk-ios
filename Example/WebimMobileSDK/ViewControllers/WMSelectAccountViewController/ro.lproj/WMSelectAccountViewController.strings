@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "Версия приложения:"; ObjectID = "16W-1A-jCm"; */
+"16W-1A-jCm.text" = "Versiunea aplicației:";
+
+/* Class = "UILabel"; text = "Авторизация"; ObjectID = "2Vo-Fd-JbN"; */
+"2Vo-Fd-JbN.text" = "Autorizare";
+
+/* Class = "UIButton"; normalTitle = "Продолжить"; ObjectID = "Exx-vL-8RS"; */
+"Exx-vL-8RS.normalTitle" = "Continuați";
+
+/* Class = "UILabel"; text = "Аккаунт с таким названием не найден"; ObjectID = "qQG-j0-IK6"; */
+"qQG-j0-IK6.text" = "Contul cu acest nume nu a fost găsit";
+
+/* Class = "UILabel"; text = "Название аккаунта*"; ObjectID = "w6x-BP-LCU"; */
+"w6x-BP-LCU.text" = "Numele contului*";

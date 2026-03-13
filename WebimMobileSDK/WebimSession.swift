@@ -165,9 +165,6 @@ public enum AccessError: Error {
      */
     case invalidThread
     
-    @available(*, unavailable, renamed: "invalidThread")
-    case INVALID_THREAD
-    
     /**
      Error that is thrown if WebimSession was destroyed.
      - author:
@@ -176,7 +173,4 @@ public enum AccessError: Error {
      2017 Webim
      */
     case invalidSession
-    
-    @available(*, unavailable, renamed: "invalidSession")
-    case INVALID_SESSION
 }

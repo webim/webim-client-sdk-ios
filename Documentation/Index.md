@@ -70,7 +70,6 @@
     -   [startChat(firstQuestion:customFields) method](#start-chat-first-question-custom-fields)
     -   [startChat(departmentKey:customFields) method](#start-chat-department-key-custom-fields)
     -   [startChat(departmentKey:firstQuestion:customFields) method](#start-chat-department-key-first-question-custom-fields)
-    -   [closeChat() method](#close-chat)
     -   [send(message:) method](#send-message)
     -   [setVisitorTyping(draftMessage:) method](#set-visitor-typing-draft-message)
     -   [send(message:data:completionHandler:) method](#send-message-data)
@@ -759,11 +758,6 @@ In most cases method call is not mandatory, send message or send file methods st
 If account settings provide automatic complimentary message it won't be sent before any "startChat" method or first sent message.
 Can throw errors of [AccessError](#access-error) type.
 
-<h3 id ="close-chat">closeChat() method</h3>
-
-Changes [ChatState](#chat-state) to [closedByVisitor](#closed-by-visitor).
-Can throw errors of [AccessError](#access-error) type.
-
 <h3 id ="set-visitor-typing-draft-message">setVisitorTyping(draftMessage:) method</h3>
 
 This method must be called whenever there is a change of the input field of a message transferring current content of a message as a parameter. When `nil` value passed it means that visitor stopped to type a message or deleted it.
@@ -1161,7 +1155,7 @@ A chat is seen in different ways by an operator depending on ChatState.
 The initial state is [closed](#closed).
 Then if a visitor sends a message ([send(message:isHintQuestion:)](#send-message-is-hint-question)), the chat changes it's state to [queue](#queue). The chat can be turned into this state by calling [startChat() method](#start-chat).
 After that, if an operator takes the chat to process, the state changes to [chatting](#chatting). The chat is being in this state until the visitor or the operator closes it.
-When closing a chat by the visitor [closeChat() method](#close-chat) it turns into the state [closedByVisitor](#closed-by-visitor), by the operator - [closedByOperator](#closed-by-operator).
+When closing a chat by the operator - [closedByOperator](#closed-by-operator).
 When both the visitor and the operator close the chat, it's state changes to the initial – [closed](#closed). A chat can also automatically turn into the initial state during long-term absence of activity in it.
 Furthermore, the first message can be sent not only by a visitor but also by an operator. In this case the state will change from the initial to [invitation](#invitation), and then, after the first message of the visitor, it changes to [chatting](#chatting).
 
@@ -1170,7 +1164,6 @@ Furthermore, the first message can be sent not only by a visitor but also by an 
 Means that an operator has taken a chat for processing.
 From this state a chat can be turned into:
 * [chatting](#chatting), if an operator intercepted the chat;
-* [closedByVisitor](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
 * [closed](#closed), automatically during long-term absence of activity.
 
 <h3 id ="chatting-with-robot">chattingWithRobot case</h3>
@@ -1178,14 +1171,13 @@ From this state a chat can be turned into:
 Means that chat is picked up by a bot.
 From this state a chat can be turned into:
 * [closedByOperator](#closed-by-operator), if an operator closes the chat;
-* [closedByVisitor](#closed-by-visitor), if a visitor closes the chat ([closeChat() method](#close-chat));
 * [closed](#closed), automatically during long-term absence of activity.
 
 <h3 id ="closed-by-operator">closedByOperator case</h3>
 
 Means that an operator has closed the chat.
 From this state a chat can be turned into:
-* [closed](#closed), if the chat is also closed by a visitor ([closeChat() method](#close-chat)), or automatically during long-term absence of activity;
+* [closed](#closed), if the chat is automatically closed during long-term absence of activity;
 * [queue](#queue), if a visitor sends a new message ([send(message:isHintQuestion:) method](#send-message-is-hint-question)).
 
 <h3 id ="closed-by-visitor">closedByVisitor case</h3>
@@ -1200,7 +1192,7 @@ From this state a chat can be turned into:
 Means that a chat has been started by an operator and at this moment is waiting for a visitor's response.
 From this state a chat can be turned into:
 * [chatting](#chatting), if a visitor sends a message ([send(message:isHintQuestion:) method](#send-message-is-hint-question));
-* [closed](#closed), if an operator or a visitor closes the chat ([closeChat() method](#close-chat)).
+* [closed](#closed), if an operator closes the chat.
 
 <h3 id ="closed">closed case</h3>
 
@@ -1214,7 +1206,6 @@ From this state a chat can be turned into:
 Means that a chat has been started by a visitor and at this moment is being in the queue for processing by an operator.
 From this state a chat can be turned into:
 * [chatting](#chatting), if an operator takes the chat for processing;
-* [closed](#closed), if a visitor closes the chat (by calling ([closeChat() method](#close-chat)) before it is taken for processing;
 * [closedByOperator](#closed-by-operator), if an operator closes the chat without taking it for processing.
 
 <h3 id ="unknown">unknown case</h3>

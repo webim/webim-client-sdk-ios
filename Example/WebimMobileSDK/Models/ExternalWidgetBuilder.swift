@@ -71,7 +71,8 @@ class ExternalWidgetBuilder {
             prechat: prechat,
             onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis
         )
-        let chatControllerConfig = chatViewControllerConfig(openFromNotification)
+       //let chatControllerConfig = chatViewControllerConfig(openFromNotification)
+        let chatControllerConfig = fastChatViewControllerConfig(openFromNotification)
         let imageControllerConfig = imageViewControllerConfig()
         let fileControllerConfig = fileViewControllerConfig()
         
@@ -407,8 +408,6 @@ class ExternalWidgetBuilder {
             .build()
         let editBarConfig = quoteViewConfig
         let surveyViewConfig = WMSurveyViewConfigBuilder()
-            .set(title: rateOperatorTitle)
-            .set(subtitle: rateOperatorSubtitle)
             .set(cosmosSettings: defaultCosmosSettings())
             .set(starsViewSize: CGSize(width: 170, height: 43))
             .set(buttonTitle: rateOperatorButtonTitle)
@@ -428,6 +427,7 @@ class ExternalWidgetBuilder {
         
         let chatConfig = WMChatViewControllerConfigBuilder()
             .set(showScrollButtonView: true)
+            .set(forceOnline: false)
             .set(scrollButtonImage: scrollButtonImage)
             .set(showScrollButtonCounter: true)
             .set(requestMessagesCount: 25)
@@ -482,6 +482,24 @@ class ExternalWidgetBuilder {
             .build()
         return fileViewControllerConfig
     }
+    
+    private func fastChatViewControllerConfig(_ openFromNotification: Bool = false) -> WMViewControllerConfig {
+        let chatConfig = WMFastCustomizationConfigBuilder()
+            .set(firstColor: #colorLiteral(red: 0.08235294118, green: 0.6745098039, blue: 0.8235294118, alpha: 1))
+            .set(secondColor: #colorLiteral(red: 0.1529411765, green: 0.1607843137, blue: 0.3176470588, alpha: 1))
+            .set(thirdColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))
+            .set(fourthColor: #colorLiteral(red: 0.3607843137, green: 0.3725490196, blue: 0.5411764706, alpha: 1))
+            .set(fifthColor: #colorLiteral(red: 0.6941176471, green: 0.7019607843, blue: 0.7098039216, alpha: 1))
+            .set(sixthColor: #colorLiteral(red: 0.9254901961, green: 0.9333333333, blue: 0.9529411765, alpha: 1))
+            .set(seventhColor: #colorLiteral(red: 0.9411764706, green: 0.9529411765, blue: 0.9607843137, alpha: 1))
+            .set(eighthColor: #colorLiteral(red: 0.9568627451, green: 0.262745098, blue: 0.2117647059, alpha: 1))
+            .set(linkColor: #colorLiteral(red: 0.1977989972, green: 0.5007162094, blue: 0.9563334584, alpha: 1))
+            .set(textSize: 16)
+            .set(cornerRadius: 10)
+            .build()
+        return chatConfig
+    }
+    
 }
 
 // MARK: - Helper Methods

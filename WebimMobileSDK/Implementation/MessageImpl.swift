@@ -622,6 +622,7 @@ final class MessageAttachmentImpl: MessageAttachment {
     private var errorType: String?
     private var errorMessage: String?
     private var visitorErrorMessage: String?
+    private var extraText: String?
     
     // MARK: - Initialization
     init(fileInfo: FileInfo,
@@ -630,7 +631,8 @@ final class MessageAttachmentImpl: MessageAttachment {
          downloadProgress: Int64? = nil,
          errorType: String? = nil,
          errorMessage: String? = nil,
-         visitorErrorMessage: String? = nil) {
+         visitorErrorMessage: String? = nil,
+         extraText: String? = nil) {
         self.fileInfo = fileInfo
         self.filesInfo = filesInfo
         self.state = state
@@ -638,6 +640,7 @@ final class MessageAttachmentImpl: MessageAttachment {
         self.errorType = errorType
         self.errorMessage = errorMessage
         self.visitorErrorMessage = visitorErrorMessage
+        self.extraText = extraText
     }
     
     // MARK: - Methods
@@ -670,6 +673,10 @@ final class MessageAttachmentImpl: MessageAttachment {
         return visitorErrorMessage
     }
     
+    func getExtraText() -> String? {
+        return extraText
+    }
+    
     func isEqual(to messageAttachment: MessageAttachment) -> Bool {
         guard let messageAttachment = messageAttachment as? MessageAttachmentImpl else {
             return false
@@ -687,6 +694,7 @@ extension MessageAttachmentImpl: Equatable {
             && lhs.getErrorType() == rhs.getErrorType()
             && lhs.getErrorMessage() == rhs.getErrorMessage()
             && lhs.getVisitorErrorMessage() == rhs.getVisitorErrorMessage()
+            && lhs.getExtraText() == rhs.getExtraText()
     }
     
     private static func areEqualFilesInfo(lhs: [FileInfo], rhs: [FileInfo]) -> Bool {
@@ -1482,6 +1490,7 @@ final class QuoteImpl: Quote {
             WebimInternalLogger.shared.log(entry: "Quote Item has not State in KeyboardRequestImpl.\(#function)")
             return nil
         }
+        
         let translationInfo = convert(messageData: quoteItem.getData()?.getTranslationInfo())
         
         return QuoteImpl(state: convert(quoteState: quoteState),

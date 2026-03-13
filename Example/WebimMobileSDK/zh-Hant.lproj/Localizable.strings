@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* 帳戶名不能為空";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* 位置不能為空";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "錯誤";
+//UIAlertHandler.swift
+"Account" = "帳戶";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "帳戶名稱包含無效字元";
+//WebimService.swift
+"AccountBlocked" = "用於建立會話的帳戶被封鎖。請聯絡 Webim 支援或使用其他支援";
+//UIAlertHandler.swift
+"Alert account name" = "Webim 帳戶名稱或完整伺服器位址（例如，「demo」或「https://demo.webim.ru」）";
+//UIAlertHandler.swift
+"Cancel" = "取消";
+//ConnectionErrorView.xib
+"Connection error" = "連線錯誤";
+//UIAlertHandler.swift
+"InvalidSettings" = "無效的帳戶設置";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "位置包含無效字符";
+//AdditionalKeys.swift
+"P.CR" = "代理請求您的聯絡資料";
+//AdditionalKeys.swift
+"P.OA" = "代理 %@ 已被指派處理您的請求";
+//AdditionalKeys.swift
+"P.OF" = "%@ 發送了一個文件: %@";
+//AdditionalKeys.swift
+"P.OM" = "%@ 寫了一封訊息: %@";
+//AdditionalKeys.swift
+"P.RO" = "給經紀人評分";
+//StringConstants.swift
+"Copy" = "複製";
+//StringConstants.swift
+"Delete" = "刪除";
+//StringConstants.swift
+"Reply" = "回复";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "歡迎使用 Webim SDK 應用程式！";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "您的回饋將幫助我們做得更好";
+//WebimService.swift
+"Your visitor account is in the black list." = "您的訪客帳號已列入黑名單";
+//WebimService.swift
+"Session initialization failed." = "會話初始化失敗";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "解析演示訪客錯誤";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "會話建立失敗";
+//ChatViewController+Listener.swift
+"typing" = "打字";
+//StringConstants.swift
+"Edit" = "編輯";
+"Enter message" = "輸入訊息";
+"Please rate the overall impression of the consultation" = "請對本次諮詢的整體印象進行評分";
+"Fetching more messages..." = "獲取更多消息";
+"Rate Operator" = "評級代理";
+"Send" = "發送";
+"New messages" = "新消息";
+"Settings" = "設定";
+"Invalid account name" = "未找到該名稱的帳戶。請檢查輸入的資訊。";
+"Share to Chat" = "分享到聊天";

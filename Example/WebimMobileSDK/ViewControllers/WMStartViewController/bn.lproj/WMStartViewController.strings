@@ -1,0 +1,33 @@
+
+/* Class = "UILabel"; text = "Новых сообщений: 5"; ObjectID = "N3o-tY-Q3j"; */
+"N3o-tY-Q3j.text" = "নতুন বার্তা: 5";
+
+/* Class = "UILabel"; accessibilityLabel = "Greeting title"; ObjectID = "fgX-wy-ZIA"; */
+"fgX-wy-ZIA.accessibilityLabel" = "Greeting title";
+
+/* Class = "UILabel"; text = "Добро пожаловать в приложение\nWebim SDK App!"; ObjectID = "fgX-wy-ZIA"; */
+"fgX-wy-ZIA.text" = "ওয়েবিম এসডিকে অ্যাপে স্বাগতম!";
+
+/* Class = "UIButton"; accessibilityHint = "Shows settings."; ObjectID = "htJ-b1-n8p"; */
+"htJ-b1-n8p.accessibilityHint" = "Shows settings.";
+
+/* Class = "UIButton"; accessibilityLabel = "Settings"; ObjectID = "htJ-b1-n8p"; */
+"htJ-b1-n8p.accessibilityLabel" = "Settings";
+
+/* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "htJ-b1-n8p"; */
+"htJ-b1-n8p.normalTitle" = "সেটিংস";
+
+/* Class = "UIButton"; accessibilityHint = "Starts chat."; ObjectID = "wAh-BG-LeG"; */
+"wAh-BG-LeG.accessibilityHint" = "Starts chat.";
+
+/* Class = "UIButton"; accessibilityLabel = "Start chat"; ObjectID = "wAh-BG-LeG"; */
+"wAh-BG-LeG.accessibilityLabel" = "Start chat";
+
+/* Class = "UIButton"; normalTitle = "Start chat"; ObjectID = "wAh-BG-LeG"; */
+"wAh-BG-LeG.normalTitle" = "চ্যাট শুরু করুন";
+
+/* Class = "UITextView"; accessibilityLabel = "Greeting words"; ObjectID = "xS6-J8-Sm9"; */
+"xS6-J8-Sm9.accessibilityLabel" = "Greeting words";
+
+/* Class = "UITextView"; text = "Для того, чтобы начать чат, \nнажмите на кнопку ниже"; ObjectID = "xS6-J8-Sm9"; */
+"xS6-J8-Sm9.text" = "চ্যাট শুরু করতে,\nনীচের বোতামে ক্লিক করুন";

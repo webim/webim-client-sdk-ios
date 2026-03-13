@@ -29,9 +29,14 @@ import WebimMobileSDK
 
 extension WMSettingsViewController: SelectUserDelegate {
     func showUserList() {
+        self.saveChangedAccountName(accountName: accountNameTextField.text)
         let vc = SelectVisitorViewController.loadViewControllerFromXib()
         vc.set(delegate: self)
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func saveChangedAccountName(accountName: String?) {
+        Settings.shared.changedAccountName = accountName
     }
 }
 

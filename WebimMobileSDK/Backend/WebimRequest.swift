@@ -68,7 +68,9 @@ final class WebimRequest {
     private var geolocationCompletionHandler: GeolocationCompletionHandler?
     private var serverSideSettingsCompletionHandler: ServerSideSettingsCompletionHandler?
     private var autocompleteCompletionHandler: AutocompleteCompletionHandler?
+    private var contactsCompletionHandler: ContactsCompletionHandler?
     private var sendResolutionCompletionHandler: SendResolutionCompletionHandler?
+    private var offlineMessageCompletionHandler: OfflineMessageCompletionHandler?
     
     // MARK: - Initialization
     init(httpMethod: AbstractRequestLoop.HTTPMethods,
@@ -103,7 +105,9 @@ final class WebimRequest {
          geolocationCompletionHandler: GeolocationCompletionHandler? = nil,
          serverSideSettingsCompletionHandler: ServerSideSettingsCompletionHandler? = nil,
          autocompleteCompletionHandler: AutocompleteCompletionHandler? = nil,
-         sendResolutionCompletionHandler: SendResolutionCompletionHandler? = nil) {
+         contactsCompletionHandler: ContactsCompletionHandler? = nil,
+         sendResolutionCompletionHandler: SendResolutionCompletionHandler? = nil,
+         offlineMessageCompletionHandler: OfflineMessageCompletionHandler? = nil) {
         self.httpMethod = httpMethod
         self.primaryData = primaryData
         self.messageID = messageID
@@ -136,7 +140,9 @@ final class WebimRequest {
         self.geolocationCompletionHandler = geolocationCompletionHandler
         self.serverSideSettingsCompletionHandler = serverSideSettingsCompletionHandler
         self.autocompleteCompletionHandler = autocompleteCompletionHandler
+        self.contactsCompletionHandler = contactsCompletionHandler
         self.sendResolutionCompletionHandler = sendResolutionCompletionHandler
+        self.offlineMessageCompletionHandler = offlineMessageCompletionHandler
     }
     
     
@@ -272,5 +278,13 @@ final class WebimRequest {
     
     func getAutocompleteCompletionHandler() -> AutocompleteCompletionHandler? {
         return autocompleteCompletionHandler
+    }
+    
+    func getContactsCompletionHandler() -> ContactsCompletionHandler? {
+        return contactsCompletionHandler
+    }
+    
+    func getOfflineMessageCompletionHandler() -> OfflineMessageCompletionHandler? {
+        return offlineMessageCompletionHandler
     }
 }

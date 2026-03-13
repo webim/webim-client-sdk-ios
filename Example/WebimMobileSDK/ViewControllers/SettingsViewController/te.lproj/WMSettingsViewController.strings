@@ -1,0 +1,48 @@
+
+/* Class = "UITextField"; accessibilityLabel = "Location text field"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.accessibilityLabel" = "Location text field";
+
+/* Class = "UITextField"; placeholder = "mobile"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.placeholder" = "mobile";
+
+/* Class = "UITextField"; text = "mobile"; ObjectID = "0cS-HU-Nd5"; */
+"0cS-HU-Nd5.text" = "mobile";
+
+/* Class = "UILabel"; text = "Account"; ObjectID = "N3V-0h-q3d"; */
+"N3V-0h-q3d.text" = "खाते";
+
+/* Class = "UIButton"; accessibilityHint = "Saves current settings and shows start screen."; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityHint" = "Saves current settings and shows start screen.";
+
+/* Class = "UIButton"; accessibilityLabel = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.accessibilityLabel" = "Save";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "YPf-5C-0ns"; */
+"YPf-5C-0ns.normalTitle" = "जतन करा";
+
+/* Class = "UILabel"; text = "Location*"; ObjectID = "dMJ-Tc-E7B"; */
+"dMJ-Tc-E7B.text" = "स्थान*";
+
+/* Class = "UILabel"; text = "Account name*"; ObjectID = "fbE-AI-B9x"; */
+"fbE-AI-B9x.text" = "खात्याचे नाव*";
+
+/* Class = "UILabel"; text = "* Location can't be empty."; ObjectID = "ohi-9E-ylR"; */
+"ohi-9E-ylR.text" = "* स्थान रिकामे असू शकत नाही";
+
+/* Class = "UILabel"; text = "* Account name can't be empty."; ObjectID = "pro-Zu-Qq2"; */
+"pro-Zu-Qq2.text" = "* खात्याचे नाव रिकामे असू शकत नाही";
+
+/* Class = "UILabel"; text = "Authorized User"; ObjectID = "t12-07-dH3"; */
+"t12-07-dH3.text" = "अधिकृत वापरकर्ता";
+
+/* Class = "UITextField"; accessibilityLabel = "Account name text field"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.accessibilityLabel" = "Account name text field";
+
+/* Class = "UITextField"; placeholder = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.placeholder" = "wmtest";
+
+/* Class = "UITextField"; text = "wmtest"; ObjectID = "tcc-FO-XDY"; */
+"tcc-FO-XDY.text" = "wmtest";
+
+/* Class = "UILabel"; text = "App version: "; ObjectID = "5PX-Cc-1oz"; */
+"5PX-Cc-1oz.text" = "అప్లికేషన్ వెర్షన్: ";

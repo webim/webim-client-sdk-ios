@@ -55,6 +55,9 @@ final class WebimClientBuilder {
     private var title: String?
     private var visitorFieldsJSONString: String?
     private var visitorJSONString: String?
+    private var isLightModeEnabled: Bool = false
+    private var authToken: String?
+    private var infoListener: InfoListener?
     
     // MARK: - Builder methods
     
@@ -168,8 +171,21 @@ final class WebimClientBuilder {
         return self
     }
     
-    func set(prechat:String?) -> WebimClientBuilder {
+    func set(prechat: String?) -> WebimClientBuilder {
         self.prechat = prechat
+        
+        return self
+    }
+    
+    func set(isLightModeEnabled: Bool) -> WebimClientBuilder {
+        self.isLightModeEnabled = isLightModeEnabled
+        
+        return self
+    }
+    
+    func set(infoListener: InfoListener?) -> WebimClientBuilder {
+        self.infoListener = infoListener
+        
         return self
     }
     
@@ -232,12 +248,14 @@ final class WebimClientBuilder {
                                                 sessionID: sessionID,
                                                 prechat: prechat,
                                                 authorizationData: authorizationData,
-                                                requestHeader: requestHeader
-                                                )
+                                                requestHeader: requestHeader,
+                                                isLightModeEnabled: isLightModeEnabled,
+                                                infoListener: infoListener)
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
-                           webimActions: WebimActionsImpl(actionRequestLoop: actionRequestLoop))
+                           webimActions: WebimActionsImpl(actionRequestLoop: actionRequestLoop),
+                           isLightModeEnabled: isLightModeEnabled)
     }
     
 }
@@ -257,36 +275,47 @@ final class WebimClient {
     private let actionRequestLoop: ActionRequestLoop
     private let deltaRequestLoop: DeltaRequestLoop
     private let webimActions: WebimActionsImpl
+    private let isLightModeEnabled: Bool
     
     // MARK: - Initialization
     init(withActionRequestLoop actionRequestLoop: ActionRequestLoop,
          deltaRequestLoop: DeltaRequestLoop,
-         webimActions: WebimActionsImpl) {
+         webimActions: WebimActionsImpl,
+         isLightModeEnabled: Bool) {
         self.actionRequestLoop = actionRequestLoop
         self.deltaRequestLoop = deltaRequestLoop
         self.webimActions = webimActions
+        self.isLightModeEnabled = isLightModeEnabled
     }
     
     // MARK: - Methods
     
     func start() {
         deltaRequestLoop.start()
-        actionRequestLoop.start()
+        if !isLightModeEnabled {
+            actionRequestLoop.start()
+        }
     }
     
     func pause() {
         deltaRequestLoop.pause()
-        actionRequestLoop.pause()
+        if !isLightModeEnabled {
+            actionRequestLoop.pause()
+        }
     }
     
     func resume() {
         deltaRequestLoop.resume()
-        actionRequestLoop.resume()
+        if !isLightModeEnabled {
+            actionRequestLoop.resume()
+        }
     }
     
     func stop() {
         deltaRequestLoop.stop()
-        actionRequestLoop.stop()
+        if !isLightModeEnabled {
+            actionRequestLoop.stop()
+        }
     }
     
     func set(deviceToken: String) {

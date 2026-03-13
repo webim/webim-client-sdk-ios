@@ -32,6 +32,7 @@ class WMSettingsViewController: UIViewController {
     // Text fields
     @IBOutlet var accountNameTextField: UITextField!
     @IBOutlet var locationTextField: UITextField!
+    @IBOutlet var userDataJsonTextView: UITextView!
     
     // Text fields error hints
     @IBOutlet var accountNameHintLabel: UILabel!
@@ -43,6 +44,7 @@ class WMSettingsViewController: UIViewController {
     @IBOutlet var accountNameInfoButton: UIButton!
     @IBOutlet var accountNameTitleLabel: UILabel!
     @IBOutlet var locationTitleLabel: UILabel!
+    @IBOutlet weak var appVersionLabel: UILabel!
     
     // Select User cell
     lazy var selectVisitorCell = SelectVisitorTableViewCell.loadXibView()
@@ -54,7 +56,9 @@ class WMSettingsViewController: UIViewController {
     @IBOutlet var locationCell: UITableViewCell!
     @IBOutlet var accountHeaderView: UIView!
     @IBOutlet var userHeaderView: UIView!
-
+    @IBOutlet var userDataJsonCell: UITableViewCell!
+    @IBOutlet var appVersionCell: UITableViewCell!
+    
     // constraints
     @IBOutlet var accountNameViewHeightContsraint: NSLayoutConstraint!
     @IBOutlet var locationViewHeightContsraint: NSLayoutConstraint!
@@ -92,11 +96,19 @@ class WMSettingsViewController: UIViewController {
         super.viewDidLoad()
         selectVisitorCell.delegate = self
         dataSource[.account] = [accountNameCell, locationCell]
-        dataSource[.user] = [selectVisitorCell]
-        
+        if WMTestManager.testModeEnabled() {
+            dataSource[.user] = [userDataJsonCell, selectVisitorCell]
+        } else {
+            dataSource[.user] = [userDataJsonCell]
+        }
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            appVersionLabel.text = "v. " + version
+            dataSource[.appVersion] = [appVersionCell]
+        }
         WebimServiceController.shared.stopSession()
         accountNameTextField.text = Settings.shared.getAccountName()
         locationTextField.text = Settings.shared.location
+        userDataJsonTextView.text = Settings.shared.userDataJson
         
         setupLabels()
         setupTextFieldsDelegate()
@@ -166,10 +178,15 @@ class WMSettingsViewController: UIViewController {
     @objc
     func toogleTestMode() {
         let message = WMTestManager.toogleTestMode() ? "Test mode enabled" : "Test mode disabled"
-        
+        if WMTestManager.testModeEnabled() {
+            dataSource[.user] = [userDataJsonCell, selectVisitorCell]
+        } else {
+            dataSource[.user] = [userDataJsonCell]
+        }
         let alert = UIAlertController(title: message, message: "", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+        tableView.reloadData()
     }
     
     @objc
@@ -211,7 +228,7 @@ class WMSettingsViewController: UIViewController {
         let pingManager = WebimPingManager(serverURL: url)
 
         pingManager.sendPing { error in
-            if let error = error {
+            if let error = error, !WMTestManager.testModeEnabled() {
                 DispatchQueue.main.async {
                     self.alertDialogHandler.showAlertForInvalidAccountName()
                 }
@@ -229,7 +246,8 @@ class WMSettingsViewController: UIViewController {
         }
         saveSettings(
             accountName: accountNameTextField.text ?? "",
-            location: locationTextField.text ?? ""
+            location: locationTextField.text ?? "",
+            userDataJson: userDataJsonTextView.text
         )
         visitorFieldsManager.updateCurrentVisitor()
         navigationController?.popViewController(animated: true)
@@ -352,12 +370,12 @@ class WMSettingsViewController: UIViewController {
         }
     }
     
-    private func saveSettings(
-        accountName: String,
-        location: String
-    ) {
+    private func saveSettings(accountName: String,
+                              location: String,
+                              userDataJson: String) {
         Settings.shared.accountName = accountName
         Settings.shared.location = location
+        Settings.shared.userDataJson = userDataJson
         Settings.shared.save()
     }
     
@@ -379,6 +397,7 @@ class WMSettingsViewController: UIViewController {
     enum Section: Int {
         case account
         case user
+        case appVersion
     }
 }
 
@@ -390,6 +409,9 @@ extension WMSettingsViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == accountNameTextField {
+            self.didSelect(visitor: .unauthorized)
+        }
         changeHintState(textField: textField, to: .editing)
     }
 

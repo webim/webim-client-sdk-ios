@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "Chatdagi rasmlarni saqlashingiz uchun Webim SDK ilovasiga foto kutubxonangizga kirish uchun ruxsat kerak.";
+
+"NSCameraUsageDescription" = "Chatga suratlarni yuborishingiz uchun Webim SDK ilovasiga kamerangizga kirish uchun ruxsat kerak.";
+
+"NSFileProviderDomainUsageDescription" = "Fayllarni suhbatga yuborishingiz uchun Webim SDK ilovasiga hujjatlar jildingizga kirish uchun ruxsat kerak.";
+
+"NSFileProviderPresenceUsageDescription" = "Fayllarni suhbatga yuborishingiz uchun Webim SDK ilovasiga hujjatlar jildingizga kirish uchun ruxsat kerak.";
+
+"NSPhotoLibraryUsageDescription" = "Chatga rasmlar yuborishingiz uchun Webim SDK ilovasiga foto kutubxonangizga kirish uchun ruxsat kerak.";

@@ -32,18 +32,24 @@ import Foundation
  - copyright:
  2021 Webim
  */
-final class ServerSettingsResponse {
+final class ServerSettingsResponse: ServerSettings {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case accountConfig = "accountConfig"
-        case locationSettings = "locationSettings"
+        case accountConfig
+        case locationSettings
+        case chat
+        case resources
+        case routingRules
     }
     
     // MARK: - Properties
-    private var accountConfig: AccountConfigItem?
+    private var accountConfig: AccountConfig?
     private var locationSettings: [String: Any?]?
+    private var chatConfig: ChatConfig?
+    private var resourcesConfig: ResourcesConfig?
+    private var routingRules: [RoutingItem]?
     
     // MARK: - Initialization
     init(jsonDictionary: [String: Any?]) {
@@ -52,11 +58,21 @@ final class ServerSettingsResponse {
         }
         if let locationSettings = jsonDictionary[JSONField.locationSettings.rawValue] as? [String: Any?] {
             self.locationSettings = locationSettings
+            if let chatConfig = locationSettings[JSONField.chat.rawValue] as? [String: Any?] {
+                self.chatConfig = ChatConfigItem(jsonDictionary: chatConfig)
+            }
+            if let resourcesConfig = locationSettings[JSONField.resources.rawValue] as? [String: Any?] {
+                self.resourcesConfig = ResourcesConfigItem(jsonDictionary: resourcesConfig)
+            }
+            
+        }
+        if let routingRules = jsonDictionary[JSONField.routingRules.rawValue] as? [[String: Any]] {
+            self.routingRules = routingRules.compactMap { RoutingItem(jsonDictionary: $0) }
         }
     }
     
     // MARK: - Methods
-    func getAccountConfig() -> AccountConfigItem? {
+    func getAccountConfig() -> AccountConfig? {
         return accountConfig
     }
     
@@ -69,6 +85,18 @@ final class ServerSettingsResponse {
             locationSettings?["allowed_upload_file_types"] = accountConfig.getAllowedUploadFileTypes()
         }
         return locationSettings ?? [:]
+    }
+    
+    func getChatConfig() -> ChatConfig? {
+        return chatConfig
+    }
+    
+    func getResources() -> ResourcesConfig? {
+        return resourcesConfig
+    }
+    
+    func getRoutingRules() -> [RoutingItem]? {
+        return routingRules
     }
     
 }

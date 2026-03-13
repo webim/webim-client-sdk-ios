@@ -38,21 +38,30 @@ class ActionRequestLoop: AbstractRequestLoop {
     // MARK: - Properties
     var actionOperationQueue: OperationQueue?
     var historyRequestOperationQueue: OperationQueue?
-    private var webimServerSideSettings: WebimServerSideSettings?
+    private var webimServerSideSettings: ServerSettingsResponse?
     @WMSynchronized var authorizationData: AuthorizationData?
     
     
     // MARK: - Initialization
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
-         internalErrorListener: InternalErrorListener, notFatalErrorHandler: NotFatalErrorHandler?, requestHeader: [String: String]?, baseURL: String) {
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader, baseURL: baseURL)
+         internalErrorListener: InternalErrorListener,
+         notFatalErrorHandler: NotFatalErrorHandler?,
+         requestHeader: [String: String]?,
+         baseURL: String) {
+        super.init(completionHandlerExecutor: completionHandlerExecutor,
+                   internalErrorListener: internalErrorListener,
+                   requestHeader: requestHeader,
+                   baseURL: baseURL)
     }
     
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
          internalErrorListener: InternalErrorListener,
          requestHeader: [String: String]?,
          baseURL: String) {
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader, baseURL: baseURL)
+        super.init(completionHandlerExecutor: completionHandlerExecutor,
+                   internalErrorListener: internalErrorListener,
+                   requestHeader: requestHeader,
+                   baseURL: baseURL)
     }
     
     // MARK: - Methods
@@ -85,7 +94,7 @@ class ActionRequestLoop: AbstractRequestLoop {
         self.authorizationData = authorizationData
     }
     
-    func getWebimServerSideSettings() -> WebimServerSideSettings? {
+    func getWebimServerSideSettings() -> ServerSettingsResponse? {
         return webimServerSideSettings
     }
     
@@ -135,6 +144,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                         self.executeServerSideSettingsRequest(request: request, data: data)
                     })
                 } else {
+                    self.handleErrorCompletionHandler(ofRequest: request)
                     WebimInternalLogger.shared.log(
                         entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
                         verbosityLevel: .warning,
@@ -253,6 +263,7 @@ class ActionRequestLoop: AbstractRequestLoop {
         
         switch error {
         case WebimInternalError.reinitializationRequired.rawValue:
+            self.handleHistoryCompletionHandler(ofRequest: request)
             break
         case WebimInternalError.fileSizeExceeded.rawValue,
              WebimInternalError.fileTypeNotAllowed.rawValue,
@@ -317,8 +328,18 @@ class ActionRequestLoop: AbstractRequestLoop {
                                     ofRequest: request)
             self.handleReactionError(error: error,
                                     ofRequest: request)
+            self.handleEditMessage(error: error,
+                                   ofRequest: request)
             
             break
+        case WebimInternalError.maxMessageLengthExceeded.rawValue:
+            self.handleEditMessage(error: error,
+                                   ofRequest: request)
+            self.handleOfflineMessageCompletionHandler(error: error,
+                                                       ofRequest: request)
+        case WebimInternalError.noTariffOption.rawValue:
+            self.handleOfflineMessageCompletionHandler(error: error,
+                                                       ofRequest: request)
         case WebimInternalError.buttonIdNotSet.rawValue,
              WebimInternalError.requestMessageIdNotSet.rawValue,
              WebimInternalError.canNotCreateResponse.rawValue,
@@ -354,12 +375,17 @@ class ActionRequestLoop: AbstractRequestLoop {
              WebimInternalError.wrongProvidedVisitorFieldsHashValue.rawValue:
              self.internalErrorListener?.on(error: error)
              self.internalErrorListener?.connectionStateChanged(connected: false)
+            handleOfflineMessageCompletionHandler(error: error, ofRequest: request)
             WebimInternalAlert.shared.present(title: .accountError, message: .accountConnectionError)
              break
         case WebimInternalError.invalidCoordinatesReceived.rawValue:
             self.handleGeolocationCompletionHandler(error: error, ofRequest: request)
+        case WebimInternalError.emailChangedTooManyTimes.rawValue:
+            self.handleContactsCompletionHandler(error: error, ofRequest: request)
+        case WebimInternalError.internalError.rawValue,
+             WebimInternalError.unknown.rawValue:
+            self.handleHistoryCompletionHandler(ofRequest: request)
         default:
-
             break
         }
     }
@@ -441,6 +467,10 @@ class ActionRequestLoop: AbstractRequestLoop {
             }
         }
         
+        if let completionHandler = request.getServerSideCompletionHandler() {
+            self.executeServerSideSettingsRequest(request: request, data: data)
+        }
+        
         self.handleClientCompletionHandlerOf(request: request, dataJSON: dataJSON[AbstractRequestLoop.ResponseFields.data.rawValue] as? [String : Any?])
     }
 
@@ -448,11 +478,16 @@ class ActionRequestLoop: AbstractRequestLoop {
                                                   data: Data) {
         if let completionHandler = request.getServerSideCompletionHandler() {
             self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                do {
-                    let webimServerSideSettings = try self.decodeToServerSideSettings(data: data)
+                let json = try? JSONSerialization.jsonObject(with: data,
+                                                             options: [])
+                if let settingsResponseDictionary = json as? [String: Any?] {
+                    let webimServerSideSettings = ServerSettingsResponse(jsonDictionary: settingsResponseDictionary)
                     self.webimServerSideSettings = webimServerSideSettings
                     completionHandler.onSuccess(webimServerSideSettings: webimServerSideSettings)
-                } catch {
+                } else if let webimServerSideSettings = self.decodeToServerSideSettings(data: data) {
+                    self.webimServerSideSettings = webimServerSideSettings
+                    completionHandler.onSuccess(webimServerSideSettings: webimServerSideSettings)
+                } else {
                     completionHandler.onFailure()
                     WebimInternalLogger.shared.log(
                         entry: "Error executing callback on receiver data: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
@@ -888,6 +923,48 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func handleContactsCompletionHandler(error errorString: String,
+                                                 ofRequest webimRequest: WebimRequest) {
+        if let sendContactsCompletionHandler = webimRequest.getContactsCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let sendContactsError: ContactsError
+                switch errorString {
+                case WebimInternalError.emailChangedTooManyTimes.rawValue:
+                    sendContactsError = .emailChangedTooManyTimes
+                    break
+                default:
+                    sendContactsError = .unknown
+                }
+                
+                sendContactsCompletionHandler.onFailure(error: sendContactsError)
+            })
+        }
+    }
+    
+    private func handleOfflineMessageCompletionHandler(error errorString: String,
+                                                       ofRequest webimRequest: WebimRequest) {
+        if let offlineMessageCompletionHandler = webimRequest.getOfflineMessageCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                let offlineMessageError: OfflineMessageError
+                switch errorString {
+                case WebimInternalError.visitorBanned.rawValue:
+                    offlineMessageError = .visitorBanned
+                    break
+                case WebimInternalError.noTariffOption.rawValue:
+                    offlineMessageError = .noTariffOption
+                    break
+                case WebimInternalError.maxMessageLengthExceeded.rawValue:
+                    offlineMessageError = .maxMessageLengthExceeded
+                    break
+                default:
+                    offlineMessageError = .unknown
+                }
+                
+                offlineMessageCompletionHandler.onFailure(error: offlineMessageError)
+            })
+        }
+    }
+    
     private func handleWrongArgumentValueError(ofRequest webimRequest: WebimRequest) {
         WebimInternalLogger.shared.log(
             entry: "Request \(webimRequest.getBaseURLString()) with parameters \(webimRequest.getPrimaryData().stringFromHTTPParameters()) failed with error \(WebimInternalError.wrongArgumentValue.rawValue)",
@@ -905,8 +982,8 @@ class ActionRequestLoop: AbstractRequestLoop {
             request.getSendStickerCompletionHandler()?.onSuccess()
             request.getDeleteUploadedFileCompletionHandler()?.onSuccess()
             request.getGeolocationCompletionHandler()?.onSuccess()
-            
             if let messageID = request.getMessageID() {
+                request.getOfflineMessageCompletionHandler()?.onSuccess(offlineMessageId: messageID)
                 request.getDataMessageCompletionHandler()?.onSuccess(messageID: messageID)
                 request.getSendMessageCompletionHandler()?.onSuccess(messageID: messageID)
                 request.getSendFileCompletionHandler()?.onSuccess(messageID: messageID)
@@ -924,6 +1001,34 @@ class ActionRequestLoop: AbstractRequestLoop {
                     logType: .networkRequest)
             }
         })
+    }
+    
+    private func handleErrorCompletionHandler(ofRequest webimRequest: WebimRequest) {
+        handleHistoryCompletionHandler(ofRequest: webimRequest)
+        handleSettingsCompletionHandler(ofRequest: webimRequest)
+    }
+    
+    private func handleHistoryCompletionHandler(ofRequest webimRequest: WebimRequest) {
+        if let completionHandler = webimRequest.getCompletionHandler() {
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                do {
+                    try completionHandler(nil)
+                } catch {
+                    WebimInternalLogger.shared.log(
+                        entry: "Error executing callback on receiver data.",
+                        verbosityLevel: .warning,
+                        logType: .networkRequest)
+                }
+            })
+        }
+    }
+    
+    private func handleSettingsCompletionHandler(ofRequest webimRequest: WebimRequest) {
+        if let completionHandler = webimRequest.getServerSideCompletionHandler() {
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                completionHandler.onFailure()
+            })
+        }
     }
     
     private func getUploadedFileFrom(dataJSON: [String: Any?]) -> UploadedFile {

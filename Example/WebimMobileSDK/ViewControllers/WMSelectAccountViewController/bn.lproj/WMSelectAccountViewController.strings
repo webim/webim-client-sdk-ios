@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "Версия приложения:"; ObjectID = "16W-1A-jCm"; */
+"16W-1A-jCm.text" = "অ্যাপ ভার্সন:";
+
+/* Class = "UILabel"; text = "Авторизация"; ObjectID = "2Vo-Fd-JbN"; */
+"2Vo-Fd-JbN.text" = "অনুমোদন";
+
+/* Class = "UIButton"; normalTitle = "Продолжить"; ObjectID = "Exx-vL-8RS"; */
+"Exx-vL-8RS.normalTitle" = "চালিয়ে যান";
+
+/* Class = "UILabel"; text = "Аккаунт с таким названием не найден"; ObjectID = "qQG-j0-IK6"; */
+"qQG-j0-IK6.text" = "এই নামের অ্যাকাউন্ট খুঁজে পাওয়া যায়নি";
+
+/* Class = "UILabel"; text = "Название аккаунта*"; ObjectID = "w6x-BP-LCU"; */
+"w6x-BP-LCU.text" = "অ্যাকাউন্টের নাম*";

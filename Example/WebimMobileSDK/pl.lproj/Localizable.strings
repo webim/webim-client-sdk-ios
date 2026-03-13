@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Nazwa konta nie może być pusta.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Lokalizacja nie może być pusta.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Błąd";
+//UIAlertHandler.swift
+"Account" = "Konto";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Nazwa konta zawiera nieprawidłowe znaki.";
+//WebimService.swift
+"AccountBlocked" = "Konto używane do tworzenia sesji jest zablokowane. Skontaktuj się z pomocą techniczną Webim lub użyj innego.";
+//UIAlertHandler.swift
+"Alert account name" = "Nazwa konta Webim lub pełny adres serwera (na przykład \"demo\" lub \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Anuluj";
+//ConnectionErrorView.xib
+"Connection error" = "Błąd połączenia";
+//UIAlertHandler.swift
+"InvalidSettings" = "Nieprawidłowe ustawienia konta";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Lokalizacja zawiera nieprawidłowe znaki.";
+//AdditionalKeys.swift
+"P.CR" = "Agent poprosił o Twoje dane kontaktowe.";
+//AdditionalKeys.swift
+"P.OA" = "Agent %@ został przypisany do Twojego żądania.";
+//AdditionalKeys.swift
+"P.OF" = "%@ wysłał plik: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ napisał wiadomość: %@";
+//AdditionalKeys.swift
+"P.RO" = "Oceń agenta.";
+//StringConstants.swift
+"Copy" = "Kopiuj";
+//StringConstants.swift
+"Delete" = "Usuń";
+//StringConstants.swift
+"Reply" = "Odpowiedz";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Witamy w aplikacji Webim SDK!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Twoja opinia pomoże nam stać się lepszymi.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Twoje konto gościa znajduje się na czarnej liście.";
+//WebimService.swift
+"Session initialization failed." = "Niepowodzenie inicjalizacji sesji.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Błąd analizy użytkownika wersji demonstracyjnej.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Niepowodzenie tworzenia sesji";
+//ChatViewController+Listener.swift
+"typing" = "pisanie";
+//StringConstants.swift
+"Edit" = "Edytuj";
+"Enter message" = "Wprowadź wiadomość";
+"Please rate the overall impression of the consultation" = "Oceń ogólne wrażenie konsultacji.";
+"Fetching more messages..." = "Pobieranie większej liczby wiadomości...";
+"Rate Operator" = "Oceń agenta";
+"Send" = "Wyślij";
+"New messages" = "Nowe wiadomości";
+"Settings" = "Ustawienia";
+"Invalid account name" = "Nie znaleziono konta o takiej nazwie. Sprawdź wprowadzone informacje.";
+"Share to Chat" = "Udostępnij na czacie";

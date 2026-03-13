@@ -125,9 +125,6 @@ public enum NotificationType {
      */
     case contactInformationRequest
     
-    @available(*, unavailable, renamed: "contactInformationRequest")
-    case CONTACT_INFORMATION_REQUEST
-    
     /**
      This notification type indicated that an operator has connected to a dialogue.
      Parameters:
@@ -138,9 +135,6 @@ public enum NotificationType {
      2017 Webim
      */
     case operatorAccepted
-    
-    @available(*, unavailable, renamed: "operatorAccepted")
-    case OPERATOR_ACCEPTED
     
     /**
      This notification type indicated that an operator has sent a file.
@@ -154,9 +148,6 @@ public enum NotificationType {
      */
     case operatorFile
     
-    @available(*, unavailable, renamed: "operatorFile")
-    case OPERATOR_FILE
-    
     /**
      This notification type indicated that an operator has sent a text message.
      Parameters:
@@ -169,9 +160,6 @@ public enum NotificationType {
      */
     case operatorMessage
     
-    @available(*, unavailable, renamed: "operatorMessage")
-    case OPERATOR_MESSAGE
-    
     /**
      This notification type indicated that an operator has sent a widget message.
      Parameters: empty.
@@ -183,9 +171,6 @@ public enum NotificationType {
      2018 Webim
      */
     case widget
-    
-    @available(*, unavailable, renamed: "widget")
-    case WIDGET
     
     /**
      This notification type indicated that an operator has sent rate operator widget.
@@ -219,9 +204,6 @@ public enum NotificationEvent {
      */
     case add
     
-    @available(*, unavailable, renamed: "add")
-    case ADD
-    
     /**
      Means that a notification should be deleted by current remote notification.
      - author:
@@ -230,8 +212,4 @@ public enum NotificationEvent {
      2017 Webim
      */
     case delete
-    
-    @available(*, unavailable, renamed: "delete")
-    case DELETE
-    
 }

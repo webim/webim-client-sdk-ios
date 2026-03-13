@@ -449,6 +449,17 @@ public protocol MessageAttachment {
      */
     func getVisitorErrorMessage() -> String?
     
+    /**
+     - returns:
+     Return extra message text.
+     - author:
+     Anna Frolova
+     - copyright:
+     2025 Webim
+     */
+    func getExtraText() -> String?
+
+    
     func isEqual(to messageAttachment: MessageAttachment) -> Bool
     
 }
@@ -707,9 +718,6 @@ public enum KeyboardState {
      */
     case pending
     
-    @available(*, unavailable, renamed: "pending")
-    case PENDING
-    
     /**
      A keyboard has response.
      - author:
@@ -719,9 +727,6 @@ public enum KeyboardState {
      */
     case completed
     
-    @available(*, unavailable, renamed: "completed")
-    case COMPLETED
-    
     /**
      A keyboard cancelled without response.
      - author:
@@ -730,9 +735,6 @@ public enum KeyboardState {
      2019 Webim
      */
     case canceled
-    
-    @available(*, unavailable, renamed: "canceled")
-    case CANCELLED
 }
 
 /**
@@ -1133,9 +1135,6 @@ public enum QuoteState {
      */
     case pending
     
-    @available(*, unavailable, renamed: "pending")
-    case PENDING
-    
     /**
      Quoute loaded.
      - author:
@@ -1145,9 +1144,6 @@ public enum QuoteState {
      */
     case filled
     
-    @available(*, unavailable, renamed: "filled")
-    case FILLED
-    
     /**
      Quote message is not found on server.
      - author:
@@ -1156,9 +1152,6 @@ public enum QuoteState {
      2019 Webim
      */
     case notFound
-    
-    @available(*, unavailable, renamed: "notFound")
-    case NOT_FOUND
 }
 
 // MARK: -
@@ -1243,9 +1236,6 @@ public enum MessageType {
      */
     case actionRequest
     
-    @available(*, unavailable, renamed: "actionRequest")
-    case ACTION_REQUEST
-    
     /**
      Message type that is received after operator clicked contacts request button.
      - important:
@@ -1258,9 +1248,6 @@ public enum MessageType {
      2017 Webim
      */
     case contactInformationRequest
-    
-    @available(*, unavailable, renamed: "contactInformationRequest")
-    case CONTACTS_REQUEST
     
     /**
      A message sent by an operator which contains an attachment.
@@ -1275,9 +1262,6 @@ public enum MessageType {
      */
     case fileFromOperator
     
-    @available(*, unavailable, renamed: "fileFromOperator")
-    case FILE_FROM_OPERATOR
-    
     /**
      A message sent by a visitor which contains an attachment.
      - important:
@@ -1291,9 +1275,6 @@ public enum MessageType {
      */
     case fileFromVisitor
     
-    @available(*, unavailable, renamed: "fileFromVisitor")
-    case FILE_FROM_VISITOR
-    
     /**
      A system information message.
      Messages of this type are automatically sent at specific events. E.g. when starting a chat, closing a chat or when an operator joins a chat.
@@ -1303,9 +1284,6 @@ public enum MessageType {
      2017 Webim
      */
     case info
-    
-    @available(*, unavailable, renamed: "info")
-    case INFO
     
     /**
      Message with buttons for visitor choise.
@@ -1317,9 +1295,6 @@ public enum MessageType {
      */
     case keyboard
     
-    @available(*, unavailable, renamed: "keyboard")
-    case KEYBOARD
-    
     /**
      Response to messages of `keyboard` type.
      - author:
@@ -1328,9 +1303,6 @@ public enum MessageType {
      2019 Webim
      */
     case keyboardResponse
-    
-    @available(*, unavailable, renamed: "keyboardResponse")
-    case KEYBOARD_RESPONSE
     
     /**
      A text message sent by an operator.
@@ -1343,9 +1315,6 @@ public enum MessageType {
      */
     case operatorMessage
     
-    @available(*, unavailable, renamed: "operatorMessage")
-    case OPERATOR
-    
     /**
      A system information message which indicates that an operator is busy and can't reply to a visitor at the moment.
      - author:
@@ -1354,9 +1323,6 @@ public enum MessageType {
      2017 Webim
      */
     case operatorBusy
-    
-    @available(*, unavailable, renamed: "operatorBusy")
-    case OPERATOR_BUSY
     
     /**
      A text message sent by a visitor.
@@ -1369,9 +1335,6 @@ public enum MessageType {
      */
     case visitorMessage
     
-    @available(*, unavailable, renamed: "visitorMessage")
-    case VISITOR
-    
     /**
      A sticker message sent by a visitor.
      - seealso:
@@ -1382,6 +1345,17 @@ public enum MessageType {
      2020 Webim
      */
     case stickerVisitor
+    
+    /**
+     A contacts message sent by a visitor.
+     - seealso:
+     `Message.getText()`
+     - author:
+     Anna Frolova
+     - copyright:
+     2024 Webim
+     */
+    case contacts
 }
 
 /**
@@ -1402,9 +1376,6 @@ public enum MessageSendStatus: String {
      */
     case sending
     
-    @available(*, unavailable, renamed: "sending")
-    case SENDING
-    
     /**
      A message had been sent to the server, received by the server and was spreaded among clients.
      - author:
@@ -1413,10 +1384,6 @@ public enum MessageSendStatus: String {
      2017 Webim
      */
     case sent
-    
-    @available(*, unavailable, renamed: "sent")
-    case SENT
-    
 }
 
 public enum ButtonType {

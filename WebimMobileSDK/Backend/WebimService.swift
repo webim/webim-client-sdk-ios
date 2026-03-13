@@ -36,7 +36,7 @@ enum Event: String {
 }
 
 enum Parameter: String {
-    case actionn = "action"
+    case action = "action"
     case applicationVersion = "app-version"
     case authorizationToken = "auth-token"
     case beforeTimestamp = "before-ts"
@@ -84,8 +84,9 @@ enum Parameter: String {
     case visitor = "visitor"
     case visitorExt = "visitor-ext"
     case visitorTyping = "typing"
+    case providedVisitor = "provided_visitor"
     case prechat = "prechat-key-independent-fields"
-    case customFields = "custom_fields"
+    case visitorFields = "visitor-fields"
     case webimSDKVersion = "x-webim-sdk-version"
     case query = "query"
     case reaction = "reaction"
@@ -95,6 +96,7 @@ enum Parameter: String {
     case fileSize = "file-size"
     case fileName = "file-name"
     case threadId = "thread_id"
+    case text = "text"
 }
 
 enum Platform: String {
@@ -112,7 +114,10 @@ enum ServerPathSuffix: String {
     case uploadFile = "/l/v/m/upload"
     case search = "/l/v/m/search-messages"
     case getConfig = "/api/visitor/v1/configs"
-    case getServerSideSettings = "/x/js/v/all-settings-mobile.js"
+    case getInfo = "/l/v/m/info"
+    case getAuthToken = "/l/v/m/auth"
+    case getMeta = "/api/visitor/meta"
+    case getServerSideSettings = "/x/js/v/all-settings-"
 }
 
 enum MultipartBody: String {

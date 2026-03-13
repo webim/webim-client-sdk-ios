@@ -115,7 +115,7 @@ class AbstractRequestLoop {
     func perform(request: URLRequest, progressRequest: URLRequest? = nil) throws -> Data {
         var requestWithUserAgent = request
         var progressRequestWithUserAgent = progressRequest
-        let value = "iOS: Webim-Client 3.43.4; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")"
+        let value = "iOS: Webim-Client 4.0.0; (\(UIDevice.current.model); \(UIDevice.current.systemVersion)); Bundle ID and version: \(Bundle.main.bundleIdentifier ?? "none") \(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "none")"
         requestWithUserAgent.setValue(value, forHTTPHeaderField: "User-Agent")
         progressRequestWithUserAgent?.setValue(value, forHTTPHeaderField: "User-Agent")
         
@@ -287,11 +287,16 @@ class AbstractRequestLoop {
             break
         }
     }
-
-    func decodeToServerSideSettings(data: Data) throws -> WebimServerSideSettings  {
+    
+    func decodeToServerSideSettings(data: Data) -> ServerSettingsResponse? {
         let readyData = prepareServerSideData(rawData: data)
-        let webimServerSideSettings = try JSONDecoder().decode(WebimServerSideSettings.self, from: readyData)
-        return webimServerSideSettings
+        let json = try? JSONSerialization.jsonObject(with: readyData,
+                                                     options: [])
+        if let dictionary = json as? [String: Any?] {
+            return ServerSettingsResponse(jsonDictionary: dictionary)
+        }
+        
+        return nil
     }
 
     func prepareServerSideData(rawData: Data) -> Data {

@@ -142,9 +142,6 @@ public enum UserRate {
      */
     case like
     
-    @available(*, unavailable, renamed: "like")
-    case LIKE
-    
     /**
      Item is disliked.
      - author:
@@ -154,9 +151,6 @@ public enum UserRate {
      */
     case dislike
     
-    @available(*, unavailable, renamed: "dislike")
-    case DISLIKE
-    
     /**
      Item isn't rated.
      - author:
@@ -165,10 +159,6 @@ public enum UserRate {
      2019 Webim
      */
     case noRate
-    
-    @available(*, unavailable, renamed: "noRate")
-    case NO_RATE
-    
 }
 
 /**

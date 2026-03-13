@@ -54,8 +54,10 @@
 "Edit" = "Modificare";
 "Enter message" = "Inserisci il messaggio";
 "Please rate the overall impression of the consultation" = "Per favore, dai un voto all'impressione generale della consulenza.";
+"Fetching more messages..." = "Recupero di altri messaggi...";
 "Rate Operator" = "Agente tariffario";
 "Send" = "Inviare";
 "New messages" = "Nuovi messaggi";
 "Settings" = "Impostazioni";
 "Invalid account name" = "Account con quel nome non trovato. Controlla le informazioni inserite.";
+"Share to Chat" = "Condividi nella chat";

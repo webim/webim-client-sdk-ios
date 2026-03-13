@@ -53,10 +53,13 @@ extension WMSettingsViewController: UITableViewDataSource, UITableViewDelegate {
             return accountHeaderView
         case .user:
             return userHeaderView
+        case .appVersion:
+            return nil
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        let currentSection = Section(rawValue: section) ?? .account
+        return currentSection == .appVersion ? 0 : UITableView.automaticDimension
     }
 }

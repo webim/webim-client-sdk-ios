@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* A fiók neve nem lehet üres.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* A hely nem lehet üres.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Hiba";
+//UIAlertHandler.swift
+"Account" = "Számla";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "A fióknév érvénytelen karaktereket tartalmaz.";
+//WebimService.swift
+"AccountBlocked" = "A munkamenet létrehozásához használt fiók blokkolva van. Kérjük, lépjen kapcsolatba a Webim ügyfélszolgálatával, vagy használjon másikat.";
+//UIAlertHandler.swift
+"Alert account name" = "Webim-fiók neve vagy teljes szervercíme (például \"demo\" vagy \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Mégse";
+//ConnectionErrorView.xib
+"Connection error" = "Csatlakozási hiba";
+//UIAlertHandler.swift
+"InvalidSettings" = "Érvénytelen fiókbeállítások";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "A hely érvénytelen karaktereket tartalmaz.";
+//AdditionalKeys.swift
+"P.CR" = "Egy ügynök elkérte az Ön elérhetőségi adatait.";
+//AdditionalKeys.swift
+"P.OA" = "%@ ügynök hozzá lett rendelve a kéréséhez.";
+//AdditionalKeys.swift
+"P.OF" = "%@ fájlt küldött: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ írt egy üzenetet: %@";
+//AdditionalKeys.swift
+"P.RO" = "Értékelje az ügynököt.";
+//StringConstants.swift
+"Copy" = "Másolás";
+//StringConstants.swift
+"Delete" = "Törlés";
+//StringConstants.swift
+"Reply" = "Válasz";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Üdvözöljük a Webim SDK alkalmazásban!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Visszajelzése segít abban, hogy jobbak legyünk.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Látogatói fiókja szerepel a feketelistán.";
+//WebimService.swift
+"Session initialization failed." = "A munkamenet inicializálása nem sikerült.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "A demo látogatói hiba elemzése.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "A munkamenet létrehozása nem sikerült";
+//ChatViewController+Listener.swift
+"typing" = "gépelés";
+//StringConstants.swift
+"Edit" = "Szerk";
+"Enter message" = "Írja be az üzenetet";
+"Please rate the overall impression of the consultation" = "Kérjük, értékelje a konzultáció összbenyomását.";
+"Fetching more messages..." = "További üzenetek lekérése...";
+"Rate Operator" = "Értékelje ezt az ügynököt";
+"Send" = "Küldje el";
+"New messages" = "Új üzenetek";
+"Settings" = "Beállítások";
+"Invalid account name" = "Az ilyen nevű fiók nem található. Kérjük, ellenőrizze a megadott adatokat.";
+"Share to Chat" = "Megosztás a chatben";

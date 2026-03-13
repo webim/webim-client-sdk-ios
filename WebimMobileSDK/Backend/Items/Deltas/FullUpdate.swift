@@ -52,6 +52,7 @@ struct FullUpdate {
         case showHelloMessage = "showHelloMessage"
         case chatStartAfterMessage = "chatStartAfterMessage"
         case helloMessageDescr = "helloMessageDescr"
+        case visitorFull = "visitorFull"
     }
     
     // MARK: - Properties
@@ -66,6 +67,7 @@ struct FullUpdate {
     private var state: String?
     private var survey: SurveyItem?
     private var visitorJSONString: String?
+    private var visitor: VisitorItem?
     private var showHelloMessage: Bool?
     private var chatStartAfterMessage: Bool?
     private var helloMessageDescr: String?
@@ -113,6 +115,10 @@ struct FullUpdate {
                 visitorJSONString = String(data: visitorJSONData,
                                            encoding: .utf8)
             }
+        }
+        
+        if let visitor = jsonDictionary[JSONField.visitorFull.rawValue] as? [String: Any] {
+            self.visitor = VisitorItem(jsonDictionary: visitor)
         }
         
         if let departmantsData = jsonDictionary[JSONField.departments.rawValue] as? [Any] {
@@ -197,6 +203,10 @@ struct FullUpdate {
     
     func getVisitorJSONString() -> String? {
         return visitorJSONString
+    }
+    
+    func getVisitor() -> VisitorItem? {
+        return visitor
     }
     
 }

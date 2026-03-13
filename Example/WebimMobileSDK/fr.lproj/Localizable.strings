@@ -54,8 +54,10 @@
 "Edit" = "Modifier";
 "Enter message" = "Saisir un message";
 "Please rate the overall impression of the consultation" = "Veuillez évaluer l’impression générale de la consultation.";
+"Fetching more messages..." = "Récupération de plus de messages...";
 "Rate Operator" = "Agent de taux";
 "Send" = "Envoyer";
 "New messages" = "Nouveaux messages";
 "Settings" = "Paramètres";
 "Invalid account name" = "Aucun compte avec ce nom n'a été trouvé. Veuillez vérifier les informations saisies.";
+"Share to Chat" = "Partager dans le chat";

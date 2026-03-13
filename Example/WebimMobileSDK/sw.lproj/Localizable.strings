@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Jina la akaunti haliwezi kuwa tupu.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Eneo haliwezi kuwa tupu.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Hitilafu";
+//UIAlertHandler.swift
+"Account" = "Akaunti";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Jina la akaunti lina vibambo batili.";
+//WebimService.swift
+"AccountBlocked" = "Akaunti ambayo hutumiwa kuunda kipindi imezuiwa. Tafadhali wasiliana na usaidizi wa Webim au utumie nyingine.";
+//UIAlertHandler.swift
+"Alert account name" = "Jina la akaunti ya Webim au anwani kamili ya seva (kwa mfano, \"demo\" au \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "Ghairi";
+//ConnectionErrorView.xib
+"Connection error" = "Hitilafu ya muunganisho";
+//UIAlertHandler.swift
+"InvalidSettings" = "Mipangilio Batili ya Akaunti";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Eneo lina vibambo batili";
+//AdditionalKeys.swift
+"P.CR" = "Wakala aliomba data yako ya mawasiliano.";
+//AdditionalKeys.swift
+"P.OA" = "Wakala %@ alikabidhiwa ombi lako.";
+//AdditionalKeys.swift
+"P.OF" = "%@ alituma faili: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ ameandika ujumbe: %@";
+//AdditionalKeys.swift
+"P.RO" = "Kadiria wakala.";
+//StringConstants.swift
+"Copy" = "Nakala";
+//StringConstants.swift
+"Delete" = "Futa";
+//StringConstants.swift
+"Reply" = "Jibu";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Karibu kwenye Programu ya Webim SDK!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Maoni yako yatatusaidia kuwa bora zaidi.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Akaunti yako ya mgeni iko kwenye orodha nyeusi.";
+//WebimService.swift
+"Session initialization failed." = "Uanzishaji wa kipindi haukufaulu.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Changanua kosa la mgeni wa onyesho.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Uundaji wa kikao umeshindwa";
+//ChatViewController+Listener.swift
+"typing" = "kuandika";
+//StringConstants.swift
+"Edit" = "Hariri";
+"Enter message" = "Ingiza ujumbe";
+"Please rate the overall impression of the consultation" = "Tafadhali kadiria maoni ya jumla ya mashauriano.";
+"Fetching more messages..." = "Inaleta ujumbe zaidi...";
+"Rate Operator" = "Wakala wa Viwango";
+"Send" = "Tuma";
+"New messages" = "Ujumbe mpya";
+"Settings" = "Mipangilio";
+"Invalid account name" = "Akaunti yenye jina hilo haijapatikana. Tafadhali angalia maelezo uliyoweka.";
+"Share to Chat" = "Shiriki kwenye gumzo";

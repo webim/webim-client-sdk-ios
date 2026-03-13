@@ -130,7 +130,7 @@ class WebimClientTests: XCTestCase {
         webimClient.set(deviceToken: "expectedDeviceToken")
         let primaryData = actionRequestLoop.webimRequest?.getPrimaryData()
 
-        XCTAssertEqual(primaryData?[Parameter.actionn.rawValue] as? String, "set_push_token")
+        XCTAssertEqual(primaryData?[Parameter.action.rawValue] as? String, "set_push_token")
         XCTAssertEqual(primaryData?[Parameter.deviceToken.rawValue] as? String, "expectedDeviceToken")
     }
 

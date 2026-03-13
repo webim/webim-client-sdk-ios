@@ -46,8 +46,9 @@ final class MessageStreamImpl {
     private let serverURLString: String
     private let location: String
     private let webimActions: WebimActionsImpl
-    private var accountConfigResponse: AccountConfigItem?
+    private var accountConfigResponse: AccountConfig?
     private var chat: ChatItem?
+    private var visitor: VisitorItem?
     private weak var chatStateListener: ChatStateListener?
     private var currentOperator: OperatorImpl?
     private var departmentList: [Department]?
@@ -73,6 +74,7 @@ final class MessageStreamImpl {
     private var surveyController: SurveyController?
     private var helloMessage: String?
     private weak var helloMessageListener: HelloMessageListener?
+    private var forceOnline: Bool = true
     private weak var sessionLanguageListener: SessionLanguageListener?
     private var lang: String?
     
@@ -163,6 +165,13 @@ final class MessageStreamImpl {
                 logType: .networkRequest)
         }
     }
+    func set(forceOnline: Bool) {
+        self.forceOnline = forceOnline
+    }
+    
+    func set(webimMeta: WebimMetaItem?) {
+        self.webimActions.set(webimMeta: webimMeta)
+    }
     
     func changingChatStateOf(chat: ChatItem?) {
         guard let chat = chat else {
@@ -196,6 +205,7 @@ final class MessageStreamImpl {
         let previousChat = self.chat
         self.chat = chat
         self.lang = chat.getTranslationOptions()?.getLanguage()
+        
         messageHolder.receiving(newChat: self.chat,
                                 previousChat: previousChat,
                                 newMessages: currentChatMessageFactoriesMapper.mapAll(messages: chat.getMessages()))
@@ -303,6 +313,10 @@ final class MessageStreamImpl {
             surveyController.nextQuestion()
         }
     }
+    
+    func onReceived(visitorItem: VisitorItem) {
+        self.visitor = visitorItem
+    }
 
     func onSurveyCancelled() {
         if let surveyController = surveyController {
@@ -339,12 +353,16 @@ final class MessageStreamImpl {
             return .chattingWithRobot
         case .closed:
             return .closed
-        case .closedByVisitor:
-            return .closedByVisitor
         case .closedByOperator:
             return .closedByOperator
         case .invitation:
             return .invitation
+        case .routing:
+            return .routing
+        case .deleted:
+            return .deleted
+        case .hold:
+            return .hold
         default:
             return .unknown
         }
@@ -371,6 +389,8 @@ final class MessageStreamImpl {
             return .chat
         case .departmentSelection:
             return .departmentSelection
+        case .firstQuestion:
+            return .firstQuestion
         case .idle:
             return .idle
         case .idleAfterChat:
@@ -417,6 +437,10 @@ extension MessageStreamImpl: MessageStream {
     
     func getDepartmentList() -> [Department]? {
         return departmentList
+    }
+    
+    func getVisitor() -> Visitor? {
+        return visitor
     }
     
     func getLocationSettings() -> LocationSettings {
@@ -619,20 +643,10 @@ extension MessageStreamImpl: MessageStream {
                                    firstQuestion: firstQuestion,
                                    departmentKey: departmentKey,
                                    customFields: customFields,
+                                   forceOnline: forceOnline,
                                    forceStart: forceStart)
             WebimInternalLogger.shared.log(
                 entry: "Request start chat in MessageStreamImpl - \(#function)",
-                verbosityLevel: .verbose,
-                logType: .networkRequest)
-        }
-    }
-    
-    func closeChat() throws {
-        try accessChecker.checkAccess()
-        if !lastChatState.isClosed() {
-            webimActions.closeChat()
-            WebimInternalLogger.shared.log(
-                entry: "Request close chat in MessageStreamImpl - \(#function)",
                 verbosityLevel: .verbose,
                 logType: .networkRequest)
         }
@@ -958,7 +972,8 @@ extension MessageStreamImpl: MessageStream {
             logType: .networkRequest)
     }
     
-    func sendSticker(withId stickerId: Int, completionHandler: SendStickerCompletionHandler?) throws {
+    func sendSticker(withId stickerId: Int,
+                     completionHandler: SendStickerCompletionHandler?) throws {
         try accessChecker.checkAccess()
         
         let messageID = ClientSideID.generateClientSideID()
@@ -971,7 +986,60 @@ extension MessageStreamImpl: MessageStream {
             logType: .networkRequest)
     }
     
-    func autocomplete(text: String, completionHandler: AutocompleteCompletionHandler?) throws {
+    func sendContacts(contacts: String,
+                      completionHandler: (any ContactsCompletionHandler)?) throws {
+        try accessChecker.checkAccess()
+        
+        webimActions.sendContacts(contacts: contacts, completionHandler: completionHandler)
+        WebimInternalLogger.shared.log(
+            entry: "Request send sticker. Contacts - \(contacts) in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+    
+    func sendOfflineMessage(message: String,
+                            fields: String,
+                            file: Data?,
+                            fileName: String?,
+                            mimeType: String?,
+                            completionHandler: (any OfflineMessageCompletionHandler)?) throws {
+        try accessChecker.checkAccess()
+        
+        let messageID = ClientSideID.generateClientSideID()
+        
+        if var file = file, var filename = fileName, var mimeType = mimeType {
+            
+            if mimeType == "image/heic" || mimeType == "image/heif" {
+                if let image = UIImage(data: file),
+                   let imageData = image.jpegData(compressionQuality: 0.5) {
+                    mimeType = "image/jpeg"
+                    file = imageData
+                    
+                    var nameComponents = filename.components(separatedBy: ".")
+                    if nameComponents.count > 1 {
+                        nameComponents.removeLast()
+                        filename = nameComponents.joined(separator: ".")
+                    }
+                    filename += ".jpeg"
+                }
+            }
+        }
+        
+        webimActions.sendOfflineMessage(clientSideID: messageID,
+                                        message: message,
+                                        fields: fields,
+                                        file: file,
+                                        fileName: fileName,
+                                        mimeType: mimeType,
+                                        completionHandler: completionHandler)
+        WebimInternalLogger.shared.log(
+            entry: "Request send offline message. Message - \(message) in MessageStreamImpl - \(#function)",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+    
+    func autocomplete(text: String,
+                      completionHandler: AutocompleteCompletionHandler?) throws {
         try accessChecker.checkAccess()
         
         if accountConfigResponse == nil {
@@ -984,7 +1052,9 @@ extension MessageStreamImpl: MessageStream {
                         let locationSettingsResponse = ServerSettingsResponse(jsonDictionary: locationSettingsResponseDictionary)
                         self.accountConfigResponse = locationSettingsResponse.getAccountConfig()
                         if let url = self.accountConfigResponse?.getHintsEndpoint() {
-                            self.webimActions.autocomplete(forText: text, url: url, completion: completionHandler)
+                            self.webimActions.autocomplete(forText: text,
+                                                           url: url,
+                                                           completion: completionHandler)
                         } else {
                             completionHandler?.onFailure(error: .hintApiInvalid)
                         }
@@ -993,7 +1063,9 @@ extension MessageStreamImpl: MessageStream {
             }
         } else {
             if let url = accountConfigResponse?.getHintsEndpoint() {
-                webimActions.autocomplete(forText: text, url: url, completion: completionHandler)
+                webimActions.autocomplete(forText: text,
+                                          url: url,
+                                          completion: completionHandler)
             } else {
                 completionHandler?.onFailure(error: .hintApiInvalid)
             }
@@ -1004,7 +1076,8 @@ extension MessageStreamImpl: MessageStream {
             logType: .networkRequest)
     }
     
-    func getRawConfig(forLocation location: String, completionHandler: RawLocationConfigCompletionHandler?) throws {
+    func getRawConfig(forLocation location: String,
+                      completionHandler: RawLocationConfigCompletionHandler?) throws {
         try accessChecker.checkAccess()
         
         webimActions.getServerSettings(forLocation: location) {
@@ -1036,7 +1109,15 @@ extension MessageStreamImpl: MessageStream {
 
     func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?) throws {
         try accessChecker.checkAccess()
-        webimActions.getServerSideSettings(completionHandler: completionHandler)
+
+        let newCompletionHandler = ServerSideSettingsCompletionHandlerWrapper.init(completionHandler: completionHandler,
+                                                                                   fallback: {[weak self] in
+            guard let self = self else { return }
+            webimActions.getOldServerSideSettings(forLocation: self.location,
+                                                  completionHandler: completionHandler)})
+            
+        webimActions.getServerSideSettings(forLocation: location,
+                                           completionHandler: newCompletionHandler)
 
         WebimInternalLogger.shared.log(
             entry: "Request get server side settings in MessageStreamImpl- \(#function)",
@@ -1310,6 +1391,10 @@ extension MessageStreamImpl: MessageStream {
                                        isHintQuestion: Bool? = nil,
                                        dataMessageCompletionHandler: DataMessageCompletionHandler? = nil,
                                        sendMessageCompletionHandler: SendMessageCompletionHandler? = nil) throws -> String {
+        if messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return ""
+        }
+        
         try startChat()
         
         let messageID = ClientSideID.generateClientSideID()
@@ -1583,4 +1668,31 @@ fileprivate final class DeleteMessageCompletionHandlerWrapper: DeleteMessageComp
             logType: .networkRequest)
     }
     
+}
+
+fileprivate final class ServerSideSettingsCompletionHandlerWrapper: ServerSideSettingsCompletionHandler {
+    weak var completionHandler: ServerSideSettingsCompletionHandler?
+    let fallback: () -> Void
+
+    init(completionHandler: ServerSideSettingsCompletionHandler?,
+         fallback: @escaping () -> Void) {
+        self.completionHandler = completionHandler
+        self.fallback = fallback
+    }
+
+    func onSuccess(webimServerSideSettings: ServerSettings) {
+        completionHandler?.onSuccess(webimServerSideSettings: webimServerSideSettings)
+        WebimInternalLogger.shared.log(
+            entry: "Success get settings",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
+
+    func onFailure() {
+        fallback()
+        WebimInternalLogger.shared.log(
+            entry: "Failure get settings",
+            verbosityLevel: .verbose,
+            logType: .networkRequest)
+    }
 }

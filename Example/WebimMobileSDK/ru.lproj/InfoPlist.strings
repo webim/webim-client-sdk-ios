@@ -10,9 +10,9 @@
 
 "NSCameraUsageDescription" = "Чтобы Вы могли отправить фото в чат, Webim требуется доступ к камере.";
 
-"NSFileProviderDomainUsageDescription" = "Приложению нужен доступ файлам.";
+"NSFileProviderDomainUsageDescription" = "Приложению нужен доступ к файлам.";
 
-"NSFileProviderPresenceUsageDescription" = "Приложению нужен доступ файлам.";
+"NSFileProviderPresenceUsageDescription" = "Приложению нужен доступ к файлам.";
 
 "NSPhotoLibraryUsageDescription" = "Чтобы Вы могли отправлять фотографии, приложению нужен доступ к галерее.";
 

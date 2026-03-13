@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* Hesap adı boş olamaz.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* Konum boş olamaz.";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "Hata";
+//UIAlertHandler.swift
+"Account" = "Hesap";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "Hesap adında geçersiz karakterler var.";
+//WebimService.swift
+"AccountBlocked" = "Oturum oluşturmak için kullanılan hesap engellendi. Lütfen Webim desteğiyle iletişime geçin veya başka bir hesap kullanın.";
+//UIAlertHandler.swift
+"Alert account name" = "Webim hesap adı veya tam sunucu adresi (örneğin, \"demo\" veya \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "İptal";
+//ConnectionErrorView.xib
+"Connection error" = "Bağlantı hatası";
+//UIAlertHandler.swift
+"InvalidSettings" = "Geçersiz Hesap Ayarları";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "Konumda geçersiz karakterler var";
+//AdditionalKeys.swift
+"P.CR" = "Bir temsilci iletişim bilgilerinizi istedi.";
+//AdditionalKeys.swift
+"P.OA" = "Temsilci %@ isteğinize atandı.";
+//AdditionalKeys.swift
+"P.OF" = "%@ bir dosya gönderdi: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ bir mesaj yazdı: %@";
+//AdditionalKeys.swift
+"P.RO" = "Temsilciyi derecelendirin.";
+//StringConstants.swift
+"Copy" = "Kopyala";
+//StringConstants.swift
+"Delete" = "Sil";
+//StringConstants.swift
+"Reply" = "Yanıtla";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Webim SDK Uygulamasına Hoş Geldiniz!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "Geri bildirimleriniz daha iyi olmamıza yardımcı olacak.";
+//WebimService.swift
+"Your visitor account is in the black list." = "Ziyaretçi hesabınız kara listede.";
+//WebimService.swift
+"Session initialization failed." = "Oturum başlatma başarısız oldu.";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "Demo ziyaretçi hatası ayrıştırıldı.";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "Oturum oluşturma başarısız oldu";
+//ChatViewController+Listener.swift
+"typing" = "yazma";
+//StringConstants.swift
+"Edit" = "Düzenle";
+"Enter message" = "Mesaj gir";
+"Please rate the overall impression of the consultation" = "Lütfen konsültasyonun genel izlenimini derecelendirin.";
+"Fetching more messages..." = "Daha fazla mesaj getiriliyor...";
+"Rate Operator" = "Temsilciyi derecelendir";
+"Send" = "Gönder";
+"New messages" = "Yeni mesajlar";
+"Settings" = "Ayarlar";
+"Invalid account name" = "Bu isimde hesap bulunamadı. Lütfen girilen bilgileri kontrol edin.";
+"Share to Chat" = "Sohbette Paylaş";

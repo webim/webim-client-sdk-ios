@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* खात्याचे नाव रिकामे असू शकत नाही";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* स्थान रिकामे असू शकत नाही";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "त्रुटी";
+//UIAlertHandler.swift
+"Account" = "खाते";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "खात्याच्या नावात अवैध वर्ण आहेत";
+//WebimService.swift
+"AccountBlocked" = "सत्र तयार करण्यासाठी वापरले जाणारे खाते ब्लॉक केले आहे. कृपया वेबिम सपोर्टशी संपर्क साधा किंवा दुसरे खाते वापरा.";
+//UIAlertHandler.swift
+"Alert account name" = "वेबिम खात्याचे नाव किंवा पूर्ण सर्व्हर पत्ता (उदाहरणार्थ, \"डेमो\" किंवा \"https://demo.webim.ru\")";
+//UIAlertHandler.swift
+"Cancel" = "रद्द करा";
+//ConnectionErrorView.xib
+"Connection error" = "कनेक्शन त्रुटी";
+//UIAlertHandler.swift
+"InvalidSettings" = "अवैध खाते सेटिंग्ज";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "स्थानात अवैध वर्ण आहेत";
+//AdditionalKeys.swift
+"P.CR" = "एका एजंटने तुमचा संपर्क डेटा मागितला.";
+//AdditionalKeys.swift
+"P.OA" = "तुमच्या विनंतीवर एजंट %@ नियुक्त करण्यात आला होता.";
+//AdditionalKeys.swift
+"P.OF" = "%@ ने फाइल पाठवली: %@.";
+//AdditionalKeys.swift
+"P.OM" = "%@ ने संदेश लिहिला: %@";
+//AdditionalKeys.swift
+"P.RO" = "एजंटला रेट करा";
+//StringConstants.swift
+"Copy" = "कॉपी करा";
+//StringConstants.swift
+"Delete" = "हटवा";
+//StringConstants.swift
+"Reply" = "उत्तर द्या";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "वेबिम एसडीके अॅपमध्ये आपले स्वागत आहे!";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "तुमचा अभिप्राय आम्हाला चांगले बनण्यास मदत करेल";
+//WebimService.swift
+"Your visitor account is in the black list." = "तुमचे अभ्यागत खाते काळ्या यादीत आहे";
+//WebimService.swift
+"Session initialization failed." = "सत्र प्रारंभ अयशस्वी";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "डेमो अभ्यागत त्रुटी पार्स करा";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "सत्र निर्मिती अयशस्वी";
+//ChatViewController+Listener.swift
+"typing" = "टाइपिंग";
+//StringConstants.swift
+"Edit" = "संपादन";
+"Enter message" = "संदेश प्रविष्ट करा";
+"Please rate the overall impression of the consultation" = "कृपया सल्लामसलतीचा एकूण प्रभाव रेट करा";
+"Fetching more messages..." = "अधिक संदेश आणत आहे";
+"Rate Operator" = "रेट एजंट";
+"Send" = "पाठवा";
+"New messages" = "नवीन संदेश";
+"Settings" = "सेटिंग्ज";
+"Invalid account name" = "त्या नावाचे खाते सापडले नाही. कृपया प्रविष्ट केलेली माहिती तपासा.";
+"Share to Chat" = "చాట్‌లో షేర్ చేయండి";

@@ -27,9 +27,20 @@
 import Foundation
 import WebimMobileSDK
 
+protocol VisitorFieldsManagerDelegate: AnyObject {
+    func visitorDataDidUpdate()
+}
+
+struct VisitorResponse: Codable {
+    let fields: [String: String]
+    let expires: TimeInterval
+    let hash: String
+}
+
 class WMVisitorFieldsManager {
     
     var visitorFieldsParser: WMVisitorFieldsParser
+    weak var delegate: VisitorFieldsManagerDelegate?
     
     var isSelectedVisitorValid: Bool {
         let demoVisitor = DemoVisitor(rawValue: selectedVisitor ?? 0)
@@ -42,17 +53,16 @@ class WMVisitorFieldsManager {
     
     @UserDefault(key: UserDefaultsKeys.currentVisitor)
     private var currentVisitor: Int?
-
+    
     @UserDefault(key: UserDefaultsKeys.fedor)
     private var fedorData: Data?
-
+    
     @UserDefault(key: UserDefaultsKeys.semion)
     private var semionData: Data?
     
     init(networkManager: NetworkManagerProtocol = NetworkManager()) {
         visitorFieldsParser = WMVisitorFieldsParser(
-            networkManager: networkManager,
-            completionHandler: nil
+            networkManager: networkManager
         )
         initialSetup()
     }
@@ -73,6 +83,19 @@ class WMVisitorFieldsManager {
         }
     }
     
+    func getVisitors() -> [VisitorResponse?] {
+        var visitors: [VisitorResponse?] = [nil]
+        if let fedor = fedorData,
+           let firstVisitor = try? JSONDecoder().decode(VisitorResponse.self, from: fedor) {
+            visitors.append(firstVisitor)
+        }
+        if let semion = semionData,
+           let secondVisitor = try? JSONDecoder().decode(VisitorResponse.self, from: semion) {
+            visitors.append(secondVisitor)
+        }
+        return visitors
+    }
+    
     func updateCurrentVisitor() {
         currentVisitor = selectedVisitor
     }
@@ -83,7 +106,6 @@ class WMVisitorFieldsManager {
     }
     
     private func initialSetup() {
-        visitorFieldsParser.set(completion: self)
         updateVisitorIfNeeded(visitor: .fedor)
         updateVisitorIfNeeded(visitor: .semion)
     }
@@ -104,20 +126,16 @@ class WMVisitorFieldsManager {
             update(demoVisitor: visitor)
             return
         }
-
+        
         if isVisitorExpired(visitorData: data) {
             update(demoVisitor: visitor)
         }
     }
     
     private func update(demoVisitor: DemoVisitor) {
-        if #available(iOS 13.0, *) {
-            Task.init {
-                let output = try await visitorFieldsParser.parse(value: demoVisitor)
-                save(visitor: output.1, data: output.0)
-            }
-        } else {
-            visitorFieldsParser.parse(value: demoVisitor)
+        Task.init {
+            let output = try await visitorFieldsParser.parse(value: demoVisitor)
+            save(visitor: output.1, data: output.0)
         }
     }
     
@@ -138,22 +156,12 @@ class WMVisitorFieldsManager {
         default:
             break
         }
+        self.delegate?.visitorDataDidUpdate()
     }
     
     private enum HelperVisitorKeys {
         static let expires = "expires"
     }
-}
-
-extension WMVisitorFieldsManager: WMVisitorFieldsParserCompletionHandler {
-    typealias OutputType = DemoVisitorOutput
-    typealias ErrorType = WMVisitorFieldsError
-
-    func onSuccess(value: DemoVisitorOutput) {
-        save(visitor: value.1, data: value.0)
-    }
-
-    func onFailure(error: WMVisitorFieldsError) { }
 }
 
 extension DemoVisitor {

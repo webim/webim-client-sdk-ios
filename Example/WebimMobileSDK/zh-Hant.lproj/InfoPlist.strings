@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "Webim SDK App 需要存取您的照片庫的權限，以便您可以保存聊天中的圖像";
+
+"NSCameraUsageDescription" = "Webim SDK App 需要存取您的相機的權限，以便您可以發送照片進行聊天";
+
+"NSFileProviderDomainUsageDescription" = "Webim SDK App 需要存取您的文件夾的權限，以便您可以發送文件進行聊天";
+
+"NSFileProviderPresenceUsageDescription" = "Webim SDK App 需要存取您的文件夾的權限，以便您可以發送文件進行聊天";
+
+"NSPhotoLibraryUsageDescription" = "Webim SDK App 需要存取您的照片庫的權限，以便您可以發送圖像進行聊天";

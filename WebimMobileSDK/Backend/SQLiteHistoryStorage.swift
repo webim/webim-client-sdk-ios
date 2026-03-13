@@ -765,6 +765,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
         
         var rawData: [String: Any?]?
         var group: Group?
+        var extraText: String?
         if let dataValue = row[SQLiteHistoryStorage.data] {
             rawData = NSKeyedUnarchiver.unarchiveObject(with: Data.fromDatatypeValue(dataValue)) as? [String: Any?]
             if let groupDictionary = rawData?["group"] as? [String: Any] {
@@ -772,6 +773,10 @@ final class SQLiteHistoryStorage: HistoryStorage {
                 group = GroupImpl(id: groupItem.getID(),
                                   messageCount: groupItem.getMessageCount(),
                                   messageNumber: groupItem.getMessageNumber())
+            }
+
+            if let text = rawData?["extra_text"] as? String {
+                extraText = text
             }
         }
         
@@ -794,7 +799,9 @@ final class SQLiteHistoryStorage: HistoryStorage {
                MessageDataItem(jsonDictionary: data).getFile()?.getState() == .error,
                attachment == nil,
                attachments.isEmpty {
-                attachment = FileInfoImpl.getErrorAttachment(byFileUrlCreator: fileUrlCreator, text: rawText, data: data)
+                attachment = FileInfoImpl.getErrorAttachment(byFileUrlCreator: fileUrlCreator,
+                                                             text: rawText,
+                                                             data: data)
             }
         }
         
@@ -820,11 +827,12 @@ final class SQLiteHistoryStorage: HistoryStorage {
                                                                      state: state,
                                                                      errorType: file?.getErrorType(),
                                                                      errorMessage: file?.getErrorMessage(),
-                                                                     visitorErrorMessage: file?.getVisitorErrorMessage()),
-                                                                     translationInfo: nil)
+                                                                     visitorErrorMessage: file?.getVisitorErrorMessage(),
+                                                                     extraText: extraText),
+                                   translationInfo: nil)
         } else if let rawData = rawData,
                   let messageData = MessageDataItem(jsonDictionary: rawData).getTranslationInfo() {
-                                                                                 
+            
             let translationInfo = TranslationInfoImpl(translatedText: messageData.getTranslatedText(),
                                                       sourceLang: messageData.getSourceLang(),
                                                       targetLang: messageData.getTargetLang(),

@@ -1,12 +1,12 @@
 # WebimMobileSDK
 
-This library provides [_Webim SDK_ for _iOS_](https://webim.ru/integration/mobile-sdk/ios-sdk-howto/) – a way to integrate _Webim_ service into your _iOS_ app.
+This library provides [_Webim SDK_ for _iOS_](https://webim.ru/kb/mobile/sdk/) – a way to integrate _Webim_ service into your _iOS_ app.
 
 Mimimum Webim server version supported – **10.5.30**.
 
 ## Installation
 
-> Minimum iOS version supported – 12.0.
+> Minimum iOS version supported – 11.0.
 
 ### CocoaPods
 
@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 3.43.4
+github "webim/webim-client-sdk-ios" ~> 4.0.0
 ```
 
 ### Swift Package Manager
@@ -41,8 +41,9 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Fixed data saving in app without keychainAccessGroup.
-* Fixed data leketion after changing visitor or account. 
+* Improved performance.
+* Removed SCREAMING_SNAKE_CASE style constants.
+* Removed method `closeChat()`
 
 ## Example
 
@@ -82,7 +83,6 @@ For this methods usage ability the `MessageStream` object is have to be getted t
 Methods examples:
 `send(message:)` – send message,
 `rateOperatorWith(id:byRating:)` – rate operator,
-`closeChat()` – close chat.
 
 ### MessageTracker
 

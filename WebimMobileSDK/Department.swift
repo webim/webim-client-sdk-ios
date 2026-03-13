@@ -123,9 +123,6 @@ public enum DepartmentOnlineStatus {
      */
     case busyOffline
     
-    @available(*, unavailable, renamed: "busyOffline")
-    case BUSY_OFFLINE
-    
     /**
      Online state with chats' count limit exceeded.
      - author:
@@ -134,9 +131,6 @@ public enum DepartmentOnlineStatus {
      2017 Webim
      */
     case busyOnline
-    
-    @available(*, unavailable, renamed: "busyOnline")
-    case BUSY_ONLINE
     
     /**
      Visitor is able to send offline messages.
@@ -147,9 +141,6 @@ public enum DepartmentOnlineStatus {
      */
     case offline
     
-    @available(*, unavailable, renamed: "offline")
-    case OFFLINE
-    
     /**
      Visitor is able to send both online and offline messages.
      - author:
@@ -159,9 +150,6 @@ public enum DepartmentOnlineStatus {
      */
     case online
     
-    @available(*, unavailable, renamed: "online")
-    case ONLINE
-    
     /**
      Any status that is not supported by this version of the library.
      - author:
@@ -170,8 +158,4 @@ public enum DepartmentOnlineStatus {
      2017 Webim
      */
     case unknown
-    
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
-    
 }

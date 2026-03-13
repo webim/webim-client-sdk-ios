@@ -40,6 +40,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     
     // MARK: - Properties
     private static var providedAuthenticationTokenErrorCount = 0
+    private var webimMeta: WebimMetaItem?
     private let appVersion: String?
     private let deltaCallback: DeltaCallback
     private let deviceID: String
@@ -57,9 +58,13 @@ class DeltaRequestLoop: AbstractRequestLoop {
     @WMSynchronized private var visitorFieldsJSONString: String?
     @WMSynchronized private var visitorJSONString: String?
     @WMSynchronized private var prechat: String?
+    @WMSynchronized private var isLightModeEnabled: Bool
+    @WMSynchronized private var authData: AuthResponse? = nil
     
     private let sessionParametersListener: SessionParametersListener? // shouldn't it be weak?
     private weak var providedAuthenticationTokenStateListener: ProvidedAuthorizationTokenStateListener?
+    private weak var infoListener: InfoListener?
+    
     
     // MARK: - Initialization
     init(deltaCallback: DeltaCallback,
@@ -78,9 +83,11 @@ class DeltaRequestLoop: AbstractRequestLoop {
          remoteNotificationSystem: Webim.RemoteNotificationSystem?,
          visitorJSONString: String?,
          sessionID: String?,
-         prechat:String?,
+         prechat: String?,
          authorizationData: AuthorizationData?,
-         requestHeader: [String: String]?) {
+         requestHeader: [String: String]?,
+         isLightModeEnabled: Bool,
+         infoListener: InfoListener?) {
         self.deltaCallback = deltaCallback
         self.sessionParametersListener = sessionParametersListener
         self.title = title
@@ -96,7 +103,12 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.providedAuthenticationTokenStateListener = providedAuthenticationTokenStateListener
         self.providedAuthenticationToken = providedAuthenticationToken
         self.prechat = prechat
-        super.init(completionHandlerExecutor: completionHandlerExecutor, internalErrorListener: internalErrorListener, requestHeader: requestHeader, baseURL: baseURL)
+        self.isLightModeEnabled = isLightModeEnabled
+        self.infoListener = infoListener
+        super.init(completionHandlerExecutor: completionHandlerExecutor,
+                   internalErrorListener: internalErrorListener,
+                   requestHeader: requestHeader,
+                   baseURL: baseURL)
     }
     
     // MARK: - Methods
@@ -112,6 +124,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
             return
         }
         queue.async {
+            self.requestMeta()
             self.run()
         }
     }
@@ -130,6 +143,9 @@ class DeltaRequestLoop: AbstractRequestLoop {
         self.location = location
         
         authorizationData = nil
+        authData = nil
+        webimMeta = nil
+        
         since = "0"
         
         requestInitialization()
@@ -140,12 +156,22 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     func run() {
-        while isRunning() {
-            if authorizationData != nil && since != "0" {
-                requestDelta()
-            } else {
-                requestAccountConfig()
-                requestInitialization()
+        if isLightModeEnabled {
+            while isRunning() {
+                if authData != nil {
+                    requestInfo()
+                } else {
+                    requestAuth()
+                }
+            }
+        } else {
+            while isRunning() {
+                if authorizationData != nil  && since != "0" {
+                    requestDelta()
+                } else {
+                    requestAccountConfig()
+                    requestInitialization()
+                }
             }
         }
     }
@@ -190,12 +216,37 @@ class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
+    func parseAuth(data: Data) {
+        if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as? [String: Any]) {
+            if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                handleInitialization(error: error)
+            } else {
+                
+                authData = AuthResponse(jsonDictionary: dataJSON)
+                requestInfo()
+            }
+        } else {
+            WebimInternalLogger.shared.log(
+                entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.internalErrorListener?.on(error: "wrong-init")
+            })
+        }
+    }
+    
     func requestInitialization() {
-        let url = URL(string: baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString())
+        var urlString = authData?.getAuthToken() == nil ? (baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString()) : (baseURL + ServerPathSuffix.initPath.rawValue)
+        let url = URL(string: urlString)
         var request = URLRequest(url: url!)
-        request.setValue("3.43.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
-        
+        if let authToken = authData?.getAuthToken() {
+            request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
         do {
             let data = try perform(request: request)
             self.parseRequestInitialization(data: data)
@@ -209,32 +260,73 @@ class DeltaRequestLoop: AbstractRequestLoop {
                 verbosityLevel: .warning,
                 logType: .networkRequest)
         }
+        
     }
     
-    func requestAccountConfig() {
-        let url = URL(string: baseURL + ServerPathSuffix.getServerSideSettings.rawValue + "?" + "location=" + location)
+    func requestAuth() {
+        let url = URL(string: baseURL + ServerPathSuffix.getAuthToken.rawValue + "?" + getAuthParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("3.43.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.httpMethod = AbstractRequestLoop.HTTPMethods.post.rawValue
+        
+        do {
+            let data = try perform(request: request)
+            self.parseAuth(data: data)
+        } catch let unknownError as UnknownError {
+            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                self.handleRequestLoop(error: unknownError)
+            })
+        } catch {
+            WebimInternalLogger.shared.log(
+                entry: "Request failed with unknown error: \(error.localizedDescription)",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
+        }
+    }
+    
+    func requestMeta() {
+        let url = URL(string: baseURL + ServerPathSuffix.getMeta.rawValue)
+        var request = URLRequest(url: url!)
+        request.setValue("4.0.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
-            let rawData = try perform(request: request)
-            guard var rawDataString = String(data: rawData, encoding: .utf8),
-                  rawDataString.count >= 31 else {
-                return
-            }
+            let data = try perform(request: request)
 
-            rawDataString.removeFirst(29)
-            rawDataString.removeLast(2)
-
-            guard let data = rawDataString.data(using: .utf8, allowLossyConversion: false) else {
-                return
+            let json = try? JSONSerialization.jsonObject(with: data,
+                                                         options: [])
+            if let webimMetaDictionary = json as? [String: Any?] {
+                webimMeta = WebimMetaItem(jsonDictionary: webimMetaDictionary)
+                deltaCallback.set(webimMeta: webimMeta)
             }
+        } catch {
+            WebimInternalLogger.shared.log(
+                entry: "Request failed with unknown error: \(error.localizedDescription)",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
+        }
+    }
+    
+    func requestAccountConfig() {
+        var url: URL
+        let accountConfigUrl = webimMeta?.getAccountConfigEndpoint()?.getUrl()
+        if accountConfigUrl != nil {
+            url = URL(string: baseURL + (accountConfigUrl ?? ServerPathSuffix.getConfig.rawValue) + "/\(location)" + "?jsonp=false")!
+        } else {
+            url = URL(string: baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)" + "?jsonp=false")!
+        }
+        var request = URLRequest(url: url)
+        request.setValue("4.0.0", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
+        
+        do {
+            var data = try perform(request: request)
             let json = try? JSONSerialization.jsonObject(with: data,
                                                          options: [])
             if let locationSettingsResponseDictionary = json as? [String: Any?] {
                 let locationSettingsResponse = ServerSettingsResponse(jsonDictionary: locationSettingsResponseDictionary)
                 deltaCallback.set(accountConfig: locationSettingsResponse.getAccountConfig())
+                checkLocationRules(locationSettings: locationSettingsResponse)
             }
         } catch let unknownError as UnknownError {
             self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
@@ -281,6 +373,51 @@ class DeltaRequestLoop: AbstractRequestLoop {
         }
     }
     
+    private func parseInfo(data: Data) {
+        if let dataJSON = try? (JSONSerialization.jsonObject(with: data) as? [String: Any]) {
+            if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                handleDeltaRequest(error: error)
+            } else {
+                let infoResponse = GetInfoResponse(jsonDictionary: dataJSON)
+                guard let unreadMessagesCount = infoResponse.getUnreadMessagesCount() else {
+                    return
+                }
+                DispatchQueue.global(qos: .background).async { [weak self] in
+                    self?.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                        self?.infoListener?.update(newMessageCount: unreadMessagesCount)
+                    })
+                }
+                usleep(10_000_000)
+            }
+        } else {
+            WebimInternalLogger.shared.log(
+                entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data").",
+                verbosityLevel: .warning,
+                logType: .networkRequest)
+        }
+    }
+    
+    private func checkLocationRules(locationSettings: ServerSettingsResponse) {
+        guard let routingRules = locationSettings.getRoutingRules(),
+              let jsonData = visitorFieldsJSONString?.data(using: .utf8),
+              let visitorJson = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+              let visitorFields = visitorJson["fields"] as? [String: String] else {
+            return
+        }
+        var newLocation = location
+        for rule in routingRules {
+            if let visitorFieldLabel = rule.getVisitorField(),
+               let visitorField = visitorFields[visitorFieldLabel],
+               visitorField == rule.getVisitorFieldValue(),
+               let locationKey = rule.getLocationKey() {
+                newLocation = locationKey
+            }
+        }
+        if newLocation != location {
+            self.location = newLocation
+        }
+    }
+    
     func requestDelta() {
         guard let url = URL(string: getDeltaServerURLString() + "?" + getDeltaParameterString()) else {
             WebimInternalLogger.shared.log(entry: "Initialize URL failure in  DeltaRequestLoop.\(#function)")
@@ -301,6 +438,32 @@ class DeltaRequestLoop: AbstractRequestLoop {
                 logType: .networkRequest)
         }
     }
+
+    func requestInfo() {
+        guard let url = URL(string: baseURL + ServerPathSuffix.getInfo.rawValue),
+              let authToken = authData?.getAuthToken() else {
+            WebimInternalLogger.shared.log(entry: "Initialize URL failure in  DeltaRequestLoop.\(#function)")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
+        request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+        do {
+            let data = try perform(request: request)
+            self.parseInfo(data: data)
+        } catch let unknownError as UnknownError {
+            handleRequestLoop(error: unknownError)
+        } catch {
+            WebimInternalLogger.shared.log(
+            entry: "Request failed with unknown error: \(error.localizedDescription).",
+            verbosityLevel: .warning,
+            logType: .networkRequest)
+        }
+    }
+
     
     // MARK: Private methods
     
@@ -344,6 +507,37 @@ class DeltaRequestLoop: AbstractRequestLoop {
         }
         if let prechat = prechat {
             parameterDictionary[Parameter.prechat.rawValue] = prechat
+        }
+        
+        return parameterDictionary.stringFromHTTPParameters()
+    }
+    
+    private func getAuthParameterString() -> String {
+        var parameterDictionary = [Parameter.deviceID.rawValue: deviceID,
+                                   Parameter.location.rawValue: location,
+                                   Parameter.platform.rawValue: Platform.ios.rawValue] as [String: Any]
+        if let appVersion = appVersion {
+            parameterDictionary[Parameter.applicationVersion.rawValue] = appVersion
+        }
+        if let deviceToken = deviceToken {
+            parameterDictionary[Parameter.deviceToken.rawValue] = deviceToken
+            switch remoteNotificationSystem {
+            case .apns:
+                parameterDictionary[Parameter.pushService.rawValue] = "apns"
+            case .fcm:
+                parameterDictionary[Parameter.pushService.rawValue] = "fcm"
+            default:
+                break
+            }
+        }
+        if let visitorJSONString = visitorJSONString {
+            parameterDictionary[Parameter.visitor.rawValue] = visitorJSONString
+        }
+        if let visitorFieldsJSONString = visitorFieldsJSONString {
+            parameterDictionary[Parameter.providedVisitor.rawValue] = visitorFieldsJSONString
+        }
+        if let providedAuthenticationToken = providedAuthenticationToken {
+            parameterDictionary[Parameter.providedAuthenticationToken.rawValue] = providedAuthenticationToken
         }
         
         return parameterDictionary.stringFromHTTPParameters()

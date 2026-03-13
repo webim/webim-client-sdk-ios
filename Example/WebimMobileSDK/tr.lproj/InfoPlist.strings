@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "Webim SDK Uygulaması, sohbetten resim kaydedebilmeniz için fotoğraf kitaplığınıza erişim iznine ihtiyaç duyar.";
+
+"NSCameraUsageDescription" = "Webim SDK Uygulaması, sohbete fotoğraf gönderebilmeniz için kameranıza erişim iznine ihtiyaç duyar.";
+
+"NSFileProviderDomainUsageDescription" = "Webim SDK Uygulaması, sohbete dosya gönderebilmeniz için belgeler klasörünüze erişim iznine ihtiyaç duyar.";
+
+"NSFileProviderPresenceUsageDescription" = "Webim SDK Uygulaması, sohbete dosya gönderebilmeniz için belgeler klasörünüze erişim iznine ihtiyaç duyar.";
+
+"NSPhotoLibraryUsageDescription" = "Webim SDK Uygulaması, sohbete resim gönderebilmeniz için fotoğraf kitaplığınıza erişim iznine ihtiyaç duyar.";

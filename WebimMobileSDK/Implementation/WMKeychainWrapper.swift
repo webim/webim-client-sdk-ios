@@ -39,15 +39,23 @@ public class WMKeychainWrapper: NSObject {
     public var userDefaults = UserDefaults.standard
     private var inited = false
     
-    override init() {
+    public init(isFromShare: Bool = false) {
         super.init()
-        cleanUserDefaults()
+        if isFromShare {
+            inited = true
+        } else {
+            cleanUserDefaults()
+        }
     }
     
-    public func setAppGroupName(userDefaults: UserDefaults, keychainAccessGroup: String) {
+    public func setAppGroupName(userDefaults: UserDefaults,
+                                keychainAccessGroup: String,
+                                needsCleanOldKeychainData: Bool = true) {
         WMKeychainWrapper.keychainAccessGroupName = keychainAccessGroup
         self.userDefaults = userDefaults
-        cleanOldKeychainData()
+        if needsCleanOldKeychainData {
+            cleanOldKeychainData()
+        }
     }
     
     private func cleanOldKeychainData() {
@@ -78,6 +86,8 @@ public class WMKeychainWrapper: NSObject {
         userDefaults.removeObject(forKey: "settings")
         userDefaults.removeObject(forKey: "previous_account")
         userDefaults.removeObject(forKey: "device-token")
+        userDefaults.removeObject(forKey: "location")
+        userDefaults.removeObject(forKey: "visitor")
         for key in userDefaults.dictionaryRepresentation().keys {
             if key.starts(with: "ru.webim.WebimClientSDKiOS") {
                 userDefaults.removeObject(forKey: key)
@@ -115,7 +125,7 @@ public class WMKeychainWrapper: NSObject {
         return fileName.hasPrefix(WMKeychainWrapper.actualDBPrefix())
     }
     
-    public static var standard: WMKeychainWrapper = WMKeychainWrapper()
+    public static let standard: WMKeychainWrapper = WMKeychainWrapper()
     
     open func dictionary(forKey defaultName: String) -> [String : Any]? {
         return WMKeychainWrapper.load(key: defaultName)?.dataToDictionary()
@@ -131,12 +141,12 @@ public class WMKeychainWrapper: NSObject {
     open func string(forKey defaultName: String) -> String? {
         return WMKeychainWrapper.readString(key: defaultName)
     }
-
+    
     static func removePreviousVisitorData(key: String) -> OSStatus {
         return removeObject(key: webimKeyPrefix + key)
     }
-    
-    static func removeObject(key: String) -> OSStatus{
+
+    static func removeObject(key: String) -> OSStatus {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: key]
         if let keychainAccessGroupName = keychainAccessGroupName {

@@ -54,7 +54,7 @@ final class WMSelectAccountViewController: UIViewController {
         let pingManager = WebimPingManager(serverURL: url)
 
         pingManager.sendPing { error in
-            if error != nil {
+            if error != nil && !WMTestManager.testModeEnabled() {
                 DispatchQueue.main.async {
                     self.alertDialogHandler.showAlertForInvalidAccountName()
                 }

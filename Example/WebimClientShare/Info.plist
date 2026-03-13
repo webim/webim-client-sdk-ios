@@ -23,11 +23,13 @@
         <key>NSExtensionPointIdentifier</key>
         <string>com.apple.share-services</string>
         <key>NSExtensionPrincipalClass</key>
-        <string>WMShareViewController</string>
+        <string>$(PRODUCT_MODULE_NAME).ShareViewController</string>
     </dict>
     <key>UIFileSharingEnabled</key>
     <true/>
     <key>keychainAppIdentifier</key>
     <string>$(AppIdentifierPrefix)ru.webim.Webim-Client.Share</string>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
 </dict>
 </plist>

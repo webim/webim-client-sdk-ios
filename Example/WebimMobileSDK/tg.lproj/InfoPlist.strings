@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "Барномаи Webim SDK барои дастрасӣ ба китобхонаи аксҳои шумо иҷозат лозим аст, то шумо метавонед тасвирҳоро аз чат захира кунед.";
+
+"NSCameraUsageDescription" = "Барномаи Webim SDK барои дастрасӣ ба камераи шумо иҷозат лозим аст, то шумо метавонед аксҳоро барои сӯҳбат фиристед.";
+
+"NSFileProviderDomainUsageDescription" = "Барномаи Webim SDK барои дастрасӣ ба ҷузвдони ҳуҷҷатҳои шумо иҷозат лозим аст, то шумо метавонед файлҳоро барои сӯҳбат фиристед.";
+
+"NSFileProviderPresenceUsageDescription" = "Барномаи Webim SDK барои дастрасӣ ба ҷузвдони ҳуҷҷатҳои шумо иҷозат лозим аст, то шумо метавонед файлҳоро барои сӯҳбат фиристед.";
+
+"NSPhotoLibraryUsageDescription" = "Барномаи Webim SDK барои дастрасӣ ба китобхонаи аксҳои шумо иҷозат лозим аст, то шумо метавонед тасвирҳоро ба сӯҳбат фиристед.";

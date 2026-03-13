@@ -1,0 +1,63 @@
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Account name can't be empty." = "* アカウント名は空欄にできません。";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"* Location can't be empty." = "* 所在地は空欄にできません。";
+//WMSettingsViewController.swift,WMSettingsViewController.xib
+"Error" = "エラー";
+//UIAlertHandler.swift
+"Account" = "アカウント";
+//WMSettingsViewController.swift
+"Account name has invalid characters" = "アカウント名に無効な文字が含まれています。";
+//WebimService.swift
+"AccountBlocked" = "セッションの作成に使用されたアカウントがブロックされています。Webimサポートにお問い合わせいただくか、別のアカウントをご利用ください。";
+//UIAlertHandler.swift
+"Alert account name" = "Webimアカウント名または完全なサーバーアドレス（例：\"demo\" または \"https://demo.webim.ru\"）";
+//UIAlertHandler.swift
+"Cancel" = "キャンセル";
+//ConnectionErrorView.xib
+"Connection error" = "接続エラー";
+//UIAlertHandler.swift
+"InvalidSettings" = "アカウント設定が無効です";
+//WMSettingsViewController.swift
+"Location has invalid characters" = "所在地に無効な文字が含まれています";
+//AdditionalKeys.swift
+"P.CR" = "エージェントがあなたの連絡先データを要求しました。";
+//AdditionalKeys.swift
+"P.OA" = "エージェント %@ があなたのリクエストに割り当てられました。";
+//AdditionalKeys.swift
+"P.OF" = "%@ がファイルを送信しました: %@";
+//AdditionalKeys.swift
+"P.OM" = "%@ がメッセージを書きました: %@";
+//AdditionalKeys.swift
+"P.RO" = "エージェントを評価してください";
+//StringConstants.swift
+"Copy" = "コピー";
+//StringConstants.swift
+"Delete" = "削除";
+//StringConstants.swift
+"Reply" = "返信";
+//WMStartViewController.xib
+"Welcome to the WebimClientLibrary app!" = "Webim SDK アプリへようこそ！";
+//WMThanksAlertView.xib
+"Your feedback will help us become better." = "皆様からのフィードバックは、サービス向上の参考になります。";
+//WebimService.swift
+"Your visitor account is in the black list." = "お客様の訪問者アカウントはブラックリストに登録されています。";
+//WebimService.swift
+"Session initialization failed." = "セッションの初期化に失敗しました。";
+//WMSettingsViewController.swift
+"Parse demo visitor error." = "デモ訪問者解析エラーです。";
+//ChatViewController+CompletionHandler.swift,UIAlertHandler.swift
+"Session creation failed" = "セッションの作成に失敗しました。";
+//ChatViewController+Listener.swift
+"typing" = "入力中";
+//StringConstants.swift
+"Edit" = "編集";
+"Enter message" = "メッセージを入力";
+"Please rate the overall impression of the consultation" = "ご相談の全体的な印象を評価してください。";
+"Fetching more messages..." = "さらにメッセージを取得中";
+"Rate Operator" = "エージェントを評価";
+"Send" = "送信";
+"New messages" = "新しいメッセージ";
+"Settings" = "設定";
+"Invalid account name" = "指定した名前のアカウントが見つかりません。入力した情報をご確認ください。";
+"Share to Chat" = "チャットで共有";

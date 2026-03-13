@@ -26,7 +26,6 @@
 
 import UIKit
 
-// This class is not used anywhere yet. Implemented for the future tasks.
 /**
  Internal representation of visitor information.
  - author:
@@ -34,7 +33,7 @@ import UIKit
  - copyright:
  2017 Webim
  */
-struct VisitorItem {
+struct VisitorItem: Visitor {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
@@ -45,20 +44,22 @@ struct VisitorItem {
     }
     
     // MARK: - Properties
-    private var icon: IconItem?
     private var id: String
-    private var visitorFields: VisitorFieldsItem
+    private var icon: IconItem?
+    private var visitorFields: VisitorFieldsItem?
+    private var visitorFieldsDictionary: [String: String]?
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        guard let id = jsonDictionary[JSONField.id.rawValue] as? String,
-            let visitorFieldsValue = jsonDictionary[JSONField.fields.rawValue] as? [String: Any?],
-            let visitorFields = VisitorFieldsItem(jsonDictionary: visitorFieldsValue) else {
+        guard let id = jsonDictionary[JSONField.id.rawValue] as? String else {
             return nil
         }
-        
         self.id = id
-        self.visitorFields = visitorFields
+        
+        if let visitorFieldsValue = jsonDictionary[JSONField.fields.rawValue] as? [String: String] {
+            self.visitorFieldsDictionary = visitorFieldsValue
+            self.visitorFields = VisitorFieldsItem(jsonDictionary: visitorFieldsValue)
+        }
         
         if let iconValue = jsonDictionary[JSONField.icon.rawValue] as? [String : Any?] {
             icon = IconItem(jsonDictionary: iconValue)
@@ -67,7 +68,7 @@ struct VisitorItem {
     
     // MARK: - Methods
     
-    func getIcon() -> IconItem? {
+    func getIcon() -> Icon? {
         return icon
     }
     
@@ -75,9 +76,14 @@ struct VisitorItem {
         return id
     }
     
-    func getVisitorFields() -> VisitorFieldsItem {
+    func getVisitorFields() -> VisitorFields? {
         return visitorFields
     }
+    
+    func getVisitorFieldsInDictionary() -> [String: String]? {
+        return visitorFieldsDictionary
+    }
+    
     
 }
 
@@ -88,38 +94,36 @@ struct VisitorItem {
  - copyright:
  2017 Webim
  */
-struct IconItem {
+struct IconItem: Icon {
     
     // MARK: - Constants
-    // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
         case color = "color"
         case shape = "shape"
     }
     
     // MARK: - Properties
-    private var color: UIColor
-    private var shape: String
+    private var color: UIColor?
+    private var shape: String?
     
     // MARK: - Initialization
     init?(jsonDictionary: [String: Any?]) {
-        guard let colorString = jsonDictionary[JSONField.color.rawValue] as? String,
-            let color = UIColor(hexString: colorString),
-            let shape = jsonDictionary[JSONField.shape.rawValue] as? String else {
-            return nil
+        if let color = jsonDictionary[JSONField.color.rawValue] as? UIColor {
+            self.color = color
         }
         
-        self.color = color
-        self.shape = shape
+        if let shape = jsonDictionary[JSONField.shape.rawValue] as? String {
+            self.shape = shape
+        }
     }
     
     // MARK: - Methods
     
-    func getColor() -> UIColor {
+    func getColor() -> UIColor? {
         return color
     }
     
-    func getShape() -> String {
+    func getShape() -> String? {
         return shape
     }
     
@@ -133,40 +137,57 @@ struct IconItem {
  - copyright:
  2017 Webim
  */
-struct VisitorFieldsItem {
+struct VisitorFieldsItem: VisitorFields {
     
     // MARK: - Constants
     // Raw values equal to field names received in responses from server.
     private enum JSONField: String {
-        case email = "email"
         case name = "name"
         case phone = "phone"
+        case email = "email"
+        case firstCustomField = "first_custom_field"
+        case secondCustomField = "second_custom_field"
+        case thirdCustomField = "third_custom_field"
     }
     
     // MARK: - Properties
+    private var name: String?
     private var email: String?
-    private var name: String
     private var phone: String?
+    private var firstCustomField: String?
+    private var secondCustomField: String?
+    private var thirdCustomField: String?
     
     // MARK: - Initialization
-    init?(jsonDictionary: [String : Any?]) {
-        guard let name = jsonDictionary[JSONField.name.rawValue] as? String else {
-            return nil
+    init?(jsonDictionary: [String : String?]) {
+        if let name = jsonDictionary[JSONField.name.rawValue] {
+            self.name = name
         }
-        self.name = name
         
-        if let email = jsonDictionary[JSONField.email.rawValue] as? String {
+        if let email = jsonDictionary[JSONField.email.rawValue] {
             self.email = email
         }
         
-        if let phone = jsonDictionary[JSONField.phone.rawValue] as? String {
+        if let phone = jsonDictionary[JSONField.phone.rawValue] {
             self.phone = phone
+        }
+        
+        if let firstCustomField = jsonDictionary[JSONField.firstCustomField.rawValue] {
+            self.firstCustomField = firstCustomField
+        }
+        
+        if let secondCustomField = jsonDictionary[JSONField.secondCustomField.rawValue] {
+            self.secondCustomField = secondCustomField
+        }
+        
+        if let thirdCustomField = jsonDictionary[JSONField.thirdCustomField.rawValue] {
+            self.thirdCustomField = thirdCustomField
         }
     }
     
     // MARK: - Methods
     
-    func getName() -> String {
+    func getName() -> String? {
         return name
     }
     
@@ -178,4 +199,15 @@ struct VisitorFieldsItem {
         return phone
     }
     
+    func getFirstCustomField() -> String? {
+        return firstCustomField
+    }
+    
+    func getSecondCustomField() -> String? {
+        return secondCustomField
+    }
+    
+    func getThirdCustomField() -> String? {
+        return thirdCustomField
+    }
 }

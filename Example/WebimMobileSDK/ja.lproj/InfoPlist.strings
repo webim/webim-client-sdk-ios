@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  WebimClientLibrary
+
+  Created by Anna Frolova on 20.09.2022.
+  Copyright © 2022 Webim. All rights reserved.
+*/
+
+"NSPhotoLibraryAddUsageDescription" = "チャットから画像を保存するために、Webim SDK アプリはフォトライブラリへのアクセス許可が必要です。";
+
+"NSCameraUsageDescription" = "チャットに写真を送信するために、Webim SDK アプリはカメラへのアクセス許可が必要です。";
+
+"NSFileProviderDomainUsageDescription" = "チャットにファイルを送信するために、Webim SDK アプリはドキュメントフォルダへのアクセス許可が必要です。";
+
+"NSFileProviderPresenceUsageDescription" = "チャットにファイルを送信するために、Webim SDK アプリはドキュメントフォルダへのアクセス許可が必要です。";
+
+"NSPhotoLibraryUsageDescription" = "チャットに画像を送信するために、Webim SDK アプリはフォトライブラリへのアクセス許可が必要です。";

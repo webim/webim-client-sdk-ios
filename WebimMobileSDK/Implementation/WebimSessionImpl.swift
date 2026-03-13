@@ -45,6 +45,7 @@ fileprivate enum WMKeychainWrapperMainPrefix: String {
     case sessionID = "session_id"
     case visitor = "visitor"
     case visitorExt = "visitor_ext"
+    case location = "location"
 }
 fileprivate enum WMKeychainWrapperGUIDPrefix: String {
     case uuid = "guid"
@@ -114,7 +115,9 @@ final class WebimSessionImpl {
                                 prechat: String?,
                                 multivisitorSection: String,
                                 onlineStatusRequestFrequencyInMillis: Int64?,
-                                requestHeader: [String: String]?) -> WebimSessionImpl {
+                                requestHeader: [String: String]?,
+                                isLightSessionMode: Bool,
+                                infoListener: InfoListener?) -> WebimSessionImpl {
         
         let visitorName = visitorFields?.getID() ?? "anonymous"
         let mobileChatInstance = mobileChatInstance ?? "default"
@@ -129,29 +132,30 @@ final class WebimSessionImpl {
                 try session.checkAccess()
             } catch {
                 WMSessionController.shared.remove(session: session)
-                return newInstanceWith(
-                    accountName: accountName,
-                    location: location,
-                    mobileChatInstance: mobileChatInstance,
-                    appVersion: appVersion,
-                    visitorFields: visitorFields,
-                    providedAuthorizationTokenStateListener: providedAuthorizationTokenStateListener,
-                    providedAuthorizationToken: providedAuthorizationToken,
-                    pageTitle: pageTitle,
-                    fatalErrorHandler: fatalErrorHandler,
-                    notFatalErrorHandler: notFatalErrorHandler,
-                    deviceToken: deviceToken,
-                    remoteNotificationSystem: remoteNotificationSystem,
-                    isLocalHistoryStoragingEnabled: isLocalHistoryStoragingEnabled,
-                    isVisitorDataClearingEnabled: isVisitorDataClearingEnabled,
-                    webimLogger: webimLogger,
-                    verbosityLevel: verbosityLevel,
-                    availableLogTypes: availableLogTypes,
-                    webimAlert: webimAlert,
-                    prechat: prechat,
-                    multivisitorSection: multivisitorSection,
-                    onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis,
-                    requestHeader: requestHeader
+                return newInstanceWith(accountName: accountName,
+                                       location: location,
+                                       mobileChatInstance: mobileChatInstance,
+                                       appVersion: appVersion,
+                                       visitorFields: visitorFields,
+                                       providedAuthorizationTokenStateListener: providedAuthorizationTokenStateListener,
+                                       providedAuthorizationToken: providedAuthorizationToken,
+                                       pageTitle: pageTitle,
+                                       fatalErrorHandler: fatalErrorHandler,
+                                       notFatalErrorHandler: notFatalErrorHandler,
+                                       deviceToken: deviceToken,
+                                       remoteNotificationSystem: remoteNotificationSystem,
+                                       isLocalHistoryStoragingEnabled: isLocalHistoryStoragingEnabled,
+                                       isVisitorDataClearingEnabled: isVisitorDataClearingEnabled,
+                                       webimLogger: webimLogger,
+                                       verbosityLevel: verbosityLevel,
+                                       availableLogTypes: availableLogTypes,
+                                       webimAlert: webimAlert,
+                                       prechat: prechat,
+                                       multivisitorSection: multivisitorSection,
+                                       onlineStatusRequestFrequencyInMillis: onlineStatusRequestFrequencyInMillis,
+                                       requestHeader: requestHeader,
+                                       isLightSessionMode: isLightSessionMode,
+                                       infoListener: infoListener
                 )
             }
             return session
@@ -172,6 +176,7 @@ final class WebimSessionImpl {
         }
         
         WMKeychainWrapper.standard.setString(accountName, forKey: WMKeychainWrapperMainPrefix.previousAccount.rawValue)
+        WMKeychainWrapper.standard.setString(location, forKey: WMKeychainWrapperMainPrefix.location.rawValue)
         
         checkSavedSessionFor(userDefaultsKey: userDefaultsKey,
                              newProvidedVisitorFields: visitorFields)
@@ -185,7 +190,8 @@ final class WebimSessionImpl {
         }
         
         let visitorFieldsJSONString = visitorFields?.getJSONString()
-        
+        WMKeychainWrapper.standard.setString(visitorFieldsJSONString ?? "",
+                                             forKey: WMKeychainWrapperMainPrefix.visitor.rawValue)
         let serverURLString = InternalUtils.createServerURLStringBy(accountName: accountName)
         WebimInternalLogger.shared.log(
             entry: "Specified Webim server – \(serverURLString).",
@@ -221,6 +227,7 @@ final class WebimSessionImpl {
 
         let webimClient = WebimClientBuilder()
             .set(baseURL: serverURLString)
+            .set(isLightModeEnabled: isLightSessionMode)
             .set(location: location)
             .set(appVersion: appVersion)
             .set(visitorFieldsJSONString: visitorFieldsJSONString)
@@ -241,6 +248,7 @@ final class WebimSessionImpl {
             .set(remoteNotificationSystem: remoteNotificationSystem)
             .set(deviceID: getDeviceID(withSuffix: multivisitorSection))
             .set(prechat: prechat)
+            .set(infoListener: infoListener)
             .build() as WebimClient
         
         var historyStorage: HistoryStorage
@@ -395,7 +403,7 @@ final class WebimSessionImpl {
             userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyRevision.rawValue)
             userDefaults.removeValue(forKey: WMKeychainWrapperMainPrefix.historyEnded.rawValue)
             WMKeychainWrapper.standard.setDictionary(userDefaults,
-                                      forKey: userDefaultsKey)
+                                                     forKey: userDefaultsKey)
         }
         _ = WMKeychainWrapper.removePreviousVisitorData(key: userDefaultsKey)
         WebimInternalLogger.shared.log(
@@ -488,7 +496,7 @@ final class WebimSessionImpl {
             
             let newVisitorFieldsDictionary = [WMKeychainWrapperMainPrefix.visitorExt.rawValue: newVisitorFieldsJSONString]
             WMKeychainWrapper.standard.setDictionary(newVisitorFieldsDictionary as [String: Any],
-                                      forKey: userDefaultsKey)
+                                                     forKey: userDefaultsKey)
         }
     }
     
@@ -507,9 +515,10 @@ final class WebimSessionImpl {
             if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: WMKeychainWrapperName.guid.rawValue) {
                 userDefaults[name] = uuidString
                 WMKeychainWrapper.standard.setDictionary(userDefaults,
-                                          forKey: WMKeychainWrapperName.guid.rawValue)
+                                                         forKey: WMKeychainWrapperName.guid.rawValue)
             } else {
-                WMKeychainWrapper.standard.setDictionary([name: uuidString as Any], forKey: WMKeychainWrapperName.guid.rawValue)
+                WMKeychainWrapper.standard.setDictionary([name: uuidString as Any],
+                                                         forKey: WMKeychainWrapperName.guid.rawValue)
             }
         }
         guard let deviceID = uuidString else {
@@ -846,7 +855,11 @@ final class HistoryPoller {
     }
     
     private func requestHistory(since: String?,
-                                completion: @escaping (_ messageList: [MessageImpl], _ deleted: Set<String>, _ hasMore: Bool, _ isInitial: Bool, _ revision: String?) -> ()) {
+                                completion: @escaping (_ messageList: [MessageImpl],
+                                                       _ deleted: Set<String>,
+                                                       _ hasMore: Bool,
+                                                       _ isInitial: Bool,
+                                                       _ revision: String?) -> ()) {
         webimActions.requestHistory(since: since) { data in
             if let data = data {
                 let json = try? JSONSerialization.jsonObject(with: data,
@@ -1104,7 +1117,7 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
     
     // MARK: - Properties
     private let internalErrorListener: InternalErrorListener?
-    private let notFatalErrorHandler: NotFatalErrorHandler?
+    private weak var notFatalErrorHandler: NotFatalErrorHandler?
     private var sessionDestroyer: SessionDestroyer
     
     // MARK: - Initialization
@@ -1146,7 +1159,7 @@ final private class DestroyOnFatalErrorListener: InternalErrorListener {
  - copyright:
  2017 Webim
  */
-final private class ErrorHandlerToInternalAdapter: InternalErrorListener {
+final class ErrorHandlerToInternalAdapter: InternalErrorListener {
     
     func onNotFatal(error: NotFatalErrorType) {
     }
@@ -1223,10 +1236,10 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
         if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
             userDefaults[WMKeychainWrapperMainPrefix.historyEnded.rawValue] = historyEnded
             WMKeychainWrapper.standard.setDictionary(userDefaults,
-                                      forKey: userDefaultsKey)
+                                                     forKey: userDefaultsKey)
         } else {
             WMKeychainWrapper.standard.setDictionary([WMKeychainWrapperMainPrefix.historyEnded.rawValue: historyEnded],
-                                           forKey: userDefaultsKey)
+                                                     forKey: userDefaultsKey)
         }
     }
     
@@ -1235,10 +1248,10 @@ final private class HistoryMetaInformationStoragePreferences: HistoryMetaInforma
             if var userDefaults = WMKeychainWrapper.standard.dictionary(forKey: userDefaultsKey) {
                 userDefaults[WMKeychainWrapperMainPrefix.historyRevision.rawValue] = revision
                 WMKeychainWrapper.standard.setDictionary(userDefaults,
-                                          forKey: userDefaultsKey)
+                                                         forKey: userDefaultsKey)
             } else {
                 WMKeychainWrapper.standard.setDictionary([WMKeychainWrapperMainPrefix.historyRevision.rawValue: revision],
-                                               forKey: userDefaultsKey)
+                                                         forKey: userDefaultsKey)
             }
         }
     }

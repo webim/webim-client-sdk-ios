@@ -54,8 +54,10 @@
 "Edit" = "Edit";
 "Enter message" = "Enter message";
 "Please rate the overall impression of the consultation" = "Please rate the overall impression of the consultation.";
+"Fetching more messages..." = "Fetching more messages...";
 "Rate Operator" = "Rate Agent";
 "Send" = "Send";
 "New messages" = "New messages";
 "Settings" = "Settings";
 "Invalid account name" = "Account with that name not found. Please check the entered information.";
+"Share to Chat" = "Share to Chat";

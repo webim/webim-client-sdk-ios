@@ -55,12 +55,16 @@ enum WebimInternalError: String, Error {
     case unauthorized = "unauthorized"
     case uploadedFileNotFound = "uploaded-file-not-found"
     case visitorBanned = "visitor_banned"
+    case noTariffOption = "no-tariff-option"
     case wrongArgumentValue = "wrong-argument-value"
     case wrongProvidedVisitorFieldsHashValue = "wrong-provided-visitor-hash-value"
     case unknownMetod = "unknown-method"
     case noPartnerOption = "no-partner-option"
     case argumentMissing = "argument-missing"
     case wrongInit = "wrong-init"
+    case wrongProvidedVisitorExpiresValue = "wrong-provided-visitor-expires-value"
+    case internalError = "internal_error"
+    case unknown
     
     // Data errors
     // Quoting message errors
@@ -126,4 +130,7 @@ enum WebimInternalError: String, Error {
     
     // Geolocation errors
     case invalidCoordinatesReceived = "invalid-coordinates-received"
+    
+    //Contacts errors
+    case emailChangedTooManyTimes = "email-changed-too-many-times"
 }

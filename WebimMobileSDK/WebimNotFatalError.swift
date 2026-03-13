@@ -80,9 +80,6 @@ public enum NotFatalErrorType {
      */
     case noNetworkConnection
     
-    @available(*, unavailable, renamed: "noNetworkConnection")
-    case NO_NETWORK_CONNECTION
-    
     /**
      This error occurs when server is not available.
      - author:
@@ -91,8 +88,4 @@ public enum NotFatalErrorType {
      2019 Webim
      */
     case serverIsNotAvailable
-    
-    @available(*, unavailable, renamed: "serverIsNotAvailable")
-    case SERVER_IS_NOT_AVAILABLE
-    
 }

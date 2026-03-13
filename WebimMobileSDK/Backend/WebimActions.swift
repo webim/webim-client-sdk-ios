@@ -72,9 +72,8 @@ protocol WebimActions {
                    firstQuestion: String?,
                    departmentKey: String?,
                    customFields: String?,
+                   forceOnline: Bool,
                    forceStart: Bool)
-    
-    func closeChat()
     
     func set(visitorTyping: Bool,
              draft: String?,
@@ -146,9 +145,21 @@ protocol WebimActions {
                       url: String,
                       completion: AutocompleteCompletionHandler?)
 
-    func getServerSideSettings(completionHandler: ServerSideSettingsCompletionHandler?)
+    func getServerSideSettings(forLocation: String,
+                               completionHandler: ServerSideSettingsCompletionHandler?)
     
     func sendGeolocation(latitude: Double,
                          longitude: Double,
                          completionHandler: GeolocationCompletionHandler?)
+    
+    func sendContacts(contacts: String,
+                      completionHandler: ContactsCompletionHandler?)
+    
+    func sendOfflineMessage(clientSideID: String,
+                            message: String,
+                            fields: String,
+                            file: Data?,
+                            fileName: String?,
+                            mimeType: String?,
+                            completionHandler: OfflineMessageCompletionHandler?)
 }

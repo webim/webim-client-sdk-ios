@@ -83,9 +83,6 @@ public enum FatalErrorType {
      */
     case accountBlocked
     
-    @available(*, unavailable, renamed: "accountBlocked")
-    case ACCOUNT_BLOCKED
-    
     /**
      Indicates an expired authorization of a visitor.
      The recommended response is to re-authorize it and to re-create session object.
@@ -101,9 +98,6 @@ public enum FatalErrorType {
      */
     case providedVisitorFieldsExpired
     
-    @available(*, unavailable, renamed: "providedVisitorFieldsExpired")
-    case PROVIDED_VISITOR_FIELDS_EXPIRED
-    
     /**
      Indicates the occurrence of an unknown error.
      Recommended response is to send an automatic bug report and show to a user an error message with the recommendation to try using the chat later.
@@ -118,9 +112,6 @@ public enum FatalErrorType {
      */
     case unknown
     
-    @available(*, unavailable, renamed: "unknown")
-    case UNKNOWN
-    
     /**
      Indicates that a visitor was banned by an operator and can't send messages to a chat anymore.
      Occurs when a user tries to open the chat or write a message after that.
@@ -133,9 +124,6 @@ public enum FatalErrorType {
      2017 Webim
      */
     case visitorBanned
-    
-    @available(*, unavailable, renamed: "visitorBanned")
-    case VISITOR_BANNED
     
     /**
      Indicates a problem of your application authorization mechanism and is unrelated to the user’s actions.
@@ -153,9 +141,13 @@ public enum FatalErrorType {
      */
     case wrongProvidedVisitorHash
     
-    @available(*, unavailable, renamed: "wrongProvidedVisitorHash")
-    case WRONG_PROVIDED_VISITOR_HASH
-    
+    /**
+     Indicates a problem of session initialization.
+     - author:
+     Nikita Kaberov
+     - copyright:
+     2025 Webim
+     */
     case initializationFailed
     
 }

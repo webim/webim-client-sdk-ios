@@ -34,11 +34,11 @@ struct InternalScheme: RawRepresentable {
 struct InternalHost {
     static let defaultHost = "demo.webim.ru"
     static var currentHost: String {
-        let host = Settings.shared.accountName
+        let host = Settings.shared.changedAccountName ?? Settings.shared.accountName
         if host.contains("https://") {
             return host.replacingOccurrences(of: "https://", with: "")
         } else {
-            return Settings.shared.accountName + ".webim.ru"
+            return host + ".webim.ru"
         }
     }
 }
@@ -94,7 +94,7 @@ extension URLComponents {
     ) {
         var components = URLComponents()
         components.scheme = scheme.rawValue
-        components.host = host
+        components.host = host.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         components.path = path
         components.queryItems = queryItems
         self = components

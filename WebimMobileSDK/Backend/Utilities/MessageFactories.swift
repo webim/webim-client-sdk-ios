@@ -44,7 +44,7 @@ class MessageMapper {
     // MARK: - Properties
     private let serverURLString: String
     private var fileUrlCreator: FileUrlCreator?
-    private var accountConfig: AccountConfigItem?
+    private var accountConfig: AccountConfig?
     private var webimClient: WebimClient?
     private var location: String?
     
@@ -79,6 +79,8 @@ class MessageMapper {
             return .visitorMessage
         case .stickerVisitor:
             return .stickerVisitor
+        case .contactInformation:
+            return .contacts
         default:
             WebimInternalLogger.shared.log(entry: "Invalid message type received: \(messageKind.rawValue)",
                 verbosityLevel: .warning)
@@ -92,7 +94,7 @@ class MessageMapper {
         guard let kind = messageItem.getKind() else {
             return nil
         }
-        if kind == .contactInformation || kind == .forOperator {
+        if kind == .forOperator {
             return nil
         }
         guard let type = MessageMapper.convert(messageKind: kind) else {
@@ -152,8 +154,9 @@ class MessageMapper {
                                                           state: state,
                                                           errorType: file?.getErrorType(),
                                                           errorMessage: file?.getErrorMessage(),
-                                                          visitorErrorMessage: file?.getVisitorErrorMessage()),
-                                                          translationInfo: nil)
+                                                          visitorErrorMessage: file?.getVisitorErrorMessage(),
+                                                          extraText: messageItem.getData()?.getExtraText()),
+                        translationInfo: nil)
                 } else {
                     if let rawData = messageItem.getRawData(),
                        let file = MessageDataItem(jsonDictionary: rawData).getFile() {
@@ -186,8 +189,10 @@ class MessageMapper {
                                                               downloadProgress: file.getDownloadProgress(),
                                                               errorType: file.getErrorType(),
                                                               errorMessage: file.getErrorMessage(),
-                                                              visitorErrorMessage: file.getVisitorErrorMessage()),
-                                                              translationInfo: nil)
+                                                              visitorErrorMessage: file.getVisitorErrorMessage(),
+                                                              extraText: messageItem.getData()?.getExtraText()),
+                            translationInfo: nil
+                        )
                     }
                 }
             }
@@ -301,7 +306,7 @@ class MessageMapper {
         self.fileUrlCreator = fileUrlCreator
     }
     
-    func set(accountConfig: AccountConfigItem?) {
+    func set(accountConfig: AccountConfig?) {
         self.accountConfig = accountConfig
     }
     

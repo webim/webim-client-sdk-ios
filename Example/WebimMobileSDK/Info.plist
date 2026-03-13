@@ -93,5 +93,9 @@
 	<false/>
 	<key>keychainAppIdentifier</key>
 	<string>$(AppIdentifierPrefix)ru.webim.Webim-Client.Share</string>
+    <key>UIDesignRequiresCompatibility</key>
+    <true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
 </dict>
 </plist>

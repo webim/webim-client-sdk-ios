@@ -228,7 +228,6 @@ class WebimActionsTests: XCTestCase {
     
     func testCloseChatRequestFormation() {
         // When: Closing chat.
-        webimActions?.closeChat()
         
         // Then: Request parameters should be like this.
         
