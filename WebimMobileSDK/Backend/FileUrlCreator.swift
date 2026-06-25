@@ -53,12 +53,12 @@ final class FileUrlCreator {
     
     // MARK: - Methods
     func createFileURL(byFilename filename: String, guid: String, isThumb: Bool = false) -> String? {
-        guard let pageID = webimClient?.getDeltaRequestLoop().getAuthorizationData()?.getPageID(),
-            let authorizationToken = webimClient?.getDeltaRequestLoop().getAuthorizationData()?.getAuthorizationToken() else {
+        guard let authorizationData = webimClient?.getDeltaRequestLoop().getAuthorizationData(), let authorizationToken = authorizationData.getAuthorizationToken() else {
                 WebimInternalLogger.shared.log(entry: "Tried to access to message attachment without authorization data.")
                 
                 return nil
         }
+        let pageID = authorizationData.getPageID()
         let expires = Int64(Date().timeIntervalSince1970) + Period.attachmentURLExpires.rawValue
         let data: String = guid + String(expires)
         if let hash = data.hmacSHA256(withKey: authorizationToken) {
@@ -77,6 +77,19 @@ final class FileUrlCreator {
                 + "expires" + "=" + String(expires) + "&"
                 + "hash" + "=" + hash
                 + (isThumb ? "&thumb=ios" : "")
+            
+            if let url = URL(string: fileURLString), let host = url.host {
+                let cookieProperties: [HTTPCookiePropertyKey: Any] = [
+                    .name: "WEBIM_VISIT_SESSION_ID",
+                    .value: authorizationData.getSessionID(),
+                    .domain: host,
+                    .path: url.path.addingPercentEncodingForURLQueryValue(),
+                    .secure: "TRUE"
+                ]
+                if let cookie = HTTPCookie(properties: cookieProperties) {
+                    HTTPCookieStorage.shared.setCookie(cookie)
+                }
+            }
             
             return fileURLString
         }

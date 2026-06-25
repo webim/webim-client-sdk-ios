@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		115289002F6474D600D5E8B4 /* WebimMobileWidget in Frameworks */ = {isa = PBXBuildFile; productRef = 115288FF2F6474D600D5E8B4 /* WebimMobileWidget */; };
 		117147392DD6A33B00784BEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 117147382DD6A33B00784BEB /* LaunchScreen.storyboard */; };
 		1171473B2DD6A34600784BEB /* LaunchScreenController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1171473A2DD6A34600784BEB /* LaunchScreenController.storyboard */; };
 		1171473D2DD6A3E800784BEB /* WMLogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1171473C2DD6A3E800784BEB /* WMLogsViewController.xib */; };
@@ -598,7 +597,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				900DB0E62E29295C00FF8F1D /* FirebaseCrashlytics in Frameworks */,
-				115289002F6474D600D5E8B4 /* WebimMobileWidget in Frameworks */,
 				902CA02F2D64A746008E91FF /* FirebaseAnalytics in Frameworks */,
 				902CA02A2D64A62F008E91FF /* WebimMobileWidget in Frameworks */,
 			);
@@ -1182,9 +1180,9 @@
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
 			packageReferences = (
+				902CA0282D64A604008E91FF /* XCLocalSwiftPackageReference "../../webim-mobile-ui-ios" */,
 				902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				115288FE2F6474D600D5E8B4 /* XCRemoteSwiftPackageReference "webim-mobile-ui-ios" */,
-				115289012F649CD700D5E8B4 /* XCRemoteSwiftPackageReference "webim-mobile-share-ios" */,
+				90760FE32F18EC0700241F71 /* XCLocalSwiftPackageReference "../../webim-mobile-share-ios" */,
 			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
@@ -1903,7 +1901,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 4.0.1;
 				MODULE_NAME = ExampleApp;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -Xfrontend -warn-long-expression-type-checking=400 -Xfrontend -warn-long-function-bodies=400 -Onone";
@@ -1935,7 +1933,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 4.0.1;
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.webim.Webim-Client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2140,25 +2138,13 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = "../../webim-mobile-ui-ios";
 		};
+		90760FE32F18EC0700241F71 /* XCLocalSwiftPackageReference "../../webim-mobile-share-ios" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../webim-mobile-share-ios";
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		115288FE2F6474D600D5E8B4 /* XCRemoteSwiftPackageReference "webim-mobile-ui-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/webim/webim-mobile-ui-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-		115289012F649CD700D5E8B4 /* XCRemoteSwiftPackageReference "webim-mobile-share-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/webim/webim-mobile-share-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -2170,11 +2156,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		115288FF2F6474D600D5E8B4 /* WebimMobileWidget */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 115288FE2F6474D600D5E8B4 /* XCRemoteSwiftPackageReference "webim-mobile-ui-ios" */;
-			productName = WebimMobileWidget;
-		};
 		900DB0E52E29295C00FF8F1D /* FirebaseCrashlytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 902CA02D2D64A746008E91FF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

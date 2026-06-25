@@ -38,18 +38,21 @@ struct AuthorizationData {
     // MARK: - Properties
     private var pageID: String
     private var authorizationToken: String
-    
+    private var sessionID: String
     
     // MARK: - Initialization
     init?(pageID: String?,
-          authorizationToken: String?) {
+          authorizationToken: String?,
+          sessionID: String?) {
         guard let pageID = pageID,
-            let authorizationToken = authorizationToken else {
+              let authorizationToken = authorizationToken,
+              let sessionID = sessionID else {
             return nil
         }
         
         self.pageID = pageID
         self.authorizationToken = authorizationToken
+        self.sessionID = sessionID
     }
     
     
@@ -63,6 +66,10 @@ struct AuthorizationData {
         return authorizationToken
     }
     
+    func getSessionID() -> String {
+        return sessionID
+    }
+    
 }
 
 // MARK: - Equatable
@@ -72,6 +79,7 @@ extension AuthorizationData: Equatable {
                     rhs: AuthorizationData) -> Bool {
         return (lhs.pageID == rhs.pageID)
             && (lhs.authorizationToken == rhs.authorizationToken)
+            && (lhs.sessionID == rhs.sessionID)
     }
     
 }

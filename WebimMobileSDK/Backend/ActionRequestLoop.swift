@@ -122,7 +122,7 @@ class ActionRequestLoop: AbstractRequestLoop {
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     
                     if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
-                        if error == WebimInternalError.reinitializationRequired.rawValue {
+                        if error == WebimInternalError.reinitializationRequired.rawValue && operationQueue != historyRequestOperationQueue {
                             do {
                                 try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil)
                             } catch {
@@ -223,9 +223,9 @@ class ActionRequestLoop: AbstractRequestLoop {
             urlRequest = URLRequest(url: url)
         } else { // POST
             if let fileName = request.getFileName(),
-                let mimeType = request.getMimeType(),
-                let fileData = request.getFileData(),
-                let boundaryString = request.getBoundaryString() {
+               let mimeType = request.getMimeType(),
+               let fileData = request.getFileData(),
+               let boundaryString = request.getBoundaryString() {
                 // Assuming that ready HTTP body is passed only for multipart requests.
                 guard let url = URL(string: (request.getBaseURLString())) else {
                     WebimInternalLogger.shared.log(entry: "Invalid URL in ActionRequestLoop.\(#function)")

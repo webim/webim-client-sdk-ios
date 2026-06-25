@@ -71,8 +71,7 @@ final class WebimActionsImpl {
     private var webimMeta: WebimMetaItem?
     
     // MARK: - Initialization
-    init(actionRequestLoop: ActionRequestLoop
-    ) {
+    init(actionRequestLoop: ActionRequestLoop) {
         self.actionRequestLoop = actionRequestLoop
     }
     

@@ -282,7 +282,6 @@ final class MessageItem {
         case info = "info"
         case keyboard = "keyboard"
         case keyboardResponse = "keyboard_response"
-        case keyboard_response = ""
         case operatorMessage = "operator"
         case operatorBusy = "operator_busy"
         case stickerVisitor = "sticker_visitor"

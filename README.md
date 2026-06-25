@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 4.0.0
+github "webim/webim-client-sdk-ios" ~> 4.0.1
 ```
 
 ### Swift Package Manager
@@ -41,9 +41,7 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Improved performance.
-* Removed SCREAMING_SNAKE_CASE style constants.
-* Removed method `closeChat()`
+* Cookies are used for downloading files.
 
 ## Example
 

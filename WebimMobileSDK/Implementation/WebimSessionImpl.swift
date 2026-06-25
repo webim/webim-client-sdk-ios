@@ -219,7 +219,8 @@ final class WebimSessionImpl {
         }
         
         let authorizationData = AuthorizationData(pageID: pageID,
-                                                  authorizationToken: authorizationToken)
+                                                  authorizationToken: authorizationToken,
+                                                  sessionID: sessionID)
         
         let deltaCallback = DeltaCallback(currentChatMessageMapper: currentChatMessageMapper,
                                           historyMessageMapper: historyMessageMapper,
