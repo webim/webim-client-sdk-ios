@@ -109,6 +109,7 @@
 		903E68062D0C483D000DDA53 /* WMSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68052D0C483D000DDA53 /* WMSessionController.swift */; };
 		903E68082D0C492F000DDA53 /* ServerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68072D0C492F000DDA53 /* ServerSettings.swift */; };
 		903E680A2D0C4BB0000DDA53 /* WeakRefference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903E68092D0C4BB0000DDA53 /* WeakRefference.swift */; };
+		9054EB1C309A0E0200E16B46 /* AuthUpdateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054EB1B309A0E0200E16B46 /* AuthUpdateListener.swift */; };
 		9069674A2CFA0E24009E19C5 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906967492CFA0E1D009E19C5 /* Visitor.swift */; };
 		909959CF2EF5A26500DB5A03 /* TranslationOptionsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909959CE2EF5A25300DB5A03 /* TranslationOptionsItem.swift */; };
 		90E683BD2E4B406500B8C2AE /* NewMessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E683BC2E4B406500B8C2AE /* NewMessageListener.swift */; };
@@ -246,6 +247,7 @@
 		903E68052D0C483D000DDA53 /* WMSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSessionController.swift; sourceTree = "<group>"; };
 		903E68072D0C492F000DDA53 /* ServerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSettings.swift; sourceTree = "<group>"; };
 		903E68092D0C4BB0000DDA53 /* WeakRefference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRefference.swift; sourceTree = "<group>"; };
+		9054EB1B309A0E0200E16B46 /* AuthUpdateListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUpdateListener.swift; sourceTree = "<group>"; };
 		906967492CFA0E1D009E19C5 /* Visitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visitor.swift; sourceTree = "<group>"; };
 		909959CE2EF5A25300DB5A03 /* TranslationOptionsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationOptionsItem.swift; sourceTree = "<group>"; };
 		90E683BC2E4B406500B8C2AE /* NewMessageListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageListener.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 		8FD24465200CE25A007EB9CB /* Backend */ = {
 			isa = PBXGroup;
 			children = (
+				9054EB1B309A0E0200E16B46 /* AuthUpdateListener.swift */,
 				8FD24482200CE25A007EB9CB /* Items */,
 				8FD24473200CE25A007EB9CB /* Utilities */,
 				8FD24466200CE25A007EB9CB /* HistoryMetaInformationStorage.swift */,
@@ -707,6 +710,7 @@
 				CE2E681320123DC9004E99EA /* Collection.swift in Sources */,
 				95EE8A9E25C3A6E6006F7BFB /* WebimService.swift in Sources */,
 				8FD244EA200CE25C007EB9CB /* WebimError.swift in Sources */,
+				9054EB1C309A0E0200E16B46 /* AuthUpdateListener.swift in Sources */,
 				8FD244E8200CE25C007EB9CB /* LocationSettingsImpl.swift in Sources */,
 				8FD244AD200CE25C007EB9CB /* Department.swift in Sources */,
 				8FD244E5200CE25C007EB9CB /* WebimErrorImpl.swift in Sources */,

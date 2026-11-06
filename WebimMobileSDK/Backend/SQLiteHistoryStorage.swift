@@ -463,7 +463,7 @@ final class SQLiteHistoryStorage: HistoryStorage {
                             verbosityLevel: .warning,
                             logType: .messageHistory)
                     }
-                } catch let Result.error(_, code, _) where code == SQLiteHistoryStorage.SQLITE_CONSTRAINT {
+                } catch let Result.error(_, code) where (code & 0xFF) == SQLiteHistoryStorage.SQLITE_CONSTRAINT {
                     do {
                         try update(message: message)
                         

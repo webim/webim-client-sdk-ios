@@ -251,6 +251,7 @@ final class WebimClientBuilder {
                                                 requestHeader: requestHeader,
                                                 isLightModeEnabled: isLightModeEnabled,
                                                 infoListener: infoListener)
+        actionRequestLoop.set(authUpdateListener: AuthUpdateListenerWrapper(deltaRequestLoop: deltaRequestLoop))
         
         return WebimClient(withActionRequestLoop: actionRequestLoop,
                            deltaRequestLoop: deltaRequestLoop,
@@ -368,6 +369,31 @@ final private class SessionParametersListenerWrapper: SessionParametersListener 
         wrappedSessionParametersListener?.onSessionParametersChanged(visitorFieldsJSONString: visitorJSONString,
                                                                      sessionID: sessionID,
                                                                      authorizationData: authorizationData)
+    }
+    
+}
+
+// MARK: -
+// Need to update AuthorizationData in DeltaRequestLoop.
+/**
+ - author:
+ Anna Frolova
+ - copyright:
+ 2026 Webim
+ */
+final private class AuthUpdateListenerWrapper: AuthUpdateListener {
+    
+    // MARK: - Properties
+    private let deltaRequestLoop: DeltaRequestLoop
+    
+    // MARK: - Initializers
+    init(deltaRequestLoop: DeltaRequestLoop) {
+        self.deltaRequestLoop = deltaRequestLoop
+    }
+    
+    // MARK: - SessionParametersListener protocol methods
+    func sessionParametersNeedsToUpdate() {
+        deltaRequestLoop.sessionParametersNeedsToUpdate()
     }
     
 }

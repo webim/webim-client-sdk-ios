@@ -6,7 +6,7 @@ Mimimum Webim server version supported – **10.5.30**.
 
 ## Installation
 
-> Minimum iOS version supported – 11.0.
+> Minimum iOS version supported – 15.0.
 
 ### CocoaPods
 
@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 4.0.1
+github "webim/webim-client-sdk-ios" ~> 4.0.2
 ```
 
 ### Swift Package Manager
@@ -41,7 +41,8 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* Cookies are used for downloading files.
+* SQLite version update.
+* Reinitialization handling improved.
 
 ## Example
 

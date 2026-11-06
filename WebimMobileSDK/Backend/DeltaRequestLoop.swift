@@ -166,7 +166,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
             }
         } else {
             while isRunning() {
-                if authorizationData != nil  && since != "0" {
+                if authorizationData != nil && since != "0" {
                     requestDelta()
                 } else {
                     requestAccountConfig()
@@ -240,7 +240,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         var urlString = authData?.getAuthToken() == nil ? (baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString()) : (baseURL + ServerPathSuffix.initPath.rawValue)
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
-        request.setValue("4.0.1", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         if let authToken = authData?.getAuthToken() {
             request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
@@ -266,7 +266,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestAuth() {
         let url = URL(string: baseURL + ServerPathSuffix.getAuthToken.rawValue + "?" + getAuthParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("4.0.1", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.post.rawValue
         
         do {
@@ -287,7 +287,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestMeta() {
         let url = URL(string: baseURL + ServerPathSuffix.getMeta.rawValue)
         var request = URLRequest(url: url!)
-        request.setValue("4.0.1", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -316,7 +316,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
             url = URL(string: baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)" + "?jsonp=false")!
         }
         var request = URLRequest(url: url)
-        request.setValue("4.0.1", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -387,7 +387,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
                         self?.infoListener?.update(newMessageCount: unreadMessagesCount)
                     })
                 }
-                usleep(10_000_000)
+                usleep(60_000_000)
             }
         } else {
             WebimInternalLogger.shared.log(
@@ -605,6 +605,10 @@ class DeltaRequestLoop: AbstractRequestLoop {
     private func handleReinitializationRequiredError() {
         authorizationData = nil
         since = "0"
+    }
+    
+    func sessionParametersNeedsToUpdate() {
+        handleReinitializationRequiredError()
     }
     
     private func handleProvidedAuthenticationTokenNotFoundError() {

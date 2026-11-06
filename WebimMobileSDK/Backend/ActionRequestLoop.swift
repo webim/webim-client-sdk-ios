@@ -39,8 +39,8 @@ class ActionRequestLoop: AbstractRequestLoop {
     var actionOperationQueue: OperationQueue?
     var historyRequestOperationQueue: OperationQueue?
     private var webimServerSideSettings: ServerSettingsResponse?
+    private var authUpdateListener: AuthUpdateListener?
     @WMSynchronized var authorizationData: AuthorizationData?
-    
     
     // MARK: - Initialization
     init(completionHandlerExecutor: ExecIfNotDestroyedHandlerExecutor,
@@ -62,6 +62,10 @@ class ActionRequestLoop: AbstractRequestLoop {
                    internalErrorListener: internalErrorListener,
                    requestHeader: requestHeader,
                    baseURL: baseURL)
+    }
+    
+    func set(authUpdateListener: AuthUpdateListener?) {
+        self.authUpdateListener = authUpdateListener
     }
     
     // MARK: - Methods
@@ -98,17 +102,20 @@ class ActionRequestLoop: AbstractRequestLoop {
         return webimServerSideSettings
     }
     
-    func enqueue(request: WebimRequest, withAuthData: Bool = true, progressRequest: WebimRequest? = nil) {
+    func enqueue(request: WebimRequest,
+                 withAuthData: Bool = true,
+                 progressRequest: WebimRequest? = nil) {
         let operationQueue = request.getCompletionHandler() != nil ? historyRequestOperationQueue : actionOperationQueue
         operationQueue?.addOperation { [weak self] in
             guard let `self` = self else {
                 return
             }
-            
-            let urlRequest = self.createUrlRequest(request: request, withAuthData: withAuthData)
+            let urlRequest = self.createUrlRequest(request: request,
+                                                   withAuthData: withAuthData)
             var urlProgressRequest: URLRequest?
             if let progressRequest = progressRequest {
-                urlProgressRequest = self.createUrlRequest(request: progressRequest, withAuthData: withAuthData)
+                urlProgressRequest = self.createUrlRequest(request: progressRequest,
+                                                           withAuthData: withAuthData)
             }
             
             do {
@@ -118,13 +125,14 @@ class ActionRequestLoop: AbstractRequestLoop {
                         logType: .networkRequest)
                     return
                 }
-                let data = try self.perform(request: urlRequest, progressRequest: urlProgressRequest)
+                let data = try self.perform(request: urlRequest,
+                                            progressRequest: urlProgressRequest)
                 if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     
                     if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
-                        if error == WebimInternalError.reinitializationRequired.rawValue && operationQueue != historyRequestOperationQueue {
+                        if error == WebimInternalError.reinitializationRequired.rawValue {
                             do {
-                                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil)
+                                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
                             } catch {
                                 return
                             }
@@ -137,11 +145,14 @@ class ActionRequestLoop: AbstractRequestLoop {
                         return
                     }
                     self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                        self.parseWebimRequest(request: request, data: data, dataJSON: dataJSON)
+                        self.parseWebimRequest(request: request,
+                                               data: data,
+                                               dataJSON: dataJSON)
                     })
                 } else if let _ = try? JSONSerialization.jsonObject(with: self.prepareServerSideData(rawData: data),options: []) as? [String : Any] {
                     self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                        self.executeServerSideSettingsRequest(request: request, data: data)
+                        self.executeServerSideSettingsRequest(request: request,
+                                                              data: data)
                     })
                 } else {
                     self.handleErrorCompletionHandler(ofRequest: request)
@@ -174,8 +185,8 @@ class ActionRequestLoop: AbstractRequestLoop {
                         return
                     }
                     self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                        sendFileCompletionHandler.onFailure(messageID: messageID,
-                                                            error: .uploadCanceled)
+                        self.parseWebimRequestJsonError(WebimInternalError.reinitializationRequired.rawValue,
+                                                        request: request)
                     })
                 }
             } catch {
@@ -187,10 +198,11 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
-    private func createUrlRequest(request: WebimRequest, withAuthData: Bool) -> URLRequest? {
+    private func createUrlRequest(request: WebimRequest,
+                                  withAuthData: Bool) -> URLRequest? {
         if self.authorizationData == nil {
             do {
-                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: nil) // wtf
+                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
             } catch {
                 return nil
             }
@@ -263,6 +275,11 @@ class ActionRequestLoop: AbstractRequestLoop {
         
         switch error {
         case WebimInternalError.reinitializationRequired.rawValue:
+            do {
+                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
+            } catch {
+                return
+            }
             self.handleHistoryCompletionHandler(ofRequest: request)
             break
         case WebimInternalError.fileSizeExceeded.rawValue,
@@ -544,6 +561,7 @@ class ActionRequestLoop: AbstractRequestLoop {
     }
     
     private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) throws -> AuthorizationData {
+        self.authUpdateListener?.sessionParametersNeedsToUpdate()
         while isRunning()
                 && (lastAuthorizationData == self.authorizationData) {
                 usleep(100_000) // 0.1 s.
