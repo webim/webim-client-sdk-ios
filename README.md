@@ -20,7 +20,7 @@ pod 'WebimMobileSDK'
 
 Add following line to your **Cartfile**:
 ```
-github "webim/webim-client-sdk-ios" ~> 4.0.2
+github "webim/webim-client-sdk-ios" ~> 4.0.3
 ```
 
 ### Swift Package Manager
@@ -41,7 +41,6 @@ Previous _Objective-C_ version (version numbers 2.x.x) can be reached from **ver
 
 ## Release notes
 
-* SQLite version update.
 * Reinitialization handling improved.
 
 ## Example

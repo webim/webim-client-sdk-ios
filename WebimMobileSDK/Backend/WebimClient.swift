@@ -392,8 +392,8 @@ final private class AuthUpdateListenerWrapper: AuthUpdateListener {
     }
     
     // MARK: - SessionParametersListener protocol methods
-    func sessionParametersNeedsToUpdate() {
-        deltaRequestLoop.sessionParametersNeedsToUpdate()
+    func sessionParametersNeedsToUpdate(oldAuthorizationData: AuthorizationData) {
+        deltaRequestLoop.sessionParametersNeedsToUpdate(oldAuthorizationData: oldAuthorizationData)
     }
     
 }

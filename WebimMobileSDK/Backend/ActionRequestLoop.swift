@@ -40,6 +40,9 @@ class ActionRequestLoop: AbstractRequestLoop {
     var historyRequestOperationQueue: OperationQueue?
     private var webimServerSideSettings: ServerSettingsResponse?
     private var authUpdateListener: AuthUpdateListener?
+    private let reinitializationLock = NSLock()
+    private static let maxReinitializationAttempts = 3
+    @WMSynchronized private var reinitializationAttempts = 0
     @WMSynchronized var authorizationData: AuthorizationData?
     
     // MARK: - Initialization
@@ -75,6 +78,8 @@ class ActionRequestLoop: AbstractRequestLoop {
             return
         }
         
+        resetReinitializationAttempts()
+        
         actionOperationQueue = OperationQueue()
         actionOperationQueue?.maxConcurrentOperationCount = 1
         actionOperationQueue?.qualityOfService = .userInitiated
@@ -86,6 +91,8 @@ class ActionRequestLoop: AbstractRequestLoop {
     
     override func stop() {
         super.stop()
+        
+        resetReinitializationAttempts()
         
         actionOperationQueue?.cancelAllOperations()
         actionOperationQueue = nil
@@ -110,110 +117,151 @@ class ActionRequestLoop: AbstractRequestLoop {
             guard let `self` = self else {
                 return
             }
-            let urlRequest = self.createUrlRequest(request: request,
-                                                   withAuthData: withAuthData)
-            var urlProgressRequest: URLRequest?
-            if let progressRequest = progressRequest {
-                urlProgressRequest = self.createUrlRequest(request: progressRequest,
-                                                           withAuthData: withAuthData)
-            }
             
-            do {
-                guard let urlRequest = urlRequest else {
-                    WebimInternalLogger.shared.log(
-                        entry: "Unwrapping url request failure in ActionRequestLoop.\(#function)",
-                        logType: .networkRequest)
+            while self.isRunning() {
+                guard let usedAuthorizationData = self.awaitForAuthorizationData() else {
                     return
                 }
-                let data = try self.perform(request: urlRequest,
-                                            progressRequest: urlProgressRequest)
-                if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                    
-                    if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
-                        if error == WebimInternalError.reinitializationRequired.rawValue {
-                            do {
-                                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
-                            } catch {
-                                return
-                            }
-                            self.enqueue(request: request)
-                        } else {
-                            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                                self.parseWebimRequestJsonError(error, request: request)
-                            })
-                        }
+                let urlRequest = self.createUrlRequest(request: request,
+                                                       withAuthData: withAuthData,
+                                                       authorizationData: usedAuthorizationData)
+                var urlProgressRequest: URLRequest?
+                if let progressRequest = progressRequest {
+                    urlProgressRequest = self.createUrlRequest(request: progressRequest,
+                                                               withAuthData: withAuthData,
+                                                               authorizationData: usedAuthorizationData)
+                }
+            
+                do {
+                    guard let urlRequest = urlRequest else {
+                        WebimInternalLogger.shared.log(
+                            entry: "Unwrapping url request failure in ActionRequestLoop.\(#function)",
+                            logType: .networkRequest)
                         return
                     }
-                    self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                        self.parseWebimRequest(request: request,
-                                               data: data,
-                                               dataJSON: dataJSON)
-                    })
-                } else if let _ = try? JSONSerialization.jsonObject(with: self.prepareServerSideData(rawData: data),options: []) as? [String : Any] {
-                    self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                        self.executeServerSideSettingsRequest(request: request,
-                                                              data: data)
-                    })
-                } else {
-                    self.handleErrorCompletionHandler(ofRequest: request)
+                    let data = try self.perform(request: urlRequest,
+                                                progressRequest: urlProgressRequest)
+                    if let dataJSON = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    
+                        if let error = dataJSON[AbstractRequestLoop.ResponseFields.error.rawValue] as? String {
+                            if error == WebimInternalError.reinitializationRequired.rawValue {
+                                if self.reinitializationAttempts >= ActionRequestLoop.maxReinitializationAttempts {
+                                    WebimInternalLogger.shared.log(
+                                        entry: "Request \(request.getBaseURLString()) is rejected with \(error) after \(self.reinitializationAttempts) reinitializations.",
+                                        verbosityLevel: .warning,
+                                        logType: .networkRequest)
+                                    self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                                        self.parseWebimRequestJsonError(error, request: request)
+                                    })
+                                    return
+                                }
+                                self.requestReinitialization(oldAuthorizationData: usedAuthorizationData)
+                                continue
+                            } else {
+                                if operationQueue == historyRequestOperationQueue {
+                                    self.resetReinitializationAttempts()
+                                }
+                                self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                                    self.parseWebimRequestJsonError(error, request: request)
+                                })
+                            }
+                            return
+                        }
+                        if operationQueue == historyRequestOperationQueue {
+                            self.resetReinitializationAttempts()
+                        }
+                        self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                            self.parseWebimRequest(request: request,
+                                                   data: data,
+                                                   dataJSON: dataJSON)
+                        })
+                    } else if let _ = try? JSONSerialization.jsonObject(with: self.prepareServerSideData(rawData: data),options: []) as? [String : Any] {
+                        self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                            self.executeServerSideSettingsRequest(request: request,
+                                                                  data: data)
+                        })
+                    } else {
+                        self.handleErrorCompletionHandler(ofRequest: request)
+                        WebimInternalLogger.shared.log(
+                            entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
+                            verbosityLevel: .warning,
+                            logType: .networkRequest)
+                    }
+                } catch let sendFileError as SendFileError {
+                    if let sendFileCompletionHandler = request.getSendFileCompletionHandler() {
+                        guard let messageID = request.getMessageID() else {
+                            WebimInternalLogger.shared.log(
+                                entry: "Request has not message ID in ActionRequestLoop.\(#function)",
+                                logType: .networkRequest)
+                            return
+                        }
+                        self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                            sendFileCompletionHandler.onFailure(messageID: messageID,
+                                                                error: sendFileError)
+                        })
+                    }
+                } catch let unknownError as UnknownError {
+                    if operationQueue != historyRequestOperationQueue {
+                        self.handleRequestLoop(error: unknownError)
+                        if let sendFileCompletionHandler = request.getSendFileCompletionHandler() {
+                            guard let messageID = request.getMessageID() else {
+                                WebimInternalLogger.shared.log(
+                                    entry: "Request has not message ID in ActionRequestLoop.\(#function)",
+                                    logType: .networkRequest)
+                                return
+                            }
+                            self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                                sendFileCompletionHandler.onFailure(messageID: messageID,
+                                                                    error: .uploadCanceled)
+                            })
+                        }
+                    } else {
+                        self.handleHistoryCompletionHandler(ofRequest: request)
+                    }
+                } catch {
                     WebimInternalLogger.shared.log(
-                        entry: "Error de-serializing server response: \(String(data: data, encoding: .utf8) ?? "unreadable data")",
+                        entry: "Request failed with unknown error: \(request.getBaseURLString()).",
                         verbosityLevel: .warning,
                         logType: .networkRequest)
                 }
-            } catch let sendFileError as SendFileError {
-                // SendFileErrors are generated from HTTP code.
-                if let sendFileCompletionHandler = request.getSendFileCompletionHandler() {
-                    guard let messageID = request.getMessageID() else {
-                        WebimInternalLogger.shared.log(
-                            entry: "Request has not message ID in ActionRequestLoop.\(#function)",
-                            logType: .networkRequest)
-                        return
-                    }
-                    self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                        sendFileCompletionHandler.onFailure(messageID: messageID,
-                                                            error: sendFileError)
-                    })
-                }
-            } catch let unknownError as UnknownError {
-                self.handleRequestLoop(error: unknownError)
-                if let sendFileCompletionHandler = request.getSendFileCompletionHandler() {
-                    guard let messageID = request.getMessageID() else {
-                        WebimInternalLogger.shared.log(
-                            entry: "Request has not message ID in ActionRequestLoop.\(#function)",
-                            logType: .networkRequest)
-                        return
-                    }
-                    self.completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                        self.parseWebimRequestJsonError(WebimInternalError.reinitializationRequired.rawValue,
-                                                        request: request)
-                    })
-                }
-            } catch {
-                WebimInternalLogger.shared.log(
-                    entry: "Request failed with unknown error: \(request.getBaseURLString()).",
-                    verbosityLevel: .warning,
-                    logType: .networkRequest)
+                return
             }
         }
     }
     
-    private func createUrlRequest(request: WebimRequest,
-                                  withAuthData: Bool) -> URLRequest? {
-        if self.authorizationData == nil {
-            do {
-                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
-            } catch {
-                return nil
+    private func requestReinitialization(oldAuthorizationData: AuthorizationData) {
+        reinitializationLock.lock()
+        defer {
+            reinitializationLock.unlock()
+        }
+        
+        guard authorizationData == oldAuthorizationData else {
+            return
+        }
+        
+        reinitializationAttempts += 1
+        authorizationData = nil
+        authUpdateListener?.sessionParametersNeedsToUpdate(oldAuthorizationData: oldAuthorizationData)
+    }
+    
+    private func resetReinitializationAttempts() {
+        reinitializationAttempts = 0
+    }
+    
+    private func awaitForAuthorizationData() -> AuthorizationData? {
+        while isRunning() {
+            if let authorizationData = authorizationData {
+                return authorizationData
             }
+            usleep(100_000) // 0.1 s.
         }
         
-        guard let usedAuthorizationData = self.authorizationData else {
-            WebimInternalLogger.shared.log(
-                entry: "Authorization Data is nil in ActionRequestLoop.\(#function)")
-            return nil
-        }
-        
+        return nil
+    }
+    
+    private func createUrlRequest(request: WebimRequest,
+                                  withAuthData: Bool,
+                                  authorizationData usedAuthorizationData: AuthorizationData) -> URLRequest? {
         if !self.isRunning() {
             return nil
         }
@@ -275,11 +323,6 @@ class ActionRequestLoop: AbstractRequestLoop {
         
         switch error {
         case WebimInternalError.reinitializationRequired.rawValue:
-            do {
-                try self.authorizationData = self.awaitForNewAuthorizationData(withLastAuthorizationData: authorizationData)
-            } catch {
-                return
-            }
             self.handleHistoryCompletionHandler(ofRequest: request)
             break
         case WebimInternalError.fileSizeExceeded.rawValue,
@@ -558,21 +601,6 @@ class ActionRequestLoop: AbstractRequestLoop {
         requestBodyData.append(boundaryEndData)
         
         return requestBodyData
-    }
-    
-    private func awaitForNewAuthorizationData(withLastAuthorizationData lastAuthorizationData: AuthorizationData?) throws -> AuthorizationData {
-        self.authUpdateListener?.sessionParametersNeedsToUpdate()
-        while isRunning()
-                && (lastAuthorizationData == self.authorizationData) {
-                usleep(100_000) // 0.1 s.
-        }
-        
-        guard let authorizationData = self.authorizationData else {
-            // Interrupted request.
-            throw AbstractRequestLoop.UnknownError.interrupted
-        }
-        
-        return authorizationData
     }
     
     private func handleDataMessage(error errorString: String,
@@ -955,6 +983,15 @@ class ActionRequestLoop: AbstractRequestLoop {
                 }
                 
                 sendContactsCompletionHandler.onFailure(error: sendContactsError)
+            })
+        }
+    }
+    
+    private func handleMessageReadCompletionHandler(error errorString: String,
+                                                    ofRequest webimRequest: WebimRequest) {
+        if let messageReadCompletionHandler = webimRequest.getMessageReadByVisitorCompletionHandler() {
+            completionHandlerExecutor?.execute(task: DispatchWorkItem {
+                messageReadCompletionHandler.onFailure(error: .unknown)
             })
         }
     }

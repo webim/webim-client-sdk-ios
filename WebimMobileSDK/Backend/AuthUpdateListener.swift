@@ -16,6 +16,11 @@ import Foundation
  */
 protocol AuthUpdateListener {
     
-    func sessionParametersNeedsToUpdate()
+    /**
+     Notifies that the server rejected `oldAuthorizationData` (`reinit-required`).
+     - parameter oldAuthorizationData: Credentials the rejected request was signed with.
+     The listener must ignore the call if the credentials have been already replaced by newer ones.
+     */
+    func sessionParametersNeedsToUpdate(oldAuthorizationData: AuthorizationData)
     
 }

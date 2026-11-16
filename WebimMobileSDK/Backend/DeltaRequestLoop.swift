@@ -50,6 +50,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     @WMSynchronized private var providedAuthenticationToken: String?
     @WMSynchronized var queue: DispatchQueue?
     @WMSynchronized var since: String = "0"
+    @WMSynchronized private var sessionEpoch: Int = 0
     @WMSynchronized private var deviceToken: String?
     @WMSynchronized private var remoteNotificationSystem: Webim.RemoteNotificationSystem?
     @WMSynchronized private var location: String
@@ -142,6 +143,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func change(location: String) throws {
         self.location = location
         
+        sessionEpoch += 1
         authorizationData = nil
         authData = nil
         webimMeta = nil
@@ -240,7 +242,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         var urlString = authData?.getAuthToken() == nil ? (baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString()) : (baseURL + ServerPathSuffix.initPath.rawValue)
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
-        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         if let authToken = authData?.getAuthToken() {
             request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
@@ -266,7 +268,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestAuth() {
         let url = URL(string: baseURL + ServerPathSuffix.getAuthToken.rawValue + "?" + getAuthParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.post.rawValue
         
         do {
@@ -287,7 +289,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestMeta() {
         let url = URL(string: baseURL + ServerPathSuffix.getMeta.rawValue)
         var request = URLRequest(url: url!)
-        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -316,7 +318,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
             url = URL(string: baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)" + "?jsonp=false")!
         }
         var request = URLRequest(url: url)
-        request.setValue("4.0.2", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -426,8 +428,17 @@ class DeltaRequestLoop: AbstractRequestLoop {
         var request = URLRequest(url: url)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
+        let requestEpoch = sessionEpoch
+        
         do {
             let data = try perform(request: request)
+            guard requestEpoch == sessionEpoch else {
+                WebimInternalLogger.shared.log(
+                    entry: "Delta response of the outdated session is dropped in DeltaRequestLoop.\(#function)",
+                    verbosityLevel: .debug,
+                    logType: .networkRequest)
+                return
+            }
             self.parseDelta(data: data)
         } catch let unknownError as UnknownError {
             handleRequestLoop(error: unknownError)
@@ -603,11 +614,16 @@ class DeltaRequestLoop: AbstractRequestLoop {
     }
     
     private func handleReinitializationRequiredError() {
+        sessionEpoch += 1
         authorizationData = nil
         since = "0"
     }
     
-    func sessionParametersNeedsToUpdate() {
+    func sessionParametersNeedsToUpdate(oldAuthorizationData: AuthorizationData) {
+        guard let currentAuthorizationData = authorizationData,
+              currentAuthorizationData == oldAuthorizationData else {
+            return
+        }
         handleReinitializationRequiredError()
     }
     
