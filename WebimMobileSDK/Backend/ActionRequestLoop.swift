@@ -987,15 +987,6 @@ class ActionRequestLoop: AbstractRequestLoop {
         }
     }
     
-    private func handleMessageReadCompletionHandler(error errorString: String,
-                                                    ofRequest webimRequest: WebimRequest) {
-        if let messageReadCompletionHandler = webimRequest.getMessageReadByVisitorCompletionHandler() {
-            completionHandlerExecutor?.execute(task: DispatchWorkItem {
-                messageReadCompletionHandler.onFailure(error: .unknown)
-            })
-        }
-    }
-    
     private func handleOfflineMessageCompletionHandler(error errorString: String,
                                                        ofRequest webimRequest: WebimRequest) {
         if let offlineMessageCompletionHandler = webimRequest.getOfflineMessageCompletionHandler() {

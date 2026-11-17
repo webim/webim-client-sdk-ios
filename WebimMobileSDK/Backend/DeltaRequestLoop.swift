@@ -242,7 +242,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
         var urlString = authData?.getAuthToken() == nil ? (baseURL + ServerPathSuffix.initPath.rawValue + "?" + getInitializationParameterString()) : (baseURL + ServerPathSuffix.initPath.rawValue)
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
-        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         if let authToken = authData?.getAuthToken() {
             request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
@@ -268,7 +268,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestAuth() {
         let url = URL(string: baseURL + ServerPathSuffix.getAuthToken.rawValue + "?" + getAuthParameterString())
         var request = URLRequest(url: url!)
-        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.post.rawValue
         
         do {
@@ -289,7 +289,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
     func requestMeta() {
         let url = URL(string: baseURL + ServerPathSuffix.getMeta.rawValue)
         var request = URLRequest(url: url!)
-        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
@@ -318,7 +318,7 @@ class DeltaRequestLoop: AbstractRequestLoop {
             url = URL(string: baseURL + ServerPathSuffix.getConfig.rawValue + "/\(location)" + "?jsonp=false")!
         }
         var request = URLRequest(url: url)
-        request.setValue("4.0.3", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
+        request.setValue("4.0.4", forHTTPHeaderField: Parameter.webimSDKVersion.rawValue)
         request.httpMethod = AbstractRequestLoop.HTTPMethods.get.rawValue
         
         do {
